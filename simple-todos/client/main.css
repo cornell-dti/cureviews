@@ -1,0 +1,293 @@
+/* CSS declarations go here */
+
+
+/*@font-face {
+    font-family: "Helvetica Neue";
+    src: url(https://github.com/jackhumbert/kle-image-creator/blob/master/fonts/HelveticaNeue-Medium.ttf) format("truetype");
+}
+*/
+body {
+    font-family: sans-serif;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    padding: 0;
+    margin: 0;
+
+    font-size: 14px;
+}
+.navbar{
+    background-color: #4990E2;
+    margin-bottom: 0px;
+}
+
+a.navbar-brand {
+    font-size: 1.3em /*36px*/;
+    font-family: 'Helvetica Neue';
+    font-weight: medium;
+    padding-left:30px;
+}
+
+
+#searchbar {
+    width: 100% !important;
+}
+
+.container {
+    background: white;
+}
+
+header {
+    padding: 20px 15px 15px 15px;
+    position: relative;
+}
+
+#login-buttons {
+    display: block;
+}
+
+#past{
+    background-color: #3399ff;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin: 0;
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-right: 1em;
+}
+
+.class-name {
+    font-size: 36px;
+    font-family: 'Helvetica Neue';
+    font-weight: medium;
+}
+
+.subheader {
+    font-size: 27px;
+    font-family: 'Helvetica Neue';
+    font-weight: medium;
+}
+
+.primary-text {
+    font-size: 18px;
+    font-family: 'Helvetica Neue';
+    font-weight: bold;
+}
+
+
+.secondary-text {
+    font-size: 14px;
+    font-family: 'Helvetica Neue';
+    font-weight: normal;
+    color: #4A4A4A;
+    opacity: .5;
+}
+
+.review-container {
+    border: 2px solid #a4a4a4;
+    padding: 10px 40px;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.review-container .text {
+    font-size: 16px;
+    font-family: 'Helvetica Neue';
+    font-weight: normal;
+    color: #4A4A4A;
+}
+
+div.caption_wrapper {
+    text-align: left;
+    display: inline-block;
+}
+
+form {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    position: relative;
+}
+
+.new-task input {
+    box-sizing: border-box;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding-right: 80px;
+    font-size: 1em;
+}
+
+.new-task input:focus{
+    outline: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    background: white;
+}
+
+.delete {
+    float: right;
+    font-weight: bold;
+    background: none;
+    font-size: 1em;
+    border: none;
+    position: relative;
+}
+
+li {
+    position: relative;
+    list-style: none;
+    padding: 15px;
+    border-bottom: #eee solid 1px;
+}
+
+li .text {
+    margin-left: 10px;
+}
+
+li.checked {
+    color: #888;
+}
+
+li.checked .text {
+    text-decoration: line-through;
+}
+
+li.private {
+    background: #eee;
+    border-color: #ddd;
+}
+
+header .hide-completed {
+    float: right;
+}
+
+.divider {
+    border-width: 1px;
+    color: #ddd;
+    margin-top: 5px;
+    margin-bottom: 10px;
+ }
+
+.toggle-private {
+    margin-left: 5px;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 50%;
+
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 10px;
+    background-color: #4990E2;
+    border-radius: 15px;
+
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    box-shadow: 3px 1px 3px #000000;
+    background-color: #000000;
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+input[type="submit"]{
+    background-color: #4990E2;
+    border-radius: 10px;
+    width: 100px;
+    border: none;
+    font-weight: bold;
+    color: white;
+    height: 40px;
+    text-align: center;
+}
+input[type="submit"]:active{
+    background-color: #2d6fbc;
+    border-radius: 10px;
+    width: 100px;
+    border: none;
+    font-weight: bold;
+    color: white;
+    height: 40px;
+    text-align: center;
+}
+
+.panel-container {
+    background-color: rgba(74,74,74,.06);
+}
+
+.fix-contain {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.no-border {
+    border-color: rgba(221,221,221,0);
+}
+
+.no-background {
+    background-color: rgba(221,221,221,0);
+}
+
+div.sm-spacing {
+    padding: 10px;
+}
+
+div.med-spacing {
+    padding: 20px;
+}
+
+div.lrg-spacing {
+    padding: 40px;
+}
+
+div.small-icon {
+    width: 35px;
+    height: 33px;
+    border-radius: 8px;
+    background: black;
+    }
+
+div.large-icon {
+    width: 58px;
+    height: 52px;
+    border-radius: 8px;
+}
+.review-container {
+    width: 100%;
+}
+
+select {
+    width:150px;
+    }
+
+@media (max-width: 600px) {
+    li {
+        padding: 12px 15px;
+    }
+
+    .search {
+        width: 150px;
+        clear: both;
+    }
+
+    .new-task input {
+        padding-bottom: 5px;
+    }
+}
