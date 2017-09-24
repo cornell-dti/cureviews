@@ -66,11 +66,7 @@ export default class Form extends Component {
       <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
         <div className = "panel panel-default">
           <div className="panel-body">
-            <textarea
-              type="text"
-              ref="reviewText"
-              placeholder="Does your professor tell funny jokes? Leave your feedback here!"
-            />
+            <textarea type="text" ref="reviewText" placeholder="Does your professor tell funny jokes? Leave your feedback here!"/>
           </div>
         </div>
         <hr className="divider" />

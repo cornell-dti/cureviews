@@ -122,7 +122,7 @@ if (Meteor.isServer) {
 	    	{ 'user' : 1 },
 	    	{ 'visible' : 1 }
 	  	);
-	});
+	  });
 
     //code that runs whenever needed
     //"publish" classes based on search query. Only published classes are visible to the client
