@@ -2,17 +2,20 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
 
-// Task component - represents a single todo item
+// Form component to allow user to add a review for selected course.
+// Takes in a course ID.
 export default class Form extends Component {
   constructor(props) {
     super(props);
 
+    //store the currently selected form values
     this.state = {
       diff: 3, //default
       quality: 3, //default
       message: null
     }
 
+    //bind the submission function to this class
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -59,8 +62,8 @@ export default class Form extends Component {
   handleQualChange(inputElement) {
     console.log(inputElement.value);
     //this.state.newReview.quality ==
-
   }
+   
   render() {
     return (
       <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >

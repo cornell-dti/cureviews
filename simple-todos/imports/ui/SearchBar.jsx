@@ -4,7 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Classes } from '../api/classes.js';
 import Course from './Course.jsx';
 
-//contains a search bar and results
+//SearchBar component - contains a search bar and results of a user course search
 export class SearchBar extends Component {
   constructor(props) {
     super(props);

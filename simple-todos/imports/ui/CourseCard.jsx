@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
 
-// Task component - represents a single todo item
+// Course Card component - renders course data, including gauges for metrics.
+// Takes in a course ID 
 export default class Form extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +40,6 @@ export default class Form extends Component {
         <p>Semesters Offered:</p>
         <p>{theClass.classSems}</p>
       </header>
-    )
-  };
+    );
+  }
 }

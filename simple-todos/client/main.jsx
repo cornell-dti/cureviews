@@ -6,6 +6,6 @@ import App from '../imports/ui/App.jsx';
 import Update from '../imports/ui/Update.jsx';
 
 Meteor.startup(() => {
-  //render(<App query=""/>, document.getElementById('render-target'));
-  render(<Update />, document.getElementById('render-target'));
+  render(<App query=""/>, document.getElementById('render-target'));
+  //render(<Update />, document.getElementById('render-target'));
 });

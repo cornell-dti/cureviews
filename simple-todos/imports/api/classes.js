@@ -87,8 +87,9 @@ Meteor.methods({
 			return addAllCourses(['FA15']);
 		}
   },
-  //get the course (as an object) with this id, checking to make sure the id is a real
+  //get the course (as an object) with this id, checking to make sure the id is real
   getCourseById: function(courseId) {
+    //console.log(courseId);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
 
     if (regex.test(courseId)) {
@@ -149,10 +150,13 @@ if (Meteor.isServer) {
 	Meteor.publish('reviews', function validReviews(courseId, visiblity) {
 	  	var ret = null
 	  	//show valid reviews for this course
+      console.log('getting reviews');
 	  	if (courseId != undefined && courseId != "" && visiblity == 1) {
+        console.log('in 1');
 	  		ret =  Reviews.find({class : courseId, visible : 1}, {limit: 700});
 	  	} else if (courseId != undefined && courseId != "" && visiblity == 0) { //invalidated reviews for a class
-	  		ret =  Reviews.find({class : courseId, visible : 0},
+        console.log('in 2');
+        ret =  Reviews.find({class : courseId, visible : 0},
 			{limit: 700});
 	  	} else if (visiblity == 0) { //all invalidated reviews
 	  		ret =  Reviews.find({visible : 0}, {limit: 700});

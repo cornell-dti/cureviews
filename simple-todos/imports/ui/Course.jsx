@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-// Task component - represents a single todo item
+// Course component - represents a single course to be shown to the user in a course search.
+// Clicking this component will change the state of the app to show course details.
 export default class Course extends Component {
   //props:
   // info, a database object containing all of this class's data.

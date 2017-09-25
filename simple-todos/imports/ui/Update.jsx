@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/classes.js';
-import Review from './Review.jsx';
+import UpdateReview from './UpdateReview.jsx';
 
-// Task component - represents a single todo item
+// Holder component for moderator interface. Shows all unapproved reviews and
+// allows the moderator to remove or approve them.
 export class Update extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +15,7 @@ export class Update extends Component {
   approveReview(review) {
     Meteor.call('makeVisible', review, (error, result) => {
       if (!error && result==1) {
-        console.log("approved review " + review._id);
+        //console.log("approved review " + review._id);
       } else {
         console.log(error)
       }
@@ -25,7 +26,7 @@ export class Update extends Component {
   removeReview(review) {
     Meteor.call('removeReview', review, (error, result) => {
       if (!error && result==1) {
-        console.log("removed review " + review._id);
+        //console.log("removed review " + review._id);
       } else {
         console.log(error)
       }
@@ -36,7 +37,7 @@ export class Update extends Component {
   renderReviews() {
     return this.props.reviewsToApprove.map((review) => (
       //create a new class "button" that will set the selected class to this class when it is clicked.
-      <Review key={review._id} info={review} removeHandler={this.removeReview} approveHandler={this.approveReview}/>
+      <UpdateReview key={review._id} info={review} removeHandler={this.removeReview} approveHandler={this.approveReview}/>
     ));
   }
 
