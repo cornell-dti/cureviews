@@ -39,7 +39,7 @@ Meteor.methods({
 	//insert a new review into the reviews database
 	insert: function(review, classId) {
 		//only insert if all necessary feilds are filled in
-		if (review.text != null && review.diff != null && review.quality != null && review.medGrade != null && classId != undefined && classId != null) {
+		if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && classId !== undefined && classId !== null) {
 			//ensure there are no illegal characters
 			var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,!()"'\/$ ]+$/i)
 			if (regex.test(review.text)) {
@@ -74,11 +74,11 @@ Meteor.methods({
  	removeReview: function(review) {
  		var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
 		if (regex.test(review._id)) {
-   		Reviews.remove({ _id: review._id})
-   		return 1
-   	} else {
-   		return 0
-   	}
+			Reviews.remove({ _id: review._id})
+			return 1
+		} else {
+			return 0
+		}
 	},
 	//update the database to add any new classes in the current semester if they don't already exist. To be called from the admin page once a semester.
 	addNewSemester: function(initiate) {
@@ -109,7 +109,7 @@ if (Meteor.isServer) {
 	        { 'classSub' : 1 },
 	        { 'classNum' : 1 },
 	        { 'classTitle' : 1 },
-          { '_id' : 1}
+          	{ '_id' : 1}
 	    );
 	  Subjects._ensureIndex(
 	  		{ 'subShort' : 1 },
@@ -128,7 +128,7 @@ if (Meteor.isServer) {
     //code that runs whenever needed
     //"publish" classes based on search query. Only published classes are visible to the client
     Meteor.publish('classes', function validClasses(searchString) {
-	  	if (searchString != undefined && searchString != "") {
+	  	if (searchString !== undefined && searchString !== "") {
 	  		console.log("query entered:", searchString);
 	  		return Classes.find({'$or' : [
 			  { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
@@ -150,15 +150,15 @@ if (Meteor.isServer) {
 	Meteor.publish('reviews', function validReviews(courseId, visiblity) {
 	  	var ret = null
 	  	//show valid reviews for this course
-      console.log('getting reviews');
-	  	if (courseId != undefined && courseId != "" && visiblity == 1) {
+        console.log('getting reviews');
+	  	if (courseId !== undefined && courseId !== "" && visiblity === 1) {
         console.log('in 1');
 	  		ret =  Reviews.find({class : courseId, visible : 1}, {limit: 700});
-	  	} else if (courseId != undefined && courseId != "" && visiblity == 0) { //invalidated reviews for a class
+	  	} else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
         console.log('in 2');
         ret =  Reviews.find({class : courseId, visible : 0},
 			{limit: 700});
-	  	} else if (visiblity == 0) { //all invalidated reviews
+	  	} else if (visiblity === 0) { //all invalidated reviews
 	  		ret =  Reviews.find({visible : 0}, {limit: 700});
 	  	} else { //no reviews
 	  		//will always be empty because visible is 0 or 1. allows meteor to still send the ready flag when a new publication is sent
@@ -182,7 +182,7 @@ function addAllCourses(semesters) {
 	for (semester in semesters) {
 		//get all classes in this semester
 	    var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
-	    if (result.statusCode != 200) {
+	    if (result.statusCode !== 200) {
 	      console.log("error");
 	    } else {
 		  	response = JSON.parse(result.content);
@@ -192,7 +192,7 @@ function addAllCourses(semesters) {
 			    parent = sub[course];
 			    //if subject doesn't exist add to Subjects collection
 			    checkSub = Subjects.find({'subShort' : (parent.value).toLowerCase()}).fetch();
-			    if (checkSub.length == 0) {
+			    if (checkSub.length === 0) {
 			     	console.log("new subject: " + parent.value);
 			        Subjects.insert({
 			        	subShort : (parent.value).toLowerCase(),
@@ -202,7 +202,7 @@ function addAllCourses(semesters) {
 
 			    //for each subject, get all classes in that subject for this semester
 			    var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
-			    if (result2.statusCode != 200) {
+			    if (result2.statusCode !== 200) {
 			    	console.log("error2");
 			    } else {
 			    	response2 = JSON.parse(result2.content);
@@ -212,7 +212,7 @@ function addAllCourses(semesters) {
 				    for (course in courses) {
 				    	try {
 					        var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
-					        if (check.length == 0) {
+					        if (check.length === 0) {
 					            console.log("new class: " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
 					        	//insert new class with empty prereqs and reviews
 					        	Classes.insert({
@@ -226,7 +226,7 @@ function addAllCourses(semesters) {
 					     	} else {
 					     		var matchedCourse = check[0] //only 1 should exist
 					     		var oldSems = matchedCourse.classSems;
-					        	if (oldSems.indexOf(semesters[semester]) == -1) {
+					        	if (oldSems.indexOf(semesters[semester]) === -1) {
 					        		console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
 						        	oldSems.push(semesters[semester]) //add this semester to the list
 						        	Classes.update({_id: matchedCourse._id}, {$set: {classSems: oldSems}})
@@ -245,7 +245,7 @@ function addAllCourses(semesters) {
 //returns an array of the current semester, to be given to the addAllCourses function
 function findCurrSemester()  {
 	var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
-	if (response.statusCode != 200) {
+	if (response.statusCode !== 200) {
       console.log("error");
     } else {
 	  	response = JSON.parse(response.content);
@@ -258,7 +258,7 @@ function findCurrSemester()  {
 //returns an array of all current semesters, to be given to the addAllCourses function
 function findAllSemesters() {
 	var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
-	if (response.statusCode != 200) {
+	if (response.statusCode !== 200) {
       console.log("error");
     } else {
 	  	response = JSON.parse(response.content);
