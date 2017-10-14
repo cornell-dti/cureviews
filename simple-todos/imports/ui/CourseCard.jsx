@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
 
 // Course Card component - renders course data, including gauges for metrics.
+//this is the left side of the two pannels
 // Takes in a course ID 
 export default class Form extends Component {
   constructor(props) {
