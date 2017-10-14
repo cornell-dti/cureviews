@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
+import './css/CourseCard.css';
 
 // Course Card component - renders course data, including gauges for metrics.
 //this is the left side of the two pannels
-// Takes in a course ID 
+// Takes in a course ID
 export default class Form extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,9 @@ export default class Form extends Component {
     return (
       <header>
         <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
+        <a className="cornellClassLink" href="https://classes.cornell.edu/browse/roster/SP18/subject/AAS" target="_blank">
+        cornell.classes.edu
+        </a>
         <h2>Class Data</h2>
         <div>
           <div className= "panel panel-default">
