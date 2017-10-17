@@ -1,12 +1,95 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import { createContainer } from 'meteor/react-meteor-data';
+// import Gauge from './Gauge.jsx';
+import Gauge from 'react-svg-gauge';
 import { Reviews } from '../api/classes.js';
 
-// Course Card component - renders course data, including gauges for metrics.
-// Takes in a course ID 
-export default class Form extends Component {
+// Holder component to list all (or top) reviews for a course.
+// Takes in course ID for selecting reviews.
+export class CourseCard extends Component {
+  //props:
+  //course, the course for this card
   constructor(props) {
     super(props);
+
+    //default gauge values
+    this.defaultGaugeState = {
+      diff: 100,
+      diffColor: "#E64458",
+      qual: 50,
+      qualColor: "#E64458",
+      grade: "-",
+      gradeNum: 6,
+      gradeColor: "#E64458"
+    };
+
+    this.state = this.defaultGaugeState;
+  }
+
+   componentWillReceiveProps(nextProps) {
+     // compare old and new reviews, if differnt re-calculate gauges
+     if (this.props.reviews != nextProps.reviews) {
+       console.log(nextProps.reviews);
+       this.updateGauges(nextProps.course, nextProps.reviews);
+     }
+   }
+
+  //update the component state to hold the state of the gagues
+  updateGauges(selectedClass, newRevs) {
+    console.log(selectedClass);
+    if (selectedClass != null && selectedClass != undefined) {
+      //create initial variables
+      var countGrade = 0;
+      var countDiff = 0;
+      var countQual = 0;
+      var count = 0;
+
+      //get all current reviews, which will now have only this class's reviews because of the updated publishing
+      var allReviews = newRevs;
+
+      //gather data on the reviews
+      if (allReviews.length != 0) {
+        allReviews.forEach(function(review) {
+          count++;
+          countGrade = countGrade + Number(review["grade"]);
+          countDiff = countDiff + review["difficulty"];
+          countQual = countQual + review["quality"];
+        });
+
+        console.log("calculated qual is", (countQual/count).toFixed(1));
+        console.log("calculated diff is ", (countDiff/count).toFixed(1));
+        console.log("calculated grade is ", (countGrade/count).toFixed(1));
+
+        //update the gauge variable values
+        this.state.qual = (countQual/count).toFixed(1); //out of 5
+        this.state.diff = (countDiff/count).toFixed(1); //out of 5
+        this.state.gradeNum = (countGrade/count).toFixed(1); //out of 5
+
+        //array to translate grades from numerical value
+        var gradeTranslation = ["C-", "C", "C+", "B-", "B", "B-", "A-", "A", "A+"];
+        this.state.grade = gradeTranslation[Math.floor(countGrade/count) - 1];
+
+        //assign colors
+        var gradeCols = ["#E64458", "#E64458", "#E64458", "#f9cc30", "#f9cc30", "#ff9e00","#53B277","#53B277","#53B277"];
+        this.state.gradeColor = gradeCols[Math.floor(this.state.gradeNum) - 1];
+
+        if (this.state.qual < 2 ) {this.state.qualColor = "#E64458";}
+        else if (this.state.qual > 2 && this.state.qual < 3.5) {this.state.qualColor = "#f9cc30";}
+        else {this.state.qualColor = "#53B277";}
+
+        if (this.state.diff < 2 ) {this.state.diffColor = "#53B277";}
+        else if (this.state.diff > 2 && this.state.diff < 3.5) {this.state.diffColor = "#f9cc30";}
+        else {this.state.diffColor = "#E64458";}
+
+      } else {
+        console.log("first else");
+        this.state = this.defaultGaugeState;
+      }
+    } else {
+      console.log("Second else");
+      this.state = this.defaultGaugeState;
+    }
   }
 
   render() {
@@ -21,16 +104,13 @@ export default class Form extends Component {
               <section>
                 <div className="row" id="gaugeHolder">
                   <div className="col-sm-4">
-                  <ng-gauge id="gauge1" foreground-color="{{$ctrl.qualColor($ctrl.qual)}}" type="arch" thick="{{$ctrl.gaugeThick}}" size="{{$ctrl.gaugeWidth}}" cap="butt" value="$ctrl.qual" label="Overall Quality" append="/5">
-                  </ng-gauge>
+                    <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} label="Quality" />
                   </div>
                   <div className="col-sm-4">
-                    <ng-gauge id="gauge2" foreground-color="{{$ctrl.diffColor($ctrl.diff)}}"  type="arch" thick="{{$ctrl.gaugeThick}}" size="{{$ctrl.gaugeWidth}}" cap="butt" value="$ctrl.diff" label="Level of Difficulty" append="/5">
-                  </ng-gauge>
+                    <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} label="Difficulty"/>
                   </div>
                   <div className="col-sm-4">
-                    <ng-gauge id="gauge3" foreground-color="{{$ctrl.gradeColor($ctrl.grade)}}" type="arch" thick="{{$ctrl.gaugeThick}}" size="{{$ctrl.gaugeWidth}}" cap="butt" value="$ctrl.grade" label="Median Grade">
-                  </ng-gauge>
+                    <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade"/>
                   </div>
                 </div>
               </section>
@@ -43,3 +123,21 @@ export default class Form extends Component {
     );
   }
 }
+
+//define the props for this object
+CourseCard.propTypes = {
+  course: PropTypes.object.isRequired,
+  reviews: PropTypes.array.isRequired
+};
+
+// wrap in a container class that allows the component to dynamically grab data
+// the component will automatically re-render when databse data changes!
+export default createContainer((props) => {
+  const subscription = Meteor.subscribe('reviews', props.course._id, 1); //get only visible reviews
+  const loading = !subscription.ready();
+  const reviews = Reviews.find({}).fetch();
+  //console.log(reviews);
+  return {
+    reviews, loading,
+  };
+}, CourseCard);

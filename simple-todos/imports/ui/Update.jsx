@@ -33,6 +33,16 @@ export class Update extends Component {
     });
   }
 
+  addNewSem(initiate) {
+    console.log("updating to new semester")
+    Meteor.call('addNewSemester', initiate, (error, result) => {
+      if (!error && result==1) {
+        console.log("Added new semester courses");
+      } else {
+        console.log(error)
+      }
+    });
+  }
   //show all reviews that have not been approved
   renderReviews() {
     return this.props.reviewsToApprove.map((review) => (
@@ -44,6 +54,8 @@ export class Update extends Component {
   render() {
     return (
       <div>
+        <h2>Admin Interface</h2>
+        <button onClick={()=> this.addNewSem(true)}>Add New Semester</button>
         <ul>
           {this.renderReviews()}
         </ul>
@@ -61,6 +73,7 @@ export default createContainer((props) => {
   const subscription = Meteor.subscribe('reviews', null, 0); //get unapproved reviews
   const loading = !subscription.ready();
   const reviewsToApprove = Reviews.find({}).fetch();
+  console.log(reviewsToApprove);
   return {
     reviewsToApprove, loading,
   };
