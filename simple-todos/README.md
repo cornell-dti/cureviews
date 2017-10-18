@@ -1,13 +1,12 @@
+# Course Reviews
 React version of course-reviews
 
-Before first run - populate your local meteor database:
-open imports/api/classes.js
-uncomment the following 3 lines
-// Classes.remove({});
-// Subjects.remove({});
-// addAllCourses(findAllSemesters());
+# Install & Run
 
-cd to the top level and run using:
-meteor
+Make sure you have [Meteor](https://www.meteor.com) installed!
 
-Once running, re-comment above lines.
+Uncomment lines 171-173 in `/imports/api/classes.js`
+
+    npm install
+    meteor npm install
+    meteor --port 3000
