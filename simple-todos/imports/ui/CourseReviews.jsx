@@ -32,11 +32,14 @@ export class CourseReviews extends Component {
   }
 }
 
+//define the props for this object
 CourseReviews.propTypes = {
   courseId: PropTypes.string.isRequired,
   reviews: PropTypes.array.isRequired
 };
 
+// wrap in a container class that allows the component to dynamically grab data
+// the component will automatically re-render when databse data changes!
 export default createContainer((props) => {
   const subscription = Meteor.subscribe('reviews', props.courseId, 1); //get only visible reviews for this course
   const loading = !subscription.ready();

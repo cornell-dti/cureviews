@@ -43,7 +43,7 @@ class App extends Component {
   renderCourseCard() {
     var toShow = <div />; //empty div
     if (this.state.selectedClass !== null) {
-      toShow = <CourseCard course={this.state.selectedClass}/>;
+      toShow = <CourseCard course={this.state.selectedClass} />;
     }
     return toShow;
   }
@@ -57,7 +57,7 @@ class App extends Component {
     return toShow;
   }
 
-  //check if a class is selected, dispay paast reviews for the class, only when one is selected
+  //check if a class is selected. Dispay past reviews for the class only when one is selected
   renderPastReviews() {
     var toShow = <div />;
     if (this.state.selectedClass !== null) {

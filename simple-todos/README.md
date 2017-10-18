@@ -10,5 +10,3 @@ Uncomment lines 171-173 in `/imports/api/classes.js`
     npm install
     meteor npm install
     meteor --port 3000
-    
-    

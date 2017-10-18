@@ -83,13 +83,13 @@ Meteor.methods({
 	//update the database to add any new classes in the current semester if they don't already exist. To be called from the admin page once a semester.
 	addNewSemester: function(initiate) {
 		if (initiate && Meteor.isServer) {
-			//return addAllCourses(findCurrSemester());
-			return addAllCourses(['FA15']);
+      console.log("updating");
+			return addAllCourses(findCurrSemester());
+			//return addAllCourses(['FA15']);
 		}
   },
   //get the course (as an object) with this id, checking to make sure the id is real
   getCourseById: function(courseId) {
-    //console.log(courseId);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
 
     if (regex.test(courseId)) {
