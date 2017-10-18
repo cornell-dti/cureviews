@@ -33,6 +33,7 @@ export class Update extends Component {
     });
   }
 
+  //add the current semester's class data to the database. Should run once a semester
   addNewSem(initiate) {
     console.log("updating to new semester")
     Meteor.call('addNewSemester', initiate, (error, result) => {
@@ -43,6 +44,7 @@ export class Update extends Component {
       }
     });
   }
+
   //show all reviews that have not been approved
   renderReviews() {
     return this.props.reviewsToApprove.map((review) => (

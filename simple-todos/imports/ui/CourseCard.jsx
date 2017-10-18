@@ -15,12 +15,12 @@ export class CourseCard extends Component {
 
     //default gauge values
     this.defaultGaugeState = {
-      diff: 100,
+      diff: 0,
       diffColor: "#E64458",
-      qual: 50,
+      qual: 0,
       qualColor: "#E64458",
       grade: "-",
-      gradeNum: 6,
+      gradeNum: 0,
       gradeColor: "#E64458"
     };
 
@@ -35,7 +35,7 @@ export class CourseCard extends Component {
      }
    }
 
-  //update the component state to hold the state of the gagues
+  //update the component state to represent new state of the gagues
   updateGauges(selectedClass, newRevs) {
     console.log(selectedClass);
     if (selectedClass != null && selectedClass != undefined) {
@@ -104,10 +104,10 @@ export class CourseCard extends Component {
               <section>
                 <div className="row" id="gaugeHolder">
                   <div className="col-sm-4">
-                    <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} label="Quality" />
+                    <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
                   </div>
                   <div className="col-sm-4">
-                    <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} label="Difficulty"/>
+                    <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
                   </div>
                   <div className="col-sm-4">
                     <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade"/>
@@ -135,7 +135,7 @@ CourseCard.propTypes = {
 export default createContainer((props) => {
   const subscription = Meteor.subscribe('reviews', props.course._id, 1); //get only visible reviews
   const loading = !subscription.ready();
-  const reviews = Reviews.find({}).fetch();
+  const reviews = Reviews.find({'visible': 1}).fetch();
   //console.log(reviews);
   return {
     reviews, loading,
