@@ -16,7 +16,7 @@ class App extends Component {
     this.state = {
       selectedClass: null,
       query: ""
-    }
+    };
 
     // bind functions called in other files to this context, so that current state is still accessable
     this.handleSelectClass = this.handleSelectClass.bind(this);
@@ -42,7 +42,7 @@ class App extends Component {
   //check if a class is selected, and show a coursecard only when one is.
   renderCourseCard() {
     var toShow = <div />; //empty div
-    if (this.state.selectedClass != null) {
+    if (this.state.selectedClass !== null) {
       toShow = <CourseCard course={this.state.selectedClass}/>;
     }
     return toShow;
@@ -51,7 +51,7 @@ class App extends Component {
   //check if a class is selected, dispay an add review form only when one is
   renderForm() {
     var toShow = <div />;
-    if (this.state.selectedClass != null) {
+    if (this.state.selectedClass !== null) {
       toShow = <Form courseId={this.state.selectedClass._id}/>;
     }
     return toShow;
@@ -60,7 +60,7 @@ class App extends Component {
   //check if a class is selected, dispay paast reviews for the class, only when one is selected
   renderPastReviews() {
     var toShow = <div />;
-    if (this.state.selectedClass != null) {
+    if (this.state.selectedClass !== null) {
       toShow = <CourseReviews courseId={this.state.selectedClass._id} />
     }
     return toShow;
