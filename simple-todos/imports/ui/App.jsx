@@ -77,7 +77,7 @@ class App extends Component {
             {this.renderCourseCard()}
           </div>
           <div className="col-md-6 panel-container fix-contain">
-            <div className="row">
+            <div>
               {this.renderForm()}
             </div>
             <div className="row">

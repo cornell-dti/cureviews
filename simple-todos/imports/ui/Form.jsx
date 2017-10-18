@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
+import './Form.css';
 
 // Form component to allow user to add a review for selected course.
 // Takes in a course ID.
@@ -70,72 +71,73 @@ export default class Form extends Component {
         <div className = "panel panel-default">
           <div className="panel-body">
             <textarea type="text" ref="reviewText" placeholder="Does your professor tell funny jokes? Leave your feedback here!"/>
-          </div>
+         
+						<hr className="divider" />
+						<div className="row">
+							<div className="col-md-3">
+							    <h1 className="secondary-text">Overall Quality</h1>
+							</div>
+							<div className="col-md-1">
+								<div className="small-icon" id="sm1">
+									<p>{this.state.quality}</p>
+								</div>
+							</div>
+							<div className="col-md-8">
+								<input type="range" id="a2" name="qual" min="0" max="5" step="1" />
+							</div>
+						</div>
+						<div className="sm-spacing"></div>
+						<div className='row'>
+						  <div className="col-md-3">
+						      <h1 className="secondary-text">Level of Difficulty</h1>
+						  </div>
+						  <div className="col-md-1">
+						    <div className="small-icon" id="sm2">
+						      <p>{this.state.diff}</p>
+						    </div>
+						  </div>
+						  <div className="col-md-8">
+						    <input type="range" id="a2" name="qual" min="0" max="5" step="1" />
+						  </div>
+						</div>
+						<div className="sm-spacing"></div>
+
+						<div className="row">
+							<div className="col-md-4">
+								<div className="secondary-text">Class Median</div>
+							</div>
+							<div className="col-md-8">
+								<select ref='median'>
+								  <option value="9">A+</option>
+								  <option value="8">A</option>
+						      <option value="7">A-</option>
+						      <option value="6">B+</option>
+						      <option value="5">B</option>
+									<option value="4">B-</option>
+									<option value="3">C+</option>
+									<option value="2">C</option>
+									<option value="1">C-</option>
+							  </select>
+						  </div>
+						</div>
+
+						<div className="sm-spacing"></div>
+		
+						<div className="row">
+							<div className="col-md-4">
+								<div className="secondary-text">Attendance</div>
+							</div>
+							<div className="col-md-8">
+						  	<select ref='atten'>
+									<option value="1">Not Mandatory</option>
+									<option value="0">Mandatory</option>
+								</select>
+							</div>
+						</div>
+					 </div>
         </div>
-        <hr className="divider" />
-        <div className="row">
-      		<div className="col-md-3">
-  				    <h1 className="secondary-text">Overall Quality</h1>
-	  			</div>
-	  			<div className="col-md-1">
-	  				<div className="small-icon" id="sm1">
-		  				<p>{this.state.quality}</p>
-		  			</div>
-	  			</div>
-		  		<div className="col-md-8">
-		  			<input type="range" id="a2" name="qual" min="0" max="5" step="1" />
-		  		</div>
-  			</div>
-				<div className="sm-spacing"></div>
-        <div className='row'>
-          <div className="col-md-3">
-              <h1 className="secondary-text">Level of Difficulty</h1>
-          </div>
-          <div className="col-md-1">
-            <div className="small-icon" id="sm1">
-              <p>{this.state.diff}</p>
-            </div>
-          </div>
-          <div className="col-md-8">
-            <input type="range" id="a2" name="qual" min="0" max="5" step="1" />
-          </div>
-        </div>
-				<div className="sm-spacing"></div>
 
-	  		<div className="row">
-	  			<div className="col-md-4">
-	  				<div className="secondary-text">Class Median</div>
-	  			</div>
-	  			<div className="col-md-8">
-			  		<select ref='median'>
-						  <option value="9">A+</option>
-						  <option value="8">A</option>
-              <option value="7">A-</option>
-              <option value="6">B+</option>
-              <option value="5">B</option>
-			  			<option value="4">B-</option>
-			  			<option value="3">C+</option>
-			  			<option value="2">C</option>
-			  			<option value="1">C-</option>
-					  </select>
-				  </div>
-  			</div>
-
-				<div className="sm-spacing"></div>
-
-	  		<div className="row">
-	  			<div className="col-md-4">
-	  				<div className="secondary-text">Attendence</div>
-	  			</div>
-	  			<div className="col-md-8">
-			    	<select ref='atten'>
-			  			<option value="1">Not Mandatory</option>
-			  			<option value="0">Mandatory</option>
-			  		</select>
-			  	</div>
-	  		</div>
-
-    	<div className="row">
+			<div className="row">
     		<div className="col-md-10">
   				<h2 className="secondary-text" >All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in the className to give feedback</h2>
   			</div>
