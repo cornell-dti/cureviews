@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
 import App      from '../imports/ui/App.jsx';
-import Form     from '../imports/ui/Form.jsx';
 import NotFound from '../imports/ui/App.jsx';
 import Update from '../imports/ui/Update.jsx';
 
@@ -14,7 +13,7 @@ Meteor.startup(() => {
         <BrowserRouter>
             <div>
                 <Route name="login" path="/app"  component={ App } />
-                <Route name="form"  path="/form" component={ Form } />
+                <Route name="admin"  path="/admin" component={ Update } />
             </div>
         </BrowserRouter>,
         document.getElementById('render-target')
