@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
-// import Gauge from './Gauge.jsx';
 import Gauge from 'react-svg-gauge';
 import { Reviews } from '../api/classes.js';
+import './css/CourseCard.css';
 
 // Holder component to list all (or top) reviews for a course.
 // Takes in course ID for selecting reviews.
@@ -97,6 +97,9 @@ export class CourseCard extends Component {
     return (
       <header>
         <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
+        <a className="cornellClassLink" href="https://classes.cornell.edu/browse/roster/SP18/" target="_blank">
+          cornell.classes.edu
+        </a>
         <h2>Class Data</h2>
         <div>
           <div className= "panel panel-default">

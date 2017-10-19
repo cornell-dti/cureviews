@@ -75,7 +75,7 @@ export default class Form extends Component {
         <hr className="divider" />
         <div className="row">
       		<div className="col-md-3">
-  				    <h1 className="secondary-text">Overall Quality</h1>
+  				    <h1 className="secondary-text">Level of Difficulty</h1>
 	  			</div>
 	  			<div className="col-md-1">
 	  				<div className="small-icon" id="sm1">
