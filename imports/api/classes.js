@@ -31,7 +31,8 @@ Reviews.schema = new SimpleSchema({
     class: {type: String}, //ref to classId
     grade: {type: Number},
     date: {type: Date},
-    visible: {type: Number}
+    visible: {type: Number},
+    reported: {type: Number},
 });
 
 // defines all methods that will be editing the database so that database changes occur only on the server
@@ -50,7 +51,8 @@ Meteor.methods({
                     class: classId,
                     grade: review.medGrade,
                     date: new Date(),
-                    visible: 0
+                    visible: 0,
+                    reported: 0,
                 })
                 return 1 //success
             } else {
@@ -146,19 +148,20 @@ if (Meteor.isServer) {
         }
     });
 
-    //"publish" reviews based on selected course and visibility requirements. Only published reviews are visible to the client
-    Meteor.publish('reviews', function validReviews(courseId, visiblity) {
+    //"publish" reviews based on selected course, visibility and reporting requirements. Only published reviews are visible to the client
+    Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
         var ret = null
         //show valid reviews for this course
         console.log('getting reviews');
-        if (courseId !== undefined && courseId !== "" && visiblity === 1) {
+        if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) {
             console.log('in 1');
-            ret =  Reviews.find({class : courseId, visible : 1}, {limit: 700});
+            ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {limit: 700});
         } else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
             console.log('in 2');
             ret =  Reviews.find({class : courseId, visible : 0},
                 {limit: 700});
         } else if (visiblity === 0) { //all invalidated reviews
+            console.log('in 3');
             ret =  Reviews.find({visible : 0}, {limit: 700});
         } else { //no reviews
             //will always be empty because visible is 0 or 1. allows meteor to still send the ready flag when a new publication is sent
@@ -168,9 +171,9 @@ if (Meteor.isServer) {
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
-    // Classes.remove({});
-    // Subjects.remove({});
-    // addAllCourses(findAllSemesters());
+    //Classes.remove({});
+    //Subjects.remove({});
+    //addAllCourses(findAllSemesters());
 }
 
 //Other helper functions used above

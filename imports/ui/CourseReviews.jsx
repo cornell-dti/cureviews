@@ -41,7 +41,7 @@ CourseReviews.propTypes = {
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
 export default createContainer((props) => {
-  const subscription = Meteor.subscribe('reviews', props.courseId, 1); //get only visible reviews for this course
+  const subscription = Meteor.subscribe('reviews', props.courseId, 1, 0); //get only visible unreported reviews for this course
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {

@@ -9,6 +9,9 @@ import UpdateReview from './UpdateReview.jsx';
 export class Update extends Component {
   constructor(props) {
     super(props);
+
+    this.approveReview.bind(this);
+    this.removeReview.bind(this);
   }
 
   //approve a review
@@ -45,12 +48,27 @@ export class Update extends Component {
     });
   }
 
-  //show all reviews that have not been approved
-  renderReviews() {
-    return this.props.reviewsToApprove.map((review) => (
+  //show all reviews that have not been approved but not reported
+  renderUnapprovedReviews() {
+    remFunc = this.removeReview;
+    appFunc = this.approveReview;
+    return this.props.reviewsToApprove.map(function(review) {
+      if (review.reported != 1) {
+         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc}/>;
+      }
+    });
+  }
+
+  //show reviews that were reported
+  renderReportedReviews() {
+    remFunc = this.removeReview;
+    appFunc = this.approveReview;
+    return this.props.reviewsToApprove.map(function(review) {
       //create a new class "button" that will set the selected class to this class when it is clicked.
-      <UpdateReview key={review._id} info={review} removeHandler={this.removeReview} approveHandler={this.approveReview}/>
-    ));
+      if (review.reported == 1) {
+        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc}/>
+      }
+    });
   }
 
   render() {
@@ -58,9 +76,16 @@ export class Update extends Component {
       <div>
         <h2>Admin Interface</h2>
         <button onClick={()=> this.addNewSem(true)}>Add New Semester</button>
-        <ul>
-          {this.renderReviews()}
-        </ul>
+        <div>
+          <ul>
+            {this.renderUnapprovedReviews()}
+          </ul>
+        </div>
+        <div>
+          <ul>
+            {this.renderReportedReviews()}
+          </ul>
+        </div>
       </div>
     )
   };
@@ -72,7 +97,7 @@ Update.propTypes = {
 };
 
 export default createContainer((props) => {
-  const subscription = Meteor.subscribe('reviews', null, 0); //get unapproved reviews
+  const subscription = Meteor.subscribe('reviews', "", 0, null); //get unapproved or reported reviews
   const loading = !subscription.ready();
   const reviewsToApprove = Reviews.find({}).fetch();
   console.log(reviewsToApprove);
