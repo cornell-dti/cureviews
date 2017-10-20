@@ -9,7 +9,7 @@ export default class Review extends Component {
   //   return (
 		// 	<li>
 		// 		<div className = "panel panel-default">
-		// 			<div className= "panel-heading" id="past">Name?</div> 
+		// 			<div className= "panel-heading" id="past">Name?</div>
 		// 			<div className = "panel-body">
 		// 			    <div className = "row">
 		// 			    	<div className = "col-sm-2">
@@ -40,6 +40,7 @@ export default class Review extends Component {
 
   render() {
     var review = this.props.info;
+    console.log("inner rev", review);
     return (
 			<li>
 				<div className = "panel panel-default">
@@ -65,6 +66,7 @@ export default class Review extends Component {
 					    <div className="row">
 					   		<div className = "review-text">{review.text}</div>
 					   	</div>
+              <button onClick={() => this.props.reportHandler(review)}>Flag</button>
 					</div>
 				</div>
 			</li>

@@ -93,13 +93,32 @@ Meteor.methods({
     //get the course (as an object) with this id, checking to make sure the id is real
     getCourseById: function(courseId) {
         var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
-
         if (regex.test(courseId)) {
             var c = Classes.find({_id: courseId}).fetch()[0];
             //console.log(c);
             return c;
         }
         return null
+    },
+    //allow user to flag a review - make it invisible and allow admin to review it.
+    reportReview: function(review) {
+      var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+      if (regex.test(review._id)) {
+        Reviews.update({_id: review._id}, { $set: {visible: 0, reported: 1} });
+        return 1;
+      } else {
+        return 0;
+      }
+    },
+    //un-flag a user, make it visible and unreported
+    undoReportReview: function(review) {
+      var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+      if (regex.test(review._id)) {
+        Reviews.update({_id: review._id}, { $set: {visible: 1, reported: 0} });
+        return 1;
+      } else {
+        return 0;
+      }
     }
 });
 

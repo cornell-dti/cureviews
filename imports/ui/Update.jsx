@@ -12,6 +12,7 @@ export class Update extends Component {
 
     this.approveReview.bind(this);
     this.removeReview.bind(this);
+    this.unReportReview.bind(this);
   }
 
   //approve a review
@@ -29,7 +30,18 @@ export class Update extends Component {
   removeReview(review) {
     Meteor.call('removeReview', review, (error, result) => {
       if (!error && result==1) {
-        //console.log("removed review " + review._id);
+        console.log("removed review " + review._id);
+      } else {
+        console.log(error)
+      }
+    });
+  }
+
+  //unflag a reported review
+  unReportReview(review) {
+    Meteor.call('undoReportReview', review, (error, result) => {
+      if (!error && result==1) {
+        //console.log(" review " + review._id);
       } else {
         console.log(error)
       }
@@ -63,10 +75,11 @@ export class Update extends Component {
   renderReportedReviews() {
     remFunc = this.removeReview;
     appFunc = this.approveReview;
+    unRepFunc = this.unReportReview;
     return this.props.reviewsToApprove.map(function(review) {
       //create a new class "button" that will set the selected class to this class when it is clicked.
       if (review.reported == 1) {
-        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc}/>
+        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={unRepFunc}/>
       }
     });
   }
@@ -77,11 +90,13 @@ export class Update extends Component {
         <h2>Admin Interface</h2>
         <button onClick={()=> this.addNewSem(true)}>Add New Semester</button>
         <div>
+          <h3>New Reviews</h3>
           <ul>
             {this.renderUnapprovedReviews()}
           </ul>
         </div>
         <div>
+          <h3>Reported Reviews</h3>
           <ul>
             {this.renderReportedReviews()}
           </ul>
