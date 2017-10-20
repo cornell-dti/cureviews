@@ -4,6 +4,27 @@ import React, { Component, PropTypes } from 'react';
 export default class UpdateReview extends Component {
   //props:
   // info, a database object containing all of this review entry's data.
+
+  //display buttons based on the type of update (report or approval)
+  renderButtons(review) {
+    reported = review.reported;
+    if (reported == 1) {
+      return (
+        <div>
+          <button onClick={() => this.props.unReportHandler(review)}> Restore Review</button>
+          <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <button onClick={() => this.props.approveHandler(review)}> Confirm Review</button>
+          <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+        </div>
+      )
+    }
+  }
+
   render() {
     var review = this.props.info;
     return (
@@ -25,8 +46,7 @@ export default class UpdateReview extends Component {
                     <div className= "panel-body"> Level of difficulty</div>
                 </div>
                 <div className= "col-sm-8">{review.text}</div>
-                <button onClick={() => this.props.approveHandler(review)}> Confirm Review</button>
-                <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+                {this.renderButtons(review)}
               </div>
           </div>
         </div>

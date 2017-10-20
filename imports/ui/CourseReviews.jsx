@@ -7,12 +7,27 @@ import Review from './Review.jsx';
 // Holder component to list all (or top) reviews for a course.
 // Takes in course ID for selecting reviews.
 export class CourseReviews extends Component {
-  //props:
-  //courseId, the course these reviews belong to
+  constructor(props) {
+    super(props);
+
+    this.reportReview.bind(this);
+  }
+
+  //report this review
+  reportReview(review) {
+    console.log(review);
+    Meteor.call('reportReview', review, (error, result) => {
+      if (!error && result==1) {
+        console.log("reported review #" + review._id);
+      } else {
+        console.log(error)
+      }
+    });
+  }
 
   renderReviews() {
     return this.props.reviews.map((review) => (
-      <Review key={review._id} info={review}/>
+      <Review key={review._id} info={review} reportHandler={this.reportReview}/>
     ));
   }
 
@@ -32,7 +47,7 @@ export class CourseReviews extends Component {
   }
 }
 
-//define the props for this object
+//props:
 CourseReviews.propTypes = {
   courseId: PropTypes.string.isRequired,
   reviews: PropTypes.array.isRequired
@@ -41,7 +56,7 @@ CourseReviews.propTypes = {
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
 export default createContainer((props) => {
-  const subscription = Meteor.subscribe('reviews', props.courseId, 1); //get only visible reviews for this course
+  const subscription = Meteor.subscribe('reviews', props.courseId, 1, 0); //get only visible unreported reviews for this course
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {
