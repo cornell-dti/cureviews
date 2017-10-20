@@ -1,0 +1,1 @@
+{"head":"<title>Todo List</title>","body":"","js":"\nTemplate.body.addContent((function() {\n  var view = this;\n  return HTML.Raw('<div id=\"render-target\"></div>');\n}));\nMeteor.startup(Template.body.renderToDocument);\n","bodyAttrs":{}}

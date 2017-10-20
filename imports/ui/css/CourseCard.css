@@ -1,4 +1,20 @@
 .cornellClassLink {
-    color: rgb(107, 107, 107);
-    text-decoration: none;
+  color: #4A4A4A;
+  text-decoration: underline;
+}
+
+.primary-text {
+  color: #4A4A4A;
+}
+
+.spacing-small{
+  line-height: 10px;
+}
+
+.spacing-medium {
+  line-height: 20px;
+}
+
+.spacing-large {
+  line-height: 40px;
 }
