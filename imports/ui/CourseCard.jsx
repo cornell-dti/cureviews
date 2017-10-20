@@ -30,10 +30,10 @@ export class CourseCard extends Component {
   componentWillReceiveProps(nextProps) {
     // compare old and new reviews, if differnt re-calculate gauges
     if (this.props.reviews != nextProps.reviews) {
-      console.log(nextProps.reviews);
-      this.updateGauges(nextProps.course, nextProps.reviews);
-    }
-  }
+       console.log(nextProps.reviews);
+       this.updateGauges(nextProps.course, nextProps.reviews);
+     }
+   }
 
   //update the component state to represent new state of the gagues
   updateGauges(selectedClass, newRevs) {
