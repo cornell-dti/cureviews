@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import "./css/Course.css";
 // Course component - represents a single course to be shown to the user in a course search.
 // Clicking this component will change the state of the app to show course details.
 export default class Course extends Component {
@@ -8,7 +8,9 @@ export default class Course extends Component {
   render() {
     var classId = this.props.info._id;
     return (
-      <li id={classId} onClick={() => this.props.handler(classId)}>{this.props.info.classFull}</li>
+      <div id = "classbutton">
+        <li id={classId} onClick={() => this.props.handler(classId)}>{this.props.info.classFull}</li>
+      </div>
     );
   }
 }

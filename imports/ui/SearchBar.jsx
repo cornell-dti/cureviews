@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Classes } from '../api/classes.js';
 import Course from './Course.jsx';
+import "./css/SearchBar.css";
 
 //SearchBar component - contains a search bar and results of a user course search
 export class SearchBar extends Component {
@@ -23,9 +24,9 @@ export class SearchBar extends Component {
 
   render() {
     return (
-      <div>
-        <input onChange={this.props.queryFunc} placeholder="CS 2110, Intro to Creative Writing"/>
-        <ul>
+      <div  id="searchbar">
+        <input id="search" onChange={this.props.queryFunc} placeholder="CS 2110, Intro to Creative Writing"/>
+        <ul id="output">
           {this.renderCourses()}
         </ul>
       </div>
