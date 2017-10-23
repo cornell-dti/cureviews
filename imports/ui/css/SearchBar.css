@@ -1,15 +1,21 @@
 #searchbar {
-  background: solid white;
+  background-color: white;
   max-width: 600px;
   display: inline-block;
-}
-
-#search{
-  width: 100%;
-  padding: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  box-shadow:  0px 1px 1px #888888;
+}
+
+#search{
+  text-align: left;
+  text-indent: 15px;
+  font-weight: normal;
+  color: black;
+  background-color: white;
+  width: 100%;
+  padding: 5px;
 }
 
 #output{
@@ -19,8 +25,6 @@
   background: solid white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  -webkit-box-shadow: 0px 3px 3px #888888;
-  -moz-box-shadow:    0px 3px 3px #888888;
   box-shadow:         0px 3px 3px #888888;
   width: 600px;
   max-height: 300px;
