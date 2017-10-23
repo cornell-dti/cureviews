@@ -15,6 +15,7 @@
 #output{
   position: absolute;
   z-index: 1;
+  margin-top: 40px; /* height of the input element*/
   background: solid white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
-import './Form.css';
+import './css/Form.css';
 
 // Form component to allow user to add a review for selected course.
 // Takes in a course ID.
@@ -64,14 +64,14 @@ export default class Form extends Component {
     console.log(inputElement.value);
     //this.state.newReview.quality ==
   }
-   
+
   render() {
     return (
       <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
         <div className = "panel panel-default">
           <div className="panel-body">
             <textarea type="text" ref="reviewText" placeholder="Does your professor tell funny jokes? Leave your feedback here!"/>
-         
+
 						<hr className="divider" />
 						<div className="row">
 							<div className="col-md-3">
@@ -122,7 +122,7 @@ export default class Form extends Component {
 						</div>
 
 						<div className="sm-spacing"></div>
-		
+
 						<div className="row">
 							<div className="col-md-4">
 								<div className="secondary-text">Attendance</div>
