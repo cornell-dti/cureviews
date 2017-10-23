@@ -4,6 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Gauge from 'react-svg-gauge';
 import { Reviews } from '../api/classes.js';
 import './css/CourseCard.css';
+import {lastOfferedSems, lastSem} from './js/CourseCard.js';
 
 // Holder component to list all (or top) reviews for a course.
 // Takes in course ID for selecting reviews.
@@ -94,13 +95,26 @@ export class CourseCard extends Component {
 
   render() {
     var theClass = this.props.course;
+    //Creats Url that points to each class page on Cornell Class Roster
+    var url = "https://classes.cornell.edu/browse/roster/"
+              + lastSem(theClass.classSems) + "/class/"
+              + theClass.classSub.toUpperCase() + "/"
+              + theClass.classNum;
+    //Calls funtion in CourseCard.js that returns a clean version of the last semsters class was offered
+    var offered = lastOfferedSems(theClass);
     return (
       <header>
-        <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-        <a className="cornellClassLink" href="https://classes.cornell.edu/browse/roster/SP18/" target="_blank">
-          cornell.classes.edu
-        </a>
-        <h2>Class Data</h2>
+      <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
+      <a className="cornellClassLink spacing-large" href={url} target="_blank">cornell.classes.edu</a>
+      <p className="review-text spacing-large">
+        <strong>Last Offered: </strong>
+        {offered}
+      </p>
+      <p className="review-text spacing-large">
+        <strong>Syllabus: </strong>
+        <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
+      </p>
+      <h2>Class Data</h2>
         <div>
           <div className= "panel panel-default">
             <div className = "panel-body">
@@ -120,8 +134,7 @@ export class CourseCard extends Component {
             </div>
           </div>
         </div>
-        <p>Semesters Offered:</p>
-        <p>{theClass.classSems}</p>
+        <p className="review-text spacing-large">Attendence Mandatory: Yes/No (Placeholder)</p>
       </header>
     );
   }
