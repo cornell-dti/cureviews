@@ -1,0 +1,49 @@
+#rectangle {
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: solid 1px #dddddd;
+}
+
+#box {
+  width: 58px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #e64558;
+}
+
+#text {
+  width: 34px;
+  height: 28px;
+  font-family: HelveticaNeue;
+  font-size: 24px;
+  letter-spacing: 0.1px;
+  text-align: center;
+  color: #ffffff;
+}
+
+#review_text{
+  font-family: HelveticaNeue;
+  font-size: 16px;
+  line-height: 1.38;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #4a4a4a;
+}
+
+#label{
+  opacity: 0.5;
+  font-family: HelveticaNeue;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #4a4a4a;
+}
+
+#button_text{
+  opacity: 0.35;
+  font-family: HelveticaNeue;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #4a4a4a;
+}

@@ -190,9 +190,9 @@ if (Meteor.isServer) {
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
-    //Classes.remove({});
-    //Subjects.remove({});
-    //addAllCourses(findAllSemesters());
+    // Classes.remove({});
+    // Subjects.remove({});
+    // addAllCourses(findAllSemesters());
 }
 
 //Other helper functions used above
