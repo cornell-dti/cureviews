@@ -1,5 +1,5 @@
 form{
-    border-radius: 25px;
+    border-radius: 100px;
 }
 .panel-body{
     padding-right: 30px;
@@ -34,15 +34,15 @@ p {
     margin-top: 10px;
 }
 input{
-    background-color: #4990E2;
-    border-radius: 10px;
-    width: 100px;
-    border: none;
+    width: 40px;
+    height: 22px;
+    font-family: HelveticaNeue;
+    font-size: 18px;
     font-weight: bold;
-    color: white;
-    height: 40px;
+    letter-spacing: 0.1px;
+    text-align: left;
+    color: #ffffff;
     float: right;
-    margin: 0 auto;
-    padding: 0;
-    text-align: center;
+    border-radius: 8px;
+    background-color: #4a90e2;
 }

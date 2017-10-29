@@ -24,12 +24,15 @@ export class SearchBar extends Component {
 
   render() {
     return (
-      <div  id="searchbar">
-        <input id="search" onChange={this.props.queryFunc} placeholder="CS 2110, Intro to Creative Writing"/>
-        <ul id="output">
-          {this.renderCourses()}
-        </ul>
-      </div>
+      <nav class="navbar">
+        <h1 class="navbar-brand mb-0" id= "navname">Cornell Reviews</h1>
+        <div  id="searchbar">
+          <input id="search" onChange={this.props.queryFunc} placeholder="CS 2110, Intro to Creative Writing"/>
+            <ul id="output">
+              {this.renderCourses()}
+            </ul>
+        </div>
+      </nav>
     );
   }
 }
