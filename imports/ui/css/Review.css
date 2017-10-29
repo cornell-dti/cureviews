@@ -2,6 +2,7 @@
   border-radius: 8px;
   background-color: #ffffff;
   border: solid 1px #dddddd;
+  margin-top: 10px;
 }
 
 #box {
@@ -46,4 +47,7 @@
   letter-spacing: 0.1px;
   text-align: left;
   color: #4a4a4a;
+}
+#reviewpanel{
+  color: #f2f2f2;
 }

@@ -80,7 +80,7 @@ class App extends Component {
             <div>
               {this.renderForm()}
             </div>
-            <div className="row">
+            <div>
               {this.renderPastReviews()}
             </div>
           </div>

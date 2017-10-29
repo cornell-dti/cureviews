@@ -6,6 +6,7 @@
   -moz-border-radius: 5px;
   border-radius: 5px;
   box-shadow:  0px 1px 1px #888888;
+  margin-top: 20px;
 }
 
 #search{
@@ -29,4 +30,14 @@
   width: 600px;
   max-height: 300px;
   overflow:hidden;
+}
+
+nav{
+  background-color: #4990E2;
+  padding-left: 20px;
+  margin-top: 0px;
+}
+
+#navname{
+  color: #fff;
 }

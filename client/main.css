@@ -42,7 +42,7 @@ a.navbar-brand {
 }
 
 header {
-    padding: 20px 15px 15px 15px;
+    padding: 100px 50px 15px 10px;
     position: relative;
 }
 
@@ -72,6 +72,7 @@ h1 {
     font-size: 27px;
     font-family: 'Helvetica Neue';
     font-weight: medium;
+    padding-top: 20px;
 }
 
 .primary-text {
@@ -233,8 +234,10 @@ input[type="submit"]:active{
 }
 
 .fix-contain {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .no-border {
