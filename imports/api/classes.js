@@ -172,7 +172,12 @@ if (Meteor.isServer) {
         var ret = null
         //show valid reviews for this course
         console.log('getting reviews');
-        if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) {
+        //for a -1 courseId, disply the most popular reviews (visible, non reported only)
+        if (courseId == -1) {
+          console.log('in popular');
+          ret =  Reviews.find({visible : 1, reported: 0}, { sort: { date: -1 }, limit: 700});
+        }
+        else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) {
             console.log('in 1');
             ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {limit: 700});
         } else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
