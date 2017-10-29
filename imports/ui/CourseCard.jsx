@@ -30,10 +30,10 @@ export class CourseCard extends Component {
 
   componentWillReceiveProps(nextProps) {
     // compare old and new reviews, if differnt re-calculate gauges
-    if (this.props.reviews != nextProps.reviews) {
-       console.log(nextProps.reviews);
-       this.updateGauges(nextProps.course, nextProps.reviews);
-     }
+    //if (this.props.reviews != nextProps.reviews) {
+   console.log(nextProps.reviews);
+   this.updateGauges(nextProps.course, nextProps.reviews);
+     //}
    }
 
   //update the component state to represent new state of the gagues
@@ -85,11 +85,13 @@ export class CourseCard extends Component {
 
       } else {
         console.log("first else");
-        this.state = this.defaultGaugeState;
+        this.setState(this.defaultGaugeState);
+        console.log(this.state)
       }
     } else {
       console.log("Second else");
-      this.state = this.defaultGaugeState;
+      this.setState(this.defaultGaugeState);
+      console.log(this.state)
     }
   }
 
@@ -151,7 +153,7 @@ CourseCard.propTypes = {
 export default createContainer((props) => {
   const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
   const loading = !subscription.ready();
-  const reviews = Reviews.find({'visible': 1, 'reported' : 0}).fetch();
+  const reviews = Reviews.find({'class': props.course._id, 'visible': 1, 'reported' : 0}).fetch();
   //console.log(reviews);
   return {
     reviews, loading,
