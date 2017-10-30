@@ -124,7 +124,6 @@ form {
     background: transparent;
     border: none;
     width: 100%;
-    padding-right: 80px;
     font-size: 1em;
 }
 
@@ -297,5 +296,3 @@ select {
         padding-bottom: 5px;
     }
 }
-
-

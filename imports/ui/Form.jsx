@@ -60,9 +60,35 @@ export default class Form extends Component {
     }
   }
 
-  handleQualChange(inputElement) {
-    console.log(inputElement.value);
-    //this.state.newReview.quality ==
+  //change the state to represent the new form quality value and trigger re-render
+  handleQualChange(event) {
+    newState = this.state;
+    newState.quality = event.target.value;
+    this.setState(newState);
+  }
+
+  //get color for quality value
+  getQualColor(value) {
+    colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"]
+    return {
+      backgroundColor: colors[value]
+    }
+
+  }
+
+  //change the state to represent the new form difficulty value and trigger re-render
+  handleDiffChange(event) {
+    newState = this.state;
+    newState.diff = event.target.value;
+    this.setState(newState);
+  }
+
+  //get color for quality value
+  getDiffColor(value) {
+    colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
+    return {
+      backgroundColor: colors[value],
+    }
   }
 
   render() {
@@ -78,12 +104,12 @@ export default class Form extends Component {
 							    <h1 className="secondary-text">Overall Quality</h1>
 							</div>
 							<div className="col-md-1">
-								<div className="small-icon" id="sm1">
+								<div className="small-icon" id="sm1" style={this.getQualColor(this.state.quality)}>
 									<p>{this.state.quality}</p>
 								</div>
 							</div>
-							<div className="col-md-8">
-								<input type="range" id="a2" name="qual" min="0" max="5" step="1" />
+							<div className="col-md-8 sliderHolder">
+								<input onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
 							</div>
 						</div>
 						<div className="sm-spacing"></div>
@@ -92,12 +118,12 @@ export default class Form extends Component {
 						      <h1 className="secondary-text">Level of Difficulty</h1>
 						  </div>
 						  <div className="col-md-1">
-						    <div className="small-icon" id="sm2">
+						    <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
 						      <p>{this.state.diff}</p>
 						    </div>
 						  </div>
-						  <div className="col-md-8">
-						    <input type="range" id="a2" name="qual" min="0" max="5" step="1" />
+						  <div className="col-md-8 sliderHolder">
+						    <input onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
 						  </div>
 						</div>
 						<div className="sm-spacing"></div>
