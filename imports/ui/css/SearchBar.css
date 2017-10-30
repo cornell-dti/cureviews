@@ -19,6 +19,7 @@
   padding: 5px;
   height: 33px;
   border-color: transparent;
+  cursor: default;
 }
 
 #output{
@@ -33,6 +34,7 @@
   width: 600px;
   max-height: 300px;
   overflow:hidden;
+  cursor: pointer;
 }
 
 nav{
@@ -44,4 +46,10 @@ nav{
 #navname{
   color: #fff;
   margin-top: 10px;
+}
+
+#report-bug{
+  padding-left: 10px;
+  color: #fff;
+  font-weight: bold;
 }
