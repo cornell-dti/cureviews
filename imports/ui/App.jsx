@@ -73,7 +73,7 @@ class App extends Component {
           <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
         </div>
         <div className='row'>
-          <div className="col-md-6">
+          <div className="col-md-6" data-spy="affix">
             {this.renderCourseCard()}
           </div>
           <div className="col-md-6 panel-container fix-contain">

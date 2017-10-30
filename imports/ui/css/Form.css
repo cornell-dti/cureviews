@@ -6,6 +6,7 @@ form{
     padding-left: 30px;
     padding-top: 25px;
     margin: auto;
+    padding-bottom: 25px;
 }
 textarea{
     width: 100%;
@@ -40,9 +41,13 @@ input{
     font-size: 18px;
     font-weight: bold;
     letter-spacing: 0.1px;
-    text-align: left;
+    text-align: center;
     color: #ffffff;
     float: right;
     border-radius: 8px;
     background-color: #4a90e2;
+}
+#postbutton{
+    padding-left: 30px;
+    padding-right:30px;
 }
