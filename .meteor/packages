@@ -23,3 +23,4 @@ aldeed:simple-schema
 twbs:bootstrap
 session@1.1.7
 http@1.2.12
+meteorhacks:aggregate

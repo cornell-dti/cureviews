@@ -158,24 +158,7 @@ if (Meteor.isServer) {
             return course._id;
           });
           console.log(mostReviews)
-          // .map(function(course) {
-          //   return course.class;
-          // });
-  //         {
-  //  $group: {
-  //    _id: '$propertyToGroupBy',
-  //    result: { $operation: '$propertyToPerformOperationOn' }
-  //  }
-  //         // {
-          //   key: { class: 1},
-          //   reduce: function( curr, result ) {
-          //        result.count += 1;
-          //    },
-          //    initial: { total : 0 }
-          //  });
-            x = Classes.find({ _id: { "$in": mostReviews } }, {limit: 200})
-           console.log(x.fetch())
-           return x
+          return Classes.find({ _id: { "$in": mostReviews } }, {limit: 200})
         }
         else if (searchString !== undefined && searchString !== "") {
             console.log("query entered:", searchString);
