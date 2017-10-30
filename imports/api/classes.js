@@ -149,7 +149,35 @@ if (Meteor.isServer) {
     //code that runs whenever needed
     //"publish" classes based on search query. Only published classes are visible to the client
     Meteor.publish('classes', function validClasses(searchString) {
-        if (searchString !== undefined && searchString !== "") {
+        if (searchString == "--") {
+          console.log("popular");
+          console.log("popular");
+          //using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
+          var pipeline = [{$group: { _id: '$class', total: { $sum: 1} }}, {$sort: {"total": -1}}];
+          mostReviews = Reviews.aggregate(pipeline).map(function(course) {
+            return course._id;
+          });
+          console.log(mostReviews)
+          // .map(function(course) {
+          //   return course.class;
+          // });
+  //         {
+  //  $group: {
+  //    _id: '$propertyToGroupBy',
+  //    result: { $operation: '$propertyToPerformOperationOn' }
+  //  }
+  //         // {
+          //   key: { class: 1},
+          //   reduce: function( curr, result ) {
+          //        result.count += 1;
+          //    },
+          //    initial: { total : 0 }
+          //  });
+            x = Classes.find({ _id: { "$in": mostReviews } }, {limit: 200})
+           console.log(x.fetch())
+           return x
+        }
+        else if (searchString !== undefined && searchString !== "") {
             console.log("query entered:", searchString);
             return Classes.find({'$or' : [
                     { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
