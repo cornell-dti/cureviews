@@ -17,12 +17,15 @@
   background-color: white;
   width: 100%;
   padding: 5px;
+  height: 33px;
+  border-color: transparent;
 }
 
 #output{
   position: absolute;
   z-index: 1;
-  margin-top: 40px; /* height of the input element*/
+  margin-top: 30px; /* height of the input element*/
+  border-radius: 10px;
   background: solid white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
@@ -40,4 +43,5 @@ nav{
 
 #navname{
   color: #fff;
+  margin-top: 10px;
 }

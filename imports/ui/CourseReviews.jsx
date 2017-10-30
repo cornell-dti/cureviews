@@ -37,7 +37,7 @@ export class CourseReviews extends Component {
 				<legend className="subheader">Past Reviews</legend>
 			    <div className= "panel panel-default" id= "reviewpanel">
 			    	<div>
-						<ul>
+						<ul id= "reviewul">
 				       {this.renderReviews()}
 						</ul>
 					</div>

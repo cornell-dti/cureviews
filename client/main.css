@@ -39,10 +39,11 @@ a.navbar-brand {
 
 .container {
     background: white;
+    width: 100%;
 }
 
 header {
-    padding: 100px 50px 15px 10px;
+    padding: 100px 50px 15px 30px;
     position: relative;
 }
 
@@ -231,13 +232,13 @@ input[type="submit"]:active{
 
 .panel-container {
     background-color: rgba(74,74,74,.06);
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
 }
 
 .fix-contain {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    float: right;
 }
 
 .no-border {
@@ -294,3 +295,5 @@ select {
         padding-bottom: 5px;
     }
 }
+
+

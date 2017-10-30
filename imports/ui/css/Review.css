@@ -49,5 +49,10 @@
   color: #4a4a4a;
 }
 #reviewpanel{
-  color: #f2f2f2;
+  border-color: transparent;
+  background-color: #f2f2f2;
+}
+
+#reviewul{
+  background-color: #f2f2f2;
 }

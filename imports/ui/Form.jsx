@@ -142,7 +142,7 @@ export default class Form extends Component {
   				<h2 className="secondary-text" >All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in the className to give feedback</h2>
   			</div>
   			<div className="col-md-2">
-  				<input type="submit" value="Post"/>
+  				<input type="submit" value="Post" id= "postbutton"/>
   			</div>
   		</div>
   		<div className="row">
