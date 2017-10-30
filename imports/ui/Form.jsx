@@ -108,7 +108,7 @@ export default class Form extends Component {
 									<p>{this.state.quality}</p>
 								</div>
 							</div>
-							<div className="col-md-8">
+							<div className="col-md-8 sliderHolder">
 								<input onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
 							</div>
 						</div>
@@ -122,7 +122,7 @@ export default class Form extends Component {
 						      <p>{this.state.diff}</p>
 						    </div>
 						  </div>
-						  <div className="col-md-8">
+						  <div className="col-md-8 sliderHolder">
 						    <input onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
 						  </div>
 						</div>

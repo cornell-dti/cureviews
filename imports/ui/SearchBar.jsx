@@ -32,7 +32,7 @@ export class SearchBar extends Component {
               {this.renderCourses()}
             </ul>
         </div>
-        <span class="navbar-text" id="report-bug"><a href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
+        <span className="navbar-text" id="report-bug"><a href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
       </nav>
     );
   }
