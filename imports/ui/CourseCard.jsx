@@ -86,12 +86,10 @@ export class CourseCard extends Component {
       } else {
         console.log("first else");
         this.setState(this.defaultGaugeState);
-        console.log(this.state)
       }
     } else {
       console.log("Second else");
       this.setState(this.defaultGaugeState);
-      console.log(this.state)
     }
   }
 
