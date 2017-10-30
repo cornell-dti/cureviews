@@ -4,7 +4,6 @@
   display: inline-block;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  border-radius: 5px;
   box-shadow:  0px 1px 1px #888888;
   margin-top: 20px;
 }
@@ -25,7 +24,6 @@
   position: absolute;
   z-index: 1;
   margin-top: 30px; /* height of the input element*/
-  border-radius: 10px;
   background: solid white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;

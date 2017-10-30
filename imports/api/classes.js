@@ -206,7 +206,7 @@ if (Meteor.isServer) {
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
-    //Classes.remove({});
+   //Classes.remove({});
     //Subjects.remove({});
     //addAllCourses(findAllSemesters());
 }

@@ -23,6 +23,7 @@ body {
 .navbar{
     background-color: #4990E2;
     margin-bottom: 0px;
+    border-radius: 0px;
 }
 
 a.navbar-brand {
@@ -40,6 +41,7 @@ a.navbar-brand {
 .container {
     background: white;
     width: 100%;
+    padding-top: 70px;
 }
 
 header {
