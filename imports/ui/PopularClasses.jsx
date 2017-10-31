@@ -22,7 +22,6 @@ export default class PopularClasses extends Component {
         console.log(error)
       }
     });
-
   }
 
   renderCourses() {

@@ -6,28 +6,37 @@ import './css/RecentReview.css';
 export default class RecentReview extends Component {
   //props:
   // info, a database object containing all of this review entry's data.
-  renderClassName(classId){
-    var toShow = ''; //empty div //empty div
-    return Meteor.call('getCourseById', classId, (error, result) => {
+  constructor(props) {
+    super(props);
+
+    // state of app will contain the class for this review
+    this.state = {
+      shortName: "",
+      longName: "",
+    };
+
+    var x = Meteor.call('getCourseById', props.info.class, (error, result) => {
       if (!error) {
-        toShow = result.classTitle;
-        return result.classTitle;
+        this.setState({
+          shortName: result.classSub.toUpperCase() + " " + result.classNum,
+          longName: result.classTitle
+        });
       } else {
-        console.log(error);
+        console.log(error)
       }
     });
-    return toShow;
   }
 
   render() {
     var review = this.props.info;
-    var classId = review.class;
+
     return (
 			<li>
         <div className="row">
           <div className = "col-sm-8">
-          {/*{this.renderClassName(classId)}*/}
-          <p className="classNameLink">Class Name + Posted Timestamp (Placeholder)</p>
+            <p className="classNameLink">
+              <b><u>{this.state.shortName}</u></b>: {this.state.longName} {review.date.toString()}
+            </p>
           </div>
         </div>
 				<div className= "review">
