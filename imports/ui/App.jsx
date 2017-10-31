@@ -61,18 +61,6 @@ class App extends Component {
     return toShow;
   }
 
-  //if query exists, displays classes that match query
-  renderCourses() {
-    if (this.state.query != "") {
-      return this.props.allCourses.slice(0,10).map((course) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} handler={this.handleSelectClass}/>
-      ));
-    } else {
-      return <div />;
-    }
-  }
-
   //check if a class is selected. Display past reviews for the class only when one is selected
   //Or display most recent reviews out of all classes if no class is selected
   renderPastReviews() {
@@ -106,13 +94,8 @@ class App extends Component {
               <p id="welcome_text">Welcome to Cornell Course Reviews</p>
             </div>
           </div>
-          <div className='row'>
-            <div id="searchbar"className="col-md-offset-4 panel">
-                <input id="search" onChange={this.updateQuery} placeholder="CS 2110, Intro to Creative Writing"/>
-                <ul id="output">
-                  {this.renderCourses()}
-                </ul>
-            </div>
+          <div className="row text-center">
+            <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
           </div>
           <div className='row'>
             <div className="col-md-10 col-md-offset-1">
@@ -135,7 +118,11 @@ class App extends Component {
       return (
         <div className="container">
           <div className='row'>
-            <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
+            <nav className="navbar navbar-fixed-top">
+              <h1 className="navbar-brand mb-0" id= "navname">Cornell Reviews</h1>
+              <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
+              <span className="navbar-text" id="report-bug"><a href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
+            </nav>
           </div>
           <div className='row'>
             <div className="col-md-6" data-spy="affix">
@@ -153,22 +140,9 @@ class App extends Component {
         </div>
       );
     }
-
   }
 }
 
-App.propTypes = {
-  allCourses: PropTypes.array.isRequired,
-  loading: React.PropTypes.bool
-};
+App.propTypes = {};
 
-export default createContainer((props) => {
-  //Use Sesssion.get to be able to use this.state.query to filter to Class results
-  //See https://forums.meteor.com/t/can-this-state-be-accessed-in-createcontainer-function/20835/13
-  const subscription = Meteor.subscribe('classes', Session.get('querySession'));
-  const loading = !subscription.ready();
-  const allCourses = Classes.find({}).fetch();
-  return {
-    allCourses, loading,
-  };
-}, App);
+export default createContainer((props) => {return {};}, App);

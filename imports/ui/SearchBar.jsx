@@ -24,16 +24,12 @@ export class SearchBar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-fixed-top">
-        <h1 className="navbar-brand mb-0" id= "navname">Cornell Reviews</h1>
-        <div  id="searchbar">
+        <div id="searchbar">
           <input id="search" onChange={this.props.queryFunc} placeholder="CS 2110, Intro to Creative Writing"/>
-            <ul id="output">
+            <ul id="output" className="text-left">
               {this.renderCourses()}
             </ul>
         </div>
-        <span className="navbar-text" id="report-bug"><a href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
-      </nav>
     );
   }
 }
