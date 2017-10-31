@@ -151,7 +151,6 @@ if (Meteor.isServer) {
     Meteor.publish('classes', function validClasses(searchString) {
         if (searchString == "--") {
           console.log("popular");
-          console.log("popular");
           //using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
           var pipeline = [{$group: { _id: '$class', total: { $sum: 1} }}, {$sort: {"total": -1}}];
           mostReviews = Reviews.aggregate(pipeline).map(function(course) {
@@ -206,7 +205,7 @@ if (Meteor.isServer) {
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
-   //Classes.remove({});
+    //Classes.remove({});
     //Subjects.remove({});
     //addAllCourses(findAllSemesters());
 }
