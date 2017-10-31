@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/classes.js';
 import Review from './Review.jsx';
+import RecentReview from './RecentReview.jsx';
 
 // Holder component to list all (or top) reviews for a course.
 // Takes in course ID for selecting reviews.
@@ -26,9 +27,15 @@ export class CourseReviews extends Component {
   }
 
   renderReviews() {
-    return this.props.reviews.map((review) => (
-      <Review key={review._id} info={review} reportHandler={this.reportReview}/>
-    ));
+    if (this.props.courseId == "-1") {
+      return this.props.reviews.map((review) => (
+        <RecentReview key={review._id} info={review} reportHandler={this.reportReview}/>
+      ));
+    } else {
+      return this.props.reviews.map((review) => (
+        <Review key={review._id} info={review} reportHandler={this.reportReview}/>
+      ));
+    }
   }
 
   render() {

@@ -1,0 +1,18 @@
+.classNameLink {
+  width: 428px;
+  height: 17px;
+  font-family: HelveticaNeue;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #4a4a4a;
+  margin-bottom: 3%;
+}
+
+.classNameLink .text-style-1 {
+  font-weight: 500;
+}
+
+.classNameLink .text-style-2 {
+  color: rgba(74, 74, 74, 0.51);
+}

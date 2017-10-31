@@ -88,18 +88,18 @@ class App extends Component {
         <div className="container container-top-gap-fix">
           <div className='row'>
             <nav className="navbar">
-              <h1 className="navbar-brand mb-0" id="navname">Cornell Reviews</h1>
+              <h1 className="cornell-reviews" id="navname">Cornell Reviews</h1>
             </nav>
           </div>
-          <div className='row'>
+          <div className='row pushDown'>
             <div className="col-md-10 col-md-offset-1">
               <p id="welcome_text">Welcome to Cornell Course Reviews</p>
             </div>
           </div>
-          <div className="row text-center">
+          <div className="row text-center pushDown">
             <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
           </div>
-          <div className='row'>
+          <div className='row pushDown'>
             <div className="col-md-10 col-md-offset-1">
               <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
             </div>
