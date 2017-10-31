@@ -5,29 +5,29 @@ import { Classes } from '../api/classes.js';
 import Course from './Course.jsx';
 
 // Holder component to list all (or top) reviews for a course.
-// Takes in course ID for selecting reviews.
-export class PopularClasses extends Component {
+// Takes in function to execute when a class is clicked.
+export default class PopularClasses extends Component {
   constructor(props) {
     super(props);
 
-    // bind functions called in other files to this context, so that current state is still accessable
-    this.handleSelectClass = this.handleSelectClass.bind(this);
-  }
+    this.state = {
+      topClasses: [] //defult to empty list
+    }
 
-  //get the full class details for the clicked class. Called in Course.jsx
-  handleSelectClass(classId) {
-    Meteor.call('getCourseById', classId, (error, result) => {
+    //get the top classes by number of reviews
+    var x = Meteor.call('topClasses', (error, result) => {
       if (!error) {
-        this.setState({selectedClass: result, query: ""});
+        this.setState({topClasses: result});
       } else {
         console.log(error)
       }
     });
+
   }
 
   renderCourses() {
-    if (this.props.query != "") {
-      return this.props.allCourses.slice(0,10).map((course) => (
+    if (this.state.topClasses != []) {
+      return this.state.topClasses.slice(0,10).map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} handler={this.props.clickFunc}/>
       ));
@@ -52,19 +52,7 @@ export class PopularClasses extends Component {
   }
 }
 
-//props:
+//props
 PopularClasses.propTypes = {
-  allCourses: PropTypes.array.isRequired,
   clickFunc: PropTypes.func.isRequired
 };
-
-// wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when databse data changes!
-export default createContainer((props) => {
-  const subscription = Meteor.subscribe('classes', "--");
-  const loading = !subscription.ready();
-  const allCourses = Classes.find({}).fetch();
-  return {
-    allCourses, loading,
-  };
-}, PopularClasses);
