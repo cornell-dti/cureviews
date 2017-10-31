@@ -20,6 +20,7 @@
   text-align: center;
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin: 5px 0 30px 5px;
 }
 
 nav {
@@ -37,4 +38,37 @@ nav {
   padding-left: 10px;
   color: #fff;
   font-weight: bold;
+}
+
+body{
+  background: url('background.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat:no-repeat;
+  object-fit: contain;
+}
+
+.container{
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.container-top-gap-fix{
+  padding-top: 0px !important;
+}
+
+.panel-container{
+  background-color: rgba(255, 255, 255, 0.0);
+  height: 100%;
+}
+
+.panel-color-translucent{
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.panel-color-gray{
+  background-color: rgba(74,74,74,.06);
+}
+
+.remove-background{
+  background-color: rgba(255, 255, 255, 1);
 }

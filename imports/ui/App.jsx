@@ -45,6 +45,8 @@ class App extends Component {
 
   //check if a class is selected, and show a coursecard only when one is.
   renderCourseCard() {
+    //Removes the backgroundImage from the body tag after a course is selected
+    document.body.style.backgroundImage = "url('')";
     var toShow = <div/>; //empty div
     if (this.state.selectedClass !== null) {
       toShow = <CourseCard course={this.state.selectedClass}/>;
@@ -83,7 +85,7 @@ class App extends Component {
   render() {
     if (this.state.selectedClass == null) {
       return (
-        <div className="container">
+        <div className="container container-top-gap-fix">
           <div className='row'>
             <nav className="navbar">
               <h1 className="navbar-brand mb-0" id="navname">Cornell Reviews</h1>
@@ -102,8 +104,8 @@ class App extends Component {
               <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
             </div>
           </div>
-          <div className='row'>
-            <div className="col-md-6 panel" data-spy="affix">
+          <div className='row panel-color-translucent'>
+            <div className="col-md-6 panel-container panel" data-spy="affix">
               {this.renderPopularClasses()}
             </div>
             <div className="col-md-6 panel-container fix-contain">
@@ -116,7 +118,7 @@ class App extends Component {
       );
     } else {
       return (
-        <div className="container">
+        <div className="container remove-background">
           <div className='row'>
             <nav className="navbar navbar-fixed-top">
               <h1 className="navbar-brand mb-0" id= "navname">Cornell Reviews</h1>
@@ -128,7 +130,7 @@ class App extends Component {
             <div className="col-md-6" data-spy="affix">
               {this.renderCourseCard()}
             </div>
-            <div className="col-md-6 panel-container fix-contain">
+            <div className="col-md-6 panel-container panel-color-gray fix-contain">
               <div>
                 {this.renderForm()}
               </div>

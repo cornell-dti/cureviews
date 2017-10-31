@@ -6,10 +6,30 @@ export default class Review extends Component {
   //props:
   // info, a database object containing all of this review entry's data.
 
+  renderClassName(classId){
+    var toShow = ''; //empty div //empty div
+    return Meteor.call('getCourseById', classId, (error, result) => {
+      if (!error) {
+        toShow = result.classTitle;
+        return result.classTitle;
+      } else {
+        console.log(error);
+      }
+    });
+    return toShow;
+  }
+
   render() {
     var review = this.props.info;
+    var classId = review.class;
     return (
 			<li id = "rectangle">
+        <div className="row">
+          <div className = "col-sm-8">
+          {/*{this.renderClassName(classId)}*/}
+          <p>Class Name + Posted Timestamp (Placeholder)</p>
+          </div>
+        </div>
 				<div className = "panel" >
 					<div className = "panel-body">
 					    <div className = "row">
