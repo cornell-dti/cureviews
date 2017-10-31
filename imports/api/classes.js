@@ -122,14 +122,24 @@ Meteor.methods({
     },
     //most popular classes by number of reviews
     topClasses: function() {
-      console.log("popular");
+      console.log("popular classes");
       //using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
-      var pipeline = [{$group: { _id: '$class', total: { $sum: 1} }}, {$sort: {"total": -1}}];
+      var pipeline = [
+        //consider only visible reviews
+        {$match: { visible: 1}},
+        //group by class and get count of reviews
+        {$group: { _id: '$class', reviewCount: { $sum: 1} }},
+        //sort by decending count
+        {$sort: {"reviewCount": -1}},
+        {$limit: 10}
+      ];
+
+      //run the functions, and find the course object for each courseId
       mostReviews = Reviews.aggregate(pipeline).map(function(course) {
-        return course._id;
+        return Classes.find({_id: course._id}).fetch()[0];
       });
-      //return as an array with fetch()
-      return Classes.find({ _id: { "$in": mostReviews } }, {limit: 20}).fetch()
+      
+      return  mostReviews
     }
 });
 
