@@ -127,7 +127,7 @@ class App extends Component {
             </nav>
           </div>
           <div className='row'>
-            <div className="col-md-6" data-spy="affix">
+            <div className="col-md-6">
               {this.renderCourseCard()}
             </div>
             <div className="col-md-6 panel-container panel-color-gray fix-contain">
