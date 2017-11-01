@@ -33,9 +33,9 @@ export default class RecentReview extends Component {
     return (
 			<li>
         <div className="row">
-          <div className = "col-sm-8">
+          <div className = "col-sm-12">
             <p className="classNameLink">
-              <b><u>{this.state.shortName}</u></b>: {this.state.longName} {review.date.toString()}
+              <b><u>{this.state.shortName}</u></b>: {this.state.longName} <i>{moment(review.date.toString()).fromNow()}</i>
             </p>
           </div>
         </div>
