@@ -28,15 +28,15 @@ export default class Form extends Component {
     //ensure all feilds are filled out
     const text = ReactDOM.findDOMNode(this.refs.reviewText).value.trim();
     const median = ReactDOM.findDOMNode(this.refs.median).value.trim();
-    const atten = ReactDOM.findDOMNode(this.refs.atten).value.trim();
+    const atten = parseInt(ReactDOM.findDOMNode(this.refs.atten).value.trim());
     if (text != null && median != null && atten != null) {
       console.log("got needed elements");
 
       // create new review object
       var newReview = {
         text: text,
-        diff: this.state.diff,
-        quality: this.state.quality,
+        diff: parseInt(this.state.diff),
+        quality: parseInt(this.state.quality),
         medGrade: median,
         atten: atten
       }
@@ -155,8 +155,8 @@ export default class Form extends Component {
 							</div>
 							<div className="col-md-8">
 						  	<select ref='atten'>
-									<option value="1">Not Mandatory</option>
-									<option value="0">Mandatory</option>
+									<option value="0">Not Mandatory</option>
+									<option value="1">Mandatory</option>
 								</select>
 							</div>
 						</div>
