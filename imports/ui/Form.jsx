@@ -20,6 +20,11 @@ export default class Form extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
+    ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+  }
+
   // handle a form submission. This will either add the review to the database
   // or return an error telling the user to try agian.
   handleSubmit(event) {
@@ -48,10 +53,13 @@ export default class Form extends Component {
           ReactDOM.findDOMNode(this.refs.reviewText).value = '';
           ReactDOM.findDOMNode(this.refs.median).value = null;
           ReactDOM.findDOMNode(this.refs.atten).value = null;
-          this.diff == 3;
-          this.quality == 3;
-
-          this.setState({message: "Thanks! Your review is pending approval."});
+          ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
+          ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+          this.setState({
+            diff:3,
+            quality: 3,
+            message: "Thanks! Your review is pending approval."
+          });
         } else {
           console.log(error)
           this.setState({message: "A error occured. Please try again."});
@@ -109,7 +117,7 @@ export default class Form extends Component {
 								</div>
 							</div>
 							<div className="col-md-8 sliderHolder">
-								<input onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
+								<input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
 							</div>
 						</div>
 						<div className="sm-spacing"></div>
@@ -123,7 +131,7 @@ export default class Form extends Component {
 						    </div>
 						  </div>
 						  <div className="col-md-8 sliderHolder">
-						    <input onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
+						    <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
 						  </div>
 						</div>
 						<div className="sm-spacing"></div>
@@ -186,10 +194,3 @@ Form.propTypes = {
   // We can use propTypes to indicate it is required
   courseId: PropTypes.string.isRequired,
 };
-
-// export default createContainer(() => {
-//   Meteor.subscribe('reviews');
-//   return {
-//     tasks: Reviews.find({}, { sort: { createdAt: -1 } }).fetch(),
-//   };
-// }, App);
