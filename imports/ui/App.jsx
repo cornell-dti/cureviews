@@ -93,7 +93,7 @@ class App extends Component {
           </div>
           <div className='row pushDown'>
             <div className="col-md-10 col-md-offset-1">
-              <p id="welcome_text">Welcome to Cornell Course Reviews</p>
+              <p id="welcome_text">Welcome to Cornell Reviews</p>
             </div>
           </div>
           <div className="row text-center pushDown">

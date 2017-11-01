@@ -1,12 +1,10 @@
 #classbutton{
-  width: 680px;
   height: 41px;
 }
 #classbutton:hover{
   background-color: #D3D3D3;
 }
 .text-style-1{
-  width: 680px;
   height: 20px;
   font-family: .SFNSText;
   font-size: 18px;
