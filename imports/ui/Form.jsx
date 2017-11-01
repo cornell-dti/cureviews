@@ -146,7 +146,7 @@ export default class Form extends Component {
 								  <option value="8">A</option>
 						      <option value="7">A-</option>
 						      <option value="6">B+</option>
-						      <option value="5">B</option>
+						      <option selected="selected" value="5">B</option>
 									<option value="4">B-</option>
 									<option value="3">C+</option>
 									<option value="2">C</option>

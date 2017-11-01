@@ -39,9 +39,13 @@ export class CourseReviews extends Component {
   }
 
   render() {
+    var title = "Past Reviews";
+    if (this.props.courseId == "-1") {
+      title = "Recent Reviews";
+    }
     return (
       <section>
-				<legend className="subheader">Past Reviews</legend>
+				<legend className="subheader">{title}</legend>
 			    <div className= "panel panel-default" id= "reviewpanel">
 			    	<div>
 						<ul id= "reviewul">
