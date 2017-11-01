@@ -136,7 +136,7 @@ export class CourseCard extends Component {
                     <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
                   </div>
                   <div className="col-sm-4">
-                    <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade"/>
+                    <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
                   </div>
                 </div>
               </section>
