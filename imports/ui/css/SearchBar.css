@@ -2,15 +2,14 @@
   background-color: white;
   max-width: 600px;
   display: inline-block;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  box-shadow:  0px 1px 1px #888888;
+  border-radius: 8px;
+  box-shadow:  0px 2px 8px 0
+  rgba(0,0,0,0.5);
   margin-top: 20px;
 }
 
 #search{
-  text-align: left;
-  text-indent: 15px;
+  text-align: center;
   font-weight: normal;
   color: black;
   background-color: white;
@@ -22,15 +21,16 @@
 }
 
 #output{
-  position: absolute;
   z-index: 1;
-  margin-top: 30px; /* height of the input element*/
+  position: absolute;
+  margin-top: 30px;/* height of the input element*/
   background: solid white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  box-shadow: 0px 3px 3px #888888;
+  box-shadow: 0px 4px 8px 0
+    rgba(0,0,0,0.5);
   width: 600px;
-  max-height: 300px;
+  max-height: 205px;
   overflow:hidden;
   cursor: pointer;
 }

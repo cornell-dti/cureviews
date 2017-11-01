@@ -24,8 +24,8 @@ export class SearchBar extends Component {
 
   render() {
     return (
-        <div id="searchbar">
-          <input id="search" onChange={this.props.queryFunc} placeholder="CS 2110, Intro to Creative Writing"/>
+        <div className = "search-bar" id="searchbar">
+          <input className = "search-text" id="search" onChange={this.props.queryFunc} placeholder="Search for classes (e.g. CS 2110, Intro to Creative Writing)"/>
             <ul id="output" className="text-left">
               {this.renderCourses()}
             </ul>

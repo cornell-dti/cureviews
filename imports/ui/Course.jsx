@@ -9,7 +9,7 @@ export default class Course extends Component {
     var classId = this.props.info._id;
     return (
       <div id = "classbutton">
-        <li id={classId} onClick={() => this.props.handler(classId)}>{this.props.info.classFull}</li>
+        <li className = "text-style-1" id={classId} onClick={() => this.props.handler(classId)}>{this.props.info.classFull}</li>
       </div>
     );
   }
