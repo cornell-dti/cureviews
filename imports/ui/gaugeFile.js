@@ -94,6 +94,7 @@ var Gauge = function (_Component) {
 		value: function render() {
 			var topLabelStyle = this.props.topLabelStyle.fontSize ? this.props.topLabelStyle : _extends({}, this.props.topLabelStyle, { fontSize: this.props.width / 10 });
 			var valueLabelStyle = this.props.valueLabelStyle.fontSize ? this.props.valueLabelStyle : _extends({}, this.props.valueLabelStyle, { fontSize: this.props.width / 5 });
+			valueLabelStyle.fill = this.props.color;
 
 			var _getPathValues = this._getPathValues(this.props.max);
 
@@ -103,7 +104,12 @@ var Gauge = function (_Component) {
 			var Xo = _getPathValues.Xo;
 			var Cy = _getPathValues.Cy;
 			var Xi = _getPathValues.Xi;
-
+			var val = this.props.value;
+			console.log(val);
+			console.log(this.props.textValue);
+			if (this.props.textValue != null) {
+				val = this.props.textValue;
+			}
 			return _react2.default.createElement(
 				'svg',
 				{ height: '100%', version: '1.1', width: '100%', xmlns: 'http://www.w3.org/2000/svg', style: { width: this.props.width, height: this.props.height, overflow: 'hidden', position: 'relative', left: 0, top: 0 } },
@@ -131,7 +137,7 @@ var Gauge = function (_Component) {
 				_react2.default.createElement(
 					'text',
 					{ x: this.props.width / 2, y: this.props.height / 5.5 * 4, textAnchor: 'middle', style: valueLabelStyle },
-					this.props.value + this.props.symbol
+					val + this.props.symbol
 				)
 			);
 		}
@@ -141,10 +147,11 @@ var Gauge = function (_Component) {
 }(_react.Component);
 
 Gauge.defaultProps = {
-	label: "React SVG Gauge",
+  label: "React SVG Gauge",
 	min: 0,
 	max: 100,
 	value: 40,
+	textValue: null,
 	width: 400,
 	height: 320,
 	color: '#fe0400',

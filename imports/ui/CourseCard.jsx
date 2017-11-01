@@ -22,7 +22,8 @@ export class CourseCard extends Component {
       qualColor: "#E64458",
       grade: "-",
       gradeNum: 0,
-      gradeColor: "#E64458"
+      gradeColor: "#E64458",
+      mandatory: "Yes",
     };
 
     this.state = this.defaultGaugeState;
@@ -32,30 +33,33 @@ export class CourseCard extends Component {
     // compare old and new reviews, if differnt re-calculate gauges
     //if (this.props.reviews != nextProps.reviews) {
    console.log(nextProps.reviews);
-   this.updateGauges(nextProps.course, nextProps.reviews);
+   this.updateState(nextProps.course, nextProps.reviews);
      //}
    }
 
-  //update the component state to represent new state of the gagues
-  updateGauges(selectedClass, newRevs) {
+  //update the component state to represent new state of the gagues and the mandatory tag
+  updateState(selectedClass, newRevs) {
     console.log(selectedClass);
     if (selectedClass != null && selectedClass != undefined) {
+      newState = {}
       //create initial variables
       var countGrade = 0;
       var countDiff = 0;
       var countQual = 0;
+      var countMan = 0;
       var count = 0;
 
       //get all current reviews, which will now have only this class's reviews because of the updated publishing
       var allReviews = newRevs;
 
-      //gather data on the reviews
+      //gather data on the reviews and the mandatory flags.
       if (allReviews.length != 0) {
         allReviews.forEach(function(review) {
           count++;
           countGrade = countGrade + Number(review["grade"]);
           countDiff = countDiff + review["difficulty"];
           countQual = countQual + review["quality"];
+          countMan = countMan + review["atten"];
         });
 
         console.log("calculated qual is", (countQual/count).toFixed(1));
@@ -63,26 +67,31 @@ export class CourseCard extends Component {
         console.log("calculated grade is ", (countGrade/count).toFixed(1));
 
         //update the gauge variable values
-        this.state.qual = (countQual/count).toFixed(1); //out of 5
-        this.state.diff = (countDiff/count).toFixed(1); //out of 5
-        this.state.gradeNum = (countGrade/count).toFixed(1); //out of 5
-
+        newState.qual = (countQual/count).toFixed(1); //out of 5
+        newState.diff = (countDiff/count).toFixed(1); //out of 5
+        newState.gradeNum = (countGrade/count).toFixed(1); //out of 5
+        if ((countMan/count).toFixed(0) == 1) {
+          newState.mandatory = "Yes";
+        }  else {
+          newState.mandatory = "No";
+        }
         //array to translate grades from numerical value
         var gradeTranslation = ["C-", "C", "C+", "B-", "B", "B-", "A-", "A", "A+"];
-        this.state.grade = gradeTranslation[Math.floor(countGrade/count) - 1];
+        newState.grade = gradeTranslation[Math.floor(countGrade/count) - 1];
 
         //assign colors
         var gradeCols = ["#E64458", "#E64458", "#E64458", "#f9cc30", "#f9cc30", "#ff9e00","#53B277","#53B277","#53B277"];
-        this.state.gradeColor = gradeCols[Math.floor(this.state.gradeNum) - 1];
+        newState.gradeColor = gradeCols[Math.floor(newState.gradeNum) - 1];
 
-        if (this.state.qual < 2 ) {this.state.qualColor = "#E64458";}
-        else if (this.state.qual > 2 && this.state.qual < 3.5) {this.state.qualColor = "#f9cc30";}
-        else {this.state.qualColor = "#53B277";}
+        if (newState.qual < 2 ) {newState.qualColor = "#E64458";}
+        else if (newState.qual > 2 && newState.qual < 3.5) {newState.qualColor = "#f9cc30";}
+        else {newState.qualColor = "#53B277";}
 
-        if (this.state.diff < 2 ) {this.state.diffColor = "#53B277";}
-        else if (this.state.diff > 2 && this.state.diff < 3.5) {this.state.diffColor = "#f9cc30";}
-        else {this.state.diffColor = "#E64458";}
+        if (newState.diff < 2 ) {newState.diffColor = "#53B277";}
+        else if (newState.diff > 2 && newState.diff < 3.5) {newState.diffColor = "#f9cc30";}
+        else {newState.diffColor = "#E64458";}
 
+        this.setState(newState);
       } else {
         console.log("first else");
         this.setState(this.defaultGaugeState);
@@ -110,10 +119,10 @@ export class CourseCard extends Component {
         <strong>Last Offered: </strong>
         {offered}
       </p>
-      <p className="review-text spacing-large">
+      {/* <p className="review-text spacing-large">
         <strong>Syllabus: </strong>
-        <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
-      </p>
+         <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
+      </p>*/}
       <h2>Class Data</h2>
         <div>
           <div className= "panel panel-default">
@@ -127,14 +136,14 @@ export class CourseCard extends Component {
                     <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
                   </div>
                   <div className="col-sm-4">
-                    <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade"/>
+                    <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
                   </div>
                 </div>
               </section>
             </div>
           </div>
         </div>
-        <p className="review-text spacing-large">Attendence Mandatory: Yes/No (Placeholder)</p>
+        <p className="review-text spacing-large">Attendence Mandatory: {this.state.mandatory}</p>
       </header>
     );
   }
