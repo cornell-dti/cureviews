@@ -160,8 +160,7 @@ if (Meteor.isServer) {
         Classes._ensureIndex(
             { 'classSub' : 1 },
             { 'classNum' : 1 },
-            { 'classTitle' : 1 },
-            { '_id' : 1}
+            { 'classTitle' : 1 }
         );
         Subjects._ensureIndex(
             { 'subShort' : 1 },
