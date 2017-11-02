@@ -157,16 +157,16 @@ Meteor.methods({
 if (Meteor.isServer) {
     Meteor.startup(() => { // code to run on server at startup
         //add indexes to collections for faster search
-        Classes._ensureIndex(
-            { 'classSub' : 1 },
-            // { 'classNum' : 1 },
-            { 'classTitle' : 1 },
-            { '_id:' : 1 }
-        );
-        Subjects._ensureIndex(
-            { 'subShort' : 1 },
-            { 'subFull' : 1 }
-        );
+        // Classes._ensureIndex(
+        //     { 'classSub' : 1 },
+        //     { 'classNum' : 1 },
+        //     { 'classTitle' : 1 },
+        //     { '_id:' : 1 }
+        // );
+        // Subjects._ensureIndex(
+        //     { 'subShort' : 1 },
+        //     { 'subFull' : 1 }
+        // );
         Reviews._ensureIndex(
             { 'class' : 1},
             { 'difficulty' : 1 },
