@@ -91,7 +91,7 @@ export default class Form extends Component {
     this.setState(newState);
   }
 
-  //get color for quality value
+  //get color for difficulty value
   getDiffColor(value) {
     colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     return {

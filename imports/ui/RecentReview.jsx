@@ -27,6 +27,15 @@ export default class RecentReview extends Component {
     });
   }
 
+    //get color for quality value
+  getQualColor(value) {
+    colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    return {
+      backgroundColor: colors[value],
+    };
+}
+
+
   render() {
     var review = this.props.info;
 
@@ -43,7 +52,7 @@ export default class RecentReview extends Component {
 					<div className = "panel-body">
 					    <div className = "row">
 					    	<div className = "col-sm-2">
-					      		<div className = "container" id = "box">
+					      		<div className = "container" id = "box" style={this.getQualColor(review.quality)}>
                       				<div id = "text">{review.quality}</div>
 					      		</div>
 					      	</div>
@@ -51,7 +60,7 @@ export default class RecentReview extends Component {
 					      		<p id = "label">Overall Quality</p>
 					      	</div>
 					    	<div className = "col-sm-2" >
-					      	<div className = "container" id = "box">
+					      	<div className = "container" id = "box" style={this.getQualColor(5 - review.difficulty)}>
 					      		<div id = "text">{review.difficulty}</div>
 					      	</div>
 					    	</div>
