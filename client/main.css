@@ -46,7 +46,8 @@ a.navbar-brand {
 
 header {
     padding: 100px 50px 15px 30px;
-    position: relative;
+    position:fixed;
+    width:50%;
 }
 
 #login-buttons {

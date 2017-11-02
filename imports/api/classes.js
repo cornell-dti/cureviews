@@ -100,6 +100,14 @@ Meteor.methods({
             //return addAllCourses(['FA15']);
         }
     },
+    addAll: function(initiate) {
+        if (initiate && Meteor.isServer) {
+            console.log("adding everything");
+            Classes.remove({});
+            Subjects.remove({});
+            return addAllCourses(findAllSemesters());
+        }
+    },
     //get the course (as an object) with this id, checking to make sure the id is real
     getCourseById: function(courseId) {
         var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
