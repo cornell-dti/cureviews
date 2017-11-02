@@ -123,11 +123,11 @@ class App extends Component {
             <nav className="navbar navbar-fixed-top">
               <h1 className="navbar-brand mb-0" id= "navname">Cornell Reviews</h1>
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
-              <span className="navbar-text" id="report-bug"><a href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
+              <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
             </nav>
           </div>
           <div className='row'>
-            <div className="col-md-6" data-spy="affix">
+            <div className="col-md-6">
               {this.renderCourseCard()}
             </div>
             <div className="col-md-6 panel-container panel-color-gray fix-contain">
