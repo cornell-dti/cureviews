@@ -60,6 +60,18 @@ export class Update extends Component {
     });
   }
 
+  //add all courses to the db
+  addAllCourses(initiate) {
+    console.log("adding all classes")
+    Meteor.call('addAll', initiate, (error, result) => {
+      if (!error && result==1) {
+        console.log("Added new semester courses");
+      } else {
+        console.log(error)
+      }
+    });
+  }
+
   //show all reviews that have not been approved but not reported
   renderUnapprovedReviews() {
     remFunc = this.removeReview;
@@ -89,6 +101,7 @@ export class Update extends Component {
       <div>
         <h2>Admin Interface</h2>
         <button onClick={()=> this.addNewSem(true)}>Add New Semester</button>
+        <button onClick={()=> this.addAllCourses(true)}>Add All Courses</button>
         <div>
           <h3>New Reviews</h3>
           <ul>
