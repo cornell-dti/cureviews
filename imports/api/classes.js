@@ -159,8 +159,9 @@ if (Meteor.isServer) {
         //add indexes to collections for faster search
         Classes._ensureIndex(
             { 'classSub' : 1 },
-            { 'classNum' : 1 },
-            { 'classTitle' : 1 }
+            // { 'classNum' : 1 },
+            { 'classTitle' : 1 },
+            { '_id:' : 1 }
         );
         Subjects._ensureIndex(
             { 'subShort' : 1 },
