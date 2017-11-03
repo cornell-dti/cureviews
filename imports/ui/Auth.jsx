@@ -36,7 +36,7 @@ export class CourseCard extends Component {
   //update the component state to represent new state of the gagues
   updateGauges(selectedClass, newRevs) {
     console.log(selectedClass);
-    if (selectedClass != null && selectedClass != undefined) {
+    if (selectedClass !== null && selectedClass !== undefined) {
       //create initial variables
       var countGrade = 0;
       var countDiff = 0;
@@ -47,7 +47,7 @@ export class CourseCard extends Component {
       var allReviews = newRevs;
 
       //gather data on the reviews
-      if (allReviews.length != 0) {
+      if (allReviews.length !== 0) {
         allReviews.forEach(function(review) {
           count++;
           countGrade = countGrade + Number(review["grade"]);

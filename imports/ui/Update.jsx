@@ -18,7 +18,7 @@ export class Update extends Component {
   //approve a review
   approveReview(review) {
     Meteor.call('makeVisible', review, (error, result) => {
-      if (!error && result==1) {
+      if (!error && result === 1) {
         //console.log("approved review " + review._id);
       } else {
         console.log(error)
@@ -29,7 +29,7 @@ export class Update extends Component {
   //remove a review
   removeReview(review) {
     Meteor.call('removeReview', review, (error, result) => {
-      if (!error && result==1) {
+      if (!error && result === 1) {
         console.log("removed review " + review._id);
       } else {
         console.log(error)
@@ -40,7 +40,7 @@ export class Update extends Component {
   //unflag a reported review
   unReportReview(review) {
     Meteor.call('undoReportReview', review, (error, result) => {
-      if (!error && result==1) {
+      if (!error && result === 1) {
         //console.log(" review " + review._id);
       } else {
         console.log(error)
@@ -50,9 +50,9 @@ export class Update extends Component {
 
   //add the current semester's class data to the database. Should run once a semester
   addNewSem(initiate) {
-    console.log("updating to new semester")
+    console.log("updating to new semester");
     Meteor.call('addNewSemester', initiate, (error, result) => {
-      if (!error && result==1) {
+      if (!error && result === 1) {
         console.log("Added new semester courses");
       } else {
         console.log(error)
@@ -62,9 +62,9 @@ export class Update extends Component {
 
   //add all courses to the db
   addAllCourses(initiate) {
-    console.log("adding all classes")
+    console.log("adding all classes");
     Meteor.call('addAll', initiate, (error, result) => {
-      if (!error && result==1) {
+      if (!error && result === 1) {
         console.log("Added new semester courses");
       } else {
         console.log(error)
@@ -77,7 +77,7 @@ export class Update extends Component {
     remFunc = this.removeReview;
     appFunc = this.approveReview;
     return this.props.reviewsToApprove.map(function(review) {
-      if (review.reported != 1) {
+      if (review.reported !== 1) {
          return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc}/>;
       }
     });
@@ -90,7 +90,7 @@ export class Update extends Component {
     unRepFunc = this.unReportReview;
     return this.props.reviewsToApprove.map(function(review) {
       //create a new class "button" that will set the selected class to this class when it is clicked.
-      if (review.reported == 1) {
+      if (review.reported === 1) {
         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={unRepFunc}/>
       }
     });

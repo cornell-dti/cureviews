@@ -1,10 +1,9 @@
-.cornellClassLink {
-  color: #4A4A4A;
-  text-decoration: underline;
+.cornellClassLink, .primary-text {
+  color: #4a4a4a;
 }
 
-.primary-text {
-  color: #4A4A4A;
+.cornellClassLink {
+  text-decoration: underline;
 }
 
 .spacing-small{

@@ -74,22 +74,22 @@ Meteor.methods({
     },
     //make the reveiw with this id visible, checking to make sure it has a real id
     makeVisible: function (review) {
-        var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+        var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
         if (regex.test(review._id)) {
-            Reviews.update(review._id, {$set: { visible: 1} })
-            return 1
+            Reviews.update(review._id, {$set: { visible: 1} });
+            return 1;
         } else {
-            return 0
+            return 0;
         }
     },
     //remove the review with this id, checking to make sure the id is a real id
     removeReview: function(review) {
-        var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+        var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
         if (regex.test(review._id)) {
-            Reviews.remove({ _id: review._id})
-            return 1
+            Reviews.remove({ _id: review._id});
+            return 1;
         } else {
-            return 0
+            return 0;
         }
     },
     //update the database to add any new classes in the current semester if they don't already exist. To be called from the admin page once a semester.
@@ -110,7 +110,7 @@ Meteor.methods({
     },
     //get the course (as an object) with this id, checking to make sure the id is real
     getCourseById: function(courseId) {
-        var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+        var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
         if (regex.test(courseId)) {
             var c = Classes.find({_id: courseId}).fetch()[0];
             //console.log(c);

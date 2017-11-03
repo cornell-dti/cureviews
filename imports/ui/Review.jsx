@@ -7,7 +7,7 @@ export default class Review extends Component {
   // info, a database object containing all of this review entry's data.
 
   renderClassName(classId){
-    var toShow = ''; //empty div //empty div
+    var toShow = ''; //empty div
     return Meteor.call('getCourseById', classId, (error, result) => {
       if (!error) {
         toShow = result.classTitle;
@@ -21,7 +21,7 @@ export default class Review extends Component {
 
   //get color for quality value
   getQualColor(value) {
-    colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value],
     };
@@ -32,39 +32,38 @@ export default class Review extends Component {
     var review = this.props.info;
     var classId = review.class;
     return (
-			<li>
-				<div className= "review">
-					<div className = "panel-body">
-					    <div className = "row">
-					    	<div className = "col-sm-2">
-					      		<div className = "container" id = "box" style={this.getQualColor(review.quality)}>
-                      				<div id = "text">{review.quality}</div>
-					      		</div>
-					      	</div>
-					      	<div className = "col-sm-4">
-					      		<p id = "label">Overall Quality</p>
-					      	</div>
-					    	<div className = "col-sm-2" >
-					      	<div className = "container" id = "box" style={this.getQualColor(5 - review.difficulty)}>
-					      		<div id = "text">{review.difficulty}</div>
-					      	</div>
-					    	</div>
-					      	<div className = "col-sm-2">
-					      		<p id = "label">Difficulty</p>
-					      	</div>
-					      	<div className = "col-sm-2">
-					      		<button onClick={() => this.props.reportHandler(review)} id = "button_text">Report</button>
-					      	</div>
-					    </div>
-					    <div className="row">
-					   		<div className = "review-text" id = "review_text">{review.text}</div>
-					   	</div>
+		<li>
+			<div className="review">
+				<div className="panel-body">
+					<div className="row">
+						<div className="col-sm-2">
+							<div className="container" id="box" style={this.getQualColor(review.quality)}>
+								<div id="text">{review.quality}</div>
+							</div>
+						</div>
+						<div className="col-sm-4">
+							<p id="label">Overall Quality</p>
+						</div>
+						<div className="col-sm-2">
+						<div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
+							<div id="text">{review.difficulty}</div>
+						</div>
+						</div>
+						<div className="col-sm-2">
+							<p id="label">Difficulty</p>
+						</div>
+						<div className="col-sm-2">
+							<button onClick={() => this.props.reportHandler(review)} id="button_text">Report</button>
+						</div>
+					</div>
+					<div className="row">
+						<div className="review-text" id="review_text">{review.text}</div>
 					</div>
 				</div>
-			</li>
+			</div>
+		</li>
     );
   }
-
 }
 
 Review.propTypes = {

@@ -7,51 +7,52 @@ export default class UpdateReview extends Component {
 
   //display buttons based on the type of update (report or approval)
   renderButtons(review) {
-    reported = review.reported;
-    if (reported == 1) {
-      return (
-        <div>
-          <button onClick={() => this.props.unReportHandler(review)}> Restore Review</button>
-          <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          <button onClick={() => this.props.approveHandler(review)}> Confirm Review</button>
-          <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
-        </div>
-      )
-    }
+      var reported = review.reported;
+      if (reported === 1) {
+          return (
+              <div>
+                  <button onClick={() => this.props.unReportHandler(review)}> Restore Review</button>
+                  <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+              </div>
+          )
+      }
+      else {
+          return (
+              <div>
+                  <button onClick={() => this.props.approveHandler(review)}> Confirm Review</button>
+                  <button onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+              </div>
+          )
+      }
   }
 
   render() {
-    var review = this.props.info;
-    return (
-      <li id={review._id}>
-        <div className= "panel panel-default">
-          <div className="panel-heading" id ="past"></div>
-          <div className= "panel-body">
-              <div className="row">
-                <div className="col-sm-2">
-                    <div className="panel panel-default">
-                      <div className="panel-body">{review.quality}</div>
-                    </div>
-                    <div className= "panel panel-default">
-                      <div className= "panel-body">{review.difficulty}</div>
-                    </div>
-                </div>
-                <div className= "col-sm-2">
-                    <div className= "panel-body"> Overall Quality</div>
-                    <div className= "panel-body"> Level of difficulty</div>
-                </div>
-                <div className= "col-sm-8">{review.text}</div>
-                {this.renderButtons(review)}
+      var review = this.props.info;
+      return (
+          <li id={review._id}>
+              <div className="panel panel-default">
+                  <div className="panel-heading" id="past"></div>
+                  <div className="panel-body">
+                      <div className="row">
+                          <div className="col-sm-2">
+                              <div className="panel panel-default">
+                                  <div className="panel-body">{review.quality}</div>
+                              </div>
+                              <div className="panel panel-default">
+                                  <div className="panel-body">{review.difficulty}</div>
+                              </div>
+                          </div>
+                          <div className="col-sm-2">
+                              <div className="panel-body"> Overall Quality</div>
+                              <div className="panel-body"> Level of difficulty</div>
+                          </div>
+                          <div className="col-sm-8">{review.text}</div>
+                          {this.renderButtons(review)}
+                      </div>
+                  </div>
               </div>
-          </div>
-        </div>
-      </li>
-    );
+          </li>
+      );
   }
 }
 

@@ -1,67 +1,70 @@
-#rectangle {
-  border-radius: 8px;
+/* Font declaration */
+#text, #review_text, #label, #button_text {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+#rectangle, .review {
   background-color: #ffffff;
+}
+
+#rectangle {
   border: solid 1px #dddddd;
+  border-radius: 8px;
   margin-top: 10px;
 }
 
 #box {
-  width: 58px;
-  height: 44px;
   border-radius: 8px;
+  height: 44px;
   /*background-color: #e64558;*/
-  padding-top: 0px;
+  padding-top: 0;
+  width: 58px;
 }
 
 #text {
-  width: 34px;
+  color: #ffffff;
   height: 28px;
-  font-family: HelveticaNeue;
   font-size: 24px;
   letter-spacing: 0.1px;
   text-align: center;
-  color: #ffffff;
+  width: 34px;
 }
 
-#review_text{
-  font-family: HelveticaNeue;
+#review_text {
+  color: #4a4a4a;
   font-size: 16px;
   line-height: 1.38;
   letter-spacing: 0.1px;
   text-align: left;
-  color: #4a4a4a;
 }
 
 #label{
+  color: #4a4a4a;
+  font-size: 14px;
+  letter-spacing: 0.1px;
   opacity: 0.5;
-  font-family: HelveticaNeue;
-  font-size: 14px;
-  letter-spacing: 0.1px;
   text-align: left;
-  color: #4a4a4a;
 }
 
-#button_text{
+#button_text {
+  color: #4a4a4a;
+  font-size: 14px;
   opacity: 0.35;
-  font-family: HelveticaNeue;
-  font-size: 14px;
   letter-spacing: 0.1px;
   text-align: left;
-  color: #4a4a4a;
 }
-#reviewpanel{
-  border-color: transparent;
+
+#reviewpanel, #reviewul {
   background-color: #f2f2f2;
 }
 
-#reviewul{
-  background-color: #f2f2f2;
+#reviewpanel {
+  border-color: transparent;
 }
 
 .review {
-  width: 100%;
-  height: 160px;
   border-radius: 8px;
-  background-color: #ffffff;
   border: solid 1px #dddddd;
+  height: 160px;
+  width: 100%;
 }

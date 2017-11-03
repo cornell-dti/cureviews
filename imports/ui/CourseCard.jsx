@@ -40,8 +40,8 @@ export class CourseCard extends Component {
   //update the component state to represent new state of the gagues and the mandatory tag
   updateState(selectedClass, newRevs) {
     console.log(selectedClass);
-    if (selectedClass != null && selectedClass != undefined) {
-      newState = {}
+    if (selectedClass !== null && selectedClass !== undefined) {
+      newState = {};
       //create initial variables
       var countGrade = 0;
       var countDiff = 0;
@@ -70,7 +70,7 @@ export class CourseCard extends Component {
         newState.qual = (countQual/count).toFixed(1); //out of 5
         newState.diff = (countDiff/count).toFixed(1); //out of 5
         newState.gradeNum = (countGrade/count).toFixed(1); //out of 5
-        if ((countMan/count).toFixed(0) == 1) {
+        if ((countMan/count).toFixed(0) === 1) {
           newState.mandatory = "Yes";
         }  else {
           newState.mandatory = "No";
@@ -83,20 +83,34 @@ export class CourseCard extends Component {
         var gradeCols = ["#E64458", "#E64458", "#E64458", "#f9cc30", "#f9cc30", "#ff9e00","#53B277","#53B277","#53B277"];
         newState.gradeColor = gradeCols[Math.floor(newState.gradeNum) - 1];
 
-        if (newState.qual < 2 ) {newState.qualColor = "#E64458";}
-        else if (newState.qual > 2 && newState.qual < 3.5) {newState.qualColor = "#f9cc30";}
-        else {newState.qualColor = "#53B277";}
+        if (newState.qual < 2 ) {
+          newState.qualColor = "#E64458";
+        }
+        else if (newState.qual > 2 && newState.qual < 3.5) {
+          newState.qualColor = "#f9cc30";
+        }
+        else {
+          newState.qualColor = "#53B277";
+        }
 
-        if (newState.diff < 2 ) {newState.diffColor = "#53B277";}
-        else if (newState.diff > 2 && newState.diff < 3.5) {newState.diffColor = "#f9cc30";}
-        else {newState.diffColor = "#E64458";}
+        if (newState.diff < 2 ) {
+          newState.diffColor = "#53B277";
+        }
+        else if (newState.diff > 2 && newState.diff < 3.5) {
+          newState.diffColor = "#f9cc30";
+        }
+        else {
+          newState.diffColor = "#E64458";
+        }
 
         this.setState(newState);
-      } else {
+      }
+      else {
         console.log("first else");
         this.setState(this.defaultGaugeState);
       }
-    } else {
+    }
+    else {
       console.log("Second else");
       this.setState(this.defaultGaugeState);
     }
@@ -104,12 +118,12 @@ export class CourseCard extends Component {
 
   render() {
     var theClass = this.props.course;
-    //Creats Url that points to each class page on Cornell Class Roster
+    //Creates Url that points to each class page on Cornell Class Roster
     var url = "https://classes.cornell.edu/browse/roster/"
               + lastSem(theClass.classSems) + "/class/"
               + theClass.classSub.toUpperCase() + "/"
               + theClass.classNum;
-    //Calls funtion in CourseCard.js that returns a clean version of the last semsters class was offered
+    //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
     var offered = lastOfferedSems(theClass);
     return (
       <header>

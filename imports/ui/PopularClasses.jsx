@@ -12,7 +12,7 @@ export default class PopularClasses extends Component {
 
     this.state = {
       topClasses: [] //defult to empty list
-    }
+    };
 
     //get the top classes by number of reviews
     var x = Meteor.call('topClasses', (error, result) => {
@@ -25,7 +25,7 @@ export default class PopularClasses extends Component {
   }
 
   renderCourses() {
-    if (this.state.topClasses != []) {
+    if (this.state.topClasses !== []) {
       return this.state.topClasses.slice(0,10).map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} handler={this.props.clickFunc}/>
@@ -38,15 +38,15 @@ export default class PopularClasses extends Component {
   render() {
     return (
       <section>
-				<legend className="subheader">Popular Classes</legend>
-			    <div className= "panel panel-default" id= "reviewpanel">
-			    	<div>
-						<ul id= "reviewul">
-				       {this.renderCourses()}
-						</ul>
-					</div>
-				</div>
-			</section>
+        <legend className="subheader">Popular Classes</legend>
+        <div className="panel panel-default" id="reviewpanel">
+            <div>
+                <ul id="reviewul">
+                    {this.renderCourses()}
+                </ul>
+            </div>
+        </div>
+      </section>
     );
   }
 }

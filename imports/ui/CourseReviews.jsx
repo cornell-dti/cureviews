@@ -18,7 +18,7 @@ export class CourseReviews extends Component {
   reportReview(review) {
     console.log(review);
     Meteor.call('reportReview', review, (error, result) => {
-      if (!error && result==1) {
+      if (!error && result === 1) {
         console.log("reported review #" + review._id);
       } else {
         console.log(error)
@@ -27,7 +27,7 @@ export class CourseReviews extends Component {
   }
 
   renderReviews() {
-    if (this.props.courseId == "-1") {
+    if (this.props.courseId === "-1") {
       return this.props.reviews.map((review) => (
         <RecentReview key={review._id} info={review} reportHandler={this.reportReview}/>
       ));
@@ -40,20 +40,20 @@ export class CourseReviews extends Component {
 
   render() {
     var title = "Past Reviews";
-    if (this.props.courseId == "-1") {
+    if (this.props.courseId === "-1") {
       title = "Recent Reviews";
     }
     return (
       <section>
-				<legend className="subheader">{title}</legend>
-			    <div className= "panel panel-default" id= "reviewpanel">
-			    	<div>
-						<ul id= "reviewul">
-				       {this.renderReviews()}
-						</ul>
-					</div>
-				</div>
-			</section>
+          <legend className="subheader">{title}</legend>
+          <div className="panel panel-default" id="reviewpanel">
+              <div>
+                  <ul id="reviewul">
+                      {this.renderReviews()}
+                  </ul>
+              </div>
+          </div>
+      </section>
     );
   }
 }

@@ -83,7 +83,7 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.selectedClass == null) {
+    if (this.state.selectedClass === null) {
       return (
         <div className="container container-top-gap-fix">
           <div className='row'>

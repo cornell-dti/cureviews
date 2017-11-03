@@ -1,19 +1,19 @@
 #classbutton{
   height: 41px;
 }
+
 #classbutton:hover{
   background-color: #D3D3D3;
 }
+
 .text-style-1{
-  height: 20px;
-  font-family: .SFNSText;
-  font-size: 18px;
-  line-height: 1.11;
-  letter-spacing: -0.2px;
-  text-align: left;
   color: #4a4a4a;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: -0.3px;
-  padding-bottom:25px;
-
+  line-height: 1.11;
+  height: 20px;
+  padding-bottom: 25px;
+  text-align: left;
 }

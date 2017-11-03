@@ -8,8 +8,8 @@ export default class Course extends Component {
   render() {
     var classId = this.props.info._id;
     return (
-      <div id = "classbutton">
-        <li className = "text-style-1" id={classId} onClick={() => this.props.handler(classId)}>{this.props.info.classFull}</li>
+      <div id="classbutton">
+        <li className="text-style-1" id={classId} onClick={() => this.props.handler(classId)}>{this.props.info.classFull}</li>
       </div>
     );
   }

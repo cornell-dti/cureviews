@@ -1,11 +1,8 @@
-/* CSS declarations go here */
-
-
-/*@font-face {
-    font-family: "Helvetica Neue";
-    src: url(https://github.com/jackhumbert/kle-image-creator/blob/master/fonts/HelveticaNeue-Medium.ttf) format("truetype");
+/* Unified font declaration */
+a.navbar-brand, .class-name, .subheader, .primary-text, .secondary-text, .review-container .text {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
 }
-*/
+
 body {
     font-family: sans-serif;
 
@@ -20,34 +17,31 @@ body {
 
     font-size: 14px;
 }
-.navbar{
+
+.navbar {
     background-color: #4990E2;
-    margin-bottom: 0px;
-    border-radius: 0px;
+    border-radius: 0;
+    margin-bottom: 0;
 }
 
 a.navbar-brand {
     font-size: 1.3em /*36px*/;
-    font-family: 'Helvetica Neue';
-    font-weight: medium;
-    padding-left:30px;
-}
+    padding-left: 30px;
 
-
-#searchbar {
-    width: 100% !important;
+    /* Below value is not valid for font-weight. Use another value. */
+    /*font-weight: medium;*/
 }
 
 .container {
     background: white;
-    width: 100%;
     padding-top: 70px;
+    width: 100%;
 }
 
 header {
     padding: 100px 50px 15px 30px;
-    position:fixed;
-    width:50%;
+    position: fixed;
+    width: 50%;
 }
 
 #login-buttons {
@@ -59,73 +53,64 @@ header {
 }
 
 h1 {
-    font-size: 1.5em;
-    margin: 0;
-    margin-bottom: 10px;
     display: inline-block;
-    margin-right: 1em;
+    font-size: 1.5em;
+    margin: 0 1em 10px 0;
 }
 
 .class-name {
     font-size: 36px;
-    font-family: 'Helvetica Neue';
-    font-weight: medium;
+    /*font-weight: medium;*/
 }
 
 .subheader {
     font-size: 27px;
-    font-family: 'Helvetica Neue';
-    font-weight: medium;
+    /*font-weight: medium;*/
     padding-top: 20px;
 }
 
 .primary-text {
     font-size: 18px;
-    font-family: 'Helvetica Neue';
     font-weight: bold;
 }
 
-
 .secondary-text {
-    font-size: 14px;
-    font-family: 'Helvetica Neue';
-    font-weight: normal;
     color: #4A4A4A;
+    font-size: 14px;
+    font-weight: normal;
     opacity: .5;
 }
 
 .review-container {
-    border: 2px solid #a4a4a4;
-    padding: 10px 40px;
     background: #fff;
+    border: 2px solid #a4a4a4;
     border-radius: 15px;
+    padding: 10px 40px;
 }
 
 .review-container .text {
-    font-size: 16px;
-    font-family: 'Helvetica Neue';
-    font-weight: normal;
     color: #4A4A4A;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 div.caption_wrapper {
-    text-align: left;
     display: inline-block;
+    text-align: left;
 }
 
 form {
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin: 10px 0 -10px 0;
     position: relative;
 }
 
 .new-task input {
     box-sizing: border-box;
-    padding: 10px 0;
     background: transparent;
     border: none;
-    width: 100%;
     font-size: 1em;
+    padding: 10px 0;
+    width: 100%;
 }
 
 .new-task input:focus{
@@ -133,25 +118,25 @@ form {
 }
 
 ul {
+    background: white;
     margin: 0;
     padding: 0;
-    background: white;
 }
 
 .delete {
+    background: none;
+    border: none;
     float: right;
     font-weight: bold;
-    background: none;
     font-size: 1em;
-    border: none;
     position: relative;
 }
 
 li {
+    border-bottom: #eee solid 1px;
+    padding: 15px;
     position: relative;
     list-style: none;
-    padding: 15px;
-    border-bottom: #eee solid 1px;
 }
 
 li .text {
@@ -178,8 +163,7 @@ header .hide-completed {
 .divider {
     border-width: 1px;
     color: #ddd;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    margin: 5px 0 10px 0;
  }
 
 .toggle-private {
@@ -189,54 +173,50 @@ header .hide-completed {
 input[type="range"] {
     -webkit-appearance: none;
     width: 50%;
-
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-    height: 10px;
     background-color: #4990E2;
     border-radius: 15px;
-
+    height: 10px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    box-shadow: 3px 1px 3px #000000;
     background-color: #000000;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    box-shadow: 3px 1px 3px #000000;
+    cursor: pointer;
+    height: 20px;
     opacity: 1;
     width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    border: 2px solid #fff;
-    cursor: pointer;
 }
 
 input[type="submit"]{
     background-color: #4990E2;
     border-radius: 10px;
-    width: 100px;
     border: none;
-    font-weight: bold;
     color: white;
+    font-weight: bold;
     height: 40px;
     text-align: center;
+    width: 100px;
 }
 input[type="submit"]:active{
     background-color: #2d6fbc;
     border-radius: 10px;
-    width: 100px;
     border: none;
-    font-weight: bold;
     color: white;
+    font-weight: bold;
     height: 40px;
     text-align: center;
+    width: 100px;
 }
 
 .panel-container {
     background-color: rgba(74,74,74,.06);
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 20px;
+    padding: 20px 50px 0;
 }
 
 .fix-contain {
@@ -264,24 +244,24 @@ div.lrg-spacing {
 }
 
 div.small-icon {
-    width: 35px;
-    height: 33px;
-    border-radius: 8px;
     background: black;
-    }
+    border-radius: 8px;
+    height: 33px;
+    width: 35px;
+}
 
 div.large-icon {
-    width: 58px;
-    height: 52px;
     border-radius: 8px;
+    height: 52px;
+    width: 58px;
 }
 .review-container {
     width: 100%;
 }
 
 select {
-    width:150px;
-    }
+    width: 150px;
+}
 
 @media (max-width: 600px) {
     li {
@@ -289,8 +269,9 @@ select {
     }
 
     .search {
-        width: 150px;
         clear: both;
+        width: 150px;
+
     }
 
     .new-task input {

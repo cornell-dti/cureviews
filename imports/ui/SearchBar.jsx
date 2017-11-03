@@ -12,24 +12,25 @@ export class SearchBar extends Component {
   }
 
   renderCourses() {
-    if (this.props.query != "") {
+    if (this.props.query !== "") {
       return this.props.allCourses.slice(0,10).map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} handler={this.props.clickFunc}/>
       ));
-    } else {
+    }
+    else {
       return <div />;
     }
   }
 
   render() {
     return (
-        <div className = "search-bar" id="searchbar">
-          <input className = "search-text" id="search" onChange={this.props.queryFunc} placeholder="Search for classes (e.g. CS 2110, Intro to Creative Writing)"/>
-            <ul id="output" className="text-left">
-              {this.renderCourses()}
-            </ul>
-        </div>
+      <div className="search-bar" id="searchbar">
+        <input className="search-text" id="search" onChange={this.props.queryFunc} placeholder="Search for classes (e.g. CS 2110, Intro to Creative Writing)"/>
+        <ul id="output" className="text-left">
+          {this.renderCourses()}
+        </ul>
+      </div>
     );
   }
 }

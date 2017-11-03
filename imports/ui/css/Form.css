@@ -1,59 +1,62 @@
-form{
+form {
     border-radius: 100px;
 }
-.panel-body{
-    padding-right: 30px;
-    padding-left: 30px;
-    padding-top: 25px;
+.panel-body {
     margin: auto;
-    padding-bottom: 25px;
+    padding: 25px 30px;
 }
-textarea{
-    width: 100%;
+textarea {
     height: 100px;
-}
-#sm1{
-    color:white;
-    background-color: #A0D53F;
-    justify-content: center;
-    display: flex;
-    align-items: center;
+    width: 100%;
 }
 
-#sm2{
-    color:white;
-    background-color: #f44336;
-    justify-content: center;
-    display: flex;
+#sm1, #sm2 {
     align-items: center;
+    color: white;
+    display: flex;
+    justify-content: center;
 }
+
+#sm1 {
+    background-color: #A0D53F;
+}
+
+#sm2 {
+    background-color: #f44336;
+}
+
 p {
     margin: 0;
 }
-.secondary-text{
-    margin-bottom: 0px;
+
+.secondary-text {
+    margin-bottom: 0;
     margin-top: 10px;
 }
-input{
-    width: 40px;
-    height: 22px;
-    font-family: HelveticaNeue;
+
+input {
+    background-color: #4a90e2;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 18px;
     font-weight: bold;
-    letter-spacing: 0.1px;
-    text-align: center;
-    color: #ffffff;
     float: right;
-    border-radius: 8px;
-    background-color: #4a90e2;
+    letter-spacing: 0.1px;
+    height: 22px;
+    text-align: center;
+    width: 40px;
 }
+
 #postbutton{
     padding-left: 30px;
-    padding-right:30px;
+    padding-right: 30px;
 }
+
 .sliderHolder {
-  padding-left: 10%;
+    padding-left: 10%;
 }
+
 input[type="range"] {
-  width: 100%;
+    width: 100%;
 }
