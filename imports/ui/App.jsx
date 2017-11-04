@@ -89,6 +89,7 @@ class App extends Component {
           <div className='row'>
             <nav className="navbar">
               <h1 className="cornell-reviews" id="navname">Cornell Reviews</h1>
+              <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
             </nav>
           </div>
           <div className='row pushDown'>
