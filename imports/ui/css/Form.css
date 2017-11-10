@@ -8,6 +8,7 @@ form {
 textarea {
     height: 100px;
     width: 100%;
+    resize: none;
 }
 
 #sm1, #sm2 {
