@@ -9,6 +9,7 @@ Classes.schema = new SimpleSchema({
     classNum: {type: Number},
     classTitle: {type: String},
     classPrereq : { type: [String] ,optional: true},
+    crossList : { type: [String] ,optional: true},
     classFull: {type: String},
     classSems: {type: [String]}
 });
@@ -163,27 +164,27 @@ Meteor.methods({
 
 //Code that runs only on the server
 if (Meteor.isServer) {
-    // Meteor.startup(() => { // code to run on server at startup
-    //     //add indexes to collections for faster search
-    //     Classes._ensureIndex(
-    //         { 'classSub' : 1 },
-    //         { 'classNum' : 1 },
-    //         { 'classTitle' : 1 },
-    //         { '_id:' : 1 }
-    //     );
-    //     Subjects._ensureIndex(
-    //         { 'subShort' : 1 },
-    //         { 'subFull' : 1 }
-    //     );
-    //     Reviews._ensureIndex(
-    //         { 'class' : 1},
-    //         { 'difficulty' : 1 },
-    //         { 'quality' : 1 },
-    //         { 'grade' : 1 },
-    //         { 'user' : 1 },
-    //         { 'visible' : 1 }
-    //     );
-    // });
+    Meteor.startup(() => { // code to run on server at startup
+        //add indexes to collections for faster search
+        Classes._ensureIndex(
+            { 'classSub' : 1 },
+            { 'classNum' : 1 },
+            { 'classTitle' : 1 },
+            { '_id:' : 1 }
+        );
+        Subjects._ensureIndex(
+            { 'subShort' : 1 },
+            { 'subFull' : 1 }
+        );
+        Reviews._ensureIndex(
+            { 'class' : 1},
+            { 'difficulty' : 1 },
+            { 'quality' : 1 },
+            { 'grade' : 1 },
+            { 'user' : 1 },
+            { 'visible' : 1 }
+        );
+    });
 
     //code that runs whenever needed
     //"publish" classes based on search query. Only published classes are visible to the client
@@ -214,18 +215,30 @@ if (Meteor.isServer) {
         //for a -1 courseId, disply the most popular reviews (visible, non reported only)
         if (courseId == -1) {
           console.log('in popular');
-          ret =  Reviews.find({visible : 1, reported: 0}, { sort: { date: -1 }, limit: 20});
+          ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 20});
         }
-        else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) {
+        else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) { //show valid reviews for this course
             console.log('in 1');
-            ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {limit: 700});
+            //get the list of crosslisted courses for this class
+            crossList = Classes.find({_id: courseId}).fetch()[0].crossList;
+            //if there are crossListed Courses, merge the reviews
+            if (crossList.length > 0) {
+              //format each courseid into an object to input to the find's '$or' search
+              crossListOR = crossList.map(function(courseId) {
+                return {"class": courseId};
+              });
+              crossListOR.push({"class": courseId}) //make sure to add the original course to the list
+              ret =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700});
+            } else {
+              ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {sort: {date: -1}, limit: 700});
+            }
         } else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
             console.log('in 2');
-            ret =  Reviews.find({class : courseId, visible : 0},
-                {limit: 700});
+            crossList = Classes.find({_id : courseId}).fetch()[0].crossList
+            ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
         } else if (visiblity === 0) { //all invalidated reviews
             console.log('in 3');
-            ret =  Reviews.find({visible : 0}, {limit: 700});
+            ret =  Reviews.find({visible : 0}, {sort: {date: -1}, limit: 700});
         } else { //no reviews
             //will always be empty because visible is 0 or 1. allows meteor to still send the ready flag when a new publication is sent
             ret = Reviews.find({visible : 10});
@@ -233,10 +246,12 @@ if (Meteor.isServer) {
         return ret
     });
 
+
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
     //Classes.remove({});
     //Subjects.remove({});
     //addAllCourses(findAllSemesters());
+    //addCrossList();
 }
 
 //Other helper functions used above
@@ -335,4 +350,54 @@ function findAllSemesters() {
         console.log(allSemestersArray);
         return allSemestersArray
     }
+}
+
+//call only once to go through all courses and add in cross-listing.
+function addCrossList() {
+  semesters = findAllSemesters()
+  for (semester in semesters) {
+      //get all classes in this semester
+      var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+      if (result.statusCode !== 200) {
+          console.log("error");
+      } else {
+          response = JSON.parse(result.content);
+          //console.log(response);
+          var sub = response.data.subjects;
+          for (course in sub) {
+              parent = sub[course];
+
+              //for each subject, get all classes in that subject for this semester
+              var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+              if (result2.statusCode !== 200) {
+                  console.log("error2");
+              } else {
+                  response2 = JSON.parse(result2.content);
+                  courses = response2.data.classes;
+
+                  for (course in courses) {
+                      try {
+                          var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                          if (check.length > 0) {
+                            crossList = courses[course].enrollGroups[0].simpleCombinations;
+                            if (crossList.length > 0) {
+                              crossListIDs = crossList.map(function(crossListedCourse) {
+                                console.log(crossListedCourse.subject)
+                                console.log(crossListedCourse.catalogNbr)
+                                var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
+                                return dbCourse[0]._id;
+                              })
+                              console.log(crossListIDs);
+                              thisCourse = check[0];
+                              Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
+                            }
+                          }
+                      } catch(error){
+                          console.log("error");
+                      }
+                  }
+              }
+          }
+      }
+  }
 }
