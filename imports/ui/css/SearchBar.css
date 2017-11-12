@@ -12,11 +12,12 @@
   background-color: white;
   border-color: transparent;
   color: black;
-  cursor: default;
+  cursor: text;
   font-weight: normal;
   height: 33px;
   padding: 5px;
   text-align: left;
+  text-indent: 10px;
   width: 100%;
 }
 
