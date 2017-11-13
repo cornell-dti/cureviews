@@ -30,7 +30,7 @@ export default class Form extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    //ensure all feilds are filled out
+    //ensure all fields are filled out
     const text = ReactDOM.findDOMNode(this.refs.reviewText).value.trim();
     const median = ReactDOM.findDOMNode(this.refs.median).value.trim();
     const atten = parseInt(ReactDOM.findDOMNode(this.refs.atten).value.trim());

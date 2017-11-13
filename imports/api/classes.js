@@ -190,21 +190,33 @@ if (Meteor.isServer) {
     //"publish" classes based on search query. Only published classes are visible to the client
     Meteor.publish('classes', function validClasses(searchString) {
       if (searchString !== undefined && searchString !== "") {
-            console.log("query entered:", searchString);
-            return Classes.find({'$or' : [
-                    { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-                    { 'classNum':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
-                    { 'classTitle':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-                    { 'classFull':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
-
-                },
-                {limit: 200});
+        console.log("query entered:", searchString);
+        //first check for exact subject match
+        exactSubSearch = Classes.find({classSub : searchString}, {limit: 200});
+        if (exactSubSearch.fetch().length > 0) {
+          return exactSubSearch;
         }
-        else {
-            console.log("no search");
-            return Classes.find({},
-                {limit: 200});
+        //next check for subject containing the query
+        subSearch = Classes.find({classSub :{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},{limit: 200});
+        if (subSearch.fetch().length > 0) {
+          return subSearch
+        } else {
+          //lastly, check eveerything else
+          return Classes.find(
+            {'$or' : [
+              { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+              { 'classNum':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
+              { 'classTitle':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+              { 'classFull':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
+            },
+            {limit: 200}
+          );
         }
+      } else {
+        console.log("no search");
+        return Classes.find({},
+            {limit: 200});
+      }
     });
 
     //"publish" reviews based on selected course, visibility and reporting requirements. Only published reviews are visible to the client
