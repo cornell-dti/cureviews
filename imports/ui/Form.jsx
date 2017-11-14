@@ -39,9 +39,9 @@ export default class Form extends Component {
 
   //change the state to represent the new form quality value and trigger re-render
   handleQualChange(event) {
-    var newState = this.state;
-    newState.quality = event.target.value;
-    this.setState(newState);
+    // var newState = this.state;
+    // newState.quality = parseInt(event.target.value);
+    this.setState({ quality: parseInt(event.target.value) });
   }
 
   //get color for quality value
@@ -54,9 +54,9 @@ export default class Form extends Component {
 
   //change the state to represent the new form difficulty value and trigger re-render
   handleDiffChange(event) {
-    var newState = this.state;
-    newState.diff = event.target.value;
-    this.setState(newState);
+    // var newState = this.state;
+    // newState.diff = parseInt(event.target.value);
+    this.setState({ diff: parseInt(event.target.value) });
   }
 
   //get color for difficulty value
@@ -73,21 +73,39 @@ export default class Form extends Component {
     ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
   }
 
+  //reload the form when a new class is selected
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.courseId != this.props.courseId) {
+      ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
+      ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+      this.setState({
+        diff:3,
+        quality: 3,
+        median: 5,
+        attend: 1,
+        text: "",
+        message: ""
+      });
+    }
+  }
+
   // handle a form submission. This will either add the review to the database
   // or return an error telling the user to try agian.
   handleSubmit(event) {
     event.preventDefault();
 
     //ensure all fields are filled out
-    const text = this.state.text.trim();
-    const median = this.state.median;
-    const atten = this.state.attend;
+    var text = this.state.text.trim();
+    var median = this.state.median;
+    var atten = this.state.attend;
+    var diff = this.state.diff;
+    var qual = this.state.quality;
     if (text !== null && median !== null && atten !== null) {
       // create new review object
       var newReview = {
         text: text,
-        diff: parseInt(this.state.diff),
-        quality: parseInt(this.state.quality),
+        diff: diff,
+        quality: qual,
         medGrade: median,
         atten: atten
       };

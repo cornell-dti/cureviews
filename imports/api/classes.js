@@ -144,7 +144,6 @@ Meteor.methods({
     },
     //most popular classes by number of reviews
     topClasses: function() {
-      console.log("popular classes");
       //using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
       var pipeline = [
         //consider only visible reviews
@@ -225,15 +224,13 @@ if (Meteor.isServer) {
     //"publish" reviews based on selected course, visibility and reporting requirements. Only published reviews are visible to the client
     Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
         var ret = null
-        //show valid reviews for this course
-        console.log('getting reviews');
         //for a -1 courseId, disply the most popular reviews (visible, non reported only)
         if (courseId == -1) {
-          console.log('in popular');
+          console.log('popular reviews');
           ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 20});
         }
         else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) { //show valid reviews for this course
-            console.log('in 1');
+            console.log('course valid reviews');
             //get the list of crosslisted courses for this class
             crossList = Classes.find({_id: courseId}).fetch()[0].crossList;
             console.log(crossList)
@@ -249,11 +246,11 @@ if (Meteor.isServer) {
               ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {sort: {date: -1}, limit: 700});
             }
         } else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
-            console.log('in 2');
+            console.log('course invalid reviews');
             crossList = Classes.find({_id : courseId}).fetch()[0].crossList
             ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
         } else if (visiblity === 0) { //all invalidated reviews
-            console.log('in 3');
+            console.log('all reviews');
             ret =  Reviews.find({visible : 0}, {sort: {date: -1}, limit: 700});
         } else { //no reviews
             //will always be empty because visible is 0 or 1. allows meteor to still send the ready flag when a new publication is sent
@@ -261,7 +258,6 @@ if (Meteor.isServer) {
         }
         return ret
     });
-
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
     //Classes.remove({});
@@ -363,7 +359,6 @@ function findAllSemesters() {
         var allSemestersArray = allSemesters.map(function(semesterObject) {
             return semesterObject.slug;
         });
-        console.log(allSemestersArray);
         return allSemestersArray
     }
 }
@@ -398,8 +393,6 @@ function addCrossList() {
                             crossList = courses[course].enrollGroups[0].simpleCombinations;
                             if (crossList.length > 0) {
                               crossListIDs = crossList.map(function(crossListedCourse) {
-                                console.log(crossListedCourse.subject)
-                                console.log(crossListedCourse.catalogNbr)
                                 var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
                                 return dbCourse[0]._id;
                               })
