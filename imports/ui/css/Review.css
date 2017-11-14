@@ -23,11 +23,12 @@
 
 #text {
   color: #ffffff;
-  height: 28px;
+  height: 100%;
   font-size: 24px;
   letter-spacing: 0.1px;
-  text-align: center;
-  width: 34px;
+  display: flex;
+  align-items: center;
+  margin: 0 20%;
 }
 
 #review_text {
@@ -44,6 +45,7 @@
   letter-spacing: 0.1px;
   opacity: 0.5;
   text-align: left;
+  margin: 0 7px;
 }
 
 #button_text {

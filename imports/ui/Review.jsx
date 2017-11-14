@@ -33,34 +33,41 @@ export default class Review extends Component {
     var classId = review.class;
     return (
 		<li>
-			<div className="review">
-				<div className="panel-body">
-					<div className="row">
-						<div className="col-sm-2">
-							<div className="container" id="box" style={this.getQualColor(review.quality)}>
-								<div id="text">{review.quality}</div>
-							</div>
-						</div>
-						<div className="col-sm-4">
-							<p id="label">Overall Quality</p>
-						</div>
-						<div className="col-sm-2">
-						<div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
-							<div id="text">{review.difficulty}</div>
-						</div>
-						</div>
-						<div className="col-sm-2">
-							<p id="label">Difficulty</p>
-						</div>
-						<div className="col-sm-2">
-							<button onClick={() => this.props.reportHandler(review)} id="button_text">Report</button>
-						</div>
-					</div>
-					<div className="row">
-						<div className="review-text" id="review_text">{review.text}</div>
-					</div>
-				</div>
-			</div>
+      <div className="row">
+        <div className="col-sm-12">
+          <p className="classNameLink">
+            <i>{moment(review.date.toString()).fromNow()}</i>
+          </p>
+        </div>
+      </div>
+      <div className="review">
+          <div className="panel-body">
+              <div className="row">
+                  <div className="col-md-2 col-xs-2 col-xs-2">
+                      <div className="container" id="box" style={this.getQualColor(review.quality)}>
+                          <div id="text">{review.quality}</div>
+                      </div>
+                  </div>
+                  <div className="col-md-4 col-sm-4 col-xs-4">
+                      <p id="label">Overall Quality</p>
+                  </div>
+                  <div className="col-md-2 col-sm-2 col-xs-2" >
+                      <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
+                          <div id="text">{review.difficulty}</div>
+                      </div>
+                  </div>
+                  <div className="col-md-2 col-sm-2 col-xs-2">
+                      <p id="label">Difficulty</p>
+                  </div>
+                  <div className="col-md-2 col-sm-2 col-xs-2">
+                      <button onClick={() => this.props.reportHandler(review)} id="button_text">Report</button>
+                  </div>
+              </div>
+              <div className="row">
+                  <div className="review-text" id="review_text">{review.text}</div>
+              </div>
+          </div>
+      </div>
 		</li>
     );
   }

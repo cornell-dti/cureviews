@@ -93,7 +93,7 @@ class App extends Component {
             </nav>
           </div>
           <div className='row pushDown'>
-            <div className="col-md-10 col-md-offset-1">
+            <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
               <p id="welcome_text">Welcome to Cornell Reviews</p>
             </div>
           </div>
@@ -106,10 +106,10 @@ class App extends Component {
             </div>
           </div>
           <div className='row panel-color-translucent'>
-            <div className="col-md-6 col-xs-12 panel-container panel">
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel">
               {this.renderPopularClasses()}
             </div>
-            <div className="col-md-6 col-xs-12 panel-container fix-contain">
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
               <div>
                 {this.renderPastReviews()}
               </div>
@@ -128,10 +128,10 @@ class App extends Component {
             </nav>
           </div>
           <div className='row'>
-            <div className="col-md-6">
+            <div className="col-md-6 col-sm-12 col-xs-12">
               {this.renderCourseCard()}
             </div>
-            <div className="col-md-6 panel-container panel-color-gray fix-contain">
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
               <div>
                 {this.renderForm()}
               </div>
