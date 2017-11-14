@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
-import { check } from 'meteor/check';
+import { check, Match} from 'meteor/check';
 
 export const Classes = new Mongo.Collection('classes');
 Classes.schema = new SimpleSchema({
@@ -33,8 +33,8 @@ Subjects.schema = new SimpleSchema({
 export const Reviews = new Mongo.Collection('reviews');
 Reviews.schema = new SimpleSchema({
     _id: {type: String},
-    user: {type: String},
-    text: {type: String,optional: true},
+    user: {type: String, optional:true},
+    text: {type: String, optional: true},
     difficulty: {type: Number},
     quality: {type: Number},
     class: {type: String}, //ref to classId
@@ -51,26 +51,29 @@ Meteor.methods({
     insert: function(review, classId) {
         //only insert if all necessary feilds are filled in
         if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && classId !== undefined && classId !== null) {
-            //ensure there are no illegal characters
-            var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,!()"'\/$ ]+$/i)
-            if (regex.test(review.text)) {
-                Reviews.insert({
-                    text: review.text,
-                    difficulty: review.diff,
-                    quality: review.quality,
-                    class: classId,
-                    grade: review.medGrade,
-                    date: new Date(),
-                    visible: 0,
-                    reported: 0,
-                    atten: review.atten
-                });
-                return 1 //success
-            } else {
-                return 0 //fail
+            var fullReview = {
+                text: review.text,
+                difficulty: review.diff,
+                quality: review.quality,
+                class: classId,
+                grade: review.medGrade,
+                date: new Date(),
+                atten: review.atten,
+                visible: 0,
+                reported: 0
+            };
+
+            try {
+              //check(fullReview, Reviews);
+              Reviews.insert(fullReview);
+              return 1; //success
+            } catch(error) {
+              console.log(error)
+              return 0; //fail
             }
         } else {
-            return 0 //fail
+            console.log("some review values are null")
+            return 0; //fail
         }
     },
     //make the reveiw with this id visible, checking to make sure it has a real id
@@ -201,7 +204,7 @@ if (Meteor.isServer) {
         if (subSearch.fetch().length > 0) {
           return subSearch
         } else {
-          //lastly, check eveerything else
+          //last check eveerything else
           return Classes.find(
             {'$or' : [
               { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
@@ -233,8 +236,9 @@ if (Meteor.isServer) {
             console.log('in 1');
             //get the list of crosslisted courses for this class
             crossList = Classes.find({_id: courseId}).fetch()[0].crossList;
+            console.log(crossList)
             //if there are crossListed Courses, merge the reviews
-            if (crossList.length > 0) {
+            if (crossList == undefined || crossList.length > 0) {
               //format each courseid into an object to input to the find's '$or' search
               crossListOR = crossList.map(function(courseId) {
                 return {"class": courseId};
