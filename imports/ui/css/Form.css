@@ -62,8 +62,9 @@ input[type="range"] {
     width: 100%;
 }
 
-.error {
+.error, .error:focus {
   border: 1px solid red !important;
+  outline: 1px solid red;
 }
 
 .hidden { display:none; }
