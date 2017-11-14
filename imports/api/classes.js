@@ -238,7 +238,7 @@ if (Meteor.isServer) {
             crossList = Classes.find({_id: courseId}).fetch()[0].crossList;
             console.log(crossList)
             //if there are crossListed Courses, merge the reviews
-            if (crossList == undefined || crossList.length > 0) {
+            if (crossList != undefined && crossList.length > 0) {
               //format each courseid into an object to input to the find's '$or' search
               crossListOR = crossList.map(function(courseId) {
                 return {"class": courseId};
