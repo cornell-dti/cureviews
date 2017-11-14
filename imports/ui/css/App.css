@@ -90,3 +90,8 @@ body{
 .pushDown {
   padding-top: 4%;
 }
+
+.title-link a{
+  color: white;
+  text-decoration: none;
+}
