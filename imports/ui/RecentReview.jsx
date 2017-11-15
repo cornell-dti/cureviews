@@ -51,23 +51,23 @@ export default class RecentReview extends Component {
             <div className="review">
                 <div className="panel-body">
                     <div className="row">
-                        <div className="col-sm-2">
+                        <div className="col-md-2 col-xs-2 col-xs-2">
                             <div className="container" id="box" style={this.getQualColor(review.quality)}>
                                 <div id="text">{review.quality}</div>
                             </div>
                         </div>
-                        <div className="col-sm-4">
+                        <div className="col-md-4 col-sm-4 col-xs-4">
                             <p id="label">Overall Quality</p>
                         </div>
-                        <div className="col-sm-2" >
+                        <div className="col-md-2 col-sm-2 col-xs-2" >
                             <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
                                 <div id="text">{review.difficulty}</div>
                             </div>
                         </div>
-                        <div className="col-sm-2">
+                        <div className="col-md-2 col-sm-2 col-xs-2">
                             <p id="label">Difficulty</p>
                         </div>
-                        <div className="col-sm-2">
+                        <div className="col-sm-2 col-sm-2 col-xs-2">
                             <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
                         </div>
                     </div>

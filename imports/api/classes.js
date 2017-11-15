@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
-import { check } from 'meteor/check';
+import { check, Match} from 'meteor/check';
 
 export const Classes = new Mongo.Collection('classes');
 Classes.schema = new SimpleSchema({
@@ -9,6 +9,7 @@ Classes.schema = new SimpleSchema({
     classNum: {type: Number},
     classTitle: {type: String},
     classPrereq : { type: [String] ,optional: true},
+    crossList : { type: [String] ,optional: true},
     classFull: {type: String},
     classSems: {type: [String]}
 });
@@ -32,8 +33,8 @@ Subjects.schema = new SimpleSchema({
 export const Reviews = new Mongo.Collection('reviews');
 Reviews.schema = new SimpleSchema({
     _id: {type: String},
-    user: {type: String},
-    text: {type: String,optional: true},
+    user: {type: String, optional:true},
+    text: {type: String, optional: true},
     difficulty: {type: Number},
     quality: {type: Number},
     class: {type: String}, //ref to classId
@@ -50,26 +51,29 @@ Meteor.methods({
     insert: function(review, classId) {
         //only insert if all necessary feilds are filled in
         if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && classId !== undefined && classId !== null) {
-            //ensure there are no illegal characters
-            var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,!()"'\/$ ]+$/i)
-            if (regex.test(review.text)) {
-                Reviews.insert({
-                    text: review.text,
-                    difficulty: review.diff,
-                    quality: review.quality,
-                    class: classId,
-                    grade: review.medGrade,
-                    date: new Date(),
-                    visible: 0,
-                    reported: 0,
-                    atten: review.atten
-                });
-                return 1 //success
-            } else {
-                return 0 //fail
+            var fullReview = {
+                text: review.text,
+                difficulty: review.diff,
+                quality: review.quality,
+                class: classId,
+                grade: review.medGrade,
+                date: new Date(),
+                atten: review.atten,
+                visible: 0,
+                reported: 0
+            };
+
+            try {
+              //check(fullReview, Reviews);
+              Reviews.insert(fullReview);
+              return 1; //success
+            } catch(error) {
+              console.log(error)
+              return 0; //fail
             }
         } else {
-            return 0 //fail
+            console.log("some review values are null")
+            return 0; //fail
         }
     },
     //make the reveiw with this id visible, checking to make sure it has a real id
@@ -140,7 +144,6 @@ Meteor.methods({
     },
     //most popular classes by number of reviews
     topClasses: function() {
-      console.log("popular classes");
       //using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
       var pipeline = [
         //consider only visible reviews
@@ -163,69 +166,92 @@ Meteor.methods({
 
 //Code that runs only on the server
 if (Meteor.isServer) {
-    // Meteor.startup(() => { // code to run on server at startup
-    //     //add indexes to collections for faster search
-    //     Classes._ensureIndex(
-    //         { 'classSub' : 1 },
-    //         { 'classNum' : 1 },
-    //         { 'classTitle' : 1 },
-    //         { '_id:' : 1 }
-    //     );
-    //     Subjects._ensureIndex(
-    //         { 'subShort' : 1 },
-    //         { 'subFull' : 1 }
-    //     );
-    //     Reviews._ensureIndex(
-    //         { 'class' : 1},
-    //         { 'difficulty' : 1 },
-    //         { 'quality' : 1 },
-    //         { 'grade' : 1 },
-    //         { 'user' : 1 },
-    //         { 'visible' : 1 }
-    //     );
-    // });
+    Meteor.startup(() => { // code to run on server at startup
+        //add indexes to collections for faster search
+        Classes._ensureIndex(
+            { 'classSub' : 1 },
+            { 'classNum' : 1 },
+            { 'classTitle' : 1 },
+            { '_id:' : 1 }
+        );
+        Subjects._ensureIndex(
+            { 'subShort' : 1 },
+            { 'subFull' : 1 }
+        );
+        Reviews._ensureIndex(
+            { 'class' : 1},
+            { 'difficulty' : 1 },
+            { 'quality' : 1 },
+            { 'grade' : 1 },
+            { 'user' : 1 },
+            { 'visible' : 1 }
+        );
+    });
 
     //code that runs whenever needed
     //"publish" classes based on search query. Only published classes are visible to the client
     Meteor.publish('classes', function validClasses(searchString) {
       if (searchString !== undefined && searchString !== "") {
-            console.log("query entered:", searchString);
-            return Classes.find({'$or' : [
-                    { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-                    { 'classNum':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
-                    { 'classTitle':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-                    { 'classFull':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
-
-                },
-                {limit: 200});
+        console.log("query entered:", searchString);
+        //first check for exact subject match
+        exactSubSearch = Classes.find({classSub : searchString}, {limit: 200});
+        if (exactSubSearch.fetch().length > 0) {
+          return exactSubSearch;
         }
-        else {
-            console.log("no search");
-            return Classes.find({},
-                {limit: 200});
+        //next check for subject containing the query
+        subSearch = Classes.find({classSub :{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},{limit: 200});
+        if (subSearch.fetch().length > 0) {
+          return subSearch
+        } else {
+          //last check eveerything else
+          return Classes.find(
+            {'$or' : [
+              { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+              { 'classNum':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
+              { 'classTitle':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+              { 'classFull':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
+            },
+            {limit: 200}
+          );
         }
+      } else {
+        console.log("no search");
+        return Classes.find({},
+            {limit: 200});
+      }
     });
 
     //"publish" reviews based on selected course, visibility and reporting requirements. Only published reviews are visible to the client
     Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
         var ret = null
-        //show valid reviews for this course
-        console.log('getting reviews');
         //for a -1 courseId, disply the most popular reviews (visible, non reported only)
         if (courseId == -1) {
-          console.log('in popular');
-          ret =  Reviews.find({visible : 1, reported: 0}, { sort: { date: -1 }, limit: 20});
+          console.log('popular reviews');
+          ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 20});
         }
-        else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) {
-            console.log('in 1');
-            ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {limit: 700});
+        else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) { //show valid reviews for this course
+            console.log('course valid reviews');
+            //get the list of crosslisted courses for this class
+            crossList = Classes.find({_id: courseId}).fetch()[0].crossList;
+            console.log(crossList)
+            //if there are crossListed Courses, merge the reviews
+            if (crossList != undefined && crossList.length > 0) {
+              //format each courseid into an object to input to the find's '$or' search
+              crossListOR = crossList.map(function(courseId) {
+                return {"class": courseId};
+              });
+              crossListOR.push({"class": courseId}) //make sure to add the original course to the list
+              ret =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700});
+            } else {
+              ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {sort: {date: -1}, limit: 700});
+            }
         } else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
-            console.log('in 2');
-            ret =  Reviews.find({class : courseId, visible : 0},
-                {limit: 700});
+            console.log('course invalid reviews');
+            crossList = Classes.find({_id : courseId}).fetch()[0].crossList
+            ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
         } else if (visiblity === 0) { //all invalidated reviews
-            console.log('in 3');
-            ret =  Reviews.find({visible : 0}, {limit: 700});
+            console.log('all reviews');
+            ret =  Reviews.find({visible : 0}, {sort: {date: -1}, limit: 700});
         } else { //no reviews
             //will always be empty because visible is 0 or 1. allows meteor to still send the ready flag when a new publication is sent
             ret = Reviews.find({visible : 10});
@@ -237,6 +263,7 @@ if (Meteor.isServer) {
     //Classes.remove({});
     //Subjects.remove({});
     //addAllCourses(findAllSemesters());
+    // addCrossList();
 }
 
 //Other helper functions used above
@@ -332,7 +359,54 @@ function findAllSemesters() {
         var allSemestersArray = allSemesters.map(function(semesterObject) {
             return semesterObject.slug;
         });
-        console.log(allSemestersArray);
         return allSemestersArray
     }
+}
+
+//call only once to go through all courses and add in cross-listing.
+function addCrossList() {
+  semesters = findAllSemesters()
+  for (semester in semesters) {
+      //get all classes in this semester
+      var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+      if (result.statusCode !== 200) {
+          console.log("error");
+      } else {
+          response = JSON.parse(result.content);
+          //console.log(response);
+          var sub = response.data.subjects;
+          for (course in sub) {
+              parent = sub[course];
+
+              //for each subject, get all classes in that subject for this semester
+              var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+              if (result2.statusCode !== 200) {
+                  console.log("error2");
+              } else {
+                  response2 = JSON.parse(result2.content);
+                  courses = response2.data.classes;
+
+                  for (course in courses) {
+                      try {
+                          var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                          if (check.length > 0) {
+                            crossList = courses[course].enrollGroups[0].simpleCombinations;
+                            if (crossList.length > 0) {
+                              crossListIDs = crossList.map(function(crossListedCourse) {
+                                var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
+                                return dbCourse[0]._id;
+                              })
+                              console.log(crossListIDs);
+                              thisCourse = check[0];
+                              Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
+                            }
+                          }
+                      } catch(error){
+                          console.log("error");
+                      }
+                  }
+              }
+          }
+      }
+  }
 }

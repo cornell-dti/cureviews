@@ -88,12 +88,12 @@ class App extends Component {
         <div className="container container-top-gap-fix">
           <div className='row'>
             <nav className="navbar">
-              <h1 className="cornell-reviews" id="navname">Cornell Reviews</h1>
+              <h1 className="cornell-reviews title-link" id="navname"><a href="">Cornell Reviews</a></h1>
               <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
             </nav>
           </div>
           <div className='row pushDown'>
-            <div className="col-md-10 col-md-offset-1">
+            <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
               <p id="welcome_text">Welcome to Cornell Reviews</p>
             </div>
           </div>
@@ -106,10 +106,11 @@ class App extends Component {
             </div>
           </div>
           <div className='row panel-color-translucent'>
-            <div className="col-md-6 panel-container panel">
+
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel">
               {this.renderPopularClasses()}
             </div>
-            <div className="col-md-6 panel-container fix-contain">
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
               <div>
                 {this.renderPastReviews()}
               </div>
@@ -122,16 +123,16 @@ class App extends Component {
         <div className="container remove-background">
           <div className='row'>
             <nav className="navbar navbar-fixed-top">
-              <h1 className="navbar-brand mb-0" id= "navname">Cornell Reviews</h1>
+              <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="">Cornell Reviews</a></h1>
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
               <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
             </nav>
           </div>
           <div className='row'>
-            <div className="col-md-6">
+            <div className="col-md-6 col-sm-12 col-xs-12">
               {this.renderCourseCard()}
             </div>
-            <div className="col-md-6 panel-container panel-color-gray fix-contain">
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
               <div>
                 {this.renderForm()}
               </div>

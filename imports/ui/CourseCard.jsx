@@ -30,12 +30,8 @@ export class CourseCard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // compare old and new reviews, if differnt re-calculate gauges
-    //if (this.props.reviews != nextProps.reviews) {
-   console.log(nextProps.reviews);
-   this.updateState(nextProps.course, nextProps.reviews);
-     //}
-   }
+    this.updateState(nextProps.course, nextProps.reviews);
+  }
 
   //update the component state to represent new state of the gagues and the mandatory tag
   updateState(selectedClass, newRevs) {
@@ -61,10 +57,6 @@ export class CourseCard extends Component {
           countQual = countQual + review["quality"];
           countMan = countMan + review["atten"];
         });
-
-        console.log("calculated qual is", (countQual/count).toFixed(1));
-        console.log("calculated diff is ", (countDiff/count).toFixed(1));
-        console.log("calculated grade is ", (countGrade/count).toFixed(1));
 
         //update the gauge variable values
         newState.qual = (countQual/count).toFixed(1); //out of 5
@@ -106,12 +98,10 @@ export class CourseCard extends Component {
         this.setState(newState);
       }
       else {
-        console.log("first else");
         this.setState(this.defaultGaugeState);
       }
     }
     else {
-      console.log("Second else");
       this.setState(this.defaultGaugeState);
     }
   }
@@ -170,12 +160,11 @@ CourseCard.propTypes = {
 };
 
 // wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when databse data changes!
+// the component will automatically re-render when database data changes!
 export default createContainer((props) => {
   const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
   const loading = !subscription.ready();
-  const reviews = Reviews.find({'class': props.course._id, 'visible': 1, 'reported' : 0}).fetch();
-  //console.log(reviews);
+  const reviews = Reviews.find({}).fetch();
   return {
     reviews, loading,
   };
