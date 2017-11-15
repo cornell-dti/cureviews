@@ -68,7 +68,7 @@ export default class RecentReview extends Component {
                             <p id="label">Difficulty</p>
                         </div>
                         <div className="col-sm-2">
-                            <button onClick={() => this.props.reportHandler(review)} id="button_text">Report</button>
+                            <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
                         </div>
                     </div>
                     <div className="row">

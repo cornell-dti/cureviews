@@ -26,7 +26,7 @@
   border-bottom-right-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  margin-top: 30px; /* height of the input element*/
+  margin-top: 0px; /* height of the input element*/
   max-height: 205px;
   overflow: hidden;
   position: absolute;

@@ -34,7 +34,9 @@ p {
     margin-top: 10px;
 }
 
-input {
+#postbutton{
+    padding-left: 30px;
+    padding-right: 30px;
     background-color: #4a90e2;
     border-radius: 8px;
     color: #ffffff;
@@ -45,12 +47,7 @@ input {
     letter-spacing: 0.1px;
     height: 22px;
     text-align: center;
-    width: 40px;
-}
-
-#postbutton{
-    padding-left: 30px;
-    padding-right: 30px;
+    height: 40px;
 }
 
 .sliderHolder {

@@ -55,10 +55,14 @@ export default class Form extends Component {
           ReactDOM.findDOMNode(this.refs.atten).value = null;
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+          
           this.setState({
             diff:3,
             quality: 3,
-            message: "Thanks! Your review is pending approval."
+            //onClick: function() {
+            //      this.setState({ message: "Thanks! Your review is pending approval."});
+            //}
+            //message: "Thanks! Your review is pending approval."
           });
         } else {
           console.log(error);
@@ -135,7 +139,7 @@ export default class Form extends Component {
                     <div className="sm-spacing"></div>
                     <div className="row">
                         <div className="col-md-4">
-                            <div className="secondary-text">Class Median</div>
+                            <div className="secondary-text">Estimated Median</div>
                         </div>
                         <div className="col-md-8">
                             <select ref='median'>
@@ -171,7 +175,8 @@ export default class Form extends Component {
                     <h2 className="secondary-text" >All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback</h2>
                 </div>
                 <div className="col-md-2">
-                    <input type="submit" value="Post" id="postbutton"/>
+                    <button id = "postbutton" onClick={()=>{ alert('Thanks! Your review is currently pending approval.'); }}>Post</button>
+                    
                 </div>
             </div>
             <div className="row">

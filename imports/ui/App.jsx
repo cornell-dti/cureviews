@@ -106,7 +106,7 @@ class App extends Component {
             </div>
           </div>
           <div className='row panel-color-translucent'>
-            <div className="col-md-6 panel-container panel" data-spy="affix">
+            <div className="col-md-6 panel-container panel">
               {this.renderPopularClasses()}
             </div>
             <div className="col-md-6 panel-container fix-contain">
