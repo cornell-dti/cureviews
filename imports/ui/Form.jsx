@@ -119,7 +119,7 @@ export default class Form extends Component {
 
           this.setState({
             diff:3,
-            quality: 3
+            quality: 3,
             median: 5,
             attend: 1,
             text: "",
