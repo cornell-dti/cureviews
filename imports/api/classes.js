@@ -20,7 +20,8 @@ Users.schema = new SimpleSchema({
     firstName: {type: String},
     lastName: {type: String},
     netId: {type: String},
-    affiliation: {type: String}
+    affiliation: {type: String},
+    token: {type: String}
 });
 
 export const Subjects = new Mongo.Collection('subjects');
@@ -161,6 +162,19 @@ Meteor.methods({
       });
 
       return  mostReviews
+    },
+    // print on the server side for API testing. Should print in logs if
+    // called (in the Auth component) by the API.
+    printOnServer: function(text) {
+      console.log(text);
+    },
+    //TODO: find the user identified by userID, and save the given token
+    saveUserToken: function(userId, token) {
+
+    },
+    //TODO: invalidate this user's token by deleting it
+    removeToken: function(userId) {
+
     }
 });
 
@@ -257,6 +271,11 @@ if (Meteor.isServer) {
             ret = Reviews.find({visible : 10});
         }
         return ret
+    });
+
+    //publish users to the client. for a valid netId, return user, otherwise show nothing.
+    Meteor.publish('users', function getUser(netId) {
+        return Users.find({netId: netId}, {limit: 20});
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!

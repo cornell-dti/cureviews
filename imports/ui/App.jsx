@@ -36,6 +36,11 @@ class App extends Component {
     });
   }
 
+  //redirect to force login
+  forceLogin() {
+    window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
+  }
+
   //set the state variable to the current value of the input. Called in SearchBar.jsx
   updateQuery(event) {
     this.setState({query: event.target.value});
@@ -78,7 +83,7 @@ class App extends Component {
   //displays most reviewed classes
   renderPopularClasses() {
     var toShow = <div/>;
-    toShow = <PopularClasses clickFunc={this.handleSelectClass}/>;
+    toShow = <PopularClasses clickFunc={this.forceLogin}/>;
     return toShow;
   }
 
