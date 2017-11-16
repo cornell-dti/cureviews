@@ -116,21 +116,18 @@ export default class Form extends Component {
           // Success, so reset form
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-          
+
           this.setState({
             diff:3,
             quality: 3,
-<<<<<<< HEAD
             //onClick: function() {
             //      this.setState({ message: "Thanks! Your review is pending approval."});
             //}
             //message: "Thanks! Your review is pending approval."
-=======
             median: 5,
             attend: 1,
             text: "",
             message: "Thanks! Your review is pending approval."
->>>>>>> a73f2f29e4b946f3d403bc4863f0160acd2cbb19
           });
         } else {
           console.log(error);
@@ -234,7 +231,7 @@ export default class Form extends Component {
                 <div className="col-md-2">
 
                     <button disabled={!isEnabled} id = "postbutton" onClick={()=>{ alert('Thanks! Your review is currently pending approval.'); }}>Post</button>
-                    
+
                 </div>
             </div>
             <div className="row">
