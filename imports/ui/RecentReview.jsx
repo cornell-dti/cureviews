@@ -43,7 +43,7 @@ export default class RecentReview extends Component {
         <li>
             <div className="row">
               <div className="col-sm-12">
-                <p className="classNameLink">
+                <p className="classNameLink" onClick={() => this.props.handler(review.class)}>
                   <b><u>{this.state.shortName}</u></b>: {this.state.longName} <i>{moment(review.date.toString()).fromNow()}</i>
                 </p>
               </div>
@@ -84,5 +84,6 @@ export default class RecentReview extends Component {
 RecentReview.propTypes = {
   // This component gets the task to display through a React prop.
   // We can use propTypes to indicate it is required
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
+  handler: PropTypes.func.isRequired
 };

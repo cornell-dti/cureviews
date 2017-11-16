@@ -6,6 +6,7 @@
   letter-spacing: 0.1px;
   margin-bottom: 3%;
   text-align: left;
+  cursor: pointer;
 }
 
 .classNameLink .text-style-1 {
@@ -15,3 +16,4 @@
 .classNameLink .text-style-2 {
   color: rgba(74, 74, 74, 0.51);
 }
+

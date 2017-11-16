@@ -68,9 +68,9 @@ class App extends Component {
   renderPastReviews() {
     var toShow = <div/>;
     if (this.state.selectedClass !== null) {
-      toShow = <CourseReviews courseId={this.state.selectedClass._id}/>;
+      toShow = <CourseReviews courseId={this.state.selectedClass._id} handler={this.handleSelectClass}/>;
     } else {
-      toShow = <CourseReviews courseId={"-1"}/>;
+      toShow = <CourseReviews courseId={"-1"} handler={this.handleSelectClass}/>;
     }
     return toShow;
   }
