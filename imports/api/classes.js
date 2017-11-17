@@ -263,7 +263,7 @@ if (Meteor.isServer) {
     //Classes.remove({});
     //Subjects.remove({});
     //addAllCourses(findAllSemesters());
-    // addCrossList();
+    //addCrossList();
 }
 
 //Other helper functions used above

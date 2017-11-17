@@ -120,17 +120,17 @@ export default class Form extends Component {
           this.setState({
             diff:3,
             quality: 3,
-<<<<<<< HEAD
+
             //onClick: function() {
             //      this.setState({ message: "Thanks! Your review is pending approval."});
             //}
             //message: "Thanks! Your review is pending approval."
-=======
+
             median: 5,
             attend: 1,
             text: "",
             message: "Thanks! Your review is pending approval."
->>>>>>> a73f2f29e4b946f3d403bc4863f0160acd2cbb19
+
           });
         } else {
           console.log(error);
