@@ -83,7 +83,7 @@ class App extends Component {
   //displays most reviewed classes
   renderPopularClasses() {
     var toShow = <div/>;
-    toShow = <PopularClasses clickFunc={this.forceLogin}/>;
+    toShow = <PopularClasses clickFunc={this.handleSelectClass}/>;
     return toShow;
   }
 
@@ -127,7 +127,7 @@ class App extends Component {
       return (
         <div className="container remove-background">
           <div className='row'>
-            <nav className="navbar navbar-fixed-top">
+            <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
               <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="">Cornell Reviews</a></h1>
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
               <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>

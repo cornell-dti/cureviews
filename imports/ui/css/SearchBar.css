@@ -6,6 +6,8 @@
   max-width: 600px;
   margin-top: 20px;
   width: 100%;
+  height: 100%;
+  /*padding: 0 10px;*/
 }
 
 #search {
@@ -33,4 +35,26 @@
   position: absolute;
   width: 600px;
   z-index: 1;
+}
+
+@media (max-width: 600px) {
+  #output {
+    width: auto !important;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+
+  #searchbar{
+    width: 95%;
+  }
+}
+
+
+.navbar-flex{
+  height: auto !important;
+  display: flex;
+}
+
+.navbar-text{
+  margin-left: 13px;
 }
