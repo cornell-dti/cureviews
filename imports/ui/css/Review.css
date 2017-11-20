@@ -15,10 +15,10 @@
 
 #box {
   border-radius: 8px;
-  height: 44px;
+  height: 34px;
   /*background-color: #e64558;*/
   padding-top: 0;
-  width: 44px;
+  width: 58px;
 }
 
 #text {
@@ -54,6 +54,9 @@
   opacity: 0.35;
   letter-spacing: 0.1px;
   text-align: left;
+  border: none;
+  background-color: white;
+  text-decoration: underline;
 }
 
 #reviewpanel, #reviewul {
