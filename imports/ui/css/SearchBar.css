@@ -6,17 +6,20 @@
   max-width: 600px;
   margin-top: 20px;
   width: 100%;
+  height: 100%;
+  /*padding: 0 10px;*/
 }
 
 #search {
   background-color: white;
   border-color: transparent;
   color: black;
-  cursor: default;
+  cursor: text;
   font-weight: normal;
   height: 33px;
   padding: 5px;
-  text-align: center;
+  text-align: left;
+  text-indent: 10px;
   width: 100%;
 }
 
@@ -26,10 +29,32 @@
   border-bottom-right-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  margin-top: 30px; /* height of the input element*/
+  margin-top: 0px; /* height of the input element*/
   max-height: 205px;
   overflow: hidden;
   position: absolute;
   width: 600px;
   z-index: 1;
+}
+
+@media (max-width: 600px) {
+  #output {
+    width: auto !important;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+
+  #searchbar{
+    width: 95%;
+  }
+}
+
+
+.navbar-flex{
+  height: auto !important;
+  display: flex;
+}
+
+.navbar-text{
+  margin-left: 13px;
 }

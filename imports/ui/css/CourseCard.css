@@ -17,3 +17,7 @@
 .spacing-large {
   line-height: 40px;
 }
+
+#gaugeHolder > div{
+  text-align: center;
+}

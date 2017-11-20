@@ -1,0 +1,21 @@
+[[[[[ ~/Sites/reviews/course-reviews-react-2.0 ]]]]]
+
+=> Started proxy.
+=> Errors prevented startup:
+   
+   While building for web.browser:
+   imports/ui/App.jsx:41:22: Invalid left-hand side in assignment expression
+   (41:22)
+   
+=> Your application has errors. Waiting for file change.
+=> A patch (Meteor 1.5.4) for your current release is available!
+   Update this project now with 'meteor update --patch'.
+=> Started MongoDB.
+=> Modified -- restarting.
+=> Meteor server restarted
+=> Started your app.
+
+=> App running at: http://localhost:3000/
+[34mI20171116-13:26:18.279(-5)? [39mno search
+[34mI20171116-13:26:18.332(-5)? [39mpopular reviews
+[34mI20171116-13:27:15.115(-5)? [39mnull

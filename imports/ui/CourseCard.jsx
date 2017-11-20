@@ -30,12 +30,8 @@ export class CourseCard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // compare old and new reviews, if differnt re-calculate gauges
-    //if (this.props.reviews != nextProps.reviews) {
-   console.log(nextProps.reviews);
-   this.updateState(nextProps.course, nextProps.reviews);
-     //}
-   }
+    this.updateState(nextProps.course, nextProps.reviews);
+  }
 
   //update the component state to represent new state of the gagues and the mandatory tag
   updateState(selectedClass, newRevs) {
@@ -61,10 +57,6 @@ export class CourseCard extends Component {
           countQual = countQual + review["quality"];
           countMan = countMan + review["atten"];
         });
-
-        console.log("calculated qual is", (countQual/count).toFixed(1));
-        console.log("calculated diff is ", (countDiff/count).toFixed(1));
-        console.log("calculated grade is ", (countGrade/count).toFixed(1));
 
         //update the gauge variable values
         newState.qual = (countQual/count).toFixed(1); //out of 5
@@ -106,12 +98,10 @@ export class CourseCard extends Component {
         this.setState(newState);
       }
       else {
-        console.log("first else");
         this.setState(this.defaultGaugeState);
       }
     }
     else {
-      console.log("Second else");
       this.setState(this.defaultGaugeState);
     }
   }
@@ -126,7 +116,7 @@ export class CourseCard extends Component {
     //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
     var offered = lastOfferedSems(theClass);
     return (
-      <header>
+      <div>
       <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
       <a className="cornellClassLink spacing-large" href={url} target="_blank">cornell.classes.edu</a>
       <p className="review-text spacing-large">
@@ -138,27 +128,25 @@ export class CourseCard extends Component {
          <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
       </p>*/}
       <h2>Class Data</h2>
-        <div>
           <div className= "panel panel-default">
             <div className = "panel-body">
               <section>
                 <div className="row" id="gaugeHolder">
-                  <div className="col-sm-4">
+                  <div className="col-md-4 col-sm-4 col-xs-12">
                     <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
                   </div>
-                  <div className="col-sm-4">
+                  <div className="col-md-4 col-sm-4 col-xs-12">
                     <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
                   </div>
-                  <div className="col-sm-4">
+                  <div className="col-md-4 col-sm-4 col-xs-12">
                     <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
                   </div>
                 </div>
               </section>
             </div>
           </div>
-        </div>
         <p className="review-text spacing-large">Attendence Mandatory: {this.state.mandatory}</p>
-      </header>
+      </div>
     );
   }
 }
@@ -170,12 +158,11 @@ CourseCard.propTypes = {
 };
 
 // wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when databse data changes!
+// the component will automatically re-render when database data changes!
 export default createContainer((props) => {
   const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
   const loading = !subscription.ready();
-  const reviews = Reviews.find({'class': props.course._id, 'visible': 1, 'reported' : 0}).fetch();
-  //console.log(reviews);
+  const reviews = Reviews.find({}).fetch();
   return {
     reviews, loading,
   };

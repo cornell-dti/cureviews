@@ -6,7 +6,6 @@
   color: #ffffff;
   font-size: 48px;
   font-weight: 500;
-  height: 57px;
   letter-spacing: -0.4px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   text-align: center;
@@ -17,7 +16,6 @@
   color: #ffffff;
   font-size: 27px;
   letter-spacing: -0.3px;
-  height: 32px;
   margin: 5px 0 30px 5px;
   padding-bottom: 1%;
   text-align: center;
@@ -89,4 +87,9 @@ body{
 
 .pushDown {
   padding-top: 4%;
+}
+
+.title-link a{
+  color: white;
+  text-decoration: none;
 }

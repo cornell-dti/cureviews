@@ -43,7 +43,7 @@ export default class RecentReview extends Component {
         <li>
             <div className="row">
               <div className="col-sm-12">
-                <p className="classNameLink">
+                <p className="classNameLink" onClick={() => this.props.handler(review.class)}>
                   <b><u>{this.state.shortName}</u></b>: {this.state.longName} <i>{moment(review.date.toString()).fromNow()}</i>
                 </p>
               </div>
@@ -51,24 +51,24 @@ export default class RecentReview extends Component {
             <div className="review">
                 <div className="panel-body">
                     <div className="row">
-                        <div className="col-sm-2">
+                        <div className="col-md-2 col-xs-2 col-xs-2">
                             <div className="container" id="box" style={this.getQualColor(review.quality)}>
                                 <div id="text">{review.quality}</div>
                             </div>
                         </div>
-                        <div className="col-sm-4">
+                        <div className="col-md-4 col-sm-4 col-xs-4">
                             <p id="label">Overall Quality</p>
                         </div>
-                        <div className="col-sm-2" >
+                        <div className="col-md-2 col-sm-2 col-xs-2" >
                             <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
                                 <div id="text">{review.difficulty}</div>
                             </div>
                         </div>
-                        <div className="col-sm-2">
+                        <div className="col-md-2 col-sm-2 col-xs-2">
                             <p id="label">Difficulty</p>
                         </div>
-                        <div className="col-sm-2">
-                            <button onClick={() => this.props.reportHandler(review)} id="button_text">Report</button>
+                        <div className="col-sm-2 col-sm-2 col-xs-2">
+                            <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
                         </div>
                     </div>
                     <div className="row">
@@ -84,5 +84,6 @@ export default class RecentReview extends Component {
 RecentReview.propTypes = {
   // This component gets the task to display through a React prop.
   // We can use propTypes to indicate it is required
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
+  handler: PropTypes.func.isRequired
 };
