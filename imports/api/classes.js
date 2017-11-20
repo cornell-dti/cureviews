@@ -188,24 +188,28 @@ Meteor.methods({
 if (Meteor.isServer) {
     Meteor.startup(() => { // code to run on server at startup
         //add indexes to collections for faster search
-        Classes._ensureIndex(
-            { 'classSub' : 1 },
-            { 'classNum' : 1 },
-            { 'classTitle' : 1 },
-            { '_id:' : 1 }
-        );
-        Subjects._ensureIndex(
-            { 'subShort' : 1 },
-            { 'subFull' : 1 }
-        );
-        Reviews._ensureIndex(
-            { 'class' : 1},
-            { 'difficulty' : 1 },
-            { 'quality' : 1 },
-            { 'grade' : 1 },
-            { 'user' : 1 },
-            { 'visible' : 1 }
-        );
+
+        //commenting out the following because heroku does not like it and refuses to build. 
+        //You can add _id directly to the database on mlab
+
+        // Classes._ensureIndex(
+        //     { 'classSub' : 1 },
+        //     { 'classNum' : 1 },
+        //     { 'classTitle' : 1 },
+        //     { '_id:' : 1 }
+        // );
+        // Subjects._ensureIndex(
+        //     { 'subShort' : 1 },
+        //     { 'subFull' : 1 }
+        // );
+        // Reviews._ensureIndex(
+        //     { 'class' : 1},
+        //     { 'difficulty' : 1 },
+        //     { 'quality' : 1 },
+        //     { 'grade' : 1 },
+        //     { 'user' : 1 },
+        //     { 'visible' : 1 }
+        // );
     });
 
     //code that runs whenever needed
