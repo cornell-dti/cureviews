@@ -75,7 +75,7 @@ export class CourseCard extends Component {
         var gradeCols = ["#E64458", "#E64458", "#E64458", "#f9cc30", "#f9cc30", "#ff9e00","#53B277","#53B277","#53B277"];
         newState.gradeColor = gradeCols[Math.floor(newState.gradeNum) - 1];
 
-        if (newState.qual < 2 ) {
+        if (newState.qual <= 2 ) {
           newState.qualColor = "#E64458";
         }
         else if (newState.qual > 2 && newState.qual < 3.5) {
@@ -85,7 +85,7 @@ export class CourseCard extends Component {
           newState.qualColor = "#53B277";
         }
 
-        if (newState.diff < 2 ) {
+        if (newState.diff <= 2 ) {
           newState.diffColor = "#53B277";
         }
         else if (newState.diff > 2 && newState.diff < 3.5) {
