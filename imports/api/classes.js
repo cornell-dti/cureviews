@@ -20,7 +20,8 @@ Users.schema = new SimpleSchema({
     firstName: {type: String},
     lastName: {type: String},
     netId: {type: String},
-    affiliation: {type: String}
+    affiliation: {type: String},
+    token: {type: String}
 });
 
 export const Subjects = new Mongo.Collection('subjects');
@@ -104,6 +105,12 @@ Meteor.methods({
             //return addAllCourses(['FA15']);
         }
     },
+    addCrossList: function(initiate) {
+        if (initiate && Meteor.isServer) {
+            console.log("adding cross-listed classes");
+            return addCrossList();
+        }
+    },
     addAll: function(initiate) {
         if (initiate && Meteor.isServer) {
             console.log("adding everything");
@@ -161,6 +168,19 @@ Meteor.methods({
       });
 
       return  mostReviews
+    },
+    // print on the server side for API testing. Should print in logs if
+    // called (in the Auth component) by the API.
+    printOnServer: function(text) {
+      console.log(text);
+    },
+    //TODO: find the user identified by userID, and save the given token
+    saveUserToken: function(userId, token) {
+
+    },
+    //TODO: invalidate this user's token by deleting it
+    removeToken: function(userId) {
+
     }
 });
 
@@ -168,24 +188,28 @@ Meteor.methods({
 if (Meteor.isServer) {
     Meteor.startup(() => { // code to run on server at startup
         //add indexes to collections for faster search
-        Classes._ensureIndex(
-            { 'classSub' : 1 },
-            { 'classNum' : 1 },
-            { 'classTitle' : 1 },
-            { '_id:' : 1 }
-        );
-        Subjects._ensureIndex(
-            { 'subShort' : 1 },
-            { 'subFull' : 1 }
-        );
-        Reviews._ensureIndex(
-            { 'class' : 1},
-            { 'difficulty' : 1 },
-            { 'quality' : 1 },
-            { 'grade' : 1 },
-            { 'user' : 1 },
-            { 'visible' : 1 }
-        );
+
+        //commenting out the following because heroku does not like it and refuses to build. 
+        //You can add _id directly to the database on mlab
+
+        // Classes._ensureIndex(
+        //     { 'classSub' : 1 },
+        //     { 'classNum' : 1 },
+        //     { 'classTitle' : 1 },
+        //     { '_id:' : 1 }
+        // );
+        // Subjects._ensureIndex(
+        //     { 'subShort' : 1 },
+        //     { 'subFull' : 1 }
+        // );
+        // Reviews._ensureIndex(
+        //     { 'class' : 1},
+        //     { 'difficulty' : 1 },
+        //     { 'quality' : 1 },
+        //     { 'grade' : 1 },
+        //     { 'user' : 1 },
+        //     { 'visible' : 1 }
+        // );
     });
 
     //code that runs whenever needed
@@ -257,6 +281,11 @@ if (Meteor.isServer) {
             ret = Reviews.find({visible : 10});
         }
         return ret
+    });
+
+    //publish users to the client. for a valid netId, return user, otherwise show nothing.
+    Meteor.publish('users', function getUser(netId) {
+        return Users.find({netId: netId}, {limit: 20});
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
@@ -371,6 +400,7 @@ function addCrossList() {
       var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
       if (result.statusCode !== 200) {
           console.log("error");
+          return 0;
       } else {
           response = JSON.parse(result.content);
           //console.log(response);
@@ -382,6 +412,7 @@ function addCrossList() {
               var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
               if (result2.statusCode !== 200) {
                   console.log("error2");
+                  return 0;
               } else {
                   response2 = JSON.parse(result2.content);
                   courses = response2.data.classes;
@@ -401,12 +432,14 @@ function addCrossList() {
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
                             }
                           }
-                      } catch(error){
+                      } catch(error) {
                           console.log("error");
+                          return 0;
                       }
                   }
               }
           }
       }
   }
+  return 1;
 }

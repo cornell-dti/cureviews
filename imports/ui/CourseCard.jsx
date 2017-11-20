@@ -116,7 +116,7 @@ export class CourseCard extends Component {
     //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
     var offered = lastOfferedSems(theClass);
     return (
-      <header>
+      <div>
       <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
       <a className="cornellClassLink spacing-large" href={url} target="_blank">cornell.classes.edu</a>
       <p className="review-text spacing-large">
@@ -128,27 +128,25 @@ export class CourseCard extends Component {
          <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
       </p>*/}
       <h2>Class Data</h2>
-        <div>
           <div className= "panel panel-default">
             <div className = "panel-body">
               <section>
                 <div className="row" id="gaugeHolder">
-                  <div className="col-sm-4">
+                  <div className="col-md-4 col-sm-4 col-xs-12">
                     <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
                   </div>
-                  <div className="col-sm-4">
+                  <div className="col-md-4 col-sm-4 col-xs-12">
                     <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
                   </div>
-                  <div className="col-sm-4">
+                  <div className="col-md-4 col-sm-4 col-xs-12">
                     <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
                   </div>
                 </div>
               </section>
             </div>
           </div>
-        </div>
         <p className="review-text spacing-large">Attendence Mandatory: {this.state.mandatory}</p>
-      </header>
+      </div>
     );
   }
 }

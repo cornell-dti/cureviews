@@ -12,9 +12,8 @@
   font-weight: 500;
   letter-spacing: -0.3px;
   line-height: 1.11;
-  height: 20px;
-  padding-bottom: 25px;
+  padding-bottom: 5px;
   text-align: left;
   cursor: pointer;
+  width: 100%;
 }
-
