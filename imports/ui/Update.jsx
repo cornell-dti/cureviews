@@ -60,6 +60,18 @@ export class Update extends Component {
     });
   }
 
+  //add cross-listed courses
+  addCrossList(initiate) {
+    console.log("updating to new semester");
+    Meteor.call('addCrossList', initiate, (error, result) => {
+      if (!error && result === 1) {
+        console.log("Added cross-listings");
+      } else {
+        console.log(error)
+      }
+    });
+  }
+
   //add all courses to the db
   addAllCourses(initiate) {
     console.log("adding all classes");
@@ -102,6 +114,7 @@ export class Update extends Component {
         <h2>Admin Interface</h2>
         <button onClick={()=> this.addNewSem(true)}>Add New Semester</button>
         <button onClick={()=> this.addAllCourses(true)}>Add All Courses</button>
+        <button onClick={()=> this.addCrossList(true)}>Add Cross-Listings</button>
         <div>
           <h3>New Reviews</h3>
           <ul>

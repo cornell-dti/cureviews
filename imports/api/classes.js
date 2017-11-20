@@ -105,6 +105,12 @@ Meteor.methods({
             //return addAllCourses(['FA15']);
         }
     },
+    addCrossList: function(initiate) {
+        if (initiate && Meteor.isServer) {
+            console.log("adding cross-listed classes");
+            return addCrossList();
+        }
+    },
     addAll: function(initiate) {
         if (initiate && Meteor.isServer) {
             console.log("adding everything");
@@ -390,6 +396,7 @@ function addCrossList() {
       var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
       if (result.statusCode !== 200) {
           console.log("error");
+          return 0;
       } else {
           response = JSON.parse(result.content);
           //console.log(response);
@@ -401,6 +408,7 @@ function addCrossList() {
               var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
               if (result2.statusCode !== 200) {
                   console.log("error2");
+                  return 0;
               } else {
                   response2 = JSON.parse(result2.content);
                   courses = response2.data.classes;
@@ -420,12 +428,14 @@ function addCrossList() {
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
                             }
                           }
-                      } catch(error){
+                      } catch(error) {
                           console.log("error");
+                          return 0;
                       }
                   }
               }
           }
       }
   }
+  return 1;
 }
