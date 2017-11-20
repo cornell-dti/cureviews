@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
-import Gauge from 'react-svg-gauge';
+import Gauge from 'react-summary-gauge-2';
 import { Reviews } from '../api/classes.js';
 import './css/CourseCard.css';
 import {lastOfferedSems, lastSem} from './js/CourseCard.js';
