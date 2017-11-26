@@ -11,15 +11,17 @@ export default class Form extends Component {
     super(props);
 
     //store all currently selected form values in the state.
-    //this will the default state.
+    //this will be the default state.
     this.state = {
       diff: 3,
       quality: 3,
-      median: 5,
+      median: 0,
       attend: 1,
       text: "",
       message: null,
     };
+
+    this.defaultState = this.state;
   }
 
   //save the current written values in the text box and trigger re-render
@@ -78,14 +80,7 @@ export default class Form extends Component {
     if (nextProps.courseId != this.props.courseId) {
       ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
       ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-      this.setState({
-        diff:3,
-        quality: 3,
-        median: 5,
-        attend: 1,
-        text: "",
-        message: ""
-      });
+      this.setState(this.defaultState);
     }
   }
 
@@ -117,14 +112,7 @@ export default class Form extends Component {
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
 
-          this.setState({
-            diff:3,
-            quality: 3,
-            median: 5,
-            attend: 1,
-            text: "",
-            message: "Thanks! Your review is pending approval."
-          });
+          this.setState(this.defaultState);
         } else {
           console.log(error);
           this.setState({message: "A error occurred. Please try again."});
@@ -193,6 +181,7 @@ export default class Form extends Component {
                         </div>
                         <div className="col-md-8">
                             <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
+                                <option value="0">I don&#39;t know</option>
                                 <option value="9">A+</option>
                                 <option value="8">A</option>
                                 <option value="7">A-</option>
