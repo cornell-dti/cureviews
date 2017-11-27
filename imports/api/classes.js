@@ -189,7 +189,7 @@ if (Meteor.isServer) {
     Meteor.startup(() => { // code to run on server at startup
         //add indexes to collections for faster search
 
-        //commenting out the following because heroku does not like it and refuses to build. 
+        //commenting out the following because heroku does not like it and refuses to build.
         //You can add _id directly to the database on mlab
 
         // Classes._ensureIndex(
@@ -251,7 +251,7 @@ if (Meteor.isServer) {
         //for a -1 courseId, disply the most popular reviews (visible, non reported only)
         if (courseId == -1) {
           console.log('popular reviews');
-          ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 20});
+          ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 5});
         }
         else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) { //show valid reviews for this course
             console.log('course valid reviews');

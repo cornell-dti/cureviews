@@ -4,7 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Gauge from 'react-summary-gauge-2';
 import { Reviews } from '../api/classes.js';
 import './css/CourseCard.css';
-import {lastOfferedSems, lastSem} from './js/CourseCard.js';
+import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
 
 // Holder component to list all (or top) reviews for a course.
 // Takes in course ID for selecting reviews.
@@ -34,75 +34,18 @@ export class CourseCard extends Component {
   }
 
   //update the component state to represent new state of the gagues and the mandatory tag
-  updateState(selectedClass, newRevs) {
-    console.log(selectedClass);
+  updateState(selectedClass, allReviews) {
     if (selectedClass !== null && selectedClass !== undefined) {
-      newState = {};
-      //create initial variables
-      var countGrade = 0;
-      var countDiff = 0;
-      var countQual = 0;
-      var countMan = 0;
-      var count = 0;
-
-      //get all current reviews, which will now have only this class's reviews because of the updated publishing
-      var allReviews = newRevs;
-
-      //gather data on the reviews and the mandatory flags.
+      //gather data on the reviews and set mandatory flags.
       if (allReviews.length != 0) {
-        allReviews.forEach(function(review) {
-          count++;
-          countGrade = countGrade + Number(review["grade"]);
-          countDiff = countDiff + review["difficulty"];
-          countQual = countQual + review["quality"];
-          countMan = countMan + review["atten"];
-        });
-
-        //update the gauge variable values
-        newState.qual = (countQual/count).toFixed(1); //out of 5
-        newState.diff = (countDiff/count).toFixed(1); //out of 5
-        newState.gradeNum = (countGrade/count).toFixed(1); //out of 5
-        if ((countMan/count).toFixed(0) === 1) {
-          newState.mandatory = "Yes";
-        }  else {
-          newState.mandatory = "No";
-        }
-        //array to translate grades from numerical value
-        var gradeTranslation = ["C-", "C", "C+", "B-", "B", "B-", "A-", "A", "A+"];
-        newState.grade = gradeTranslation[Math.floor(countGrade/count) - 1];
-
-        //assign colors
-        var gradeCols = ["#E64458", "#E64458", "#E64458", "#f9cc30", "#f9cc30", "#ff9e00","#53B277","#53B277","#53B277"];
-        newState.gradeColor = gradeCols[Math.floor(newState.gradeNum) - 1];
-
-        if (newState.qual < 2 ) {
-          newState.qualColor = "#E64458";
-        }
-        else if (newState.qual > 2 && newState.qual < 3.5) {
-          newState.qualColor = "#f9cc30";
-        }
-        else {
-          newState.qualColor = "#53B277";
-        }
-
-        if (newState.diff < 2 ) {
-          newState.diffColor = "#53B277";
-        }
-        else if (newState.diff > 2 && newState.diff < 3.5) {
-          newState.diffColor = "#f9cc30";
-        }
-        else {
-          newState.diffColor = "#E64458";
-        }
-
-        this.setState(newState);
-      }
-      else {
-        this.setState(this.defaultGaugeState);
+        //set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
+        this.setState(getGaugeValues(allReviews));
+      } else {
+        this.setState(this.defaultGaugeState); //default gauge values
       }
     }
     else {
-      this.setState(this.defaultGaugeState);
+      this.setState(this.defaultGaugeState); //default gauge values
     }
   }
 
