@@ -54,8 +54,9 @@ export function getGaugeValues(allReviews) {
   //update the gauge variable values
   newState.qual = (countQual/count).toFixed(1); //out of 5
   newState.diff = (countDiff/count).toFixed(1); //out of 5
+
   if (count2 > 0) {
-    newState.gradeNum = (countGrade/count2).toFixed(1); //out of 5
+    newState.gradeNum = Math.floor(countGrade/count2); //out of 5
   } else {
     newState.gradeNum = 0;
   }
@@ -67,7 +68,7 @@ export function getGaugeValues(allReviews) {
 
   //translate grades from numerical value to letters, and assign the correct color.
   if (newState.gradeNum > 0) {
-    var gradeTranslation = ["C-", "C", "C+", "B-", "B", "B-", "A-", "A", "A+"];
+    var gradeTranslation = ["C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"];
     newState.grade = gradeTranslation[Math.floor(newState.gradeNum) - 1];
     var gradeCols = ["#E64458", "#E64458", "#E64458", "#f9cc30", "#f9cc30", "#ff9e00","#53B277","#53B277","#53B277"];
     newState.gradeColor = gradeCols[Math.floor(newState.gradeNum) - 1];
