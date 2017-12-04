@@ -59,7 +59,7 @@ export function getGaugeValues(allReviews) {
   } else {
     newState.gradeNum = 0;
   }
-  if ((countMan/count).toFixed(0) === 1) {
+  if ((countMan/count).toFixed(0) == 1) {
     newState.mandatory = "Yes";
   }  else {
     newState.mandatory = "No";
