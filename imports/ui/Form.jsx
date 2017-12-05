@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/classes.js';
 import './css/Form.css';
+import { Bert } from 'meteor/themeteorchef:bert'; //alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 
 // Form component to allow user to add a review for selected course.
 // Takes in a course ID.
@@ -10,6 +11,11 @@ export default class Form extends Component {
   constructor(props) {
     super(props);
 
+    Bert.defaults = {
+      hideDelay: 4000,
+      style: 'growl-top-left',
+      type: 'success'
+    };
     //store all currently selected form values in the state.
     //this will be the default state.
     this.state = {
@@ -19,6 +25,7 @@ export default class Form extends Component {
       attend: 1,
       text: "",
       message: null,
+      postClicks: 0,
     };
 
     this.defaultState = this.state;
@@ -41,8 +48,6 @@ export default class Form extends Component {
 
   //change the state to represent the new form quality value and trigger re-render
   handleQualChange(event) {
-    // var newState = this.state;
-    // newState.quality = parseInt(event.target.value);
     this.setState({ quality: parseInt(event.target.value) });
   }
 
@@ -56,8 +61,6 @@ export default class Form extends Component {
 
   //change the state to represent the new form difficulty value and trigger re-render
   handleDiffChange(event) {
-    // var newState = this.state;
-    // newState.diff = parseInt(event.target.value);
     this.setState({ diff: parseInt(event.target.value) });
   }
 
@@ -95,7 +98,7 @@ export default class Form extends Component {
     var atten = this.state.attend;
     var diff = this.state.diff;
     var qual = this.state.quality;
-    if (text !== null && median !== null && atten !== null) {
+    if (text.length > 0 && text !== null && median !== null && atten !== null) {
       // create new review object
       var newReview = {
         text: text,
@@ -105,7 +108,8 @@ export default class Form extends Component {
         atten: atten
       };
 
-      //call the insert funtion
+      console.log("ready to submit");
+      // call the insert funtion
       Meteor.call('insert', newReview, this.props.courseId, (error, result) => {
         if (!error && result==1) {
           // Success, so reset form
@@ -113,6 +117,7 @@ export default class Form extends Component {
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
 
           this.setState(this.defaultState);
+          Bert.alert('Thanks! Your review is currently pending approval.');
         } else {
           console.log(error);
           this.setState({message: "A error occurred. Please try again."});
@@ -125,13 +130,15 @@ export default class Form extends Component {
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
     var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
+    console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,
-      text: text === null || text === undefined || text.length === 0 || !regex.test(text),
+      textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
+      text: text != null && text != undefined && text.length > 0 && !regex.test(text),
       allFalse: false
     }
-    errs.allTrue = !(errs.median || errs.attend || errs.text);
+    errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty);
     return errs;
   }
 
@@ -144,7 +151,8 @@ export default class Form extends Component {
         <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
             <div className="panel panel-default">
                 <div className="panel-body">
-                    <textarea className={err.text && this.state.text != "" ? "error" : ""} type="text" value={this.state.text} onChange={(event) => this.handleTextChange(event)} placeholder="Does your professor tell funny jokes? Leave your feedback here!" />
+                    <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text} onChange={(event) => this.handleTextChange(event)} placeholder="Does your professor tell funny jokes? Leave your feedback here!" />
+                    <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
                     <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                     <hr className="divider" />
                     <div className="row">
@@ -214,9 +222,7 @@ export default class Form extends Component {
                     <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
                 </div>
                 <div className="col-md-2">
-
-                    <button disabled={!isEnabled} id = "postbutton" onClick={()=>{ alert('Thanks! Your review is currently pending approval.'); }}>Post</button>
-
+                    <button id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
                 </div>
             </div>
             <div className="row">
