@@ -93,3 +93,14 @@ body{
   color: white;
   text-decoration: none;
 }
+
+.sticky{
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  .sticky{
+    position: sticky;
+    top: 75px;
+  }
+}

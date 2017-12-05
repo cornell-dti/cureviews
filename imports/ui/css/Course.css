@@ -5,7 +5,6 @@
 .text-style-1{
   display: inline-block;
   overflow: ellipsis;
-  white-space: nowrap;
   color: #4a4a4a;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 18px;

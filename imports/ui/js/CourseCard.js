@@ -22,6 +22,8 @@ export function semAbbriviationToWord(sem){
       return "Fall \'" + abbreviation.substring(2);
     case "SU":
       return "Summer \'" + abbreviation.substring(2);
+    case "WI":
+      return "Winter \'" + abbreviation.substring(2);
   }
 }
 

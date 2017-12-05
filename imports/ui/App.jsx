@@ -111,8 +111,7 @@ class App extends Component {
             </div>
           </div>
           <div className='row panel-color-translucent'>
-
-            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel">
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
               {this.renderPopularClasses()}
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
@@ -134,7 +133,7 @@ class App extends Component {
             </nav>
           </div>
           <div className='row'>
-            <div className="col-md-6 col-sm-12 col-xs-12">
+            <div className="col-md-6 col-sm-12 col-xs-12 sticky">
               {this.renderCourseCard()}
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
