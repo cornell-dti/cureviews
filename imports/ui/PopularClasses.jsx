@@ -26,7 +26,7 @@ export default class PopularClasses extends Component {
 
   renderCourses() {
     if (this.state.topClasses !== []) {
-      return this.state.topClasses.slice(0,10).map((course) => (
+      return this.state.topClasses.map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} handler={this.props.clickFunc}/>
       ));
