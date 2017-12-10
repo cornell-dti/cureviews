@@ -43,6 +43,7 @@ nav {
 #yes{
   color: #fff;
   font-weight: bold;
+  cursor: pointer;
 }
 #no{
   color: #fff;
