@@ -36,12 +36,21 @@ nav {
 
 #report-bug{
   color: #fff;
-  font-weight: bold;
   padding-right: 30px;
+  font-weight: normal;
+}
+
+#yes{
+  color: #fff;
+  font-weight: bold;
+}
+#no{
+  color: #fff;
+  font-weight: bold;
 }
 
 body{
-  background: url('backgroundNew.JPG') fixed no-repeat;
+  background: url('backgroundNew-edited.jpg') fixed no-repeat;
   background-size: cover;
   object-fit: contain;
 }

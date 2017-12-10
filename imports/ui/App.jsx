@@ -8,6 +8,7 @@ import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
 import PopularClasses from './PopularClasses.jsx';
 import "./css/App.css";
+import {sendFeedback} from './js/Feedback.js';
 
 // App component - represents the whole app
 class App extends Component {
@@ -129,7 +130,12 @@ class App extends Component {
             <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
               <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="">Cornell Reviews</a></h1>
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
-              <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
+              <div className="navbar-text navbar-right">
+                <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
+			          <div className="useful useful-text">
+                  Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span></a>
+                </div>
+              </div>
             </nav>
           </div>
           <div className='row'>
