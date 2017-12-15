@@ -46,6 +46,12 @@ Reviews.schema = new SimpleSchema({
     reported: {type: Number},
 });
 
+export const Validation = new Mongo.Collection('validation');
+Validation.schema = new SimpleSchema({
+    _id: {type: String},
+    adminPass: {type: String},
+});
+
 // defines all methods that will be editing the database so that database changes occur only on the server
 Meteor.methods({
     //insert a new review into the reviews database
@@ -181,6 +187,15 @@ Meteor.methods({
     //TODO: invalidate this user's token by deleting it
     removeToken: function(userId) {
 
+    },
+    //validate admin password
+    vailidateAdmin: function(pass) {
+      console.log(Validation.find({}).fetch()[0].adminPass);
+      if (Validation.find({}).fetch()[0].adminPass == pass) {
+        return 1;
+      } else {
+        return 0;
+      }
     }
 });
 
