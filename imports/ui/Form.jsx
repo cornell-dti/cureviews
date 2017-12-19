@@ -165,7 +165,7 @@ export default class Form extends Component {
                             </div>
                         </div>
                         <div className="col-md-8 sliderHolder">
-                            <input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
+                           <input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
                         </div>
                     </div>
                     <div className="sm-spacing"></div>
