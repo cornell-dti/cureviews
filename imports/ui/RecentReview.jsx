@@ -44,8 +44,9 @@ export default class RecentReview extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <p className="classNameLink" onClick={() => this.props.handler(review.class)}>
-                  <b><u>{this.state.shortName}</u></b>: {this.state.longName} <i>{moment(review.date.toString()).fromNow()}</i>
+                  <b><u>{this.state.shortName}</u></b>: {this.state.longName} 
                 </p>
+                <p><i>{moment(review.date.toString()).fromNow()}</i></p>
               </div>
             </div>
             <div className="review">
