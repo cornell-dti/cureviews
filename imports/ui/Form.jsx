@@ -151,9 +151,11 @@ export default class Form extends Component {
         <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
             <div className="panel panel-default">
                 <div className="panel-body">
+
                     <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)} placeholder="Enter your class feedback here!
                               Try to mention helpful details like which professor taught the class or what semester you took it." />
+
                     <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
                     <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                     <hr className="divider" />
@@ -189,7 +191,7 @@ export default class Form extends Component {
                         <div className="col-md-4">
                             <div className="secondary-text">Estimated Median</div>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8 selectAlignment">
                             <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
                                 <option value="0">I don&#39;t know</option>
                                 <option value="9">A+</option>
@@ -209,7 +211,7 @@ export default class Form extends Component {
                         <div className="col-md-4">
                             <div className="secondary-text">Attendance</div>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8 selectAlignment">
                             <select value={this.state.attend} onChange={(event) => this.handleAttendChange(event)}>
                                 <option value="0">Not Mandatory</option>
                                 <option value="1">Mandatory</option>

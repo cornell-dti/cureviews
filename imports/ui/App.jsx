@@ -94,13 +94,13 @@ class App extends Component {
         <div className="container container-top-gap-fix">
           <div className='row'>
             <nav className="navbar">
-              <h1 className="cornell-reviews title-link" id="navname"><a href="">Cornell Reviews</a></h1>
+              <h1 className="cornell-reviews title-link" id="navname"><a href="">CU Reviews</a></h1>
               <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
             </nav>
           </div>
           <div className='row pushDown'>
             <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
-              <p id="welcome_text">Welcome to Cornell Reviews</p>
+              <p id="welcome_text">Welcome to CU Reviews</p>
             </div>
           </div>
           <div className="row text-center pushDown">
@@ -128,7 +128,7 @@ class App extends Component {
         <div className="container remove-background">
           <div className='row'>
             <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
-              <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="">Cornell Reviews</a></h1>
+              <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="">CU Reviews</a></h1>
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
               <div className="navbar-text navbar-right">
                 <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
