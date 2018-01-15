@@ -129,8 +129,7 @@ export default class Form extends Component {
   //check if the state variables in the review are valid
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
-    // Uncomment this line when done vvvvvv
-    // var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
+    var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
     console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
