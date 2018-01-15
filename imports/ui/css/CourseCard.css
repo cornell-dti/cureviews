@@ -21,3 +21,9 @@
 #gaugeHolder > div{
   text-align: center;
 }
+
+#coursedetails {
+  padding-top: 80px;
+  padding-left: 30px;
+  padding-right: 30px;
+}

@@ -59,7 +59,7 @@ export class CourseCard extends Component {
     //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
     var offered = lastOfferedSems(theClass);
     return (
-      <div>
+      <div id="coursedetails">
       <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
       <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
       <p className="review-text spacing-large">
