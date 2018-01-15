@@ -17,13 +17,13 @@ export function semAbbriviationToWord(sem){
   var abbreviation  = String(sem);
   switch (abbreviation.substring(0,2)){
     case "SP":
-      return "Spring \'" + abbreviation.substring(2);
+      return "Spring 20" + abbreviation.substring(2);
     case "FA":
-      return "Fall \'" + abbreviation.substring(2);
+      return "Fall 20" + abbreviation.substring(2);
     case "SU":
-      return "Summer \'" + abbreviation.substring(2);
+      return "Summer 20" + abbreviation.substring(2);
     case "WI":
-      return "Winter \'" + abbreviation.substring(2);
+      return "Winter 20" + abbreviation.substring(2);
   }
 }
 
@@ -63,9 +63,9 @@ export function getGaugeValues(allReviews) {
     newState.gradeNum = 0;
   }
   if ((countMan/count).toFixed(0) == 1) {
-    newState.mandatory = "Yes";
+    newState.mandatory = "Mandatory";
   }  else {
-    newState.mandatory = "No";
+    newState.mandatory = "Not Mandatory";
   }
 
   //translate grades from numerical value to letters, and assign the correct color.

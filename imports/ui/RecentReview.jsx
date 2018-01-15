@@ -44,14 +44,14 @@ export default class RecentReview extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <p className="classNameLink" onClick={() => this.props.handler(review.class)}>
-                  <b><u>{this.state.shortName}</u></b>: {this.state.longName} 
+                  <b><u>{this.state.shortName}</u></b>: {this.state.longName}
                 </p>
                 <p><i>{moment(review.date.toString()).fromNow()}</i></p>
               </div>
             </div>
             <div className="review">
                 <div className="panel-body">
-                    <div className="row">
+                    <div className="row reviewNumbers">
                         <div className="col-md-2 col-xs-2 col-xs-2">
                             <div className="container" id="box" style={this.getQualColor(review.quality)}>
                                 <div id="text">{review.quality}</div>

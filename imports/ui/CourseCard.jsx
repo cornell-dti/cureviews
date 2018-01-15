@@ -23,7 +23,7 @@ export class CourseCard extends Component {
       grade: "-",
       gradeNum: 0,
       gradeColor: "#E64458",
-      mandatory: "Yes",
+      mandatory: "Mandatory",
     };
 
     this.state = this.defaultGaugeState;
@@ -88,7 +88,7 @@ export class CourseCard extends Component {
               </section>
             </div>
           </div>
-        <p className="review-text spacing-large">Attendence Mandatory: {this.state.mandatory}</p>
+        <p className="review-text spacing-large">Attendance: {this.state.mandatory}</p>
       </div>
     );
   }

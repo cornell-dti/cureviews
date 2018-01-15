@@ -42,7 +42,7 @@ export default class Review extends Component {
       </div>
       <div className="review">
           <div className="panel-body">
-              <div className="row">
+              <div className="row reviewNumbers">
                   <div className="col-md-2 col-xs-2 col-xs-2">
                       <div className="container" id="box" style={this.getQualColor(review.quality)}>
                           <div id="text">{review.quality}</div>

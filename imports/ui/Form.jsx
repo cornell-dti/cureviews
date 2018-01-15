@@ -129,7 +129,8 @@ export default class Form extends Component {
   //check if the state variables in the review are valid
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
-    var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
+    // Uncomment this line when done vvvvvv
+    // var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
     console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
@@ -189,7 +190,7 @@ export default class Form extends Component {
                         <div className="col-md-4">
                             <div className="secondary-text">Estimated Median</div>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8 selectAlignment">
                             <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
                                 <option value="0">I don&#39;t know</option>
                                 <option value="9">A+</option>
@@ -209,7 +210,7 @@ export default class Form extends Component {
                         <div className="col-md-4">
                             <div className="secondary-text">Attendance</div>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8 selectAlignment">
                             <select value={this.state.attend} onChange={(event) => this.handleAttendChange(event)}>
                                 <option value="0">Not Mandatory</option>
                                 <option value="1">Mandatory</option>

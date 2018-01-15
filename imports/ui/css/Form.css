@@ -65,3 +65,7 @@ input[type="range"] {
 }
 
 .hidden { display:none; }
+
+.selectAlignment {
+  padding-top: 8px;
+}
