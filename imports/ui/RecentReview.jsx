@@ -44,7 +44,9 @@ export default class RecentReview extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <p className="classNameLink" onClick={() => this.props.handler(review.class)}>
-                  <b><u>{this.state.shortName}</u></b>: {this.state.longName}
+
+                  <b><u>{this.state.shortName}</u></b>: {this.state.longName} 
+
                 </p>
                 <p><i>{moment(review.date.toString()).fromNow()}</i></p>
               </div>
@@ -69,7 +71,7 @@ export default class RecentReview extends Component {
                             <p id="label">Difficulty</p>
                         </div>
                         <div className="col-sm-2 col-sm-2 col-xs-2">
-                            <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
+                            <button id="button_text" onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.')}}>Report</button>
                         </div>
                     </div>
                     <div className="row">
