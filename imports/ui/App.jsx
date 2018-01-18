@@ -132,9 +132,6 @@ class App extends Component {
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
               <div className="navbar-text navbar-right">
                 <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
-			          <div className="useful useful-text">
-                  Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span></a>
-                </div>
               </div>
             </nav>
           </div>
@@ -146,6 +143,11 @@ class App extends Component {
               <div>
                 {this.renderForm()}
               </div>
+              <div className="useful useful-text">
+                <h5>
+                  Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span></a>
+                </h5>
+                </div>
               <div>
                 {this.renderPastReviews()}
               </div>
