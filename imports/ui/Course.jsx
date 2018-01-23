@@ -10,7 +10,7 @@ export default class Course extends Component {
     return (
       <div id="classbutton">
         <li className="text-style-1" id={classInfo._id} onClick={() => this.props.handler(classInfo._id)}>
-        {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
+          {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
         </li>
       </div>
     );

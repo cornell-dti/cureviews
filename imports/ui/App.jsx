@@ -17,7 +17,9 @@ class App extends Component {
 
     // state of the app will change depending on class selection and current search query
     this.state = {
-      selectedClass: null,
+      selectedClass: typeof this.props.selectedClass !== "undefined" && this.props.selectedClass !== null
+          ? this.props.selectedClass
+          : null,
       query: ""
     };
 
@@ -94,7 +96,7 @@ class App extends Component {
         <div className="container container-top-gap-fix">
           <div className='row'>
             <nav className="navbar">
-              <h1 className="cornell-reviews title-link" id="navname"><a href="">CU Reviews</a></h1>
+              <h1 className="cornell-reviews title-link" id="navname"><a href="/">CU Reviews</a></h1>
               <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
             </nav>
           </div>
@@ -128,7 +130,7 @@ class App extends Component {
         <div className="container remove-background">
           <div className='row'>
             <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
-              <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="">CU Reviews</a></h1>
+              <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="/">CU Reviews</a></h1>
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
               <div className="navbar-text navbar-right">
                 <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>

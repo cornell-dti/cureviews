@@ -135,6 +135,16 @@ Meteor.methods({
         }
         return null
     },
+    getCourseByInfo: function (number, subject) {
+        const numberRegex  = new RegExp(/^(?=.*[0-9])/i);
+        const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
+        if (numberRegex.test(number) && subjectRegex.test(subject)) {
+            return Classes.find({classSub: subject, classNum: number}).fetch()[0];
+        }
+        else {
+            return null;
+        }
+    },
     //allow user to flag a review - make it invisible and allow admin to review it.
     reportReview: function(review) {
       var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
@@ -231,7 +241,7 @@ if (Meteor.isServer) {
     //"publish" classes based on search query. Only published classes are visible to the client
     Meteor.publish('classes', function validClasses(searchString) {
       if (searchString !== undefined && searchString !== "") {
-        console.log("query entered:", searchString);
+        //console.log("query entered:", searchString);
         //first check for exact subject match
         exactSubSearch = Classes.find({classSub : searchString}, {limit: 200});
         if (exactSubSearch.fetch().length > 0) {
@@ -240,41 +250,46 @@ if (Meteor.isServer) {
         //next check for subject containing the query
         subSearch = Classes.find({classSub :{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},{limit: 200});
         if (subSearch.fetch().length > 0) {
-          return subSearch
-        } else {
+          return subSearch;
+        } 
+        else {
           //last check eveerything else
           return Classes.find(
             {'$or' : [
-              { 'classSub':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-              { 'classNum':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
+              { 'classSub':  { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+              { 'classNum':  { '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
               { 'classTitle':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-              { 'classFull':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
+              { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
             },
-            {limit: 200}
+            { limit: 200 }
           );
         }
       } else {
-        console.log("no search");
-        return Classes.find({},
-            {limit: 200});
+        //console.log("no search");
+        return Classes.find({}, {limit: 200});
       }
     });
 
     //"publish" reviews based on selected course, visibility and reporting requirements. Only published reviews are visible to the client
     Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
-        var ret = null
-        //for a -1 courseId, disply the most popular reviews (visible, non reported only)
-        if (courseId == -1) {
-          console.log('popular reviews');
+        var ret = null;
+        //for a -1 courseId, display the most popular reviews (visible, non reported only)
+        if (courseId === -1) {
+          //console.log('popular reviews');
           ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 5});
         }
         else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) { //show valid reviews for this course
-            console.log('course valid reviews');
+            //console.log('course valid reviews');
             //get the list of crosslisted courses for this class
-            crossList = Classes.find({_id: courseId}).fetch()[0].crossList;
-            console.log(crossList)
+            var crossList;
+            crossListResult = Classes.find({_id: courseId}).fetch()[0];
+            if (crossListResult !== undefined) {
+                // Why
+                crossList = crossListResult.crossList;
+            }
+            //console.log(crossList);
             //if there are crossListed Courses, merge the reviews
-            if (crossList != undefined && crossList.length > 0) {
+            if (crossList !== undefined && crossList.length > 0) {
               //format each courseid into an object to input to the find's '$or' search
               crossListOR = crossList.map(function(courseId) {
                 return {"class": courseId};
@@ -304,10 +319,10 @@ if (Meteor.isServer) {
     });
 
     // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
-    //Classes.remove({});
-    //Subjects.remove({});
-    //addAllCourses(findAllSemesters());
-    //addCrossList();
+    // Classes.remove({});
+    // Subjects.remove({});
+    // addAllCourses(findAllSemesters());
+    // addCrossList();
 }
 
 //Other helper functions used above
@@ -442,7 +457,7 @@ function addCrossList() {
                                 var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
                                 return dbCourse[0]._id;
                               })
-                              console.log(crossListIDs);
+                              //console.log(crossListIDs);
                               thisCourse = check[0];
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
                             }
