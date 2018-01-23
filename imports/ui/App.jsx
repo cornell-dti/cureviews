@@ -9,6 +9,7 @@ import CourseReviews from './CourseReviews.jsx';
 import PopularClasses from './PopularClasses.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
+import {courseVisited} from './js/Feedback.js';
 
 // App component - represents the whole app
 class App extends Component {
