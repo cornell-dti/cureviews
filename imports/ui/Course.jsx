@@ -9,9 +9,11 @@ export default class Course extends Component {
     var classInfo = this.props.info;
     return (
       <div id="classbutton">
-        <li className="text-style-1" id={classInfo._id} onClick={() => this.props.handler(classInfo._id)}>
-          {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
-        </li>
+          <li id={classInfo._id} onClick={() => this.props.handler(classInfo._id)}>
+              <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
+                  {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
+              </a>
+          </li>
       </div>
     );
   }

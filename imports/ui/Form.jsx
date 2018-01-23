@@ -108,10 +108,10 @@ export default class Form extends Component {
         atten: atten
       };
 
-      console.log("ready to submit");
+      //console.log("ready to submit");
       // call the insert funtion
       Meteor.call('insert', newReview, this.props.courseId, (error, result) => {
-        if (!error && result==1) {
+        if (!error && result === 1) {
           // Success, so reset form
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
@@ -130,14 +130,14 @@ export default class Form extends Component {
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
     var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
-    console.log(this.state.postClicks);
+    //console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
-      text: text != null && text != undefined && text.length > 0 && !regex.test(text),
+      text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
       allFalse: false
-    }
+    };
     errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty);
     return errs;
   }

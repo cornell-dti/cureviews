@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
-import {Classes} from '../api/classes.js';
 import Form from './Form.jsx';
-import Course from './Course.jsx';
 import CourseCard from './CourseCard.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
