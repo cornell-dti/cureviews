@@ -156,7 +156,7 @@ class App extends Component {
           </div>
         </div>
       );
-      courseVisited(this.state.selectedClass.classSub, this.selectedClass.classNum);
+      courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
     }
   }
 }
