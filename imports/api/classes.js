@@ -251,7 +251,7 @@ if (Meteor.isServer) {
         subSearch = Classes.find({classSub :{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},{limit: 200});
         if (subSearch.fetch().length > 0) {
           return subSearch;
-        } 
+        }
         else {
           //last check eveerything else
           return Classes.find(
@@ -274,7 +274,7 @@ if (Meteor.isServer) {
     Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
         var ret = null;
         //for a -1 courseId, display the most popular reviews (visible, non reported only)
-        if (courseId === -1) {
+        if (courseId === "-1") {
           //console.log('popular reviews');
           ret =  Reviews.find({visible : 1, reported: 0}, { sort: {date: -1}, limit: 5});
         }
