@@ -125,6 +125,7 @@ class App extends Component {
         </div>
       );
     } else {
+      courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
         <div className="container remove-background">
           <div className='row'>
@@ -156,7 +157,6 @@ class App extends Component {
           </div>
         </div>
       );
-      courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
     }
   }
 }
