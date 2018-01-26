@@ -8,34 +8,23 @@ import PopularClasses from './PopularClasses.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
+import Home from './Home.jsx';
 
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
     super(props);
 
-    // state of the app will change depending on class selection and current search query
+    // state of the app will change depending on class selection, query sends info to searchbar
     this.state = {
       selectedClass: typeof this.props.selectedClass !== "undefined" && this.props.selectedClass !== null
           ? this.props.selectedClass
           : null,
-      query: ""
+      query: '',
     };
 
     // bind functions called in other files to this context, so that current state is still accessable
-    this.handleSelectClass = this.handleSelectClass.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
-  }
-
-  //get the full class details for the clicked class. Called in Course.jsx
-  handleSelectClass(classId) {
-    Meteor.call('getCourseById', classId, (error, result) => {
-      if (!error) {
-        this.setState({selectedClass: result, query: ""});
-      } else {
-        console.log(error)
-      }
-    });
   }
 
   //redirect to force login
@@ -44,93 +33,23 @@ class App extends Component {
   }
 
   //set the state variable to the current value of the input. Called in SearchBar.jsx
+  //searchbar must receive the query to use in subscription to courses for search suggestions
   updateQuery(event) {
     this.setState({query: event.target.value});
     //Session to be able to get info from this.state.query in createContainer
     Session.set('querySession', this.state.query);
   }
 
-  //check if a class is selected, and show a coursecard only when one is.
-  renderCourseCard() {
-    //Removes the backgroundImage from the body tag after a course is selected
-    document.body.style.backgroundImage = "url('')";
-    var toShow = <div/>; //empty div
-    if (this.state.selectedClass !== null) {
-      toShow = <CourseCard course={this.state.selectedClass}/>;
-    }
-    return toShow;
-  }
-
-  //check if a class is selected, dispay an add review form only when one is
-  renderForm() {
-    var toShow = <div/>;
-    if (this.state.selectedClass !== null) {
-      toShow = <Form courseId={this.state.selectedClass._id}/>;
-    }
-    return toShow;
-  }
-
-  //check if a class is selected. Display past reviews for the class only when one is selected
-  //Or display most recent reviews out of all classes if no class is selected
-  renderPastReviews() {
-    var toShow = <div/>;
-    if (this.state.selectedClass !== null) {
-      toShow = <CourseReviews courseId={this.state.selectedClass._id} handler={this.handleSelectClass}/>;
-    } else {
-      toShow = <CourseReviews courseId={"-1"} handler={this.handleSelectClass}/>;
-    }
-    return toShow;
-  }
-
-  //displays most reviewed classes
-  renderPopularClasses() {
-    var toShow = <div/>;
-    toShow = <PopularClasses clickFunc={this.handleSelectClass}/>;
-    return toShow;
-  }
-
   render() {
     if (this.state.selectedClass === null) {
-      return (
-        <div className="container container-top-gap-fix">
-          <div className='row'>
-            <nav className="navbar">
-              <h1 className="cornell-reviews title-link" id="navname"><a href="/">CU Reviews</a></h1>
-              <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
-            </nav>
-          </div>
-          <div className='row pushDown'>
-            <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
-              <p id="welcome_text">Welcome to CU Reviews</p>
-            </div>
-          </div>
-          <div className="row text-center pushDown">
-            <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
-          </div>
-          <div className='row pushDown'>
-            <div className="col-md-10 col-md-offset-1">
-              <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
-            </div>
-          </div>
-          <div className='row panel-color-translucent'>
-            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
-              {this.renderPopularClasses()}
-            </div>
-            <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
-              <div>
-                {this.renderPastReviews()}
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+      <Home />
     } else {
       return (
         <div className="container remove-background">
           <div className='row'>
             <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
               <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="/">CU Reviews</a></h1>
-              <SearchBar query={this.state.query} queryFunc={this.updateQuery} clickFunc={this.handleSelectClass}/>
+              <SearchBar query={this.state.query} queryFunc={this.updateQuery}/>
               <div className="navbar-text navbar-right">
                 <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
               </div>
@@ -138,11 +57,11 @@ class App extends Component {
           </div>
           <div className='row'>
             <div className="col-md-6 col-sm-12 col-xs-12 sticky">
-              {this.renderCourseCard()}
+              <CourseCard course={this.state.selectedClass}/>
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
               <div>
-                {this.renderForm()}
+                <Form courseId={this.state.selectedClass._id}/>
               </div>
               <div className="useful useful-text">
                 <h5>
@@ -150,7 +69,7 @@ class App extends Component {
                 </h5>
                 </div>
               <div>
-                {this.renderPastReviews()}
+                <CourseReviews courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
