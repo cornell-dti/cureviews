@@ -108,10 +108,10 @@ export default class Form extends Component {
         atten: atten
       };
 
-      console.log("ready to submit");
+      //console.log("ready to submit");
       // call the insert funtion
       Meteor.call('insert', newReview, this.props.courseId, (error, result) => {
-        if (!error && result==1) {
+        if (!error && result === 1) {
           // Success, so reset form
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
@@ -130,14 +130,14 @@ export default class Form extends Component {
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
     var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
-    console.log(this.state.postClicks);
+    //console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
-      text: text != null && text != undefined && text.length > 0 && !regex.test(text),
+      text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
       allFalse: false
-    }
+    };
     errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty);
     return errs;
   }
@@ -151,9 +151,11 @@ export default class Form extends Component {
         <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
             <div className="panel panel-default">
                 <div className="panel-body">
-                    <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text} onChange={(event) => this.handleTextChange(event)}
-                              placeholder="Enter your class feedback here! Try to mention helpful details like which professor
-                              taught the class or what semester you took it." />
+
+                    <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                              onChange={(event) => this.handleTextChange(event)} placeholder="Enter your class feedback here!
+                              Try to mention helpful details like which professor taught the class or what semester you took it." />
+
                     <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
                     <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                     <hr className="divider" />

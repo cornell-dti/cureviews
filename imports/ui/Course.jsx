@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import "./css/Course.css";
 // Course component - represents a single course to be shown to the user in a course search.
-// Clicking this component will change the state of the app to show course details.
+// Clicking this component will change the route of the app to show course details.
 export default class Course extends Component {
   //props:
   // info, a database object containing all of this class's data.
@@ -9,9 +9,11 @@ export default class Course extends Component {
     var classInfo = this.props.info;
     return (
       <div id="classbutton">
-        <li className="text-style-1" id={classInfo._id} onClick={() => this.props.handler(classInfo._id)}>
-        {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
-        </li>
+          <li id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } >
+              <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
+                  {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
+              </a>
+          </li>
       </div>
     );
   }
@@ -21,5 +23,4 @@ Course.propTypes = {
   // This component gets the task to display through a React prop.
   // We can use propTypes to indicate it is required
   info: PropTypes.object.isRequired,
-  handler: PropTypes.func.isRequired
 };

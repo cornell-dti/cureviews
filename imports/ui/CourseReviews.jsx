@@ -29,7 +29,7 @@ export class CourseReviews extends Component {
   renderReviews() {
     if (this.props.courseId === "-1") {
       return this.props.reviews.map((review) => (
-        <RecentReview key={review._id} info={review} reportHandler={this.reportReview} handler={this.props.handler}/>
+        <RecentReview key={review._id} info={review} reportHandler={this.reportReview} />
       ));
     } else {
       return this.props.reviews.map((review) => (
@@ -62,7 +62,6 @@ export class CourseReviews extends Component {
 CourseReviews.propTypes = {
   courseId: PropTypes.string.isRequired,
   reviews: PropTypes.array.isRequired,
-  handler: PropTypes.func.isRequired
 };
 
 // wrap in a container class that allows the component to dynamically grab data

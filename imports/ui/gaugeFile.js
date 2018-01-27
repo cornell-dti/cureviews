@@ -105,8 +105,8 @@ var Gauge = function (_Component) {
 			var Cy = _getPathValues.Cy;
 			var Xi = _getPathValues.Xi;
 			var val = this.props.value;
-			console.log(val);
-			console.log(this.props.textValue);
+			// console.log(val);
+			// console.log(this.props.textValue);
 			if (this.props.textValue != null) {
 				val = this.props.textValue;
 			}
