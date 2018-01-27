@@ -13,13 +13,15 @@ export default class RecentReview extends Component {
     this.state = {
       shortName: "",
       longName: "",
+      link: "",
     };
 
     var x = Meteor.call('getCourseById', props.info.class, (error, result) => {
       if (!error) {
         this.setState({
           shortName: result.classSub.toUpperCase() + " " + result.classNum,
-          longName: result.classTitle
+          longName: result.classTitle,
+          link: '/course/'+ result.classSub.toUpperCase() + "/" + result.classNum,
         });
       } else {
         console.log(error)
@@ -43,11 +45,9 @@ export default class RecentReview extends Component {
         <li>
             <div className="row">
               <div className="col-sm-12">
-                <p className="classNameLink" onClick={() => this.props.handler(review.class)}>
-
-                  <b><u>{this.state.shortName}</u></b>: {this.state.longName} 
-
-                </p>
+                <a className="classNameLink" href={this.state.link}>
+                  <b><u>{this.state.shortName}</u></b>: {this.state.longName}
+                </a>
                 <p><i>{moment(review.date.toString()).fromNow()}</i></p>
               </div>
             </div>
@@ -85,8 +85,5 @@ export default class RecentReview extends Component {
 }
 
 RecentReview.propTypes = {
-  // This component gets the task to display through a React prop.
-  // We can use propTypes to indicate it is required
   info: PropTypes.object.isRequired,
-  handler: PropTypes.func.isRequired
 };

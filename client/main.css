@@ -139,6 +139,14 @@ li {
     list-style: none;
 }
 
+#classbutton li {
+    padding: 0;
+}
+
+#classbutton li a {
+    padding: 15px;
+}
+
 li .text {
     margin-left: 10px;
 }

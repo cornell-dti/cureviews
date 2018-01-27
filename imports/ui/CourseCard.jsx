@@ -33,11 +33,11 @@ export class CourseCard extends Component {
     this.updateState(nextProps.course, nextProps.reviews);
   }
 
-  //update the component state to represent new state of the gagues and the mandatory tag
+  //update the component state to represent new state of the gauges and the mandatory tag
   updateState(selectedClass, allReviews) {
     if (selectedClass !== null && selectedClass !== undefined) {
       //gather data on the reviews and set mandatory flags.
-      if (allReviews.length != 0) {
+      if (allReviews.length !== 0) {
         //set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
         this.setState(getGaugeValues(allReviews));
       } else {
@@ -53,43 +53,43 @@ export class CourseCard extends Component {
     var theClass = this.props.course;
     //Creates Url that points to each class page on Cornell Class Roster
     var url = "https://classes.cornell.edu/browse/roster/"
-              + lastSem(theClass.classSems) + "/class/"
-              + theClass.classSub.toUpperCase() + "/"
-              + theClass.classNum;
+        + lastSem(theClass.classSems) + "/class/"
+        + theClass.classSub.toUpperCase() + "/"
+        + theClass.classNum;
     //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
     var offered = lastOfferedSems(theClass);
     return (
-      <div id="coursedetails">
-      <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-      <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
-      <p className="review-text spacing-large">
-        <strong>Last Offered: </strong>
-        {offered}
-      </p>
-      {/* <p className="review-text spacing-large">
-        <strong>Syllabus: </strong>
-         <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
-      </p>*/}
-      <h2>Class Data</h2>
-          <div className= "panel panel-default">
-            <div className = "panel-body">
-              <section>
-                <div className="row" id="gaugeHolder">
-                  <div className="col-md-4 col-sm-4 col-xs-12">
-                    <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
-                  </div>
-                  <div className="col-md-4 col-sm-4 col-xs-12">
-                    <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
-                  </div>
-                  <div className="col-md-4 col-sm-4 col-xs-12">
-                    <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
-                  </div>
+        <div id="coursedetails">
+            <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
+            <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            <p className="review-text spacing-large">
+                <strong>Last Offered: </strong>
+                {offered}
+            </p>
+            {/* <p className="review-text spacing-large">
+    <strong>Syllabus: </strong>
+     <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
+  </p>*/}
+            <h2>Class Data</h2>
+            <div className= "panel panel-default">
+                <div className = "panel-body">
+                    <section>
+                        <div className="row" id="gaugeHolder">
+                            <div className="col-md-4 col-sm-4 col-xs-12">
+                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
+                            </div>
+                            <div className="col-md-4 col-sm-4 col-xs-12">
+                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
+                            </div>
+                            <div className="col-md-4 col-sm-4 col-xs-12">
+                                <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-              </section>
             </div>
-          </div>
-        <p className="review-text spacing-large">Attendance: {this.state.mandatory}</p>
-      </div>
+            <p className="review-text spacing-large">Attendance: {this.state.mandatory}</p>
+        </div>
     );
   }
 }

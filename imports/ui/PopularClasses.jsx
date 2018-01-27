@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
 import { Classes } from '../api/classes.js';
 import Course from './Course.jsx';
 
@@ -28,7 +27,7 @@ export default class PopularClasses extends Component {
     if (this.state.topClasses !== []) {
       return this.state.topClasses.map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} handler={this.props.clickFunc}/>
+        <Course key={course._id} info={course} />
       ));
     } else {
       return <div />;
@@ -52,6 +51,4 @@ export default class PopularClasses extends Component {
 }
 
 //props
-PopularClasses.propTypes = {
-  clickFunc: PropTypes.func.isRequired
-};
+PopularClasses.propTypes = {};
