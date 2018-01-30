@@ -45,6 +45,7 @@ class App extends Component {
     if (this.state.selectedClass === null) {
       <Home />
     } else {
+      console.log("test");
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
         <div className="container remove-background">
