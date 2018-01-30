@@ -8,13 +8,11 @@ export default class Course extends Component {
   render() {
     var classInfo = this.props.info;
     return (
-      <div id="classbutton">
-          <li id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } >
-              <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
-                  {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
-              </a>
-          </li>
-      </div>
+      <li className="classbutton" id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } >
+          <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
+              {classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle}
+          </a>
+      </li>
     );
   }
 }
