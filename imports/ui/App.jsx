@@ -29,6 +29,7 @@ class App extends Component {
 
   //redirect to force login
   forceLogin() {
+    console.log("just to push new dev");
     window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   }
 
@@ -44,6 +45,7 @@ class App extends Component {
     if (this.state.selectedClass === null) {
       <Home />
     } else {
+      console.log("test");
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
         <div className="container remove-background">
