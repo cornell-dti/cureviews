@@ -60,6 +60,7 @@ class App extends Component {
           <div className='row'>
             <div className="col-md-6 col-sm-12 col-xs-12 sticky">
               <CourseCard course={this.state.selectedClass}/>
+              console.log("test");
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
               <div>
