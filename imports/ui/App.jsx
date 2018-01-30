@@ -29,6 +29,7 @@ class App extends Component {
 
   //redirect to force login
   forceLogin() {
+    console.log("just to push new dev");
     window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   }
 
