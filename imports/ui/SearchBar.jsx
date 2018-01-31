@@ -8,15 +8,18 @@ import "./css/SearchBar.css";
 //SearchBar component - contains a search bar and results of a user course search
 export class SearchBar extends Component {
   constructor(props) {
+    console.log("constructing the searchbar");
     super(props);
   }
 
   renderCourses() {
     if (this.props.query !== "") {
-      return this.props.allCourses.slice(0,10).map((course) => (
+      results = this.props.allCourses.slice(0,100).map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course}/>
       ));
+      console.log("results", results);
+      return results;
     }
     else {
       return <div />;
@@ -39,8 +42,7 @@ SearchBar.propTypes = {
   allCourses: PropTypes.array.isRequired,
   loading: React.PropTypes.bool,
   query: PropTypes.string.isRequired,
-  queryFunc: PropTypes.func.isRequired,
-  clickFunc: PropTypes.func.isRequired
+  queryFunc: PropTypes.func.isRequired
 };
 
 export default createContainer((props) => {
