@@ -8,18 +8,15 @@ import "./css/SearchBar.css";
 //SearchBar component - contains a search bar and results of a user course search
 export class SearchBar extends Component {
   constructor(props) {
-    console.log("constructing the searchbar");
     super(props);
   }
 
   renderCourses() {
     if (this.props.query !== "") {
-      results = this.props.allCourses.slice(0,100).map((course) => (
+      return this.props.allCourses.slice(0,100).map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course}/>
       ));
-      console.log("results", results);
-      return results;
     }
     else {
       return <div />;

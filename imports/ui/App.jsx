@@ -8,79 +8,81 @@ import PopularClasses from './PopularClasses.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
-import Home from './Home.jsx';
+import { Classes } from '../api/classes.js';
 
-// App component - represents the whole app
+// App component - represents the homepage
 class App extends Component {
   constructor(props) {
     super(props);
 
-    // state of the app will change depending on class selection, query sends info to searchbar
+    // hold query to send to searchbar
     this.state = {
-      selectedClass: typeof this.props.selectedClass !== "undefined" && this.props.selectedClass !== null
-          ? this.props.selectedClass
-          : null,
-      query: '',
+      query: "",
     };
 
     // bind functions called in other files to this context, so that current state is still accessable
-    this.updateQuery = this.updateQuery.bind(this);
-  }
-
-  //redirect to force login
-  forceLogin() {
-    console.log("just to push new dev");
-    window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
+    this.updateQuery.bind(this);
   }
 
   //set the state variable to the current value of the input. Called in SearchBar.jsx
   //searchbar must receive the query to use in subscription to courses for search suggestions
-  updateQuery(event) {
+  updateQuery = (event) => {
     this.setState({query: event.target.value});
     //Session to be able to get info from this.state.query in createContainer
     Session.set('querySession', this.state.query);
   }
 
+  //redirect to force login
+  forceLogin() {
+    window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
+  }
+
   render() {
-    if (this.state.selectedClass === null) {
-      <Home />
-    } else {
-      courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
-      return (
-        <div className="container remove-background">
-          <div className='row'>
-            <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
-              <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="/">CU Reviews</a></h1>
-              <SearchBar query={this.state.query} queryFunc={this.updateQuery}/>
-              <div className="navbar-text navbar-right">
-                <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
-              </div>
-            </nav>
+    return (
+      <div className="container container-top-gap-fix">
+        <div className='row'>
+          <nav className="navbar">
+            <h1 className="cornell-reviews title-link" id="navname"><a href="/">CU Reviews</a></h1>
+            <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
+          </nav>
+        </div>
+        <div className='row pushDown'>
+          <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
+            <p id="welcome_text">Welcome to CU Reviews</p>
           </div>
-          <div className='row'>
-            <div className="col-md-6 col-sm-12 col-xs-12 sticky">
-              <CourseCard course={this.state.selectedClass}/>
-            </div>
-            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
-              <div>
-                <Form courseId={this.state.selectedClass._id}/>
-              </div>
-              <div className="useful useful-text">
-                <h5>
-                  Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span></a>
-                </h5>
-                </div>
-              <div>
-                <CourseReviews courseId={this.state.selectedClass._id} />
-              </div>
+        </div>
+        <div className="row text-center pushDown">
+          <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+        </div>
+        <div className='row pushDown'>
+          <div className="col-md-10 col-md-offset-1">
+            <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
+          </div>
+        </div>
+        <div className='row panel-color-translucent'>
+          <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
+            <PopularClasses />
+          </div>
+          <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
+            <div>
+              <CourseReviews courseId={"-1"} /> 
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
 
-App.propTypes = {};
+App.propTypes = {
+  allCourses: PropTypes.array.isRequired,
+};
 
-export default createContainer((props) => {return {};}, App);
+export default createContainer((props) => {
+  const subscription = Meteor.subscribe('classes', props.query);
+  const loading = !subscription.ready();
+  const allCourses = Classes.find({}).fetch();
+  return {
+    allCourses, loading,
+  };
+}, App);

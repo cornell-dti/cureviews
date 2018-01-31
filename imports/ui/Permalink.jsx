@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from "meteor/meteor";
-import App from './App.jsx';
 import CourseCard from './CourseCard.jsx';
 import {createContainer} from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
@@ -10,7 +9,7 @@ import PopularClasses from './PopularClasses.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
-import Home from './Home.jsx';
+import App from './App.jsx';
 
 // Permalink component - Component to render a CourseCard after searching for it in the database
 export default class Permalink extends Component {
