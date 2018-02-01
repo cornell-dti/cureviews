@@ -12,7 +12,7 @@
     "PAPERTRAIL_API_TOKEN": {
       "required": true
     },
-    "ROOT_URL": "pull-request-WRwrS2YXQdhLVJb"
+    "ROOT_URL": "https://pull-request-WRwrS2YXQdhLVJb.herokuapp.com"
   },
   "formation": {
     "web": {
