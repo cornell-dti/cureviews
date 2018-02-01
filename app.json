@@ -12,9 +12,7 @@
     "PAPERTRAIL_API_TOKEN": {
       "required": true
     },
-    "ROOT_URL": {
-      "required": true
-    }
+    "ROOT_URL": "pull-request-WRwrS2YXQdhLVJb"
   },
   "formation": {
     "web": {
