@@ -39,33 +39,35 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container container-top-gap-fix">
-        <div className='row'>
-          <nav className="navbar">
-            <h1 className="cornell-reviews title-link" id="navname"><a href="/">CU Reviews</a></h1>
-            <span className="navbar-text navbar-right" ><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
-          </nav>
-        </div>
-        <div className='row pushDown'>
+      <div className="container-fluid container-top-gap-fix">
+        <nav className="navbar">
+          <div className="navbar-header">
+           <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
+         </div>
+          <ul className="nav navbar-nav nav-right nopadding clearBackground">
+            <li className='reportButton'><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
+          </ul>
+        </nav>
+        <div className='container pushDown'>
           <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
             <p id="welcome_text">Welcome to CU Reviews</p>
           </div>
         </div>
-        <div className="row text-center pushDown">
+        <div className="container text-center pushDown searchWidth">
           <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
         </div>
-        <div className='row pushDown'>
+        <div className='container pushDown'>
           <div className="col-md-10 col-md-offset-1">
             <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
           </div>
         </div>
-        <div className='row panel-color-translucent'>
+        <div className='container noPadding panel-color-translucent'>
           <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
             <PopularClasses />
           </div>
           <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
             <div>
-              <CourseReviews courseId={"-1"} /> 
+              <CourseReviews courseId={"-1"} />
             </div>
           </div>
         </div>
