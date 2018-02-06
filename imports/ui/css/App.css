@@ -167,6 +167,7 @@ body{
 
 .searchWidth {
   width: 80%;
+  padding-left: 2em;
 }
 
 @media (min-width: 992px) {
