@@ -57,6 +57,11 @@ p {
     height: 40px;
 }
 
+#postbutton:focus {
+  outline: none;
+  box-shadow: 0 0 3pt 2pt #99c2e7;
+}
+
 .sliderHolder {
     padding-left: 10%;
 }

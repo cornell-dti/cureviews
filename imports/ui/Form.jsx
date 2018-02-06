@@ -154,9 +154,8 @@ export default class Form extends Component {
               <div className="panel panel-default">
                   <div className="panel-body">
                       <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
-                                onChange={(event) => this.handleTextChange(event)} placeholder="Enter your class feedback here!
-                                Try to mention helpful details like which professor taught the class or what semester you took it." />
-
+                        onChange={(event) => this.handleTextChange(event)}
+                        placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
                       <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
                       <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                       <hr className="divider" />
@@ -227,7 +226,7 @@ export default class Form extends Component {
                       <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
                   </div>
                   <div className="col-md-3">
-                      <button id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                      <button  disabled={!isEnabled} id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
                   </div>
               </div>
               <div className="row">
