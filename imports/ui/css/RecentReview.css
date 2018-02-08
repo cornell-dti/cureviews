@@ -9,6 +9,10 @@
   cursor: pointer;
 }
 
+.classNameLink:hover {
+  text-decoration: none;
+}
+
 .classNameLink .text-style-1 {
   font-weight: 500;
 }

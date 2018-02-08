@@ -59,21 +59,13 @@ export default class Permalink extends Component {
           }
       });
     }
-    // <div className='row'>
-    //   <nav className="navbar navbar-flex navbar-fixed-top col-xs-12">
-    //     <h1 className="navbar-brand mb-0 title-link" id= "navname"><a href="/">CU Reviews</a></h1>
-    //     <SearchBar query={this.state.query} queryFunc={this.updateQuery}/>
-    //     <div className="navbar-text navbar-right">
-    //       <span><a id="report-bug" href = "https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank">Report a Bug</a></span>
-    //     </div>
-    //   </nav>
-    // </div>
+
     render () {
         if (this.state.selectedClass) {
           courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
           return (
             <div className="container-fluid container-top-gap-fix remove-background">
-              <nav className="navbar">
+              <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                  <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
                 </div>
@@ -87,7 +79,7 @@ export default class Permalink extends Component {
                 <div className="col-md-6 col-sm-12 col-xs-12 sticky">
                   <CourseCard course={this.state.selectedClass}/>
                 </div>
-                <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray fix-contain">
+                <div className="col-md-6 col-sm-12 col-xs-12 panel-container moveDown panel-color-gray">
                   <div>
                     <Form courseId={this.state.selectedClass._id}/>
                   </div>
