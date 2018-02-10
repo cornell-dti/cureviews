@@ -1,0 +1,12 @@
+#error{
+    font-size: 50px;
+    color: blue;
+    text-align: center;
+    padding-left: 50px;
+    margin-left: 50px;
+    
+}
+
+#loading{
+    padding-top: 300px;
+}

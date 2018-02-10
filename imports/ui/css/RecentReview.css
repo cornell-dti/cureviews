@@ -20,3 +20,11 @@
 .reviewNumbers{
   margin-bottom: 8px;
 }
+
+#date{
+  float: right;
+}
+
+#button_text{
+  float: right;
+}
