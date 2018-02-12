@@ -10,6 +10,7 @@ import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
 import App from './App.jsx';
+import "./css/Permalink.css";
 
 // Permalink component - Component to render a CourseCard after searching for it in the database
 export default class Permalink extends Component {
@@ -59,6 +60,8 @@ export default class Permalink extends Component {
           }
       });
     }
+    
+
 
     render () {
         if (this.state.selectedClass) {
@@ -102,16 +105,19 @@ export default class Permalink extends Component {
           //TODO: 404 error graphic
           return (
               <div id="coursedetails">
-                404: Class not found
+                <h1 id="error">Error 404: Class not Found</h1>
               </div>
           );
         } else {
           //TODO: loading screen graphic
-          return (
-              <div id="coursedetails">
-                Loading...
+            const Loading = require('react-loading-animation'); 
+            return (
+                <div id="loading">
+                <Loading/>;
               </div>
-          );
+            )
+              
+          
         }
     }
 }
