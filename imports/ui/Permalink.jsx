@@ -104,9 +104,22 @@ export default class Permalink extends Component {
         } else if (this.state.classDoesntExist) {
           //TODO: 404 error graphic
           return (
-              <div id="coursedetails">
-                <h1 id="error">Error 404: Class not Found</h1>
+              <div className="container-fluid container-top-gap-fix remove-background">
+              <nav className="navbar navbar-fixed-top">
+                <div className="navbar-header">
+                 <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
+                </div>
+                <ul className="nav navbar-nav nav-right searchWidth nopadding clearBackground">
+                  <li className='nav-searchBar'><SearchBar query={this.state.query} queryFunc={this.updateQuery}/></li>
+                  <li className="text-right reportButton reportButtonWidth"><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
+                </ul>
+              </nav>
+              <div id="error">
+              <span>Sorry, we couldn't find your class.</span>
+              <h3>Try searching again.</h3>
               </div>
+              </div>
+              
           );
         } else {
           //TODO: loading screen graphic
