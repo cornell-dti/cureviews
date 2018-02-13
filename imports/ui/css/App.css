@@ -26,18 +26,23 @@
 nav {
   background-color: #4990E2;
   margin-top: 0;
-  padding-left: 20px;
 }
 
 #navname{
   color: #fff;
   margin-top: 10px;
+  font-size: 1.8em;
 }
 
-#report-bug{
+#report-bug {
   color: #fff;
-  padding-right: 30px;
   font-weight: normal;
+  padding-top: 0;
+}
+
+#report-bug:hover {
+  background-color: transparent;
+  opacity: .7;
 }
 
 #yes{
@@ -62,12 +67,15 @@ body{
 
 .container-top-gap-fix{
   padding-top: 0 !important;
+  padding: 0;
 }
 
 .panel-container{
   background-color: rgba(255, 255, 255, 0.0);
   height: 100%;
 }
+
+.moveDown {margin-top: 72px;}
 
 .panel-color-translucent{
   background-color: rgba(255, 255, 255, 0.93);
@@ -93,19 +101,73 @@ body{
 
 .navbar {
   height: 72px;
+  padding-top: 1em;
 }
 
 .pushDown {
   padding-top: 4%;
 }
 
-.title-link a{
+.title-link a {
   color: white;
   text-decoration: none;
 }
 
 .sticky{
   position: relative;
+}
+.noPadding {
+  padding: 0 !important;
+}
+
+.nav-center {
+  margin-top: 15px;
+  background-color: transparent !important;
+}
+
+.nav-right {
+  margin-top: 15px;
+  float: right !important;
+  background-color: transparent !important;
+}
+
+.nav-searchBar {
+  border: none !important;
+  padding: 0;
+  padding-left: 2em;
+  width: 80%;
+  margin-top: -15px;
+}
+
+.nav-searchBar > div {
+  box-shadow: none !important;
+  width: 100% !important;
+  padding-top: 0;
+  margin-top: 0 !important;
+
+}
+
+.nav-searchBar > div > input {
+  text-align: left !important;
+}
+
+.nav-searchBar ul {
+  width: 100% !important;
+}
+
+.reportButton {
+
+  border: none !important;
+  padding: 0;
+}
+
+.reportButtonWidth {
+  width: 20% !important;
+}
+
+.searchWidth {
+  width: 80%;
+  padding-left: 2em;
 }
 
 @media (min-width: 992px) {

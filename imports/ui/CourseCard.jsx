@@ -66,10 +66,6 @@ export class CourseCard extends Component {
                 <strong>Last Offered: </strong>
                 {offered}
             </p>
-            {/* <p className="review-text spacing-large">
-    <strong>Syllabus: </strong>
-     <a className="cornellClassLink spacing-large" href={url} target="_blank">Download</a> (Placeholder)
-  </p>*/}
             <h2>Class Data</h2>
             <div className= "panel panel-default">
                 <div className = "panel-body">
@@ -88,7 +84,9 @@ export class CourseCard extends Component {
                     </section>
                 </div>
             </div>
-            <p className="review-text spacing-large">Attendance: {this.state.mandatory}</p>
+            <p className="review-text spacing-large">
+              <strong>Attendance:</strong> {this.state.mandatory}
+            </p>
         </div>
     );
   }

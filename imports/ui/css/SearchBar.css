@@ -25,6 +25,11 @@
   height: 40px;
 }
 
+#search:focus {
+  outline: none;
+  box-shadow: 0 0 3pt 2pt #99c2e7;
+}
+
 #output {
   background: white;
   border-bottom-left-radius: 12px;
@@ -36,26 +41,15 @@
   overflow-y: auto;
   position: absolute;
   max-width: 1000px;
-  width: 80%;
+  /* width: 61.5%; */
   z-index: 1;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .nav-search-holder {
   width: 100%;
-}
-@media (max-width: 600px) {
-  #output {
-    width: 95% !important;
-    margin-right: 15px;
-    margin-left: 15px;
-  }
-
-  #searchbar {
-    width: 95%;
-  }
 }
 
 .navbar-flex{
@@ -67,4 +61,31 @@
   margin-left: 13px;
   color: #fff;
   font-weight: bold;
+}
+
+/* custom widths for searchbar */
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+	#output {
+    width: 61.5%
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+  #output {
+    width: 61.7%
+  }
+}
+
+@media only screen and (min-width : 1160px) {
+  #output {
+    width: 62%;
+  }
+}
+
+@media only screen and (min-width : 1280px) {
+  #output {
+    width: 62.4%
+  }
 }

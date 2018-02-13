@@ -16,3 +16,8 @@
   cursor: pointer;
   width: 100%;
 }
+
+.text-style-1:hover {
+  text-decoration: none;
+  color: inherit;
+}

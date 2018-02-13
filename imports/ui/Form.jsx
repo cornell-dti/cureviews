@@ -148,93 +148,94 @@ export default class Form extends Component {
     var err = this.validateInputs(this.state.median, this.state.attend, this.state.text);
     var isEnabled = err.allTrue;
     return (
-        <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-            <div className="panel panel-default">
-                <div className="panel-body">
+        <div>
+          <legend className="review-header">Leave a Review</legend>
+          <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
+              <div className="panel panel-default">
+                  <div className="panel-body">
+                      <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                        onChange={(event) => this.handleTextChange(event)}
+                        placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
+                      <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
+                      <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                      <hr className="divider" />
+                      <div className="row">
+                          <div className="col-md-3">
+                              <h1 className="secondary-text">Overall Quality</h1>
+                          </div>
+                          <div className="col-md-1">
+                              <div className="small-icon" id="sm1" style={this.getQualColor(this.state.quality)}>
+                                  <p>{this.state.quality}</p>
+                              </div>
+                          </div>
+                          <div className="col-md-8 sliderHolder">
+                             <input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className='row'>
+                          <div className="col-md-3">
+                              <h1 className="secondary-text">Level of Difficulty</h1>
+                          </div>
+                          <div className="col-md-1">
+                              <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
+                                  <p>{this.state.diff}</p>
+                              </div>
+                          </div>
+                          <div className="col-md-8 sliderHolder">
+                              <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-4">
+                              <div className="secondary-text">Estimated Median</div>
+                          </div>
+                          <div className="col-md-8 selectAlignment">
+                              <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
+                                  <option value="0">I don&#39;t know</option>
+                                  <option value="9">A+</option>
+                                  <option value="8">A</option>
+                                  <option value="7">A-</option>
+                                  <option value="6">B+</option>
+                                  <option value="5">B</option>
+                                  <option value="4">B-</option>
+                                  <option value="3">C+</option>
+                                  <option value="2">C</option>
+                                  <option value="1">C-</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-4">
+                              <div className="secondary-text">Attendance</div>
+                          </div>
+                          <div className="col-md-8 selectAlignment">
+                              <select value={this.state.attend} onChange={(event) => this.handleAttendChange(event)}>
+                                  <option value="0">Not Mandatory</option>
+                                  <option value="1">Mandatory</option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
-                    <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
-                              onChange={(event) => this.handleTextChange(event)} placeholder="Enter your class feedback here!
-                              Try to mention helpful details like which professor taught the class or what semester you took it." />
-
-                    <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
-                    <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                    <hr className="divider" />
-                    <div className="row">
-                        <div className="col-md-3">
-                            <h1 className="secondary-text">Overall Quality</h1>
-                        </div>
-                        <div className="col-md-1">
-                            <div className="small-icon" id="sm1" style={this.getQualColor(this.state.quality)}>
-                                <p>{this.state.quality}</p>
-                            </div>
-                        </div>
-                        <div className="col-md-8 sliderHolder">
-                           <input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
-                        </div>
-                    </div>
-                    <div className="sm-spacing"></div>
-                    <div className='row'>
-                        <div className="col-md-3">
-                            <h1 className="secondary-text">Level of Difficulty</h1>
-                        </div>
-                        <div className="col-md-1">
-                            <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
-                                <p>{this.state.diff}</p>
-                            </div>
-                        </div>
-                        <div className="col-md-8 sliderHolder">
-                            <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="0" max="5" step="1" />
-                        </div>
-                    </div>
-                    <div className="sm-spacing"></div>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <div className="secondary-text">Estimated Median</div>
-                        </div>
-                        <div className="col-md-8 selectAlignment">
-                            <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
-                                <option value="0">I don&#39;t know</option>
-                                <option value="9">A+</option>
-                                <option value="8">A</option>
-                                <option value="7">A-</option>
-                                <option value="6">B+</option>
-                                <option value="5">B</option>
-                                <option value="4">B-</option>
-                                <option value="3">C+</option>
-                                <option value="2">C</option>
-                                <option value="1">C-</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="sm-spacing"></div>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <div className="secondary-text">Attendance</div>
-                        </div>
-                        <div className="col-md-8 selectAlignment">
-                            <select value={this.state.attend} onChange={(event) => this.handleAttendChange(event)}>
-                                <option value="0">Not Mandatory</option>
-                                <option value="1">Mandatory</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="row">
-                <div className="col-md-10">
-                    <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
-                </div>
-                <div className="col-md-2">
-                    <button id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-sm-12">
-                    <h2 className="secondary-text">{this.state.message}</h2>
-                </div>
-            </div>
-        </form>
+              <div className="row">
+                  <div className="col-md-9">
+                      <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
+                  </div>
+                  <div className="col-md-3">
+                      <button  disabled={!isEnabled} id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                  </div>
+              </div>
+              <div className="row">
+                  <div className="col-sm-12">
+                      <h2 className="secondary-text">{this.state.message}</h2>
+                  </div>
+              </div>
+          </form>
+        </div>
     );
   }
 }
