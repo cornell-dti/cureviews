@@ -169,7 +169,9 @@ body{
   width: 80%;
   padding-left: 2em;
 }
-
+.logo {
+  margin-top: -5px;
+}
 @media (min-width: 992px) {
   .sticky{
     position: sticky;
