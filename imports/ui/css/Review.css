@@ -32,6 +32,7 @@
 }
 
 #review_text {
+  overflow: hidden;
   color: #4a4a4a;
   font-size: 16px;
   line-height: 1.38;
@@ -49,6 +50,7 @@
 }
 
 #button_text {
+  /* padding-left: 0; */
   color: #4a4a4a;
   font-size: 14px;
   opacity: 0.35;
