@@ -48,7 +48,7 @@ export default class RecentReview extends Component {
                 <a className="classNameLink" href={this.state.link}>
                   <b><u>{this.state.shortName}</u></b>: {this.state.longName}
                 </a>
-                <p><i>{moment(review.date.toString()).fromNow()}</i></p>
+                <p id="date"><i>{moment(review.date.toString()).fromNow()}</i></p>
               </div>
             </div>
             <div className="review">

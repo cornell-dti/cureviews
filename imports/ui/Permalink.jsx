@@ -10,6 +10,7 @@ import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
 import App from './App.jsx';
+import "./css/Permalink.css";
 
 // Permalink component - Component to render a CourseCard after searching for it in the database
 export default class Permalink extends Component {
@@ -59,6 +60,8 @@ export default class Permalink extends Component {
           }
       });
     }
+    
+
 
     render () {
         if (this.state.selectedClass) {
@@ -101,17 +104,33 @@ export default class Permalink extends Component {
         } else if (this.state.classDoesntExist) {
           //TODO: 404 error graphic
           return (
-              <div id="coursedetails">
-                404: Class not found
+              <div className="container-fluid container-top-gap-fix remove-background">
+              <nav className="navbar navbar-fixed-top">
+                <div className="navbar-header">
+                 <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
+                </div>
+                <ul className="nav navbar-nav nav-right searchWidth nopadding clearBackground">
+                  <li className='nav-searchBar'><SearchBar query={this.state.query} queryFunc={this.updateQuery}/></li>
+                  <li className="text-right reportButton reportButtonWidth"><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
+                </ul>
+              </nav>
+              <div id="error">
+              <span>Sorry, we couldn't find your class.</span>
+              <h3>Try searching again.</h3>
               </div>
+              </div>
+              
           );
         } else {
           //TODO: loading screen graphic
-          return (
-              <div id="coursedetails">
-                Loading...
+            const Loading = require('react-loading-animation'); 
+            return (
+                <div id="loading">
+                <Loading/>;
               </div>
-          );
+            )
+              
+          
         }
     }
 }
