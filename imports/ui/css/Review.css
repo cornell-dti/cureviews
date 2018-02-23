@@ -69,6 +69,10 @@
   border-color: transparent;
 }
 
+.moveRight {
+  text-align: right !important;
+}
+
 .review {
   border-radius: 8px;
   border: solid 1px #dddddd;
