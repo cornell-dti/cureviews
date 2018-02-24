@@ -43,7 +43,7 @@ class App extends Component {
         <nav className="navbar">
           <div className="navbar-header">
             <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-              <span><img src='logo.svg' width="40" height="40" className="d-inline-block align-top" alt="" /> CU Reviews</span>
+              <span><img src='logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" /> CU Reviews</span>
             </a>
           </div>
           <ul className="nav navbar-nav nav-right nopadding clearBackground">

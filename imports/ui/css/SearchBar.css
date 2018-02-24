@@ -63,7 +63,7 @@
   font-weight: bold;
 }
 
-/* custom widths for searchbar */
+/* custom widths for searchbar results */
 /* Custom, iPhone Retina */
 @media only screen and (min-width : 320px) {
 	#output {
@@ -75,6 +75,12 @@
 @media only screen and (min-width : 480px) {
   #output {
     width: 60%
+  }
+}
+
+@media only screen and (min-width : 1280px) {
+  #output {
+    width: 60.8%
   }
 }
 
