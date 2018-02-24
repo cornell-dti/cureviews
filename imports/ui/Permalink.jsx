@@ -60,7 +60,7 @@ export default class Permalink extends Component {
           }
       });
     }
-    
+
 
 
     render () {
@@ -70,7 +70,9 @@ export default class Permalink extends Component {
             <div className="container-fluid container-top-gap-fix remove-background">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
-                 <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
+                  <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+                    <span><img src='/logo.svg' width="40" height="40" className="d-inline-block align-top" alt="" /> CU Reviews</span>
+                  </a>
                 </div>
                 <ul className="nav navbar-nav nav-right searchWidth nopadding clearBackground">
                   <li className='nav-searchBar'><SearchBar query={this.state.query} queryFunc={this.updateQuery}/></li>
@@ -107,7 +109,9 @@ export default class Permalink extends Component {
               <div className="container-fluid container-top-gap-fix remove-background">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
-                 <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
+                  <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+                    <span><img src='/logo.svg' width="40" height="40" className="d-inline-block align-top" alt="" /> CU Reviews</span>
+                  </a>
                 </div>
                 <ul className="nav navbar-nav nav-right searchWidth nopadding clearBackground">
                   <li className='nav-searchBar'><SearchBar query={this.state.query} queryFunc={this.updateQuery}/></li>
@@ -119,18 +123,18 @@ export default class Permalink extends Component {
               <h3>Try searching again.</h3>
               </div>
               </div>
-              
+
           );
         } else {
           //TODO: loading screen graphic
-            const Loading = require('react-loading-animation'); 
+            const Loading = require('react-loading-animation');
             return (
                 <div id="loading">
                 <Loading/>;
               </div>
             )
-              
-          
+
+
         }
     }
 }
