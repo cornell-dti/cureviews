@@ -42,7 +42,9 @@ class App extends Component {
       <div className="container-fluid container-top-gap-fix">
         <nav className="navbar">
           <div className="navbar-header">
-           <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">CU Reviews</a>
+            <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+              <span><img src='logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" /> CU Reviews</span>
+            </a>
           </div>
           <ul className="nav navbar-nav nav-right nopadding clearBackground">
             <li className='reportButton'><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
