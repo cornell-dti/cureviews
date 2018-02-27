@@ -4,6 +4,8 @@ form {
 .panel-body {
     margin: auto;
     padding: 25px 30px;
+    padding-right: 0px;
+    padding-bottom: 10px;
 }
 textarea {
     height: 100px;

@@ -57,6 +57,7 @@
   border: none;
   background-color: white;
   text-decoration: underline;
+  padding-right: 0px;
 }
 
 #reviewpanel, #reviewul {
@@ -66,6 +67,7 @@
 #reviewpanel {
   border-color: transparent;
 }
+
 
 .review {
   border-radius: 8px;
