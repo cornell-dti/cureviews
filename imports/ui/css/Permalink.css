@@ -1,16 +1,68 @@
-#error{
+#error {
     font-size: 50px;
     color: blue;
     text-align: center;
     padding-left: 50px;
     padding-top: 200px;
-    
+
 }
 
 #loading{
     padding-top: 300px;
 }
 
+.searchWidth {
+  width: 78%;
+  padding-left: 1em;
+}
 
+.nav-searchBar {
+  border: none !important;
+  padding: 0;
+  padding-left: 2em;
+  width: 80%;
+  margin-top: -15px;
+}
 
-  
+.nav-searchBar > div {
+  box-shadow: none !important;
+  width: 100% !important;
+  padding-top: 0;
+  margin-top: 0 !important;
+
+}
+
+.nav-searchBar > div > input {
+  text-align: left !important;
+}
+
+.nav-searchBar ul {
+  width: 96.7% !important;
+}
+
+/* custom widths for searchbar */
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+	#output {
+    width: 57%
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+  #output {
+    width: 60%
+  }
+}
+
+@media only screen and (min-width : 1280px) {
+  #output {
+    width: 60.8%
+  }
+}
+
+@media only screen and (min-width : 1280px) {
+  #output {
+    width: 60.8%
+  }
+}

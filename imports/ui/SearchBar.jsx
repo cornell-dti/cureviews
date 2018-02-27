@@ -15,7 +15,7 @@ export class SearchBar extends Component {
     if (this.props.query !== "") {
       return this.props.allCourses.slice(0,100).map((course) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course}/>
+        <Course key={course._id} info={course} query={this.props.query}/>
       ));
     }
     else {
