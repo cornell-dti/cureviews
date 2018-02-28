@@ -1,6 +1,7 @@
 /* Font declaration */
 #text, #review_text, #label, #button_text {
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding-right: 30px;
 }
 
 #rectangle, .review {
