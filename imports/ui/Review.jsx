@@ -64,9 +64,7 @@ export default class Review extends Component {
                   <div className="review-text" id="review_text">{review.text}</div>
               </div>
 							<div className="col-sm-12">
-
                       <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
-
                   </div>
           </div>
       </div>
