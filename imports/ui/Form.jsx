@@ -152,7 +152,7 @@ export default class Form extends Component {
           <legend className="review-header">Leave a Review</legend>
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <div className="panel panel-default">
-                  <div className="panel-body">
+                  <div className="panel-body" id="form">
                       <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                         onChange={(event) => this.handleTextChange(event)}
                         placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
