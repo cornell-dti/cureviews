@@ -21,3 +21,9 @@
   text-decoration: none;
   color: inherit;
 }
+
+.found {
+  text-decoration: underline;
+  font-weight: bold;
+  color:#4990E2;
+}
