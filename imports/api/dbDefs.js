@@ -1,6 +1,18 @@
 import { Mongo } from 'meteor/mongo';
 
-//defines struture of database elements 
+/*
+
+ Database sefinitions file. Defines all collections in the local database,
+ with collection attributes, types, and required fields.
+
+ Used by both the Server and Client to define local and minimongo database
+ structure.
+
+*/
+
+/* # Classes collection.
+   # Holds data about each class in the course roster.
+*/
 export const Classes = new Mongo.Collection('classes');
 Classes.schema = new SimpleSchema({
     _id: {type: String},
@@ -13,6 +25,9 @@ Classes.schema = new SimpleSchema({
     classSems: {type: [String]}
 });
 
+/* # Users collection.
+   # Holds data about each user. Data is collected via Cornell net-id login.
+*/
 export const Users = new Mongo.Collection('users');
 Users.schema = new SimpleSchema({
     _id: {type: String},
@@ -23,6 +38,10 @@ Users.schema = new SimpleSchema({
     token: {type: String}
 });
 
+/* # Subjects Collection
+   # List of all course subject groups and their full text names
+   # ex: CS -> Computer Science
+*/
 export const Subjects = new Mongo.Collection('subjects');
 Subjects.schema = new SimpleSchema({
     _id: {type: String},
@@ -30,6 +49,11 @@ Subjects.schema = new SimpleSchema({
     subFull: {type: String}
 });
 
+/* # Reviews Collection.
+   # Stores each review inputted by a user. Linked with the course that was
+   # reviewed via a mapping with on class, which holds the _id attribute of
+   # the class from the Classes collection
+*/
 export const Reviews = new Mongo.Collection('reviews');
 Reviews.schema = new SimpleSchema({
     _id: {type: String},
@@ -45,6 +69,10 @@ Reviews.schema = new SimpleSchema({
     reported: {type: Number},
 });
 
+/* # Validation Collection.
+   # Stores passwords and other sensitive application keys.
+   # Must be manually populated with data when the app is initialized.
+*/
 export const Validation = new Mongo.Collection('validation');
 Validation.schema = new SimpleSchema({
     _id: {type: String},

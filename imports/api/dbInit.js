@@ -2,10 +2,33 @@ import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
 import { Classes, Users, Subjects, Reviews, Validation } from './dbDefs.js';
 
-// Adds all classes and subjects from Cornell's API between the selected semesters to the database.
-// Called when updating for a new semester and when initializing the database
+/*
+
+  Course API scraper. Uses HTTP requests to get course data from the Cornell
+  Course API and stores the results in the local database.
+
+  Functions defined here should be called during app initialization to populate
+  the local database or once a semester to add new semester data to the
+  local database.
+
+  Functions are called by admins via the admin interface, or programmatically
+  by calling the function in the classes.js file in a Meteor.startup() block
+  on the Server.
+
+*/
+
+/* # Populates the Classes and Subjects collections in the local database by grabbing
+   # all courses data for the semesters in the semsters array though requests
+   # sent to the Cornell Courses API
+   #
+   # example: semesters = ["SP17", "SP16", "SP15","FA17", "FA16", "FA15"];
+   #
+   # Using the findAllSemesters() array as input, the function populates an
+   # empty database with all courses and subjects.
+   # Using findCurrSemester(), the function updates the existing database.
+   #
+*/
 export function addAllCourses(semesters) {
-    // var semesters = ["SP17", "SP16", "SP15","FA17", "FA16", "FA15"];
     for (semester in semesters) {
         //get all classes in this semester
         var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
@@ -69,7 +92,10 @@ export function addAllCourses(semesters) {
     }
 }
 
-//returns an array of the current semester, to be given to the addAllCourses function
+/* # Grabs the API-required format of the current semester, to be given to the
+   # addAllCourses function.
+   # Return: String Array (length = 1)
+*/
 export function findCurrSemester()  {
     var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
     if (response.statusCode !== 200) {
@@ -82,7 +108,10 @@ export function findCurrSemester()  {
     }
 }
 
-//returns an array of all current semesters, to be given to the addAllCourses function
+/* # Grabs the API-required format of the all recent semesters to be given to the
+   # addAllCourses function.
+   # Return: String Array
+*/
 export function findAllSemesters() {
     var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
     if (response.statusCode !== 200) {
@@ -97,7 +126,12 @@ export function findAllSemesters() {
     }
 }
 
-//call only once to go through all courses and add in cross-listing.
+/* # Look through all courses in the local database, and identifies those
+   # that are cross-lists (have multiple official names). Link these classes
+   # by adding their course_id to all crolisted class's crosslist array.
+   #
+   # Called once during intialization, only after all courses have been added.
+*/
 export function addCrossList() {
   semesters = findAllSemesters()
   for (semester in semesters) {

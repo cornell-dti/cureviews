@@ -5,19 +5,28 @@ import { Classes, Users, Subjects, Reviews, Validation } from './dbDefs.js';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList } from './dbInit.js';
 
 /*
-Main API file. Defines all interactions between the client and server sides of the
-meteor application. Client code will call funtions defined here to
-insert, update and query the local meteor database.
 
-Uses dbDefs.js as a blueprint for collections in the local meteor database.
-Uses dbInit.js 
+ Main API file. Defines all interactions between the client and server sides of the
+ meteor application. Client code will call funtions defined here to insert, update
+ and query the local meteor database.
+
+ imports dbDefs.js for blueprints of collections in the local meteor database.
+ imports dbInit.js for initializing the local meteor database with courses from the
+ cornell course api
 
 */
-// defines all methods that will be editing the database so that database changes occur only on the server
+
+/* # Meteor Methods
+   # Client-side code in meteor is not allowed direct access to the local database
+   # (this makes it easier to keep the backend secure from outside users).
+   # Instead, the Client interacts with the database through the functions definied below,
+   # which can be initiated by the Client but run on the Server.
+*/
 Meteor.methods({
-    //insert a new review into the reviews database
+    // insert a new review into the reviews collection.
+    // Upon success returns 1, else returns 0.
     insert: function(review, classId) {
-        //only insert if all necessary feilds are filled in
+        // check: only insert if all form feilds are filled in
         if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && classId !== undefined && classId !== null) {
             var fullReview = {
                 text: review.text,
@@ -40,12 +49,16 @@ Meteor.methods({
               return 0; //fail
             }
         } else {
+            //error handling
             console.log("some review values are null")
             return 0; //fail
         }
     },
-    //make the reveiw with this id visible, checking to make sure it has a real id
+
+    // Make this reveiw visible to everyone (ex: un-report a review)
+    // Upon succcess, return 1, else 0.
     makeVisible: function (review) {
+        // check: make sure review id is valid and non-malicious
         var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
         if (regex.test(review._id)) {
             Reviews.update(review._id, {$set: { visible: 1} });
@@ -54,8 +67,11 @@ Meteor.methods({
             return 0;
         }
     },
-    //remove the review with this id, checking to make sure the id is a real id
+
+    // Delete this review from the local database.
+    // Upon succcess, return 1, else 0.
     removeReview: function(review) {
+        // check: make sure review id is valid and non-malicious
         var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
         if (regex.test(review._id)) {
             Reviews.remove({ _id: review._id});
@@ -64,21 +80,36 @@ Meteor.methods({
             return 0;
         }
     },
-    //update the database to add any new classes in the current semester if they don't already exist. To be called from the admin page once a semester.
+
+    // Update the local database when Cornell Course API adds data for the
+    // upcoming semester. Will add new classes if they don't already exist,
+    // and update the semesters offered for classes that do.
+    // Should be is called by an admin via the admin page once a semester.
     addNewSemester: function(initiate) {
+        // ensure code is running on the server, not client
         if (initiate && Meteor.isServer) {
-            console.log("updating");
+            console.log("updating new semester");
             return addAllCourses(findCurrSemester());
-            //return addAllCourses(['FA15']);
         }
     },
+
+    // Update the local database by linking crosslisted courses, so reviews
+    // from all "names" of a class are visible under each course.
+    // Should be called by an admin via the admin page ONLY ONCE
+    // during database initialization, after calling addAll below.
     addCrossList: function(initiate) {
+        // ensure the code is running on the server, not the client
         if (initiate && Meteor.isServer) {
             console.log("adding cross-listed classes");
             return addCrossList();
         }
     },
+
+    // Update the local database with all courses from the Cornell Class Roster.
+    // Should be is called by an admin via the admin page ONLY ONCE
+    // during database initialization.
     addAll: function(initiate) {
+        // ensure code is running on the server, not the client
         if (initiate && Meteor.isServer) {
             console.log("adding everything");
             Classes.remove({});
@@ -86,17 +117,21 @@ Meteor.methods({
             return addAllCourses(findAllSemesters());
         }
     },
-    //get the course (as an object) with this id, checking to make sure the id is real
+
+    // Get a course with this course_id from the Classes collection in the local database.
     getCourseById: function(courseId) {
+        // check: make sure course id is valid and non-malicious
         var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
         if (regex.test(courseId)) {
             var c = Classes.find({_id: courseId}).fetch()[0];
-            //console.log(c);
             return c;
         }
         return null
     },
+
+    // Get a course with this course number and subject from the Classes collection in the local database.
     getCourseByInfo: function (number, subject) {
+        // check: make sure number and subject are valid, non-malicious strings
         const numberRegex  = new RegExp(/^(?=.*[0-9])/i);
         const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
         if (numberRegex.test(number) && subjectRegex.test(subject)) {
@@ -106,8 +141,11 @@ Meteor.methods({
             return null;
         }
     },
-    //allow user to flag a review - make it invisible and allow admin to review it.
+
+    // Flag a review - mark it as reported and make it invisible to non-admin users.
+    // To be called by a non-admin user from a specific review.
     reportReview: function(review) {
+      // check: make sure review id is valid and non-malicious
       var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
       if (regex.test(review._id)) {
         Reviews.update({_id: review._id}, { $set: {visible: 0, reported: 1} });
@@ -116,8 +154,11 @@ Meteor.methods({
         return 0;
       }
     },
-    //un-flag a user, make it visible and unreported
+
+    // Un-flag a review, making it visible to everyone and "unreported"
+    // To be called by an admin via the admin interface.
     undoReportReview: function(review) {
+      // check: make sure review id is valid and non-malicious
       var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
       if (regex.test(review._id)) {
         Reviews.update({_id: review._id}, { $set: {visible: 1, reported: 0} });
@@ -126,9 +167,12 @@ Meteor.methods({
         return 0;
       }
     },
-    //most popular classes by number of reviews
+
+    // Get a list the most popular courses from the Classes collection (objects)
+    // popular classes -> most reviewed.
     topClasses: function() {
-      //using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
+      // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
+      // to run complex queries
       var pipeline = [
         //consider only visible reviews
         {$match: { visible: 1}},
@@ -139,15 +183,16 @@ Meteor.methods({
         {$limit: 10}
       ];
 
-      //run the functions, and find the course object for each courseId
+      //run the query, and grap the full course object for each returned course_id
       mostReviews = Reviews.aggregate(pipeline).map(function(course) {
         return Classes.find({_id: course._id}).fetch()[0];
       });
 
       return  mostReviews
     },
-    // print on the server side for API testing. Should print in logs if
-    // called (in the Auth component) by the API.
+
+    // Print on the server side for API testing. Should print in logs if
+    // called by the API (in the Auth component).
     printOnServer: function(text) {
       console.log(text);
     },
@@ -159,24 +204,30 @@ Meteor.methods({
     removeToken: function(userId) {
 
     },
-    //validate admin password
+    // Validate admin password.
+    // Upon success, return 1, else return 0.
     vailidateAdmin: function(pass) {
-      console.log(Validation.find({}).fetch()[0].adminPass);
-      if (Validation.find({}).fetch()[0].adminPass == pass) {
-        return 1;
+      // check: make sure review id is valid and non-malicious
+      var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+      if (regex.test(pass)) {
+        if (Validation.find({}).fetch()[0].adminPass == pass) {
+          return 1;
+        }
+        return 0;
       } else {
         return 0;
       }
     }
 });
 
-//Code that runs only on the server
+/* # Server Side Code
+   # Code within this block can only run on the server-side of the application.
+   # Adds indexes to local database collections to optimize search
+*/
 if (Meteor.isServer) {
     Meteor.startup(() => { // code to run on server at startup
-        //add indexes to collections for faster search
-
-        //commenting out the following because heroku does not like it and refuses to build.
-        //You can add _id directly to the database on mlab
+        // Commenting out the following because heroku does not like it and refuses to build.
+        // You can add _id directly to the database on mlab
 
         // Classes._ensureIndex(
         //     { 'classSub' : 1 },
@@ -198,8 +249,32 @@ if (Meteor.isServer) {
         // );
     });
 
-    //code that runs whenever needed
-    //"publish" classes based on search query. Only published classes are visible to the client
+    /* # Database Publishers
+       # Client-side code in meteor only has access to subsets of the local
+       # database collections though the following Publishers. Publishers listen
+       # to Client-side requests and return database elements as an array of
+       # JSON values to the Client, which stores them in another, minified database
+       # with the same format as local database collections.
+       #
+       # When the Client 'subscribes' to the publisher, it gets the most up-to-date
+       # elements in the database, and automaticly updates when the database changes.
+       # Client components can subscribe to only one instance of a collection Publisher.
+       #
+       # see minimongo collections and publish/subsribe to learn more:
+       # https://guide.meteor.com/collections.html
+       # https://docs.meteor.com/api/pubsub.html
+    */
+
+    /* Publish a subset of the local database's Classes collection based on the requested searchstring.
+       Return: array of course objects (JSON).
+       If searchString is a valid string:
+         Return any courses containing the string in the format 'subject number: course name'.
+         Courses whose subject matches the string are 'top matches' and should
+         placed at the top of the returned array. Courses with subjects containing the string
+         are 'secondary matches', placed under top matches in the return array
+      If searchString is undefined or empty:
+         Return an array of 200 courses.
+    */
     Meteor.publish('classes', function validClasses(searchString) {
       if (searchString !== undefined && searchString !== "") {
         //console.log("query entered:", searchString);
@@ -231,7 +306,21 @@ if (Meteor.isServer) {
       }
     });
 
-    //"publish" reviews based on selected course, visibility and reporting requirements. Only published reviews are visible to the client
+    /* Publish a subset of the local database's Reviews collection based on the requested parameters.
+       Return: array of course objects (JSON).
+       If courseId is -1:
+         return most popular reviews (visible and not reported)
+       If courseId is valid, visibility = 1, reportStatus = 0:
+         return unreported, visible reviews for the course with this course_id
+         or a crosslisted course. Used by CourseCard.js to render a course's reviews.
+       If courseId is valid, visiblity = 0:
+         return invalidated reviews for a course.
+       If visiblity = 0:
+         return all invalidated reviews. Used to render reviews in the admin view.
+         Includes reviews awaiting approval and those that were reported.
+       Else:
+         return none
+    */
     Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
         var ret = null;
         //for a -1 courseId, display the most popular reviews (visible, non reported only)
@@ -265,7 +354,7 @@ if (Meteor.isServer) {
             crossList = Classes.find({_id : courseId}).fetch()[0].crossList
             ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
         } else if (visiblity === 0) { //all invalidated reviews
-            console.log('all reviews');
+            console.log('all invalidated reviews');
             ret =  Reviews.find({visible : 0}, {sort: {date: -1}, limit: 700});
         } else { //no reviews
             //will always be empty because visible is 0 or 1. allows meteor to still send the ready flag when a new publication is sent
@@ -274,12 +363,19 @@ if (Meteor.isServer) {
         return ret
     });
 
-    //publish users to the client. for a valid netId, return user, otherwise show nothing.
+    /* Publish a subset of the local database's Users collection based on the requested netId.
+       Return: User object (JSON).
+    */
     Meteor.publish('users', function getUser(netId) {
         return Users.find({netId: netId}, {limit: 20});
     });
 
-    // COMMENT THESE OUT AFTER THE FIRST METEOR BUILD!!
+  /*
+   # Initial database population.
+   # Grab data from Cornell Course API to populate local database. Can also be run
+   # from the admin interface. Comment out the lines below wait until database
+   # population in complete, and re-comment.
+  */
     // Classes.remove({});
     // Subjects.remove({});
     // addAllCourses(findAllSemesters());
