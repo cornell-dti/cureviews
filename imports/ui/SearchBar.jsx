@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Classes } from '../api/classes.js';
+import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
 import "./css/SearchBar.css";
 

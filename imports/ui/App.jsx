@@ -8,7 +8,7 @@ import PopularClasses from './PopularClasses.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
-import { Classes } from '../api/classes.js';
+import { Classes } from '../api/dbDefs.js';
 
 // App component - represents the homepage
 class App extends Component {

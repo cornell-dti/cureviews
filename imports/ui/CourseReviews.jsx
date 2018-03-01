@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Reviews } from '../api/classes.js';
+import { Reviews } from '../api/dbDefs.js';
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
 
