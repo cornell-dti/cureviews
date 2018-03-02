@@ -30,7 +30,8 @@ nav {
 
 #navname{
   color: #fff;
-  margin-top: 10px;
+  padding-left: 10px;
+  margin-top: 5px;
   font-size: 1.8em;
 }
 
@@ -131,32 +132,7 @@ body{
   background-color: transparent !important;
 }
 
-.nav-searchBar {
-  border: none !important;
-  padding: 0;
-  padding-left: 2em;
-  width: 80%;
-  margin-top: -15px;
-}
-
-.nav-searchBar > div {
-  box-shadow: none !important;
-  width: 100% !important;
-  padding-top: 0;
-  margin-top: 0 !important;
-
-}
-
-.nav-searchBar > div > input {
-  text-align: left !important;
-}
-
-.nav-searchBar ul {
-  width: 100% !important;
-}
-
 .reportButton {
-
   border: none !important;
   padding: 0;
 }
@@ -165,9 +141,8 @@ body{
   width: 20% !important;
 }
 
-.searchWidth {
-  width: 80%;
-  padding-left: 2em;
+#logoImg {
+  margin-top: -5px;
 }
 
 @media (min-width: 992px) {

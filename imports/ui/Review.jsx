@@ -74,7 +74,7 @@ export default class Review extends Component {
                       <div className="review-text" id="review_text">{review.text}</div>
                   </div>
               </div>
-          </div>
+            </div>
       </div>
 		</li>
     );
