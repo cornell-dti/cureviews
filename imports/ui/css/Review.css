@@ -71,6 +71,10 @@
   border-color: transparent;
 }
 
+.moveRight {
+  text-align: right !important;
+  padding-right: 35px;
+}
 
 .review {
   border-radius: 8px;
