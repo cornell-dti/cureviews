@@ -119,8 +119,9 @@ export default class Permalink extends Component {
                 </ul>
               </nav>
               <div id="error">
-              <span>Sorry, we couldn't find your class.</span>
-              <h3>Try searching again.</h3>
+                <img src="/error.png" width="400" height="300" />
+                <h2>Sorry, we couldn't find your class you're searching for.</h2>
+                <h2>Please search for a different class.</h2>
               </div>
               </div>
 
