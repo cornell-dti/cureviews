@@ -119,7 +119,7 @@ export default class Permalink extends Component {
                 </ul>
               </nav>
               <div id="error">
-                <img src="/error.png" width="400" height="300" />
+                <img id="errorgauge" src="/error.png" width="400px" height="auto" />
                 <h2>Sorry, we couldn't find your class you're searching for.</h2>
                 <h2>Please search for a different class.</h2>
               </div>
