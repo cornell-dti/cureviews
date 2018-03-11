@@ -3,7 +3,6 @@ import { check, Match} from 'meteor/check';
 import { Classes, Users, Subjects, Reviews, Validation } from './dbDefs.js';
 
 /*
-
   Course API scraper. Uses HTTP requests to get course data from the Cornell
   Course API and stores the results in the local database.
 

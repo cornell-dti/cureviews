@@ -4,9 +4,20 @@ import { Reviews } from '../api/classes.js';
 import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; //alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 
-// Form component to allow user to add a review for selected course.
-// Takes in a course ID.
-// validation uses react controlled form elements as described at https://goshakkk.name/instant-form-fields-validation-react/
+/*
+  Form Component. Displays a from that allows the user to submit a single reivew for a given class.
+
+  Takes in a course id for the course this review is for.
+
+  Before inserting a review, it is validated  for illegal characters and to
+  ensure all fields are filled in. Form componets are implemented as 'controlled
+  components' to run validation, as described at https://goshakkk.name/instant-form-fields-validation-react/
+  and in the course review docs.
+
+  Once a review is submitted (with an 'unapproved'
+  flag), the Bart library is used to display a message telling the user the
+  review was submitted and pending approval.
+*/
 export default class Form extends Component {
   constructor(props) {
     super(props);
@@ -130,7 +141,6 @@ export default class Form extends Component {
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
     var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
-    //console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,

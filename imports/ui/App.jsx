@@ -10,32 +10,42 @@ import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
 import { Classes } from '../api/dbDefs.js';
 
-// App component - represents the homepage
-class App extends Component {
+/*
+  App Component. Uppermost component in the component tree, and the first element
+  of the HTML body tag, grabbed by main.html
+
+  Renders the applicaiton homepage with a navbar and searchbar, popular
+  classes and recent reviews components.
+*/
+export default class App extends Component {
   constructor(props) {
     super(props);
 
-    // hold query to send to searchbar
+    // keep track of user's inputed query to send to SearcBar. Initialize to empty string.
     this.state = {
       query: "",
     };
 
-    // bind functions called in other files to this context, so that current state is still accessable
+    // Bind function queryUpdate to this component's state. Required because updateQuery
+    // changes the App component's state, but is called in another file (SearchBar component)
+    // the 'this' keyword changes depending on the context of the file a function is called in,
+    // so we bind this function to the App component to refence it as 'this'
     this.updateQuery.bind(this);
   }
 
-  //set the state variable to the current value of the input. Called in SearchBar.jsx
-  //searchbar must receive the query to use in subscription to courses for search suggestions
+  // Set the local state variable query to the current value of the input (given by user)
+  // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
     this.setState({query: event.target.value});
     //Session to be able to get info from this.state.query in createContainer
     Session.set('querySession', this.state.query);
   }
 
-  //redirect to force login
-  forceLogin() {
-    window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
-  }
+  // Redirect the user to a login screen. Once the user logs in, successfully,
+  // they will be re-routed to this component.
+  // forceLogin() {
+  //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
+  // }
 
   render() {
     return (
@@ -78,15 +88,5 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  allCourses: PropTypes.array.isRequired,
-};
-
-export default createContainer((props) => {
-  const subscription = Meteor.subscribe('classes', props.query);
-  const loading = !subscription.ready();
-  const allCourses = Classes.find({}).fetch();
-  return {
-    allCourses, loading,
-  };
-}, App);
+// takes no props
+App.propTypes = {};

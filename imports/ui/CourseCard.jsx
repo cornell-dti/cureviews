@@ -6,15 +6,17 @@ import { Reviews } from '../api/dbDefs.js';
 import './css/CourseCard.css';
 import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
 
-// Holder component to list all (or top) reviews for a course.
-// Takes in course ID for selecting reviews.
+/*
+  Course Card Component. Returns a view of aggregated information about a class.
+  Displays course title, link to course roster, gauges, and other class metrics.
+
+  Takes in the course's database object to get metrics.
+*/
 export class CourseCard extends Component {
-  //props:
-  //course, the course for this card
   constructor(props) {
     super(props);
 
-    //default gauge values
+    // default gauge values
     this.defaultGaugeState = {
       diff: 0,
       diffColor: "#E64458",
@@ -26,19 +28,22 @@ export class CourseCard extends Component {
       mandatory: "Mandatory",
     };
 
+    // initialize state as default gauge values
     this.state = this.defaultGaugeState;
   }
 
+  // whenever the incoming props change (i.e, the database of reviews for a class
+  // is updated) trigger a re-render by updating the gauge values in the local state.
   componentWillReceiveProps(nextProps) {
     this.updateState(nextProps.course, nextProps.reviews);
   }
 
-  //update the component state to represent new state of the gauges and the mandatory tag
+  //recalculate guage values and other metrics to update the local state
   updateState(selectedClass, allReviews) {
     if (selectedClass !== null && selectedClass !== undefined) {
-      //gather data on the reviews and set mandatory flags.
+      // gather data on the reviews and set mandatory flags.
       if (allReviews.length !== 0) {
-        //set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
+        // set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
         this.setState(getGaugeValues(allReviews));
       } else {
         this.setState(this.defaultGaugeState); //default gauge values
@@ -51,13 +56,16 @@ export class CourseCard extends Component {
 
   render() {
     var theClass = this.props.course;
-    //Creates Url that points to each class page on Cornell Class Roster
+
+    // Creates Url that points to each class page on Cornell Class Roster
     var url = "https://classes.cornell.edu/browse/roster/"
         + lastSem(theClass.classSems) + "/class/"
         + theClass.classSub.toUpperCase() + "/"
         + theClass.classNum;
-    //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
+
+    // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     var offered = lastOfferedSems(theClass);
+
     return (
         <div id="coursedetails">
             <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
@@ -92,16 +100,18 @@ export class CourseCard extends Component {
   }
 }
 
-//define the props for this object
+// Component requires course information and all reviews for the course to generate
+// aggregate course data. Parent class provides the course object, while createContainer
+// grabs this course's reviews.
 CourseCard.propTypes = {
   course: PropTypes.object.isRequired,
   reviews: PropTypes.array.isRequired
 };
 
-// wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when database data changes!
+// Grab all visible and unreported reviews for this class by filtering against
+// this course's id.
 export default createContainer((props) => {
-  const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
+  const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); // 1 and 0 get only visible unreported reviews
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {
