@@ -42,30 +42,36 @@ export default class Review extends Component {
       </div>
       <div className="review">
           <div className="panel-body">
-              <div className="row reviewNumbers">
-                  <div className="col-md-2 col-xs-2 col-xs-2">
-                      <div className="container" id="box" style={this.getQualColor(review.quality)}>
-                          <div id="text">{review.quality}</div>
-                      </div>
-                  </div>
-                  <div className="col-md-4 col-sm-4 col-xs-4">
-                      <p id="label">Overall Quality</p>
-                  </div>
-                  <div className="col-md-2 col-sm-2 col-xs-2" >
-                      <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
-                          <div id="text">{review.difficulty}</div>
-                      </div>
-                  </div>
-                  <div className="col-md-2 col-sm-2 col-xs-2">
-                      <p id="label">Difficulty</p>
-                  </div>
-              </div>
               <div className="row">
-                  <div className="review-text" id="review_text">{review.text}</div>
-              </div>
-							<div className="col-sm-12">
-                      <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
+                  <div className="col-md-4 col-sm-4 col-xs-5">
+                    <div className="row reviewNumbersMargin">
+                      <div className="col-md-4 col-sm-4 col-xs-4">
+                          <div className="container" id="box" style={this.getQualColor(review.quality)}>
+                              <div id="text">{review.quality}</div>
+                          </div>
+                      </div>
+                      <div className="col-md-8 col-sm-8 col-xs-8">
+                          <p id="label">Overall Quality</p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4 col-sm-4 col-xs-4" >
+                          <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
+                              <div id="text">{review.difficulty}</div>
+                          </div>
+                      </div>
+                      <div className="col-md-8 col-sm-8 col-xs-8">
+                          <p id="label">Difficulty</p>
+                      </div>
+                    </div>
                   </div>
+                  <div className="col-md-7">
+                      <div className="review-text" id="review_text">{review.text}</div>
+                  </div>
+              </div>
+              <div className="row moveRight">
+                  <button id="button_text" onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.')}}>Report</button>
+              </div>
           </div>
       </div>
 		</li>

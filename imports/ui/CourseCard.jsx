@@ -61,7 +61,10 @@ export class CourseCard extends Component {
     return (
         <div id="coursedetails">
             <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-            <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            {/*Used to force new line */}
+            <div>
+              <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            </div>
             <p className="review-text spacing-large">
                 <strong>Last Offered: </strong>
                 {offered}
