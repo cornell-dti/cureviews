@@ -8,6 +8,14 @@ import App       from '../imports/ui/App.jsx';
 
 import { BrowserRouter, Route } from "react-router-dom";
 
+/*
+Generates appliation component sent to the client side entry point (main.html)
+as an HTML object with id "render-target".
+
+A router is generated using the BrowserRouter library. This determines which
+application component the user should see based on the URL they enter.
+
+*/
 Meteor.startup(() => {
     render(
         <BrowserRouter>

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
-import {createContainer} from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';

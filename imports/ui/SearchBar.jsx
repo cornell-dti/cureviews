@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
-import { Classes } from '../api/classes.js';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
 import "./css/SearchBar.css";
 
@@ -42,11 +42,11 @@ SearchBar.propTypes = {
   queryFunc: PropTypes.func.isRequired
 };
 
-export default createContainer((props) => {
+export default withTracker(props => {
   const subscription = Meteor.subscribe('classes', props.query);
   const loading = !subscription.ready();
   const allCourses = Classes.find({}).fetch();
   return {
     allCourses, loading,
   };
-}, SearchBar);
+}) (SearchBar);

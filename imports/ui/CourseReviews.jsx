@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
-import { Reviews } from '../api/classes.js';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Reviews } from '../api/dbDefs.js';
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
 
@@ -66,11 +66,11 @@ CourseReviews.propTypes = {
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
-export default createContainer((props) => {
+export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', props.courseId, 1, 0); //get only visible unreported reviews for this course
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {
     reviews, loading,
   };
-}, CourseReviews);
+}) (CourseReviews);

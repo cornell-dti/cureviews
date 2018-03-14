@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Users } from '../api/classes.js';
 import {BrowserRouter, Route } from "react-router-dom";
 import { HTTP } from 'meteor/http';
@@ -43,7 +43,7 @@ Auth.propTypes = {
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
-export default createContainer((props) => {
+export default withTracker(props => {
   const subscription = Meteor.subscribe('users', "-1"); //get all users
   const loading = !subscription.ready();
   const users = Users.find({}).fetch();
@@ -51,4 +51,4 @@ export default createContainer((props) => {
   return {
     users,
   };
-}, Auth);
+}) (Auth);
