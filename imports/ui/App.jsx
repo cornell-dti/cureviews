@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {createContainer} from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
 import CourseCard from './CourseCard.jsx';
 import SearchBar from './SearchBar.jsx';
@@ -82,11 +82,11 @@ App.propTypes = {
   allCourses: PropTypes.array.isRequired,
 };
 
-export default createContainer((props) => {
+export default withTracker(props => {
   const subscription = Meteor.subscribe('classes', props.query);
   const loading = !subscription.ready();
   const allCourses = Classes.find({}).fetch();
   return {
     allCourses, loading,
   };
-}, App);
+}) (App);
