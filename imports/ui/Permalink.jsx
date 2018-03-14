@@ -99,11 +99,8 @@ export default class Permalink extends Component {
               </div>
             </div>
           );
-            // return (
-            //     <App selectedClass={ this.state.selectedClass } />
-            // );
         } else if (this.state.classDoesntExist) {
-          //TODO: 404 error graphic
+          // 404 error graphic
           return (
               <div className="container-fluid container-top-gap-fix remove-background">
               <nav className="navbar navbar-fixed-top">
@@ -118,14 +115,15 @@ export default class Permalink extends Component {
                 </ul>
               </nav>
               <div id="error">
-              <span>Sorry, we couldn't find your class.</span>
-              <h3>Try searching again.</h3>
+                <img id="errorgauge" src="/error.png" width="400px" height="auto" />
+                <h2>Sorry, we couldn't find the class you're searching for.</h2>
+                <h2>Please search for a different class.</h2>
               </div>
               </div>
 
           );
         } else {
-          //TODO: loading screen graphic
+          //loading screen graphic
             const Loading = require('react-loading-animation');
             return (
                 <div id="loading">
