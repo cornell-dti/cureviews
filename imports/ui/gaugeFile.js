@@ -1,7 +1,11 @@
-//COPY INTO node_modules/react-svg-gauge/lib/Gauge.js
-//this file controls some of the CSS and calculations for the guages.
-//to change the gauges, edit the file at node_modules/react-svg-gauge/lib/Gauge.js and restart meteor
-//when you are ready to commit, overwrite this file to add to git (node_modules is under git ignore).
+/*
+  Code for Custom Gauge library that displays gagues in the coursecard.
+	Controls some of the CSS and calculations for the guages.
+
+	This code has been complied into a library avaliable as a node module. To edit it,
+	make edits on the file at node_modules/react-summary-gauge-2/lib/Gauge.js and restart meteor.
+	When you are ready to commit changes, update the react-summary-gauge-2 library and re-import it.
+*/
 
 'use strict';
 

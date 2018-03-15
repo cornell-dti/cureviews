@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {createContainer} from 'meteor/react-meteor-data';
+import {withTracker} from 'meteor/react-meteor-data';
 import { CollectionName } from '../api/dbDefs.js';
 import "./css/App.css"; // css files
 
@@ -45,7 +45,7 @@ export class Template extends Component {
 
 // Define the names, types and optional status of the props that will be passed
 // to this component from the parent component that creates it.
-// Be sure to include any collections obtained from the createContainer below!
+// Be sure to include any collections obtained from the withTracker below!
 
 // describe props
 Template.propTypes = {
@@ -58,13 +58,13 @@ Template.propTypes = {
 // If the component needs to access data from the database, it must be wrapped
 // inside a container that can subscribe to a meteor collection.
 //
-// createContainer encapsulates the component and subscribes to the published version
+// withTracker encapsulates the component and subscribes to the published version
 // of a specified Meteor collections, passing it to the component as a prop. This subscription will
 // automatically update whenever its database collection changes and will trigger a component re-render.
 // Look at the publishers in ../api/classes.js for more information about publishers and subscribers.
 
 // Explain which collections this componet will subscribe to, and what data is expected to be returned.
-export default createContainer((props) => {
+export default withTracker((props) => {
   const subscription = Meteor.subscribe('collection name', parameter1InPublisher, parameter2InPublisher); //get collection as lowercase name from ../api/dbInit.js
   const loading = !subscription.ready();
   const collectionAsObjectList = CollectionName.find({}).fetch();

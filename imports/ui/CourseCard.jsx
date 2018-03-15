@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import Gauge from 'react-summary-gauge-2';
 import { Reviews } from '../api/dbDefs.js';
 import './css/CourseCard.css';
@@ -69,7 +69,9 @@ export class CourseCard extends Component {
     return (
         <div id="coursedetails">
             <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-            <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            <div> {/* Forces link onto next line */}
+              <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            </div>
             <p className="review-text spacing-large">
                 <strong>Last Offered: </strong>
                 {offered}
@@ -101,20 +103,20 @@ export class CourseCard extends Component {
 }
 
 // Component requires course information and all reviews for the course to generate
-// aggregate course data. Parent class provides the course object, while createContainer
+// aggregate course data. Parent class provides the course object, while withTracker
 // grabs this course's reviews.
 CourseCard.propTypes = {
   course: PropTypes.object.isRequired,
   reviews: PropTypes.array.isRequired
 };
 
-// Grab all visible and unreported reviews for this class by filtering against
-// this course's id.
-export default createContainer((props) => {
-  const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); // 1 and 0 get only visible unreported reviews
+// wrap in a container class that allows the component to dynamically grab data
+// the component will automatically re-render when database data changes!
+export default withTracker(props => {
+  const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {
     reviews, loading,
   };
-}, CourseCard);
+}) (CourseCard);

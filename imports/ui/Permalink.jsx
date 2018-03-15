@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
-import {createContainer} from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
@@ -38,7 +37,7 @@ export default class Permalink extends Component {
     //searchbar must receive the query to use in subscription to courses for search suggestions
     updateQuery(event) {
       this.setState({query: event.target.value});
-      //Session to be able to get info from this.state.query in createContainer
+      //Session to be able to get info from this.state.query in withTracker
       Session.set('querySession', this.state.query);
     }
 
@@ -100,11 +99,8 @@ export default class Permalink extends Component {
               </div>
             </div>
           );
-            // return (
-            //     <App selectedClass={ this.state.selectedClass } />
-            // );
         } else if (this.state.classDoesntExist) {
-          //TODO: 404 error graphic
+          // 404 error graphic
           return (
               <div className="container-fluid container-top-gap-fix remove-background">
               <nav className="navbar navbar-fixed-top">
@@ -119,14 +115,15 @@ export default class Permalink extends Component {
                 </ul>
               </nav>
               <div id="error">
-              <span>Sorry, we couldn't find your class.</span>
-              <h3>Try searching again.</h3>
+                <img id="errorgauge" src="/error.png" width="400px" height="auto" />
+                <h2>Sorry, we couldn't find the class you're searching for.</h2>
+                <h2>Please search for a different class.</h2>
               </div>
               </div>
 
           );
         } else {
-          //TODO: loading screen graphic
+          //loading screen graphic
             const Loading = require('react-loading-animation');
             return (
                 <div id="loading">

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import UpdateReview from './UpdateReview.jsx';
 
@@ -137,7 +137,7 @@ Update.propTypes = {
   loading: React.PropTypes.bool
 };
 
-export default createContainer((props) => {
+export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', "", 0, null); //get unapproved or reported reviews
   const loading = !subscription.ready();
   const reviewsToApprove = Reviews.find({}).fetch();
@@ -145,4 +145,4 @@ export default createContainer((props) => {
   return {
     reviewsToApprove, loading,
   };
-}, Update);
+}) (Update);

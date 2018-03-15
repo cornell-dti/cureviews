@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {createContainer} from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
 import CourseCard from './CourseCard.jsx';
 import SearchBar from './SearchBar.jsx';
@@ -37,7 +37,7 @@ export default class App extends Component {
   // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
     this.setState({query: event.target.value});
-    //Session to be able to get info from this.state.query in createContainer
+    //Session to be able to get info from this.state.query in withTracker
     Session.set('querySession', this.state.query);
   }
 
