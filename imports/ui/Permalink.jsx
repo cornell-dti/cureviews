@@ -89,7 +89,7 @@ export default class Permalink extends Component {
                   </div>
                   <div className="useful useful-text">
                     <h5>
-                      Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span></a>
+                      Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)} href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no"><span>no</span></a>
                     </h5>
                     </div>
                   <div>
