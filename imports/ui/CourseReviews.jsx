@@ -5,8 +5,16 @@ import { Reviews } from '../api/dbDefs.js';
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
 
-// Holder component to list all (or top) reviews for a course.
-// Takes in course ID for selecting reviews.
+/*
+  Course Reviews Component. Takes in the course's database id and returns:
+
+  - if course Id is valid:
+    a list of all reviews for a course, sorted by date.
+    The component also handles user reporting of reviews.
+
+  -if course id = -1:
+    - list of 5 most recent reviews added to the database
+*/
 export class CourseReviews extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +22,7 @@ export class CourseReviews extends Component {
     this.reportReview.bind(this);
   }
 
-  //report this review
+  // Report this review
   reportReview(review) {
     console.log(review);
     Meteor.call('reportReview', review, (error, result) => {
@@ -58,7 +66,8 @@ export class CourseReviews extends Component {
   }
 }
 
-//props:
+// Component requires a course object pivided by a parent component, and uses
+// withTracker to get a list of reviews.
 CourseReviews.propTypes = {
   courseId: PropTypes.string.isRequired,
   reviews: PropTypes.array.isRequired,

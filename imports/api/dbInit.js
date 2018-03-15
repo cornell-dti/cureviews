@@ -3,7 +3,6 @@ import { check, Match} from 'meteor/check';
 import { Classes, Users, Subjects, Reviews, Validation } from './dbDefs.js';
 
 /*
-
   Course API scraper. Uses HTTP requests to get course data from the Cornell
   Course API and stores the results in the local database.
 
@@ -126,9 +125,9 @@ export function findAllSemesters() {
     }
 }
 
-/* # Look through all courses in the local database, and identifies those
-   # that are cross-lists (have multiple official names). Link these classes
-   # by adding their course_id to all crolisted class's crosslist array.
+/* # Look through all courses in the local database, and identify those
+   # that are cross-listed (have multiple official names). Link these classes
+   # by adding their course_id to all crosslisted class's crosslist array.
    #
    # Called once during intialization, only after all courses have been added.
 */

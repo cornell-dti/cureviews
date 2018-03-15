@@ -37,7 +37,7 @@ export default class Permalink extends Component {
     //searchbar must receive the query to use in subscription to courses for search suggestions
     updateQuery(event) {
       this.setState({query: event.target.value});
-      //Session to be able to get info from this.state.query in createContainer
+      //Session to be able to get info from this.state.query in withTracker
       Session.set('querySession', this.state.query);
     }
 
