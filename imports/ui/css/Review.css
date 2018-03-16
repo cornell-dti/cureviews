@@ -4,6 +4,13 @@
   padding-right: 30px;
 }
 
+.panel-body-3 {
+    margin: auto;
+    padding: 25px 30px;
+    padding-right: 0px;
+    margin-bottom: 5px;
+}
+
 #rectangle, .review {
   background-color: #ffffff;
 }
