@@ -261,7 +261,7 @@ export default class Form extends Component {
   }
 }
 
-// Form must be provided the course id of the class this review will be for. 
+// Form must be provided the course id of the class this review will be for.
 Form.propTypes = {
   courseId: PropTypes.string.isRequired,
 };
