@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 
 /*
 
- Database sefinitions file. Defines all collections in the local database,
+ Database definitions file. Defines all collections in the local database,
  with collection attributes, types, and required fields.
 
  Used by both the Server and Client to define local and minimongo database

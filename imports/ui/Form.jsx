@@ -5,7 +5,10 @@ import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 
 /*
-  Form Component. Displays a from that allows the user to submit a single reivew for a given class.
+  Form Component.
+
+  Container component that displays a form allowing the user to submit a
+  single reivew for a given class.
 
   Takes in a course id for the course this review is for.
 

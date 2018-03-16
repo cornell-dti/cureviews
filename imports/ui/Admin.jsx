@@ -5,13 +5,14 @@ import { Reviews } from '../api/dbDefs.js';
 import UpdateReview from './UpdateReview.jsx';
 import "./css/Admin.css";
 /*
-  Admin Interface Component. Can only be via password access from the Login component.
+  Admin Interface Component.
 
-  Shows the admin a list of reviews that need approval and a list of reviews that
-  have been reported, with buttons to approve, delete, and unreport reviews.
+  Container component shows the admin a list of reviews that need approval,
+  a list of reviews that have been reported, with buttons to approve, delete,
+  and unreport reviews. Also gives access to buttons that populate and update
+  the Classes collection in the local meteor database.
 
-  Also gives access to buttons that populate and update the Classes database.
-
+  Can only be via password access from the Login component.
 */
 
 export class Admin extends Component {
@@ -134,7 +135,7 @@ export class Admin extends Component {
         <h2>Admin Interface</h2>
 
         <br />
-        
+
         <div className="width-90">
           <div className="panel panel-default">
             <div className="panel-body">
@@ -183,17 +184,18 @@ export class Admin extends Component {
   };
 }
 
+// requires a list of reivews not visible to regular users
 Admin.propTypes = {
-  reviewsToApprove: PropTypes.array.isRequired,
-  loading: React.PropTypes.bool
+  reviewsToApprove: PropTypes.array.isRequired
 };
 
+// wrap in a container class that allows the component to dynamically grab reivews.
+// The component will automatically re-render when new views are added to the database.
 export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', "", 0, null); //get unapproved or reported reviews
   const loading = !subscription.ready();
   const reviewsToApprove = Reviews.find({}).fetch();
-  console.log(reviewsToApprove);
   return {
-    reviewsToApprove, loading,
+    reviewsToApprove,
   };
 }) (Admin);

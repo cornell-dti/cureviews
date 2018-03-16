@@ -11,8 +11,8 @@ import {courseVisited} from './js/Feedback.js';
 import { Classes } from '../api/dbDefs.js';
 
 /*
-  App Component. Uppermost component in the component tree, and the first element
-  of the HTML body tag, grabbed by main.html
+  App Component. Uppermost View component in the component tree,
+  the first element of the HTML body tag grabbed by main.html.
 
   Renders the applicaiton homepage with a navbar and searchbar, popular
   classes and recent reviews components.
@@ -33,7 +33,7 @@ export default class App extends Component {
     this.updateQuery.bind(this);
   }
 
-  // Set the local state variable query to the current value of the input (given by user)
+  // Set the local state variable 'query' to the current value of the input (given by user)
   // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
     this.setState({query: event.target.value});
@@ -41,7 +41,7 @@ export default class App extends Component {
     Session.set('querySession', this.state.query);
   }
 
-  // Redirect the user to a login screen. Once the user logs in, successfully,
+  // TODO: Redirect the user to a login screen. Once the user logs in, successfully,
   // they will be re-routed to this component.
   // forceLogin() {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");

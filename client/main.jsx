@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
 import Login      from '../imports/ui/Login.jsx';
-import Permalink  from '../imports/ui/Permalink.jsx';
+import ClassView  from '../imports/ui/ClassView.jsx';
 import App       from '../imports/ui/App.jsx';
 
 import { BrowserRouter, Route } from "react-router-dom";
@@ -22,7 +22,7 @@ Meteor.startup(() => {
             <div>
                 <Route name="app" exact path="/" component={ App } />
                 <Route name="admin" exact path="/admin" component={ Login } />
-                <Route name="permalink" exact path="/course/:subject/:number" component={ Permalink } />
+                <Route name="permalink" exact path="/course/:subject/:number" component={ ClassView } />
             </div>
         </BrowserRouter>,
         document.getElementById('render-target')

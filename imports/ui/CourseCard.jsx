@@ -7,11 +7,17 @@ import './css/CourseCard.css';
 import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
 
 /*
-  Course Card Component. Returns a view of aggregated information about a class.
-  Displays course title, link to course roster, gauges, and other class metrics.
+  Course Card Component.
 
-  Takes in the course's database object to get metrics.
+  Container Component that returns a paenl of aggregated information about a class:
+  Displays:
+    - course title
+    - link to course roster
+    - gauges for quality, difficulty and estimated median
+    - semsters last offered
+    - attendance requirement
 */
+
 export class CourseCard extends Component {
   constructor(props) {
     super(props);
@@ -32,13 +38,13 @@ export class CourseCard extends Component {
     this.state = this.defaultGaugeState;
   }
 
-  // whenever the incoming props change (i.e, the database of reviews for a class
+  // Whenever the incoming props change (i.e, the database of reviews for a class
   // is updated) trigger a re-render by updating the gauge values in the local state.
   componentWillReceiveProps(nextProps) {
     this.updateState(nextProps.course, nextProps.reviews);
   }
 
-  //recalculate guage values and other metrics to update the local state
+  // Recalculate gauge values and other metrics to update the local state
   updateState(selectedClass, allReviews) {
     if (selectedClass !== null && selectedClass !== undefined) {
       // gather data on the reviews and set mandatory flags.
@@ -102,16 +108,16 @@ export class CourseCard extends Component {
   }
 }
 
-// Component requires course information and all reviews for the course to generate
-// aggregate course data. Parent class provides the course object, while withTracker
+// Component requires course information and all reviews for the course.
+// Parent class provides the course's database object, while withTracker
 // grabs this course's reviews.
 CourseCard.propTypes = {
   course: PropTypes.object.isRequired,
   reviews: PropTypes.array.isRequired
 };
 
-// wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when database data changes!
+// wrap in a container class that allows the component to dynamically grab reviews.
+// The component will automatically re-render if the reviews change.
 export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
   const loading = !subscription.ready();

@@ -2,14 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import "./css/Course.css";
 
 /*
-  Course Component. Represents a single course, shown in the UI as an element of a
-  list like the results of a search. The course's data is passed in as a prop.
+  Course Component.
+
+  Simple styling component that represents a single course (an li element).
+  Used to list courses in PopularClasses and in the results of a search in SearchBar.
 
   If a query is provided as a prop, the component is a seach result, so we underline
   and boldface the query text within the title of the course.
 
-  Clicking this component will change the route of the app to show course details.
+  Clicking this component will change the route of the app to render the course's ClassView.
 */
+
 export default class Course extends Component {
   render() {
     // generate full human-readable name of class
@@ -38,9 +41,9 @@ export default class Course extends Component {
   }
 }
 
-// Requres course informaiton to generate course title, and uses the query to
+// Requres course informaiton (database object) to generate course title, and uses the query to
 // determine styling of output
 Course.propTypes = {
   info: PropTypes.object.isRequired,
-  query: PropTypes.string
+  query: PropTypes.string //optional
 };

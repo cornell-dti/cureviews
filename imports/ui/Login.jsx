@@ -5,10 +5,11 @@ import Admin from './Admin.jsx';
 import "./css/Login.css";
 
 /*
-  Admin Interface Login Component. Requests a password from the user to access the Admin
-  Interface.
+  Admin Interface Login Component.
 
-  Takes the given password and validates it with the password stored in the database.
+  View component accessed via /admin.
+
+  Requests a password from the user and validates it with the password stored in the database.
   If the user enters the correct password, the Admin Interface is displayed using
   the Admin component. Otherwise, an error message is displayed.
 
@@ -79,18 +80,20 @@ export default class Login extends Component {
       );
     } else {
       return (
-        <div className="pushDown">
-          <div className="panel panel-default">
-            <div className="panel-heading">
-              <h3 className="panel-title">Enter Admin Password</h3>
-            </div>
-            <div className="panel-body">
-              <form onSubmit={this.handleSubmit.bind(this)} >
-                <div className="input-group fullInput">
-                  <input type="text" className="form-control" ref="input" value={this.state.pass} onChange={(event) => this.handlePassChange(event)} />
-                </div>
-                <div>{this.state.message}</div>
-              </form>
+        <div className="container whiteBg">
+          <div className="pushDown">
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Enter Admin Password</h3>
+              </div>
+              <div className="panel-body">
+                <form onSubmit={this.handleSubmit.bind(this)} >
+                  <div className="input-group fullInput">
+                    <input type="text" className="form-control" ref="input" value={this.state.pass} onChange={(event) => this.handlePassChange(event)} />
+                  </div>
+                  <div>{this.state.message}</div>
+                </form>
+              </div>
             </div>
           </div>
         </div>

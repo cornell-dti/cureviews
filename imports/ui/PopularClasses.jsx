@@ -3,8 +3,18 @@ import ReactDOM from 'react-dom';
 import { Classes } from '../api/classes.js';
 import Course from './Course.jsx';
 
-// Holder component to list all (or top) reviews for a course.
-// Takes in function to execute when a class is clicked.
+
+/*
+  Popular Classes Component.
+
+  Simple styling component that renders a list of the top 10 courses with the
+  most reviews. When the course is clicked, the user is taken
+  to the course's ClassView.
+
+  The course is rendered as  li element through the Course component, and has
+  no underlining since no query is provided.
+*/
+
 export default class PopularClasses extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +23,8 @@ export default class PopularClasses extends Component {
       topClasses: [] //defult to empty list
     };
 
-    //get the top classes by number of reviews
+    // get the top classes by number of reviews, using a Meteor function
+    // defined in imports/api/classes
     var x = Meteor.call('topClasses', (error, result) => {
       if (!error) {
         this.setState({topClasses: result});
@@ -23,10 +34,12 @@ export default class PopularClasses extends Component {
     });
   }
 
+  // convert the list of class objects into a styled list of courses.
+  // Course will act as a button, such that clicking a course will take the user
+  // to that class's ClassView.
   renderCourses() {
     if (this.state.topClasses !== []) {
       return this.state.topClasses.map((course) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} />
       ));
     } else {
@@ -50,5 +63,5 @@ export default class PopularClasses extends Component {
   }
 }
 
-//props
+// takes in no props
 PopularClasses.propTypes = {};

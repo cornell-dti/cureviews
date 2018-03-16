@@ -6,15 +6,17 @@ import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
 
 /*
-  Course Reviews Component. Takes in the course's database id and returns:
+  Course Reviews Component.
 
-  - if course Id is valid:
+  Container component that takes in the course's database id and returns:
+  If course Id is valid:
     a list of all reviews for a course, sorted by date.
     The component also handles user reporting of reviews.
 
-  -if course id = -1:
+  If course id = -1:
     - list of 5 most recent reviews added to the database
 */
+
 export class CourseReviews extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +24,8 @@ export class CourseReviews extends Component {
     this.reportReview.bind(this);
   }
 
-  // Report this review
+  // Report this review. Find the review in the local database and change
+  // its 'reported' flag to true.
   reportReview(review) {
     console.log(review);
     Meteor.call('reportReview', review, (error, result) => {
@@ -34,6 +37,7 @@ export class CourseReviews extends Component {
     });
   }
 
+  // Loop through the list of reivews and render them (as a list)
   renderReviews() {
     if (this.props.courseId === "-1") {
       return this.props.reviews.map((review) => (

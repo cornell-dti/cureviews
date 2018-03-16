@@ -2,20 +2,31 @@ import React, { Component, PropTypes } from 'react';
 import './css/Review.css';
 import './css/RecentReview.css';
 
-//Recent Review component - represents a review shown on the homepage.
+/*
+  Recent Review Component.
+
+  Simple styling component that renders a single review (an li element)
+  to show on the homepage. Homepage reivews will include:
+   - the name of the course the reivew was for (which takes the user to the course's ClassView onclick)
+   - how long ago the reivew was Added
+   - all review content
+   - report button
+*/
+
 export default class RecentReview extends Component {
-  //props:
-  // info, a database object containing all of this review entry's data.
   constructor(props) {
     super(props);
 
-    // state of app will contain the class for this review
+    // state of app will contain details about the class this reivew is for,
+    // and generate the url link to the class's ClassView
     this.state = {
       shortName: "",
       longName: "",
       link: "",
     };
 
+    // Get details about the course this review belongs to, using the courseId
+    // assigned to this review.
     var x = Meteor.call('getCourseById', props.info.class, (error, result) => {
       if (!error) {
         this.setState({
@@ -29,13 +40,21 @@ export default class RecentReview extends Component {
     });
   }
 
-    //get color for quality value
+  // Function to get the color of the quality color box based on the quality value.
   getQualColor(value) {
     var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value],
     };
-}
+  }
+
+  // Function to get the color of the difficulty color box based on the diffiiculty value.
+  getDiffColor(value) {
+    var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
+    return {
+      backgroundColor: colors[value],
+    };
+  }
 
 
   render() {
@@ -63,7 +82,7 @@ export default class RecentReview extends Component {
                             <p id="label">Overall Quality</p>
                         </div>
                         <div className="col-md-2 col-sm-2 col-xs-2" >
-                            <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
+                            <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
                                 <div id="text">{review.difficulty}</div>
                             </div>
                         </div>
@@ -84,6 +103,7 @@ export default class RecentReview extends Component {
   }
 }
 
+// takes in the database object representing this review
 RecentReview.propTypes = {
   info: PropTypes.object.isRequired,
 };

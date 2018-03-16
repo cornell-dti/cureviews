@@ -1,11 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import './css/Review.css';
 
-//Simple Review component - represents a stored review shown to the user when a course is selected.
-export default class Review extends Component {
-  //props:
-  // info, a database object containing all of this review entry's data.
+/*
+  Review Component.
 
+  Simple styling component that renders a single review (an li element)
+  to show in a ClassView. These reivews will include:
+   - how long ago the reivew was added
+   - all review content
+   - report button
+*/
+
+export default class Review extends Component {
+
+  // Function to convert the classId assigned to this review into the
+  // full, human-readable name of the class.
   renderClassName(classId){
     var toShow = ''; //empty div
     return Meteor.call('getCourseById', classId, (error, result) => {
@@ -20,13 +29,21 @@ export default class Review extends Component {
   }
 
   //get color for quality value
+  // Function to get the color of the quality color box based on the quality value.
   getQualColor(value) {
     var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value],
     };
-}
+  }
 
+  // Function to get the color of the difficulty color box based on the diffiiculty value.
+  getDiffColor(value) {
+    var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
+    return {
+      backgroundColor: colors[value],
+    };
+  }
 
   render() {
     var review = this.props.info;
@@ -52,7 +69,7 @@ export default class Review extends Component {
                       <p id="label">Overall Quality</p>
                   </div>
                   <div className="col-md-2 col-sm-2 col-xs-2" >
-                      <div className="container" id="box" style={this.getQualColor(5 - review.difficulty)}>
+                      <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
                           <div id="text">{review.difficulty}</div>
                       </div>
                   </div>
@@ -64,8 +81,8 @@ export default class Review extends Component {
                   <div className="review-text" id="review_text">{review.text}</div>
               </div>
 							<div className="col-sm-12">
-                      <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
-                  </div>
+                  <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
+              </div>
           </div>
       </div>
 		</li>
@@ -73,8 +90,7 @@ export default class Review extends Component {
   }
 }
 
+// takes in the database object representing this review
 Review.propTypes = {
-  // This component gets the task to display through a React prop.
-  // We can use propTypes to indicate it is required
   info: PropTypes.object.isRequired
 };
