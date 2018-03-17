@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Classes } from '../api/classes.js';
+import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
 
 

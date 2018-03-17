@@ -1,6 +1,6 @@
 import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
-import { Classes, Users, Subjects, Reviews, Validation } from './dbDefs.js';
+import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
 /*
   Course API scraper. Uses HTTP requests to get course data from the Cornell
@@ -10,9 +10,7 @@ import { Classes, Users, Subjects, Reviews, Validation } from './dbDefs.js';
   the local database or once a semester to add new semester data to the
   local database.
 
-  Functions are called by admins via the admin interface, or programmatically
-  by calling the function in the classes.js file in a Meteor.startup() block
-  on the Server.
+  Functions are called by admins via the admin interface.
 
 */
 

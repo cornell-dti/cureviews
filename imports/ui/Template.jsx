@@ -69,10 +69,10 @@ Template.propTypes = {
 // inside a container that can subscribe to a meteor collection.
 //
 // withTracker encapsulates the component and subscribes to the published version
-// of a specified Meteor collections (defined in imports/api/classes.js),
+// of a specified Meteor collections (defined in server/publications.js),
 // passing it to the component as a prop. This subscription will automatically
 // update whenever its database collection changes and will trigger a component re-render.
-// Look at the publishers in ../api/classes.js for more information about publishers and subscribers.
+// Look at the publishers in server/publications.js for more information about publishers and subscribers.
 
 // Explain which collections this componet will subscribe to, and what data is expected to be returned.
 export default withTracker((props) => {

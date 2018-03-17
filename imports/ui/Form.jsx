@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Reviews } from '../api/classes.js';
+import { Reviews } from '../api/dbDefs.js';
 import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 

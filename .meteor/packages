@@ -26,3 +26,4 @@ http@1.4.0
 meteorhacks:aggregate
 momentjs:moment
 themeteorchef:bert
+monbro:mongodb-mapreduce-aggregation

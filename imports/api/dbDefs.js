@@ -6,7 +6,7 @@ import { Mongo } from 'meteor/mongo';
  with collection attributes, types, and required fields.
 
  Used by both the Server and Client to define local and minimongo database
- structure.
+ structures.
 
 */
 

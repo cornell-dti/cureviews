@@ -69,7 +69,6 @@ export default class ClassView extends Component {
     // requested subject and course number. Update the local state accordingly.
     componentWillMount () {
       Meteor.call("getCourseByInfo", this.state.number, this.state.subject, (err, selectedClass) => {
-          console.log("requesting", selectedClass);
           if (!err && selectedClass) {
               // Save the Class object that matches the request
               this.setState({
