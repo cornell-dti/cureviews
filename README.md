@@ -8,6 +8,17 @@ Make sure you have [Meteor](https://www.meteor.com) installed!
     meteor npm install
     meteor --port 3000
 
-To populate your local database with course data, uncomment lines 379-382 in `/imports/api/classes.js`. Do not make changes to the code as classes are being added (once there are no additional "new class: ..." statements printed in the terminal, all classes have been added). Re-comment the above lines to prevent continuous repopulation of the database.
-
 You can access the app at http://localhost:3000.
+
+Next, add a password to your local database. Launch a second terminal window and
+navigate to the application folder (leave the application running in the first
+terminal window). Run:
+
+    meteor mongo
+    db.validation.insert({“adminPass”: “my_super_secret_password'})
+
+Note: If you copy and paste, ensure that the quotes (“”) copy over correctly!
+
+Navigate to http://localhost:3000/admin and enter your password when prompted.
+Select the “Add All Courses” button and wait for the database to populate. Once
+no new messages appear in the terminal window, click the “Add Cross-Listings” button.

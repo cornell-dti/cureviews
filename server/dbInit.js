@@ -10,7 +10,7 @@ import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/db
   the local database or once a semester to add new semester data to the
   local database.
 
-  Functions are called by admins via the admin interface.
+  Functions are called by admins via the admin interface (Admin component).
 
 */
 
