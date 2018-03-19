@@ -53,7 +53,7 @@ export default class Review extends Component {
       <div className="row">
         <div className="col-sm-12">
           <p className="classNameLink">
-            <i>{moment(review.date.toString()).fromNow()}</i>
+            <i>{moment(review.date.toISOString()).fromNow()}</i>
           </p>
         </div>
       </div>
