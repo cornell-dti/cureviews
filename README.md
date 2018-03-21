@@ -15,9 +15,9 @@ navigate to the application folder (leave the application running in the first
 terminal window). Run:
 
     meteor mongo
-    db.validation.insert({“adminPass”: “my_super_secret_password'})
+    db.validation.insert({'adminPass': 'my_super_secret_password'})
 
-Note: If you copy and paste, ensure that the quotes (“”) copy over correctly!
+Note: If you copy and paste, ensure that the quotes ('') copy over correctly!
 
 Navigate to http://localhost:3000/admin and enter your password when prompted.
 Select the “Add All Courses” button and wait for the database to populate. Once
