@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {withTracker} from 'meteor/react-meteor-data';
 import { CollectionName } from '../api/dbDefs.js';
 import "./css/App.css"; // css files

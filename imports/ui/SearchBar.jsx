@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Classes } from '../api/dbDefs.js';
@@ -52,7 +53,7 @@ export class SearchBar extends Component {
 // and a list of all courses that satisfy the query.
 SearchBar.propTypes = {
   allCourses: PropTypes.array.isRequired,
-  loading: React.PropTypes.bool, // optional
+  loading: PropTypes.bool, // optional
   query: PropTypes.string.isRequired,
   queryFunc: PropTypes.func.isRequired
 };

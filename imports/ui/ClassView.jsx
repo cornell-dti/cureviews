@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
