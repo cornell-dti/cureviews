@@ -50,7 +50,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="container-fluid container-top-gap-fix">
+      <div className="container-fluid container-top-gap-fix background-image">
         <nav className="navbar">
           <div className="navbar-header">
             <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">

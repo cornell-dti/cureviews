@@ -91,7 +91,7 @@ export default class ClassView extends Component {
         if (this.state.selectedClass) {
           courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
           return (
-            <div className="container-fluid container-top-gap-fix remove-background">
+            <div className="container-fluid container-top-gap-fix">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
@@ -127,7 +127,7 @@ export default class ClassView extends Component {
         } else if (this.state.classDoesntExist) {
           // Class was not found, so show a 404 error graphic.
           return (
-              <div className="container-fluid container-top-gap-fix remove-background">
+              <div className="container-fluid container-top-gap-fix">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
