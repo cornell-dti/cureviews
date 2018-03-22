@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
 import CourseCard from './CourseCard.jsx';
@@ -49,7 +50,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="container-fluid container-top-gap-fix">
+      <div className="container-fluid container-top-gap-fix background-image">
         <nav className="navbar">
           <div className="navbar-header">
             <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
