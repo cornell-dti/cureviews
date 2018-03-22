@@ -4,6 +4,8 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import UpdateReview from './UpdateReview.jsx';
 import "./css/Admin.css";
+import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
+
 /*
   Admin Interface Component.
 
@@ -18,6 +20,22 @@ import "./css/Admin.css";
 export class Admin extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      disableButton: false,
+      doubleClick: false,
+      loading: 0, // 0: starting state, no attempt to update database,
+                  // 1: database init function was called, scraper is running
+                  // 2: database init function has completed
+    }
+
+    // define bart alert message constants
+    Bert.defaults = {
+      hideDelay: 8000, //time alert stays on screen
+      type: 'danger',
+      style: 'growl-top-right',
+      icon: 'fa-warning',
+    };
 
     this.approveReview.bind(this);
     this.removeReview.bind(this);
@@ -74,33 +92,54 @@ export class Admin extends Component {
     });
   }
 
-  // Call when user selects "Add Cross-Listings" button. Runs code to store
-  // id's of cross-listed classes in the database. Should only be run once
-  // when the app is initialzied, right after adding all classes to the
-  // database using addAllCourses.
-  addCrossList(initiate) {
-    console.log("updating to new semester");
-    Meteor.call('addCrossList', initiate, (error, result) => {
+  // Call when user selects "Initialize Database" button. Scrapes the Cornell
+  // Course API to store all classes and subjects in the local database.
+  // Then, runs code to store id's of cross-listed classes against each class.
+  // Should only be run ONCE when the app is initialzied.
+  //
+  // NOTE: requries an initialize flag to ensure the function is only run on
+  // a button click without this, it will run every time this component is created.
+  addAllCourses(initiate) {
+    console.log("adding all classes");
+    this.setState({disableButton: true, loading: 1});
+    Meteor.call('addAll', initiate, (error, result) => {
       if (!error && result === 1) {
-        console.log("Added cross-listings");
+        console.log("Added new semester courses");
+        this.setState({disableButton: false, loading: 2});
       } else {
         console.log(error)
       }
     });
   }
 
-  // Call when user selects "Add All Classes" button. Scrapes the Cornell
-  // Course API to store all classes in the local database. Should only be run
-  // once when the app is initialzied.
-  addAllCourses(initiate) {
-    console.log("adding all classes");
-    Meteor.call('addAll', initiate, (error, result) => {
-      if (!error && result === 1) {
-        console.log("Added new semester courses");
-      } else {
-        console.log(error)
-      }
-    });
+
+  // handle the first click to the "Initialize Database" button. Show an alert
+  // and update state to remember the next click will be a double click.
+  firstClickHandler() {
+    Bert.alert('<div><h1>STOP AND THINK REALLY HARD</h1><p>This will delete all data in the database!!! Click agian ONLY if you are initializing the database.</p></div>');
+    this.setState({doubleClick: true});
+  }
+
+  // Render the "Initialize Database" button.
+  // If this is the user's first click, make the button give an alert.
+  // If this is the user's second click, call addAllCourses above to initiaize
+  // the local database
+  renderInitButton(doubleClick) {
+    // offer button to edit database
+    if (doubleClick) {
+      return (
+        <div className="btn-group separate-buttons" role="group">
+          <button disabled={this.state.disableButton} type="button" className="btn btn-warning" onClick={() => this.addAllCourses(true)}>Initialize Database</button>
+        </div>
+      );
+    } else {
+      // offer button that gives alert and saves next click as a double click (in local state)
+      return (
+        <div className="btn-group separate-buttons" role="group">
+          <button type="button" className="btn btn-warning" onClick={() => this.firstClickHandler()}>Initialize Database</button>
+        </div>
+      );
+    }
   }
 
   // Show a list of all reviews that have not been approved. Will allow admin to
@@ -130,27 +169,31 @@ export class Admin extends Component {
   }
 
   render() {
+    console.log(this.state.loading === 1);
+    console.log(this.state.loading === 2);
     return (
       <div className="container whiteBg">
-        <h2>Admin Interface</h2>
-
-        <br />
 
         <div className="width-90">
-          <div className="panel panel-default">
-            <div className="panel-body">
-              <div className="btn-group btn-group-justified" role="group">
-                <div className="btn-group separate-buttons" role="group">
-                  <button type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
-                </div>
-                <div className="btn-group separate-buttons" role="group">
-                  <button type="button" className="btn btn-warning" onClick={()=> this.addAllCourses(true)}>Add All Courses</button>
-                </div>
-                <div className="btn-group separate-buttons" role="group">
-                  <button type="button" className="btn btn-warning" onClick={()=> this.addCrossList(true)}>Add Cross-Listings</button>
-                </div>
-              </div>
+          <h2>Admin Interface</h2>
+
+          <br />
+          
+          <div className="text-right">
+            <div className="btn-group" role="group">
+              <button type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
             </div>
+            <div className="btn-group" role="group">
+              {this.renderInitButton(this.state.doubleClick)}
+            </div>
+          </div>
+
+          <div hidden={!(this.state.loading === 1)} className="width-90">
+            <p>Database Initializing. This process can take up to 10 minutes</p>
+          </div>
+
+          <div hidden={!(this.state.loading === 2)} className="width-90">
+            <p>Database Initialaization Complete.</p>
           </div>
 
           <br />

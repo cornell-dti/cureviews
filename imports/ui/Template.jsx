@@ -32,16 +32,23 @@ export class Template extends Component {
     this.func1.bind(this)
   }
 
-  // given a incoming post request, generate a token for this user
+  // some function used in the app
   func1(value) {
 
   }
 
-  // save the token against this user, or add in a new user if needed
+  // another function used in the app. If these get to long, move to a new
+  // file under the /js folder named Template.js.
   func2(value) {
 
   }
 
+  // function that specifically renders HTML or another component. Keep these
+  // at the bottom of the list of functions, closer to the final render
+  renderElement() {
+
+  }
+  
   render() {
     return (
       <div>

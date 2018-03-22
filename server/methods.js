@@ -99,10 +99,15 @@ Meteor.methods({
     addAll: function(initiate) {
         // ensure code is running on the server, not the client
         if (initiate && Meteor.isServer) {
-            console.log("adding everything");
             Classes.remove({});
             Subjects.remove({});
-            return addAllCourses(findAllSemesters());
+            const val =  addAllCourses(findAllSemesters());
+            if (val) {
+              return addCrossList();
+            } else {
+              console.log("fail");
+              return 0;
+            }
         }
     },
 

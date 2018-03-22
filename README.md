@@ -20,5 +20,6 @@ terminal window). Run:
 Note: If you copy and paste, ensure that the quotes ('') copy over correctly!
 
 Navigate to http://localhost:3000/admin and enter your password when prompted.
-Select the “Add All Courses” button and wait for the database to populate. Once
-no new messages appear in the terminal window, click the “Add Cross-Listings” button.
+Select the “Initialize Database” button and wait for the database to populate.
+
+Once this process completes, the application is ready to use!

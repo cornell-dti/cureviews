@@ -28,7 +28,7 @@ export default class Form extends Component {
 
     // define bart alert message constants
     Bert.defaults = {
-      hideDelay: 4000, //time before the alert shows up
+      hideDelay: 4000, //time alert stays on screen
       style: 'growl-top-left', // location and animation of alert
       type: 'success' // color styling
     };

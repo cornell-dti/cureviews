@@ -31,6 +31,7 @@ export function addAllCourses(semesters) {
         var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
         if (result.statusCode !== 200) {
             console.log("error");
+            return 0;
         } else {
             response = JSON.parse(result.content);
             //console.log(response);
@@ -51,6 +52,7 @@ export function addAllCourses(semesters) {
                 var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
                 if (result2.statusCode !== 200) {
                     console.log("error2");
+                    return 0;
                 } else {
                     response2 = JSON.parse(result2.content);
                     courses = response2.data.classes;
@@ -81,12 +83,14 @@ export function addAllCourses(semesters) {
                             }
                         } catch(error){
                             console.log(course);
+                            return 0;
                         }
                     }
                 }
             }
         }
     }
+    return 1;
 }
 
 /* # Grabs the API-required format of the current semester, to be given to the
@@ -163,7 +167,7 @@ export function addCrossList() {
                                 var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
                                 return dbCourse[0]._id;
                               })
-                              //console.log(crossListIDs);
+                              console.log(crossListIDs);
                               thisCourse = check[0];
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
                             }
@@ -177,5 +181,6 @@ export function addCrossList() {
           }
       }
   }
+  console.log("cross-listings added");
   return 1;
 }
