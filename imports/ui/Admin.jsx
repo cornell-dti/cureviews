@@ -178,7 +178,7 @@ export class Admin extends Component {
           <h2>Admin Interface</h2>
 
           <br />
-          
+
           <div className="text-right">
             <div className="btn-group" role="group">
               <button type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
@@ -189,7 +189,7 @@ export class Admin extends Component {
           </div>
 
           <div hidden={!(this.state.loading === 1)} className="width-90">
-            <p>Database Initializing. This process can take up to 10 minutes</p>
+            <p>Database Initializing. This process can take up to 15 minutes.</p>
           </div>
 
           <div hidden={!(this.state.loading === 2)} className="width-90">

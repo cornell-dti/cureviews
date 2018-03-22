@@ -99,8 +99,8 @@ Meteor.methods({
     addAll: function(initiate) {
         // ensure code is running on the server, not the client
         if (initiate && Meteor.isServer) {
-            Classes.remove({});
-            Subjects.remove({});
+            // Classes.remove({});
+            // Subjects.remove({});
             const val =  addAllCourses(findAllSemesters());
             if (val) {
               return addCrossList();
