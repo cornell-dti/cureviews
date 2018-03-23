@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
@@ -90,7 +91,7 @@ export default class ClassView extends Component {
         if (this.state.selectedClass) {
           courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
           return (
-            <div className="container-fluid container-top-gap-fix remove-background">
+            <div className="container-fluid container-top-gap-fix">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
@@ -113,7 +114,7 @@ export default class ClassView extends Component {
                   </div>
                   <div className="useful useful-text">
                     <h5>
-                      Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span></a>
+                      Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}></a><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span>
                     </h5>
                     </div>
                   <div>
@@ -126,7 +127,7 @@ export default class ClassView extends Component {
         } else if (this.state.classDoesntExist) {
           // Class was not found, so show a 404 error graphic.
           return (
-              <div className="container-fluid container-top-gap-fix remove-background">
+              <div className="container-fluid container-top-gap-fix">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">

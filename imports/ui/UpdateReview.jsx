@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import "./css/Review.css";
 
 /*
@@ -78,7 +79,7 @@ export default class UpdateReview extends Component {
               <div className="col-sm-12">
                 <b>Course:</b> {this.state.shortName}: {this.state.longName}
                 <br></br>
-                <b>Posted </b> {moment(review.date.toString()).fromNow()}
+                <b>Posted </b> {moment(review.date.toISOString()).fromNow()}
               </div>
             </div>
               <div className="panel panel-default">

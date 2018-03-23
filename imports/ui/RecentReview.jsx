@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import './css/Review.css';
 import './css/RecentReview.css';
 
@@ -67,7 +68,7 @@ export default class RecentReview extends Component {
                 <a className="classNameLink" href={this.state.link}>
                   <b><u>{this.state.shortName}</u></b>: {this.state.longName}
                 </a>
-                <p id="date"><i>{moment(review.date.toString()).fromNow()}</i></p>
+                <p id="date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
               </div>
             </div>
             <div className="review">
