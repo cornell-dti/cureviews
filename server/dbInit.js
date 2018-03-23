@@ -159,6 +159,7 @@ export function addCrossList() {
 
                   for (course in courses) {
                       try {
+
                           var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
                           if (check.length > 0) {
                             crossList = courses[course].enrollGroups[0].simpleCombinations;
@@ -167,6 +168,7 @@ export function addCrossList() {
                                 var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
                                 return dbCourse[0]._id;
                               })
+                              console.log(courses[course].subject + " " + courses[course].catalogNbr);
                               console.log(crossListIDs);
                               thisCourse = check[0];
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})

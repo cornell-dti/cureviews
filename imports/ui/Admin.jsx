@@ -23,9 +23,10 @@ export class Admin extends Component {
     super(props);
 
     this.state = {
-      disableButton: false,
+      disableInit: false,
+      disableNewSem: false,
       doubleClick: false,
-      loading: 0, // 0: starting state, no attempt to update database,
+      loadingInit: 0, // 0: starting state, no attempt to update database,
                   // 1: database init function was called, scraper is running
                   // 2: database init function has completed
     }
@@ -84,9 +85,11 @@ export class Admin extends Component {
   // sShould run once a semester, when new classes are added to the roster.
   addNewSem(initiate) {
     console.log("updating to new semester");
+    this.setState({disableNewSem: true});
     Meteor.call('addNewSemester', initiate, (error, result) => {
       if (!error && result === 1) {
         console.log("Added new semester courses");
+        this.setState({disableNewSem: false});
       } else {
         console.log(error)
       }
@@ -102,11 +105,11 @@ export class Admin extends Component {
   // a button click without this, it will run every time this component is created.
   addAllCourses(initiate) {
     console.log("adding all classes");
-    this.setState({disableButton: true, loading: 1});
+    this.setState({disableInit: true, loadingInit: 1});
     Meteor.call('addAll', initiate, (error, result) => {
       if (!error && result === 1) {
         console.log("Added new semester courses");
-        this.setState({disableButton: false, loading: 2});
+        this.setState({disableInit: false, loadingInit: 2});
       } else {
         console.log(error)
       }
@@ -130,7 +133,7 @@ export class Admin extends Component {
     if (doubleClick) {
       return (
         <div className="btn-group separate-buttons" role="group">
-          <button disabled={this.state.disableButton} type="button" className="btn btn-warning" onClick={() => this.addAllCourses(true)}>Initialize Database</button>
+          <button disabled={this.state.disableInit} type="button" className="btn btn-warning" onClick={() => this.addAllCourses(true)}>Initialize Database</button>
         </div>
       );
     } else {
@@ -174,24 +177,32 @@ export class Admin extends Component {
       <div className="container whiteBg">
         <div className="width-90">
           <h2>Admin Interface</h2>
-          
+
           <br />
 
           <div className="text-right">
             <div className="btn-group" role="group">
-              <button type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
+              <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
             </div>
             <div className="btn-group" role="group">
               {this.renderInitButton(this.state.doubleClick)}
             </div>
           </div>
 
-          <div hidden={!(this.state.loading === 1)} className="width-90">
+          <div hidden={!(this.state.loadingInit === 1)} className="width-90">
+            <p>Adding New Semester Data. This process can take up to 15 minutes.</p>
+          </div>
+
+          <div hidden={!(this.state.loadingInit === 2)} className="width-90">
+            <p>New Semester Data import is complete!</p>
+          </div>
+
+          <div hidden={!(this.state.loadingInit === 1)} className="width-90">
             <p>Database Initializing. This process can take up to 15 minutes.</p>
           </div>
 
-          <div hidden={!(this.state.loading === 2)} className="width-90">
-            <p>Database Initialaization Complete.</p>
+          <div hidden={!(this.state.loadingInit === 2)} className="width-90">
+            <p>Database initialaization is complete!</p>
           </div>
 
           <br />

@@ -72,12 +72,20 @@ Meteor.methods({
     // Update the local database when Cornell Course API adds data for the
     // upcoming semester. Will add new classes if they don't already exist,
     // and update the semesters offered for classes that do.
-    // Should be is called by an admin via the admin page once a semester.
+    // Then, call a second function to link crosslisted courses, so reviews
+    // from all "names" of a class are visible under each course.
+    // Should be called by an admin via the admin page once a semester.
     addNewSemester: function(initiate) {
         // ensure code is running on the server, not client
         if (initiate && Meteor.isServer) {
             console.log("updating new semester");
-            return addAllCourses(findCurrSemester());
+            const val = addAllCourses(findCurrSemester());
+            if (val) {
+              return addCrossList();
+            } else {
+              console.log("fail");
+              return 0;
+            }
         }
     },
 
@@ -85,17 +93,19 @@ Meteor.methods({
     // from all "names" of a class are visible under each course.
     // Should be called by an admin via the admin page ONLY ONCE
     // during database initialization, after calling addAll below.
-    addCrossList: function(initiate) {
-        // ensure the code is running on the server, not the client
-        if (initiate && Meteor.isServer) {
-            console.log("adding cross-listed classes");
-            return addCrossList();
-        }
-    },
+    // addCrossList: function(initiate) {
+    //     // ensure the code is running on the server, not the client
+    //     if (initiate && Meteor.isServer) {
+    //         console.log("adding cross-listed classes");
+    //         return addCrossList();
+    //     }
+    // },
 
     // Update the local database with all courses from the Cornell Class Roster.
-    // Should be is called by an admin via the admin page ONLY ONCE
-    // during database initialization.
+    // Then, call a second function to link crosslisted courses, so reviews
+    // from all "names" of a class are visible under each course.
+    // Should be called by an admin via the admin page ONLY ONCE during database
+    // initialization.
     addAll: function(initiate) {
         // ensure code is running on the server, not the client
         if (initiate && Meteor.isServer) {
