@@ -170,14 +170,11 @@ export class Admin extends Component {
   }
 
   render() {
-    console.log(this.state.loading === 1);
-    console.log(this.state.loading === 2);
     return (
       <div className="container whiteBg">
-
         <div className="width-90">
           <h2>Admin Interface</h2>
-
+          
           <br />
 
           <div className="text-right">
