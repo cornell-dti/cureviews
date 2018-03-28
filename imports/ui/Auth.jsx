@@ -1,15 +1,17 @@
-import React, { Component, PropTypes } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
-import { Users } from '../api/classes.js';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Users } from '../api/dbDefs.js';
 import {BrowserRouter, Route } from "react-router-dom";
 import { HTTP } from 'meteor/http';
 
-// Holder backend component that is accessed by the login API.
-// API sends user data as POST request. This component reads the data,
-// creates a token for this user, saves it to the DB, and sends it back to the
-// API (in encrypted format)
-export class Auth extends Component {
-  //props: none incoming, grabs Users in DB.
+/*
+  Auth Component. INCOMPLETE.
+
+  Backend Container component that handles login logistics and inteactions with Google login API.
+*/
+
+export default class Auth extends Component {
   constructor(props) {
     super(props);
 
@@ -36,19 +38,6 @@ export class Auth extends Component {
   }
 }
 
-//define the props for this object
+// takes no props
 Auth.propTypes = {
-  users: PropTypes.array.isRequired
 };
-
-// wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when databse data changes!
-export default createContainer((props) => {
-  const subscription = Meteor.subscribe('users', "-1"); //get all users
-  const loading = !subscription.ready();
-  const users = Users.find({}).fetch();
-  //console.log(users);
-  return {
-    users,
-  };
-}, Auth);

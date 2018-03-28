@@ -1,23 +1,40 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { Reviews } from '../api/classes.js';
+import { Reviews } from '../api/dbDefs.js';
 import './css/Form.css';
-import { Bert } from 'meteor/themeteorchef:bert'; //alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
+import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 
-// Form component to allow user to add a review for selected course.
-// Takes in a course ID.
-// validation uses react controlled form elements as described at https://goshakkk.name/instant-form-fields-validation-react/
+/*
+  Form Component.
+
+  Container component that displays a form allowing the user to submit a
+  single reivew for a given class.
+
+  Takes in a course id for the course this review is for.
+
+  Before inserting a review, it is validated  for illegal characters and to
+  ensure all fields are filled in. Form componets are implemented as 'controlled
+  components' to run validation, as described at https://goshakkk.name/instant-form-fields-validation-react/
+  and in the course review docs.
+
+  Once a review is submitted (with an 'unapproved' flag), the Bart library is
+  used to display an alert message telling the user the review was submitted and pending approval,
+  or that an error occured.
+*/
+
 export default class Form extends Component {
   constructor(props) {
     super(props);
 
+    // define bart alert message constants
     Bert.defaults = {
-      hideDelay: 4000,
-      style: 'growl-top-left',
-      type: 'success'
+      hideDelay: 4000, //time alert stays on screen
+      style: 'growl-top-left', // location and animation of alert
+      type: 'success' // color styling
     };
+
     //store all currently selected form values in the state.
-    //this will be the default state.
     this.state = {
       diff: 3,
       quality: 3,
@@ -28,30 +45,35 @@ export default class Form extends Component {
       postClicks: 0,
     };
 
+    // store inital values as the default state to revert to after submission
     this.defaultState = this.state;
   }
 
-  //save the current written values in the text box and trigger re-render
+  // Save the current user input text from the text box in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleTextChange = (event) => {
     this.setState({text: event.target.value});
   }
 
-  //save the selected value for attendence as an integer and trigger re-render
+  // Save the current user selected value for attendence (as an integer) in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleAttendChange = (event) => {
     this.setState({ attend: parseInt(event.target.value) });
   }
 
-  //save the selected class median as an integer and trigger re-render
+  // Save the current user selected value for median grade in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleMedianChange = (event) => {
     this.setState({ median: parseInt(event.target.value) });
   }
 
-  //change the state to represent the new form quality value and trigger re-render
+  // Save the current user selected value for quality in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleQualChange(event) {
     this.setState({ quality: parseInt(event.target.value) });
   }
 
-  //get color for quality value
+  // Convert the quality slider's value to a color.
   getQualColor(value) {
     var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
@@ -59,12 +81,13 @@ export default class Form extends Component {
     }
   }
 
-  //change the state to represent the new form difficulty value and trigger re-render
+  // Save the current user selected value for difficulty in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleDiffChange(event) {
     this.setState({ diff: parseInt(event.target.value) });
   }
 
-  //get color for difficulty value
+  // Convert the difficulty slider's value to a color.
   getDiffColor(value) {
     var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     return {
@@ -72,13 +95,15 @@ export default class Form extends Component {
     }
   }
 
-  //after the initial render, set the values of the sliders
+  // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
     ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+    this.setState(this.defaultState);
   }
 
-  //reload the form when a new class is selected
+  // Called each time this component receieves new props.
+  // resets the values of the sliders to 3 and sets the state to the default state.
   componentWillReceiveProps(nextProps) {
     if (nextProps.courseId != this.props.courseId) {
       ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
@@ -87,12 +112,13 @@ export default class Form extends Component {
     }
   }
 
-  // handle a form submission. This will either add the review to the database
-  // or return an error telling the user to try agian.
+  // Form submission handler. This will either add the review to the database
+  // and trigger a success message, or error and ask the user to try again.
   handleSubmit(event) {
+    // 'pause' automatic form submisson
     event.preventDefault();
 
-    //ensure all fields are filled out
+    // ensure all fields are filled out
     var text = this.state.text.trim();
     var median = this.state.median;
     var atten = this.state.attend;
@@ -108,8 +134,7 @@ export default class Form extends Component {
         atten: atten
       };
 
-      //console.log("ready to submit");
-      // call the insert funtion
+      // call the api insert function
       Meteor.call('insert', newReview, this.props.courseId, (error, result) => {
         if (!error && result === 1) {
           // Success, so reset form
@@ -119,6 +144,7 @@ export default class Form extends Component {
           this.setState(this.defaultState);
           Bert.alert('Thanks! Your review is currently pending approval.');
         } else {
+          // error, alert user
           console.log(error);
           this.setState({message: "A error occurred. Please try again."});
         }
@@ -126,11 +152,11 @@ export default class Form extends Component {
     }
   }
 
-  //check if the state variables in the review are valid
+  // Validation function. Checks if the median and attendence are filled out,
+  // and checks text for any unaccepted symbols
   validateInputs(median, attend, text) {
     //ensure there are no illegal characters
     var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
-    //console.log(this.state.postClicks);
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,
@@ -143,8 +169,8 @@ export default class Form extends Component {
   }
 
   render() {
-    //check to see if all inputs are valid. If not, disable the post button and
-    //add a border around inputs that need to be changed.
+    // check to see if all inputs are valid. If some inputs are invalide, disable the
+    // post button and add red border around inputs that need to be changed.
     var err = this.validateInputs(this.state.median, this.state.attend, this.state.text);
     var isEnabled = err.allTrue;
     return (
@@ -152,7 +178,7 @@ export default class Form extends Component {
           <legend className="review-header">Leave a Review</legend>
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <div className="panel panel-default">
-                  <div className="panel-body" id="form">
+                  <div className="panel-body-2" id="form">
                       <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                         onChange={(event) => this.handleTextChange(event)}
                         placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
@@ -220,7 +246,6 @@ export default class Form extends Component {
                       </div>
                   </div>
               </div>
-
               <div className="row">
                   <div className="col-md-9">
                       <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
@@ -240,8 +265,7 @@ export default class Form extends Component {
   }
 }
 
+// Form must be provided the course id of the class this review will be for.
 Form.propTypes = {
-  // This component gets the task to display through a React prop.
-  // We can use propTypes to indicate it is required
   courseId: PropTypes.string.isRequired,
 };

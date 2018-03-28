@@ -1,12 +1,23 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
-import { Reviews } from '../api/classes.js';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Reviews } from '../api/dbDefs.js';
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
 
-// Holder component to list all (or top) reviews for a course.
-// Takes in course ID for selecting reviews.
+/*
+  Course Reviews Component.
+
+  Container component that takes in the course's database id and returns:
+  If course Id is valid:
+    a list of all reviews for a course, sorted by date.
+    The component also handles user reporting of reviews.
+
+  If course id = -1:
+    - list of 5 most recent reviews added to the database
+*/
+
 export class CourseReviews extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +25,8 @@ export class CourseReviews extends Component {
     this.reportReview.bind(this);
   }
 
-  //report this review
+  // Report this review. Find the review in the local database and change
+  // its 'reported' flag to true.
   reportReview(review) {
     console.log(review);
     Meteor.call('reportReview', review, (error, result) => {
@@ -26,6 +38,7 @@ export class CourseReviews extends Component {
     });
   }
 
+  // Loop through the list of reivews and render them (as a list)
   renderReviews() {
     if (this.props.courseId === "-1") {
       return this.props.reviews.map((review) => (
@@ -58,7 +71,8 @@ export class CourseReviews extends Component {
   }
 }
 
-//props:
+// Component requires a course object pivided by a parent component, and uses
+// withTracker to get a list of reviews.
 CourseReviews.propTypes = {
   courseId: PropTypes.string.isRequired,
   reviews: PropTypes.array.isRequired,
@@ -66,11 +80,11 @@ CourseReviews.propTypes = {
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
-export default createContainer((props) => {
+export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', props.courseId, 1, 0); //get only visible unreported reviews for this course
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {
     reviews, loading,
   };
-}, CourseReviews);
+}) (CourseReviews);

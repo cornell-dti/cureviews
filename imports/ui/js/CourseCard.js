@@ -1,3 +1,8 @@
+/*
+  Additonal functions used in the CourseCard component.
+*/
+
+// Get a human-readable string representing a list of [up to] the last 2 semesters this class was offered.
 export function lastOfferedSems(theClass){
   var semsArray = theClass.classSems;
   var lastSemester = semsArray[semsArray.length-1];
@@ -13,6 +18,7 @@ export function lastOfferedSems(theClass){
   return lastTwoOffered;
 }
 
+// helper function to convert semester abbreviations to a full word
 export function semAbbriviationToWord(sem){
   var abbreviation  = String(sem);
   switch (abbreviation.substring(0,2)){
@@ -27,11 +33,15 @@ export function semAbbriviationToWord(sem){
   }
 }
 
+
 export function lastSem(sem){
   var semesterList  = String(sem);
   return semesterList.substring(semesterList.length-4);
 }
 
+// collect aggregate information from allReviews, the list of all reviews
+// submitted for this class. Return values for the average difficulty, quality,
+// average grade, and madatory/not mandatory status.
 export function getGaugeValues(allReviews) {
   newState = {};
   //create initial variables
