@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
+import {abbreviationToFullName} from './js/PopularClasses.js';
 
 
 /*
@@ -35,13 +36,15 @@ export default class PopularClasses extends Component {
     });
   }
 
-  // convert the list of class objects into a styled list of courses.
-  // Course will act as a button, such that clicking a course will take the user
-  // to that class's ClassView.
+  // convert the list of class topics into numbered leaderboard of most reviewed topics.
   renderCourses() {
     if (this.state.topClasses !== []) {
-      return this.state.topClasses.map((course) => (
-        <Course key={course._id} info={course} />
+      return this.state.topClasses.map((course, index) => (
+        <li className="classbutton"  >
+            <h3 className="text-style-2" >
+                {(index+1).toString()}. {abbreviationToFullName(course[0].toUpperCase())}
+            </h3>
+        </li>
       ));
     } else {
       return <div />;
@@ -51,7 +54,7 @@ export default class PopularClasses extends Component {
   render() {
     return (
       <section>
-        <legend className="subheader">Popular Classes</legend>
+        <legend className="subheader">Most Reviews by Subject</legend>
         <div className="panel panel-default" id="reviewpanel">
             <div>
                 <ul id="reviewul">

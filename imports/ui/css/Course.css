@@ -17,6 +17,21 @@
   width: 100%;
 }
 
+.text-style-2{
+  display: inline-block;
+  overflow: ellipsis;
+  color: #4a4a4a;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  line-height: 1.11;
+  padding-bottom: 5px;
+  text-align: left;
+  /* cursor: pointer; */
+  width: 100%;
+}
+
 .text-style-1:hover {
   text-decoration: none;
   color: inherit;
