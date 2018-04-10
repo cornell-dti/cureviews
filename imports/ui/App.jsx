@@ -5,7 +5,7 @@ import Form from './Form.jsx';
 import CourseCard from './CourseCard.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
-import PopularClasses from './PopularClasses.jsx';
+import SubjectLeaderboard from './SubjectLeaderboard.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
@@ -76,7 +76,7 @@ export default class App extends Component {
         </div>
         <div className='container noPadding panel-color-translucent'>
           <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
-            <PopularClasses />
+            <SubjectLeaderboard />
           </div>
           <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
             <div>

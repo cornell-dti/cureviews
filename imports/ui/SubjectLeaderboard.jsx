@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
-import {abbreviationToFullName} from './js/PopularClasses.js';
 
 
 /*
@@ -13,11 +12,11 @@ import {abbreviationToFullName} from './js/PopularClasses.js';
   most reviews. When the course is clicked, the user is taken
   to the course's ClassView.
 
-  The course is rendered as  li element through the Course component, and has
+  The course is rendered as ol element through the Course component, and has
   no underlining since no query is provided.
 */
 
-export default class PopularClasses extends Component {
+export default class SubjectLeaderboard extends Component {
   constructor(props) {
     super(props);
 
@@ -40,11 +39,11 @@ export default class PopularClasses extends Component {
   renderCourses() {
     if (this.state.topClasses !== []) {
       return this.state.topClasses.map((course, index) => (
-        <li className="classbutton"  >
+        <ol className="no-hover classbutton" key={index}>
             <h3 className="text-style-2" >
-                {(index+1).toString()}. {abbreviationToFullName(course[0].toUpperCase())}
+                {(index+1).toString()}. {course[0]}
             </h3>
-        </li>
+        </ol>
       ));
     } else {
       return <div />;
@@ -68,4 +67,4 @@ export default class PopularClasses extends Component {
 }
 
 // takes in no props
-PopularClasses.propTypes = {};
+SubjectLeaderboard.propTypes = {};

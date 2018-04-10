@@ -6,7 +6,7 @@ import "./css/Course.css";
   Course Component.
 
   Simple styling component that represents a single course (an li element).
-  Used to list courses in PopularClasses and in the results of a search in SearchBar.
+  Used to list courses in SubjectLeaderboard and in the results of a search in SearchBar.
 
   If a query is provided as a prop, the component is a seach result, so we underline
   and boldface the query text within the title of the course.

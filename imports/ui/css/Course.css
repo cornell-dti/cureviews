@@ -1,3 +1,8 @@
+/* Overrides the hover color from .classbutton:hover */
+.no-hover:hover {
+  background-color: #f2f2f2 !important;
+}
+
 .classbutton:hover{
   background-color: #D3D3D3;
 }

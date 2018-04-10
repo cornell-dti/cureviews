@@ -192,8 +192,8 @@ Meteor.methods({
       mostReviews = Reviews.aggregate(pipeline).map(function(course) {
         // classObject is the Class object associated with course._id
         var classObject =  Classes.find({_id: course._id}).fetch()[0];
-        // classSubject is the string of the subject (abbreviated) of classObject
-        var classSubject = classObject.classSub;
+        // classSubject is the string of the full subject of classObject
+        var classSubject = Subjects.find({subShort: classObject.classSub}).fetch()[0].subFull;
         // Adds the number of reviews to the ongoing count of reviews per subject
         reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
         return classObject;
@@ -206,8 +206,9 @@ Meteor.methods({
         //Sorts array by number of reviews each topic has
         return a[1]<b[1]? 1:a[1]>b[1]?-1:0;
       });
-      console.log(subjectsAndReviewCountArray);
-      return subjectsAndReviewCountArray
+      
+      // Returns the top 15 most reviewed classes
+      return subjectsAndReviewCountArray.slice(0, 15)
     },
 
     // Print on the server side for API testing. Should print in logs if
