@@ -173,7 +173,7 @@ Meteor.methods({
 
     // Get a list the most popular courses from the Classes collection (objects)
     // popular classes -> most reviewed.
-    topClasses: function() {
+    topSubjects: function() {
       // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
       // to run complex queries
       var pipeline = [
@@ -240,7 +240,7 @@ Meteor.methods({
     }
 });
 
-// Recreation of Python's defaultdict to be used in topClasses method
+// Recreation of Python's defaultdict to be used in topSubjects method
 function defaultDict(){
   this.get = function (key){
     if(this.hasOwnProperty(key)){

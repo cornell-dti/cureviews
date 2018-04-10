@@ -2,18 +2,17 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Classes } from '../api/dbDefs.js';
-import Course from './Course.jsx';
+// No longer referenced
+// import Course from './Course.jsx';
 
 
 /*
-  Popular Classes Component.
+  Subject Leaderboard Component.
 
-  Simple styling component that renders a list of the top 10 courses with the
-  most reviews. When the course is clicked, the user is taken
-  to the course's ClassView.
+  Simple styling component that renders a list of the top 15 subjects with the
+  most total reviews. The subjects are not clickable.
 
-  The course is rendered as ol element through the Course component, and has
-  no underlining since no query is provided.
+  The course is rendered as repeating ol elements.
 */
 
 export default class SubjectLeaderboard extends Component {
@@ -21,14 +20,14 @@ export default class SubjectLeaderboard extends Component {
     super(props);
 
     this.state = {
-      topClasses: [] //defult to empty list
+      topSubjects: [] //defult to empty list
     };
 
-    // get the top classes by number of reviews, using a Meteor function
+    // get the top subjects by number of reviews, using a Meteor function
     // defined in imports/api/classes
-    var x = Meteor.call('topClasses', (error, result) => {
+    var x = Meteor.call('topSubjects', (error, result) => {
       if (!error) {
-        this.setState({topClasses: result});
+        this.setState({topSubjects: result});
       } else {
         console.log(error)
       }
@@ -37,8 +36,8 @@ export default class SubjectLeaderboard extends Component {
 
   // convert the list of class topics into numbered leaderboard of most reviewed topics.
   renderCourses() {
-    if (this.state.topClasses !== []) {
-      return this.state.topClasses.map((course, index) => (
+    if (this.state.topSubjects !== []) {
+      return this.state.topSubjects.map((course, index) => (
         <ol className="no-hover classbutton" key={index}>
             <h3 className="text-style-2" >
                 {(index+1).toString()}. {course[0]}
@@ -54,6 +53,8 @@ export default class SubjectLeaderboard extends Component {
     return (
       <section>
         <legend className="subheader">Most Reviews by Subject</legend>
+        {/* Note that the id:"reviewpanel" and "reviewul" still refer to this component as a 
+        component.  I did not change the name to keep the styling consistent*/}
         <div className="panel panel-default" id="reviewpanel">
             <div>
                 <ul id="reviewul">

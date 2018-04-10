@@ -75,7 +75,7 @@ export default class App extends Component {
           </div>
         </div>
         <div className='container noPadding panel-color-translucent'>
-          <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
+          <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel">
             <SubjectLeaderboard />
           </div>
           <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
