@@ -1,20 +1,29 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import Gauge from 'react-summary-gauge-2';
-import { Reviews } from '../api/classes.js';
+import { Reviews } from '../api/dbDefs.js';
 import './css/CourseCard.css';
 import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
 
-// Holder component to list all (or top) reviews for a course.
-// Takes in course ID for selecting reviews.
+/*
+  Course Card Component.
+
+  Container Component that returns a paenl of aggregated information about a class:
+  Displays:
+    - course title
+    - link to course roster
+    - gauges for quality, difficulty and estimated median
+    - semsters last offered
+    - attendance requirement
+*/
+
 export class CourseCard extends Component {
-  //props:
-  //course, the course for this card
   constructor(props) {
     super(props);
 
-    //default gauge values
+    // default gauge values
     this.defaultGaugeState = {
       diff: 0,
       diffColor: "#E64458",
@@ -26,19 +35,22 @@ export class CourseCard extends Component {
       mandatory: "Mandatory",
     };
 
+    // initialize state as default gauge values
     this.state = this.defaultGaugeState;
   }
 
+  // Whenever the incoming props change (i.e, the database of reviews for a class
+  // is updated) trigger a re-render by updating the gauge values in the local state.
   componentWillReceiveProps(nextProps) {
     this.updateState(nextProps.course, nextProps.reviews);
   }
 
-  //update the component state to represent new state of the gauges and the mandatory tag
+  // Recalculate gauge values and other metrics to update the local state
   updateState(selectedClass, allReviews) {
     if (selectedClass !== null && selectedClass !== undefined) {
-      //gather data on the reviews and set mandatory flags.
+      // gather data on the reviews and set mandatory flags.
       if (allReviews.length !== 0) {
-        //set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
+        // set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
         this.setState(getGaugeValues(allReviews));
       } else {
         this.setState(this.defaultGaugeState); //default gauge values
@@ -51,17 +63,22 @@ export class CourseCard extends Component {
 
   render() {
     var theClass = this.props.course;
-    //Creates Url that points to each class page on Cornell Class Roster
+
+    // Creates Url that points to each class page on Cornell Class Roster
     var url = "https://classes.cornell.edu/browse/roster/"
         + lastSem(theClass.classSems) + "/class/"
         + theClass.classSub.toUpperCase() + "/"
         + theClass.classNum;
-    //Calls function in CourseCard.js that returns a clean version of the last semsters class was offered
+
+    // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     var offered = lastOfferedSems(theClass);
+
     return (
         <div id="coursedetails">
             <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-            <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            <div> {/* Forces link onto next line */}
+              <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            </div>
             <p className="review-text spacing-large">
                 <strong>Last Offered: </strong>
                 {offered}
@@ -92,19 +109,21 @@ export class CourseCard extends Component {
   }
 }
 
-//define the props for this object
+// Component requires course information and all reviews for the course.
+// Parent class provides the course's database object, while withTracker
+// grabs this course's reviews.
 CourseCard.propTypes = {
   course: PropTypes.object.isRequired,
   reviews: PropTypes.array.isRequired
 };
 
-// wrap in a container class that allows the component to dynamically grab data
-// the component will automatically re-render when database data changes!
-export default createContainer((props) => {
+// wrap in a container class that allows the component to dynamically grab reviews.
+// The component will automatically re-render if the reviews change.
+export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', props.course._id, 1, 0); //get only visible unreported reviews
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
   return {
     reviews, loading,
   };
-}, CourseCard);
+}) (CourseCard);

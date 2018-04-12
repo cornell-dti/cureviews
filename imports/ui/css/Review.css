@@ -4,6 +4,13 @@
   padding-right: 30px;
 }
 
+.panel-body-3 {
+    margin: auto;
+    padding: 25px 30px;
+    padding-right: 0px;
+    margin-bottom: 5px;
+}
+
 #rectangle, .review {
   background-color: #ffffff;
 }
@@ -69,7 +76,6 @@
   border-color: transparent;
 }
 
-
 .review {
   border-radius: 8px;
   border: solid 1px #dddddd;
@@ -78,4 +84,8 @@
 
 .reviewNumbers{
   margin-bottom: 8px;
+}
+
+.space-review-buttons {
+  margin-left: 5px;
 }

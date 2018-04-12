@@ -1,14 +1,26 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import "./css/Course.css";
-// Course component - represents a single course to be shown to the user in a course search.
-// Clicking this component will change the route of the app to show course details.
+
+/*
+  Course Component.
+
+  Simple styling component that represents a single course (an li element).
+  Used to list courses in the results of a search in SearchBar.
+
+  If a query is provided as a prop, the component is a seach result, so we underline
+  and boldface the query text within the title of the course.
+
+  Clicking this component will change the route of the app to render the course's ClassView.
+*/
+
 export default class Course extends Component {
-  //props:
-  // info, a database object containing all of this class's data.
-  // query, string within the details of this course if it is a search result
   render() {
+    // generate full human-readable name of class
     var classInfo = this.props.info;
     var text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
+
+    // check if a query was provided, if so underline parts of the class name
     if (this.props.query) {
       if (text.toLowerCase().indexOf(this.props.query) != -1) {
         startIndex = text.toLowerCase().indexOf(this.props.query);
@@ -18,6 +30,8 @@ export default class Course extends Component {
     } else {
       text = <div>{text}</div>
     }
+
+    // return classname as a list element
     return (
       <li className="classbutton" id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } >
           <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
@@ -28,9 +42,9 @@ export default class Course extends Component {
   }
 }
 
+// Requres course informaiton (database object) to generate course title, and uses the query to
+// determine styling of output
 Course.propTypes = {
-  // This component gets the task to display through a React prop.
-  // We can use propTypes to indicate it is required
   info: PropTypes.object.isRequired,
-  query: PropTypes.string
+  query: PropTypes.string //optional
 };
