@@ -173,25 +173,42 @@ Meteor.methods({
 
     // Get a list the most popular courses from the Classes collection (objects)
     // popular classes -> most reviewed.
-    topClasses: function() {
+    topSubjects: function() {
       // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
       // to run complex queries
       var pipeline = [
         //consider only visible reviews
         {$match: { visible: 1}},
         //group by class and get count of reviews
-        {$group: { _id: '$class', reviewCount: { $sum: 1} }},
+        {$group: { _id: '$class', reviewCount: { $sum: 1} }}
         //sort by decending count
-        {$sort: {"reviewCount": -1}},
-        {$limit: 10}
+        // {$sort: {"reviewCount": -1}},
+        // {$limit: 10}
       ];
-
-      //run the query, and grap the full course object for each returned course_id
+      // reviewedSubjects is a dictionary-like object of subjects (key) and
+      // number of reviews (value) associated with that subject
+      var reviewedSubjects = new defaultDict();
+      //run the query and return the class name and number of reviews written to it
       mostReviews = Reviews.aggregate(pipeline).map(function(course) {
-        return Classes.find({_id: course._id}).fetch()[0];
+        // classObject is the Class object associated with course._id
+        var classObject =  Classes.find({_id: course._id}).fetch()[0];
+        // classSubject is the string of the full subject of classObject
+        var classSubject = Subjects.find({subShort: classObject.classSub}).fetch()[0].subFull;
+        // Adds the number of reviews to the ongoing count of reviews per subject
+        reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
+        return classObject;
       });
-
-      return  mostReviews
+      // Creates a map of subjects (key) and total number of reviews (value)
+      var subjectsMap = new Map(Object.entries(reviewedSubjects));
+      subjectsMap.delete("get");
+      var subjectsAndReviewCountArray = Array.from(subjectsMap);
+      subjectsAndReviewCountArray = subjectsAndReviewCountArray.sort(function(a,b) {
+        //Sorts array by number of reviews each topic has
+        return a[1]<b[1]? 1:a[1]>b[1]?-1:0;
+      });
+      
+      // Returns the top 15 most reviewed classes
+      return subjectsAndReviewCountArray.slice(0, 15)
     },
 
     // Print on the server side for API testing. Should print in logs if
@@ -222,3 +239,15 @@ Meteor.methods({
       }
     }
 });
+
+// Recreation of Python's defaultdict to be used in topSubjects method
+function defaultDict(){
+  this.get = function (key){
+    if(this.hasOwnProperty(key)){
+      return this[key];
+    }
+    else{
+      return 0;
+    }
+  }
+};

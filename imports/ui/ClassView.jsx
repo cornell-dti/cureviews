@@ -5,7 +5,8 @@ import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
-import PopularClasses from './PopularClasses.jsx';
+// Commented because unecessary but left here just in case
+// import SubjectLeaderboard from './SubjectLeaderboard.jsx';
 import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
