@@ -40,7 +40,10 @@ export default class SubjectLeaderboard extends Component {
       return this.state.topSubjects.map((course, index) => (
         <ol className="no-hover classbutton" key={index}>
             <h3 className="text-style-2" >
-                {(index+1).toString()}. {course[0]}
+            {/* Displays subject and number it ranks (per total reivews) */}
+            {(index+1).toString()}. {course[0]}
+            {/* Displays the number of total reviews next to subject */}
+            <span className="float-right">{course[1]}</span>
             </h3>
         </ol>
       ));
