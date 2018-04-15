@@ -76,13 +76,13 @@ export function addAllCourses(semesters) {
                                 var matchedCourse = check[0] //only 1 should exist
                                 var oldSems = matchedCourse.classSems;
                                 if (oldSems.indexOf(semesters[semester]) === -1) {
-                                    console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
+                                    //console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
                                     oldSems.push(semesters[semester]) //add this semester to the list
                                     Classes.update({_id: matchedCourse._id}, {$set: {classSems: oldSems}})
                                 }
                             }
                         } catch(error){
-                            console.log(course);
+                            console.log("error3");
                             return 0;
                         }
                     }
@@ -169,7 +169,7 @@ export function addCrossList() {
                                 return dbCourse[0]._id;
                               })
                               console.log(courses[course].subject + " " + courses[course].catalogNbr);
-                              console.log(crossListIDs);
+                              // console.log(crossListIDs);
                               thisCourse = check[0];
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
                             }

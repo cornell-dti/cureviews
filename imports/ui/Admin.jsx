@@ -26,9 +26,12 @@ export class Admin extends Component {
       disableInit: false,
       disableNewSem: false,
       doubleClick: false,
-      loadingInit: 0, // 0: starting state, no attempt to update database,
+      loadingInit: 0, // 0: starting state, no attempt to init database,
                   // 1: database init function was called, scraper is running
                   // 2: database init function has completed
+      loadingSemester: 0, // 0: starting state, no attempt to update database,
+                  // 1: database semester update function was called, scraper is running
+                  // 2: database semester update function has completed
     }
 
     // define bart alert message constants
@@ -85,11 +88,11 @@ export class Admin extends Component {
   // sShould run once a semester, when new classes are added to the roster.
   addNewSem(initiate) {
     console.log("updating to new semester");
-    this.setState({disableNewSem: true});
+    this.setState({disableNewSem: true, loadingSemester: 1});
     Meteor.call('addNewSemester', initiate, (error, result) => {
       if (!error && result === 1) {
         console.log("Added new semester courses");
-        this.setState({disableNewSem: false});
+        this.setState({disableNewSem: false, loadingSemester: 2});
       } else {
         console.log(error)
       }
@@ -189,11 +192,11 @@ export class Admin extends Component {
             </div>
           </div>
 
-          <div hidden={!(this.state.loadingInit === 1)} className="width-90">
+          <div hidden={!(this.state.loadingSemester === 1)} className="width-90">
             <p>Adding New Semester Data. This process can take up to 15 minutes.</p>
           </div>
 
-          <div hidden={!(this.state.loadingInit === 2)} className="width-90">
+          <div hidden={!(this.state.loadingSemester === 2)} className="width-90">
             <p>New Semester Data import is complete!</p>
           </div>
 
