@@ -61,7 +61,8 @@ export default class ClassView extends Component {
     // it must be bound to this component (in the constructor) so that this component's local state changes.
     // Searchbar takes the query in this component's local state to render its search suggestions.
     updateQuery(event) {
-      this.setState({query: event.target.value});
+      // trim the query to remove trailing spaces      
+      this.setState({query: event.target.value.trim()});
       //Session to be able to get info from this.state.query in withTracker
       Session.set('querySession', this.state.query);
     }
