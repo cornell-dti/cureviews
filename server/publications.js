@@ -23,44 +23,90 @@ import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList } from 
 /* Publish a subset of the local database's Classes collection based on the requested searchstring.
    Return: array of course objects (JSON).
    If searchString is a valid string:
-     Return any courses containing the string in the format 'subject number: course name'.
-     Courses whose subject matches the string are 'top matches' and should
-     placed at the top of the returned array. Courses with subjects containing the string
-     are 'secondary matches', placed under top matches in the return array
+    Return a 'good' search using the following rules:
+    - if the first character is a number, return all courses with that number, sorted by number
+    - if the searchstring is a subject shorthand 
+      return all courses with that subject ordered by full course title
+    - if the searchstring contains both numbers and letters try to split into numbers and letters
+      - if letters form a subject, return courses with this subject containing the given number
+    -else look for searchstring matches across class title and full course title.
   If searchString is undefined or empty:
      Return an array of 200 courses.
 */
 Meteor.publish('classes', function validClasses(searchString) {
   if (searchString !== undefined && searchString !== "") {
-    //console.log("query entered:", searchString);
-    //first check for exact subject match
-    exactSubSearch = Classes.find({classSub : searchString}, {limit: 200});
-    if (exactSubSearch.fetch().length > 0) {
-      return exactSubSearch;
-    }
-    //next check for subject containing the query
-    subSearch = Classes.find({classSub :{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},{limit: 200});
-    if (subSearch.fetch().length > 0) {
-      return subSearch;
-    }
-    else {
-      //last check eveerything else
+    // check if first digit is a number. Catches searchs like "1100"
+    // if so, search only through the course numbers and return classes ordered by full name
+    indexFirstDigit = searchString.search(/\d/)
+    if (indexFirstDigit == 0) {
+      console.log("only numbers")
       return Classes.find(
-        {'$or' : [
-          { 'classSub':  { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-          { 'classNum':  { '$regex' : `.*${searchString}.*`, '$options' : '-i' } },
-          { 'classTitle':{ '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-          { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}]
-        },
-        { limit: 200 }
-      );
+        {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}, 
+        {sort: {classFull: 1}, limit: 200}, 
+        {reactive: false});
     }
+   
+    // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
+    if (isSubShorthand(searchString)) {
+      console.log("matches subject: " + searchString)
+      return Classes.find(
+        { 'classSub':  searchString},
+        {sort: {classFull: 1}, limit: 200},  
+        {reactive: false});
+    }
+
+    // check if text before space is subject, if so search only classes with this subject.
+    // Speeds up searches like "CS 1110"
+    indexFirstSpace = searchString.search(" ")
+    if (indexFirstSpace != -1) {
+      console.log("has space at: " + String(indexFirstSpace))
+      strBeforeSpace = searchString.substring(0, indexFirstSpace)
+      strAfterSpace = searchString.substring(indexFirstSpace + 1)
+      if (isSubShorthand(strBeforeSpace)) {
+        console.log("matches subject with space: " + strBeforeSpace)
+        return searchWithinSubject(strBeforeSpace, strAfterSpace)
+      }
+    }
+
+    // check if text is subject followed by course number (no space)
+    // if so search only classes with this subject.
+    // Speeds up searches like "CS1110"
+    if (indexFirstDigit != -1) {
+      console.log("has digit at: " + String(indexFirstDigit))
+      strBeforeDigit = searchString.substring(0, indexFirstDigit)
+      strAfterDigit = searchString.substring(indexFirstDigit)
+      if (isSubShorthand(strBeforeDigit)) {
+        console.log("matches subject with digit: " + String(strBeforeDigit))
+        return searchWithinSubject(strBeforeDigit, strAfterDigit)
+      }
+    }
+
+    //last resort, everything 
+    console.log("nothing matches")
+    return Classes.find(
+      { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+      {sort: {classFull: 1}, limit: 200}, 
+      {reactive: false}
+    );
   } else {
     //console.log("no search");
-    return Classes.find({}, {limit: 200});
+    return Classes.find({}, {sort: {classFull: 1}, limit: 200}, {reactive: false});
   }
 });
 
+// Helper to check if a string is a subject code
+isSubShorthand = (sub) => {
+  subCheck = Subjects.find({subShort: sub}).fetch()
+  return subCheck.length > 0;
+}
+
+// helper to format search within a subject 
+searchWithinSubject = (sub, remainder) => {
+  return Classes.find(
+    { 'classSub':  sub, 'classFull': { '$regex' : `.*${remainder}.*`, '$options' : '-i' }},
+    {sort: {classFull: 1}, limit: 200},  
+    {reactive: false});
+}
 
 /* Publish a subset of the local database's Reviews collection based on the requested parameters.
    Return: array of course objects (JSON).
