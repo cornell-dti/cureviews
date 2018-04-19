@@ -54,7 +54,7 @@ export class SearchBar extends Component {
 
   render() {
     return (
-      <div className="search-bar text-left" id="searchbar" onBlur={this.hideDropdown} onFocus={this.showDropdown}>
+      <div className="search-bar text-left" id="searchbar" >
         <input className="search-text" id="search" onChange={this.props.queryFunc} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
         <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }}>
           {this.renderCourses()}
