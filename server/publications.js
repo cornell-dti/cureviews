@@ -39,7 +39,7 @@ Meteor.publish('classes', function validClasses(searchString) {
     // if so, search only through the course numbers and return classes ordered by full name
     indexFirstDigit = searchString.search(/\d/)
     if (indexFirstDigit == 0) {
-      console.log("only numbers")
+      // console.log("only numbers")
       return Classes.find(
         {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}, 
         {sort: {classFull: 1}, limit: 200}, 
@@ -48,7 +48,7 @@ Meteor.publish('classes', function validClasses(searchString) {
    
     // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
     if (isSubShorthand(searchString)) {
-      console.log("matches subject: " + searchString)
+      // console.log("matches subject: " + searchString)
       return Classes.find(
         { 'classSub':  searchString},
         {sort: {classFull: 1}, limit: 200},  
@@ -59,11 +59,10 @@ Meteor.publish('classes', function validClasses(searchString) {
     // Speeds up searches like "CS 1110"
     indexFirstSpace = searchString.search(" ")
     if (indexFirstSpace != -1) {
-      console.log("has space at: " + String(indexFirstSpace))
       strBeforeSpace = searchString.substring(0, indexFirstSpace)
       strAfterSpace = searchString.substring(indexFirstSpace + 1)
       if (isSubShorthand(strBeforeSpace)) {
-        console.log("matches subject with space: " + strBeforeSpace)
+        // console.log("matches subject with space: " + strBeforeSpace)
         return searchWithinSubject(strBeforeSpace, strAfterSpace)
       }
     }
@@ -72,17 +71,16 @@ Meteor.publish('classes', function validClasses(searchString) {
     // if so search only classes with this subject.
     // Speeds up searches like "CS1110"
     if (indexFirstDigit != -1) {
-      console.log("has digit at: " + String(indexFirstDigit))
       strBeforeDigit = searchString.substring(0, indexFirstDigit)
       strAfterDigit = searchString.substring(indexFirstDigit)
       if (isSubShorthand(strBeforeDigit)) {
-        console.log("matches subject with digit: " + String(strBeforeDigit))
+        // console.log("matches subject with digit: " + String(strBeforeDigit))
         return searchWithinSubject(strBeforeDigit, strAfterDigit)
       }
     }
 
-    //last resort, everything 
-    console.log("nothing matches")
+    //last resort, search everything 
+    // console.log("nothing matches");
     return Classes.find(
       { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
       {sort: {classFull: 1}, limit: 200}, 
