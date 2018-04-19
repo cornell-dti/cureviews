@@ -20,6 +20,14 @@ import "./css/SearchBar.css";
 
 export class SearchBar extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showDropdown: true,
+    }
+  }
+
   // Convert the class objects that satisfy this query into a styled list of search results.
   // Each one will act as a button, such that clicking a course will take the user
   // to that class's ClassView. The name of the class will have underline and bold
@@ -36,11 +44,19 @@ export class SearchBar extends Component {
     }
   }
 
+  showDropdown = () => {
+    this.setState({showDropdown: true})
+  }
+
+  hideDropdown = () => {
+    this.setState({showDropdown: false})
+  }
+
   render() {
     return (
-      <div className="search-bar text-left" id="searchbar">
+      <div className="search-bar text-left" id="searchbar" onBlur={this.hideDropdown} onFocus={this.showDropdown}>
         <input className="search-text" id="search" onChange={this.props.queryFunc} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
-        <ul id="output">
+        <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }}>
           {this.renderCourses()}
         </ul>
       </div>

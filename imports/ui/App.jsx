@@ -15,7 +15,7 @@ import { Classes } from '../api/dbDefs.js';
   App Component. Uppermost View component in the component tree,
   the first element of the HTML body tag grabbed by main.html.
 
-  Renders the applicaiton homepage with a navbar and searchbar, popular
+  Renders the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 */
 export default class App extends Component {
@@ -37,7 +37,8 @@ export default class App extends Component {
   // Set the local state variable 'query' to the current value of the input (given by user)
   // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
-    this.setState({query: event.target.value});
+     // trim the query to remove trailing spaces
+    this.setState({query: event.target.value.trim()});
     //Session to be able to get info from this.state.query in withTracker
     Session.set('querySession', this.state.query);
   }
