@@ -26,6 +26,25 @@ export default class Course extends Component {
         startIndex = text.toLowerCase().indexOf(this.props.query);
         endIndex = startIndex + this.props.query.length;
         text = <div>{text.substring(0,startIndex)}<span className='found'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</div>
+      } else {
+        // based on search technique in server/publications, results without a contains match 
+        // must be of the form "CS21" or "CS 21". The subject must be a 'match', as well as some 
+        // text in the substring of query after the subject.
+
+        // substring of query after the subject, without trailing spaces
+        queryWithoutSubject = this.props.query.substring(classInfo.classSub.length).trim(); 
+        // search substring of text after subject for substring of query.
+        textWithoutSubject = classInfo.classNum + ": " + classInfo.classTitle;
+        startIndex = textWithoutSubject.toLowerCase().indexOf(queryWithoutSubject);
+        endIndex = startIndex + queryWithoutSubject.length;
+
+        // underline the subject and any other matching text
+        text = 
+        <div>
+          <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>
+          {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
+        </div>
+        
       }
     } else {
       text = <div>{text}</div>
