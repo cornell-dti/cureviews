@@ -93,6 +93,90 @@ export function addAllCourses(semesters) {
     return 1;
 }
 
+
+export function updateProfessors (semesters){
+  //You just want to go through all the classes in the Classes database and update the Professors field
+  //Don't want to go through the semesters
+  //Might want a helper function that returns that professors for you
+    console.log("In updateProfessors method")
+     for (semester in semesters) {
+        //get all classes in this semester
+        var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+        if (result.statusCode !== 200) {
+            console.log("In the first if statusCode error")
+            console.log("error");
+            return 0;
+        }
+
+        else {
+            response = JSON.parse(result.content);
+            //console.log(response);
+            var sub = response.data.subjects; //array of the subjects
+            for (course in sub) {       //for every subject
+                parent = sub[course];
+                var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+
+                if (result2.statusCode !== 200) {
+                  console.log("In the second if statusCode error")
+                    console.log("error2");
+                    return 0;
+                }
+
+                else {
+                    response2 = JSON.parse(result2.content);
+                    console.log("PRINTING ALL THE COURSES")
+                    courses = response2.data.classes;
+                    console.log(courses)
+
+                    //add each class to the Classes collection if it doesnt exist already
+                    for (course in courses) {
+                        try {
+                            var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                            var matchedCourse = check[0]  //catch this if there is no class existing
+                            var oldProfessors = []
+                            oldProfessors.push(matchedCourse.classProfessors)
+                            //var oldProfessors = matchedCourse.classProfessors
+                            console.log("TRYING TO PRINT THE ENROLL GROUP!")
+                            console.log(courses[course].enrollGroups)
+                            console.log("Testing strm")
+                            console.log(courses[course].strm)
+
+                            var classSections = courses[course].enrollGroups.classSections
+                            for (section in classSections){
+                                if (sections[section].ssrComponent == "LEC"){
+                                  var firstName = sections[section].meetings.instructors.firstName
+                                  var lastName = sections[section].meetings.instructors.lastName
+                                  var fullName = firstName + " " + lastName
+                                  if (!oldProfessors.includes(fullName)){
+                                      oldProfessors.push(fullName)
+                                  }
+                                }
+                            }
+                            //Classes.update({_id: matchedCourse._id}, {$set: {classSems: oldSems}})
+                            console.log("Printing the professors")
+                            console.log(oldProfessors)
+                            Classes.update({_id: matchedCourse._id}, {$set: {classProfessors: oldProfessors}})
+                          }
+
+                        catch(error){
+                          console.log("In the catch error")
+                          console.log(error)
+                          console.log(course)
+                          return 0;
+                        }
+                    }
+                }
+            }
+        }
+      }
+    }
+
+
+export function getProfessorsForClass(){
+  //Need the method here to extract the Professor from the response
+  //return the array here
+}
+
 /* # Grabs the API-required format of the current semester, to be given to the
    # addAllCourses function.
    # Return: String Array (length = 1)

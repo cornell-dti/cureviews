@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
-import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList } from './dbInit.js';
+import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors} from './dbInit.js';
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
 /* # Meteor Methods
@@ -121,6 +121,18 @@ Meteor.methods({
         }
     },
 
+    /* Update the database so we have the professors information.
+    This calls updateProfessors in dbInit */
+    setProfessors: function(initiate){
+        if (initiate && Meteor.isServer){
+          const val = updateProfessors(findAllSemesters());
+          if (val == 0){
+            console.log("fail")
+            return 0;
+          }
+        }
+    },
+
     // Get a course with this course_id from the Classes collection in the local database.
     getCourseById: function(courseId) {
         // check: make sure course id is valid and non-malicious
@@ -206,7 +218,7 @@ Meteor.methods({
         //Sorts array by number of reviews each topic has
         return a[1]<b[1]? 1:a[1]>b[1]?-1:0;
       });
-      
+
       // Returns the top 15 most reviewed classes
       return subjectsAndReviewCountArray.slice(0, 15)
     },

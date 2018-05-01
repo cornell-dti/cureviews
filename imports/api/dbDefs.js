@@ -22,7 +22,8 @@ Classes.schema = new SimpleSchema({
     classPrereq : { type: [String] ,optional: true}, // list of pre-req classes, a string of Classes _id.
     crossList : { type: [String] ,optional: true}, // list of classes that are crosslisted with this one, a string of Classes _id.
     classFull: {type: String}, // full class title to search by, formated as 'classSub classNum: classTitle'
-    classSems: {type: [String]} // list of semesters this class was offered, like ['FA17', 'FA16']
+    classSems: {type: [String]}, // list of semesters this class was offered, like ['FA17', 'FA16']
+    classProfessors: {type: [String]} //list of professors that have thought the course over past semesters
 });
 
 /* # Users collection.

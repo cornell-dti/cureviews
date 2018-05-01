@@ -116,6 +116,38 @@ export class Admin extends Component {
     });
   }
 
+  updateProfessors(initiate) {
+    console.log("updating professors");
+    this.setState({disableInit: true, loadingInit: 1});
+    Meteor.call('setProfessors', initiate, (error, result) => {
+      if (!error && result === 1) {
+        console.log("Updated the professors");
+        this.setState({disableInit: false, loadingInit: 2});
+      } else {
+        console.log("In the admin.jsx error block")
+        console.log(error)
+      }
+    });
+  }
+
+  renderProfessorsButton(doubleClick) {
+    // offer button to edit database
+    if (doubleClick) {
+      return (
+        <div className="btn-group separate-buttons" role="group">
+          <button disabled={this.state.disableInit} type="button" className="btn btn-warning" onClick={() => this.updateProfessors(true)}>Update Professors</button>
+        </div>
+      );
+    } else {
+      // offer button that gives alert and saves next click as a double click (in local state)
+      return (
+        <div className="btn-group separate-buttons" role="group">
+          <button type="button" className="btn btn-warning" onClick={() => this.firstClickHandler()}> Update Professors 2</button>
+        </div>
+      );
+    }
+  }
+
 
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
@@ -183,6 +215,9 @@ export class Admin extends Component {
           <div className="text-right">
             <div className="btn-group" role="group">
               <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
+            </div>
+            <div className="btn-group" role="group">
+              <button type="button" className="btn btn-warning" onClick={()=> this.updateProfessors(true)}>Update Professors</button>
             </div>
             <div className="btn-group" role="group">
               {this.renderInitButton(this.state.doubleClick)}
