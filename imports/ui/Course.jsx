@@ -15,6 +15,23 @@ import "./css/Course.css";
 */
 
 export default class Course extends Component {
+  
+  
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+  triggerClick = () =>{
+    console.log("trigger")
+    if(this.props.active){
+      //console.log("trigger")
+      console.log(this.refs.class);
+      this.props.cursor.refs.class.click();
+      //this.refs.class.click();
+    }
+  }
   render() {
     // generate full human-readable name of class
     var classInfo = this.props.info;
@@ -52,8 +69,8 @@ export default class Course extends Component {
 
     // return classname as a list element
     return (
-      <li className="classbutton" id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } >
-          <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
+      <li className={this.props.active ? 'active classButton' : 'classButton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+          <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`} ref="class">
               {text}
           </a>
       </li>
@@ -65,5 +82,7 @@ export default class Course extends Component {
 // determine styling of output
 Course.propTypes = {
   info: PropTypes.object.isRequired,
-  query: PropTypes.string //optional
+  query: PropTypes.string, //optional
+  active: PropTypes.bool,
+  cursor: PropTypes.function,
 };
