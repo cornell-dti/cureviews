@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import "./css/Course.css";
+import { Route, Redirect } from 'react-router';
 
 /*
   Course Component.
@@ -17,26 +18,15 @@ import "./css/Course.css";
 export default class Course extends Component {
   
   
-  componentDidMount() {
-    this.props.onRef(this)
-  }
-  componentWillUnmount() {
-    this.props.onRef(undefined)
-  }
-  triggerClick = () =>{
-    console.log("trigger")
-    if(this.props.active){
-      //console.log("trigger")
-      console.log(this.refs.class);
-      this.props.cursor.refs.class.click();
-      //this.refs.class.click();
-    }
-  }
   render() {
     // generate full human-readable name of class
     var classInfo = this.props.info;
     var text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
-
+    
+    //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
+    if(this.props.active && this.props.cursor == 1){
+       return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
+      }
     // check if a query was provided, if so underline parts of the class name
     if (this.props.query) {
       if (text.toLowerCase().indexOf(this.props.query) != -1) {
@@ -67,9 +57,11 @@ export default class Course extends Component {
       text = <div>{text}</div>
     }
 
-    // return classname as a list element
-    return (
-      <li className={this.props.active ? 'active classButton' : 'classButton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+    //return classname as a list element
+    
+      return (
+      //highlight the element if the indexes matched up (the active prop is true). still allows hover highlighting from mouse.
+      <li className={this.props.active ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
           <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`} ref="class">
               {text}
           </a>
@@ -84,5 +76,5 @@ Course.propTypes = {
   info: PropTypes.object.isRequired,
   query: PropTypes.string, //optional
   active: PropTypes.bool,
-  cursor: PropTypes.function,
+  cursor: PropTypes.number,
 };

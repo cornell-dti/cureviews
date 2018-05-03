@@ -7,7 +7,7 @@
 }
 
 .classbutton:hover{
-  background-color: #D3D3D3;
+  background-color: #D3D3D3 !important;
 }
 
 .text-style-1{

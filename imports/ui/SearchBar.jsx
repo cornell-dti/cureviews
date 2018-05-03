@@ -26,9 +26,8 @@ export class SearchBar extends Component {
 
     this.state = {
       showDropdown: true,
-      result: [],
-      index: 0,
-      
+      index: 0, //the initial state is the first element
+      enter: 0, //to keep track of the initial state of enter as false
     }
     
   
@@ -36,30 +35,31 @@ export class SearchBar extends Component {
   
   
   handleKeyPress = (e) => {
-    //detect some arrow key movement (up or down)
-    //const {result, index, enter} = this.state
+    //detect some arrow key movement (up, down, or enter)
     if (e.key == "ArrowDown") {
-      //find the first element of the dropdown
-      //hilight it -> focus
-      console.log("arrow")
+      //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState( prevState => ({
         index: prevState.index + 1
+        
       }))
- 
+
     }
     else if (e.key == "ArrowUp") {
-      
+      //if the up arrow key was detected, decrease the index value by 1 to highlight the prev element
+      //never index below 0 (the first element)
       this.setState( prevState => ({
-        index: prevState.index - 1
+        index: Math.max(prevState.index - 1, 0)
+        
       }))
+
     }
     
-    /*else if(e.key == "Enter"){
-      console.log("enter")
-      //console.log(ReactDOM.findDOMNode(this.refs.enter).value);
-      //ReactDOM.findDOMNode(this.refs.enter).value
-      console.log("finish")
-    }*/
+    else if(e.key == "Enter"){
+      //if the enter key was detected, change the state of enter to 1 (true)
+      this.setState({
+        enter: 1
+      })
+    }
     
     
     else{
@@ -68,16 +68,6 @@ export class SearchBar extends Component {
     
   }
   
-  handleEnter=(e) => {
-    if(e.key == "Enter"){
-      refs.triggerClick()
-    }
-  }
-  
-  onEnter = () => {
-    console.log(this.refs)
-    this.refs.triggerClick()
-  }
   
   
   
@@ -96,15 +86,14 @@ export class SearchBar extends Component {
   // where it matches the query.
   renderCourses() {
     if (this.props.query !== "") {
-      /*return this.props.allCourses.slice(0,100).map((course) => (
+      return this.props.allCourses.slice(0,100).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.props.query}/>
-      ));*/
-      result = this.props.allCourses.slice(0,100);
-      return result.map((course, i) => {
-        
-        return <Course key={course._id} info={course} query={this.props.query} active={this.state.index == i} cursor={this.handleEnter} onRef={ref => (this.child = ref)}/>
-      });
+        <Course key={course._id} info={course} query={this.props.query} active={this.state.index == i} cursor={this.state.enter}/>
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "cursor" will pass through the value of the enter state
+      ));
+      
     }
     else {
       return <div />;
