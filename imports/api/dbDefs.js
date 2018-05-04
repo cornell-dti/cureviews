@@ -77,5 +77,5 @@ Reviews.schema = new SimpleSchema({
 export const Validation = new Mongo.Collection('validation');
 Validation.schema = new SimpleSchema({
     _id: {type: String}, // mongo-generated random id for this document
-    adminPass: {type: String}, // admin password to validate against 
+    adminPass: {type: String}, // admin password to validate against
 });

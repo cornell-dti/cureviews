@@ -125,7 +125,11 @@ Meteor.methods({
     This calls updateProfessors in dbInit */
     setProfessors: function(initiate){
         if (initiate && Meteor.isServer){
-          const val = updateProfessors(findAllSemesters());
+          var semesters = findAllSemesters();
+          semesters = semesters.slice(0, semesters.length -3);
+          console.log("These are the semesters");
+          console.log(semesters);
+        const val = updateProfessors(semesters);
           if (val == 0){
             console.log("fail")
             return 0;

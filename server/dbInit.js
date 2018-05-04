@@ -112,52 +112,53 @@ export function updateProfessors (semesters){
             response = JSON.parse(result.content);
             //console.log(response);
             var sub = response.data.subjects; //array of the subjects
-            for (course in sub) {       //for every subject
+            for (course in sub) {             //for every subject
                 parent = sub[course];
                 var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
 
                 if (result2.statusCode !== 200) {
-                  console.log("In the second if statusCode error")
-                    console.log("error2");
+                  //console.log("In the second if statusCode error")
+                    //console.log("error2");
                     return 0;
                 }
 
                 else {
                     response2 = JSON.parse(result2.content);
-                    console.log("PRINTING ALL THE COURSES")
+                    //console.log("PRINTING ALL THE COURSES")
                     courses = response2.data.classes;
-                    console.log(courses)
+                    //console.log(courses)
 
                     //add each class to the Classes collection if it doesnt exist already
                     for (course in courses) {
                         try {
                             var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
                             var matchedCourse = check[0]  //catch this if there is no class existing
-                            var oldProfessors = []
-                            oldProfessors.push(matchedCourse.classProfessors)
-                            //var oldProfessors = matchedCourse.classProfessors
-                            console.log("TRYING TO PRINT THE ENROLL GROUP!")
-                            console.log(courses[course].enrollGroups)
-                            console.log("Testing strm")
-                            console.log(courses[course].strm)
+                            console.log(courses[course].subject);
+                            console.log(courses[course].catalogNbr);
+                            //We are getting an error here! This doesn't make sense why matchedCourse would return undefined
+                            /*if (matchedCourse == undefined){
+                              return 0
+                            }*/
 
-                            var classSections = courses[course].enrollGroups.classSections
-                            for (section in classSections){
-                                if (sections[section].ssrComponent == "LEC"){
-                                  var firstName = sections[section].meetings.instructors.firstName
-                                  var lastName = sections[section].meetings.instructors.lastName
+                            console.log("This is the matchedCourse")
+                            console.log(matchedCourse)
+                            var oldProfessors = matchedCourse.classProfessors
+
+                            var enrollGroups = courses[course].enrollGroups     //This returns an array
+                            for (eg in enrollGroups){
+                                if (enrollGroups[eg].classSections[0].ssrComponent == "LEC"){
+                                  //if ()
+                                  var firstName = enrollGroups[eg].classSections[0].meetings[0].instructors[0].firstName
+                                  var lastName = enrollGroups[eg].classSections[0].meetings[0].instructors[0].lastName
                                   var fullName = firstName + " " + lastName
                                   if (!oldProfessors.includes(fullName)){
                                       oldProfessors.push(fullName)
+                                      console.log(oldProfessors)
                                   }
                                 }
                             }
-                            //Classes.update({_id: matchedCourse._id}, {$set: {classSems: oldSems}})
-                            console.log("Printing the professors")
-                            console.log(oldProfessors)
                             Classes.update({_id: matchedCourse._id}, {$set: {classProfessors: oldProfessors}})
-                          }
-
+                        }
                         catch(error){
                           console.log("In the catch error")
                           console.log(error)
@@ -166,10 +167,10 @@ export function updateProfessors (semesters){
                         }
                     }
                 }
-            }
+              }
         }
-      }
     }
+  }
 
 
 export function getProfessorsForClass(){
