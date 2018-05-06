@@ -60,8 +60,10 @@ export default class Course extends Component {
     //return classname as a list element
     
       return (
-      //highlight the element if the indexes matched up (the active prop is true). still allows hover highlighting from mouse.
-      <li className={this.props.active ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+      //highlight the element if the indexes matched up (the active prop is true)
+      //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
+      //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
+      <li className={this.props.active && this.props.mouse != 1 ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
           <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`} ref="class">
               {text}
           </a>
@@ -77,4 +79,5 @@ Course.propTypes = {
   query: PropTypes.string, //optional
   active: PropTypes.bool,
   cursor: PropTypes.number,
+  mouse: PropTypes.number,
 };
