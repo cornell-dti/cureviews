@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import "./css/Course.css";
+import { Route, Redirect } from 'react-router';
 
 /*
   Course Component.
@@ -15,11 +16,17 @@ import "./css/Course.css";
 */
 
 export default class Course extends Component {
+  
+  
   render() {
     // generate full human-readable name of class
     var classInfo = this.props.info;
     var text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
-
+    
+    //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
+    if(this.props.active && this.props.cursor == 1){
+       return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
+      }
     // check if a query was provided, if so underline parts of the class name
     if (this.props.query) {
       if (text.toLowerCase().indexOf(this.props.query) != -1) {
@@ -50,10 +57,14 @@ export default class Course extends Component {
       text = <div>{text}</div>
     }
 
-    // return classname as a list element
-    return (
-      <li className="classbutton" id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } >
-          <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
+    //return classname as a list element
+    
+      return (
+      //highlight the element if the indexes matched up (the active prop is true)
+      //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
+      //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
+      <li className={this.props.active && this.props.mouse != 1 ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+          <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`} ref="class">
               {text}
           </a>
       </li>
@@ -65,5 +76,8 @@ export default class Course extends Component {
 // determine styling of output
 Course.propTypes = {
   info: PropTypes.object.isRequired,
-  query: PropTypes.string //optional
+  query: PropTypes.string, //optional
+  active: PropTypes.bool,
+  cursor: PropTypes.number,
+  mouse: PropTypes.number,
 };
