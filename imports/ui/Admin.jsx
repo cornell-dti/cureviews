@@ -147,25 +147,6 @@ export class Admin extends Component {
     });
   }
 
-  renderProfessorsButton(doubleClick) {
-    // offer button to edit database
-    if (doubleClick) {
-      return (
-        <div className="btn-group separate-buttons" role="group">
-          <button disabled={this.state.disableInit} type="button" className="btn btn-warning" onClick={() => this.updateProfessors(true)}>Update Professors</button>
-        </div>
-      );
-    } else {
-      // offer button that gives alert and saves next click as a double click (in local state)
-      return (
-        <div className="btn-group separate-buttons" role="group">
-          <button type="button" className="btn btn-warning" onClick={() => this.firstClickHandler()}> Update Professors 2</button>
-        </div>
-      );
-    }
-  }
-
-
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
   firstClickHandler() {

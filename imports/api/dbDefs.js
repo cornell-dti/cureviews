@@ -23,7 +23,7 @@ Classes.schema = new SimpleSchema({
     crossList : { type: [String] ,optional: true}, // list of classes that are crosslisted with this one, a string of Classes _id.
     classFull: {type: String}, // full class title to search by, formated as 'classSub classNum: classTitle'
     classSems: {type: [String]}, // list of semesters this class was offered, like ['FA17', 'FA16']
-    classProfessors: {type: [String]} //list of professors that have thought the course over past semesters
+    classProfessors: {type: [String]} //list of professors that have taught the course over past semesters
 });
 
 /* # Users collection.
@@ -68,6 +68,7 @@ Reviews.schema = new SimpleSchema({
     atten: {type: Number}, // attendence measure from the review
     visible: {type: Number}, // visibility flag - 1 if visible to users, 0 if only visible to admin
     reported: {type: Number}, // reported flag - 1 if review was reported, 0 otherwise
+    professors: {type: [String]}, //list of professors that have thought the course over past semesters
 });
 
 /* # Validation Collection.

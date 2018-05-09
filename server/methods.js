@@ -15,7 +15,7 @@ Meteor.methods({
     // Upon success returns 1, else returns 0.
     insert: function(review, classId) {
         // check: only insert if all form feilds are filled in
-        if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && classId !== undefined && classId !== null) {
+        if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && review.professors !== null&& classId !== undefined && classId !== null) {
             var fullReview = {
                 text: review.text,
                 difficulty: review.diff,
@@ -25,7 +25,8 @@ Meteor.methods({
                 date: new Date(),
                 atten: review.atten,
                 visible: 0,
-                reported: 0
+                reported: 0,
+                professors: review.professors,
             };
 
             try {

@@ -112,7 +112,7 @@ export default class ClassView extends Component {
                 </div>
                 <div className="col-md-6 col-sm-12 col-xs-12 panel-container moveDown panel-color-gray">
                   <div>
-                    <Form courseId={this.state.selectedClass._id}/>
+                    <Form course={this.state.selectedClass}/>
                   </div>
                   <div className="useful useful-text">
                     <h5>
