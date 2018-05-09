@@ -120,11 +120,25 @@ export class Admin extends Component {
   }
 
   updateProfessors(initiate) {
-    console.log("updating professors");
+    console.log("Updating professors");
     this.setState({disableInit: true, loadingInit: 1});
     Meteor.call('setProfessors', initiate, (error, result) => {
       if (!error && result === 1) {
         console.log("Updated the professors");
+        this.setState({disableInit: false, loadingInit: 2});
+      } else {
+        console.log("In the admin.jsx error block")
+        console.log(error)
+      }
+    });
+  }
+  
+  resetProfessors(initiate) {
+    console.log("Setting the professors to an empty array");
+    this.setState({disableInit: true, loadingInit: 1});
+    Meteor.call('resetProfessors', initiate, (error, result) => {
+      if (!error && result === 1) {
+        console.log("Reset all the professors to empty arrays");
         this.setState({disableInit: false, loadingInit: 2});
       } else {
         console.log("In the admin.jsx error block")
@@ -221,6 +235,9 @@ export class Admin extends Component {
             </div>
             <div className="btn-group" role="group">
               <button type="button" className="btn btn-warning" onClick={()=> this.updateProfessors(true)}>Update Professors</button>
+            </div>
+            <div className="btn-group" role="group">
+              <button type="button" className="btn btn-warning" onClick={()=> this.resetProfessors(true)}>RESET Professors</button>
             </div>
             <div className="btn-group" role="group">
               {this.renderInitButton(this.state.doubleClick)}

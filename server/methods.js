@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
-import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors} from './dbInit.js';
+import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray} from './dbInit.js';
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
 /* # Meteor Methods
@@ -122,14 +122,48 @@ Meteor.methods({
     },
 
     /* Update the database so we have the professors information.
-    This calls updateProfessors in dbInit */
+    This calls updateProfessors in dbInit
+    NOTE: We are temporarily not updating any professors for classes inspect
+    'SU14','SU15','SU16','SU17','SU18', 'FA18', 'WI18'*/
     setProfessors: function(initiate){
         if (initiate && Meteor.isServer){
           var semesters = findAllSemesters();
-          semesters = semesters.slice(0, semesters.length -3);
+          // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
+          var toRemove = ['SU18', 'FA18', 'WI18']
+          toRemove.forEach(function(sem){
+            var index = semesters.indexOf(sem);
+            if (index > -1) {
+              semesters.splice(index, 1);
+            }
+          })
           console.log("These are the semesters");
           console.log(semesters);
         const val = updateProfessors(semesters);
+          if (val == 0){
+            console.log("fail")
+            return 0;
+          }
+        }
+    },
+    
+    /* Initializes the classProfessors field in the Classes collection to an empty array so that
+    we have a uniform empty array to fill with updateProfessors 
+    This calls the resetProfessorArray in dbInit
+    NOTE: We are temporarily not updating any professors for classes inspect
+    'SU18', 'FA18', 'WI18'*/
+    resetProfessors: function(initiate){
+        if (initiate && Meteor.isServer){
+          var semesters = findAllSemesters();
+          var toRemove = ['SU18', 'FA18', 'WI18']
+          toRemove.forEach(function(sem){
+            var index = semesters.indexOf(sem);
+            if (index > -1) {
+              semesters.splice(index, 1);
+            }
+          })
+          console.log("These are the semesters");
+          console.log(semesters);
+        const val = resetProfessorArray(semesters);
           if (val == 0){
             console.log("fail")
             return 0;
