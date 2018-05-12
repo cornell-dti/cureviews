@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import { Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
@@ -35,7 +36,6 @@ export default class Form extends Component {
     };
 
     //store all currently selected form values in the state.
-    //#TODO change this to array ["none"]
     this.state = {
       diff: 3,
       quality: 3,
@@ -44,11 +44,13 @@ export default class Form extends Component {
       text: "",
       message: null,
       postClicks: 0,
-      professors: "none",
+      professors: this.props.course.classProfessors,
+      checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state;
+    this.handleProfChange.bind(this)
   }
 
   // Save the current user input text from the text box in the local state.
@@ -100,14 +102,17 @@ export default class Form extends Component {
   // Save the current professor selected string for professors in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleProfChange(event) {
-    this.setState({ professors: [String(event.target.value)] });
+    const profs = this.state.checkedProfs;
+    index = parseInt(event.target.name)
+    profs[index] = !profs[index]
+    this.setState({ checkedProfs: profs});
   }
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
     ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-    ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+    //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
     
     this.setState(this.defaultState);
   }
@@ -118,7 +123,7 @@ export default class Form extends Component {
     if (nextProps.course != this.props.course) {
       ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
       ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-      ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+      //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
       this.setState(this.defaultState);
     }
   }
@@ -135,12 +140,14 @@ export default class Form extends Component {
     var atten = this.state.attend;
     var diff = this.state.diff;
     var qual = this.state.quality;
-    var prof = this.state.professors;
+    var prof = this.state.checkedProfs.filter(checked => checked === true).map((checked, index) => {
+      return this.state.professors[index];
+    });
     if (text.length > 0 
       && text !== null 
       && median !== null 
       && atten !== null
-      && prof !== ["none"]) {
+      && prof !== []) {
       // create new review object
       var newReview = {
         text: text,
@@ -157,9 +164,10 @@ export default class Form extends Component {
           // Success, so reset form
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-          ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+          // ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
 
           this.setState(this.defaultState);
+          this.setState({checkedProfs: Array((this.props.course.classProfessors).length).fill(false)}); // force reset 
           Bert.alert('Thanks! Your review is currently pending approval.');
         } else {
           // error, alert user
@@ -180,13 +188,29 @@ export default class Form extends Component {
       attend: attend === null || attend === undefined,
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
-      professorsEmpty: this.state.postClicks > 0 && (prof === "none" || prof[0] == ["none"]),
+      professorsEmpty: this.state.postClicks > 0 && !(this.state.checkedProfs.includes(true)),
       allFalse: false
     };
     errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty || errs.professorsEmpty);
     return errs;
+    console.log(errs);
   }
 
+  renderCheckboxes() {
+    if (this.props.course.classProfessors != []) {
+      return this.props.course.classProfessors.map((e, key) => {
+        return (
+          <div key={e} className="checkbox">
+            <label>
+              <input name={key} onChange={(event) => this.handleProfChange(event)} type="checkbox" checked={this.state.checkedProfs[key]} />
+              {e}
+            </label>
+          </div>
+        )
+      })
+    }
+  }
+  
   render() {
     var theClass = this.props.course
     // check to see if all inputs are valid. If some inputs are invalide, disable the
@@ -258,13 +282,7 @@ export default class Form extends Component {
                               <div className="secondary-text">Professor(s)</div>
                           </div>
                           <div className="col-md-8 selectAlignment">
-                              <select ref="profSelect" value={this.state.professors} onChange={(event) => this.handleProfChange(event)}>
-                                <option value="none">Select Professor(s)</option>
-                                {theClass.classProfessors.map((e, key) => {
-                                  return <option key={key} value={e.value}>{e}</option>;
-                                })}
-                              <option value="Other">Other</option>
-                              </select>
+                              {this.renderCheckboxes()}
                               <div ref="noProfMsg" className={err.professorsEmpty ? "" : "hidden"}>Please select the professor(s) you took this class with!</div>
                           </div>
                       </div>
