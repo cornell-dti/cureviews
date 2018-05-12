@@ -1,5 +1,4 @@
 import React, { Component} from 'react';
-import { Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
