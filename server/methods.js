@@ -139,9 +139,11 @@ Meteor.methods({
           })
           console.log("These are the semesters");
           console.log(semesters);
-        const val = updateProfessors(semesters);
-          if (val == 0){
-            console.log("fail")
+          const val = updateProfessors(semesters);
+          if (val) {
+            return val;
+          } else {
+            console.log("fail at setProfessors in method.js");
             return 0;
           }
         }
@@ -164,9 +166,11 @@ Meteor.methods({
           })
           console.log("These are the semesters");
           console.log(semesters);
-        const val = resetProfessorArray(semesters);
-          if (val == 0){
-            console.log("fail")
+          const val = resetProfessorArray(semesters);
+          if (val) {
+            return val;
+          } else {
+            console.log("fail at resetProfessors in method.js");
             return 0;
           }
         }

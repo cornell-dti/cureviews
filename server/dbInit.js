@@ -207,6 +207,8 @@ export function updateProfessors (semesters){
               }
         }
     }
+    console.log("professors updated");
+    return 1;
   }
   
   export function resetProfessorArray (semesters){
@@ -272,6 +274,8 @@ export function updateProfessors (semesters){
                 }
           }
       }
+      console.log("professors reset");
+      return 1;
     }
 
 
