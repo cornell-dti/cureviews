@@ -22,28 +22,72 @@ export class SearchBar extends Component {
 
   constructor(props) {
     super(props);
+    
 
     this.state = {
       showDropdown: true,
+      index: 0, //the initial state is the first element
+      enter: 0, //to keep track of the initial state of enter as false
+      mouse: 0, //keep track of the initial state of mouse hovering in the list cells as false
     }
+    
+  
   }
+  
+  
+  handleKeyPress = (e) => {
+    //detect some arrow key movement (up, down, or enter)
+    if (e.key == "ArrowDown") {
+      //if the down arrow was detected, increase the index value by 1 to highlight the next element
+      this.setState( prevState => ({
+        index: prevState.index + 1
+        
+      }))
 
-  // Convert the class objects that satisfy this query into a styled list of search results.
-  // Each one will act as a button, such that clicking a course will take the user
-  // to that class's ClassView. The name of the class will have underline and bold
-  // where it matches the query.
-  renderCourses() {
-    if (this.props.query !== "") {
-      return this.props.allCourses.slice(0,100).map((course) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.props.query}/>
-      ));
     }
-    else {
-      return <div />;
+    else if (e.key == "ArrowUp") {
+      //if the up arrow key was detected, decrease the index value by 1 to highlight the prev element
+      //never index below 0 (the first element)
+      this.setState( prevState => ({
+        index: Math.max(prevState.index - 1, 0)
+        
+      }))
+
     }
+    
+    else if(e.key == "Enter"){
+      //if the enter key was detected, change the state of enter to 1 (true)
+      this.setState({
+        enter: 1
+      })
+    }
+    
+    
+    else{
+      this.props.queryFunc(e);
+    }
+    
   }
-
+  
+  mouseHover = () => {
+    this.setState({
+      mouse: 1
+    })
+    
+  }
+  
+  mouseLeave = () => {
+    this.setState({
+      mouse: 0
+    })
+    this.setState({
+      index: 0 //resets the index to the first element
+    })
+  }
+  
+  
+  
+  
   showDropdown = () => {
     this.setState({showDropdown: true})
   }
@@ -52,11 +96,36 @@ export class SearchBar extends Component {
     this.setState({showDropdown: false})
   }
 
+  // Convert the class objects that satisfy this query into a styled list of search results.
+  // Each one will act as a button, such that clicking a course will take the user
+  // to that class's ClassView. The name of the class will have underline and bold
+  // where it matches the query.
+  renderCourses() {
+    if (this.props.query !== "") {
+      return this.props.allCourses.slice(0,100).map((course, i) => (
+        //create a new class "button" that will set the selected class to this class when it is clicked.
+        <Course key={course._id} info={course} query={this.props.query} active={this.state.index == i} cursor={this.state.enter} mouse = {this.state.mouse}/>
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "cursor" will pass through the value of the enter state
+        //the prop "mouse" will pass through the value of the mouse state
+      ));
+      
+    }
+    else {
+      return <div />;
+    }
+  }
+
+  
+
   render() {
+    const {index} = this.state
+    
     return (
       <div className="search-bar text-left" id="searchbar" >
-        <input className="search-text" id="search" onChange={this.props.queryFunc} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
-        <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }}>
+        <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
+        <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderCourses()}
         </ul>
       </div>
