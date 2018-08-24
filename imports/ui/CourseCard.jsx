@@ -83,10 +83,6 @@ export class CourseCard extends Component {
                 <strong>Last Offered: </strong>
                 {offered}
             </p>
-            <p className="review-text spacing-large">
-                <strong>Professor(s): {theClass.classProfessors}</strong>
-                {offered}
-            </p>
             <h2>Class Data</h2>
             <div className= "panel panel-default">
                 <div className = "panel-body">
