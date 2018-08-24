@@ -93,6 +93,197 @@ export function addAllCourses(semesters) {
     return 1;
 }
 
+
+export function updateProfessors (semesters){
+  //You just want to go through all the classes in the Classes database and update the Professors field
+  //Don't want to go through the semesters
+  //Might want a helper function that returns that professors for you
+    console.log("In updateProfessors method")
+    semesterLoop:
+     for (semester in semesters) {
+        //get all classes in this semester
+        console.log("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester])
+        try{
+          HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+        }
+        catch(e){
+          console.log(e)
+          continue semesterLoop;
+        }
+        var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+        console.log(result)
+        if (result.statusCode !== 200 || result.status == "error") {
+            console.log("In the first if statusCode error")
+            console.log("error");
+            continue semesterLoop;
+        }
+
+        else {
+            response = JSON.parse(result.content);
+            //console.log(response);
+            var sub = response.data.subjects; //array of the subjects
+            subjectLoop:
+            for (course in sub) {             //for every subject
+                parent = sub[course];
+                console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
+                try{
+                  HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+                }
+                catch(e){
+                  console.log(e)
+                  continue subjectLoop;
+                }
+                var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+                if (result2.statusCode !== 200 || result2.status == "error") {
+                  //console.log("In the second if statusCode error")
+                    //console.log("error2");
+                    console.log("In the second if statusCode error")
+                    console.log("error");
+                    continue subjectLoop;
+                }
+
+                else {
+                    response2 = JSON.parse(result2.content);
+                    //console.log("PRINTING ALL THE COURSES")
+                    courses = response2.data.classes;
+                    //console.log(courses)
+
+                    //add each class to the Classes collection if it doesnt exist already
+                    for (course in courses) {
+                        try {
+                            var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                            var matchedCourse = check[0]  //catch this if there is no class existing
+                            if (typeof matchedCourse !== "undefined"){
+                              console.log(courses[course].subject);
+                              console.log(courses[course].catalogNbr);
+                              console.log("This is the matchedCourse")
+                              console.log(matchedCourse)
+                              var oldProfessors = matchedCourse.classProfessors
+                              console.log("This is the length of old profs")
+                              console.log(oldProfessors.length)
+                              var classSections = courses[course].enrollGroups[0].classSections     //This returns an array
+                              for (section in classSections){
+                                  if (classSections[section].ssrComponent == "LEC"){
+                                    // Checks to see if class has scheduled meetings before checking them
+                                    if (classSections[section].meetings.length > 0){
+                                      var professors = classSections[section].meetings[0].instructors
+                                      // Checks to see if class has instructors before checking them
+                                      // Example of class without professors is:
+                                      // ASRC 3113 in FA16
+                                      // ASRC 3113 returns an empty array for professors
+                                      if (professors.length > 0){
+                                        for (professor in professors){
+                                          var firstName = professors[professor].firstName
+                                          var lastName = professors[professor].lastName
+                                          var fullName = firstName + " " + lastName
+                                          if (!oldProfessors.includes(fullName)){
+                                              oldProfessors.push(fullName)
+                                              console.log("This is a new professor")
+                                              console.log(typeof oldProfessors)
+                                              console.log(oldProfessors)
+                                          }
+                                        }
+                                      }
+                                      else{
+                                        console.log("This class does not have professors")
+                                      }
+                                    }
+                                    else{
+                                      console.log("This class does not have meetings scheduled")
+                                    }
+                                  }
+                              }
+                              Classes.update({_id: matchedCourse._id}, {$set: {classProfessors: oldProfessors}})
+                            }
+                        }
+                        catch(error){
+                          console.log("In the catch error")
+                          console.log(error)
+                          console.log(course)
+                          return 0;
+                        }
+                    }
+                }
+              }
+        }
+    }
+    console.log("professors updated");
+    return 1;
+  }
+  
+  export function resetProfessorArray (semesters){
+    // Initializes the classProfessors field in the Classes collection to an empty array so that
+    // we have a uniform empty array to fill with updateProfessors
+    // Will only have to be called ONCE
+      console.log("In resetProfessorArray method")
+       for (semester in semesters) {
+          //get all classes in this semester
+          var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+          if (result.statusCode !== 200) {
+              console.log("In the first if statusCode error")
+              console.log("error");
+              return 0;
+          }
+
+          else {
+              response = JSON.parse(result.content);
+              //console.log(response);
+              var sub = response.data.subjects; //array of the subjects
+              for (course in sub) {             //for every subject
+                  parent = sub[course];
+                  console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
+                  var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+
+                  if (result2.statusCode !== 200) {
+                    //console.log("In the second if statusCode error")
+                      //console.log("error2");
+                      return 0;
+                  }
+
+                  else {
+                      response2 = JSON.parse(result2.content);
+                      //console.log("PRINTING ALL THE COURSES")
+                      courses = response2.data.classes;
+                      //console.log(courses)
+
+                      //add each class to the Classes collection if it doesnt exist already
+                      for (course in courses) {
+                          try {
+                              var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                              var matchedCourse = check[0]  //catch this if there is no class existing
+                              if (typeof matchedCourse !== "undefined"){
+                                console.log(courses[course].subject);
+                                console.log(courses[course].catalogNbr);
+                                console.log("This is the matchedCourse")
+                                console.log(matchedCourse)
+                                // var oldProfessors = matchedCourse.classProfessors
+                                var oldProfessors = []
+                                console.log("This is the length of old profs")
+                                console.log(oldProfessors.length)
+                                Classes.update({_id: matchedCourse._id}, {$set: {classProfessors: oldProfessors}})
+                              }
+                          }
+                          catch(error){
+                            console.log("In the catch error")
+                            console.log(error)
+                            console.log(course)
+                            return 0;
+                          }
+                      }
+                  }
+                }
+          }
+      }
+      console.log("professors reset");
+      return 1;
+    }
+
+
+export function getProfessorsForClass(){
+  //Need the method here to extract the Professor from the response
+  //return the array here
+}
+
 /* # Grabs the API-required format of the current semester, to be given to the
    # addAllCourses function.
    # Return: String Array (length = 1)

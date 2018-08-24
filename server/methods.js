@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
-import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList } from './dbInit.js';
+import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray} from './dbInit.js';
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
 /* # Meteor Methods
@@ -15,7 +15,7 @@ Meteor.methods({
     // Upon success returns 1, else returns 0.
     insert: function(review, classId) {
         // check: only insert if all form feilds are filled in
-        if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && classId !== undefined && classId !== null) {
+        if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && review.professors !== null&& classId !== undefined && classId !== null) {
             var fullReview = {
                 text: review.text,
                 difficulty: review.diff,
@@ -25,7 +25,8 @@ Meteor.methods({
                 date: new Date(),
                 atten: review.atten,
                 visible: 0,
-                reported: 0
+                reported: 0,
+                professors: review.professors,
             };
 
             try {
@@ -121,6 +122,60 @@ Meteor.methods({
         }
     },
 
+    /* Update the database so we have the professors information.
+    This calls updateProfessors in dbInit
+    NOTE: We are temporarily not updating any professors for classes inspect
+    'SU14','SU15','SU16','SU17','SU18', 'FA18', 'WI18'*/
+    setProfessors: function(initiate){
+        if (initiate && Meteor.isServer){
+          var semesters = findAllSemesters();
+          // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
+          var toRemove = ['SU18', 'FA18', 'WI18']
+          toRemove.forEach(function(sem){
+            var index = semesters.indexOf(sem);
+            if (index > -1) {
+              semesters.splice(index, 1);
+            }
+          })
+          console.log("These are the semesters");
+          console.log(semesters);
+          const val = updateProfessors(semesters);
+          if (val) {
+            return val;
+          } else {
+            console.log("fail at setProfessors in method.js");
+            return 0;
+          }
+        }
+    },
+    
+    /* Initializes the classProfessors field in the Classes collection to an empty array so that
+    we have a uniform empty array to fill with updateProfessors 
+    This calls the resetProfessorArray in dbInit
+    NOTE: We are temporarily not updating any professors for classes inspect
+    'SU18', 'FA18', 'WI18'*/
+    resetProfessors: function(initiate){
+        if (initiate && Meteor.isServer){
+          var semesters = findAllSemesters();
+          var toRemove = ['SU18', 'FA18', 'WI18']
+          toRemove.forEach(function(sem){
+            var index = semesters.indexOf(sem);
+            if (index > -1) {
+              semesters.splice(index, 1);
+            }
+          })
+          console.log("These are the semesters");
+          console.log(semesters);
+          const val = resetProfessorArray(semesters);
+          if (val) {
+            return val;
+          } else {
+            console.log("fail at resetProfessors in method.js");
+            return 0;
+          }
+        }
+    },
+
     // Get a course with this course_id from the Classes collection in the local database.
     getCourseById: function(courseId) {
         // check: make sure course id is valid and non-malicious
@@ -206,7 +261,7 @@ Meteor.methods({
         //Sorts array by number of reviews each topic has
         return a[1]<b[1]? 1:a[1]>b[1]?-1:0;
       });
-      
+
       // Returns the top 15 most reviewed classes
       return subjectsAndReviewCountArray.slice(0, 15)
     },

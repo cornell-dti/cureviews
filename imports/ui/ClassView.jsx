@@ -71,6 +71,7 @@ export default class ClassView extends Component {
     // Use the get variables to search the local Classes database for a class with the
     // requested subject and course number. Update the local state accordingly.
     componentWillMount () {
+        
       Meteor.call("getCourseByInfo", this.state.number, this.state.subject, (err, selectedClass) => {
           if (!err && selectedClass) {
               // Save the Class object that matches the request
@@ -86,6 +87,23 @@ export default class ClassView extends Component {
               });
           }
       });
+    }
+    
+    componentWillReceiveProps(nextProps){
+        //if this component receives new props from the Redirect, it resets its state so that it can render/mount
+        //a new ClassView component with the new props
+        const number  = nextProps.match.params.number;
+        const subject = nextProps.match.params.subject.toLowerCase();
+
+       
+        this.state = {
+            number: number,
+            subject: subject,
+            selectedClass: null,
+            classDoesntExist: false,
+            query: '',
+        };
+        this.componentWillMount()
     }
 
     // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
@@ -112,7 +130,7 @@ export default class ClassView extends Component {
                 </div>
                 <div className="col-md-6 col-sm-12 col-xs-12 panel-container moveDown panel-color-gray">
                   <div>
-                    <Form courseId={this.state.selectedClass._id}/>
+                    <Form course={this.state.selectedClass}/>
                   </div>
                   <div className="useful useful-text">
                     <h5>

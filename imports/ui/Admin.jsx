@@ -32,6 +32,12 @@ export class Admin extends Component {
       loadingSemester: 0, // 0: starting state, no attempt to update database,
                   // 1: database semester update function was called, scraper is running
                   // 2: database semester update function has completed
+      loadingProfs: 0, // 0: starting state, no attempt to update database,
+                  // 1: database professor clear function was called, scraper is running
+                  // 2: database professor update function has completed
+      resettingProfs: 0, // 0: starting state, no attempt to clear database,
+                  // 1: database professor clearing function was called, scraper is running
+                  // 2: database professor clearing function has completed            
     }
 
     // define bart alert message constants
@@ -119,6 +125,33 @@ export class Admin extends Component {
     });
   }
 
+  updateProfessors(initiate) {
+    console.log("Updating professors");
+    this.setState({disableInit: true, loadingProfs: 1});
+    Meteor.call('setProfessors', initiate, (error, result) => {
+      if (!error && result === 1) {
+        console.log("Updated the professors");
+        this.setState({disableInit: false, loadingProfs: 2});
+      } else {
+        console.log("In the admin.jsx error block")
+        console.log(error)
+      }
+    });
+  }
+  
+  resetProfessors(initiate) {
+    console.log("Setting the professors to an empty array");
+    this.setState({disableInit: true, resettingProfs: 1});
+    Meteor.call('resetProfessors', initiate, (error, result) => {
+      if (!error && result === 1) {
+        console.log("Reset all the professors to empty arrays");
+        this.setState({disableInit: false, resettingProfs: 2});
+      } else {
+        console.log("In the admin.jsx error block")
+        console.log(error)
+      }
+    });
+  }
 
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
@@ -184,8 +217,14 @@ export class Admin extends Component {
           <br />
 
           <div className="text-right">
-            <div className="btn-group" role="group">
+            <div className="btn-group separate-buttons" role="group">
               <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={()=> this.addNewSem(true)}>Add New Semester</button>
+            </div>
+            <div className="btn-group separate-buttons" role="group">
+              <button type="button" className="btn btn-warning" onClick={()=> this.updateProfessors(true)}>Update Professors</button>
+            </div>
+            <div className="btn-group separate-buttons" role="group">
+              <button type="button" className="btn btn-warning" onClick={()=> this.resetProfessors(true)}>RESET Professors</button>
             </div>
             <div className="btn-group" role="group">
               {this.renderInitButton(this.state.doubleClick)}
@@ -198,6 +237,24 @@ export class Admin extends Component {
 
           <div hidden={!(this.state.loadingSemester === 2)} className="width-90">
             <p>New Semester Data import is complete!</p>
+          </div>
+          
+          <div hidden={!(this.state.resettingProfs === 1)} className="width-90">
+            <p>Clearing all associated professors from Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+
+          <div hidden={!(this.state.resettingProfs === 2)} className="width-90">
+            <p>All professor arrays in Classes reset to empty!</p>
+          </div>
+          
+          <div hidden={!(this.state.loadingProfs === 1)} className="width-90">
+            <p>Updating professor data to Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+
+          <div hidden={!(this.state.loadingProfs === 2)} className="width-90">
+            <p>Professor data import to Classes is complete!</p>
           </div>
 
           <div hidden={!(this.state.loadingInit === 1)} className="width-90">

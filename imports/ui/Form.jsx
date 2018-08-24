@@ -43,10 +43,13 @@ export default class Form extends Component {
       text: "",
       message: null,
       postClicks: 0,
+      professors: this.props.course.classProfessors,
+      checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state;
+    this.handleProfChange.bind(this)
   }
 
   // Save the current user input text from the text box in the local state.
@@ -63,7 +66,7 @@ export default class Form extends Component {
 
   // Save the current user selected value for median grade in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleMedianChange = (event) => {
+  handleMedianChange(event) {
     this.setState({ median: parseInt(event.target.value) });
   }
 
@@ -94,20 +97,32 @@ export default class Form extends Component {
       backgroundColor: colors[value],
     }
   }
+  
+  // Save the current professor selected string for professors in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleProfChange(event) {
+    const profs = this.state.checkedProfs;
+    index = parseInt(event.target.name)
+    profs[index] = !profs[index]
+    this.setState({ checkedProfs: profs});
+  }
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
     ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+    //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+    
     this.setState(this.defaultState);
   }
 
   // Called each time this component receieves new props.
   // resets the values of the sliders to 3 and sets the state to the default state.
   componentWillReceiveProps(nextProps) {
-    if (nextProps.courseId != this.props.courseId) {
+    if (nextProps.course != this.props.course) {
       ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
       ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+      //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
       this.setState(this.defaultState);
     }
   }
@@ -124,24 +139,34 @@ export default class Form extends Component {
     var atten = this.state.attend;
     var diff = this.state.diff;
     var qual = this.state.quality;
-    if (text.length > 0 && text !== null && median !== null && atten !== null) {
+    var prof = this.state.checkedProfs.filter(checked => checked === true).map((checked, index) => {
+      return this.state.professors[index];
+    });
+    if (text.length > 0 
+      && text !== null 
+      && median !== null 
+      && atten !== null
+      && prof !== []) {
       // create new review object
       var newReview = {
         text: text,
         diff: diff,
         quality: qual,
         medGrade: median,
-        atten: atten
+        atten: atten,
+        professors: prof
       };
 
       // call the api insert function
-      Meteor.call('insert', newReview, this.props.courseId, (error, result) => {
+      Meteor.call('insert', newReview, this.props.course._id, (error, result) => {
         if (!error && result === 1) {
           // Success, so reset form
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
           ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+          // ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
 
           this.setState(this.defaultState);
+          this.setState({checkedProfs: Array((this.props.course.classProfessors).length).fill(false)}); // force reset 
           Bert.alert('Thanks! Your review is currently pending approval.');
         } else {
           // error, alert user
@@ -154,24 +179,42 @@ export default class Form extends Component {
 
   // Validation function. Checks if the median and attendence are filled out,
   // and checks text for any unaccepted symbols
-  validateInputs(median, attend, text) {
+  validateInputs(median, attend, text, prof) {
     //ensure there are no illegal characters
-    var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
+        var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
+      professorsEmpty: this.state.postClicks > 0 && !(this.state.checkedProfs.includes(true)),
       allFalse: false
     };
-    errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty);
+    errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty || errs.professorsEmpty);
     return errs;
+    console.log(errs);
   }
 
+  renderCheckboxes() {
+    if (this.props.course.classProfessors != []) {
+      return this.props.course.classProfessors.map((e, key) => {
+        return (
+          <div key={e} className="checkbox">
+            <label>
+              <input name={key} onChange={(event) => this.handleProfChange(event)} type="checkbox" checked={this.state.checkedProfs[key]} />
+              {e}
+            </label>
+          </div>
+        )
+      })
+    }
+  }
+  
   render() {
+    var theClass = this.props.course
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
-    var err = this.validateInputs(this.state.median, this.state.attend, this.state.text);
+    var err = this.validateInputs(this.state.median, this.state.attend, this.state.text, this.state.professors);
     var isEnabled = err.allTrue;
     return (
         <div>
@@ -235,6 +278,16 @@ export default class Form extends Component {
                       <div className="sm-spacing"></div>
                       <div className="row">
                           <div className="col-md-4">
+                              <div className="secondary-text">Professor(s)</div>
+                          </div>
+                          <div className="col-md-8 selectAlignment">
+                              {this.renderCheckboxes()}
+                              <div ref="noProfMsg" className={err.professorsEmpty ? "" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-4">
                               <div className="secondary-text">Attendance</div>
                           </div>
                           <div className="col-md-8 selectAlignment">
@@ -265,7 +318,7 @@ export default class Form extends Component {
   }
 }
 
-// Form must be provided the course id of the class this review will be for.
+// Form must be provided the course object of the class this review will be for.
 Form.propTypes = {
-  courseId: PropTypes.string.isRequired,
+  course: PropTypes.object.isRequired,
 };

@@ -91,10 +91,14 @@ export default class UpdateReview extends Component {
                           <div className="panel panel-default">
                               <div className="panel-body text-center">{review.difficulty}</div>
                           </div>
+                          <div className="panel panel-default">
+                              <div className="panel-body text-center">{review.professors}</div>
+                          </div>
                       </div>
                       <div className="col-sm-2">
                           <div className="panel-body"> Overall Quality</div>
                           <div className="panel-body"> Level of difficulty</div>
+                          <div className="panel-body"> Professor(s)</div>
                       </div>
                       <div className="col-sm-9">
                         {review.text}
