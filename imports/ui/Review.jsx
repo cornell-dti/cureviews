@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/Review.css';
 
@@ -16,7 +16,7 @@ export default class Review extends Component {
 
   // Function to convert the classId assigned to this review into the
   // full, human-readable name of the class.
-  renderClassName(classId){
+  renderClassName(classId) {
     var toShow = ''; //empty div
     return Meteor.call('getCourseById', classId, (error, result) => {
       if (!error) {
@@ -50,43 +50,63 @@ export default class Review extends Component {
     var review = this.props.info;
     var classId = review.class;
     return (
-		<li>
-      <div className="row">
-        <div className="col-sm-12">
-          <p className="classNameLink">
-            <i>{moment(review.date.toISOString()).fromNow()}</i>
-          </p>
-        </div>
-      </div>
-      <div className="review">
-          <div className="panel-body-3">
-              <div className="row reviewNumbers">
-                  <div className="col-md-2 col-xs-2 col-xs-2">
-                      <div className="container" id="box" style={this.getQualColor(review.quality)}>
-                          <div id="text">{review.quality}</div>
-                      </div>
-                  </div>
-                  <div className="col-md-4 col-sm-4 col-xs-4">
-                      <p id="label">Overall Quality</p>
-                  </div>
-                  <div className="col-md-2 col-sm-2 col-xs-2" >
-                      <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
-                          <div id="text">{review.difficulty}</div>
-                      </div>
-                  </div>
-                  <div className="col-md-2 col-sm-2 col-xs-2">
-                      <p id="label">Difficulty</p>
-                  </div>
-              </div>
-              <div className="row">
-                  <div className="review-text" id="review_text">{review.text}</div>
-              </div>
-							<div className="col-sm-12">
-                  <button onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.');}} id="button_text">Report</button>
-              </div>
+      <li>
+        <div className="row">
+          <div className="col-sm-12">
+            <p className="classNameLink">
+              <i>{moment(review.date.toISOString()).fromNow()}</i>
+            </p>
           </div>
-      </div>
-		</li>
+        </div>
+        <div className="review">
+          <div className="panel-body-3">
+            <div className="row reviewNumbers">
+              <div className="col-md-2 col-xs-2 col-xs-2">
+                <div className="container" id="box" style={this.getQualColor(review.quality)}>
+                  <div id="text">{review.quality}</div>
+                </div>
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-2" id="labelName">
+                <p id="labelName">Workload</p>
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-2" id="rightLabel">
+                <p id="rightLabel">Recommendability</p>
+              </div>
+            </div>
+            <div className="row reviewNumbers">
+              <div className="col-md-2 col-sm-2 col-xs-2" >
+                <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
+                  <div id="text">{review.difficulty}</div>
+                </div>
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-2" id="labelName">
+                <p id="labelName">Difficulty</p>
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-2" id="rightLabel">
+                <p id="rightLabel">Professor: </p>
+              </div>
+              <div className="col-md-4 col-sm-4 col-xs-4" id="rightLabel" >
+                <div className="container" id="prof_box">
+                  <div id="professor_text">Michael Clarkson</div>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="review-text" id="review_text">{review.text}</div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12">
+                <p id="button_text">I agree</p>
+              </div>
+            </div>
+            <div className="col-sm-12">
+              <button type="button" className="btn btn-circle btn-primary"><i id="agreeNumber">1</i>
+              </button>
+              {/* <button onClick={() => { this.props.reportHandler(review); alert('This post has been reported and will be reviewed.'); }} id="button_text">Report</button> */}
+            </div>
+          </div>
+        </div>
+      </li>
     );
   }
 }

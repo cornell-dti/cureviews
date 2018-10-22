@@ -22,11 +22,23 @@
 }
 
 #box {
-  border-radius: 8px;
-  height: 34px;
+  border-radius: 25px;
+  height: 44px;
   /*background-color: #e64558;*/
   padding-top: 0;
   width: 44px;
+}
+
+#prof_box {
+  border-radius: 10px;
+  height: 100%;
+  padding-top: 2px;
+  width: 100%;
+  background-color: #ececec; 
+  margin-top: 5px;
+  padding-top: 0px;
+  padding-left: 5px;
+  padding-right: 0px;
 }
 
 #text {
@@ -47,6 +59,18 @@
   text-align: left;
 }
 
+#professor_text{
+  color: black;
+  font-size: 14px;
+  line-height: 1.38;
+  letter-spacing: 0.1px;
+  text-align: center;
+  /* background-color: #ececec; */
+  padding: 0 0 0 0;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 #label{
   color: #4a4a4a;
   font-size: 14px;
@@ -57,23 +81,67 @@
 }
 
 #button_text {
-  color: #4a4a4a;
+  color: black;
   font-size: 14px;
-  opacity: 0.35;
   letter-spacing: 0.1px;
   text-align: right;
   border: none;
   background-color: white;
   text-decoration: none;
-  padding-right: 0px;
+  padding-right: 25px;
+}
+.btn-circle {
+  width: 45px;
+  height: 45px;
+  padding: 0px 0px;
+  border-radius: 25px;
+  text-align: center;
+  line-height: 1.42857;
+  background-color: black;
+  float: right;
+  margin-right: 10px;
 }
 
+.btn-primary:hover {
+  color: #fff;
+  background-color:#4990e2;
+  border-color: #4990e2;
+}
 #reviewpanel, #reviewul {
   background-color: #f2f2f2;
 }
 
 #reviewpanel {
   border-color: transparent;
+}
+
+#labelName {
+  padding-left: 0px;
+  padding-right: 0px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #000000;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  margin: 0 0px;
+  padding-top: 5px;
+}
+
+#rightLabel {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #000000;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  margin: 0 7px;
+  padding-top: 5px;
+  padding-left: 20px;
+  padding-right: 0px;
+}
+
+#agreeNumber {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 20px;
 }
 
 .review {
