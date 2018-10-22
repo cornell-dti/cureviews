@@ -180,25 +180,27 @@ header .hide-completed {
 
 input[type="range"] {
     -webkit-appearance: none;
-    width: 50%;
+    width: 100%;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-    background-color: #4990E2;
+    background-color: #4a90e2;
     border-radius: 15px;
-    height: 10px;
+    height: 6.4px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     background-color: #000000;
-    border: 2px solid #fff;
+    border: 2px solid #000000;
     border-radius: 100%;
-    box-shadow: 3px 1px 3px #000000;
+    box-shadow: 0px 1px 2px 0px #000000;
     cursor: pointer;
-    height: 20px;
+    position: relative;
+    bottom: 5px; /* Used to fix spacing */
+    height: 17px;
     opacity: 1;
-    width: 20px;
+    width: 17px;
 }
 
 input[type="submit"]{

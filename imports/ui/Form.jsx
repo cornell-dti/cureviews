@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
 import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
-
+var Slider = require('nw-react-slider');
 /*
   Form Component.
 
@@ -181,7 +181,8 @@ export default class Form extends Component {
   // and checks text for any unaccepted symbols
   validateInputs(median, attend, text, prof) {
     //ensure there are no illegal characters
-        var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
+    // TODO un-comment the next line
+        // var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
     errs = {
       median: median === null || median === undefined,
       attend: attend === null || attend === undefined,
@@ -230,7 +231,7 @@ export default class Form extends Component {
                       <hr className="divider" />
                       <div className="row">
                           <div className="col-md-3">
-                              <h1 className="secondary-text">Overall Quality</h1>
+                              <h1 className="secondary-text">Workload</h1>
                           </div>
                           <div className="col-md-1">
                               <div className="small-icon" id="sm1" style={this.getQualColor(this.state.quality)}>
@@ -244,7 +245,7 @@ export default class Form extends Component {
                       <div className="sm-spacing"></div>
                       <div className='row'>
                           <div className="col-md-3">
-                              <h1 className="secondary-text">Level of Difficulty</h1>
+                              <h1 className="secondary-text">Difficulty</h1>
                           </div>
                           <div className="col-md-1">
                               <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
@@ -258,7 +259,7 @@ export default class Form extends Component {
                       <div className="sm-spacing"></div>
                       <div className="row">
                           <div className="col-md-4">
-                              <div className="secondary-text">Estimated Median</div>
+                              <div className="secondary-text">Median Grade</div>
                           </div>
                           <div className="col-md-8 selectAlignment">
                               <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
@@ -286,17 +287,6 @@ export default class Form extends Component {
                           </div>
                       </div>
                       <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-4">
-                              <div className="secondary-text">Attendance</div>
-                          </div>
-                          <div className="col-md-8 selectAlignment">
-                              <select value={this.state.attend} onChange={(event) => this.handleAttendChange(event)}>
-                                  <option value="0">Not Mandatory</option>
-                                  <option value="1">Mandatory</option>
-                              </select>
-                          </div>
-                      </div>
                   </div>
               </div>
               <div className="row">
