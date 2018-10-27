@@ -69,11 +69,6 @@ export default class Review extends Component {
               <div className="col-md-2 col-sm-2 col-xs-2" id="labelName">
                 <p id="labelName">Workload</p>
               </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" id="rightLabel">
-                <p id="rightLabel">Recommendability</p>
-              </div>
-            </div>
-            <div className="row reviewNumbers">
               <div className="col-md-2 col-sm-2 col-xs-2" >
                 <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
                   <div id="text">{review.difficulty}</div>
@@ -82,10 +77,15 @@ export default class Review extends Component {
               <div className="col-md-2 col-sm-2 col-xs-2" id="labelName">
                 <p id="labelName">Difficulty</p>
               </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" id="rightLabel">
-                <p id="rightLabel">Professor: </p>
+              <div className="col-md-2 col-sm-2 col-xs-2" id="labelName">
+                <p id="labelName">Recommendability</p>
               </div>
-              <div className="col-md-4 col-sm-4 col-xs-4" id="rightLabel" >
+            </div>
+            <div className="row reviewNumbers">
+              <div className="col-md-3 col-sm-3 col-xs-3" id="labelName">
+                <p id="profLabel">Professor: </p>
+              </div>
+              <div className="col-md-4 col-sm-4 col-xs-4" id="labelName" >
                 <div className="container" id="prof_box">
                   <div id="professor_text">Michael Clarkson</div>
                 </div>

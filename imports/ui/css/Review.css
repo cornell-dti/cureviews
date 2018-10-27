@@ -37,7 +37,7 @@
   background-color: #ececec; 
   margin-top: 5px;
   padding-top: 0px;
-  padding-left: 5px;
+  padding-left: 0px;
   padding-right: 0px;
 }
 
@@ -61,19 +61,19 @@
 
 #professor_text{
   color: black;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.38;
   letter-spacing: 0.1px;
   text-align: center;
   /* background-color: #ececec; */
-  padding: 0 0 0 0;
+  padding-left: 0px;
   margin-left: 0px;
   margin-right: 0px;
 }
 
 #label{
   color: #4a4a4a;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.1px;
   opacity: 0.5;
   text-align: left;
@@ -82,7 +82,7 @@
 
 #button_text {
   color: black;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.1px;
   text-align: right;
   border: none;
@@ -120,20 +120,20 @@
   padding-right: 0px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #000000;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.1px;
   text-align: left;
   margin: 0 0px;
   padding-top: 5px;
 }
 
-#rightLabel {
+#profLabel {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #000000;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.1px;
   text-align: left;
-  margin: 0 7px;
+  margin: 0 0 0 15px;
   padding-top: 5px;
   padding-left: 20px;
   padding-right: 0px;
