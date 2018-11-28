@@ -75,35 +75,43 @@ export class CourseCard extends Component {
 
     return (
         <div id="coursedetails">
-            <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-            <div> {/* Forces link onto next line */}
-              <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            <div id="numBox" className="courseNum">{theClass.classSub.toUpperCase() + " " + theClass.classNum}</div>
+            <h1 className="subheader">{theClass.classTitle}</h1>
+            <div id="box" className="cornellClassLink spacing-large top-margin-small" href={url} target="_blank"> {/* Forces link onto next line */}
+              <a href={url}>classes.cornell.edu</a>
             </div>
-            <p className="review-text spacing-large">
+            <p className="review-text spacing-large top-margin-small">
                 <strong>Last Offered: </strong>
                 {offered}
             </p>
-            <h2>Class Data</h2>
-            <div className= "panel panel-default">
+            <div className= "panel panel-default top-margin">
                 <div className = "panel-body">
                     <section>
-                        <div className="row" id="gaugeHolder">
-                            <div className="col-md-4 col-sm-4 col-xs-12">
-                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
+                        <div className="row " id="gaugeHolder">
+                            <div className="col-md-6 col-sm-6 col-xs-12">
+                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Workload" />
                             </div>
-                            <div className="col-md-4 col-sm-4 col-xs-12">
-                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
+                            <div className="col-md-6 col-sm-6 col-xs-12">
+                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Level of Difficulty"/>
                             </div>
-                            <div className="col-md-4 col-sm-4 col-xs-12">
-                                <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
+                        </div>
+                        <div className="row " id="gaugeHolder">
+                            <div className="col-md-6 col-sm-6 col-xs-12">
+                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Median Grade" />
+                            </div>
+                            <div className="col-md-6 col-sm-6 col-xs-12">
+                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Overall Rating"/>
                             </div>
                         </div>
                     </section>
                 </div>
             </div>
-            <p className="review-text spacing-large">
-              <strong>Attendance:</strong> {this.state.mandatory}
-            </p>
+
+            <div className = "top-margin-small">
+              <div id="enrollBox"> {/*try disabled button also change fonts back, use chrome in editor thing*/}
+                <text className="overall-rank"> Enroll with Caution</text>
+              </div>
+            </div>
         </div>
     );
   }
