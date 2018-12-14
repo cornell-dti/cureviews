@@ -4,13 +4,64 @@ form {
 .panel-body-2 {
     margin: auto;
     padding: 25px 30px;
-    padding-right: 0px;
-    padding-bottom: 10px;
 }
 #form{
-    padding-right: 30px;
+    padding-right: 15%;
+    padding-left: 15%;
     padding-bottom: 25px;
 }
+
+#reviewTextRow{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-color: #4a90e2;
+    border-radius: 15px;
+    height: 6.4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #000000;
+    border: 2px solid #000000;
+    border-radius: 100%;
+    box-shadow: 0px 1px 2px 0px #000000;
+    cursor: pointer;
+    position: relative;
+    bottom: 5px; /* Used to fix spacing */
+    height: 17px;
+    opacity: 1;
+    width: 17px;
+}
+
+input[type="submit"]{
+    background-color: #4990E2;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    text-align: center;
+    width: 100px;
+}
+input[type="submit"]:active{
+    background-color: #2d6fbc;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    text-align: center;
+    width: 100px;
+}
+
 textarea {
     height: 100px;
     width: 100%;
@@ -25,6 +76,8 @@ textarea {
 #sm1, #sm2 {
     align-items: center;
     color: white;
+    font-size: 15px;
+    font-weight: 500;
     display: flex;
     justify-content: center;
 }
@@ -46,6 +99,11 @@ p {
     margin-top: 10px;
 }
 
+.rodal-dialog{
+  box-shadow: 0 1px 17px 7px #0000004a !important;
+  border-radius: 8px !important;
+}
+
 #postbutton{
     border: none;
     padding-left: 30px;
@@ -56,11 +114,13 @@ p {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 18px;
     font-weight: bold;
-    float: right;
     letter-spacing: 0.1px;
     height: 22px;
     text-align: center;
     height: 40px;
+    position: relative;
+    top: 50px;
+    box-shadow: 0px 3px 2px 1px #0000007d;
 }
 
 #postbutton:focus {

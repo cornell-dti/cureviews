@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
 import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
-var Slider = require('nw-react-slider');
+import Select from 'react-select';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 /*
   Form Component.
 
@@ -36,20 +38,23 @@ export default class Form extends Component {
 
     //store all currently selected form values in the state.
     this.state = {
+      height: 529,
+      visible: false,
       diff: 3,
-      quality: 3,
-      median: 0,
-      attend: 1,
+      workload: 3,
+      median: { value: 0, label: 'I don\'t know' }, //Default for median selecter
       text: "",
       message: null,
       postClicks: 0,
+      selectedProfessors: null,
       professors: this.props.course.classProfessors,
-      checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
+      // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
-    this.defaultState = this.state;
+    this.defaultState = this.state
     this.handleProfChange.bind(this)
+    this.handleMedianChange.bind(this)
   }
 
   // Save the current user input text from the text box in the local state.
@@ -58,36 +63,37 @@ export default class Form extends Component {
     this.setState({text: event.target.value});
   }
 
-  // Save the current user selected value for attendence (as an integer) in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleAttendChange = (event) => {
-    this.setState({ attend: parseInt(event.target.value) });
-  }
-
   // Save the current user selected value for median grade in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleMedianChange(event) {
-    this.setState({ median: parseInt(event.target.value) });
-  }
-
-  // Save the current user selected value for quality in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleQualChange(event) {
-    this.setState({ quality: parseInt(event.target.value) });
-  }
-
-  // Convert the quality slider's value to a color.
-  getQualColor(value) {
-    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
-    return {
-      backgroundColor: colors[value]
-    }
+  handleMedianChange(medianValue) {
+    this.setState({ median: medianValue })
   }
 
   // Save the current user selected value for difficulty in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleDiffChange(event) {
     this.setState({ diff: parseInt(event.target.value) });
+  }
+
+  // Save the current user selected value for quality in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleWorkChange(event) {
+    this.setState({ workload: parseInt(event.target.value) });
+  }
+
+  // Save the current professor selected string for professors in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleProfChange(selectedProfessors){
+    console.log(selectedProfessors.map(professor => {return professor.label}))
+    this.setState({ selectedProfessors: selectedProfessors })
+  }
+
+  // Convert the quality slider's value to a color.
+  getWorkColor(value) {
+    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    return {
+      backgroundColor: colors[value]
+    }
   }
 
   // Convert the difficulty slider's value to a color.
@@ -97,23 +103,12 @@ export default class Form extends Component {
       backgroundColor: colors[value],
     }
   }
-  
-  // Save the current professor selected string for professors in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleProfChange(event) {
-    const profs = this.state.checkedProfs;
-    index = parseInt(event.target.name)
-    profs[index] = !profs[index]
-    this.setState({ checkedProfs: profs});
-  }
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-    ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+    ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
     //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-    
-    this.setState(this.defaultState);
   }
 
   // Called each time this component receieves new props.
@@ -121,7 +116,7 @@ export default class Form extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.course != this.props.course) {
       ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-      ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+      ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
       //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
       this.setState(this.defaultState);
     }
@@ -135,26 +130,25 @@ export default class Form extends Component {
 
     // ensure all fields are filled out
     var text = this.state.text.trim();
-    var median = this.state.median;
-    var atten = this.state.attend;
+    var median = this.state.median.value;
     var diff = this.state.diff;
-    var qual = this.state.quality;
-    var prof = this.state.checkedProfs.filter(checked => checked === true).map((checked, index) => {
-      return this.state.professors[index];
-    });
+    var work = this.state.workload;
+    var prof = this.state.selectedProfessors.map(professor => {return professor.label});
+    // var ratingNum =  //#TODO THIS
+    // var likesNum = 0; //#TODO THIS
     if (text.length > 0 
       && text !== null 
       && median !== null 
-      && atten !== null
       && prof !== []) {
       // create new review object
       var newReview = {
         text: text,
         diff: diff,
-        quality: qual,
+        workload: work,
         medGrade: median,
-        atten: atten,
-        professors: prof
+        professors: prof,
+        // likes: likesNum,  //#TODO THIS 
+        // rating: ratingNum //#TODO THIS
       };
 
       // call the api insert function
@@ -162,11 +156,10 @@ export default class Form extends Component {
         if (!error && result === 1) {
           // Success, so reset form
           ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-          ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
+          ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
           // ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
 
           this.setState(this.defaultState);
-          this.setState({checkedProfs: Array((this.props.course.classProfessors).length).fill(false)}); // force reset 
           Bert.alert('Thanks! Your review is currently pending approval.');
         } else {
           // error, alert user
@@ -177,132 +170,171 @@ export default class Form extends Component {
     }
   }
 
-  // Validation function. Checks if the median and attendence are filled out,
+  // Validation function. Checks if the median are filled out,
   // and checks text for any unaccepted symbols
-  validateInputs(median, attend, text, prof) {
+  validateInputs(median, text, prof) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
         // var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
     errs = {
       median: median === null || median === undefined,
-      attend: attend === null || attend === undefined,
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
-      professorsEmpty: this.state.postClicks > 0 && !(this.state.checkedProfs.includes(true)),
+      professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length == 0),
       allFalse: false
     };
-    errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty || errs.professorsEmpty);
+    errs.allTrue = !(errs.median || errs.text || errs.textEmpty || errs.professorsEmpty);
     return errs;
     console.log(errs);
   }
 
-  renderCheckboxes() {
+  getProfOptions() {
     if (this.props.course.classProfessors != []) {
-      return this.props.course.classProfessors.map((e, key) => {
-        return (
-          <div key={e} className="checkbox">
-            <label>
-              <input name={key} onChange={(event) => this.handleProfChange(event)} type="checkbox" checked={this.state.checkedProfs[key]} />
-              {e}
-            </label>
-          </div>
-        )
-      })
+      var profOptions = []
+      for(var prof in this.props.course.classProfessors){
+        var professorName = this.props.course.classProfessors[prof]
+        
+        profOptions.push({
+          "value" : professorName,
+          "label" : professorName 
+        })
+      }
+      return profOptions
     }
   }
+  
+  getMedianOptions() {
+    
+    const medianGrades = [
+      { value: 0, label: 'I don\'t know' },
+      { value: 9, label: 'A+' },
+      { value: 8, label: 'A' },
+      { value: 7, label: 'A-' },
+      { value: 6, label: 'B+' },
+      { value: 5, label: 'B' },
+      { value: 4, label: 'B-' },
+      { value: 3, label: 'C+' },
+      { value: 2, label: 'C' },
+      { value: 1, label: 'C-' }
+    ]
+    return medianGrades
+  }
+  
+    show() {
+        this.setState({ visible: true });
+    }
+
+    hide() {
+        this.setState({ visible: false });
+        console.log(this.refs.formElement.clientHeight);
+        this.setState({ height: this.refs.formElement.clientHeight });
+    }
+  
+    getRodalHeight(){
+      console.log("this.refs.formElement.clientHeight");
+      // return this.refs.formElement.clientHeight;
+      return 530;
+    }
   
   render() {
     var theClass = this.props.course
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
-    var err = this.validateInputs(this.state.median, this.state.attend, this.state.text, this.state.professors);
+    var err = this.validateInputs(this.state.median, this.state.text, this.state.professors);
     var isEnabled = err.allTrue;
     return (
         <div>
           <legend className="review-header">Leave a Review</legend>
-          <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-              <div className="panel panel-default">
-                  <div className="panel-body-2" id="form">
-                      <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
-                        onChange={(event) => this.handleTextChange(event)}
-                        placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
-                      <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
-                      <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                      <hr className="divider" />
-                      <div className="row">
-                          <div className="col-md-3">
-                              <h1 className="secondary-text">Workload</h1>
+          <button onClick={this.show.bind(this)}>show</button>
+
+          <Rodal animation="slideRight" height={520} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
+            <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref="formElement">
+                    <div className="panel-body-2" id="form">
+                        <div className="row" id="reviewTextRow">
+                          <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                            onChange={(event) => this.handleTextChange(event)}
+                            placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
+                          <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
+                          <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                        </div>
+                        
+                        <hr className="divider" />
+                        <div className="row">
+                            <div className="col-md-3 col-sm-3 col-xs-3">
+                                <h1 className="secondary-text">Workload</h1>
+                            </div>
+                            <div className="col-md-1 col-sm-1 col-xs-1">
+                                <div className="small-icon" id="sm1" style={this.getWorkColor(this.state.workload)}>
+                                    <p>{this.state.workload}</p>
+                                </div>
+                            </div>
+                            <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                               <input ref="workloadSlider" onChange={(event) => this.handleWorkChange(event)} type="range" id="a2" name="work" min="1" max="5" step="1" />
+                            </div>
+                        </div>
+                        <div className="sm-spacing"></div>
+                        <div className='row'>
+                            <div className="col-md-3 col-sm-3 col-xs-3">
+                                <h1 className="secondary-text">Difficulty</h1>
+                            </div>
+                            <div className="col-md-1 col-sm-1 col-xs-1">
+                                <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
+                                    <p>{this.state.diff}</p>
+                                </div>
+                            </div>
+                            <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                                <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="dff" min="1" max="5" step="1" />
+                            </div>
+                        </div>
+                        <div className="sm-spacing"></div>
+                        <div className="row">
+                            <div className="col-md-3 col-sm-3 col-xs-3">
+                                <div className="secondary-text">Median Grade</div>
+                            </div>
+                            <div className="col-md-6  col-sm-6 col-xs-6 selectAlignment">
+                                <Select value={this.state.median} 
+                                  onChange={(medianGrade) => this.handleMedianChange(medianGrade)}  
+                                  options={this.getMedianOptions()} 
+                                />
+                                
+                            </div>
+                        </div>
+                        <div className="sm-spacing"></div>
+                        <div className="row">
+                            <div className="col-md-3 col-sm-3 col-xs-3">
+                                <div className="secondary-text">Professor</div>
+                            </div>
+                            <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment">
+                                <Select value={this.state.selectedProfessors} 
+                                  onChange={(professors) => this.handleProfChange(professors)} 
+                                  isMulti 
+                                  options={this.getProfOptions()} 
+                                />
+                                <div ref="noProfMsg" className={err.professorsEmpty ? "" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                            </div>
+                        </div>
+                        <div className="sm-spacing"></div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
+                            </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-12 text-center">
+                              <button disabled={!isEnabled} id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
                           </div>
-                          <div className="col-md-1">
-                              <div className="small-icon" id="sm1" style={this.getQualColor(this.state.quality)}>
-                                  <p>{this.state.quality}</p>
-                              </div>
-                          </div>
-                          <div className="col-md-8 sliderHolder">
-                             <input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="1" max="5" step="1" />
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                      <div className='row'>
-                          <div className="col-md-3">
-                              <h1 className="secondary-text">Difficulty</h1>
-                          </div>
-                          <div className="col-md-1">
-                              <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
-                                  <p>{this.state.diff}</p>
-                              </div>
-                          </div>
-                          <div className="col-md-8 sliderHolder">
-                              <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="1" max="5" step="1" />
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-4">
-                              <div className="secondary-text">Median Grade</div>
-                          </div>
-                          <div className="col-md-8 selectAlignment">
-                              <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
-                                  <option value="0">I don&#39;t know</option>
-                                  <option value="9">A+</option>
-                                  <option value="8">A</option>
-                                  <option value="7">A-</option>
-                                  <option value="6">B+</option>
-                                  <option value="5">B</option>
-                                  <option value="4">B-</option>
-                                  <option value="3">C+</option>
-                                  <option value="2">C</option>
-                                  <option value="1">C-</option>
-                              </select>
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-4">
-                              <div className="secondary-text">Professor(s)</div>
-                          </div>
-                          <div className="col-md-8 selectAlignment">
-                              {this.renderCheckboxes()}
-                              <div ref="noProfMsg" className={err.professorsEmpty ? "" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                  </div>
-              </div>
-              <div className="row">
-                  <div className="col-md-9">
-                      <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
-                  </div>
-                  <div className="col-md-3">
-                      <button  disabled={!isEnabled} id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                  </div>
-              </div>
-              <div className="row">
-                  <div className="col-sm-12">
-                      <h2 className="secondary-text">{this.state.message}</h2>
-                  </div>
-              </div>
-          </form>
+                        </div>
+                    </div>
+                    
+                
+                <div className="row">
+                    <div className="col-sm-12">
+                        <h2 className="secondary-text">{this.state.message}</h2>
+                    </div>
+                </div>
+            </form>
+          </Rodal>
+          
         </div>
     );
   }
