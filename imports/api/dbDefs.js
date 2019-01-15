@@ -69,6 +69,7 @@ Reviews.schema = new SimpleSchema({
     visible: {type: Number}, // visibility flag - 1 if visible to users, 0 if only visible to admin
     reported: {type: Number}, // reported flag - 1 if review was reported, 0 otherwise
     professors: {type: [String]}, //list of professors that have thought the course over past semesters
+    likes: {type: [Number]}, //number of likes a review has
 });
 
 /* # Validation Collection.

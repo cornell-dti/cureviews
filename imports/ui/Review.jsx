@@ -104,13 +104,16 @@ export default class Review extends Component {
                 <p id="review-date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
               </div>
               <div className="col-sm-9">
-                <button className="upvote btn-lg">
+                <button className="upvote btn-lg" onClick={() => {
+                  this.props.increment(review);
+                }}>
                   <span className="glyphicon glyphicon-thumbs-up"></span>
                 </button>
               </div>
             </div>
             <div className="row">
-              <p id="upvote-text">Helpful (1)</p>
+              <p id="upvote-text">Helpful</p>
+              <p>{review.likes}</p>
             </div>
           </div>
         </div>
@@ -118,6 +121,7 @@ export default class Review extends Component {
     );
   }
 }
+
 
 // takes in the database object representing this review
 Review.propTypes = {

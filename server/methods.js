@@ -27,6 +27,7 @@ Meteor.methods({
                 visible: 0,
                 reported: 0,
                 professors: review.professors,
+                likes: 0,
             };
 
             try {
@@ -44,6 +45,30 @@ Meteor.methods({
             return 0; //fail
         }
     },
+
+    //Increment the number of likes a review has gotten
+    incrementLike: function(review){
+      try {
+        review.likes = review.likes + 1;
+        return 1;
+      }
+      catch(error){
+        return 0;
+      }
+    }
+
+    /*Decrement the number of likes a review has gotten.
+    This is never called anywhere yet, but can be used in the future if we want a "disagree" button
+    */
+    decrementLike: function(review){
+      try {
+        review.likes = review.likes - 1;
+        return 1;
+      }
+      catch(error){
+        return 0;
+      }
+    }
 
     // Make this reveiw visible to everyone (ex: un-report a review)
     // Upon succcess, return 1, else 0.
@@ -150,9 +175,9 @@ Meteor.methods({
           }
         }
     },
-    
+
     /* Initializes the classProfessors field in the Classes collection to an empty array so that
-    we have a uniform empty array to fill with updateProfessors 
+    we have a uniform empty array to fill with updateProfessors
     This calls the resetProfessorArray in dbInit
     NOTE: We are temporarily not updating any professors for classes inspect
     'SU18', 'FA18', 'WI18'*/
