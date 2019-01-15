@@ -3,7 +3,9 @@
 }
 
 .cornellClassLink {
-  text-decoration: underline;
+  font-size: 16px;
+  text-align: center;
+  border-left: 5px solid #4990e2;
 }
 
 .spacing-small{
@@ -15,7 +17,77 @@
 }
 
 .spacing-large {
-  line-height: 40px;
+  line-height: 30px;
+}
+
+.top-margin-small {
+  margin-top: 20px;
+}
+
+.top-margin {
+  margin-top: 50px;
+}
+
+.subheader {
+  font-family: HelveticaNeue;
+  font-weight: 500;
+}
+
+.courseNum{
+  text-align: center;
+  font-size: 23.5px;
+  color: #ffffff;
+  margin-left: center;
+  margin-right: center;
+  margin-top:20px;
+}
+
+.review-text {
+  font-family: HelveticaNeue;
+  font-size: 18px;
+  color: #333333;
+}
+
+.overall-rank {
+  font-size: 30px;
+  color: white;
+  vertical-align: center;
+  text-align:center;
+  align-items: center;
+}
+
+label {
+  font-family: HelveticaNeue;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+}
+
+
+#numBox{
+  width: 115px;
+  height: 31px;
+  border-radius: 6px;
+  background-color: #4990e2;
+  text-align: center;
+}
+
+#box{
+  width: 160px;
+  height: 27px;
+  border-radius: 1px;
+  background-color: #d8d8d8;
+}
+
+#enrollBox{
+  width: 280px;
+  height: 45px;
+  border-radius: 6px;
+  background-color: #e64558;
+  text-align: center;
+  margin: auto;
 }
 
 #gaugeHolder > div{
@@ -23,7 +95,7 @@
 }
 
 #coursedetails {
-  padding-top: 80px;
+  padding-top: 10px;
   padding-left: 30px;
   padding-right: 30px;
 }
