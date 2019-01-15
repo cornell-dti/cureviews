@@ -26,11 +26,13 @@ import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/db
    #
 */
 export function addAllCourses(semesters) {
+    console.log(semesters);
     for (semester in semesters) {
         //get all classes in this semester
+        console.log("Adding classes for the following semester: " + semesters[semester]);
         var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
         if (result.statusCode !== 200) {
-            console.log("error");
+            console.log("Error in addAllCourses: 1");
             return 0;
         } else {
             response = JSON.parse(result.content);
@@ -51,7 +53,7 @@ export function addAllCourses(semesters) {
                 //for each subject, get all classes in that subject for this semester
                 var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
                 if (result2.statusCode !== 200) {
-                    console.log("error2");
+                    console.log("Error in addAllCourses: 2");
                     return 0;
                 } else {
                     response2 = JSON.parse(result2.content);
@@ -60,7 +62,9 @@ export function addAllCourses(semesters) {
                     //add each class to the Classes collection if it doesnt exist already
                     for (course in courses) {
                         try {
+                          console.log(courses[course].subject + " " + courses[course].catalogNbr);
                             var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                            console.log(check);
                             if (check.length === 0) {
                                 console.log("new class: " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
                                 //insert new class with empty prereqs and reviews
@@ -76,13 +80,13 @@ export function addAllCourses(semesters) {
                                 var matchedCourse = check[0] //only 1 should exist
                                 var oldSems = matchedCourse.classSems;
                                 if (oldSems.indexOf(semesters[semester]) === -1) {
-                                    //console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
+                                    // console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
                                     oldSems.push(semesters[semester]) //add this semester to the list
                                     Classes.update({_id: matchedCourse._id}, {$set: {classSems: oldSems}})
                                 }
                             }
                         } catch(error){
-                            console.log("error3");
+                            console.log("Error in addAllCourses: 3");
                             return 0;
                         }
                     }
@@ -90,6 +94,7 @@ export function addAllCourses(semesters) {
             }
         }
     }
+    console.log("Finished addAllCourses");
     return 1;
 }
 
@@ -106,15 +111,16 @@ export function updateProfessors (semesters){
         try{
           HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
         }
-        catch(e){
-          console.log(e)
+        catch(error){
+          console.log("Error in updateProfessors: 1");
+          console.log(error);
           continue semesterLoop;
         }
         var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
-        console.log(result)
+        // console.log(result)
         if (result.statusCode !== 200 || result.status == "error") {
-            console.log("In the first if statusCode error")
-            console.log("error");
+            console.log("Error in updateProfessors: 2");
+            console.log(result.status);
             continue semesterLoop;
         }
 
@@ -125,28 +131,25 @@ export function updateProfessors (semesters){
             subjectLoop:
             for (course in sub) {             //for every subject
                 parent = sub[course];
-                console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
+                // console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
                 try{
                   HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
                 }
-                catch(e){
-                  console.log(e)
+                catch(error){
+                  console.log("Error in updateProfessors: 3");
+                  console.log(error)
                   continue subjectLoop;
                 }
                 var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
                 if (result2.statusCode !== 200 || result2.status == "error") {
-                  //console.log("In the second if statusCode error")
-                    //console.log("error2");
-                    console.log("In the second if statusCode error")
-                    console.log("error");
+                    console.log("Error in updateProfessors: 4");
+                    console.log(result2.status);
                     continue subjectLoop;
                 }
 
                 else {
                     response2 = JSON.parse(result2.content);
-                    //console.log("PRINTING ALL THE COURSES")
                     courses = response2.data.classes;
-                    //console.log(courses)
 
                     //add each class to the Classes collection if it doesnt exist already
                     for (course in courses) {
@@ -154,16 +157,20 @@ export function updateProfessors (semesters){
                             var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
                             var matchedCourse = check[0]  //catch this if there is no class existing
                             if (typeof matchedCourse !== "undefined"){
-                              console.log(courses[course].subject);
-                              console.log(courses[course].catalogNbr);
-                              console.log("This is the matchedCourse")
+                              // console.log(courses[course].subject);
+                              // console.log(courses[course].catalogNbr);
+                              // console.log("This is the matchedCourse")
                               console.log(matchedCourse)
-                              var oldProfessors = matchedCourse.classProfessors
-                              console.log("This is the length of old profs")
-                              console.log(oldProfessors.length)
+                              var oldProfessors = matchedCourse.classProfessors;
+                              if (oldProfessors == undefined){
+                                oldProfessors = [];
+                              }
+                              // console.log("This is the length of old profs")
+                              // console.log(oldProfessors.length)
                               var classSections = courses[course].enrollGroups[0].classSections     //This returns an array
                               for (section in classSections){
-                                  if (classSections[section].ssrComponent == "LEC"){
+                                  if (classSections[section].ssrComponent == "LEC" ||
+                                      classSections[section].ssrComponent == "SEM"){
                                     // Checks to see if class has scheduled meetings before checking them
                                     if (classSections[section].meetings.length > 0){
                                       var professors = classSections[section].meetings[0].instructors
@@ -178,18 +185,18 @@ export function updateProfessors (semesters){
                                           var fullName = firstName + " " + lastName
                                           if (!oldProfessors.includes(fullName)){
                                               oldProfessors.push(fullName)
-                                              console.log("This is a new professor")
-                                              console.log(typeof oldProfessors)
-                                              console.log(oldProfessors)
+                                              // console.log("This is a new professor")
+                                              // console.log(typeof oldProfessors)
+                                              // console.log(oldProfessors)
                                           }
                                         }
                                       }
                                       else{
-                                        console.log("This class does not have professors")
+                                        // console.log("This class does not have professors");
                                       }
                                     }
                                     else{
-                                      console.log("This class does not have meetings scheduled")
+                                      // console.log("This class does not have meetings scheduled");
                                     }
                                   }
                               }
@@ -197,9 +204,10 @@ export function updateProfessors (semesters){
                             }
                         }
                         catch(error){
-                          console.log("In the catch error")
+                          console.log("Error in updateProfessors: 5");
+                          console.log("Error on course " + courses[course].subject + " " + courses[course].catalogNbr);
                           console.log(error)
-                          console.log(course)
+                          
                           return 0;
                         }
                     }
@@ -207,7 +215,7 @@ export function updateProfessors (semesters){
               }
         }
     }
-    console.log("professors updated");
+    console.log("Finished updateProfessors");
     return 1;
   }
   
@@ -220,8 +228,8 @@ export function updateProfessors (semesters){
           //get all classes in this semester
           var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
           if (result.statusCode !== 200) {
-              console.log("In the first if statusCode error")
-              console.log("error");
+              console.log("Error in resetProfessorArray: 1");
+              console.log(result.statusCode);
               return 0;
           }
 
@@ -235,8 +243,8 @@ export function updateProfessors (semesters){
                   var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
 
                   if (result2.statusCode !== 200) {
-                    //console.log("In the second if statusCode error")
-                      //console.log("error2");
+                      console.log("Error in resetProfessorArray: 2");
+                      console.log(result.statusCode);
                       return 0;
                   }
 
@@ -264,9 +272,9 @@ export function updateProfessors (semesters){
                               }
                           }
                           catch(error){
-                            console.log("In the catch error")
+                            console.log("Error in resetProfessorArray: 5");
+                            console.log("Error on course " + courses[course].subject + " " + courses[course].catalogNbr);
                             console.log(error)
-                            console.log(course)
                             return 0;
                           }
                       }
@@ -291,11 +299,12 @@ export function getProfessorsForClass(){
 export function findCurrSemester()  {
     var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
     if (response.statusCode !== 200) {
-        console.log("error");
+        console.log("Error in findCurrSemester");
     } else {
         response = JSON.parse(response.content);
         allSemesters = response.data.rosters;
         thisSem = allSemesters[allSemesters.length - 1].slug;
+        console.log("Updating for following semester: " + thisSem);
         return [thisSem];
     }
 }
@@ -330,7 +339,7 @@ export function addCrossList() {
       //get all classes in this semester
       var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
       if (result.statusCode !== 200) {
-          console.log("error");
+          console.log("Error in addCrossList: 1");
           return 0;
       } else {
           response = JSON.parse(result.content);
@@ -342,7 +351,7 @@ export function addCrossList() {
               //for each subject, get all classes in that subject for this semester
               var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
               if (result2.statusCode !== 200) {
-                  console.log("error2");
+                  console.log("Error in addCrossList: 2");
                   return 0;
               } else {
                   response2 = JSON.parse(result2.content);
@@ -350,23 +359,35 @@ export function addCrossList() {
 
                   for (course in courses) {
                       try {
-
                           var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                          // console.log((courses[course].subject).toLowerCase() + " "  + courses[course].catalogNbr);
+                          // console.log(check);
                           if (check.length > 0) {
                             crossList = courses[course].enrollGroups[0].simpleCombinations;
                             if (crossList.length > 0) {
                               crossListIDs = crossList.map(function(crossListedCourse) {
+                                console.log(crossListedCourse);
                                 var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
-                                return dbCourse[0]._id;
+                                //Added the following check because MUSIC 2340
+                                //was crosslisted with AMST 2340, which was not in our db
+                                //so was causing an error here when calling 'dbCourse[0]._id'
+                                //AMST 2340 exists in FA17 but not FA18
+                                if (dbCourse[0]){
+                                  return dbCourse[0]._id;
+                                }
+                                else{
+                                  return null;
+                                }
                               })
                               console.log(courses[course].subject + " " + courses[course].catalogNbr);
                               // console.log(crossListIDs);
                               thisCourse = check[0];
-                              Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}})
+                              Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}});
                             }
                           }
                       } catch(error) {
-                          console.log("error");
+                        console.log("Error in addCrossList: 3");
+                          console.log(error);
                           return 0;
                       }
                   }
@@ -374,6 +395,6 @@ export function addCrossList() {
           }
       }
   }
-  console.log("cross-listings added");
+  console.log("Finished addCrossList");
   return 1;
 }
