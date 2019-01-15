@@ -19,7 +19,7 @@ application component the user should see based on the URL they enter.
 Meteor.startup(() => {
     render(
         <BrowserRouter>
-            <div>
+            <div className="container-fluid full-height noLeftRightPadding">
                 <Route name="app" exact path="/" component={ App } />
                 <Route name="admin" exact path="/admin" component={ Login } />
                 <Route name="permalink" exact path="/course/:subject/:number" component={ ClassView } />
