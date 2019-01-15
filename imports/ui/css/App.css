@@ -26,6 +26,10 @@
   color: #ffffff;
 }
 
+.no-float{
+  float: none;
+}
+
 nav {
   background-color: #4990E2;
   margin-top: 0;
