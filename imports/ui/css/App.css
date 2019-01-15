@@ -37,12 +37,13 @@ nav {
 
 #navname{
   color: #fff;
-  padding-left: 10px;
-  margin-top: 5px;
+  padding-left: 20px;
+  margin-top: 9px;
   font-size: 1.8em;
 }
 
 #report-bug {
+  float: right;
   color: #fff;
   font-weight: normal;
   padding-top: 0;
@@ -111,11 +112,15 @@ nav {
   letter-spacing: 0.2px;
   padding-top: 1%;
   text-align: left;
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .navbar {
-  height: 72px;
+  min-height: 72px;
   padding-top: 1em;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .pushDown {

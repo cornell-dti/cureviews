@@ -112,23 +112,25 @@ export default class ClassView extends Component {
           courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
           return (
             <div className="container-fluid container-top-gap-fix">
-              <nav className="navbar navbar-fixed-top">
-                <div className="navbar-header">
+              <div className="row navbar">
+                <div className="col-md-2 col-sm-2 col-xs-2">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-                    <span><img src='/logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" /> CU Reviews</span>
+                    <span>CU Reviews</span>
                   </a>
                 </div>
-                <ul className="nav navbar-nav nav-right searchWidth nopadding clearBackground">
-                  <li className='nav-searchBar'><SearchBar query={this.state.query} queryFunc={this.updateQuery}/></li>
-                  <li className="text-right reportButton reportButtonWidth"><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
-                </ul>
-              </nav>
+                <div className="col-md-7 col-sm-7 col-xs-7">
+                  <SearchBar query={this.state.query} queryFunc={this.updateQuery}/>
+                </div>
+                <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
+                  <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
+                </div>
+              </div>
               <div className='clearfix' />
               <div className='container noPadding'>
                 <div className="col-md-6 col-sm-12 col-xs-12 sticky">
                   <CourseCard course={this.state.selectedClass}/>
                 </div>
-                <div className="col-md-6 col-sm-12 col-xs-12 panel-container moveDown panel-color-gray">
+                <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
                   <div>
                     <Form course={this.state.selectedClass}/>
                   </div>
@@ -148,17 +150,19 @@ export default class ClassView extends Component {
           // Class was not found, so show a 404 error graphic.
           return (
               <div className="container-fluid container-top-gap-fix">
-              <nav className="navbar navbar-fixed-top">
-                <div className="navbar-header">
+              <div className="row navbar">
+                <div className="col-md-2 col-sm-2 col-xs-2">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-                    <span><img src='/logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" /> CU Reviews</span>
+                    <span>CU Reviews</span>
                   </a>
                 </div>
-                <ul className="nav navbar-nav nav-right searchWidth nopadding clearBackground">
-                  <li className='nav-searchBar'><SearchBar query={this.state.query} queryFunc={this.updateQuery}/></li>
-                  <li className="text-right reportButton reportButtonWidth"><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
-                </ul>
-              </nav>
+                <div className="col-md-7 col-sm-7 col-xs-7">
+                  <SearchBar query={this.state.query} queryFunc={this.updateQuery}/>
+                </div>
+                <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
+                  <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
+                </div>
+              </div>
               <div id="error">
                 <img id="errorgauge" src="/error.png" width="400px" height="auto" />
                 <h2>Sorry, we couldn't find the class you're searching for.</h2>
