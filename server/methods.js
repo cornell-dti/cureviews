@@ -39,7 +39,8 @@ Meteor.methods({
             }
         } else {
             //error handling
-            console.log("some review values are null")
+            console.log("Error at Meteor Method: Insert");
+            console.log("Some review values are likely null");
             return 0; //fail
         }
     },
@@ -80,11 +81,12 @@ Meteor.methods({
         // ensure code is running on the server, not client
         if (initiate && Meteor.isServer) {
             console.log("updating new semester");
-            const val = addAllCourses(findCurrSemester());
+            const val = addAllCourses(findAllSemesters());
+            console.log(val);
             if (val) {
               return addCrossList();
             } else {
-              console.log("fail");
+              console.log("Error at Meteor Method: addNewSemester");
               return 0;
             }
         }
@@ -116,7 +118,7 @@ Meteor.methods({
             if (val) {
               return addCrossList();
             } else {
-              console.log("fail");
+              console.log("Error at Meteor Method: addAll");
               return 0;
             }
         }
@@ -130,20 +132,20 @@ Meteor.methods({
         if (initiate && Meteor.isServer){
           var semesters = findAllSemesters();
           // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
-          var toRemove = ['SU18', 'FA18', 'WI18']
-          toRemove.forEach(function(sem){
-            var index = semesters.indexOf(sem);
-            if (index > -1) {
-              semesters.splice(index, 1);
-            }
-          })
-          console.log("These are the semesters");
+          // var toRemove = ['SU18', 'FA18', 'WI18']
+          // toRemove.forEach(function(sem){
+          //   var index = semesters.indexOf(sem);
+          //   if (index > -1) {
+          //     semesters.splice(index, 1);
+          //   }
+          // })
+          console.log("These are the semesters being updated");
           console.log(semesters);
           const val = updateProfessors(semesters);
           if (val) {
             return val;
           } else {
-            console.log("fail at setProfessors in method.js");
+            console.log("Error at Meteor Method: setProfessors");
             return 0;
           }
         }
@@ -164,13 +166,13 @@ Meteor.methods({
               semesters.splice(index, 1);
             }
           })
-          console.log("These are the semesters");
+          console.log("These are the semesters being reset");
           console.log(semesters);
           const val = resetProfessorArray(semesters);
           if (val) {
             return val;
           } else {
-            console.log("fail at resetProfessors in method.js");
+            console.log("Error at Meteor Method: resetProfessors");
             return 0;
           }
         }
