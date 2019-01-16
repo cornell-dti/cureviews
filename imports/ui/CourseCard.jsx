@@ -73,39 +73,45 @@ export class CourseCard extends Component {
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     var offered = lastOfferedSems(theClass);
 
-    /*
+    
     var GaugeWrapper = React.createClass({
       componentDidMount(){
-        var target = React.findDOMNode(this)
+        //Notice these are found by their refs not by ID
+        var target = ReactDOM.findDOMNode(this.refs.foo);
         var gauge = new Gauge(target).setOptions(this.props.options);
         gauge.maxValue = this.props.max;
         gauge.set(this.props.value);
+        
+        //Notice these are found by their refs not by ID
+        var target2 = ReactDOM.findDOMNode(this.refs.poo);
+        var gauge2 = new Gauge(target2).setOptions(this.props.options);
+        gauge2.maxValue = this.props.max;
+        gauge2.set(this.props.value);
+        
       },
       render(){
-        return <canvas width={this.props.width} height={this.props.height} />
+        return (
+          // Created a component 'GaugeWrapper' that returns 2 gauges but you can add as many as you sendFeedback
+          // You just need to reference them all by different names 'target', 'target2', etc.
+          //Notice they are called by 'ref', not by ID
+          <div className="row">
+            <div className="col-md-6 col-sm-6">
+              <canvas ref="foo" width={this.props.width} height={this.props.height} />
+            </div>
+            <div className="col-md-6 col-sm-6">
+              <canvas ref="poo" width={this.props.width} height={this.props.height} />
+            </div>
+          </div>
+          
+        );
+        
       }
-    });*/
+    });
 
 
-    /*var target = this.refs.test;
-        var gauge = Gauge.Gauge(target);*/
+    // /*var target = this.refs.test;
+    //     var gauge = Gauge.Gauge(target);*/
 
-    opts = {
-      angle: 0.15, /// The span of the gauge arc
-      lineWidth: 0.44, // The line thickness
-      pointer: {
-        length: 0.9, // Relative to gauge radius
-        strokeWidth: 0.035 // The thickness
-      },
-      colorStart: this.state.diffColor,   // Colors
-      colorStop: this.state.diffColor,    // just experiment with them
-      strokeColor: this.state.diffColor   // to see which ones work best for you
-    };
-    var target = document.getElementById('foo'); // your canvas element
-    var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-    gauge.maxValue = 3000; // set max gauge value
-    gauge.setMinValue(0);  // set min value
-    gauge.set(1250); // set actual value
 
 
     /*
@@ -138,12 +144,12 @@ export class CourseCard extends Component {
                 <div className = "panel-body">
                     <section>
                         <div className="row " id="gaugeHolder">
-                            <div className="col-md-6 col-sm-6 col-xs-12" id="qualGauge">
-                                <canvas width={this.props.width} height={this.props.height} ref="foo" />
+                            <div className="col-md-12 col-sm-12 col-xs-12" id="qualGauge">
+                                <GaugeWrapper width="500" options={{}} max="500" value="50"/>
                             </div>
-                            <div className="col-md-6 col-sm-6 col-xs-12">
-                            </div>
+                            
                         </div>
+                        {/*
                         <div className="row " id="gaugeHolder">
                             <div className="col-md-6 col-sm-6 col-xs-12">
                             </div>
@@ -151,6 +157,7 @@ export class CourseCard extends Component {
                             yo
                             </div>
                         </div>
+                        */}
                     </section>
                 </div>
             </div>
