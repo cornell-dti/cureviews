@@ -2,10 +2,10 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
-import Gauge from 'react-summary-gauge-2';
 import { Reviews } from '../api/dbDefs.js';
 import './css/CourseCard.css';
 import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
+import {Gauge} from 'gaugeJS';
 
 /*
   Course Card Component.
@@ -73,6 +73,56 @@ export class CourseCard extends Component {
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     var offered = lastOfferedSems(theClass);
 
+    /*
+    var GaugeWrapper = React.createClass({
+      componentDidMount(){
+        var target = React.findDOMNode(this)
+        var gauge = new Gauge(target).setOptions(this.props.options);
+        gauge.maxValue = this.props.max;
+        gauge.set(this.props.value);
+      },
+      render(){
+        return <canvas width={this.props.width} height={this.props.height} />
+      }
+    });*/
+
+
+    /*var target = this.refs.test;
+        var gauge = Gauge.Gauge(target);*/
+
+    opts = {
+      angle: 0.15, /// The span of the gauge arc
+      lineWidth: 0.44, // The line thickness
+      pointer: {
+        length: 0.9, // Relative to gauge radius
+        strokeWidth: 0.035 // The thickness
+      },
+      colorStart: this.state.diffColor,   // Colors
+      colorStop: this.state.diffColor,    // just experiment with them
+      strokeColor: this.state.diffColor   // to see which ones work best for you
+    };
+    var target = document.getElementById('foo'); // your canvas element
+    var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+    gauge.maxValue = 3000; // set max gauge value
+    gauge.setMinValue(0);  // set min value
+    gauge.set(1250); // set actual value
+
+
+    /*
+    var target = this.refs.test; // your canvas element
+    var gauge =  new Gauge(target).setOptions(opts); // create sexy gauge!
+
+    var target = this.refs.test;
+    var gauge = Gauge.Gauge(target);*/
+
+    /*
+    var target = document.getElementById('foo'); // your canvas element
+    var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+    gauge.maxValue = 3000; // set max gauge value
+    gauge.setMinValue(0);  // set min value
+    gauge.set(1250); // set actual value
+    */
+
     return (
         <div id="coursedetails">
             <div id="numBox" className="courseNum">{theClass.classSub.toUpperCase() + " " + theClass.classNum}</div>
@@ -88,19 +138,17 @@ export class CourseCard extends Component {
                 <div className = "panel-body">
                     <section>
                         <div className="row " id="gaugeHolder">
-                            <div className="col-md-6 col-sm-6 col-xs-12">
-                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Workload" />
+                            <div className="col-md-6 col-sm-6 col-xs-12" id="qualGauge">
+                                <canvas width={this.props.width} height={this.props.height} ref="foo" />
                             </div>
                             <div className="col-md-6 col-sm-6 col-xs-12">
-                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Level of Difficulty"/>
                             </div>
                         </div>
                         <div className="row " id="gaugeHolder">
                             <div className="col-md-6 col-sm-6 col-xs-12">
-                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Median Grade" />
                             </div>
                             <div className="col-md-6 col-sm-6 col-xs-12">
-                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Overall Rating"/>
+                            yo
                             </div>
                         </div>
                     </section>
