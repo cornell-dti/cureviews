@@ -80,7 +80,7 @@
 #review-date {
   text-align: center;
   color:gray;
-  padding-left : 30px;
+  padding-left : 20px;
   font-size: 13px;
 }
 
@@ -91,7 +91,7 @@
   margin-right: 2px;
 }
 
-.report-review, .upvote {
+.report-review, .upvote, .voted {
   width: 30px;
   height: 30px;
   padding: 0px 0px 0px 0px;
@@ -114,14 +114,25 @@
   border-radius: 30px;
 }
 
+.voted{
+  color: #fff;
+  background-color:#4990e2;
+  border-color: #4990e2;
+  margin-right: 0px;
+  padding-right: 0px;
+  border-radius: 30px;
+}
+
 .report-review:hover {
   color: #4990e2;
 }
 
 .upvote:hover {
-  color: #fff;
-  background-color:#4990e2;
   border-color: #4990e2;
+}
+
+.voted:hover {
+  border-color: black;
 }
 
 #reviewpanel, #reviewul {
