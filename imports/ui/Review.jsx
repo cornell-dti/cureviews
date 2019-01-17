@@ -10,9 +10,20 @@ import './css/Review.css';
    - how long ago the reivew was added
    - all review content
    - report button
+   - like button
 */
 
 export default class Review extends Component {
+  constructor(props) {
+    super(props);
+
+
+    this.state = {
+      liked: false, //indicates whether or not the review has been liked in the current state
+    }
+
+
+  }
 
   // Function to convert the classId assigned to this review into the
   // full, human-readable name of the class.
@@ -44,6 +55,38 @@ export default class Review extends Component {
     return {
       backgroundColor: colors[value],
     };
+  }
+
+  // Function that checks whether or not the review has already been liked
+  // in the current state. If so, the number of likes decreases by 1 as if removing a like.
+  // Otherwise, the number of likes increases by 1.
+  increment(review) {
+    if (this.state.liked == false) {
+      return Meteor.call('incrementLike', review, (error, result) => {
+        if (!error && result === 1) {
+          this.setState({
+            liked: true,
+          })
+          console.log(this.state.liked);
+          console.log("Likes: " + review.likes);
+        } else {
+          console.log(error)
+        }
+      });
+    }
+    else {
+      return Meteor.call('decrementLike', review, (error, result) => {
+        if (!error && result === 1) {
+          this.setState({
+            liked: false,
+          })
+          console.log("Likes: " + review.likes);
+        } else {
+          console.log(error)
+        }
+      });
+    }
+
   }
 
   render() {
@@ -104,16 +147,18 @@ export default class Review extends Component {
                 <p id="review-date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
               </div>
               <div className="col-sm-9">
-                <button className="upvote btn-lg" onClick={() => {
-                  this.props.increment(review);
-                }}>
+                <button className= //if the review has been liked, the button will be filled in.
+                  {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+                  onClick={() => {
+                    this.increment(review);
+                  }}>
                   <span className="glyphicon glyphicon-thumbs-up"></span>
                 </button>
               </div>
             </div>
             <div className="row">
-              <p id="upvote-text">Helpful</p>
-              <p>{review.likes}</p>
+              <p id="upvote-text">Helpful
+              ({(review.likes == undefined ? 0 : review.likes)})</p>
             </div>
           </div>
         </div>
