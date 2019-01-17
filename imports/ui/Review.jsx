@@ -107,7 +107,7 @@ export default class Review extends Component {
           <div className="panel-body-3">
             <div className="row reviewNumbers">
               <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
-                <div className="container" id="box" style={this.getQualColor(review.quality)}>
+                <div className="container" id="circlebox" style={this.getQualColor(review.quality)}>
                   <div id="text">{review.quality}</div>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export default class Review extends Component {
                 <p id="labelName">Overall Rating</p>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="circle">
-                <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
+                <div className="container" id="circlebox" style={this.getDiffColor(review.difficulty)}>
                   <div id="text">{review.difficulty}</div>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export default class Review extends Component {
                 <p id="labelName">Difficulty</p>
               </div>
               <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
-                <div className="container" id="box" style={this.getQualColor(review.quality)}>
+                <div className="container" id="circlebox" style={this.getQualColor(review.quality)}>
                   <div id="text">{review.quality}</div>
                 </div>
               </div>
