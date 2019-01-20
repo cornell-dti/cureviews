@@ -135,9 +135,8 @@ export default class Review extends Component {
               <div className="col-md-3 col-sm-3 col-xs-3">
                 <p id="profLabel">Professor: </p>
               </div>
-              <div className="col-md-4 col-sm-4 col-xs-4">
-                <p id="professor_text">Michael Clarkson</p>
-              </div>
+              {review.professors.map((prof) => (<div className="col-md-4 col-sm-3 col-xs-3">
+                <p id="professor_text">{prof}</p></div>))}
             </div>
             <div className="row">
               <div className="review-text" id="review_text">{review.text}</div>
