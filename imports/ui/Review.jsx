@@ -95,7 +95,7 @@ export default class Review extends Component {
     return (
       <li>
         <div className="review">
-          <div className="col-sm-12">
+          <div className="col-md-12 col-xs-12 col-xs-12">
             <button className="report-review" onClick={() => {
               this.props.reportHandler(review);
               alert('This post has been reported and will be reviewed.');
@@ -131,7 +131,7 @@ export default class Review extends Component {
                 <p id="labelName">Workload</p>
               </div>
             </div>
-            <div className="row">
+            <div className="row noLeftRightPadding">
               <div className="col-md-3 col-sm-3 col-xs-3">
                 <p id="profLabel">Professor: </p>
               </div>
@@ -142,11 +142,11 @@ export default class Review extends Component {
             <div className="row">
               <div className="review-text" id="review_text">{review.text}</div>
             </div>
-            <div className="row">
-              <div className="col-sm-3">
+            <div className="row noLeftRightPadding">
+              <div className="col-md-3 col-sm-3 col-xs-3">
                 <p id="review-date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
               </div>
-              <div className="col-sm-9">
+              <div className="col-md-9 col-sm-9 col-xs-9">
                 <button className= //if the review has been liked, the button will be filled in.
                   {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
                   onClick={() => {
