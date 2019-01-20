@@ -1,11 +1,5 @@
-.cornellClassLink, .primary-text {
-  color: #4a4a4a;
-}
-
 .cornellClassLink {
-  font-size: 16px;
-  text-align: center;
-  border-left: 5px solid #4990e2;
+  color: #9b9b9b;
 }
 
 .spacing-small{
@@ -17,11 +11,15 @@
 }
 
 .spacing-large {
-  line-height: 30px;
+  line-height: 20px;
 }
 
 .top-margin-small {
   margin-top: 20px;
+}
+
+.top-margin-medium {
+  margin-top: 40px;
 }
 
 .top-margin {
@@ -30,7 +28,7 @@
 
 .subheader {
   font-family: HelveticaNeue;
-  font-weight: 500;
+  font-size: 35px;
 }
 
 .courseNum{
@@ -63,31 +61,6 @@ label {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.2px;
-}
-
-
-#numBox{
-  width: 115px;
-  height: 31px;
-  border-radius: 6px;
-  background-color: #4990e2;
-  text-align: center;
-}
-
-#box{
-  width: 160px;
-  height: 27px;
-  border-radius: 1px;
-  background-color: #d8d8d8;
-}
-
-#enrollBox{
-  width: 280px;
-  height: 45px;
-  border-radius: 6px;
-  background-color: #e64558;
-  text-align: center;
-  margin: auto;
 }
 
 #gaugeHolder > div{

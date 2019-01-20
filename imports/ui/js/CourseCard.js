@@ -8,7 +8,7 @@ export function lastOfferedSems(theClass){
   var lastSemester = semsArray[semsArray.length-1];
   var lastSemester2 = semsArray[semsArray.length-2];
   if (lastSemester2 != null){
-    var lastTwoOffered = semAbbriviationToWord(semsArray[semsArray.length-1]) + "  ■  " + semAbbriviationToWord(semsArray[semsArray.length-2]);
+    var lastTwoOffered = semAbbriviationToWord(semsArray[semsArray.length-1]) + ", " + semAbbriviationToWord(semsArray[semsArray.length-2]);
   }
   else {
     var lastTwoOffered = semAbbriviationToWord(semsArray[semsArray.length-1]);

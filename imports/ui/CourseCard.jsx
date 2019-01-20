@@ -73,99 +73,93 @@ export class CourseCard extends Component {
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     var offered = lastOfferedSems(theClass);
 
-    
     var GaugeWrapper = React.createClass({
       componentDidMount(){
-        //Notice these are found by their refs not by ID
+        var overallOpts = {
+          lines: 12,
+          angle: 0.15,
+          lineWidth: 0.44,
+          pointer: {
+            length: 0.9,
+            strokeWidth: 0.035,
+            color: '#000000'
+          },
+          limitMax: 'false',
+          percentColors: [[0.0, "#53b227" ], [.33, "#f8cc30"], [.66, "#e64558"]],
+          strokeColor: '#E0E0E0',
+          generateGradient: true
+        };
+        var difWorkOpts = Object.assign({}, overallOpts);
+        difWorkOpts.percentColors = [[0.0, "#e64558" ], [.33, "#f8cc30"], [.66, "#53b227"]];
+        // Overall Rating
         var target = ReactDOM.findDOMNode(this.refs.foo);
-        var gauge = new Gauge(target).setOptions(this.props.options);
+        var gauge = new Gauge(target).setOptions(overallOpts);
         gauge.maxValue = this.props.max;
-        gauge.set(this.props.value);
-        
-        //Notice these are found by their refs not by ID
-        var target2 = ReactDOM.findDOMNode(this.refs.poo);
-        var gauge2 = new Gauge(target2).setOptions(this.props.options);
+        gauge.set(this.state.qual);
+
+        // Difficulty
+        var target2 = ReactDOM.findDOMNode(this.refs.goo);
+        var gauge2 = new Gauge(target2).setOptions(difWorkOpts);
         gauge2.maxValue = this.props.max;
-        gauge2.set(this.props.value);
-        
+        gauge2.set(this.state.diffColor);
+
+        // WorkLoad
+        var target2 = ReactDOM.findDOMNode(this.refs.hoo);
+        var gauge2 = new Gauge(target2).setOptions(difWorkOpts);
+        gauge2.maxValue = this.props.max;
+        gauge2.set(this.state.gradeNum);
       },
       render(){
         return (
-          // Created a component 'GaugeWrapper' that returns 2 gauges but you can add as many as you sendFeedback
-          // You just need to reference them all by different names 'target', 'target2', etc.
-          //Notice they are called by 'ref', not by ID
           <div className="row">
-            <div className="col-md-6 col-sm-6">
+            <div className="col-md-4 col-sm-4">
+              {this.state.qual}
               <canvas ref="foo" width={this.props.width} height={this.props.height} />
+              Overall Rating
             </div>
-            <div className="col-md-6 col-sm-6">
-              <canvas ref="poo" width={this.props.width} height={this.props.height} />
+            <div className="col-md-4 col-sm-4">
+              {this.state.diffColor}
+              <canvas ref="goo" width={this.props.width} height={this.props.height} />
+              Difficulty
+            </div>
+            <div className="col-md-4 col-sm-4">
+              {this.state.gradeNum}
+              <canvas ref="hoo" width={this.props.width} height={this.props.height} />
+              WorkLoad
             </div>
           </div>
-          
         );
-        
       }
     });
 
-
-    // /*var target = this.refs.test;
-    //     var gauge = Gauge.Gauge(target);*/
-
-
-
-    /*
-    var target = this.refs.test; // your canvas element
-    var gauge =  new Gauge(target).setOptions(opts); // create sexy gauge!
-
-    var target = this.refs.test;
-    var gauge = Gauge.Gauge(target);*/
-
-    /*
-    var target = document.getElementById('foo'); // your canvas element
-    var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-    gauge.maxValue = 3000; // set max gauge value
-    gauge.setMinValue(0);  // set min value
-    gauge.set(1250); // set actual value
-    */
-
     return (
         <div id="coursedetails">
-            <div id="numBox" className="courseNum">{theClass.classSub.toUpperCase() + " " + theClass.classNum}</div>
-            <h1 className="subheader">{theClass.classTitle}</h1>
-            <div id="box" className="cornellClassLink spacing-large top-margin-small" href={url} target="_blank"> {/* Forces link onto next line */}
-              <a href={url}>classes.cornell.edu</a>
+            <h1 className="subheader top-margin">
+              <strong> {theClass.classSub.toUpperCase() + " " + theClass.classNum
+              + ": " + theClass.classTitle}
+              </strong>
+            </h1>
+            <div href={url} target="_blank"> {/* Forces link onto next line */}
+              <a className="cornellClassLink" href={url}>Course Roster</a>
             </div>
-            <p className="review-text spacing-large top-margin-small">
-                <strong>Last Offered: </strong>
+            <p className="review-text spacing-large top-margin">
+                <strong>Offered: </strong>
                 {offered}
             </p>
-            <div className= "panel panel-default top-margin">
+            <p className="review-text spacing-large top-margin-small">
+                <strong>Median Grade: </strong>
+                {this.state.grade}
+            </p>
+            <div className= "panel panel-default top-margin-medium">
                 <div className = "panel-body">
                     <section>
                         <div className="row " id="gaugeHolder">
                             <div className="col-md-12 col-sm-12 col-xs-12" id="qualGauge">
-                                <GaugeWrapper width="500" options={{}} max="500" value="50"/>
-                            </div>
-                            
-                        </div>
-                        {/*
-                        <div className="row " id="gaugeHolder">
-                            <div className="col-md-6 col-sm-6 col-xs-12">
-                            </div>
-                            <div className="col-md-6 col-sm-6 col-xs-12">
-                            yo
+                                <GaugeWrapper width="200" options={{}} max="200" value="50"/>
                             </div>
                         </div>
-                        */}
                     </section>
                 </div>
-            </div>
-
-            <div className = "top-margin-small">
-              <div id="enrollBox"> {/*try disabled button also change fonts back, use chrome in editor thing*/}
-                <text className="overall-rank"> Enroll with Caution</text>
-              </div>
             </div>
         </div>
     );
