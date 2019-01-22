@@ -54,7 +54,7 @@ export default class App extends Component {
       <div className="container-fluid full-height background-gradient">
       
         <div className="row">
-            <img src='/logo.svg' className="img-responsive center-block" id="img-padding-top" alt="" />
+            <img src='/logo.svg' className="img-responsive center-block" id="img-padding-top" alt="CU Reviews Logo" />
         </div>
         <div className="row">
           <div className="col-md-9 col-sm-9 col-xs-9 center-block no-float">
@@ -65,6 +65,11 @@ export default class App extends Component {
         <div className="row">
           <div className="col-md-10 col-md-offset-1">
             <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
+          </div>
+        </div>
+        <div className="row footer navbar-fixed-bottom">
+          <div className="col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
+            <img src='/skyline.svg' className="center-block outline" id="" alt="" />
           </div>
         </div>
       </div>

@@ -26,6 +26,13 @@
   color: #ffffff;
 }
 
+.outline{
+  display: block;
+  max-width: 150%;
+  width: 100%;
+  height: auto;
+}
+
 .no-float{
   float: none;
 }
@@ -140,7 +147,7 @@ nav {
 }
 
 #img-padding-top{
-  margin-top: 10%;
+  margin-top: 2%;
 }
 
 .nav-center {
