@@ -92,6 +92,8 @@ export default class Review extends Component {
   render() {
     var review = this.props.info;
     var classId = review.class;
+    console.log(review);
+    console.log(review.professors);
     return (
       <li>
         <div className="review">
@@ -135,8 +137,10 @@ export default class Review extends Component {
               <div className="col-md-3 col-sm-3 col-xs-3">
                 <p id="profLabel">Professor: </p>
               </div>
-              {review.professors.map((prof) => (<div className="col-md-4 col-sm-3 col-xs-3">
-                <p id="professor_text">{prof}</p></div>))}
+              {/*The following adds a grey professor box for each professor listed in the review*/}
+              {(review.professors) ? review.professors.map((prof, index) => (<div key={index} className="col-md-4 col-sm-3 col-xs-3">
+                <p id="professor_text">{prof}</p></div>)) : <div className="col-md-4 col-sm-3 col-xs-3">
+                  <p id="professor_text">N/A</p></div>}
             </div>
             <div className="row">
               <div className="review-text" id="review_text">{review.text}</div>
