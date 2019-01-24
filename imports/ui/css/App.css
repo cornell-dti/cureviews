@@ -128,6 +128,9 @@ nav {
   padding-top: 1em;
   padding-left: 10px;
   padding-right: 10px;
+  z-index: 1004;
+  top: 0px;
+  position: sticky;
 }
 
 .pushDown {
