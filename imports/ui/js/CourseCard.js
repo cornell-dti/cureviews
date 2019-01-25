@@ -83,7 +83,13 @@ export function getGaugeValues(allReviews) {
   //Fixed to 1 decimal place
   newState.rating = (sumRating/countRatingAndDiff).toFixed(1); //out of 5
   newState.diff = (sumDiff/countRatingAndDiff).toFixed(1); //out of 5
-  newState.workload = (sumWork/countWork).toFixed(1); //out of 5
+  if(countWork > 0){
+    newState.workload = (sumWork/countWork).toFixed(1); //out of 5
+  }
+  else{
+    newState.workload = "-";
+  }
+  
 
   if (sumGrade > 0) {
     newState.gradeNum = Math.floor(sumGrade/countGrade); //out of 5

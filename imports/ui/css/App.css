@@ -33,6 +33,10 @@
   height: auto;
 }
 
+.z-index{
+  z-index: 1045;
+}
+
 .no-float{
   float: none;
 }
