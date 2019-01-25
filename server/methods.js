@@ -14,16 +14,15 @@ Meteor.methods({
   // insert a new review into the reviews collection.
   // Upon success returns 1, else returns 0.
   insert: function (review, classId) {
-    // check: only insert if all form feilds are filled in
-    if (review.text !== null && review.diff !== null && review.quality !== null && review.medGrade !== null && review.professors !== null && classId !== undefined && classId !== null) {
+    // check: only insert if all form fields are filled in
+    if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
       var fullReview = {
         text: review.text,
         difficulty: review.diff,
-        quality: review.quality,
+        rating: review.rating,
+        workload: review.workload,
         class: classId,
-        grade: review.medGrade,
         date: new Date(),
-        atten: review.atten,
         visible: 0,
         reported: 0,
         professors: review.professors,
@@ -40,7 +39,7 @@ Meteor.methods({
       }
     } else {
       //error handling
-      console.log("some review values are null")
+      console.log("Some review values are null")
       return 0; //fail
     }
   },

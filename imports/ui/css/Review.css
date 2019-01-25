@@ -54,7 +54,7 @@
   padding-bottom: 15px;
 }
 
-#professor_text{
+#professor-text{
   border-radius: 5px;
   color: black;
   font-size: 13px;
@@ -62,7 +62,8 @@
   letter-spacing: 0.1px;
   text-align: center;
   background-color: #ececec;
-  padding-left: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 5px;

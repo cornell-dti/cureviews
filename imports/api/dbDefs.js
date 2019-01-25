@@ -61,11 +61,10 @@ Reviews.schema = new SimpleSchema({
     user: { type: String, optional: true }, // user who wrote this review, a Users _id
     text: { type: String, optional: true }, // text from the review
     difficulty: { type: Number }, // difficulty measure from the review
-    quality: { type: Number }, // quality measure from the review
+    rating: { type: Number }, // quality measure from the review
+    workload: { type: Number }, // quality measure from the review
     class: { type: String }, // class the review was for, a Classes _id
-    grade: { type: Number }, // estimated median from the review
     date: { type: Date }, // date/timestamp the review was submited
-    atten: { type: Number }, // attendence measure from the review
     visible: { type: Number }, // visibility flag - 1 if visible to users, 0 if only visible to admin
     reported: { type: Number }, // reported flag - 1 if review was reported, 0 otherwise
     professors: { type: [String] }, //list of professors that have thought the course over past semesters

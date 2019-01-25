@@ -134,11 +134,6 @@ export default class ClassView extends Component {
                   <div>
                     <Form course={this.state.selectedClass}/>
                   </div>
-                  <div className="useful useful-text">
-                    <h5>
-                      Was this helpful? <a onClick={() => sendFeedback(1)}><span id="yes">yes</span></a> | <a onClick={() => sendFeedback(0)}></a><span><a href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a></span>
-                    </h5>
-                    </div>
                   <div>
                     <CourseReviews courseId={this.state.selectedClass._id} />
                   </div>

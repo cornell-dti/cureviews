@@ -138,8 +138,6 @@ export default class Form extends Component {
     var diff = this.state.diff;
     var work = this.state.workload;
     var prof = this.state.selectedProfessors.map(professor => {return professor.label});
-    // var ratingNum =  //#TODO THIS
-    // var likesNum = 0; //#TODO THIS
     if (text.length > 0 
       && text !== null
       && prof !== []) {
@@ -150,8 +148,6 @@ export default class Form extends Component {
           diff: diff,
           workload: work,
           professors: prof,
-          // likes: likesNum,  //#TODO THIS 
-          // rating: ratingNum //#TODO THIS
         };
 
         // call the api insert function
@@ -241,19 +237,16 @@ export default class Form extends Component {
     pushReviewsDown(formState){
       var marginHeight;
       var offsetHeight;
-      // Was open, then close it
+      // Form is opened
       if (formState == 'open'){
-        console.log("is open");
         marginHeight = this.dropdownHeight;
         offsetHeight = ReactDOM.findDOMNode(this.refs.selectHolder).offsetHeight - 46;
       }
-      // Was closed, then open it
+      // Form is closed
       else{
-        console.log("is closed");
         marginHeight = 0;
         offsetHeight = 0;
       }
-      console.log(offsetHeight);
       $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
     }
   

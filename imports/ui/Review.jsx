@@ -40,21 +40,21 @@ export default class Review extends Component {
     return toShow;
   }
 
-  //get color for quality value
-  // Function to get the color of the quality color box based on the quality value.
-  getQualColor(value) {
+  // Convert the reviews's value to a color starting with red and ending with green.
+  getColorRedToGreen(value) {
     var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
-      backgroundColor: colors[value],
-    };
+      backgroundColor: colors[value]
+    }
   }
 
-  // Function to get the color of the difficulty color box based on the diffiiculty value.
-  getDiffColor(value) {
+  // Convert the reviews's value to a color starting with green and ending with red.
+  getColorGreenToRed(value) {
     var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
-    return {
+    if(value == undefined) return {backgroundColor: "#a9a9a9"}
+    else return {
       backgroundColor: colors[value],
-    };
+    }
   }
 
   // Function that checks whether or not the review has already been liked
@@ -93,7 +93,7 @@ export default class Review extends Component {
     var review = this.props.info;
     var classId = review.class;
     // console.log(review);
-    // console.log(review.professors);
+    // console.log(review.rating);
     return (
       <li>
         <div className="review">
@@ -109,15 +109,15 @@ export default class Review extends Component {
           <div className="panel-body-3">
             <div className="row reviewNumbers">
               <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
-                <div className="container" id="circlebox" style={this.getQualColor(review.quality)}>
-                  <div id="text">{review.quality}</div>
+                <div className="container" id="circlebox" style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
+                  <div id="text">{(review.rating != undefined) ? review.rating : review.quality}</div>
                 </div>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
                 <p id="labelName">Overall Rating</p>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="circle">
-                <div className="container" id="circlebox" style={this.getDiffColor(review.difficulty)}>
+                <div className="container" id="circlebox" style={this.getColorGreenToRed(review.difficulty)}>
                   <div id="text">{review.difficulty}</div>
                 </div>
               </div>
@@ -125,8 +125,8 @@ export default class Review extends Component {
                 <p id="labelName">Difficulty</p>
               </div>
               <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
-                <div className="container" id="circlebox" style={this.getQualColor(review.quality)}>
-                  <div id="text">{review.quality}</div>
+                <div className="container" id="circlebox" style={this.getColorGreenToRed(review.workload)}>
+                  <div id="text">{(review.workload) ? review.workload : "-"}</div>
                 </div>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
@@ -137,10 +137,13 @@ export default class Review extends Component {
               <div className="col-md-3 col-sm-3 col-xs-3">
                 <p id="profLabel">Professor: </p>
               </div>
-              {/*The following adds a grey professor box for each professor listed in the review*/}
-              {(review.professors) ? review.professors.map((prof, index) => (<div key={index} className="col-md-4 col-sm-3 col-xs-3">
-                <p id="professor_text">{prof}</p></div>)) : <div className="col-md-4 col-sm-3 col-xs-3">
-                  <p id="professor_text">N/A</p></div>}
+              <div className="col-md-9 col-sm-9 col-xs-9">
+                {/*The following adds a grey professor box for each professor listed in the review*/}
+                {(review.professors) ? review.professors.map((prof, index) => (<div key={index} className="col-md-4 col-sm-4 col-xs-6">
+                  <p id="professor-text">{prof}</p></div>)) : <div className="col-md-4 col-sm-4 col-xs-6">
+                    <p id="professor-text">N/A</p></div>}
+              </div>
+              
             </div>
             <div className="row">
               <div className="review-text" id="review_text">{review.text}</div>
