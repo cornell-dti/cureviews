@@ -89,7 +89,7 @@ export class CourseCard extends Component {
                 <strong>Median Grade: </strong>
                 {this.state.grade}
             </p>
-            <div className= "panel panel-default top-margin-medium">
+            <div className= "panel panel-default top-margin-medium panel-radius">
                 <div className = "panel-body">
                     <section>
                       <div className="row" id="gaugeHolder">

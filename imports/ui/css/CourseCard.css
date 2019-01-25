@@ -99,3 +99,7 @@ label {
 .padding-bottom{
   padding-bottom: 5px;
 }
+
+.panel-radius{
+  border-radius: 8px;
+}
