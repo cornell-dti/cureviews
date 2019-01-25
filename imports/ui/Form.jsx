@@ -86,7 +86,8 @@ export default class Form extends Component {
   // Called whenever this form element changes to trigger re-render to run validation.
   handleProfChange(selectedProfessors){
     // console.log(selectedProfessors.map(professor => {return professor.label}))
-    this.setState({ selectedProfessors: selectedProfessors })
+    this.setState({ selectedProfessors: selectedProfessors });    
+    this.pushReviewsDown(this.state.dropdown);
   }
 
   // Convert the slider's value to a color starting with red and ending with green.
@@ -230,24 +231,30 @@ export default class Form extends Component {
     // Takes care of "pushing down" the reviews by the dynamic height of the form
     toggleDropdown(e){      
        
-       var marginHeight;
-       var nextState;
-       
-       // Was open, close
-       if (this.state.dropdown == 'open'){
-         nextState = '';
-         marginHeight = 0;
-       }
-       // Was closed, open
-       else{
-         nextState = 'open';
-         marginHeight = this.dropdownHeight;
-       }
-
-       $("#form-dropdown").css("margin-bottom", marginHeight + "px");
-       
        var nextState = this.state.dropdown == 'open' ? '' : 'open';
        this.setState({ dropdown: nextState });
+       this.pushReviewsDown(nextState);
+    }
+    
+    //Pushes down the reviews from the form depending on how long the form becomes
+    //Uses the margin-bottom attribute to do this
+    pushReviewsDown(formState){
+      var marginHeight;
+      var offsetHeight;
+      // Was open, then close it
+      if (formState == 'open'){
+        console.log("is open");
+        marginHeight = this.dropdownHeight;
+        offsetHeight = ReactDOM.findDOMNode(this.refs.selectHolder).offsetHeight - 46;
+      }
+      // Was closed, then open it
+      else{
+        console.log("is closed");
+        marginHeight = 0;
+        offsetHeight = 0;
+      }
+      console.log(offsetHeight);
+      $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
     }
   
   render() {
@@ -328,7 +335,7 @@ export default class Form extends Component {
                               <div className="col-md-3 col-sm-3 col-xs-3">
                                   <div className="secondary-text">Professor</div>
                               </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment">
+                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
                                   <Select value={this.state.selectedProfessors} 
                                     onChange={(professors) => this.handleProfChange(professors)} 
                                     isMulti 

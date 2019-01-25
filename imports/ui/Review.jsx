@@ -92,8 +92,8 @@ export default class Review extends Component {
   render() {
     var review = this.props.info;
     var classId = review.class;
-    console.log(review);
-    console.log(review.professors);
+    // console.log(review);
+    // console.log(review.professors);
     return (
       <li>
         <div className="review">
