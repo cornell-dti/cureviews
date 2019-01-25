@@ -14,7 +14,7 @@
 
 #second_welcome_text{
   height: 14px;
-  padding-top: 10%;
+  padding-top: 6%;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 20px;
   font-weight: normal;
@@ -31,6 +31,7 @@
   max-width: 150%;
   width: 100%;
   height: auto;
+  margin-bottom: -2%;
 }
 
 .z-index{
