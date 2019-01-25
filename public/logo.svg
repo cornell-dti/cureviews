@@ -9,7 +9,7 @@
                 <feMergeNode in="SourceGraphic"/>
             </feMerge>
         </filter>
-        <text id="c" fill="#FFF" font-family="Avenir-Medium, Avenir" font-size="47.088" font-weight="400" letter-spacing=".775">
+        <text id="c" fill="#FFF" font-family="Avenir-Medium, Avenir, sans-serif" font-size="47.088" font-weight="400" letter-spacing=".775">
             <tspan x="34.632" y="217">Reviews</tspan>
         </text>
         <filter id="b" width="107.5%" height="123.4%" x="-3.7%" y="-11.7%" filterUnits="objectBoundingBox">
@@ -24,11 +24,11 @@
             <path fill="#E64559" d="M98.115 70.39l-.255.134-12.388 8.756c-5.218-5.124-11.979-8.216-19.364-8.216-16.522 0-29.916 15.473-29.916 34.56 0 19.087 13.394 34.56 29.916 34.56 9.072 0 17.2-4.665 22.687-12.031l13.369 9.825c-8.305 9.707-20.366 15.814-33.788 15.814-25.052 0-45.36-21.275-45.36-47.52 0-26.245 20.308-47.52 45.36-47.52 11.377 0 21.776 4.388 29.739 11.637z"/>
             <path fill="#C7C7C7" d="M96.024 71.928c-3.366-5.508-5.346-8.388-5.94-8.64-3.444-1.463-5.425-3.145-7.452-3.888-2.491-.912-7.756-1.812-12.636-2.052-1.637-.08-12.041 2.295-31.212 7.128l11.88 11.556c3.136-1.87 5.512-3.059 7.128-3.564 4.566-1.428 9.32-1.343 10.26-1.296 1.44.072 3.132.396 5.076.972 1.321.401 2.293.725 2.916.972.623.247 1.559.679 2.808 1.296 1.569.97 2.72 1.726 3.456 2.268.735.542 1.78 1.406 3.132 2.592l10.584-7.344z"/>
             <path fill="#F8CC30" d="M155.986 77.004v-29.7h-12.658v29.7zM203.004 77.004v-29.7h-12.657v29.7z"/>
-            <text fill="#F8CC30" font-family="Avenir-Heavy, Avenir" font-size="108" font-weight="600" letter-spacing=".355" transform="translate(133.84 40.608)">
+            <text fill="#F8CC30" font-family="Avenir-Heavy, Avenir, sans-serif" font-size="108" font-weight="600" letter-spacing=".355" transform="translate(133.84 40.608)">
                 <tspan x=".346" y="108">U</tspan>
             </text>
             <path fill="#D8D8D8" d="M137.344 47.304h12.658v22.464h-12.658z"/>
-            <text fill="#FFF" font-family="Avenir-Medium, Avenir" font-size="162" font-weight="400" letter-spacing=".533">
+            <text fill="#FFF" font-family="Avenir-Medium, Avenir, sans-serif" font-size="162" font-weight="400" letter-spacing=".533">
                 <tspan x="1.207" y="162">CU</tspan>
             </text>
         </g>
