@@ -25,15 +25,14 @@ export class CourseCard extends Component {
 
     // default gauge values
     this.defaultGaugeState = {
+      rating: 0,
+      ratingColor: "#E64458",
       diff: 0,
       diffColor: "#E64458",
-      qual: 0,
-      qualColor: "#E64458",
+      workload: 0,
+      workloadColor: "#E64458",
       grade: "-",
       gradeNum: 0,
-      loadColor: "#E64458", //replaced gradeColor
-      load: '0',
-      mandatory: "Mandatory",
     };
 
     // initialize state as default gauge values
@@ -76,15 +75,13 @@ export class CourseCard extends Component {
 
     return (
         <div id="coursedetails">
-            <h1 className="subheader top-margin">
-              <strong> {theClass.classSub.toUpperCase() + " " + theClass.classNum
-              + ": " + theClass.classTitle}
-              </strong>
+            <h1 className="class-title top-margin">
+              {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}
             </h1>
             <div href={url} target="_blank"> {/* Forces link onto next line */}
-              <a className="cornellClassLink" href={url}>Course Roster <img src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
+              <a className="cornellClassLink" href={url}>Course Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
             </div>
-            <p className="review-text spacing-large top-margin">
+            <p className="class-info spacing-large top-margin">
                 <strong>Offered: </strong>
                 {offered}
             </p>
@@ -97,13 +94,13 @@ export class CourseCard extends Component {
                     <section>
                       <div className="row" id="gaugeHolder">
                           <div className="col-md-4 col-sm-4 col-xs-12">
-                              <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Overall Rating" />
+                              <Gauge value={this.state.rating} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
                           </div>
                           <div className="col-md-4 col-sm-4 col-xs-12">
                               <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
                           </div>
                           <div className="col-md-4 col-sm-4 col-xs-12">
-                              <Gauge value={this.state.load} width={160} height={120} color={this.state.loadColor} max={5} label="Workload"/>
+                              <Gauge value={this.state.workload} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload"/>
                           </div>
                       </div>
                     </section>

@@ -73,3 +73,29 @@ label {
   padding-left: 30px;
   padding-right: 30px;
 }
+
+.class-title{
+  font-family: HelveticaNeue;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  color: #4a4a4a;
+}
+
+.class-info{
+  font-family: HelveticaNeue;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+.padding-bottom{
+  padding-bottom: 5px;
+}
