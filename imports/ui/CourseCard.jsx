@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
+import Gauge from 'react-summary-gauge-2';
 import './css/CourseCard.css';
 import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
-import {Gauge} from 'gaugeJS';
 
 /*
   Course Card Component.
@@ -31,7 +31,8 @@ export class CourseCard extends Component {
       qualColor: "#E64458",
       grade: "-",
       gradeNum: 0,
-      gradeColor: "#E64458",
+      loadColor: "#E64458", //replaced gradeColor
+      load: '0',
       mandatory: "Mandatory",
     };
 
@@ -73,65 +74,6 @@ export class CourseCard extends Component {
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     var offered = lastOfferedSems(theClass);
 
-    var GaugeWrapper = React.createClass({
-      componentDidMount(){
-        var overallOpts = {
-          lines: 12,
-          angle: 0.15,
-          lineWidth: 0.44,
-          pointer: {
-            length: 0.9,
-            strokeWidth: 0.035,
-            color: '#000000'
-          },
-          limitMax: 'false',
-          percentColors: [[0.0, "#53b227" ], [.33, "#f8cc30"], [.66, "#e64558"]],
-          strokeColor: '#E0E0E0',
-          generateGradient: true
-        };
-        var difWorkOpts = Object.assign({}, overallOpts);
-        difWorkOpts.percentColors = [[0.0, "#e64558" ], [.33, "#f8cc30"], [.66, "#53b227"]];
-        // Overall Rating
-        var target = ReactDOM.findDOMNode(this.refs.foo);
-        var gauge = new Gauge(target).setOptions(overallOpts);
-        gauge.maxValue = this.props.max;
-        gauge.set(this.state.qual);
-
-        // Difficulty
-        var target2 = ReactDOM.findDOMNode(this.refs.goo);
-        var gauge2 = new Gauge(target2).setOptions(difWorkOpts);
-        gauge2.maxValue = this.props.max;
-        gauge2.set(this.state.diffColor);
-
-        // WorkLoad
-        var target2 = ReactDOM.findDOMNode(this.refs.hoo);
-        var gauge2 = new Gauge(target2).setOptions(difWorkOpts);
-        gauge2.maxValue = this.props.max;
-        gauge2.set(this.state.gradeNum);
-      },
-      render(){
-        return (
-          <div className="row">
-            <div className="col-md-4 col-sm-4">
-              {this.state.qual}
-              <canvas ref="foo" width={this.props.width} height={this.props.height} />
-              Overall Rating
-            </div>
-            <div className="col-md-4 col-sm-4">
-              {this.state.diffColor}
-              <canvas ref="goo" width={this.props.width} height={this.props.height} />
-              Difficulty
-            </div>
-            <div className="col-md-4 col-sm-4">
-              {this.state.gradeNum}
-              <canvas ref="hoo" width={this.props.width} height={this.props.height} />
-              WorkLoad
-            </div>
-          </div>
-        );
-      }
-    });
-
     return (
         <div id="coursedetails">
             <h1 className="subheader top-margin">
@@ -140,7 +82,7 @@ export class CourseCard extends Component {
               </strong>
             </h1>
             <div href={url} target="_blank"> {/* Forces link onto next line */}
-              <a className="cornellClassLink" href={url}>Course Roster</a>
+              <a className="cornellClassLink" href={url}>Course Roster <img src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
             </div>
             <p className="review-text spacing-large top-margin">
                 <strong>Offered: </strong>
@@ -153,11 +95,17 @@ export class CourseCard extends Component {
             <div className= "panel panel-default top-margin-medium">
                 <div className = "panel-body">
                     <section>
-                        <div className="row " id="gaugeHolder">
-                            <div className="col-md-12 col-sm-12 col-xs-12" id="qualGauge">
-                                <GaugeWrapper width="200" options={{}} max="200" value="50"/>
-                            </div>
-                        </div>
+                      <div className="row" id="gaugeHolder">
+                          <div className="col-md-4 col-sm-4 col-xs-12">
+                              <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Overall Rating" />
+                          </div>
+                          <div className="col-md-4 col-sm-4 col-xs-12">
+                              <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
+                          </div>
+                          <div className="col-md-4 col-sm-4 col-xs-12">
+                              <Gauge value={this.state.load} width={160} height={120} color={this.state.loadColor} max={5} label="Workload"/>
+                          </div>
+                      </div>
                     </section>
                 </div>
             </div>
