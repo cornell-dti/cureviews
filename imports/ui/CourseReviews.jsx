@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -46,7 +46,7 @@ export class CourseReviews extends Component {
       ));
     } else {
       return this.props.reviews.map((review) => (
-        <Review key={review._id} info={review} reportHandler={this.reportReview}/>
+        <Review key={review._id} info={review} reportHandler={this.reportReview} />
       ));
     }
   }
@@ -58,14 +58,14 @@ export class CourseReviews extends Component {
     }
     return (
       <section>
-          <legend className="subheader">{title}</legend>
-          <div className="panel panel-default" id="reviewpanel">
-              <div>
-                  <ul id="reviewul">
-                      {this.renderReviews()}
-                  </ul>
-              </div>
+        <legend className="subheader">{title}</legend>
+        <div className="panel panel-default" id="reviewpanel">
+          <div>
+            <ul id="reviewul">
+              {this.renderReviews()}
+            </ul>
           </div>
+        </div>
       </section>
     );
   }
@@ -87,4 +87,4 @@ export default withTracker(props => {
   return {
     reviews, loading,
   };
-}) (CourseReviews);
+})(CourseReviews);

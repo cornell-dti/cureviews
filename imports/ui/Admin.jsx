@@ -72,6 +72,7 @@ export class Admin extends Component {
       if (!error && result === 1) {
         //console.log("removed review " + review._id);
       } else {
+        console.log("Error at Meteor Call :removeReview");
         console.log(error)
       }
     });
@@ -84,6 +85,7 @@ export class Admin extends Component {
       if (!error && result === 1) {
         //console.log(" review " + review._id);
       } else {
+        console.log("Error at Meteor Call :undoReportReview");
         console.log(error)
       }
     });
@@ -100,7 +102,8 @@ export class Admin extends Component {
         console.log("Added new semester courses");
         this.setState({disableNewSem: false, loadingSemester: 2});
       } else {
-        console.log(error)
+        console.log("Error at Meteor Call: addNewSemester");
+        console.log(error);
       }
     });
   }
@@ -120,6 +123,7 @@ export class Admin extends Component {
         console.log("Added new semester courses");
         this.setState({disableInit: false, loadingInit: 2});
       } else {
+        console.log("Error at Meteor Call :addAll");
         console.log(error)
       }
     });
@@ -133,7 +137,7 @@ export class Admin extends Component {
         console.log("Updated the professors");
         this.setState({disableInit: false, loadingProfs: 2});
       } else {
-        console.log("In the admin.jsx error block")
+        console.log("Error at Meteor Call :setProfessors");
         console.log(error)
       }
     });
@@ -147,7 +151,7 @@ export class Admin extends Component {
         console.log("Reset all the professors to empty arrays");
         this.setState({disableInit: false, resettingProfs: 2});
       } else {
-        console.log("In the admin.jsx error block")
+        console.log("Error at Meteor Call :resetProfessors");
         console.log(error)
       }
     });

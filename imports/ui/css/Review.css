@@ -1,13 +1,11 @@
 /* Font declaration */
 #text, #review_text, #label, #button_text {
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  padding-right: 30px;
 }
 
 .panel-body-3 {
     margin: auto;
-    padding: 25px 30px;
-    padding-right: 0px;
+    padding: 25px 30px 0px;
     margin-bottom: 5px;
 }
 
@@ -21,51 +19,121 @@
   margin-top: 10px;
 }
 
-#box {
-  border-radius: 8px;
+#circlebox {
+  border-radius: 25px;
   height: 34px;
   /*background-color: #e64558;*/
   padding-top: 0;
-  width: 44px;
+  width: 34px;
+  left: 50%;
+}
+
+#circle {
+  padding-right: 0px;
+  margin-right: 0px;
 }
 
 #text {
   color: #ffffff;
   height: 100%;
-  font-size: 24px;
+  font-size: 16px;
   letter-spacing: 0.1px;
   display: flex;
   align-items: center;
-  margin: 0 5%;
+  position: relative;
+  left: -50%;
 }
 
 #review_text {
-  color: #4a4a4a;
-  font-size: 16px;
+  color:black;
+  font-size: 15px;
   line-height: 1.38;
   letter-spacing: 0.1px;
   text-align: left;
+  padding-left: 50px;
+  padding-bottom: 15px;
+}
+
+#professor-text{
+  border-radius: 5px;
+  color: black;
+  font-size: 13px;
+  line-height: 1.38;
+  letter-spacing: 0.1px;
+  text-align: center;
+  background-color: #ececec;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 5px;
 }
 
 #label{
   color: #4a4a4a;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.1px;
   opacity: 0.5;
   text-align: left;
   margin: 0 7px;
 }
 
-#button_text {
-  color: #4a4a4a;
-  font-size: 14px;
-  opacity: 0.35;
-  letter-spacing: 0.1px;
-  text-align: right;
-  border: none;
+#review-date {
+  text-align: center;
+  color:gray;
+  padding-left : 20px;
+  font-size: 13px;
+}
+
+#upvote-text{
+  float: right;
+  color: #4990e2;
+  font-size: 11px;
+  margin-right: 2px;
+}
+
+.report-review, .upvote, .voted {
+  width: 30px;
+  height: 30px;
+  padding: 0px 0px 0px 0px;
+  text-align: center;
+  line-height: 1.42857;
   background-color: white;
-  text-decoration: none;
+  float: right;
+  margin-right: 10px;
+  border-color: white;
+}
+
+.report-review {
+  color: #9b9b9b;
+}
+
+.upvote{
+  color: #4990e2;
+  margin-right: 0px;
   padding-right: 0px;
+  border-radius: 30px;
+}
+
+.voted{
+  color: #fff;
+  background-color:#4990e2;
+  border-color: #4990e2;
+  margin-right: 0px;
+  padding-right: 0px;
+  border-radius: 30px;
+}
+
+.report-review:hover {
+  color: #4990e2;
+}
+
+.upvote:hover {
+  border-color: #4990e2;
+}
+
+.voted:hover {
+  border-color: black;
 }
 
 #reviewpanel, #reviewul {
@@ -74,6 +142,43 @@
 
 #reviewpanel {
   border-color: transparent;
+}
+
+#labelName {
+  padding-left: 0px;
+  padding-right: 0px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #000000;
+  font-size: 14.5px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  margin: 0 0px;
+  padding-top: 4px;
+}
+
+#label-wrap{
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0 0px;
+  padding-top: 4px;
+  padding-bottom: 15px;
+}
+
+#profLabel {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #000000;
+  font-size: 13px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 35px;
+  padding-right: 0px;
+  padding-bottom: 10px;
+}
+
+#agreeNumber {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 20px;
 }
 
 .review {
@@ -88,4 +193,9 @@
 
 .space-review-buttons {
   margin-left: 5px;
+}
+
+.noLeftRightPadding{
+  padding-left: 0px;
+  padding-right: 0px;
 }

@@ -2,8 +2,8 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
-import Gauge from 'react-summary-gauge-2';
 import { Reviews } from '../api/dbDefs.js';
+import Gauge from 'react-summary-gauge-2';
 import './css/CourseCard.css';
 import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
 
@@ -25,14 +25,14 @@ export class CourseCard extends Component {
 
     // default gauge values
     this.defaultGaugeState = {
+      rating: 0,
+      ratingColor: "#E64458",
       diff: 0,
       diffColor: "#E64458",
-      qual: 0,
-      qualColor: "#E64458",
+      workload: 0,
+      workloadColor: "#E64458",
       grade: "-",
       gradeNum: 0,
-      gradeColor: "#E64458",
-      mandatory: "Mandatory",
     };
 
     // initialize state as default gauge values
@@ -75,35 +75,37 @@ export class CourseCard extends Component {
 
     return (
         <div id="coursedetails">
-            <h1 className="subheader">{theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}</h1>
-            <div> {/* Forces link onto next line */}
-              <a className="cornellClassLink spacing-large" href={url} target="_blank">classes.cornell.edu</a>
+            <h1 className="class-title top-margin">
+              {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}
+            </h1>
+            <div href={url} target="_blank"> {/* Forces link onto next line */}
+              <a className="cornellClassLink" href={url}>Course Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
             </div>
-            <p className="review-text spacing-large">
-                <strong>Last Offered: </strong>
+            <p className="class-info spacing-large top-margin">
+                <strong>Offered: </strong>
                 {offered}
             </p>
-            <h2>Class Data</h2>
-            <div className= "panel panel-default">
+            <p className="review-text spacing-large top-margin-small">
+                <strong>Median Grade: </strong>
+                {this.state.grade}
+            </p>
+            <div className= "panel panel-default top-margin-medium panel-radius">
                 <div className = "panel-body">
                     <section>
-                        <div className="row" id="gaugeHolder">
-                            <div className="col-md-4 col-sm-4 col-xs-12">
-                                <Gauge value={this.state.qual} width={160} height={120} color={this.state.qualColor} max={5} label="Quality" />
-                            </div>
-                            <div className="col-md-4 col-sm-4 col-xs-12">
-                                <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
-                            </div>
-                            <div className="col-md-4 col-sm-4 col-xs-12">
-                                <Gauge value={this.state.gradeNum} width={160} height={120} color={this.state.gradeColor} max={9} label="Median Grade" textValue={this.state.grade}/>
-                            </div>
-                        </div>
+                      <div className="row" id="gaugeHolder">
+                          <div className="col-md-4 col-sm-4 col-xs-12">
+                              <Gauge value={this.state.rating} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
+                          </div>
+                          <div className="col-md-4 col-sm-4 col-xs-12">
+                              <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
+                          </div>
+                          <div className="col-md-4 col-sm-4 col-xs-12">
+                              <Gauge value={this.state.workload} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload"/>
+                          </div>
+                      </div>
                     </section>
                 </div>
             </div>
-            <p className="review-text spacing-large">
-              <strong>Attendance:</strong> {this.state.mandatory}
-            </p>
         </div>
     );
   }
