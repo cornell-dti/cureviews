@@ -42,6 +42,12 @@
   float: none;
 }
 
+.scale-logo{
+  max-height: 220px;
+  width: auto;
+  margin-bottom: 55px;
+}
+
 nav {
   background-color: #4990E2;
   margin-top: 0;
@@ -155,7 +161,7 @@ nav {
 }
 
 #img-padding-top{
-  margin-top: 2%;
+  margin-top: 4%;
 }
 
 .nav-center {
