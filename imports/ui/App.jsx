@@ -63,7 +63,7 @@ export default class App extends Component {
         </div>
         
         <div className="row">
-          <div className="col-md-10 col-md-offset-1 z-index">
+          <div className="col-md-10 col-md-offset-1">
             <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
           </div>
         </div>
