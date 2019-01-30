@@ -51,38 +51,25 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="container-fluid container-top-gap-fix background-image">
-        <nav className="navbar">
-          <div className="navbar-header">
-            <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-              <span><img src='logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" /> CU Reviews</span>
-            </a>
-          </div>
-          <ul className="nav navbar-nav nav-right nopadding clearBackground">
-            <li className='reportButton'><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
-          </ul>
-        </nav>
-        <div className='container pushDown'>
-          <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
-            <p id="welcome_text">Welcome to CU Reviews</p>
+      <div className="container-fluid full-height background-gradient">
+      
+        <div className="row">
+            <img src='/logo.png' className="img-responsive center-block scale-logo" id="img-padding-top" alt="CU Reviews Logo" />
+        </div>
+        <div className="row">
+          <div className="col-md-9 col-sm-9 col-xs-9 center-block no-float z-index">
+            <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
           </div>
         </div>
-        <div className="container text-center pushDown searchWidth">
-          <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
-        </div>
-        <div className='container pushDown'>
+        
+        <div className="row">
           <div className="col-md-10 col-md-offset-1">
             <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
           </div>
         </div>
-        <div className='container noPadding panel-color-translucent'>
-          <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel">
-            <SubjectLeaderboard />
-          </div>
-          <div className="col-md-6 col-sm-12 col-xs-12 panel-container fix-contain">
-            <div>
-              <CourseReviews courseId={"-1"} />
-            </div>
+        <div className="row footer navbar-fixed-bottom">
+          <div className="col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
+            <img src='/skyline.svg' className="center-block outline" id="" alt="" />
           </div>
         </div>
       </div>

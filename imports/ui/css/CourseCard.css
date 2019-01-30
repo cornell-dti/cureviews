@@ -1,9 +1,5 @@
-.cornellClassLink, .primary-text {
-  color: #4a4a4a;
-}
-
 .cornellClassLink {
-  text-decoration: underline;
+  color: #9b9b9b;
 }
 
 .spacing-small{
@@ -15,7 +11,57 @@
 }
 
 .spacing-large {
-  line-height: 40px;
+  line-height: 20px;
+}
+
+.top-margin-small {
+  margin-top: 20px;
+}
+
+.top-margin-medium {
+  margin-top: 40px;
+}
+
+.top-margin {
+  margin-top: 50px;
+}
+
+.subheader {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 35px;
+}
+
+.courseNum{
+  text-align: center;
+  font-size: 23.5px;
+  color: #ffffff;
+  margin-left: center;
+  margin-right: center;
+  margin-top:20px;
+}
+
+
+.review-text {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  color: #333333;
+}
+
+.overall-rank {
+  font-size: 30px;
+  color: white;
+  vertical-align: center;
+  text-align:center;
+  align-items: center;
+}
+
+label {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
 }
 
 #gaugeHolder > div{
@@ -23,7 +69,37 @@
 }
 
 #coursedetails {
-  padding-top: 80px;
+  padding-top: 10px;
   padding-left: 30px;
   padding-right: 30px;
+}
+
+.class-title{
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  color: #4a4a4a;
+}
+
+.class-info{
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+.padding-bottom{
+  padding-bottom: 5px;
+}
+
+.panel-radius{
+  border-radius: 8px;
 }

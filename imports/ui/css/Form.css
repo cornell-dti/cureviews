@@ -4,13 +4,137 @@ form {
 .panel-body-2 {
     margin: auto;
     padding: 25px 30px;
-    padding-right: 0px;
-    padding-bottom: 10px;
 }
 #form{
-    padding-right: 30px;
-    padding-bottom: 25px;
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-bottom: 20px;
 }
+
+#reviewTextRow{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+#dropdown-button{
+  width: 100%;
+  border: none;
+  height: 54px;
+  border-radius: 1.5px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  background-color: #4a90e2;
+  
+}
+
+.review-header {
+  height: 14px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 450;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: -0.1px;
+  color: #ffffff;
+}
+
+.float-r{
+  float: right;
+}
+
+.padding-right-40{
+  padding-right: 40px;
+}
+
+.arrow {
+  border: solid #ffffff;
+  margin-top: 9px;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.dropdown .dropdown-menu {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+
+    /* max-height: 0;*/ /* uncomment to have more of a 'slide' animation; however, this breaks dynamic resizing 'push down' */
+    width: 100%;
+    display: block;
+    overflow: visible;
+    opacity: 0;
+}
+
+.dropdown.open .dropdown-menu {
+    max-height: 650px;
+    opacity: 1;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-color: #4a90e2;
+    border-radius: 15px;
+    height: 6.4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #000000;
+    border: 2px solid #000000;
+    border-radius: 100%;
+    box-shadow: 0px 1px 2px 0px #000000;
+    cursor: pointer;
+    position: relative;
+    bottom: 5px; /* Used to fix spacing */
+    height: 17px;
+    opacity: 1;
+    width: 17px;
+}
+
+input[type="submit"]{
+    background-color: #4990E2;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    text-align: center;
+    width: 100px;
+}
+input[type="submit"]:active{
+    background-color: #2d6fbc;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    text-align: center;
+    width: 100px;
+}
+
 textarea {
     height: 100px;
     width: 100%;
@@ -22,9 +146,18 @@ textarea {
     border: 1px solid #999999;
 }
 
+.rating-icon{
+  background: black;
+  border-radius: 10%;
+  height: 33px;
+  width: 35px;
+}
+
 #sm1, #sm2 {
     align-items: center;
     color: white;
+    font-size: 15px;
+    font-weight: 500;
     display: flex;
     justify-content: center;
 }
@@ -56,14 +189,16 @@ p {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 18px;
     font-weight: bold;
-    float: right;
     letter-spacing: 0.1px;
     height: 22px;
     text-align: center;
     height: 40px;
+    position: relative;
+    margin-top: 24px;
 }
 
 #postbutton:focus {
+  cursor: pointer;
   outline: none;
   box-shadow: 0 0 3pt 2pt #99c2e7;
 }
@@ -81,12 +216,14 @@ input[type="range"] {
   outline: 1px solid red;
 }
 
+.missing-profs{
+  color: #FF314A;
+}
+
 .hidden { display:none; }
 
 .selectAlignment {
   padding-top: 8px;
 }
 
-.review-header {
-  font-size: 27px;
-}
+

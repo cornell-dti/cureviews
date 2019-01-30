@@ -86,7 +86,7 @@ export default class UpdateReview extends Component {
                   <div className="panel-body">
                       <div className="col-sm-1">
                           <div className="panel panel-default">
-                              <div className="panel-body text-center">{review.quality}</div>
+                              <div className="panel-body text-center">{review.rating}</div>
                           </div>
                           <div className="panel panel-default">
                               <div className="panel-body text-center">{review.difficulty}</div>
@@ -96,8 +96,8 @@ export default class UpdateReview extends Component {
                           </div>
                       </div>
                       <div className="col-sm-2">
-                          <div className="panel-body"> Overall Quality</div>
-                          <div className="panel-body"> Level of difficulty</div>
+                          <div className="panel-body"> Overall Rating</div>
+                          <div className="panel-body"> Difficulty</div>
                           <div className="panel-body"> Professor(s)</div>
                       </div>
                       <div className="col-sm-9">

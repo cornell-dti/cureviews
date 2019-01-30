@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
 import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
-
+import Select from 'react-select';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 /*
   Form Component.
 
@@ -29,27 +31,31 @@ export default class Form extends Component {
 
     // define bart alert message constants
     Bert.defaults = {
-      hideDelay: 4000, //time alert stays on screen
-      style: 'growl-top-left', // location and animation of alert
+      hideDelay: 5000, //time alert stays on screen
+      style: 'growl-top-right', // location and animation of alert
       type: 'success' // color styling
     };
 
-    //store all currently selected form values in the state.
+    //store all currently selected form values in the state.    
     this.state = {
+      dropdown: '', //empty as opposed to 'open'
+      visible: false,
+      rating: 3,
       diff: 3,
-      quality: 3,
-      median: 0,
-      attend: 1,
+      workload: 3,
+      // median: { value: 0, label: 'I don\'t know' }, //Default for median selecter
       text: "",
       message: null,
       postClicks: 0,
+      selectedProfessors: [],
       professors: this.props.course.classProfessors,
-      checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
+      // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
-    this.defaultState = this.state;
+    this.defaultState = this.state
     this.handleProfChange.bind(this)
+    // this.handleMedianChange.bind(this)
   }
 
   // Save the current user input text from the text box in the local state.
@@ -58,71 +64,64 @@ export default class Form extends Component {
     this.setState({text: event.target.value});
   }
 
-  // Save the current user selected value for attendence (as an integer) in the local state.
+  // Save the current user selected value for rating in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleAttendChange = (event) => {
-    this.setState({ attend: parseInt(event.target.value) });
+  handleRatingChange(event) {
+    this.setState({ rating: parseInt(event.target.value) });
   }
-
-  // Save the current user selected value for median grade in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleMedianChange(event) {
-    this.setState({ median: parseInt(event.target.value) });
-  }
-
-  // Save the current user selected value for quality in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleQualChange(event) {
-    this.setState({ quality: parseInt(event.target.value) });
-  }
-
-  // Convert the quality slider's value to a color.
-  getQualColor(value) {
-    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
-    return {
-      backgroundColor: colors[value]
-    }
-  }
-
+  
   // Save the current user selected value for difficulty in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleDiffChange(event) {
     this.setState({ diff: parseInt(event.target.value) });
   }
 
-  // Convert the difficulty slider's value to a color.
-  getDiffColor(value) {
+  // Save the current user selected value for quality in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleWorkChange(event) {
+    this.setState({ workload: parseInt(event.target.value) });
+  }
+
+  // Save the current professor selected string for professors in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleProfChange(selectedProfessors){
+    // console.log(selectedProfessors.map(professor => {return professor.label}))
+    this.setState({ selectedProfessors: selectedProfessors });    
+    this.pushReviewsDown(this.state.dropdown);
+  }
+
+  // Convert the slider's value to a color starting with red and ending with green.
+  getSliderColorRedToGreen(value) {
+    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    return {
+      backgroundColor: colors[value]
+    }
+  }
+
+  // Convert the slider's value to a color starting with green and ending with red.
+  getSliderColorGreenToRed(value) {
     var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     return {
       backgroundColor: colors[value],
     }
   }
-  
-  // Save the current professor selected string for professors in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleProfChange(event) {
-    const profs = this.state.checkedProfs;
-    index = parseInt(event.target.name)
-    profs[index] = !profs[index]
-    this.setState({ checkedProfs: profs});
-  }
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-    ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-    //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-    
-    this.setState(this.defaultState);
+    ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
+    this.dropdownHeight = ReactDOM.findDOMNode(this.refs.dropdownMenu).clientHeight + 15;
+    this.toggleDropdown(this); //Open review dropdown when page loads
   }
 
   // Called each time this component receieves new props.
   // resets the values of the sliders to 3 and sets the state to the default state.
   componentWillReceiveProps(nextProps) {
     if (nextProps.course != this.props.course) {
+      ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
       ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-      ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-      //ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+      ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
       this.setState(this.defaultState);
     }
   }
@@ -135,184 +134,226 @@ export default class Form extends Component {
 
     // ensure all fields are filled out
     var text = this.state.text.trim();
-    var median = this.state.median;
-    var atten = this.state.attend;
+    var rate = this.state.rating;
     var diff = this.state.diff;
-    var qual = this.state.quality;
-    var prof = this.state.checkedProfs.filter(checked => checked === true).map((checked, index) => {
-      return this.state.professors[index];
-    });
+    var work = this.state.workload;
+    var prof = this.state.selectedProfessors.map(professor => {return professor.label});
     if (text.length > 0 
-      && text !== null 
-      && median !== null 
-      && atten !== null
+      && text !== null
       && prof !== []) {
-      // create new review object
-      var newReview = {
-        text: text,
-        diff: diff,
-        quality: qual,
-        medGrade: median,
-        atten: atten,
-        professors: prof
-      };
+        // create new review object
+        var newReview = {
+          text: text,
+          rating: rate,
+          diff: diff,
+          workload: work,
+          professors: prof,
+        };
 
-      // call the api insert function
-      Meteor.call('insert', newReview, this.props.course._id, (error, result) => {
-        if (!error && result === 1) {
-          // Success, so reset form
-          ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-          ReactDOM.findDOMNode(this.refs.qualSlider).value = 3;
-          // ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-
-          this.setState(this.defaultState);
-          this.setState({checkedProfs: Array((this.props.course.classProfessors).length).fill(false)}); // force reset 
-          Bert.alert('Thanks! Your review is currently pending approval.');
-        } else {
-          // error, alert user
-          console.log(error);
-          this.setState({message: "A error occurred. Please try again."});
-        }
-      });
+        // call the api insert function
+        Meteor.call('insert', newReview, this.props.course._id, (error, result) => {
+          // if (!error && result === 1) {
+          if (error || result === 1) {
+            // Success, so reset form
+            ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
+            ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
+            ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
+            ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+            this.toggleDropdown(this); //Close the review dropdown when page loads
+            
+            this.setState(this.defaultState);
+            Bert.alert('Thanks! Your review is currently pending approval.');
+          } else {
+            // error, alert user
+            console.log(error);
+            this.setState({message: "A error occurred. Please try again."});
+          }
+        });
     }
   }
 
-  // Validation function. Checks if the median and attendence are filled out,
+  // Validation function. Checks if the median are filled out,
   // and checks text for any unaccepted symbols
-  validateInputs(median, attend, text, prof) {
+  validateInputs(text, prof) {
     //ensure there are no illegal characters
-        var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
+    // TODO un-comment the next line
+    var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i);
     errs = {
-      median: median === null || median === undefined,
-      attend: attend === null || attend === undefined,
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
-      professorsEmpty: this.state.postClicks > 0 && !(this.state.checkedProfs.includes(true)),
+      professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length == 0),
       allFalse: false
     };
-    errs.allTrue = !(errs.median || errs.attend || errs.text || errs.textEmpty || errs.professorsEmpty);
+    errs.allTrue = !(errs.text || errs.textEmpty || errs.professorsEmpty);
+    // console.log(errs);
     return errs;
-    console.log(errs);
   }
 
-  renderCheckboxes() {
+  getProfOptions() {
     if (this.props.course.classProfessors != []) {
-      return this.props.course.classProfessors.map((e, key) => {
-        return (
-          <div key={e} className="checkbox">
-            <label>
-              <input name={key} onChange={(event) => this.handleProfChange(event)} type="checkbox" checked={this.state.checkedProfs[key]} />
-              {e}
-            </label>
-          </div>
-        )
-      })
+      var profOptions = []
+      for(var prof in this.props.course.classProfessors){
+        var professorName = this.props.course.classProfessors[prof]
+        
+        profOptions.push({
+          "value" : professorName,
+          "label" : professorName 
+        })
+      }
+      return profOptions
     }
   }
   
+  // Return the options for median grades
+  // TODO deprecate this as we are no longer collecting this metric
+  getMedianOptions() {
+    
+    const medianGrades = [
+      { value: 0, label: 'I don\'t know' },
+      { value: 9, label: 'A+' },
+      { value: 8, label: 'A' },
+      { value: 7, label: 'A-' },
+      { value: 6, label: 'B+' },
+      { value: 5, label: 'B' },
+      { value: 4, label: 'B-' },
+      { value: 3, label: 'C+' },
+      { value: 2, label: 'C' },
+      { value: 1, label: 'C-' }
+    ]
+    return medianGrades
+  }
+    // Toggle the form dropdown
+    // e: passes in the 'this' context to be able to work with this.state
+    // Takes care of "pushing down" the reviews by the dynamic height of the form
+    toggleDropdown(e){      
+       
+       var nextState = this.state.dropdown == 'open' ? '' : 'open';
+       this.setState({ dropdown: nextState });
+       this.pushReviewsDown(nextState);
+    }
+    
+    //Pushes down the reviews from the form depending on how long the form becomes
+    //Uses the margin-bottom attribute to do this
+    pushReviewsDown(formState){
+      var marginHeight;
+      var offsetHeight;
+      // Form is opened
+      if (formState == 'open'){
+        marginHeight = this.dropdownHeight;
+        offsetHeight = ReactDOM.findDOMNode(this.refs.selectHolder).offsetHeight - 46;
+      }
+      // Form is closed
+      else{
+        marginHeight = 0;
+        offsetHeight = 0;
+      }
+      $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+    }
+  
   render() {
-    var theClass = this.props.course
+    var theClass = this.props.course;
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
-    var err = this.validateInputs(this.state.median, this.state.attend, this.state.text, this.state.professors);
+    var err = this.validateInputs(this.state.text, this.state.professors);
     var isEnabled = err.allTrue;
     return (
         <div>
-          <legend className="review-header">Leave a Review</legend>
-          <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-              <div className="panel panel-default">
-                  <div className="panel-body-2" id="form">
-                      <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
-                        onChange={(event) => this.handleTextChange(event)}
-                        placeholder="Enter your class feedback here! Try to mention helpful details like which professor taught the class or what semester you took it." />
-                      <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
-                      <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                      <hr className="divider" />
-                      <div className="row">
-                          <div className="col-md-3">
-                              <h1 className="secondary-text">Overall Quality</h1>
+          <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
+            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+              <div className="row">
+                <div className="col-md-6">
+                  <p className="review-header">Leave a Review</p>
+                </div>
+                <div className="col-md-6 padding-right-40">
+                  <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
+                </div>
+              </div>
+            
+            </button>
+            <ul id="dropdown-menu" className="dropdown-menu" ref="dropdownMenu">
+              <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref="formElement">
+                      <div className="panel-body-2" id="form">
+                          <div className="row" id="reviewTextRow">
+                            <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                              onChange={(event) => this.handleTextChange(event)}
+                              placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
+                            <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
+                            <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                           </div>
-                          <div className="col-md-1">
-                              <div className="small-icon" id="sm1" style={this.getQualColor(this.state.quality)}>
-                                  <p>{this.state.quality}</p>
+                          
+                          <hr className="divider" />
+                          <div className="row">
+                              <div className="col-md-3 col-sm-3 col-xs-3">
+                                  <h1 className="secondary-text">Overall Rating</h1>
+                              </div>
+                              <div className="col-md-1 col-sm-1 col-xs-1">
+                                  <div className="rating-icon" id="sm1" style={this.getSliderColorRedToGreen(this.state.rating)}>
+                                      <p>{this.state.rating}</p>
+                                  </div>
+                              </div>
+                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                                 <input ref="ratingSlider" onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
                               </div>
                           </div>
-                          <div className="col-md-8 sliderHolder">
-                             <input ref="qualSlider" onChange={(event) => this.handleQualChange(event)} type="range" id="a2" name="qual" min="1" max="5" step="1" />
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                      <div className='row'>
-                          <div className="col-md-3">
-                              <h1 className="secondary-text">Level of Difficulty</h1>
-                          </div>
-                          <div className="col-md-1">
-                              <div className="small-icon" id="sm2" style={this.getDiffColor(this.state.diff)}>
-                                  <p>{this.state.diff}</p>
+                          <div className="sm-spacing"></div>
+                          <div className="row">
+                              <div className="col-md-3 col-sm-3 col-xs-3">
+                                  <h1 className="secondary-text">Difficulty</h1>
+                              </div>
+                              <div className="col-md-1 col-sm-1 col-xs-1">
+                                  <div className="rating-icon" id="sm1" style={this.getSliderColorGreenToRed(this.state.diff)}>
+                                      <p>{this.state.diff}</p>
+                                  </div>
+                              </div>
+                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                                 <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
                               </div>
                           </div>
-                          <div className="col-md-8 sliderHolder">
-                              <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="a2" name="qual" min="1" max="5" step="1" />
+                          <div className="sm-spacing"></div>
+                          <div className='row'>
+                              <div className="col-md-3 col-sm-3 col-xs-3">
+                                  <h1 className="secondary-text">Workload</h1>
+                              </div>
+                              <div className="col-md-1 col-sm-1 col-xs-1">
+                                  <div className="rating-icon" id="sm2" style={this.getSliderColorGreenToRed(this.state.workload)}>
+                                      <p>{this.state.workload}</p>
+                                  </div>
+                              </div>
+                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                                  <input ref="workloadSlider" onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
+                              </div>
+                          </div>
+                          <div className="sm-spacing"></div>
+                          <div className="row">
+                              <div className="col-md-3 col-sm-3 col-xs-3">
+                                  <div className="secondary-text">Professor</div>
+                              </div>
+                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
+                                  <Select value={this.state.selectedProfessors} 
+                                    onChange={(professors) => this.handleProfChange(professors)} 
+                                    isMulti 
+                                    options={this.getProfOptions()} 
+                                    ref="profSelect"
+                                  />
+                                  <div ref="noProfMsg" className={err.professorsEmpty ? "missing-profs" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                              </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12 text-right">
+                                <button disabled={!isEnabled} id ="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                            </div>
                           </div>
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-4">
-                              <div className="secondary-text">Estimated Median</div>
-                          </div>
-                          <div className="col-md-8 selectAlignment">
-                              <select value={this.state.median} onChange={(event) => this.handleMedianChange(event)}>
-                                  <option value="0">I don&#39;t know</option>
-                                  <option value="9">A+</option>
-                                  <option value="8">A</option>
-                                  <option value="7">A-</option>
-                                  <option value="6">B+</option>
-                                  <option value="5">B</option>
-                                  <option value="4">B-</option>
-                                  <option value="3">C+</option>
-                                  <option value="2">C</option>
-                                  <option value="1">C-</option>
-                              </select>
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-4">
-                              <div className="secondary-text">Professor(s)</div>
-                          </div>
-                          <div className="col-md-8 selectAlignment">
-                              {this.renderCheckboxes()}
-                              <div ref="noProfMsg" className={err.professorsEmpty ? "" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-4">
-                              <div className="secondary-text">Attendance</div>
-                          </div>
-                          <div className="col-md-8 selectAlignment">
-                              <select value={this.state.attend} onChange={(event) => this.handleAttendChange(event)}>
-                                  <option value="0">Not Mandatory</option>
-                                  <option value="1">Mandatory</option>
-                              </select>
-                          </div>
+                      
+                  
+                  <div className="row">
+                      <div className="col-sm-12">
+                          <h2 className="secondary-text">{this.state.message}</h2>
                       </div>
                   </div>
-              </div>
-              <div className="row">
-                  <div className="col-md-9">
-                      <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
-                  </div>
-                  <div className="col-md-3">
-                      <button  disabled={!isEnabled} id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                  </div>
-              </div>
-              <div className="row">
-                  <div className="col-sm-12">
-                      <h2 className="secondary-text">{this.state.message}</h2>
-                  </div>
-              </div>
-          </form>
+              </form>
+            </ul>
+          </div>
         </div>
     );
   }
