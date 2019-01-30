@@ -160,7 +160,7 @@ export class Admin extends Component {
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
   firstClickHandler() {
-    Bert.alert('<div><h1>STOP AND THINK REALLY HARD</h1><p>This will delete all data in the database!!! Click agian ONLY if you are initializing the database.</p></div>');
+    Bert.alert('<div><h1>STOP AND THINK REALLY HARD</h1><p>This will delete all data in the database!!! Click again ONLY if you are initializing the database.</p></div>');
     this.setState({doubleClick: true});
   }
 
