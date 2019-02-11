@@ -226,4 +226,8 @@ input[type="range"] {
   padding-top: 8px;
 }
 
+.noLeftRightMargin{
+  margin-right: 0;
+  margin-left: 0;
+}
 
