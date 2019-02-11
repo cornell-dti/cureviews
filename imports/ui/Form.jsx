@@ -260,7 +260,7 @@ export default class Form extends Component {
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
             <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-              <div className="row">
+              <div className="row noLeftRightMargin">
                 <div className="col-md-6">
                   <p className="review-header">Leave a Review</p>
                 </div>
