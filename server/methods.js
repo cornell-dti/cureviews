@@ -108,19 +108,20 @@ Meteor.methods({
   // Then, call a second function to link crosslisted courses, so reviews
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page once a semester.
-  addNewSemester: function (initiate) {
-    // ensure code is running on the server, not client
-    if (initiate && Meteor.isServer) {
-      console.log("updating new semester");
-      const val = addAllCourses(findCurrSemester());
-      if (val) {
-        return addCrossList();
-      } else {
-        console.log("fail");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // addNewSemester: function (initiate) {
+  //   // ensure code is running on the server, not client
+  //   if (initiate && Meteor.isServer) {
+  //     console.log("updating new semester");
+  //     const val = addAllCourses(findCurrSemester());
+  //     if (val) {
+  //       return addCrossList();
+  //     } else {
+  //       console.log("fail");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   // Update the local database by linking crosslisted courses, so reviews
   // from all "names" of a class are visible under each course.
@@ -139,74 +140,77 @@ Meteor.methods({
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page ONLY ONCE during database
   // initialization.
-  addAll: function (initiate) {
-    // ensure code is running on the server, not the client
-    if (initiate && Meteor.isServer) {
-      Classes.remove({});
-      Subjects.remove({});
-      const val = addAllCourses(findAllSemesters());
-      if (val) {
-        return addCrossList();
-      } else {
-        console.log("fail");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // addAll: function (initiate) {
+  //   // ensure code is running on the server, not the client
+  //   if (initiate && Meteor.isServer) {
+  //     Classes.remove({});
+  //     Subjects.remove({});
+  //     const val = addAllCourses(findAllSemesters());
+  //     if (val) {
+  //       return addCrossList();
+  //     } else {
+  //       console.log("fail");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   /* Update the database so we have the professors information.
   This calls updateProfessors in dbInit
   NOTE: We are temporarily not updating any professors for classes inspect
   'SU14','SU15','SU16','SU17','SU18', 'FA18', 'WI18'*/
-  setProfessors: function (initiate) {
-    if (initiate && Meteor.isServer) {
-      var semesters = findAllSemesters();
-      // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
-      var toRemove = ['SU18', 'FA18', 'WI18']
-      toRemove.forEach(function (sem) {
-        var index = semesters.indexOf(sem);
-        if (index > -1) {
-          semesters.splice(index, 1);
-        }
-      })
-      console.log("These are the semesters");
-      console.log(semesters);
-      const val = updateProfessors(semesters);
-      if (val) {
-        return val;
-      } else {
-        console.log("fail at setProfessors in method.js");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // setProfessors: function (initiate) {
+  //   if (initiate && Meteor.isServer) {
+  //     var semesters = findAllSemesters();
+  //     // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
+  //     var toRemove = ['SU18', 'FA18', 'WI18']
+  //     toRemove.forEach(function (sem) {
+  //       var index = semesters.indexOf(sem);
+  //       if (index > -1) {
+  //         semesters.splice(index, 1);
+  //       }
+  //     })
+  //     console.log("These are the semesters");
+  //     console.log(semesters);
+  //     const val = updateProfessors(semesters);
+  //     if (val) {
+  //       return val;
+  //     } else {
+  //       console.log("fail at setProfessors in method.js");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   /* Initializes the classProfessors field in the Classes collection to an empty array so that
   we have a uniform empty array to fill with updateProfessors
   This calls the resetProfessorArray in dbInit
   NOTE: We are temporarily not updating any professors for classes inspect
   'SU18', 'FA18', 'WI18'*/
-  resetProfessors: function (initiate) {
-    if (initiate && Meteor.isServer) {
-      var semesters = findAllSemesters();
-      var toRemove = ['SU18', 'FA18', 'WI18']
-      toRemove.forEach(function (sem) {
-        var index = semesters.indexOf(sem);
-        if (index > -1) {
-          semesters.splice(index, 1);
-        }
-      })
-      console.log("These are the semesters");
-      console.log(semesters);
-      const val = resetProfessorArray(semesters);
-      if (val) {
-        return val;
-      } else {
-        console.log("fail at resetProfessors in method.js");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // resetProfessors: function (initiate) {
+  //   if (initiate && Meteor.isServer) {
+  //     var semesters = findAllSemesters();
+  //     var toRemove = ['SU18', 'FA18', 'WI18']
+  //     toRemove.forEach(function (sem) {
+  //       var index = semesters.indexOf(sem);
+  //       if (index > -1) {
+  //         semesters.splice(index, 1);
+  //       }
+  //     })
+  //     console.log("These are the semesters");
+  //     console.log(semesters);
+  //     const val = resetProfessorArray(semesters);
+  //     if (val) {
+  //       return val;
+  //     } else {
+  //       console.log("fail at resetProfessors in method.js");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   // Get a course with this course_id from the Classes collection in the local database.
   getCourseById: function (courseId) {
