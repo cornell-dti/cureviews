@@ -24,7 +24,6 @@ export default class Login extends Component {
     // user's input password and its validation state.
     this.state = {
       pass: "",
-      validated: false,
       message: ""
     };
 
@@ -52,9 +51,9 @@ export default class Login extends Component {
         if (!error && result==1) {
           // Success, set 'validate' in local state
           newState = {
-            pass: "",
-            validated: true
+            pass: ""
           };
+          Session.set('adminlogin', true);
           this.setState(newState);
         } else {
           // otherwise, clear the input and send error message.
@@ -75,7 +74,7 @@ export default class Login extends Component {
 
   render() {
     // if password was valid, show admin interface, otherwise ask for the password.
-    if (this.state.validated) {
+    if (Session.get("adminlogin")) {
       return (
         <Admin />
       );
@@ -90,9 +89,11 @@ export default class Login extends Component {
               <div className="panel-body">
                 <form onSubmit={this.handleSubmit.bind(this)} >
                   <div className="input-group fullInput">
-                    <input type="text" className="form-control" ref="input" value={this.state.pass} onChange={(event) => this.handlePassChange(event)} />
+                    <input type="password" className="form-control" ref="input" value={this.state.pass} onChange={(event) => this.handlePassChange(event)} />
                   </div>
-                  <div>{this.state.message}</div>
+                  <div>
+                    <p className="error-message">{this.state.message}</p>
+                  </div>
                 </form>
               </div>
             </div>
