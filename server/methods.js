@@ -43,6 +43,34 @@ Meteor.methods({
       return 0; //fail
     }
   },
+  
+  //Inserts a new user into the Users collection. Takes in profileObj from response returned by 
+  //Google login. Upon success returns 1, else returns 0
+  insertUser : function(user){
+    if(user.givenName!=null && user.familyName!=null && user.email!=null){
+    var newUser={
+        firstName: user.givenName,
+        lastName: user.familyName,
+        netId: user.email.split("@")[0],
+        token: user.tokenId
+    };
+
+    try {
+      //check(newUser, Users);
+      Users.insert(newUser);
+      return 1; //success
+    } catch (error) {
+      console.log(error)
+      return 0; //fail
+    }
+
+  }
+  else{
+    //error handling
+    console.log("Some review values are null")
+    return 0; //fail
+  }
+  },
 
   //Increment the number of likes a review has gotten by 1.
   incrementLike: function (review) {
