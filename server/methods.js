@@ -212,6 +212,16 @@ Meteor.methods({
   //   }
   // },
 
+  //Get a user with this user_id from the Users collection in the local database
+  getUserById : function(userId) {
+    var regex=new RegExp(/^(?=.*[A-Z0-9])/i);
+    if(regex.test(userId)){
+      var user=Users.find({_id: userId}).fetch()[0];
+      return user;
+    }
+    return null;
+  },
+
   // Get a course with this course_id from the Classes collection in the local database.
   getCourseById: function (courseId) {
     // check: make sure course id is valid and non-malicious
