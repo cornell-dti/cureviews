@@ -95,7 +95,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id)) {
-      Reviews.remove({ _id: review._id });
+      // Reviews.remove({ _id: review._id });
       return 1;
     } else {
       return 0;
