@@ -44,9 +44,10 @@ Meteor.methods({
     }
   },
   
-  //Inserts a new user into the Users collection. Takes in profileObj from response returned by 
+  //Inserts a new user into the Users collection. Takes in profileObj as [user] from response returned by 
   //Google login. Upon success returns 1, else returns 0
   insertUser : function(user){
+    //Check user object has all required fields
     if(user.givenName!=null && user.familyName!=null && user.email!=null && user.tokenId!=null){
     var newUser={
         firstName: user.givenName,

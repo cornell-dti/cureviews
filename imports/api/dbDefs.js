@@ -28,7 +28,8 @@ Classes.schema = new SimpleSchema({
 
 /* # Users collection.
    # Holds data about each user. Data is collected via Cornell net-id login.
-*//*
+*/
+
 export const Users = new Mongo.Collection('users');
 Users.schema = new SimpleSchema({
     _id: { type: String }, // mongo-generated random id for this document
@@ -37,7 +38,7 @@ Users.schema = new SimpleSchema({
     netId: { type: String }, // user netId
     affiliation: { type: String }, // user affliaition, like ENG or A&S
     token: { type: String } // random token generated during login process
-});*/
+});
 
 /* # Subjects Collection
    # List of all course subject groups and their full text names
