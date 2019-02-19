@@ -36,7 +36,7 @@ export default class Form extends Component {
       type: 'success' // color styling
     };
 
-    //store all currently selected form values in the state.    
+    //store all currently selected form values in the state.
     this.state = {
       dropdown: '', //empty as opposed to 'open'
       visible: false,
@@ -69,7 +69,7 @@ export default class Form extends Component {
   handleRatingChange(event) {
     this.setState({ rating: parseInt(event.target.value) });
   }
-  
+
   // Save the current user selected value for difficulty in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleDiffChange(event) {
@@ -86,7 +86,7 @@ export default class Form extends Component {
   // Called whenever this form element changes to trigger re-render to run validation.
   handleProfChange(selectedProfessors){
     // console.log(selectedProfessors.map(professor => {return professor.label}))
-    this.setState({ selectedProfessors: selectedProfessors });    
+    this.setState({ selectedProfessors: selectedProfessors });
     this.pushReviewsDown(this.state.dropdown);
   }
 
@@ -138,7 +138,7 @@ export default class Form extends Component {
     var diff = this.state.diff;
     var work = this.state.workload;
     var prof = this.state.selectedProfessors.map(professor => {return professor.label});
-    if (text.length > 0 
+    if (text.length > 0
       && text !== null
       && prof !== []) {
         // create new review object
@@ -160,7 +160,7 @@ export default class Form extends Component {
             ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
             ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
             this.toggleDropdown(this); //Close the review dropdown when page loads
-            
+
             this.setState(this.defaultState);
             Bert.alert('Thanks! Your review is currently pending approval.');
           } else {
@@ -194,20 +194,20 @@ export default class Form extends Component {
       var profOptions = []
       for(var prof in this.props.course.classProfessors){
         var professorName = this.props.course.classProfessors[prof]
-        
+
         profOptions.push({
           "value" : professorName,
-          "label" : professorName 
+          "label" : professorName
         })
       }
       return profOptions
     }
   }
-  
+
   // Return the options for median grades
   // TODO deprecate this as we are no longer collecting this metric
   getMedianOptions() {
-    
+
     const medianGrades = [
       { value: 0, label: 'I don\'t know' },
       { value: 9, label: 'A+' },
@@ -225,13 +225,13 @@ export default class Form extends Component {
     // Toggle the form dropdown
     // e: passes in the 'this' context to be able to work with this.state
     // Takes care of "pushing down" the reviews by the dynamic height of the form
-    toggleDropdown(e){      
-       
+    toggleDropdown(e){
+
        var nextState = this.state.dropdown == 'open' ? '' : 'open';
        this.setState({ dropdown: nextState });
        this.pushReviewsDown(nextState);
     }
-    
+
     //Pushes down the reviews from the form depending on how long the form becomes
     //Uses the margin-bottom attribute to do this
     pushReviewsDown(formState){
@@ -249,7 +249,7 @@ export default class Form extends Component {
       }
       $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
     }
-  
+
   render() {
     var theClass = this.props.course;
     // check to see if all inputs are valid. If some inputs are invalide, disable the
@@ -268,7 +268,7 @@ export default class Form extends Component {
                   <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
                 </div>
               </div>
-            
+
             </button>
             <ul id="dropdown-menu" className="dropdown-menu" ref="dropdownMenu">
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref="formElement">
@@ -277,10 +277,10 @@ export default class Form extends Component {
                             <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
                               placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
-                            <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
-                            <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                            <div ref="emptyMsg" className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                            <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                           </div>
-                          
+
                           <hr className="divider" />
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
@@ -329,13 +329,13 @@ export default class Form extends Component {
                                   <div className="secondary-text">Professor</div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
-                                  <Select value={this.state.selectedProfessors} 
-                                    onChange={(professors) => this.handleProfChange(professors)} 
-                                    isMulti 
-                                    options={this.getProfOptions()} 
+                                  <Select value={this.state.selectedProfessors}
+                                    onChange={(professors) => this.handleProfChange(professors)}
+                                    isMulti
+                                    options={this.getProfOptions()}
                                     ref="profSelect"
                                   />
-                                  <div ref="noProfMsg" className={err.professorsEmpty ? "missing-profs" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                                  <div ref="noProfMsg" className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
                               </div>
                           </div>
                           <div className="row">
@@ -344,8 +344,8 @@ export default class Form extends Component {
                             </div>
                           </div>
                       </div>
-                      
-                  
+
+
                   <div className="row">
                       <div className="col-sm-12">
                           <h2 className="secondary-text">{this.state.message}</h2>
