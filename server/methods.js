@@ -242,7 +242,7 @@ Meteor.methods({
   //   }
   // },
 
-  //Get a user with this user_id from the Users collection in the local database
+  //Get a user with this netId from the Users collection in the local database
   getUserByNetId : function(netId) {
     var regex=new RegExp(/^(?=.*[A-Z0-9])/i);
     if(regex.test(netId)){
