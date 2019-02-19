@@ -53,7 +53,7 @@ Meteor.methods({
         firstName: user.givenName,
         lastName: user.familyName,
         netId: user.email.split("@")[0],
-        affiliation= "",
+        affiliation: null,
         token: user.tokenId
     };
 
