@@ -243,10 +243,10 @@ Meteor.methods({
   // },
 
   //Get a user with this user_id from the Users collection in the local database
-  getUserById : function(userId) {
+  getUserByNetId : function(netId) {
     var regex=new RegExp(/^(?=.*[A-Z0-9])/i);
-    if(regex.test(userId)){
-      var user=Users.find({_id: userId}).fetch()[0];
+    if(regex.test(netId)){
+      var user=Users.find({netId: netId}).fetch()[0];
       return user;
     }
     return null;
