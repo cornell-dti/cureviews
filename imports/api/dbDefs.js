@@ -37,7 +37,8 @@ Users.schema = new SimpleSchema({
     lastName: { type: String }, // user last name
     netId: { type: String }, // user netId
     affiliation: { type: String }, // user affliaition, like ENG or A&S
-    token: { type: String } // random token generated during login process
+    token: { type: String }, // random token generated during login process
+    privilege: { type: String } // user privilege level
 });
 
 /* # Subjects Collection
