@@ -9,11 +9,56 @@ import SubjectLeaderboard from './SubjectLeaderboard.jsx';
 import "./css/App.css";
 import { sendFeedback } from './js/Feedback.js';
 import { courseVisited } from './js/Feedback.js';
-import { Classes } from '../api/dbDefs.js';
+import { Classes, Users } from '../api/dbDefs.js';
 import { GoogleLogin } from 'react-google-login';
+
 
 const responseGoogle = (response) => {
   console.log(response);
+
+  //Get netID from response and look for in database
+  var profile=response.profileObj;
+  var netId=profile.email.split("@")[0];
+  console.log(netId);
+  var currentUser;
+  Meteor.call('getUserByNetId', netId, (error, result) =>{
+    if(!error || result===1){
+      currentUser=result;
+      console.log("getuserbynetid result: ");
+      console.log(result);
+    }
+    else{
+      console.log(error);
+    }
+  }
+  );
+
+  if(!currentUser){
+    var newUser={
+      firstName: profile.givenName,
+      lastName: profile.familyName,
+      netId: netId,
+      affiliation: null,
+      token: response.tokenId,
+      privilege: "regular"
+    }
+    Meteor.call('insertUser', newUser, (error, result) =>{
+      if(!error || result===1){
+        currentUser=newUser;
+        console.log("new user");
+        console.log(newUser);
+      }
+      else{
+        console.log(error);
+      }
+    }
+    );
+  }
+  else{
+    console.log("old user");
+    console.log(currentUser);
+  }
+
 }
 /*
   App Component. Uppermost View component in the component tree,

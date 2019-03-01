@@ -30,8 +30,8 @@ Classes.schema = new SimpleSchema({
    # Holds data about each user. Data is collected via Cornell net-id login.
 */
 
-export const Users = new Mongo.Collection('users');
-Users.schema = new SimpleSchema({
+export const Students = new Mongo.Collection('students');
+Students.schema = new SimpleSchema({
     _id: { type: String }, // mongo-generated random id for this document
     firstName: { type: String }, // user first name
     lastName: { type: String }, // user last name

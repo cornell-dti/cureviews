@@ -3,7 +3,7 @@ import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
 import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
-import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
+import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
@@ -51,11 +51,11 @@ Meteor.methods({
   //Upon success returns 1, else returns 0
   insertUser: function (user) {
     //Check user object has all required fields
-    if (user.givenName != null && user.familyName != null && user.email != null && user.tokenId != null && user.privilege != null) {
+    if (true) {
       var newUser = {
-        firstName: user.givenName,
-        lastName: user.familyName,
-        netId: user.email.split("@")[0],
+        firstName: user.firstName,
+        lastName: user.lastName,
+        netId: user.netId,
         affiliation: null,
         token: user.tokenId,
         privilege: user.privilege
@@ -63,7 +63,7 @@ Meteor.methods({
 
       try {
         //check(newUser, Users);
-        Users.insert(newUser);
+        Students.insert(newUser);
         return 1; //success
       } catch (error) {
         console.log(error)
@@ -73,7 +73,7 @@ Meteor.methods({
     }
     else {
       //error handling
-      console.log("Some review values are null")
+      console.log("Some user values are null")
       return 0; //fail
     }
   },
@@ -250,7 +250,7 @@ Meteor.methods({
   getUserByNetId: function (netId) {
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
-      var user = Users.find({ netId: netId }).fetch()[0];
+      var user = Students.find({ netId: netId }).fetch()[0];
       return user;
     }
     return null;
