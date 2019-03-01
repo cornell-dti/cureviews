@@ -10,9 +10,11 @@ import "./css/App.css";
 import { sendFeedback } from './js/Feedback.js';
 import { courseVisited } from './js/Feedback.js';
 import { Classes } from '../api/dbDefs.js';
-import ReactDOM from 'react-dom';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 
+const responseGoogle = (response) => {
+  console.log(response);
+}
 /*
   App Component. Uppermost View component in the component tree,
   the first element of the HTML body tag grabbed by main.html.
@@ -60,6 +62,16 @@ export default class App extends Component {
     return (
       <div className="container-fluid full-height background-gradient">
 
+        <GoogleLogin
+          clientId="836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com"
+          render={renderProps => (
+            <button onClick={renderProps.onClick}>This is my custom Google button</button>
+          )}
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+        />
+        
         <div className="row">
           <img src='/logo.png' className="img-responsive center-block scale-logo" id="img-padding-top" alt="CU Reviews Logo" />
         </div>
@@ -68,13 +80,6 @@ export default class App extends Component {
             <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
           </div>
         </div>
-        {/*    
-        <GoogleLogin
-          clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-        /> */}
 
         <div className="row">
           <div className="col-md-10 col-md-offset-1">
