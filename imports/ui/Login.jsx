@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
@@ -48,7 +48,7 @@ export default class Login extends Component {
     if (pass.length > 0 && pass !== null && this.validateInputs(pass)) {
       // call the vailidate funtion
       Meteor.call('vailidateAdmin', pass, (error, result) => {
-        if (!error && result==1) {
+        if (!error && result == 1) {
           // Success, set 'validate' in local state
           newState = {
             pass: ""
@@ -58,7 +58,7 @@ export default class Login extends Component {
         } else {
           // otherwise, clear the input and send error message.
           this.setState(this.defaultState);
-          this.setState({message: "Incorrect Password"});
+          this.setState({ message: "Incorrect Password" });
         }
       });
     }

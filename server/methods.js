@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
+import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
@@ -128,7 +129,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id)) {
-      Reviews.remove({ _id: review._id });
+      // Reviews.remove({ _id: review._id });
       return 1;
     } else {
       return 0;
@@ -350,14 +351,26 @@ Meteor.methods({
   printOnServer: function (text) {
     console.log(text);
   },
-  //TODO: find the user identified by userID, and save the given token
-  saveUserToken: function (userId, token) {
 
+  //TODO: find the user identified by userID, and save the given token
+  //Using meteor session to save the netID and token
+  saveUserToken: function (userId, token) {
+    if (Session.equals(user, undefined) && Session.equals(token, undefined)) {
+      Session.setDefaultPersistent(user, userId);
+      Session.setDefaultPersistent(token, token);
+    } else {
+      Session.setPersistent({ user: userId, token: token });
+    }
   },
+
+
   //TODO: invalidate this user's token by deleting it
   removeToken: function (userId) {
 
   },
+
+
+
   // Validate admin password.
   // Upon success, return 1, else return 0.
   vailidateAdmin: function (pass) {
@@ -442,3 +455,12 @@ function defaultDict() {
     }
   }
 };
+
+// helper function
+function isJSON(str) {
+  try {
+    return (JSON.parse(str) && !!str);
+  } catch (e) {
+    return false;
+  }
+}
