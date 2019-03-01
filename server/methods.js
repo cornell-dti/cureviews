@@ -4,6 +4,8 @@ import { check, Match } from 'meteor/check';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(CLIENT_ID);
 /* # Meteor Methods
    # Client-side code in meteor is not allowed direct access to the local database
    # (this makes it easier to keep the backend secure from outside users).
@@ -369,7 +371,64 @@ Meteor.methods({
     } else {
       return 0;
     }
+  },
+
+  /**
+   * Returns true if [netid] matches the netid in the email of the JSON
+   * web token. False otherwise.
+   * This method authenticates the user token through the Google API.
+   * @param token: google auth token
+   * @param netid: netid to verify
+   * @requires that you have a handleVerifyError, like as follows:
+   * verify(token, function(){//do whatever}).catch(function(error){
+   * handleVerifyError(error, res);
+   */
+  verify: async function (token, netid) {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    //The REST API uses payloads to pass and return data structures too large to be handled as parameters
+    //The term 'payload' is used to distinguish it as the 'interesting' 
+    //information in a chunk of data or similar from the overhead to support it
+    const { email } = payload;
+
+    //parse out the netid from email to verify it is the same as the netid 
+    //passed in (similar to research connect)
+    const emailBeforeAt = email.replace((`@${payload.hd}`), '');
+    if (emailBeforeAt === netid) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  },
+  /**
+   * Used in the .catch when verify is used, handles whatever should be done
+   * @param errorObj (required) the error that is returned from the .catch
+   * @param res the response object
+   * @return {boolean} true if their token is too old, false if some other error
+   * @requires that you have the verify function, like as follows:
+   * verify(token, function(){//do whatever}).catch(function(error){
+   *        handleVerifyError(error, res);
+   * }
+   */
+  handleVerifyError: function (errorObj, res) {
+    if (errorObj && errorObj.toString()) {
+      if (errorObj.toString().indexOf('used too late') !== -1) {
+        res.status(409).send('Token used too late');
+        return true;
+      }
+
+      res.status(409).send('Invalid token');
+      return true;
+    }
+    return false;
   }
+
 });
 
 // Recreation of Python's defaultdict to be used in topSubjects method
