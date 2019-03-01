@@ -6,7 +6,7 @@ import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, update
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(CLIENT_ID);
+const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 /* # Meteor Methods
    # Client-side code in meteor is not allowed direct access to the local database
    # (this makes it easier to keep the backend secure from outside users).
@@ -46,36 +46,36 @@ Meteor.methods({
       return 0; //fail
     }
   },
-  
+
   //Inserts a new user into the Users collection.
   //Upon success returns 1, else returns 0
-  insertUser : function(user){
+  insertUser: function (user) {
     //Check user object has all required fields
-    if(user.givenName!=null && user.familyName!=null && user.email!=null && user.tokenId!=null && user.privilege!=null){
-    var newUser={
+    if (user.givenName != null && user.familyName != null && user.email != null && user.tokenId != null && user.privilege != null) {
+      var newUser = {
         firstName: user.givenName,
         lastName: user.familyName,
         netId: user.email.split("@")[0],
         affiliation: null,
         token: user.tokenId,
         privilege: user.privilege
-    };
+      };
 
-    try {
-      //check(newUser, Users);
-      Users.insert(newUser);
-      return 1; //success
-    } catch (error) {
-      console.log(error)
+      try {
+        //check(newUser, Users);
+        Users.insert(newUser);
+        return 1; //success
+      } catch (error) {
+        console.log(error)
+        return 0; //fail
+      }
+
+    }
+    else {
+      //error handling
+      console.log("Some review values are null")
       return 0; //fail
     }
-
-  }
-  else{
-    //error handling
-    console.log("Some review values are null")
-    return 0; //fail
-  }
   },
 
   //Increment the number of likes a review has gotten by 1.
@@ -247,10 +247,10 @@ Meteor.methods({
   // },
 
   //Get a user with this netId from the Users collection in the local database
-  getUserByNetId : function(netId) {
-    var regex=new RegExp(/^(?=.*[A-Z0-9])/i);
-    if(regex.test(netId)){
-      var user=Users.find({netId: netId}).fetch()[0];
+  getUserByNetId: function (netId) {
+    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(netId)) {
+      var user = Users.find({ netId: netId }).fetch()[0];
       return user;
     }
     return null;
@@ -399,7 +399,7 @@ Meteor.methods({
   verify: async function (token, netid) {
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
       // Or, if multiple clients access the backend:
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
