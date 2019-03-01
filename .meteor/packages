@@ -28,3 +28,6 @@ momentjs:moment
 themeteorchef:bert
 monbro:mongodb-mapreduce-aggregation
 underscore
+accounts-ui
+accounts-google
+u2622:persistent-session

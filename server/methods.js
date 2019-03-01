@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
+import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
@@ -307,14 +308,40 @@ Meteor.methods({
   printOnServer: function (text) {
     console.log(text);
   },
-  //TODO: find the user identified by userID, and save the given token
-  saveUserToken: function (userId, token) {
 
+  //TODO: find the user identified by userID, and save the given token
+  //Using meteor session to save the netID and token
+  saveUserToken: function (userId, token) {
+    if (Session.equals(user, undefined) && Session.equals(token, undefined)) {
+      Session.setDefault(user, userId);
+      Session.setDefault(token, token);
+    } else {
+      Session.set({ user: userId, token: token });
+    }
+    //functions to help Session save user after refresh -- essentially extends Session to save information to local storage when it is set
+    // improving the session package to persist it to the localstorage
+    Session._set = Session.set;
+    Session.set = function (key, value) {
+      Session._set(key, value);
+      localStorage.setItem(key, JSON.stringify(value));
+    };
+
+    // loading the localstorate on load
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      var value = localStorage.getItem(key);
+      Session._set(key, isJSON(value) ? JSON.parse(value) : value);
+    }
   },
+
+
   //TODO: invalidate this user's token by deleting it
   removeToken: function (userId) {
 
   },
+
+
+
   // Validate admin password.
   // Upon success, return 1, else return 0.
   vailidateAdmin: function (pass) {
@@ -342,3 +369,12 @@ function defaultDict() {
     }
   }
 };
+
+// helper function
+function isJSON(str) {
+  try {
+    return (JSON.parse(str) && !!str);
+  } catch (e) {
+    return false;
+  }
+}
