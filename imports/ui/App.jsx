@@ -12,9 +12,7 @@ import { courseVisited } from './js/Feedback.js';
 import { Classes } from '../api/dbDefs.js';
 import { GoogleLogin } from 'react-google-login';
 
-const responseGoogle = (response) => {
-  console.log(response);
-}
+
 /*
   App Component. Uppermost View component in the component tree,
   the first element of the HTML body tag grabbed by main.html.
@@ -36,11 +34,22 @@ export default class App extends Component {
     // the 'this' keyword changes depending on the context of the file a function is called in,
     // so we bind this function to the App component to refence it as 'this'
     this.updateQuery.bind(this);
-
     document.getElementById('googleButton');
-    const responseGoogle = (response) => {
-      console.log(response);
-    }
+  }
+
+  responseGoogle = (response) => {
+    console.log(response);
+    user = response.profileObj.email.replace("@cornell.edu", '');
+    token = response.tokenId;
+    this.saveUserToken(user, token);
+    // Meteor.call('saveUserToken', user, token, (error, result) => {
+    //   if (!error && result === 1) {
+    //     console.log("Saved user and token to Session");
+    //   } else {
+    //     console.log("Error at Meteor Call : saveUserToken");
+    //     console.log(error)
+    //   }
+    // });
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -52,11 +61,33 @@ export default class App extends Component {
     Session.set('querySession', this.state.query);
   }
 
+
   // TODO: Redirect the user to a login screen. Once the user logs in, successfully,
   // they will be re-routed to this component.
   // forceLogin() {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   // }
+
+  //Using meteor session to save the netID and token
+  //Saves user's netID and token from response to Session
+  saveUserToken(netId, token) {
+    var regex = new RegExp(/^[a-zA-Z0-9]*$/i);
+    if (regex.test(netId)) {
+      // console.log("saving to Session");
+      if (Session.equals(user, undefined) && Session.equals(user, undefined)) {
+        Session.setDefaultPersistent(user, netId);
+        Session.setDefaultPersistent(token, token);
+      } else {
+        Session.setPersistent({ user: netId, token: token });
+      }
+      // console.log(Session.get("user"));
+      return 1;
+    }
+    else {
+      // console.log("error with regex");
+      return 0;
+    };
+  }
 
   render() {
     return (
@@ -68,10 +99,10 @@ export default class App extends Component {
             <button onClick={renderProps.onClick}>This is my custom Google button</button>
           )}
           buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
+          onSuccess={this.responseGoogle.bind(this)}
+          onFailure={this.responseGoogle.bind(this)}
         />
-        
+
         <div className="row">
           <img src='/logo.png' className="img-responsive center-block scale-logo" id="img-padding-top" alt="CU Reviews Logo" />
         </div>
