@@ -404,9 +404,9 @@ Meteor.methods({
     if (emailBeforeAt === netid) {
       return true;
     }
-    else {
-      return false;
-    }
+
+    return false;
+
   },
   /**
    * Used in the .catch when verify is used, handles whatever should be done
