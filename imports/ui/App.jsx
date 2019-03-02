@@ -82,6 +82,18 @@ export default class App extends Component {
         Meteor.call('insertUser', newUser, (error, result) =>{
           if(!error || result===1){
             currentUser=newUser;
+
+            Meteor.call('getUserByNetId', netId, (error, result) =>{
+              if(!error || result===1){
+                currentUser=result;
+                console.log(currentUser);
+                return currentUser;
+              }
+              else{
+                console.log(error);
+              }
+            }
+            );
           }
           else{
             console.log(error);
@@ -89,9 +101,9 @@ export default class App extends Component {
         }
         );
     
-        return currentUser;
       }
-
+      console.log(currentUser);
+      return currentUser;
     }
     else{
       console.log(error);
