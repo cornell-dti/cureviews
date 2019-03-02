@@ -352,17 +352,6 @@ Meteor.methods({
     console.log(text);
   },
 
-  //TODO: find the user identified by userID, and save the given token
-  //Using meteor session to save the netID and token
-  saveUserToken: function (userId, token) {
-    if (Session.equals(user, undefined) && Session.equals(token, undefined)) {
-      Session.setDefaultPersistent(user, userId);
-      Session.setDefaultPersistent(token, token);
-    } else {
-      Session.setPersistent({ user: userId, token: token });
-    }
-  },
-
 
   //TODO: invalidate this user's token by deleting it
   removeToken: function (userId) {
@@ -415,9 +404,9 @@ Meteor.methods({
     if (emailBeforeAt === netid) {
       return true;
     }
-    else {
-      return false;
-    }
+
+    return false;
+
   },
   /**
    * Used in the .catch when verify is used, handles whatever should be done
