@@ -14,53 +14,6 @@ import { GoogleLogin } from 'react-google-login';
 
 
 
-const responseGoogle = (response) => {
-  console.log(response);
-
-  //Get netID from response and look for in database
-  var profile=response.profileObj;
-  var netId=profile.email.split("@")[0];
-  console.log(netId);
-  var currentUser;
-  Meteor.call('getUserByNetId', netId, (error, result) =>{
-    if(!error || result===1){
-      currentUser=result;
-      console.log("getuserbynetid result: ");
-      console.log(result);
-    }
-    else{
-      console.log(error);
-    }
-  }
-  );
-
-  if(!currentUser){
-    var newUser={
-      firstName: profile.givenName,
-      lastName: profile.familyName,
-      netId: netId,
-      affiliation: null,
-      token: response.tokenId,
-      privilege: "regular"
-    }
-    Meteor.call('insertUser', newUser, (error, result) =>{
-      if(!error || result===1){
-        currentUser=newUser;
-        console.log("new user");
-        console.log(newUser);
-      }
-      else{
-        console.log(error);
-      }
-    }
-    );
-  }
-  else{
-    console.log("old user");
-    console.log(currentUser);
-  }
-
-}
 
 /*
   App Component. Uppermost View component in the component tree,
@@ -91,6 +44,8 @@ export default class App extends Component {
     user = response.profileObj.email.replace("@cornell.edu", '');
     token = response.tokenId;
     this.saveUserToken(user, token);
+
+    this.retrieveUser(response);
     // Meteor.call('saveUserToken', user, token, (error, result) => {
     //   if (!error && result === 1) {
     //     console.log("Saved user and token to Session");
@@ -99,6 +54,52 @@ export default class App extends Component {
     //     console.log(error)
     //   }
     // });
+  }
+
+  //Checks database for user with given netId. If user does not exits,
+  //creates new user and inserts into database.
+  retrieveUser = (response) =>{
+    console.log(response);
+
+  //Get netID from response and look for in database
+  var profile=response.profileObj;
+  var netId=profile.email.split("@")[0];
+  console.log(netId);
+  var currentUser;
+  Meteor.call('getUserByNetId', netId, (error, result) =>{
+    if(!error || result===1){
+      currentUser=result;
+      console.log(result);
+
+      if(typeof currentUser==="undefined" || typeof currentUser==="null"){
+        //Create new user from profile of response
+        var newUser={
+          firstName: profile.givenName,
+          lastName: profile.familyName,
+          netId: netId,
+          affiliation: null,
+          token: response.tokenId,
+          privilege: "regular"
+        }
+        Meteor.call('insertUser', newUser, (error, result) =>{
+          if(!error || result===1){
+            currentUser=newUser;
+          }
+          else{
+            console.log(error);
+          }
+        }
+        );
+    
+        return currentUser;
+      }
+
+    }
+    else{
+      console.log(error);
+    }
+  }
+  );
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
