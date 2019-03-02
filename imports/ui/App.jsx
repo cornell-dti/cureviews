@@ -64,12 +64,10 @@ export default class App extends Component {
   //Get netID from response and look for in database
   var profile=response.profileObj;
   var netId=profile.email.split("@")[0];
-  console.log(netId);
   var currentUser;
   Meteor.call('getUserByNetId', netId, (error, result) =>{
     if(!error || result===1){
       currentUser=result;
-      console.log(result);
 
       if(typeof currentUser==="undefined" || typeof currentUser==="null"){
         //Create new user from profile of response
