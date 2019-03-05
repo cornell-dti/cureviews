@@ -51,13 +51,13 @@ Meteor.methods({
   //Upon success returns 1, else returns 0
   insertUser: function (user) {
     //Check user object has all required fields
-    if (user.firstName != null && user.lastName != null && user.netId != null && user.tokenId != null && user.privilege != null) {
+    if (user.firstName != null && user.lastName != null && user.netId != null && user.token != null && user.privilege != null) {
       var newUser = {
         firstName: user.firstName,
         lastName: user.lastName,
         netId: user.netId,
         affiliation: null,
-        token: user.tokenId,
+        token: user.token,
         privilege: user.privilege
       };
 

@@ -57,10 +57,8 @@ export default class App extends Component {
   }
 
   //Checks database for user with given netId. If user does not exits,
-  //creates new user and inserts into database.
+  //creates new user from [response], inserts into database, and returns the new user.
   retrieveUser = (response) =>{
-    console.log(response);
-
   //Get netID from response and look for in database
   var profile=response.profileObj;
   var netId=profile.email.split("@")[0];
@@ -69,8 +67,8 @@ export default class App extends Component {
     if(!error || result===1){
       currentUser=result;
 
+      // Create new user from profile of response if user does not exist yet
       if(typeof currentUser==="undefined" || typeof currentUser==="null"){
-        //Create new user from profile of response
         var newUser={
           firstName: profile.givenName,
           lastName: profile.familyName,
@@ -79,14 +77,16 @@ export default class App extends Component {
           token: response.tokenId,
           privilege: "regular"
         }
+        //Insert the new user into the the database
         Meteor.call('insertUser', newUser, (error, result) =>{
           if(!error || result===1){
             currentUser=newUser;
 
+            //Gets the new user from the database. This is done so that
+            //the Mongo generated _id is included in the object
             Meteor.call('getUserByNetId', netId, (error, result) =>{
               if(!error || result===1){
                 currentUser=result;
-                console.log(currentUser);
                 return currentUser;
               }
               else{
@@ -102,7 +102,6 @@ export default class App extends Component {
         );
     
       }
-      console.log(currentUser);
       return currentUser;
     }
     else{
