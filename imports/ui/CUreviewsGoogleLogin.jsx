@@ -109,8 +109,8 @@ export default class CUreviewsGoogleLogin extends Component {
     if (regex.test(netId)) {
       // console.log("saving to Session");
       if (Session.equals(user, undefined) && Session.equals(user, undefined)) {
-        Session.setDefaultPersistent(user, netId);
-        Session.setDefaultPersistent(token, token);
+        Session.setDefaultPersistent("user", netId);
+        Session.setDefaultPersistent("token", token);
       } else {
         Session.setPersistent({ "user": netId, "token": token });
       }
