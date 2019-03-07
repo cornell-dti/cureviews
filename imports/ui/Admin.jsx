@@ -56,9 +56,10 @@ export class Admin extends Component {
   }
   
   componentWillMount(){
-    Meteor.call('verify', Session.get("token"), Session.get("user"), (error, result) => {
+    user = Session.get("user")
+    Meteor.call('verify', Session.get("token"), user, (error, result) => {
       if (!error && result === true) {
-        Meteor.call('userIsAdmin', Session.get("user"), (error, result) => {
+        Meteor.call('userIsAdmin', user, (error, result) => {
           if (!error && result === true) {
             adminPanelHTML  = (
               <div className="container whiteBg">

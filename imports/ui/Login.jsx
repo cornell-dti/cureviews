@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
 import Admin from './Admin.jsx';
+import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import "./css/Login.css";
 
 /*
@@ -95,6 +96,7 @@ export default class Login extends Component {
                     <p className="error-message">{this.state.message}</p>
                   </div>
                 </form>
+                <CUreviewsGoogleLogin/>
               </div>
             </div>
           </div>

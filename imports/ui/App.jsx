@@ -5,12 +5,10 @@ import Form from './Form.jsx';
 import CourseCard from './CourseCard.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
-import SubjectLeaderboard from './SubjectLeaderboard.jsx';
 import "./css/App.css";
 import { sendFeedback } from './js/Feedback.js';
 import { courseVisited } from './js/Feedback.js';
 import { Classes, Users } from '../api/dbDefs.js';
-import { GoogleLogin } from 'react-google-login';
 
 
 
@@ -39,78 +37,6 @@ export default class App extends Component {
     document.getElementById('googleButton');
   }
 
-  responseGoogle = (response) => {
-    console.log(response);
-    user = response.profileObj.email.replace("@cornell.edu", '');
-    token = response.tokenId;
-    this.saveUserToken(user, token);
-
-    this.retrieveUser(response);
-    // Meteor.call('saveUserToken', user, token, (error, result) => {
-    //   if (!error && result === 1) {
-    //     console.log("Saved user and token to Session");
-    //   } else {
-    //     console.log("Error at Meteor Call : saveUserToken");
-    //     console.log(error)
-    //   }
-    // });
-  }
-
-  //Checks database for user with given netId. If user does not exits,
-  //creates new user from [response], inserts into database, and returns the new user.
-  retrieveUser = (response) =>{
-  //Get netID from response and look for in database
-  var profile=response.profileObj;
-  var netId=profile.email.split("@")[0];
-  var currentUser;
-  Meteor.call('getUserByNetId', netId, (error, result) =>{
-    if(!error || result===1){
-      currentUser=result;
-
-      // Create new user from profile of response if user does not exist yet
-      if(typeof currentUser==="undefined" || typeof currentUser==="null"){
-        var newUser={
-          firstName: profile.givenName,
-          lastName: profile.familyName,
-          netId: netId,
-          affiliation: null,
-          token: response.tokenId,
-          privilege: "regular"
-        }
-        //Insert the new user into the the database
-        Meteor.call('insertUser', newUser, (error, result) =>{
-          if(!error || result===1){
-            currentUser=newUser;
-
-            //Gets the new user from the database. This is done so that
-            //the Mongo generated _id is included in the object
-            Meteor.call('getUserByNetId', netId, (error, result) =>{
-              if(!error || result===1){
-                currentUser=result;
-                return currentUser;
-              }
-              else{
-                console.log(error);
-              }
-            }
-            );
-          }
-          else{
-            console.log(error);
-          }
-        }
-        );
-    
-      }
-      return currentUser;
-    }
-    else{
-      console.log(error);
-    }
-  }
-  );
-  }
-
   // Set the local state variable 'query' to the current value of the input (given by user)
   // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
@@ -120,49 +46,9 @@ export default class App extends Component {
     Session.set('querySession', this.state.query);
   }
 
-
-  // TODO: Redirect the user to a login screen. Once the user logs in, successfully,
-  // they will be re-routed to this component.
-  // forceLogin() {
-  //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
-  // }
-
-  //Using meteor session to save the netID and token
-  //Saves user's netID and token from response to Session
-  saveUserToken(netId, token) {
-    console.log("Saving token")
-    console.log(netId)
-    var regex = new RegExp(/^[a-zA-Z0-9]*$/i);
-    if (regex.test(netId)) {
-      // console.log("saving to Session");
-      if (Session.equals(user, undefined) && Session.equals(user, undefined)) {
-        Session.setDefaultPersistent(user, netId);
-        Session.setDefaultPersistent(token, token);
-      } else {
-        Session.setPersistent({ "user": netId, "token": token });
-      }
-      console.log(Session.get("user"));
-      return 1;
-    }
-    else {
-      console.log("error with regex");
-      return 0;
-    };
-  }
-
   render() {
     return (
       <div className="container-fluid full-height background-gradient">
-
-        <GoogleLogin
-          clientId="836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com"
-          render={renderProps => (
-            <button onClick={renderProps.onClick}>This is my custom Google button</button>
-          )}
-          buttonText="Login"
-          onSuccess={this.responseGoogle.bind(this)}
-          onFailure={this.responseGoogle.bind(this)}
-        />
 
         <div className="row">
           <img src='/logo.png' className="img-responsive center-block scale-logo" id="img-padding-top" alt="CU Reviews Logo" />

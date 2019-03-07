@@ -259,8 +259,8 @@ Meteor.methods({
   //Returns true if user matching "netId" is an admin
   userIsAdmin: function (netId) {
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(netId)) {
-      var user = Students.find({ netId: netId }).fetch()[0];
+    user = Meteor.call('getUserByNetId', netId)
+    if (user){
       return user.privilege == "admin";
     }
     return false;
@@ -396,28 +396,34 @@ Meteor.methods({
    * handleVerifyError(error, res);
    */
   verify: async function (token, netid) {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
-      // Or, if multiple clients access the backend:
-      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-    });
-    // console.log(ticket);
-    const payload = ticket.getPayload();
-    //The REST API uses payloads to pass and return data structures too large to be handled as parameters
-    //The term 'payload' is used to distinguish it as the 'interesting' 
-    //information in a chunk of data or similar from the overhead to support it
-    const { email } = payload;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      });
+      // console.log(ticket);
+      const payload = ticket.getPayload();
+      //The REST API uses payloads to pass and return data structures too large to be handled as parameters
+      //The term 'payload' is used to distinguish it as the 'interesting' 
+      //information in a chunk of data or similar from the overhead to support it
+      const { email } = payload;
 
-    //parse out the netid from email to verify it is the same as the netid 
-    //passed in (similar to research connect)
-    const emailBeforeAt = email.replace((`@${payload.hd}`), '');
-    // console.log(emailBeforeAt);
-    // console.log(netid);
-    const valid_email = emailBeforeAt == netid;
+      //parse out the netid from email to verify it is the same as the netid 
+      //passed in (similar to research connect)
+      const emailBeforeAt = email.replace((`@${payload.hd}`), '');
+      // console.log(emailBeforeAt);
+      // console.log(netid);
+      const valid_email = emailBeforeAt == netid;
+      
+      return valid_email;
+
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
     
-    return valid_email;
-
   },
   /**
    * Used in the .catch when verify is used, handles whatever should be done
