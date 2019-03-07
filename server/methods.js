@@ -1,9 +1,12 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
+import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
-import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
+import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 /* # Meteor Methods
    # Client-side code in meteor is not allowed direct access to the local database
    # (this makes it easier to keep the backend secure from outside users).
@@ -40,6 +43,37 @@ Meteor.methods({
     } else {
       //error handling
       console.log("Some review values are null")
+      return 0; //fail
+    }
+  },
+
+  //Inserts a new user into the Users collection.
+  //Upon success returns 1, else returns 0
+  insertUser: function (user) {
+    //Check user object has all required fields
+    if (user.firstName != null && user.lastName != null && user.netId != null && user.token != null && user.privilege != null) {
+      var newUser = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        netId: user.netId,
+        affiliation: null,
+        token: user.token,
+        privilege: user.privilege
+      };
+
+      try {
+        //check(newUser, Users);
+        Students.insert(newUser);
+        return 1; //success
+      } catch (error) {
+        console.log(error)
+        return 0; //fail
+      }
+
+    }
+    else {
+      //error handling
+      console.log("Some user values are null")
       return 0; //fail
     }
   },
@@ -212,6 +246,26 @@ Meteor.methods({
   //   }
   // },
 
+  //Get a user with this netId from the Users collection in the local database
+  getUserByNetId: function (netId) {
+    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(netId)) {
+      var user = Students.find({ netId: netId }).fetch()[0];
+      return user;
+    }
+    return null;
+  },
+  
+  //Returns true if user matching "netId" is an admin
+  userIsAdmin: function (netId) {
+    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    user = Meteor.call('getUserByNetId', netId)
+    if (user){
+      return user.privilege == "admin";
+    }
+    return false;
+  },
+
   // Get a course with this course_id from the Classes collection in the local database.
   getCourseById: function (courseId) {
     // check: make sure course id is valid and non-malicious
@@ -307,14 +361,15 @@ Meteor.methods({
   printOnServer: function (text) {
     console.log(text);
   },
-  //TODO: find the user identified by userID, and save the given token
-  saveUserToken: function (userId, token) {
 
-  },
+
   //TODO: invalidate this user's token by deleting it
   removeToken: function (userId) {
 
   },
+
+
+
   // Validate admin password.
   // Upon success, return 1, else return 0.
   vailidateAdmin: function (pass) {
@@ -328,7 +383,71 @@ Meteor.methods({
     } else {
       return 0;
     }
+  },
+
+  /**
+   * Returns true if [netid] matches the netid in the email of the JSON
+   * web token. False otherwise.
+   * This method authenticates the user token through the Google API.
+   * @param token: google auth token
+   * @param netid: netid to verify
+   * @requires that you have a handleVerifyError, like as follows:
+   * verify(token, function(){//do whatever}).catch(function(error){
+   * handleVerifyError(error, res);
+   */
+  verify: async function (token, netid) {
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      });
+      // console.log(ticket);
+      const payload = ticket.getPayload();
+      //The REST API uses payloads to pass and return data structures too large to be handled as parameters
+      //The term 'payload' is used to distinguish it as the 'interesting' 
+      //information in a chunk of data or similar from the overhead to support it
+      const { email } = payload;
+
+      //parse out the netid from email to verify it is the same as the netid 
+      //passed in (similar to research connect)
+      const emailBeforeAt = email.replace((`@${payload.hd}`), '');
+      // console.log(emailBeforeAt);
+      // console.log(netid);
+      const valid_email = emailBeforeAt == netid;
+      
+      return valid_email;
+
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+    
+  },
+  /**
+   * Used in the .catch when verify is used, handles whatever should be done
+   * @param errorObj (required) the error that is returned from the .catch
+   * @param res the response object
+   * @return {boolean} true if their token is too old, false if some other error
+   * @requires that you have the verify function, like as follows:
+   * verify(token, function(){//do whatever}).catch(function(error){
+   *        handleVerifyError(error, res);
+   * }
+   */
+  handleVerifyError: function (errorObj, res) {
+    if (errorObj && errorObj.toString()) {
+      if (errorObj.toString().indexOf('used too late') !== -1) {
+        res.status(409).send('Token used too late');
+        return true;
+      }
+
+      res.status(409).send('Invalid token');
+      return true;
+    }
+    return false;
   }
+
 });
 
 // Recreation of Python's defaultdict to be used in topSubjects method
@@ -342,3 +461,12 @@ function defaultDict() {
     }
   }
 };
+
+// helper function
+function isJSON(str) {
+  try {
+    return (JSON.parse(str) && !!str);
+  } catch (e) {
+    return false;
+  }
+}
