@@ -392,6 +392,7 @@ Meteor.methods({
       // Or, if multiple clients access the backend:
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
+    console.log(ticket);
     const payload = ticket.getPayload();
     //The REST API uses payloads to pass and return data structures too large to be handled as parameters
     //The term 'payload' is used to distinguish it as the 'interesting' 
@@ -401,11 +402,11 @@ Meteor.methods({
     //parse out the netid from email to verify it is the same as the netid 
     //passed in (similar to research connect)
     const emailBeforeAt = email.replace((`@${payload.hd}`), '');
-    if (emailBeforeAt === netid) {
-      return true;
-    }
-
-    return false;
+    // console.log(emailBeforeAt);
+    // console.log(netid);
+    const valid_email = emailBeforeAt == netid;
+    
+    return valid_email;
 
   },
   /**

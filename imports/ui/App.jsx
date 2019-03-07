@@ -130,6 +130,8 @@ export default class App extends Component {
   //Using meteor session to save the netID and token
   //Saves user's netID and token from response to Session
   saveUserToken(netId, token) {
+    console.log("Saving token")
+    console.log(netId)
     var regex = new RegExp(/^[a-zA-Z0-9]*$/i);
     if (regex.test(netId)) {
       // console.log("saving to Session");
@@ -137,13 +139,13 @@ export default class App extends Component {
         Session.setDefaultPersistent(user, netId);
         Session.setDefaultPersistent(token, token);
       } else {
-        Session.setPersistent({ user: netId, token: token });
+        Session.setPersistent({ "user": netId, "token": token });
       }
-      // console.log(Session.get("user"));
+      console.log(Session.get("user"));
       return 1;
     }
     else {
-      // console.log("error with regex");
+      console.log("error with regex");
       return 0;
     };
   }
