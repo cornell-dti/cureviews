@@ -255,6 +255,16 @@ Meteor.methods({
     }
     return null;
   },
+  
+  //Returns true if user matching "netId" is an admin
+  userIsAdmin: function (netId) {
+    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(netId)) {
+      var user = Students.find({ netId: netId }).fetch()[0];
+      return user.privilege == "admin";
+    }
+    return false;
+  },
 
   // Get a course with this course_id from the Classes collection in the local database.
   getCourseById: function (courseId) {
@@ -392,7 +402,7 @@ Meteor.methods({
       // Or, if multiple clients access the backend:
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
-    console.log(ticket);
+    // console.log(ticket);
     const payload = ticket.getPayload();
     //The REST API uses payloads to pass and return data structures too large to be handled as parameters
     //The term 'payload' is used to distinguish it as the 'interesting' 

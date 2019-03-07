@@ -38,7 +38,8 @@ export class Admin extends Component {
       // 2: database professor update function has completed
       resettingProfs: 0, // 0: starting state, no attempt to clear database,
       // 1: database professor clearing function was called, scraper is running
-      // 2: database professor clearing function has completed            
+      // 2: database professor clearing function has completed      
+      adminPanelHTML: "Invalid Credentials"      
     }
 
     // define bart alert message constants
@@ -53,12 +54,112 @@ export class Admin extends Component {
     this.removeReview.bind(this);
     this.unReportReview.bind(this);
   }
-
+  
+  componentWillMount(){
+    Meteor.call('verify', Session.get("token"), Session.get("user"), (error, result) => {
+      if (!error && result === true) {
+        Meteor.call('userIsAdmin', Session.get("user"), (error, result) => {
+          if (!error && result === true) {
+            adminPanelHTML  = (
+              <div className="container whiteBg">
+                <div className="width-90">
+                  <h2>Admin Interface</h2>
+            
+                  <br />
+            
+                  <div className="text-right">
+                    <div className="btn-group separate-buttons" role="group">
+                      <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={() => this.addNewSem(true)}>Add New Semester</button>
+                    </div>
+                    <div className="btn-group separate-buttons" role="group">
+                      <button type="button" className="btn btn-warning" onClick={() => this.updateProfessors(true)}>Update Professors</button>
+                    </div>
+                    <div className="btn-group separate-buttons" role="group">
+                      <button type="button" className="btn btn-warning" onClick={() => this.resetProfessors(true)}>RESET Professors</button>
+                    </div>
+                    <div className="btn-group" role="group">
+                      {this.renderInitButton(this.state.doubleClick)}
+                    </div>
+                  </div>
+            
+                  <div hidden={!(this.state.loadingSemester === 1)} className="width-90">
+                    <p>Adding New Semester Data. This process can take up to 15 minutes.</p>
+                  </div>
+            
+                  <div hidden={!(this.state.loadingSemester === 2)} className="width-90">
+                    <p>New Semester Data import is complete!</p>
+                  </div>
+            
+                  <div hidden={!(this.state.resettingProfs === 1)} className="width-90">
+                    <p>Clearing all associated professors from Classes.</p>
+                    <p>This process can take up to 15 minutes.</p>
+                  </div>
+            
+                  <div hidden={!(this.state.resettingProfs === 2)} className="width-90">
+                    <p>All professor arrays in Classes reset to empty!</p>
+                  </div>
+            
+                  <div hidden={!(this.state.loadingProfs === 1)} className="width-90">
+                    <p>Updating professor data to Classes.</p>
+                    <p>This process can take up to 15 minutes.</p>
+                  </div>
+            
+                  <div hidden={!(this.state.loadingProfs === 2)} className="width-90">
+                    <p>Professor data import to Classes is complete!</p>
+                  </div>
+            
+                  <div hidden={!(this.state.loadingInit === 1)} className="width-90">
+                    <p>Database Initializing. This process can take up to 15 minutes.</p>
+                  </div>
+            
+                  <div hidden={!(this.state.loadingInit === 2)} className="width-90">
+                    <p>Database initialaization is complete!</p>
+                  </div>
+            
+                  <br />
+            
+                  <div className="panel panel-default">
+                    <div className="panel-heading">
+                      <h3 className="panel-title">New Reviews</h3>
+                    </div>
+                    <div className="panel-body">
+                      <ul>
+                        {this.renderUnapprovedReviews()}
+                      </ul>
+                    </div>
+                  </div>
+            
+                  <br />
+            
+                  <div className="panel panel-default">
+                    <div className="panel-heading">
+                      <h3 className="panel-title">Reported Reviews</h3>
+                    </div>
+                    <div className="panel-body">
+                      <ul>
+                        {this.renderReportedReviews()}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+            this.setState({adminPanelHTML: adminPanelHTML})
+          }
+        });
+        
+      }
+    });
+  }
+  
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
     Meteor.call('makeVisible', review, (error, result) => {
       if (!error && result === 1) {
+        // Using jQuery here to make review disappear after approved
+        // because /admin is now being served statically
+        $('#' + review._id)[0].style.display = "none";
         //console.log("approved review " + review._id);
       } else {
         console.log(error)
@@ -71,6 +172,9 @@ export class Admin extends Component {
   removeReview(review) {
     Meteor.call('removeReview', review, (error, result) => {
       if (!error && result === 1) {
+        // Using jQuery here to make review disappear after removed
+        // because /admin is now being served statically
+        $('#' + review._id)[0].style.display = "none";
         //console.log("removed review " + review._id);
       } else {
         console.log("Error at Meteor Call :removeReview");
@@ -85,6 +189,9 @@ export class Admin extends Component {
     Meteor.call('undoReportReview', review, (error, result) => {
       if (!error && result === 1) {
         //console.log(" review " + review._id);
+        // Using jQuery here to make review disappear after unReport
+        // because /admin is now being served statically
+        $('#' + review._id)[0].style.display = "none";
       } else {
         console.log("Error at Meteor Call :undoReportReview");
         console.log(error)
@@ -214,99 +321,10 @@ export class Admin extends Component {
   }
 
   render() {
-    Meteor.call('verify', Session.get("token"), Session.get("user"), (error, result) => {
-      if (!error && result === true) {
-        //console.log("removed review " + review._id);
-        return (
-          <div className="container whiteBg">
-            <div className="width-90">
-              <h2>Admin Interface</h2>
-
-              <br />
-
-              <div className="text-right">
-                <div className="btn-group separate-buttons" role="group">
-                  <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={() => this.addNewSem(true)}>Add New Semester</button>
-                </div>
-                <div className="btn-group separate-buttons" role="group">
-                  <button type="button" className="btn btn-warning" onClick={() => this.updateProfessors(true)}>Update Professors</button>
-                </div>
-                <div className="btn-group separate-buttons" role="group">
-                  <button type="button" className="btn btn-warning" onClick={() => this.resetProfessors(true)}>RESET Professors</button>
-                </div>
-                <div className="btn-group" role="group">
-                  {this.renderInitButton(this.state.doubleClick)}
-                </div>
-              </div>
-
-              <div hidden={!(this.state.loadingSemester === 1)} className="width-90">
-                <p>Adding New Semester Data. This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(this.state.loadingSemester === 2)} className="width-90">
-                <p>New Semester Data import is complete!</p>
-              </div>
-
-              <div hidden={!(this.state.resettingProfs === 1)} className="width-90">
-                <p>Clearing all associated professors from Classes.</p>
-                <p>This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(this.state.resettingProfs === 2)} className="width-90">
-                <p>All professor arrays in Classes reset to empty!</p>
-              </div>
-
-              <div hidden={!(this.state.loadingProfs === 1)} className="width-90">
-                <p>Updating professor data to Classes.</p>
-                <p>This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(this.state.loadingProfs === 2)} className="width-90">
-                <p>Professor data import to Classes is complete!</p>
-              </div>
-
-              <div hidden={!(this.state.loadingInit === 1)} className="width-90">
-                <p>Database Initializing. This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(this.state.loadingInit === 2)} className="width-90">
-                <p>Database initialaization is complete!</p>
-              </div>
-
-              <br />
-
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title">New Reviews</h3>
-                </div>
-                <div className="panel-body">
-                  <ul>
-                    {this.renderUnapprovedReviews()}
-                  </ul>
-                </div>
-              </div>
-
-              <br />
-
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title">Reported Reviews</h3>
-                </div>
-                <div className="panel-body">
-                  <ul>
-                    {this.renderReportedReviews()}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      }
-    });
     return (
       <div className="container whiteBg">
         <div className="width-90">
-          <h2>Invalid Token</h2>
+          {this.state.adminPanelHTML}
         </div>
       </div>
     )
