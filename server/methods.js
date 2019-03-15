@@ -175,23 +175,37 @@ Meteor.methods({
     }
   },
 
-  // This updates the metrics for an individual class given its
-  // course subject and course number. Returns 1 if successful,
-  // 0 otherwise.
+  // This updates the metrics for an individual class given its course 
+  // subject and course number. Returns 1 if successful, 0 otherwise.
   updateCourseMetrics : function (courseId){
     var course = Meteor.call('getCourseById', courseId)
     if(course){
-      var reviews=Reviews.find({ _id: courseId }).fetch();
-      var state=getGaugeValues(reviews);
-      Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
+      var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if (regex.test(courseId)) {
+        var reviews=Reviews.find({ _id: courseId }).fetch();
+        var state=getGaugeValues(reviews);
+        Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
         classDifficulty:state.diff, classGrade:state.grade } });
         return 1;
+      }
     }
     else{
       return 0;
     }
 
     },
+
+    // Used to update the review metrics for all courses
+    //in the database.
+    updateMetricsForAllCourses: function (){
+      var courses=Classes.find();
+
+      for (var course in courses){
+        Meteor.call("updateCourseMetrics", course._id);
+      }
+    },
+
+    
 
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
