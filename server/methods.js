@@ -4,6 +4,7 @@ import { check, Match } from 'meteor/check';
 import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
+import {getGaugeValues} from '../imports/ui/js/CourseCard.js';
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
@@ -135,6 +136,24 @@ Meteor.methods({
       return 0;
     }
   },
+
+  // This updates the metrics for an individual class given its
+  // course subject and course number. Returns 1 if successful,
+  // 0 otherwise.
+  updateCourseMetrics : function (courseId){
+    var course = Meteor.call('getCourseById', courseId)
+    if(course){
+      var reviews=Reviews.find({ _id: courseId }).fetch();
+      var state=getGaugeValues(reviews);
+      Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
+        classDifficulty:state.diff, classGrade:state.grade } });
+        return 1;
+    }
+    else{
+      return 0;
+    }
+
+    },
 
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
