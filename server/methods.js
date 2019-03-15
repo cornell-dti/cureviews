@@ -234,6 +234,18 @@ Meteor.methods({
       return courses;
     },
 
+    // Used to update the review metrics for all courses
+    //in the database.
+    updateMetricsForAllCourses: function (){
+      var courses=Classes.find();
+
+      for (var course in courses){
+        Meteor.call("updateCourseMetrics", course._id);
+      }
+    },
+
+    
+
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
   // and update the semesters offered for classes that do.
