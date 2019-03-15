@@ -3,7 +3,7 @@ import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
-import { getGaugeValues } from '../imports/ui/js/CourseCard.js';
+import {getGaugeValues} from '../imports/ui/js/CourseCard.js';
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
