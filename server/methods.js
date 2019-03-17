@@ -237,7 +237,6 @@ Meteor.methods({
     // Used to update the review metrics for all courses
     //in the database.
     updateMetricsForAllCourses: function (){
-      console.log("Updated metrics");
       var courses=Classes.find().fetch();
       courses.forEach(function(course){
         Meteor.call("updateCourseMetrics", course._id);
