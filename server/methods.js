@@ -15,7 +15,8 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
    # which can be initiated by the Client but run on the Server.
 */
 Meteor.methods({
-  // insert a new review into the reviews collection.
+  // insert a new review into the reviews collection. Also updates 
+  // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
   insert: function (review, classId) {
     // check: only insert if all form fields are filled in
@@ -36,6 +37,8 @@ Meteor.methods({
       try {
         //check(fullReview, Reviews);
         Reviews.insert(fullReview);
+        //Update the course metrics
+        Meteor.call("updateCourseMetrics", classId);
         return 1; //success
       } catch (error) {
         console.log(error)
@@ -142,10 +145,13 @@ Meteor.methods({
   updateCourseMetrics : function (courseId){
     var course = Meteor.call('getCourseById', courseId)
     if(course){
-        var reviews=Reviews.find({ _id: courseId }).fetch();
+        var reviews=Reviews.find({class: courseId }).fetch();
         var state=getGaugeValues(reviews);
+       if( typeof state.rating == 'string' && typeof state.workload == 'string' && typeof state.diff == 'string' && typeof state.grade == 'string' )
+       {
         Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
-        classDifficulty:state.diff, classGrade:state.grade } });
+        classDifficulty:state.diff, classGrade:state.grade } });}
+
         return 1;
       
     }
@@ -158,11 +164,11 @@ Meteor.methods({
     // Used to update the review metrics for all courses
     //in the database.
     updateMetricsForAllCourses: function (){
-      var courses=Classes.find();
-
-      for (var course in courses){
+      console.log("Updated metrics");
+      var courses=Classes.find().fetch();
+      courses.forEach(function(course){
         Meteor.call("updateCourseMetrics", course._id);
-      }
+      });
     },
 
     // Returns courses with the given metrics. Takes
