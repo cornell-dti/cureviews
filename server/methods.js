@@ -29,7 +29,11 @@ const searchWithinSubject = (sub, remainder) => {
 }
 
 Meteor.methods({
-  // insert a new review into the reviews collection.
+  // insert a new review into the reviews collection. Also updates 
+  // course metrics upon successfully inserting review.
+  // Upon success returns 1, else returns 0.
+  // insert a new review into the reviews collection. Also updates 
+  // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
@@ -41,7 +45,7 @@ Meteor.methods({
     // console.log("ticket");
     // console.log(ticket);
     Meteor.call('insertUser', ticket);
-    if (ticket.hd === "cornell.edu"){
+    if (ticket.hd === "cornell.edu") {
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
         const fullReview = {
           text: review.text,
@@ -60,6 +64,8 @@ Meteor.methods({
           //check(fullReview, Reviews);
           Reviews.insert(fullReview);
           console.log("Success: Submitted review");
+          //Update the course metrics
+          Meteor.call("updateCourseMetrics", classId);
           return 1; //success
         } catch (error) {
           console.log(error)
@@ -178,12 +184,15 @@ Meteor.methods({
   // This updates the metrics for an individual class given its course 
   // subject and course number. Returns 1 if successful, 0 otherwise.
   updateCourseMetrics : function (courseId){
-    var course = Meteor.call('getCourseById', courseId)
+    let course = Meteor.call('getCourseById', courseId)
     if(course){
-        var reviews=Reviews.find({ _id: courseId }).fetch();
-        var state=getGaugeValues(reviews);
+        let reviews=Reviews.find({class: courseId }).fetch();
+        let state=getGaugeValues(reviews);
+       if( typeof state.rating == 'string' && typeof state.workload == 'string' && typeof state.diff == 'string' && typeof state.grade == 'string' )
+       {
         Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
-        classDifficulty:state.diff, classGrade:state.grade } });
+        classDifficulty:state.diff, classGrade:state.grade } });}
+
         return 1;
       
     }
@@ -196,11 +205,11 @@ Meteor.methods({
     // Used to update the review metrics for all courses
     //in the database.
     updateMetricsForAllCourses: function (){
-      var courses=Classes.find();
-
-      for (var course in courses){
+      console.log("Updated metrics");
+      let courses=Classes.find().fetch();
+      courses.forEach(function(course){
         Meteor.call("updateCourseMetrics", course._id);
-      }
+      });
     },
 
     // Returns courses with the given metrics. Takes
@@ -209,10 +218,10 @@ Meteor.methods({
     // Returns null if no courses match this criteria
     getCoursesByMetrics: function (metrics){
       // check: make sure course id is valid and non-malicious
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(metrics.rating) && regex.test(metrics.workload)
      && regex.test(metrics.diff) && regex.test(metrics.grade) ) {
-      var c = Classes.find({ classRating: metrics.rating, classWorkload: metrics.workload, 
+      let c = Classes.find({ classRating: metrics.rating, classWorkload: metrics.workload, 
         classDifficulty: metrics.diff, classGrade: metrics.grade }).fetch();
       return c;
     }
