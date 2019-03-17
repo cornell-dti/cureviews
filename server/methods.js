@@ -46,6 +46,8 @@ Meteor.methods({
           //check(fullReview, Reviews);
           Reviews.insert(fullReview);
           console.log("Success: Submitted review");
+          //Update the course metrics
+          Meteor.call("updateCourseMetrics", classId);
           return 1; //success
         } catch (error) {
           console.log(error)
@@ -166,10 +168,13 @@ Meteor.methods({
   updateCourseMetrics : function (courseId){
     var course = Meteor.call('getCourseById', courseId)
     if(course){
-        var reviews=Reviews.find({ _id: courseId }).fetch();
+        var reviews=Reviews.find({class: courseId }).fetch();
         var state=getGaugeValues(reviews);
+       if( typeof state.rating == 'string' && typeof state.workload == 'string' && typeof state.diff == 'string' && typeof state.grade == 'string' )
+       {
         Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
-        classDifficulty:state.diff, classGrade:state.grade } });
+        classDifficulty:state.diff, classGrade:state.grade } });}
+
         return 1;
       
     }
@@ -182,11 +187,11 @@ Meteor.methods({
     // Used to update the review metrics for all courses
     //in the database.
     updateMetricsForAllCourses: function (){
-      var courses=Classes.find();
-
-      for (var course in courses){
+      console.log("Updated metrics");
+      var courses=Classes.find().fetch();
+      courses.forEach(function(course){
         Meteor.call("updateCourseMetrics", course._id);
-      }
+      });
     },
 
     // Returns courses with the given metrics. Takes
