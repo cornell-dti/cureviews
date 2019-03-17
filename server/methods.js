@@ -181,8 +181,8 @@ Meteor.methods({
     }
   },
 
-  // This updates the metrics for an individual class given its course 
-  // subject and course number. Returns 1 if successful, 0 otherwise.
+  // This updates the metrics for an individual class given its Mongo-generated id. 
+  // Returns 1 if successful, 0 otherwise.
   updateCourseMetrics : function (courseId){
     let course = Meteor.call('getCourseById', courseId)
     if(course){
