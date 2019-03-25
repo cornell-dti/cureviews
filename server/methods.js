@@ -247,13 +247,13 @@ Meteor.methods({
     // in an object which specifies each metric as a field
     // i.e. metrics.grade, metrics.workload, etc
     // Returns null if no courses match this criteria
-    getCoursesByMetrics: function (metrics){
+    getCoursesByMetrics: function (rating, workload, diff, grade){
       // check: make sure course id is valid and non-malicious
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(metrics.rating) && regex.test(metrics.workload)
-     && regex.test(metrics.diff) && regex.test(metrics.grade) ) {
-      var c = Classes.find({ classRating: metrics.rating, classWorkload: metrics.workload, 
-        classDifficulty: metrics.diff, classGrade: metrics.grade }).fetch();
+    if (regex.test(rating) && regex.test(workload)
+     && regex.test(diff) && regex.test(grade) ) {
+      var c = Classes.find({ classRating: rating, classWorkload: workload, 
+        classDifficulty: diff, classGrade: grade }).fetch();
       return c;
     }
     return null
