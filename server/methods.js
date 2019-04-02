@@ -209,19 +209,20 @@ Meteor.methods({
     return null
     },
 
+    // Returns courses with the given parameters.
+    // Takes in a dictionary object of field names
+    // and the desired value, i.e. 
+    // {"classRating":"4.4",
+    //  "classGrade":"A-" }
+    // Returns an empty array if no classes match.
     getCoursesByFilters: function(parameters){
-      var courses=null;
-      for(var field in parameters) {
-        var value = parameters[field];
-        if (courses==null){
-          courses=Classes.find({ field : value }).rawCollection();
-        }
-        else{
-          courses=courses.find({ field : value }).rawCollection();
-        }
+      var courses=[];
+      var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      for(var key in dict){
+        if(!regex.test(key) || regex.test(parameters[key])) return courses;
       }
-
-      return courses.find().fetch();
+      courses=Classes.find(parameters).fetch();
+      return courses;
     },
 
   // Update the local database when Cornell Course API adds data for the
