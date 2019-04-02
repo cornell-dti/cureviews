@@ -170,22 +170,6 @@ Meteor.methods({
       });
     },
 
-    // Returns courses with the given metrics. Takes
-    // in an object which specifies each metric as a field
-    // i.e. metrics.grade, metrics.workload, etc
-    // Returns null if no courses match this criteria
-    getCoursesByMetrics: function (rating, workload, diff, grade){
-      // check: make sure course id is valid and non-malicious
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(rating) && regex.test(workload)
-     && regex.test(diff) && regex.test(grade) ) {
-      var c = Classes.find({ classRating: rating, classWorkload: workload, 
-        classDifficulty: diff, classGrade: grade }).fetch();
-      return c;
-    }
-    return null
-    },
-
     // Returns courses with the given parameters.
     // Takes in a dictionary object of field names
     // and the desired value, i.e. 
