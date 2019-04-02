@@ -259,6 +259,21 @@ Meteor.methods({
     return null
     },
 
+    getCoursesByFilters: function(parameters){
+      var courses=null;
+      for(var field in parameters) {
+        var value = parameters[field];
+        if (courses==null){
+          courses=Classes.find({ field : value }).rawCollection();
+        }
+        else{
+          courses=courses.find({ field : value }).rawCollection();
+        }
+      }
+
+      return courses.find().fetch();
+    },
+
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
   // and update the semesters offered for classes that do.
