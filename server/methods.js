@@ -255,12 +255,12 @@ Meteor.methods({
     }
     return null;
   },
-  
+
   //Returns true if user matching "netId" is an admin
   userIsAdmin: function (netId) {
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     user = Meteor.call('getUserByNetId', netId)
-    if (user){
+    if (user) {
       return user.privilege == "admin";
     }
     return false;
@@ -313,6 +313,26 @@ Meteor.methods({
       return 1;
     } else {
       return 0;
+    }
+  },
+
+  //get all reviews by professor
+  getReviewsByProfessor: function (professor) {
+    var regex = new RegExp(/^(?=.*[A-Z])/i)
+    if (regex.test(professor)) {
+      return Reviews.find({ professors: { $elemMatch: { $eq: professor } } }).fetch();
+    } else {
+      return null;
+    }
+  },
+
+  //get all classes by professor
+  getClassesByProfessor: function (professor) {
+    var regex = new RegExp(/^(?=.*[A-Z])/i)
+    if (regex.test(professor)) {
+      return Classes.find({ classProfessors: { $elemMatch: { $eq: professor } } }).fetch();
+    } else {
+      return null;
     }
   },
 
@@ -416,14 +436,14 @@ Meteor.methods({
       // console.log(emailBeforeAt);
       // console.log(netid);
       const valid_email = emailBeforeAt == netid;
-      
+
       return valid_email;
 
     } catch (e) {
       console.log(e);
       return false;
     }
-    
+
   },
   /**
    * Used in the .catch when verify is used, handles whatever should be done
