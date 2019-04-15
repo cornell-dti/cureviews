@@ -1,7 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
-import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
@@ -16,35 +15,47 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
 Meteor.methods({
   // insert a new review into the reviews collection.
   // Upon success returns 1, else returns 0.
-  insert: function (review, classId) {
+  insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
-    if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
-      var fullReview = {
-        text: review.text,
-        difficulty: review.diff,
-        rating: review.rating,
-        workload: review.workload,
-        class: classId,
-        date: new Date(),
-        visible: 0,
-        reported: 0,
-        professors: review.professors,
-        likes: 0,
-      };
+    if(token == undefined){
+      console.log("Token was undefined in insert")
+      return 0; // Token was undefined
+    }
+    const ticket = Meteor.call('getVerificationTicket', token);
+    if (ticket.hd === "cornell.edu"){
+      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
+        var fullReview = {
+          text: review.text,
+          difficulty: review.diff,
+          rating: review.rating,
+          workload: review.workload,
+          class: classId,
+          date: new Date(),
+          visible: 0,
+          reported: 0,
+          professors: review.professors,
+          likes: 0,
+        };
 
-      try {
-        //check(fullReview, Reviews);
-        Reviews.insert(fullReview);
-        return 1; //success
-      } catch (error) {
-        console.log(error)
+        try {
+          //check(fullReview, Reviews);
+          Reviews.insert(fullReview);
+          console.log("Succesfully submitted review")
+          return 1; //success
+        } catch (error) {
+          console.log(error)
+          return 0; //fail
+        }
+      } else {
+        //error handling
+        console.log("Some review values are null")
         return 0; //fail
       }
-    } else {
-      //error handling
-      console.log("Some review values are null")
-      return 0; //fail
+    } else{
+      console.log("Error: non-Cornell email attempted to insert review")
+      return 0;
     }
+    
   },
 
   //Inserts a new user into the Users collection.
@@ -395,14 +406,19 @@ Meteor.methods({
    * verify(token, function(){//do whatever}).catch(function(error){
    * handleVerifyError(error, res);
    */
-  verify: async function (token, netid) {
+  getVerificationTicket: async function (token) {
     try {
+      if(token == undefined){
+        console.log("Token was undefined in getVerificationTicket")
+        return 0; // Token was undefined
+      }
       const ticket = await client.verifyIdToken({
         idToken: token,
         audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
         // Or, if multiple clients access the backend:
         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
+      return ticket.getPayload();
       // console.log(ticket);
       const payload = ticket.getPayload();
       //The REST API uses payloads to pass and return data structures too large to be handled as parameters
