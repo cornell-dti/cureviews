@@ -19,7 +19,7 @@ export default class CUreviewsGoogleLogin extends Component {
     super(props);
 
     this.state = {
-      lastVerification: new Date().getTime()
+      lastVerification: (new Date().getTime()) - 5000
     }
 
     this.responseGoogle.bind(this)

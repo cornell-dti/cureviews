@@ -131,10 +131,11 @@ Meteor.methods({
 
   // Make this reveiw visible to everyone (ex: un-report a review)
   // Upon succcess, return 1, else 0.
-  makeVisible: function (review) {
+  makeVisible: function (review, token) {
     // check: make sure review id is valid and non-malicious
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(review._id)) {
+    if (regex.test(review._id) && userIsAdmin) {
       Reviews.update(review._id, { $set: { visible: 1 } });
       return 1;
     } else {
@@ -144,11 +145,12 @@ Meteor.methods({
 
   // Delete this review from the local database.
   // Upon succcess, return 1, else 0.
-  removeReview: function (review) {
+  removeReview: function (review, token) {
     // check: make sure review id is valid and non-malicious
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(review._id)) {
-      // Reviews.remove({ _id: review._id });
+    if (regex.test(review._id) && userIsAdmin) {
+      Reviews.remove({ _id: review._id });
       return 1;
     } else {
       return 0;
@@ -276,12 +278,15 @@ Meteor.methods({
   },
   
   //Returns true if user matching "netId" is an admin
-  userIsAdmin: function (netId) {
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    user = Meteor.call('getUserByNetId', netId)
-    if (user){
-      return user.privilege == "admin";
+  tokenIsAdmin: function (token) {
+    if (token != undefined){
+      const ticket = Meteor.call('getVerificationTicket', token);
+      const user = Meteor.call('getUserByNetId', ticket.email.replace("@cornell.edu", ""));
+      if (user){
+        return user.privilege === "admin";
+      }
     }
+    console.log("Token is undefined at tokenIsAdmin")
     return false;
   },
 

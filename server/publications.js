@@ -121,8 +121,9 @@ searchWithinSubject = (sub, remainder) => {
    Else:
      return none
 */
-Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus) {
+Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus, token) {
     var ret = null;
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     //for a -1 courseId, display the most popular reviews (visible, non reported only)
     if (courseId === "-1") {
       //console.log('popular reviews');
@@ -149,11 +150,11 @@ Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatu
         } else {
           ret =  Reviews.find({class : courseId, visible : 1, reported: 0}, {sort: {date: -1}, limit: 700});
         }
-    } else if (courseId !== undefined && courseId !== "" && visiblity === 0) { //invalidated reviews for a class
+    } else if (courseId !== undefined && courseId !== "" && visiblity === 0 && userIsAdmin) { //invalidated reviews for a class
         console.log('course invalid reviews');
         crossList = Classes.find({_id : courseId}).fetch()[0].crossList
         ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
-    } else if (visiblity === 0) { //all invalidated reviews
+    } else if (visiblity === 0 && userIsAdmin) { //all invalidated reviews
         console.log('all invalidated reviews');
         ret =  Reviews.find({visible : 0}, {sort: {date: -1}, limit: 700});
     } else { //no reviews
