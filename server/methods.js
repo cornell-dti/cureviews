@@ -22,6 +22,7 @@ Meteor.methods({
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
+    const insertUserCall = Meteor.call('insertUser', ticket);
     if (ticket.hd === "cornell.edu"){
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
         var fullReview = {
@@ -60,26 +61,33 @@ Meteor.methods({
 
   //Inserts a new user into the Users collection.
   //Upon success returns 1, else returns 0
-  insertUser: function (user) {
+  insertUser: function (googleObject) {
     //Check user object has all required fields
-    if (user.firstName != null && user.lastName != null && user.netId != null && user.token != null && user.privilege != null) {
+    if (googleObject.given_name != null
+          && googleObject.family_name != null
+          && googleObject.email.replace("@cornell.edu", "") != null) {
       var newUser = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        netId: user.netId,
+        firstName: googleObject.given_name,
+        lastName: googleObject.family_name,
+        netId: googleObject.email.replace("@cornell.edu", ""),
         affiliation: null,
-        token: user.token,
-        privilege: user.privilege
+        token: null,
+        privilege: "regular"
       };
 
-      try {
-        //check(newUser, Users);
-        Students.insert(newUser);
-        return 1; //success
-      } catch (error) {
-        console.log(error)
-        return 0; //fail
+      const user = Meteor.call('getUserByNetId', googleObject.email.replace("@cornell.edu", ""));
+      if(user == null){
+        try {
+          //check(newUser, Users);
+          Students.insert(newUser);
+          return 1; //success
+        } catch (error) {
+          console.log(error)
+          return 0; //fail
+        }
       }
+      return 1; //No need to add user again
+      
 
     }
     else {
