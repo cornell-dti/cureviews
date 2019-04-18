@@ -54,12 +54,14 @@ export default class Form extends Component {
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
       review: {},
+      team: {"value" : "Not Applicable", "label" : "Not Applicable"}
       // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
     this.handleProfChange.bind(this)
+    this.handleTeamChange.bind(this)
     this.toggleDropdown.bind(this)
     this.submitReview = this.submitReview.bind(this)
     this.hide = this.hide.bind(this)
@@ -95,6 +97,13 @@ export default class Form extends Component {
   handleProfChange(selectedProfessors){
     // console.log(selectedProfessors.map(professor => {return professor.label}))
     this.setState({ selectedProfessors: selectedProfessors });    
+    this.pushReviewsDown(this.state.dropdown);
+  }
+
+  // Save the current team selected in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleTeamChange(team){
+    this.setState({ team: team });    
     this.pushReviewsDown(this.state.dropdown);
   }
 
@@ -146,6 +155,7 @@ export default class Form extends Component {
     var diff = this.state.diff;
     var work = this.state.workload;
     var prof = this.state.selectedProfessors.map(professor => {return professor.label});
+    var team = this.state.team;
     if (text.length > 0 
       && text !== null
       && prof !== []) {
@@ -156,6 +166,7 @@ export default class Form extends Component {
           diff: diff,
           workload: work,
           professors: prof,
+          team: team,
         };
         
         this.setState({"review" : newReview})
@@ -175,6 +186,7 @@ export default class Form extends Component {
         ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
         ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
         ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+        ReactDOM.findDOMNode(this.refs.teamSelect).value = "Not Applicable";
         this.toggleDropdown(); //Close the review dropdown when page loads
     
         this.setState(this.defaultState);
@@ -219,6 +231,19 @@ export default class Form extends Component {
       }
       return profOptions
     }
+  }
+
+  // returns available DTI review team options
+  getTeamOptions() {
+    var teams = ["Not Applicable", "CU Reviews", "Campus Density", "CUE", "Queue Me In", "Research Connect", "Samwise"];
+    teamOptions = [];
+    for(var teamName of teams){
+      teamOptions.push({
+        "value" : teamName,
+        "label" : teamName
+      })
+    }
+    return teamOptions;
   }
   
   // Return the options for median grades
@@ -362,9 +387,16 @@ export default class Form extends Component {
                               </div>
                           </div>
                           <div className="row">
-                            <div className="col-md-12 text-right">
-                                <button disabled={!isEnabled} id ="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                            </div>
+                              <div className="col-md-3 col-sm-3 col-xs-3">
+                                  <div className="secondary-text">Review Team</div>
+                              </div>
+                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
+                                  <Select value={this.state.team} 
+                                    onChange={(team) => this.handleTeamChange(team)}  
+                                    options={this.getTeamOptions()} 
+                                    ref="teamSelect"
+                                  />
+                              </div>
                           </div>
                       </div>
                       
