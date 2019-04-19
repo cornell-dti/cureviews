@@ -108,11 +108,15 @@ export default class CUreviewsGoogleLogin extends Component {
   //Using meteor session to save the netID and token
   //Saves user's netID and token from response to Session
   saveToken(token) {
+    console.log("This is the token");
+    console.log(token);
     Session.setPersistent({"token": token});
     if (Session.get("token") != token){
       console.log("Error saving token to session")
       return 0;
     }
+    console.log("This is the session");
+    console.log(Session);
     return 1;
   }
   
