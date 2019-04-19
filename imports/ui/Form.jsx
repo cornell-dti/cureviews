@@ -2,11 +2,15 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
-import './css/Form.css';
+
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
+import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
+import './css/Form.css';
+import { Session } from 'meteor/session';
+
 /*
   Form Component.
 
@@ -49,13 +53,17 @@ export default class Form extends Component {
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
+      review: {},
       // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
     this.handleProfChange.bind(this)
-    // this.handleMedianChange.bind(this)
+    this.toggleDropdown.bind(this)
+    this.submitReview = this.submitReview.bind(this)
+    this.hide = this.hide.bind(this)
+    this.show = this.show.bind(this)
   }
 
   // Save the current user input text from the text box in the local state.
@@ -112,7 +120,7 @@ export default class Form extends Component {
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
     ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
     this.dropdownHeight = ReactDOM.findDOMNode(this.refs.dropdownMenu).clientHeight + 15;
-    this.toggleDropdown(this); //Open review dropdown when page loads
+    this.toggleDropdown(); //Open review dropdown when page loads
   }
 
   // Called each time this component receieves new props.
@@ -149,27 +157,36 @@ export default class Form extends Component {
           workload: work,
           professors: prof,
         };
-
-        // call the api insert function
-        Meteor.call('insert', newReview, this.props.course._id, (error, result) => {
-          // if (!error && result === 1) {
-          if (error || result === 1) {
-            // Success, so reset form
-            ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
-            ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-            ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
-            ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-            this.toggleDropdown(this); //Close the review dropdown when page loads
-            
-            this.setState(this.defaultState);
-            Bert.alert('Thanks! Your review is currently pending approval.');
-          } else {
-            // error, alert user
-            console.log(error);
-            this.setState({message: "A error occurred. Please try again."});
-          }
-        });
+        
+        this.setState({"review" : newReview})
+        
+        this.show();
+        
     }
+  }
+  
+  submitReview(){
+    // call the api insert function
+    Meteor.call('insert', Session.get("token"), this.state.review, this.props.course._id, (error, result) => {
+      // if (!error && result === 1) {
+      if (error || result === 1) {
+        // Success, so reset form
+        ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
+        ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
+        ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
+        ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+        this.toggleDropdown(); //Close the review dropdown when page loads
+    
+        this.setState(this.defaultState);
+        this.hide();
+        
+        Bert.alert('Thanks! Your review is currently pending approval.');
+      } else {
+        // error, alert user
+        console.log(error);
+        this.setState({message: "A error occurred. Please try again."});
+      }
+    });
   }
 
   // Validation function. Checks if the median are filled out,
@@ -223,10 +240,8 @@ export default class Form extends Component {
     return medianGrades
   }
     // Toggle the form dropdown
-    // e: passes in the 'this' context to be able to work with this.state
     // Takes care of "pushing down" the reviews by the dynamic height of the form
-    toggleDropdown(e){      
-       
+    toggleDropdown(){
        var nextState = this.state.dropdown == 'open' ? '' : 'open';
        this.setState({ dropdown: nextState });
        this.pushReviewsDown(nextState);
@@ -248,6 +263,14 @@ export default class Form extends Component {
         offsetHeight = 0;
       }
       $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+    }
+    
+    show() {
+        this.setState({ visible: true });
+    }
+
+     hide() {
+      this.setState({ visible: false });
     }
   
   render() {
@@ -354,6 +377,34 @@ export default class Form extends Component {
               </form>
             </ul>
           </div>
+          
+          <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
+            <div id="modal-background">
+              <div id="modal-top">
+                <img src='/logo2x.png' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+                <p id="modal-title" className="center-block">Email Verification</p>
+              </div>
+              <div id="">
+                <p id="modal-text" className="center-block">
+                  You’re almost there! - log in with cornell.edu to
+                  verify you are a student. 
+                </p>
+                <p id="modal-text" className="center-block">
+                  (Don’t worry, your identity will always be kept secret!)
+                </p>
+                <p id="modal-footer" className="center-block">
+                  You will be redirected to our login page.
+                  Not seeing it? Click here.
+                </p>
+                <CUreviewsGoogleLogin 
+                      executeLogin={this.state.visible} 
+                      waitTime="1000"  
+                      onSuccessFunction={this.submitReview}
+                      onFailureFunction={this.responseGoogle} />
+              </div>
+            </div>
+            
+          </Rodal>
         </div>
     );
   }
