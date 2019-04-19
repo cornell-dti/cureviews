@@ -330,8 +330,6 @@ Admin.propTypes = {
 // wrap in a container class that allows the component to dynamically grab reivews.
 // The component will automatically re-render when new views are added to the database.
 export default withTracker(props => {
-  console.log("This is the session from Admin");
-  console.log(Session);
   const subscription = Meteor.subscribe('reviews', "", 0, null, Session.get("token")); //get unapproved or reported reviews
   const loading = !subscription.ready();
   const reviewsToApprove = Reviews.find({}).fetch();
