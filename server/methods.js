@@ -279,6 +279,7 @@ Meteor.methods({
   
   //Returns true if user matching "netId" is an admin
   tokenIsAdmin: function (token) {
+    console.log(token);
     if (token != undefined){
       const ticket = Meteor.call('getVerificationTicket', token);
       console.log(ticket);
