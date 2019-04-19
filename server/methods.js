@@ -269,9 +269,13 @@ Meteor.methods({
 
   //Get a user with this netId from the Users collection in the local database
   getUserByNetId: function (netId) {
+    console.log("This is user in getUserByNetId");
+    console.log(netId);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
       var user = Students.find({ netId: netId }).fetch()[0];
+      console.log("This is user object");
+      console.log(user);
       return user;
     }
     return null;
@@ -279,6 +283,7 @@ Meteor.methods({
   
   //Returns true if user matching "netId" is an admin
   tokenIsAdmin: function (token) {
+    console.log("This is token in tokenIsAdmin");
     console.log(token);
     if (token != undefined){
       const ticket = Meteor.call('getVerificationTicket', token);
