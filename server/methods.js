@@ -281,6 +281,7 @@ Meteor.methods({
   tokenIsAdmin: function (token) {
     if (token != undefined){
       const ticket = Meteor.call('getVerificationTicket', token);
+      console.log(ticket);
       const user = Meteor.call('getUserByNetId', ticket.email.replace("@cornell.edu", ""));
       if (user){
         return user.privilege === "admin";
