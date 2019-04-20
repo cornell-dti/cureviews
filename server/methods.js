@@ -24,7 +24,7 @@ Meteor.methods({
     const ticket = Meteor.call('getVerificationTicket', token);
     const insertUserCall = Meteor.call('insertUser', ticket);
     if (ticket.hd === "cornell.edu"){
-      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
+      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null && review.memberReferral !== null) {
         var fullReview = {
           text: review.text,
           difficulty: review.diff,
@@ -36,6 +36,7 @@ Meteor.methods({
           reported: 0,
           professors: review.professors,
           likes: 0,
+          memberReferral: review.memberReferral,
         };
 
         try {

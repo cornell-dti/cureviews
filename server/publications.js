@@ -123,13 +123,12 @@ searchWithinSubject = (sub, remainder) => {
 */
 Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus, token) {
     var ret = null;
-    // console.log("This is token in publish reviews");
-    // console.log(token);
-    
-    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
-    
-    // console.log("This is the result of userIsAdmin in publish");
-    // console.log(userIsAdmin);
+    if (token === undefined || token===null || token===""){
+      userIsAdmin = false;
+    }
+    else{
+      userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    }
     //for a -1 courseId, display the most popular reviews (visible, non reported only)
     if (courseId === "-1") {
       //console.log('popular reviews');
