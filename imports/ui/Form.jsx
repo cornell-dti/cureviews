@@ -54,14 +54,14 @@ export default class Form extends Component {
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
       review: {},
-      team: {"value" : "Not Applicable", "label" : "Not Applicable"}
+      teamMemberReferral: {"value" : "Not Applicable", "label" : "Not Applicable"}
       // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
     this.handleProfChange.bind(this)
-    this.handleTeamChange.bind(this)
+    this.handleReferralChange.bind(this)
     this.toggleDropdown.bind(this)
     this.submitReview = this.submitReview.bind(this)
     this.hide = this.hide.bind(this)
@@ -102,8 +102,8 @@ export default class Form extends Component {
 
   // Save the current team selected in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleTeamChange(team){
-    this.setState({ team: team });    
+  handleReferralChange(teamMember){
+    this.setState({ teamMemberReferral: teamMember });    
     this.pushReviewsDown(this.state.dropdown);
   }
 
@@ -155,7 +155,7 @@ export default class Form extends Component {
     var diff = this.state.diff;
     var work = this.state.workload;
     var prof = this.state.selectedProfessors.map(professor => {return professor.label});
-    var team = this.state.team;
+    var teamMemberReferral = this.state.teamMemberReferral.value;
     if (text.length > 0 
       && text !== null
       && prof !== []) {
@@ -166,7 +166,7 @@ export default class Form extends Component {
           diff: diff,
           workload: work,
           professors: prof,
-          team: team,
+          memberReferral: teamMemberReferral,
         };
         
         this.setState({"review" : newReview})
@@ -186,7 +186,7 @@ export default class Form extends Component {
         ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
         ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
         ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-        ReactDOM.findDOMNode(this.refs.teamSelect).value = "Not Applicable";
+        ReactDOM.findDOMNode(this.refs.referralSelect).value = "Not Applicable";
         this.toggleDropdown(); //Close the review dropdown when page loads
     
         this.setState(this.defaultState);
@@ -235,7 +235,7 @@ export default class Form extends Component {
 
   // returns available DTI review team options
   getTeamOptions() {
-    var teams = ["Not Applicable", "CU Reviews", "Campus Density", "CUE", "Queue Me In", "Research Connect", "Samwise"];
+    var teams = ["Not Applicable", "Alexa Bren", "Aram Baghdassarian", "Ashneel Das", "Ayesha Gagguturi", "Andrew Gao", "Andrew Yates", "Adam Masters", "Ashley Ticzon", "Ashrita Raman", "Joaquin Amante", "Amanda Ong", "Boon Palipatana", "Bryan Graeser", "Cedric Castillo", "Dray Farley", "Connie Lei", "Dhruv Baijal", "David Chu", "Emily Chan", "Evan Welsh", "Flora Liu", "Gleni Kodra", "Ishika Jain", "Jagger Brulato", "Jesse Mansoor", "Jessica Chen", "Julian Londono", "Justin Tran", "Jill Wu", "Jessica Hong", "Jessica Zhao", "Kathleen Xu", "Kaushik Ravikumar", "Kaitlyn Son", "Kathy Wang", "Lisa LaBarbera", "Laura Sizemore", "Matthew Epstein", "Matthew Barker", "Matthew Coufal", "Megan She", "Michael Xing", "Megan Yin", "Neha Rao", "Qichen Hu", "Trey Burrell", "Robert Villaluz", "Rebecca Fu", "Ronni Mok", "Ryan Slama", "Raymone Radi", "Rodrigo Taipe", "Rishitha Thambireddy", "Alice Zhou", "Shefali Agarwal", "Sanjana Seshadri", "Stacy Wei", "Sophia Wang", "Shane Yun", "Shi Chong Zhao", "Sonya Tao", "Sam Zhou", "Vivian Shiu", "Vanessa Wang", "Will Spencer", "William Evans", "Yvonne Chan", "Aiden Yeonsuk Kim", "Michelle Park", "April Ye", "Yuchang Zhou", "Yisu Zheng", "Andrew Xiao"];
     teamOptions = [];
     for(var teamName of teams){
       teamOptions.push({
@@ -388,15 +388,20 @@ export default class Form extends Component {
                           </div>
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <div className="secondary-text">Review Team</div>
+                                  <div className="secondary-text">Member Referred By</div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
-                                  <Select value={this.state.team} 
-                                    onChange={(team) => this.handleTeamChange(team)}  
+                                  <Select value={this.state.teamMemberReferral}
+                                    onChange={(teamMember) => this.handleReferralChange(teamMember)}  
                                     options={this.getTeamOptions()} 
-                                    ref="teamSelect"
+                                    ref="referralSelect"
                                   />
                               </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12 text-right">
+                                <button disabled={!isEnabled} id ="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                            </div>
                           </div>
                       </div>
                       
@@ -429,7 +434,7 @@ export default class Form extends Component {
                   Not seeing it? Click here.
                 </p>
                 <CUreviewsGoogleLogin 
-                      executeLogin={this.state.visible} 
+                      executeLogin={this.state.visible}
                       waitTime="1000"  
                       onSuccessFunction={this.submitReview}
                       onFailureFunction={this.responseGoogle} />
