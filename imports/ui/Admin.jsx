@@ -114,7 +114,7 @@ export class Admin extends Component {
   addNewSem(initiate) {
     console.log("updating to new semester");
     this.setState({ disableNewSem: true, loadingSemester: 1 });
-    Meteor.call('addNewSemester', initiate, (error, result) => {
+    Meteor.call('addNewSemester', initiate, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
         console.log("Added new semester courses");
         this.setState({ disableNewSem: false, loadingSemester: 2 });

@@ -165,9 +165,10 @@ Meteor.methods({
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page once a semester.
   // TODO uncomment
-  // addNewSemester: function (initiate) {
+  // addNewSemester: function (initiate, token) {
+    // const userIsAdmin = Meteor.call('tokenIsAdmin', token);
   //   // ensure code is running on the server, not client
-  //   if (initiate && Meteor.isServer) {
+  //   if (initiate && Meteor.isServer && userIsAdmin) {
   //     console.log("updating new semester");
   //     const val = addAllCourses(findCurrSemester());
   //     if (val) {
