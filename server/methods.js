@@ -198,9 +198,10 @@ Meteor.methods({
   // Should be called by an admin via the admin page ONLY ONCE during database
   // initialization.
   // TODO uncomment
-  // addAll: function (initiate) {
+  // addAll: function (initiate, token) {
+  //  const userIsAdmin=Meteor.call('tokenIsAdmin', token);
   //   // ensure code is running on the server, not the client
-  //   if (initiate && Meteor.isServer) {
+  //   if (initiate && Meteor.isServer && userIsAdmin) {
   //     Classes.remove({});
   //     Subjects.remove({});
   //     const val = addAllCourses(findAllSemesters());

@@ -135,7 +135,7 @@ export class Admin extends Component {
   addAllCourses(initiate) {
     console.log("adding all classes");
     this.setState({ disableInit: true, loadingInit: 1 });
-    Meteor.call('addAll', initiate, (error, result) => {
+    Meteor.call('addAll', initiate, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
         console.log("Added new semester courses");
         this.setState({ disableInit: false, loadingInit: 2 });
