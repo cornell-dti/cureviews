@@ -99,7 +99,7 @@ export class Admin extends Component {
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   unReportReview(review) {
-    Meteor.call('undoReportReview', review, (error, result) => {
+    Meteor.call('undoReportReview', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
         console.log("Review unreported")
       } else {

@@ -337,10 +337,11 @@ Meteor.methods({
 
   // Un-flag a review, making it visible to everyone and "unreported"
   // To be called by an admin via the admin interface.
-  undoReportReview: function (review) {
+  undoReportReview: function (review, token) {
+    const userIsAdmin=Meteor.call('tokenIsAdmin', token);
     // check: make sure review id is valid and non-malicious
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
-    if (regex.test(review._id)) {
+    if (regex.test(review._id) && userIsAdmin) {
       Reviews.update({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
       return 1;
     } else {
