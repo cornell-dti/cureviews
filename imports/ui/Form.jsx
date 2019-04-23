@@ -2,11 +2,15 @@ import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
-import './css/Form.css';
+
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
+import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
+import './css/Form.css';
+import { Session } from 'meteor/session';
+
 /*
   Form Component.
 
@@ -49,13 +53,19 @@ export default class Form extends Component {
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
+      review: {},
+      teamMemberReferral: {"value" : "Not Applicable", "label" : "Not Applicable"}
       // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
     this.handleProfChange.bind(this)
-    // this.handleMedianChange.bind(this)
+    this.handleReferralChange.bind(this)
+    this.toggleDropdown.bind(this)
+    this.submitReview = this.submitReview.bind(this)
+    this.hide = this.hide.bind(this)
+    this.show = this.show.bind(this)
   }
 
   // Save the current user input text from the text box in the local state.
@@ -90,6 +100,13 @@ export default class Form extends Component {
     this.pushReviewsDown(this.state.dropdown);
   }
 
+  // Save the current team selected in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleReferralChange(teamMember){
+    this.setState({ teamMemberReferral: teamMember });    
+    this.pushReviewsDown(this.state.dropdown);
+  }
+
   // Convert the slider's value to a color starting with red and ending with green.
   getSliderColorRedToGreen(value) {
     var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
@@ -112,7 +129,7 @@ export default class Form extends Component {
     ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
     ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
     this.dropdownHeight = ReactDOM.findDOMNode(this.refs.dropdownMenu).clientHeight + 15;
-    this.toggleDropdown(this); //Open review dropdown when page loads
+    this.toggleDropdown(); //Open review dropdown when page loads
   }
 
   // Called each time this component receieves new props.
@@ -138,6 +155,7 @@ export default class Form extends Component {
     var diff = this.state.diff;
     var work = this.state.workload;
     var prof = this.state.selectedProfessors.map(professor => {return professor.label});
+    var teamMemberReferral = this.state.teamMemberReferral.value;
     if (text.length > 0 
       && text !== null
       && prof !== []) {
@@ -148,28 +166,39 @@ export default class Form extends Component {
           diff: diff,
           workload: work,
           professors: prof,
+          memberReferral: teamMemberReferral,
         };
-
-        // call the api insert function
-        Meteor.call('insert', newReview, this.props.course._id, (error, result) => {
-          // if (!error && result === 1) {
-          if (error || result === 1) {
-            // Success, so reset form
-            ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
-            ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-            ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
-            ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-            this.toggleDropdown(this); //Close the review dropdown when page loads
-            
-            this.setState(this.defaultState);
-            Bert.alert('Thanks! Your review is currently pending approval.');
-          } else {
-            // error, alert user
-            console.log(error);
-            this.setState({message: "A error occurred. Please try again."});
-          }
-        });
+        
+        this.setState({"review" : newReview})
+        
+        this.show();
+        
     }
+  }
+  
+  submitReview(){
+    // call the api insert function
+    Meteor.call('insert', Session.get("token"), this.state.review, this.props.course._id, (error, result) => {
+      // if (!error && result === 1) {
+      if (error || result === 1) {
+        // Success, so reset form
+        ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
+        ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
+        ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
+        ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+        ReactDOM.findDOMNode(this.refs.referralSelect).value = "Not Applicable";
+        this.toggleDropdown(); //Close the review dropdown when page loads
+    
+        this.setState(this.defaultState);
+        this.hide();
+        
+        Bert.alert('Thanks! Your review is currently pending approval.');
+      } else {
+        // error, alert user
+        console.log(error);
+        this.setState({message: "A error occurred. Please try again."});
+      }
+    });
   }
 
   // Validation function. Checks if the median are filled out,
@@ -203,6 +232,19 @@ export default class Form extends Component {
       return profOptions
     }
   }
+
+  // returns available DTI review team options
+  getTeamOptions() {
+    var teams = ["Not Applicable", "Alexa Bren", "Aram Baghdassarian", "Ashneel Das", "Ayesha Gagguturi", "Andrew Gao", "Andrew Yates", "Adam Masters", "Ashley Ticzon", "Ashrita Raman", "Joaquin Amante", "Amanda Ong", "Boon Palipatana", "Bryan Graeser", "Cedric Castillo", "Dray Farley", "Connie Lei", "Dhruv Baijal", "David Chu", "Emily Chan", "Evan Welsh", "Flora Liu", "Gleni Kodra", "Ishika Jain", "Jagger Brulato", "Jesse Mansoor", "Jessica Chen", "Julian Londono", "Justin Tran", "Jill Wu", "Jessica Hong", "Jessica Zhao", "Kathleen Xu", "Kaushik Ravikumar", "Kaitlyn Son", "Kathy Wang", "Lisa LaBarbera", "Laura Sizemore", "Matthew Epstein", "Matthew Barker", "Matthew Coufal", "Megan She", "Michael Xing", "Megan Yin", "Neha Rao", "Qichen Hu", "Trey Burrell", "Robert Villaluz", "Rebecca Fu", "Ronni Mok", "Ryan Slama", "Raymone Radi", "Rodrigo Taipe", "Rishitha Thambireddy", "Alice Zhou", "Shefali Agarwal", "Sanjana Seshadri", "Stacy Wei", "Sophia Wang", "Shane Yun", "Shi Chong Zhao", "Sonya Tao", "Sam Zhou", "Vivian Shiu", "Vanessa Wang", "Will Spencer", "William Evans", "Yvonne Chan", "Aiden Yeonsuk Kim", "Michelle Park", "April Ye", "Yuchang Zhou", "Yisu Zheng", "Andrew Xiao"];
+    teamOptions = [];
+    for(var teamName of teams){
+      teamOptions.push({
+        "value" : teamName,
+        "label" : teamName
+      })
+    }
+    return teamOptions;
+  }
   
   // Return the options for median grades
   // TODO deprecate this as we are no longer collecting this metric
@@ -223,10 +265,8 @@ export default class Form extends Component {
     return medianGrades
   }
     // Toggle the form dropdown
-    // e: passes in the 'this' context to be able to work with this.state
     // Takes care of "pushing down" the reviews by the dynamic height of the form
-    toggleDropdown(e){      
-       
+    toggleDropdown(){
        var nextState = this.state.dropdown == 'open' ? '' : 'open';
        this.setState({ dropdown: nextState });
        this.pushReviewsDown(nextState);
@@ -248,6 +288,14 @@ export default class Form extends Component {
         offsetHeight = 0;
       }
       $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+    }
+    
+    show() {
+        this.setState({ visible: true });
+    }
+
+     hide() {
+      this.setState({ visible: false });
     }
   
   render() {
@@ -339,6 +387,18 @@ export default class Form extends Component {
                               </div>
                           </div>
                           <div className="row">
+                              <div className="col-md-3 col-sm-3 col-xs-3">
+                                  <div className="secondary-text">Member Referred By</div>
+                              </div>
+                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
+                                  <Select value={this.state.teamMemberReferral}
+                                    onChange={(teamMember) => this.handleReferralChange(teamMember)}  
+                                    options={this.getTeamOptions()} 
+                                    ref="referralSelect"
+                                  />
+                              </div>
+                          </div>
+                          <div className="row">
                             <div className="col-md-12 text-right">
                                 <button disabled={!isEnabled} id ="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
                             </div>
@@ -354,6 +414,34 @@ export default class Form extends Component {
               </form>
             </ul>
           </div>
+          
+          <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
+            <div id="modal-background">
+              <div id="modal-top">
+                <img src='/logo2x.png' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+                <p id="modal-title" className="center-block">Email Verification</p>
+              </div>
+              <div id="">
+                <p id="modal-text" className="center-block">
+                  You’re almost there! - log in with cornell.edu to
+                  verify you are a student. 
+                </p>
+                <p id="modal-text" className="center-block">
+                  (Don’t worry, your identity will always be kept secret!)
+                </p>
+                <p id="modal-footer" className="center-block">
+                  You will be redirected to our login page.
+                  Not seeing it? Click here.
+                </p>
+                <CUreviewsGoogleLogin 
+                      executeLogin={this.state.visible}
+                      waitTime="1000"  
+                      onSuccessFunction={this.submitReview}
+                      onFailureFunction={this.responseGoogle} />
+              </div>
+            </div>
+            
+          </Rodal>
         </div>
     );
   }

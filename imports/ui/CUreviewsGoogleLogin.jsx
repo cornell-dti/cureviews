@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 // import {withTracker} from 'meteor/react-meteor-data';
 import { GoogleLogin } from 'react-google-login';
+import { Session } from 'meteor/session';
 
 /*
   Google Login C Component. Specific to this project.
@@ -17,12 +18,11 @@ export default class CUreviewsGoogleLogin extends Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   somevar1: 1
-    //   somevar2: 2
-    // }
+    this.state = {
+      lastVerification: (new Date().getTime()) - 5000
+    }
 
-    // this.func1.bind(this)
+    this.responseGoogle.bind(this)
   }
 
   // // some function used in the app
@@ -37,12 +37,17 @@ export default class CUreviewsGoogleLogin extends Component {
   // }
 
   responseGoogle = (response) => {
-    console.log(response);
-    user = response.profileObj.email.replace("@cornell.edu", '');
     token = response.tokenId;
-    this.saveUserToken(user, token);
-
-    this.retrieveUser(response);
+    if (token){
+      if (this.saveToken(token) === 1){
+        console.log("Succesfully saved token to session");
+      } else{
+        console.log("Error saving token");
+      }
+      this.setState({lastVerification : new Date().getTime()});
+      this.props.onSuccessFunction();
+    }
+    
   }
 
   //Checks database for user with given netId. If user does not exits,
@@ -102,25 +107,17 @@ export default class CUreviewsGoogleLogin extends Component {
   
   //Using meteor session to save the netID and token
   //Saves user's netID and token from response to Session
-  saveUserToken(netId, token) {
-    console.log("Saving token")
-    console.log(netId)
-    var regex = new RegExp(/^[a-zA-Z0-9]*$/i);
-    if (regex.test(netId)) {
-      // console.log("saving to Session");
-      if (Session.equals(user, undefined) && Session.equals(user, undefined)) {
-        Session.setDefaultPersistent("user", netId);
-        Session.setDefaultPersistent("token", token);
-      } else {
-        Session.setPersistent({ "user": netId, "token": token });
-      }
-      console.log(Session.get("user"));
-      return 1;
-    }
-    else {
-      console.log("error with regex");
+  saveToken(token) {
+    // console.log("This is the token in saveToken");
+    // console.log(token);
+    Session.setPersistent({"token": token});
+    if (Session.get("token") != token){
+      console.log("Error saving token to session")
       return 0;
-    };
+    }
+    // console.log("This is the session after saving token");
+    // console.log(Session);
+    return 1;
   }
   
   // // function that specifically renders HTML or another component. Keep these
@@ -135,10 +132,15 @@ export default class CUreviewsGoogleLogin extends Component {
         <br/>
         <GoogleLogin
           clientId="836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com"
+          hostedDomain="cornell.edu"
           render={renderProps => (
-            <button onClick={renderProps.onClick}>Authenticate with @cornell.edu email</button>
+            <script>{(this.props.executeLogin 
+                      && Math.abs(this.state.lastVerification - new Date().getTime()) >  5000) ? 
+              setTimeout(function () {
+                renderProps.onClick()
+              }, this.props.waitTime)
+               : 1 }</script>
           )}
-          buttonText="Login"
           onSuccess={this.responseGoogle.bind(this)}
           onFailure={this.responseGoogle.bind(this)}
         />
