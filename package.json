@@ -15,7 +15,7 @@
     "meteor-node-stubs": "~0.2.4",
     "npm": "^5.6.0",
     "nw-react-slider": "^2.0.1",
-    "prop-types": "^15.6.1",
+    "prop-types": "^15.7.2",
     "react": "^15.6.2",
     "react-addons-pure-render-mixin": "^15.6.0",
     "react-bootstrap-slider": "^2.1.3",
