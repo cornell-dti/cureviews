@@ -9,6 +9,7 @@ import "./css/App.css";
 import { sendFeedback } from './js/Feedback.js';
 import { courseVisited } from './js/Feedback.js';
 import { Classes, Users } from '../api/dbDefs.js';
+import { Results } from './Results.jsx'
 
 
 
@@ -27,6 +28,7 @@ export default class App extends Component {
     // keep track of user's inputed query to send to SearcBar. Initialize to empty string.
     this.state = {
       query: "",
+      search: 1,
     };
 
     // Bind function queryUpdate to this component's state. Required because updateQuery
@@ -47,6 +49,31 @@ export default class App extends Component {
   }
 
   render() {
+    if (this.state.search == 1) {
+      return (
+        <div>
+          <Results filterResults={[{
+            _id: "abc",  // mongo-generated random id for this document
+            classSub: "abc", // subject, like "PHIL" or "CS"
+            classNum: 3, // course number, like 1110
+            classTitle: "abc", // class title, like 'Introduction to Algorithms'
+            classPrereq: ["abc"], // list of pre-req classes, a string of Classes _id.
+            crossList: ["abc"], // list of classes that are crosslisted with this one, a string of Classes _id.
+            classFull: "abc", // full class title to search by, formated as 'classSub classNum: classTitle'
+            classSems: ["abc"], // list of semesters this class was offered, like ['FA17', 'FA16']
+            classProfessors: ["abc"], //list of professors that have taught the course over past semesters
+            classRating: "abc", // the average class rating from reviews
+            classRatingColor: "abc", //color to indicate rating level
+            classWorkload: "abc", // the average workload rating from reviews
+            classWorkloadColor: "abc", //color to indicate workload level
+            classDifficulty: "abc", // the average difficulty rating from reviews
+            classDifficultyColor: "abc", //color to indicate difficulty level
+            classGrade: "abc" // the average grade from reviews
+
+          }]} />
+        </div>
+      );
+    }
     return (
       <div className="container-fluid full-height background-gradient">
 

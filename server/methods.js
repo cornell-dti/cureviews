@@ -4,7 +4,7 @@ import { check, Match } from 'meteor/check';
 import { Session } from 'meteor/session';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
-import {getGaugeValues} from '../imports/ui/js/CourseCard.js';
+import { getGaugeValues } from '../imports/ui/js/CourseCard.js';
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
@@ -142,49 +142,54 @@ Meteor.methods({
 
   // This updates the metrics for an individual class given its Mongo-generated id. 
   // Returns 1 if successful, 0 otherwise.
-  updateCourseMetrics : function (courseId){
+  updateCourseMetrics: function (courseId) {
     var course = Meteor.call('getCourseById', courseId)
-    if(course){
-        var reviews=Reviews.find({class: courseId }).fetch();
-        var state=getGaugeValues(reviews);
-       if( typeof state.rating == 'string' && typeof state.workload == 'string' && typeof state.diff == 'string' && typeof state.grade == 'string' )
-       {
-        Classes.update({ _id: courseId }, { $set: { classRating: state.rating, classWorkload: state.workload, 
-        classDifficulty:state.diff, classGrade:state.grade } });}
+    if (course) {
+      var reviews = Reviews.find({ class: courseId }).fetch();
+      var state = getGaugeValues(reviews);
+      if (typeof state.rating == 'string' && typeof state.workload == 'string' && typeof state.diff == 'string' && typeof state.grade == 'string') {
+        Classes.update({ _id: courseId }, {
+          $set: {
+            classRating: state.rating, classRatingColor: state.ratingColor,
+            classWorkload: state.workload, classWorkLoadColor: state.workloadColor,
+            classDifficulty: state.diff, classDifficultyColor: state.diffColor, classGrade: state.grade
+          }
+        });
+      }
 
-        return 1;
-      
+      return 1;
+
     }
-    else{
+    else {
       return 0;
     }
 
-    },
+  },
 
-    // Used to update the review metrics for all courses
-    //in the database.
-    updateMetricsForAllCourses: function (){
-      var courses=Classes.find().fetch();
-      courses.forEach(function(course){
-        Meteor.call("updateCourseMetrics", course._id);
-      });
-    },
+  // Used to update the review metrics for all courses
+  //in the database.
+  updateMetricsForAllCourses: function () {
+    var courses = Classes.find().fetch();
+    courses.forEach(function (course) {
+      Meteor.call("updateCourseMetrics", course._id);
+    });
+  },
 
-    // Returns courses with the given parameters.
-    // Takes in a dictionary object of field names
-    // and the desired value, i.e. 
-    // {"classRating":"4.4",
-    //  "classGrade":"A-" }
-    // Returns an empty array if no classes match.
-    getCoursesByFilters: function(parameters){
-      var courses=[];
-      var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      for(var key in dict){
-        if(!regex.test(key) || regex.test(parameters[key])) return courses;
-      }
-      courses=Classes.find(parameters).fetch();
-      return courses;
-    },
+  // Returns courses with the given parameters.
+  // Takes in a dictionary object of field names
+  // and the desired value, i.e. 
+  // {"classRating":"4.4",
+  //  "classGrade":"A-" }
+  // Returns an empty array if no classes match.
+  getCoursesByFilters: function (parameters) {
+    var courses = [];
+    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    for (var key in dict) {
+      if (!regex.test(key) || regex.test(parameters[key])) return courses;
+    }
+    courses = Classes.find(parameters).fetch();
+    return courses;
+  },
 
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
@@ -305,12 +310,12 @@ Meteor.methods({
     }
     return null;
   },
-  
+
   //Returns true if user matching "netId" is an admin
   userIsAdmin: function (netId) {
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     user = Meteor.call('getUserByNetId', netId)
-    if (user){
+    if (user) {
       return user.privilege == "admin";
     }
     return false;
@@ -466,14 +471,14 @@ Meteor.methods({
       // console.log(emailBeforeAt);
       // console.log(netid);
       const valid_email = emailBeforeAt == netid;
-      
+
       return valid_email;
 
     } catch (e) {
       console.log(e);
       return false;
     }
-    
+
   },
   /**
    * Used in the .catch when verify is used, handles whatever should be done
