@@ -2,12 +2,12 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
-import Login              from '../imports/ui/Login.jsx';
-import ClassView          from '../imports/ui/ClassView.jsx';
-import App                from '../imports/ui/App.jsx';
-import AuthRedirect       from '../imports/ui/AuthRedirect.jsx';
+import Login from '../imports/ui/Login.jsx';
+import ClassView from '../imports/ui/ClassView.jsx';
+import App from '../imports/ui/App.jsx';
 
 import { BrowserRouter, Route } from "react-router-dom";
+import { Results } from '../imports/ui/Results.jsx';
 
 /*
 Generates appliation component sent to the client side entry point (main.html)
@@ -21,10 +21,10 @@ Meteor.startup(() => {
     render(
         <BrowserRouter>
             <div className="container-fluid full-height noLeftRightPadding">
-                <Route name="app" exact path="/" component={ App } />
-                <Route name="admin" exact path="/admin" component={ Login } />
-                <Route name="permalink" exact path="/course/:subject/:number" component={ ClassView } />
-                <Route name="auth" exact path="/auth" component={ AuthRedirect } />
+                <Route name="app" exact path="/" component={App} />
+                <Route name="admin" exact path="/admin" component={Login} />
+                <Route name="permalink" exact path="/course/:subject/:number" component={ClassView} />
+                <Route name="permalink" exact path="/results" component={Results} />
             </div>
         </BrowserRouter>,
         document.getElementById('render-target')
