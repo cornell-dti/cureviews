@@ -24,6 +24,7 @@ Meteor.startup(() => {
                 <Route name="app" exact path="/" component={App} />
                 <Route name="admin" exact path="/admin" component={Login} />
                 <Route name="permalink" exact path="/course/:subject/:number" component={ClassView} />
+                <Route name="auth" exact path="/auth" component={ AuthRedirect } />
                 <Route name="permalink" exact path="/results" component={Results} />
             </div>
         </BrowserRouter>,

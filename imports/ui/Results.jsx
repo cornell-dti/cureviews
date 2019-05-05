@@ -5,6 +5,7 @@ import { CollectionName } from '../api/dbDefs.js';
 import "./css/Results.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import SearchBar from './SearchBar.jsx';
+import ResultsDisplay from './ResultsDisplay.jsx';
 
 
 /*
@@ -23,8 +24,9 @@ import SearchBar from './SearchBar.jsx';
 export class Results extends Component {
   constructor(props) {
     super(props);
+    _isMounted = false;
     this.state = {
-      courseList: this.props.filterResults,
+      courseList: [],
       query: '',
     };
 
@@ -39,27 +41,22 @@ export class Results extends Component {
     Session.set('querySession', this.state.query);
   }
 
-
-
-  //TODO: mount component. How do I get component to load? Is Search calling it?
-  //props as list of course objects
-
-  //What exactly am I receiving from the filter search? list of Course objects
-
-  componentWillMount() {
-
-    Meteor.call("getCourseByFilters", {
-      "classRating": "4.4",
-      "classGrade": "A-"
+  componentDidMount() {
+    this._isMounted = true;
+    Meteor.call("getCoursesByFilters", {
+      classRating: 4.5
     }, (err, courseList) => {
-      if (!err && courseList) {
+      if (!err && courseList.length != 0 && this._isMounted) {
         // Save the Class object that matches the request
         this.setState({
           courseList: courseList
         });
+        console.log("yes");
+        console.log(this.state.courseList);
       }
       else {
         // No class matches the request.
+        console.log(courseList);
         console.log("no");
         console.log(this.state.courseList);
         // this.setState({
@@ -83,48 +80,47 @@ export class Results extends Component {
       classDoesntExist: false,
       query: '',
     };
-    this.componentWillMount()
+    this.componentDidMount()
   }
 
-  renderResults() {
-    return this.state.courseList.map((result, index) => (
-      <FilteredResult key={index} course={result} />
-    ));
-
+  componentWillUnmount() {
+    this._isMounted = false;
   }
-
 
   render() {
-    return (
-      <div className="container-fluid container-top-gap-fix">
-        <div className="row navbar">
-          <div className="col-md-2 col-sm-2 col-xs-2">
-            <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-              <span>CU Reviews</span>
-            </a>
+    var content = null;
+    if (this.state.courseList.length != 0) {
+      content = (
+        <div className="container-fluid container-top-gap-fix">
+          <div className="row navbar">
+            <div className="col-md-2 col-sm-2 col-xs-2">
+              <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+                <span>CU Reviews</span>
+              </a>
+            </div>
+            <div className="col-md-7 col-sm-7 col-xs-7">
+              <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+            </div>
+            <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
+              {/*<a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>*/}
+              Report a Bug (inactive)
+            </div>
           </div>
-          <div className="col-md-7 col-sm-7 col-xs-7">
-            <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+
+          <div className="row">
+            <div className="col-md-12 col-sm-12 col-xs-12">
+              <p>We found <b>{this.state.courseList.length}</b> courses</p>
+            </div>
           </div>
-          <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
-            <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
-          </div>
+          <ResultsDisplay courses={this.state.courseList} />
         </div>
-
-
-        <section>
-          <legend className="subheader">Here's what we found for Information Science with a rating of average</legend>
-          {/* <div className="panel panel-default" id="reviewpanel"> */}
-          <div id="results">
-            <ul>
-
-              {this.renderResults()}
-            </ul>
-          </div>
-          {/* </div> */}
-        </section>
+      );
+    }
+    return (
+      <div>
+        {content}
       </div>
-    );
+    )
   }
 }
 
@@ -133,9 +129,6 @@ export class Results extends Component {
 // Be sure to include any collections obtained from withTracker!
 
 // describe props
-Results.propTypes = {
-  filterResults: PropTypes.array.isRequired
-};
 
 // If the component needs to access data from the database, it must be wrapped
 // inside a container that can subscribe to a meteor collection.
