@@ -17,13 +17,13 @@ Meteor.methods({
   // Upon success returns 1, else returns 0.
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
-    if(token == undefined){
+    if (token == undefined) {
       console.log("Token was undefined in insert")
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
     const insertUserCall = Meteor.call('insertUser', ticket);
-    if (ticket.hd === "cornell.edu"){
+    if (ticket.hd === "cornell.edu") {
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null && review.memberReferral !== null) {
         var fullReview = {
           text: review.text,
@@ -53,11 +53,11 @@ Meteor.methods({
         console.log("Some review values are null")
         return 0; //fail
       }
-    } else{
+    } else {
       console.log("Error: non-Cornell email attempted to insert review")
       return 0;
     }
-    
+
   },
 
   //Inserts a new user into the Users collection.
@@ -65,8 +65,8 @@ Meteor.methods({
   insertUser: function (googleObject) {
     //Check user object has all required fields
     if (googleObject.given_name != null
-          && googleObject.family_name != null
-          && googleObject.email.replace("@cornell.edu", "") != null) {
+      && googleObject.family_name != null
+      && googleObject.email.replace("@cornell.edu", "") != null) {
       var newUser = {
         firstName: googleObject.given_name,
         lastName: googleObject.family_name,
@@ -77,7 +77,7 @@ Meteor.methods({
       };
 
       const user = Meteor.call('getUserByNetId', googleObject.email.replace("@cornell.edu", ""));
-      if(user == null){
+      if (user == null) {
         try {
           //check(newUser, Users);
           Students.insert(newUser);
@@ -88,7 +88,7 @@ Meteor.methods({
         }
       }
       return 1; //No need to add user again
-      
+
 
     }
     else {
@@ -283,24 +283,16 @@ Meteor.methods({
   },
 
   //Returns true if user matching "netId" is an admin
-<<<<<<< HEAD
-  userIsAdmin: function (netId) {
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    user = Meteor.call('getUserByNetId', netId)
-    if (user) {
-      return user.privilege == "admin";
-=======
   tokenIsAdmin: function (token) {
     // console.log("This is token in tokenIsAdmin");
     // console.log(token);
-    if (token != undefined){
+    if (token != undefined) {
       const ticket = Meteor.call('getVerificationTicket', token);
       // console.log(ticket);
       const user = Meteor.call('getUserByNetId', ticket.email.replace("@cornell.edu", ""));
-      if (user){
+      if (user) {
         return user.privilege === "admin";
       }
->>>>>>> a30c2f7e870b8631531d88015aa6eb0e2213573d
     }
     console.log("Token is undefined at tokenIsAdmin")
     return false;
@@ -457,7 +449,7 @@ Meteor.methods({
    */
   getVerificationTicket: async function (token) {
     try {
-      if(token == undefined){
+      if (token == undefined) {
         console.log("Token was undefined in getVerificationTicket")
         return 0; // Token was undefined
       }
