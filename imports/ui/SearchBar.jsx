@@ -124,7 +124,7 @@ export class SearchBar extends Component {
     
     return (
       <div className="search-bar text-left" id="searchbar" >
-        <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
+        <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autocomplete="off"/>
         <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderCourses()}
         </ul>
