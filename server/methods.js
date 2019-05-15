@@ -18,7 +18,7 @@ Meteor.methods({
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
     if (token == undefined) {
-      console.log("Token was undefined in insert")
+      console.log("Error: Token was undefined in insert");
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
@@ -41,20 +41,19 @@ Meteor.methods({
         try {
           //check(fullReview, Reviews);
           Reviews.insert(fullReview);
-          console.log("Succesfully submitted review")
+          console.log("Success: Submitted review");
           return 1; //success
         } catch (error) {
           console.log(error)
           return 0; //fail
         }
       } else {
-        //error handling
-        console.log("Some review values are null")
+        console.log("Error: Some review values are null");
         return 0; //fail
       }
     } else {
-      console.log("Error: non-Cornell email attempted to insert review")
-      return 0;
+      console.log("Error: non-Cornell email attempted to insert review");
+      return 0; //fail
     }
 
   },

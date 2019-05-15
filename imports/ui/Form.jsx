@@ -62,6 +62,7 @@ export default class Form extends Component {
     this.handleProfChange.bind(this)
     this.toggleDropdown.bind(this)
     this.submitReview = this.submitReview.bind(this)
+    this.submitError = this.submitError.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
   }
@@ -163,7 +164,7 @@ export default class Form extends Component {
     }
   }
   
-  submitReview(){
+  submitReview(response){
     // call the api insert function
     Meteor.call('insert', Session.get("token"), this.state.review, this.props.course._id, (error, result) => {
       // if (!error && result === 1) {
@@ -182,9 +183,16 @@ export default class Form extends Component {
       } else {
         // error, alert user
         console.log(error);
+        Bert.alert("An unknown error occured, please try again.", "danger");
         this.setState({message: "A error occurred. Please try again."});
+        this.hide();
       }
     });
+  }
+  
+  submitError(){
+    this.hide();
+    Bert.alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
   }
 
   // Validation function. Checks if the median are filled out,
@@ -394,9 +402,9 @@ export default class Form extends Component {
                 </p>
                 <CUreviewsGoogleLogin 
                       executeLogin={this.state.visible}
-                      waitTime="1000"  
+                      waitTime="3000"  
                       onSuccessFunction={this.submitReview}
-                      onFailureFunction={this.responseGoogle} />
+                      onFailureFunction={this.submitError} />
               </div>
             </div>
             
