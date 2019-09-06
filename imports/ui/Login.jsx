@@ -1,9 +1,11 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
 import Admin from './Admin.jsx';
+import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import "./css/Login.css";
+import { Session } from 'meteor/session';
 
 /*
   Admin Interface Login Component.
@@ -24,58 +26,22 @@ export default class Login extends Component {
     // user's input password and its validation state.
     this.state = {
       pass: "",
-      validated: false,
       message: ""
     };
 
     this.defaultState = this.state;
+    this.changeSession = this.changeSession.bind(this)
   }
 
-  // Save the user input text from the text box in the local state.
-  // Called whenever the input element changes to trigger re-render.
-  handlePassChange(event) {
-    this.setState({ pass: event.target.value });
-  }
-
-  // Handle a form submission to compare the user input to the password
-  // stored in the local database. If the validation passes, changed the
-  // local state 'validated' to true, otherwise, give an error message.
-  handleSubmit(event) {
-    // pause auto-submit
-    event.preventDefault();
-
-    //ensure all fields are filled out
-    var pass = this.state.pass.trim();
-    if (pass.length > 0 && pass !== null && this.validateInputs(pass)) {
-      // call the vailidate funtion
-      Meteor.call('vailidateAdmin', pass, (error, result) => {
-        if (!error && result==1) {
-          // Success, set 'validate' in local state
-          newState = {
-            pass: "",
-            validated: true
-          };
-          this.setState(newState);
-        } else {
-          // otherwise, clear the input and send error message.
-          this.setState(this.defaultState);
-          this.setState({message: "Incorrect Password"});
-        }
-      });
-    }
-  }
-
-  // Check if the provided password is a valid string and not malicious to
-  // the database.
-  validateInputs(text) {
-    // ensure there are no illegal characters
-    var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i)
-    return regex.test(text);
+  changeSession(){
+    console.log("Change session");
+    Session.set("adminlogin", true);
+    this.setState({"pass" : "two"});
   }
 
   render() {
     // if password was valid, show admin interface, otherwise ask for the password.
-    if (this.state.validated) {
+    if (Session.get("adminlogin") === true) {
       return (
         <Admin />
       );
@@ -85,15 +51,14 @@ export default class Login extends Component {
           <div className="pushDown">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">Enter Admin Password</h3>
+                <h3 className="panel-title">Please wait to be authenticated</h3>
               </div>
               <div className="panel-body">
-                <form onSubmit={this.handleSubmit.bind(this)} >
-                  <div className="input-group fullInput">
-                    <input type="text" className="form-control" ref="input" value={this.state.pass} onChange={(event) => this.handlePassChange(event)} />
-                  </div>
-                  <div>{this.state.message}</div>
-                </form>
+                <CUreviewsGoogleLogin 
+                      executeLogin={true} 
+                      waitTime="1500"
+                      onSuccessFunction={this.changeSession}
+                      onFailureFunction={this.responseGoogle} />
               </div>
             </div>
           </div>

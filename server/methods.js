@@ -2,8 +2,10 @@ import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
-import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
+import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 /* # Meteor Methods
    # Client-side code in meteor is not allowed direct access to the local database
    # (this makes it easier to keep the backend secure from outside users).
@@ -13,33 +15,85 @@ import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/db
 Meteor.methods({
   // insert a new review into the reviews collection.
   // Upon success returns 1, else returns 0.
-  insert: function (review, classId) {
+  insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
-    if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
-      var fullReview = {
-        text: review.text,
-        difficulty: review.diff,
-        rating: review.rating,
-        workload: review.workload,
-        class: classId,
-        date: new Date(),
-        visible: 0,
-        reported: 0,
-        professors: review.professors,
-        likes: 0,
-      };
+    if(token == undefined){
+      console.log("Token was undefined in insert")
+      return 0; // Token was undefined
+    }
+    const ticket = Meteor.call('getVerificationTicket', token);
+    const insertUserCall = Meteor.call('insertUser', ticket);
+    if (ticket.hd === "cornell.edu"){
+      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null && review.memberReferral !== null) {
+        var fullReview = {
+          text: review.text,
+          difficulty: review.diff,
+          rating: review.rating,
+          workload: review.workload,
+          class: classId,
+          date: new Date(),
+          visible: 0,
+          reported: 0,
+          professors: review.professors,
+          likes: 0,
+          memberReferral: review.memberReferral,
+        };
 
-      try {
-        //check(fullReview, Reviews);
-        Reviews.insert(fullReview);
-        return 1; //success
-      } catch (error) {
-        console.log(error)
+        try {
+          //check(fullReview, Reviews);
+          Reviews.insert(fullReview);
+          console.log("Succesfully submitted review")
+          return 1; //success
+        } catch (error) {
+          console.log(error)
+          return 0; //fail
+        }
+      } else {
+        //error handling
+        console.log("Some review values are null")
         return 0; //fail
       }
-    } else {
+    } else{
+      console.log("Error: non-Cornell email attempted to insert review")
+      return 0;
+    }
+    
+  },
+
+  //Inserts a new user into the Users collection.
+  //Upon success returns 1, else returns 0
+  insertUser: function (googleObject) {
+    //Check user object has all required fields
+    if (googleObject.given_name != null
+          && googleObject.family_name != null
+          && googleObject.email.replace("@cornell.edu", "") != null) {
+      var newUser = {
+        firstName: googleObject.given_name,
+        lastName: googleObject.family_name,
+        netId: googleObject.email.replace("@cornell.edu", ""),
+        affiliation: null,
+        token: null,
+        privilege: "regular"
+      };
+
+      const user = Meteor.call('getUserByNetId', googleObject.email.replace("@cornell.edu", ""));
+      if(user == null){
+        try {
+          //check(newUser, Users);
+          Students.insert(newUser);
+          return 1; //success
+        } catch (error) {
+          console.log(error)
+          return 0; //fail
+        }
+      }
+      return 1; //No need to add user again
+      
+
+    }
+    else {
       //error handling
-      console.log("Some review values are null")
+      console.log("Some user values are null")
       return 0; //fail
     }
   },
@@ -78,10 +132,11 @@ Meteor.methods({
 
   // Make this reveiw visible to everyone (ex: un-report a review)
   // Upon succcess, return 1, else 0.
-  makeVisible: function (review) {
+  makeVisible: function (review, token) {
     // check: make sure review id is valid and non-malicious
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(review._id)) {
+    if (regex.test(review._id) && userIsAdmin) {
       Reviews.update(review._id, { $set: { visible: 1 } });
       return 1;
     } else {
@@ -91,10 +146,11 @@ Meteor.methods({
 
   // Delete this review from the local database.
   // Upon succcess, return 1, else 0.
-  removeReview: function (review) {
+  removeReview: function (review, token) {
     // check: make sure review id is valid and non-malicious
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(review._id)) {
+    if (regex.test(review._id) && userIsAdmin) {
       Reviews.remove({ _id: review._id });
       return 1;
     } else {
@@ -108,19 +164,20 @@ Meteor.methods({
   // Then, call a second function to link crosslisted courses, so reviews
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page once a semester.
-  addNewSemester: function (initiate) {
-    // ensure code is running on the server, not client
-    if (initiate && Meteor.isServer) {
-      console.log("updating new semester");
-      const val = addAllCourses(findCurrSemester());
-      if (val) {
-        return addCrossList();
-      } else {
-        console.log("fail");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // addNewSemester: function (initiate) {
+  //   // ensure code is running on the server, not client
+  //   if (initiate && Meteor.isServer) {
+  //     console.log("updating new semester");
+  //     const val = addAllCourses(findCurrSemester());
+  //     if (val) {
+  //       return addCrossList();
+  //     } else {
+  //       console.log("fail");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   // Update the local database by linking crosslisted courses, so reviews
   // from all "names" of a class are visible under each course.
@@ -139,73 +196,106 @@ Meteor.methods({
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page ONLY ONCE during database
   // initialization.
-  addAll: function (initiate) {
-    // ensure code is running on the server, not the client
-    if (initiate && Meteor.isServer) {
-      Classes.remove({});
-      Subjects.remove({});
-      const val = addAllCourses(findAllSemesters());
-      if (val) {
-        return addCrossList();
-      } else {
-        console.log("fail");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // addAll: function (initiate) {
+  //   // ensure code is running on the server, not the client
+  //   if (initiate && Meteor.isServer) {
+  //     Classes.remove({});
+  //     Subjects.remove({});
+  //     const val = addAllCourses(findAllSemesters());
+  //     if (val) {
+  //       return addCrossList();
+  //     } else {
+  //       console.log("fail");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   /* Update the database so we have the professors information.
   This calls updateProfessors in dbInit
   NOTE: We are temporarily not updating any professors for classes inspect
   'SU14','SU15','SU16','SU17','SU18', 'FA18', 'WI18'*/
-  setProfessors: function (initiate) {
-    if (initiate && Meteor.isServer) {
-      var semesters = findAllSemesters();
-      // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
-      var toRemove = ['SU18', 'FA18', 'WI18']
-      toRemove.forEach(function (sem) {
-        var index = semesters.indexOf(sem);
-        if (index > -1) {
-          semesters.splice(index, 1);
-        }
-      })
-      console.log("These are the semesters");
-      console.log(semesters);
-      const val = updateProfessors(semesters);
-      if (val) {
-        return val;
-      } else {
-        console.log("fail at setProfessors in method.js");
-        return 0;
-      }
-    }
-  },
+  // TODO uncomment
+  // setProfessors: function (initiate) {
+  //   if (initiate && Meteor.isServer) {
+  //     var semesters = findAllSemesters();
+  //     // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
+  //     var toRemove = ['SU18', 'FA18', 'WI18']
+  //     toRemove.forEach(function (sem) {
+  //       var index = semesters.indexOf(sem);
+  //       if (index > -1) {
+  //         semesters.splice(index, 1);
+  //       }
+  //     })
+  //     console.log("These are the semesters");
+  //     console.log(semesters);
+  //     const val = updateProfessors(semesters);
+  //     if (val) {
+  //       return val;
+  //     } else {
+  //       console.log("fail at setProfessors in method.js");
+  //       return 0;
+  //     }
+  //   }
+  // },
 
   /* Initializes the classProfessors field in the Classes collection to an empty array so that
   we have a uniform empty array to fill with updateProfessors
   This calls the resetProfessorArray in dbInit
   NOTE: We are temporarily not updating any professors for classes inspect
   'SU18', 'FA18', 'WI18'*/
-  resetProfessors: function (initiate) {
-    if (initiate && Meteor.isServer) {
-      var semesters = findAllSemesters();
-      var toRemove = ['SU18', 'FA18', 'WI18']
-      toRemove.forEach(function (sem) {
-        var index = semesters.indexOf(sem);
-        if (index > -1) {
-          semesters.splice(index, 1);
-        }
-      })
-      console.log("These are the semesters");
-      console.log(semesters);
-      const val = resetProfessorArray(semesters);
-      if (val) {
-        return val;
-      } else {
-        console.log("fail at resetProfessors in method.js");
-        return 0;
+  // TODO uncomment
+  // resetProfessors: function (initiate) {
+  //   if (initiate && Meteor.isServer) {
+  //     var semesters = findAllSemesters();
+  //     var toRemove = ['SU18', 'FA18', 'WI18']
+  //     toRemove.forEach(function (sem) {
+  //       var index = semesters.indexOf(sem);
+  //       if (index > -1) {
+  //         semesters.splice(index, 1);
+  //       }
+  //     })
+  //     console.log("These are the semesters");
+  //     console.log(semesters);
+  //     const val = resetProfessorArray(semesters);
+  //     if (val) {
+  //       return val;
+  //     } else {
+  //       console.log("fail at resetProfessors in method.js");
+  //       return 0;
+  //     }
+  //   }
+  // },
+
+  //Get a user with this netId from the Users collection in the local database
+  getUserByNetId: function (netId) {
+    // console.log("This is user in getUserByNetId");
+    // console.log(netId);
+    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(netId)) {
+      var user = Students.find({ netId: netId }).fetch()[0];
+      // console.log("This is user object");
+      // console.log(user);
+      return user;
+    }
+    return null;
+  },
+  
+  //Returns true if user matching "netId" is an admin
+  tokenIsAdmin: function (token) {
+    // console.log("This is token in tokenIsAdmin");
+    // console.log(token);
+    if (token != undefined){
+      const ticket = Meteor.call('getVerificationTicket', token);
+      // console.log(ticket);
+      const user = Meteor.call('getUserByNetId', ticket.email.replace("@cornell.edu", ""));
+      if (user){
+        return user.privilege === "admin";
       }
     }
+    console.log("Token is undefined at tokenIsAdmin")
+    return false;
   },
 
   // Get a course with this course_id from the Classes collection in the local database.
@@ -303,14 +393,15 @@ Meteor.methods({
   printOnServer: function (text) {
     console.log(text);
   },
-  //TODO: find the user identified by userID, and save the given token
-  saveUserToken: function (userId, token) {
 
-  },
+
   //TODO: invalidate this user's token by deleting it
   removeToken: function (userId) {
 
   },
+
+
+
   // Validate admin password.
   // Upon success, return 1, else return 0.
   vailidateAdmin: function (pass) {
@@ -324,7 +415,76 @@ Meteor.methods({
     } else {
       return 0;
     }
+  },
+
+  /**
+   * Returns true if [netid] matches the netid in the email of the JSON
+   * web token. False otherwise.
+   * This method authenticates the user token through the Google API.
+   * @param token: google auth token
+   * @param netid: netid to verify
+   * @requires that you have a handleVerifyError, like as follows:
+   * verify(token, function(){//do whatever}).catch(function(error){
+   * handleVerifyError(error, res);
+   */
+  getVerificationTicket: async function (token) {
+    try {
+      if(token == undefined){
+        console.log("Token was undefined in getVerificationTicket")
+        return 0; // Token was undefined
+      }
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      });
+      return ticket.getPayload();
+      // console.log(ticket);
+      const payload = ticket.getPayload();
+      //The REST API uses payloads to pass and return data structures too large to be handled as parameters
+      //The term 'payload' is used to distinguish it as the 'interesting' 
+      //information in a chunk of data or similar from the overhead to support it
+      const { email } = payload;
+
+      //parse out the netid from email to verify it is the same as the netid 
+      //passed in (similar to research connect)
+      const emailBeforeAt = email.replace((`@${payload.hd}`), '');
+      // console.log(emailBeforeAt);
+      // console.log(netid);
+      const valid_email = emailBeforeAt == netid;
+      
+      return valid_email;
+
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+    
+  },
+  /**
+   * Used in the .catch when verify is used, handles whatever should be done
+   * @param errorObj (required) the error that is returned from the .catch
+   * @param res the response object
+   * @return {boolean} true if their token is too old, false if some other error
+   * @requires that you have the verify function, like as follows:
+   * verify(token, function(){//do whatever}).catch(function(error){
+   *        handleVerifyError(error, res);
+   * }
+   */
+  handleVerifyError: function (errorObj, res) {
+    if (errorObj && errorObj.toString()) {
+      if (errorObj.toString().indexOf('used too late') !== -1) {
+        res.status(409).send('Token used too late');
+        return true;
+      }
+
+      res.status(409).send('Invalid token');
+      return true;
+    }
+    return false;
   }
+
 });
 
 // Recreation of Python's defaultdict to be used in topSubjects method
@@ -338,3 +498,12 @@ function defaultDict() {
     }
   }
 };
+
+// helper function
+function isJSON(str) {
+  try {
+    return (JSON.parse(str) && !!str);
+  } catch (e) {
+    return false;
+  }
+}

@@ -57,7 +57,7 @@ export function getGaugeValues(allReviews) {
   allReviews.forEach(function(review) {
     // console.log("rating: " + review["rating"]);
     // console.log("quality: " + review["quality"]);
-    console.log("work: " + review["workload"]);
+    // console.log("work: " + review["workload"]);
 
     countRatingAndDiff++;
     sumDiff += review["difficulty"];
@@ -73,7 +73,7 @@ export function getGaugeValues(allReviews) {
       sumWork += Number(review["workload"]);
     }
     
-    if (review["grade"] != undefined) {
+    if (review["grade"] != undefined && review["grade"] > 0) {
       countGrade++;
       sumGrade += Number(review["grade"]);
     }
@@ -92,7 +92,7 @@ export function getGaugeValues(allReviews) {
   
 
   if (sumGrade > 0) {
-    newState.gradeNum = Math.floor(sumGrade/countGrade); //out of 5
+    newState.gradeNum = Math.round(sumGrade/countGrade); //out of 5
   } else {
     newState.gradeNum = 0;
   }

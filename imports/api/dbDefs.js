@@ -29,14 +29,16 @@ Classes.schema = new SimpleSchema({
 /* # Users collection.
    # Holds data about each user. Data is collected via Cornell net-id login.
 */
-export const Users = new Mongo.Collection('users');
-Users.schema = new SimpleSchema({
+
+export const Students = new Mongo.Collection('students');
+Students.schema = new SimpleSchema({
     _id: { type: String }, // mongo-generated random id for this document
     firstName: { type: String }, // user first name
     lastName: { type: String }, // user last name
     netId: { type: String }, // user netId
     affiliation: { type: String }, // user affliaition, like ENG or A&S
-    token: { type: String } // random token generated during login process
+    token: { type: String }, // random token generated during login process
+    privilege: { type: String } // user privilege level
 });
 
 /* # Subjects Collection
@@ -69,6 +71,7 @@ Reviews.schema = new SimpleSchema({
     reported: { type: Number }, // reported flag - 1 if review was reported, 0 otherwise
     professors: { type: [String] }, //list of professors that have thought the course over past semesters
     likes: { type: Number, min: 0 }, //number of likes a review has
+    memberReferral: { type: String, optional: true }, // DTI member referral for review contest
 });
 
 /* # Validation Collection.
