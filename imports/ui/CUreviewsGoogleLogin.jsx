@@ -40,12 +40,15 @@ export default class CUreviewsGoogleLogin extends Component {
     token = response.tokenId;
     if (token){
       if (this.saveToken(token) === 1){
-        console.log("Succesfully saved token to session");
+        // console.log("Succesfully saved token to session");
       } else{
         console.log("Error saving token");
       }
       this.setState({lastVerification : new Date().getTime()});
-      this.props.onSuccessFunction();
+      this.props.onSuccessFunction(response);
+    }
+    else{
+      this.props.onFailureFunction(response);
     }
     
   }
