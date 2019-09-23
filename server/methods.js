@@ -18,22 +18,13 @@ Meteor.methods({
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
     if (token == undefined) {
-<<<<<<< HEAD
-      console.log("Token was undefined in insert")
-=======
       console.log("Error: Token was undefined in insert");
->>>>>>> dev
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
     const insertUserCall = Meteor.call('insertUser', ticket);
-<<<<<<< HEAD
-    if (ticket.hd === "cornell.edu") {
-      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null && review.memberReferral !== null) {
-=======
     if (ticket.hd === "cornell.edu"){
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
->>>>>>> dev
         var fullReview = {
           text: review.text,
           difficulty: review.diff,
@@ -61,13 +52,8 @@ Meteor.methods({
         return 0; //fail
       }
     } else {
-<<<<<<< HEAD
-      console.log("Error: non-Cornell email attempted to insert review")
-      return 0;
-=======
       console.log("Error: non-Cornell email attempted to insert review");
       return 0; //fail
->>>>>>> dev
     }
 
   },
