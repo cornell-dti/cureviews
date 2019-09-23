@@ -40,7 +40,7 @@ export default class Form extends Component {
       type: 'success' // color styling
     };
 
-    //store all currently selected form values in the state.    
+    //store all currently selected form values in the state.
     this.state = {
       dropdown: '', //empty as opposed to 'open'
       visible: false,
@@ -53,17 +53,16 @@ export default class Form extends Component {
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
-      review: {},
-      teamMemberReferral: {"value" : "Not Applicable", "label" : "Not Applicable"}
+      review: {}
       // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
     this.handleProfChange.bind(this)
-    this.handleReferralChange.bind(this)
     this.toggleDropdown.bind(this)
     this.submitReview = this.submitReview.bind(this)
+    this.submitError = this.submitError.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
   }
@@ -79,7 +78,7 @@ export default class Form extends Component {
   handleRatingChange(event) {
     this.setState({ rating: parseInt(event.target.value) });
   }
-  
+
   // Save the current user selected value for difficulty in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleDiffChange(event) {
@@ -96,14 +95,7 @@ export default class Form extends Component {
   // Called whenever this form element changes to trigger re-render to run validation.
   handleProfChange(selectedProfessors){
     // console.log(selectedProfessors.map(professor => {return professor.label}))
-    this.setState({ selectedProfessors: selectedProfessors });    
-    this.pushReviewsDown(this.state.dropdown);
-  }
-
-  // Save the current team selected in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleReferralChange(teamMember){
-    this.setState({ teamMemberReferral: teamMember });    
+    this.setState({ selectedProfessors: selectedProfessors });
     this.pushReviewsDown(this.state.dropdown);
   }
 
@@ -155,8 +147,7 @@ export default class Form extends Component {
     var diff = this.state.diff;
     var work = this.state.workload;
     var prof = this.state.selectedProfessors.map(professor => {return professor.label});
-    var teamMemberReferral = this.state.teamMemberReferral.value;
-    if (text.length > 0 
+    if (text.length > 0
       && text !== null
       && prof !== []) {
         // create new review object
@@ -166,17 +157,14 @@ export default class Form extends Component {
           diff: diff,
           workload: work,
           professors: prof,
-          memberReferral: teamMemberReferral,
         };
-        
         this.setState({"review" : newReview})
         
         this.show();
-        
     }
   }
   
-  submitReview(){
+  submitReview(response){
     // call the api insert function
     Meteor.call('insert', Session.get("token"), this.state.review, this.props.course._id, (error, result) => {
       // if (!error && result === 1) {
@@ -186,7 +174,6 @@ export default class Form extends Component {
         ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
         ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
         ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
-        ReactDOM.findDOMNode(this.refs.referralSelect).value = "Not Applicable";
         this.toggleDropdown(); //Close the review dropdown when page loads
     
         this.setState(this.defaultState);
@@ -196,9 +183,16 @@ export default class Form extends Component {
       } else {
         // error, alert user
         console.log(error);
+        Bert.alert("An unknown error occured, please try again.", "danger");
         this.setState({message: "A error occurred. Please try again."});
+        this.hide();
       }
     });
+  }
+  
+  submitError(){
+    this.hide();
+    Bert.alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
   }
 
   // Validation function. Checks if the median are filled out,
@@ -223,33 +217,20 @@ export default class Form extends Component {
       var profOptions = []
       for(var prof in this.props.course.classProfessors){
         var professorName = this.props.course.classProfessors[prof]
-        
+
         profOptions.push({
           "value" : professorName,
-          "label" : professorName 
+          "label" : professorName
         })
       }
       return profOptions
     }
   }
 
-  // returns available DTI review team options
-  getTeamOptions() {
-    var teams = ["Not Applicable", "Alexa Bren", "Aram Baghdassarian", "Ashneel Das", "Ayesha Gagguturi", "Andrew Gao", "Andrew Yates", "Adam Masters", "Ashley Ticzon", "Ashrita Raman", "Joaquin Amante", "Amanda Ong", "Boon Palipatana", "Bryan Graeser", "Cedric Castillo", "Dray Farley", "Connie Lei", "Dhruv Baijal", "David Chu", "Emily Chan", "Evan Welsh", "Flora Liu", "Gleni Kodra", "Ishika Jain", "Jagger Brulato", "Jesse Mansoor", "Jessica Chen", "Julian Londono", "Justin Tran", "Jill Wu", "Jessica Hong", "Jessica Zhao", "Kathleen Xu", "Kaushik Ravikumar", "Kaitlyn Son", "Kathy Wang", "Lisa LaBarbera", "Laura Sizemore", "Matthew Epstein", "Matthew Barker", "Matthew Coufal", "Megan She", "Michael Xing", "Megan Yin", "Neha Rao", "Qichen Hu", "Trey Burrell", "Robert Villaluz", "Rebecca Fu", "Ronni Mok", "Ryan Slama", "Raymone Radi", "Rodrigo Taipe", "Rishitha Thambireddy", "Alice Zhou", "Shefali Agarwal", "Sanjana Seshadri", "Stacy Wei", "Sophia Wang", "Shane Yun", "Shi Chong Zhao", "Sonya Tao", "Sam Zhou", "Vivian Shiu", "Vanessa Wang", "Will Spencer", "William Evans", "Yvonne Chan", "Aiden Yeonsuk Kim", "Michelle Park", "April Ye", "Yuchang Zhou", "Yisu Zheng", "Andrew Xiao"];
-    teamOptions = [];
-    for(var teamName of teams){
-      teamOptions.push({
-        "value" : teamName,
-        "label" : teamName
-      })
-    }
-    return teamOptions;
-  }
-  
   // Return the options for median grades
   // TODO deprecate this as we are no longer collecting this metric
   getMedianOptions() {
-    
+
     const medianGrades = [
       { value: 0, label: 'I don\'t know' },
       { value: 9, label: 'A+' },
@@ -271,7 +252,7 @@ export default class Form extends Component {
        this.setState({ dropdown: nextState });
        this.pushReviewsDown(nextState);
     }
-    
+
     //Pushes down the reviews from the form depending on how long the form becomes
     //Uses the margin-bottom attribute to do this
     pushReviewsDown(formState){
@@ -289,7 +270,6 @@ export default class Form extends Component {
       }
       $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
     }
-    
     show() {
         this.setState({ visible: true });
     }
@@ -297,7 +277,6 @@ export default class Form extends Component {
      hide() {
       this.setState({ visible: false });
     }
-  
   render() {
     var theClass = this.props.course;
     // check to see if all inputs are valid. If some inputs are invalide, disable the
@@ -316,7 +295,7 @@ export default class Form extends Component {
                   <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
                 </div>
               </div>
-            
+
             </button>
             <ul id="dropdown-menu" className="dropdown-menu" ref="dropdownMenu">
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref="formElement">
@@ -325,10 +304,10 @@ export default class Form extends Component {
                             <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
                               placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
-                            <div ref="emptyMsg" className={err.textEmpty ? "" : "hidden"}>Please add text to your review!</div>
-                            <div className={err.text && this.state.text != "" ? "" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                            <div ref="emptyMsg" className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                            <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                           </div>
-                          
+
                           <hr className="divider" />
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
@@ -377,25 +356,13 @@ export default class Form extends Component {
                                   <div className="secondary-text">Professor</div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
-                                  <Select value={this.state.selectedProfessors} 
-                                    onChange={(professors) => this.handleProfChange(professors)} 
-                                    isMulti 
-                                    options={this.getProfOptions()} 
+                                  <Select value={this.state.selectedProfessors}
+                                    onChange={(professors) => this.handleProfChange(professors)}
+                                    isMulti
+                                    options={this.getProfOptions()}
                                     ref="profSelect"
                                   />
-                                  <div ref="noProfMsg" className={err.professorsEmpty ? "missing-profs" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <div className="secondary-text">Member Referred By</div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
-                                  <Select value={this.state.teamMemberReferral}
-                                    onChange={(teamMember) => this.handleReferralChange(teamMember)}  
-                                    options={this.getTeamOptions()} 
-                                    ref="referralSelect"
-                                  />
+                                  <div ref="noProfMsg" className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
                               </div>
                           </div>
                           <div className="row">
@@ -404,8 +371,8 @@ export default class Form extends Component {
                             </div>
                           </div>
                       </div>
-                      
-                  
+
+
                   <div className="row">
                       <div className="col-sm-12">
                           <h2 className="secondary-text">{this.state.message}</h2>
@@ -435,9 +402,9 @@ export default class Form extends Component {
                 </p>
                 <CUreviewsGoogleLogin 
                       executeLogin={this.state.visible}
-                      waitTime="1000"  
+                      waitTime="3000"  
                       onSuccessFunction={this.submitReview}
-                      onFailureFunction={this.responseGoogle} />
+                      onFailureFunction={this.submitError} />
               </div>
             </div>
             
