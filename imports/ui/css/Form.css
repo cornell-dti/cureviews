@@ -27,7 +27,7 @@ form {
   border-radius: 1.5px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   background-color: #4a90e2;
-  
+
 }
 
 .review-header {
@@ -56,7 +56,7 @@ form {
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
-  
+
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
@@ -220,7 +220,7 @@ input[type="range"] {
   outline: 1px solid red;
 }
 
-.missing-profs{
+.form-field-error{
   color: #FF314A;
 }
 

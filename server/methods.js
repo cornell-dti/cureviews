@@ -18,13 +18,22 @@ Meteor.methods({
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
     if (token == undefined) {
+<<<<<<< HEAD
       console.log("Token was undefined in insert")
+=======
+      console.log("Error: Token was undefined in insert");
+>>>>>>> dev
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
     const insertUserCall = Meteor.call('insertUser', ticket);
+<<<<<<< HEAD
     if (ticket.hd === "cornell.edu") {
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null && review.memberReferral !== null) {
+=======
+    if (ticket.hd === "cornell.edu"){
+      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
+>>>>>>> dev
         var fullReview = {
           text: review.text,
           difficulty: review.diff,
@@ -36,26 +45,29 @@ Meteor.methods({
           reported: 0,
           professors: review.professors,
           likes: 0,
-          memberReferral: review.memberReferral,
         };
 
         try {
           //check(fullReview, Reviews);
           Reviews.insert(fullReview);
-          console.log("Succesfully submitted review")
+          console.log("Success: Submitted review");
           return 1; //success
         } catch (error) {
           console.log(error)
           return 0; //fail
         }
       } else {
-        //error handling
-        console.log("Some review values are null")
+        console.log("Error: Some review values are null");
         return 0; //fail
       }
     } else {
+<<<<<<< HEAD
       console.log("Error: non-Cornell email attempted to insert review")
       return 0;
+=======
+      console.log("Error: non-Cornell email attempted to insert review");
+      return 0; //fail
+>>>>>>> dev
     }
 
   },
@@ -165,9 +177,10 @@ Meteor.methods({
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page once a semester.
   // TODO uncomment
-  // addNewSemester: function (initiate) {
+  // addNewSemester: function (initiate, token) {
+  // const userIsAdmin = Meteor.call('tokenIsAdmin', token);
   //   // ensure code is running on the server, not client
-  //   if (initiate && Meteor.isServer) {
+  //   if (initiate && Meteor.isServer && userIsAdmin) {
   //     console.log("updating new semester");
   //     const val = addAllCourses(findCurrSemester());
   //     if (val) {
@@ -197,9 +210,10 @@ Meteor.methods({
   // Should be called by an admin via the admin page ONLY ONCE during database
   // initialization.
   // TODO uncomment
-  // addAll: function (initiate) {
+  // addAll: function (initiate, token) {
+  //  const userIsAdmin=Meteor.call('tokenIsAdmin', token);
   //   // ensure code is running on the server, not the client
-  //   if (initiate && Meteor.isServer) {
+  //   if (initiate && Meteor.isServer && userIsAdmin) {
   //     Classes.remove({});
   //     Subjects.remove({});
   //     const val = addAllCourses(findAllSemesters());
@@ -217,8 +231,9 @@ Meteor.methods({
   NOTE: We are temporarily not updating any professors for classes inspect
   'SU14','SU15','SU16','SU17','SU18', 'FA18', 'WI18'*/
   // TODO uncomment
-  // setProfessors: function (initiate) {
-  //   if (initiate && Meteor.isServer) {
+  // setProfessors: function (initiate, token) {
+  // const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+  //   if (initiate && Meteor.isServer && userIsAdmin) {
   //     var semesters = findAllSemesters();
   //     // var toRemove = ['SU14','SU15','SU16','SU17','WI14','WI15','WI16','WI17','SU18', 'FA18', 'WI18']
   //     var toRemove = ['SU18', 'FA18', 'WI18']
@@ -246,8 +261,9 @@ Meteor.methods({
   NOTE: We are temporarily not updating any professors for classes inspect
   'SU18', 'FA18', 'WI18'*/
   // TODO uncomment
-  // resetProfessors: function (initiate) {
-  //   if (initiate && Meteor.isServer) {
+  // resetProfessors: function (initiate, token) {
+  // const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+  //   if (initiate && Meteor.isServer && userIsAdmin) {
   //     var semesters = findAllSemesters();
   //     var toRemove = ['SU18', 'FA18', 'WI18']
   //     toRemove.forEach(function (sem) {
@@ -337,10 +353,11 @@ Meteor.methods({
 
   // Un-flag a review, making it visible to everyone and "unreported"
   // To be called by an admin via the admin interface.
-  undoReportReview: function (review) {
+  undoReportReview: function (review, token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     // check: make sure review id is valid and non-malicious
     var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
-    if (regex.test(review._id)) {
+    if (regex.test(review._id) && userIsAdmin) {
       Reviews.update({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
       return 1;
     } else {
