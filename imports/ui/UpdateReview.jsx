@@ -37,7 +37,7 @@ export default class UpdateReview extends Component {
 
     // Get details about the course this review belongs to, using the courseId
     // assigned to this review.
-    var x = Meteor.call('getCourseById', props.info.class, (error, result) => {
+    Meteor.call('getCourseById', props.info.class, (error, result) => {
       if (!error) {
         this.setState({
           shortName: result.classSub.toUpperCase() + " " + result.classNum,
@@ -52,7 +52,7 @@ export default class UpdateReview extends Component {
   // Decide which buttons to show, and what action the buttons take,
   // based on the type of update (report or approval)
   renderButtons(review) {
-      var reported = review.reported;
+      const reported = review.reported;
       if (reported === 1) {
           return (
             <div className='text-right'>
@@ -72,7 +72,7 @@ export default class UpdateReview extends Component {
   }
 
   render() {
-      var review = this.props.info;
+      const review = this.props.info;
       return (
           <li id={review._id}>
             <div className="row">

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import UpdateReview from './UpdateReview.jsx';
 import "./css/Admin.css";
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
-import { createVerify } from 'crypto';
 import { Session } from 'meteor/session';
 
 /*
@@ -206,8 +204,8 @@ export class Admin extends Component {
   // Show a list of all reviews that have not been approved. Will allow admin to
   // approve or delete with the click of button.
   renderUnapprovedReviews() {
-    remFunc = this.removeReview;
-    appFunc = this.approveReview;
+    const remFunc = this.removeReview;
+    const appFunc = this.approveReview;
     return this.props.reviewsToApprove.map(function (review) {
       if (review.reported !== 1) {
         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} />;
@@ -218,9 +216,9 @@ export class Admin extends Component {
   // Show a list of all reviews that were reported. Will allow admin to approve
   // or delete with the click of button.
   renderReportedReviews() {
-    remFunc = this.removeReview;
-    appFunc = this.approveReview;
-    unRepFunc = this.unReportReview;
+    const remFunc = this.removeReview;
+    const appFunc = this.approveReview;
+    const unRepFunc = this.unReportReview;
     return this.props.reviewsToApprove.map(function (review) {
       //create a new class "button" that will set the selected class to this class when it is clicked.
       if (review.reported === 1) {
@@ -319,7 +317,7 @@ export class Admin extends Component {
       </div>
     )
 
-  };
+  }
 }
 
 // requires a list of reviews not visible to regular users
@@ -329,7 +327,7 @@ Admin.propTypes = {
 
 // wrap in a container class that allows the component to dynamically grab reivews.
 // The component will automatically re-render when new views are added to the database.
-export default withTracker(props => {
+export default withTracker(() => {
   const subscription = Meteor.subscribe('reviews', "", 0, null, Session.get("token")); //get unapproved or reported reviews
   const loading = !subscription.ready();
   const reviewsToApprove = Reviews.find({}).fetch();

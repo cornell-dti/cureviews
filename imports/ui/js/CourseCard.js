@@ -4,23 +4,19 @@
 
 // Get a human-readable string representing a list of [up to] the last 2 semesters this class was offered.
 export function lastOfferedSems(theClass){
-  var semsArray = theClass.classSems;
-  var lastSemester = semsArray[semsArray.length-1];
-  var lastSemester2 = semsArray[semsArray.length-2];
-  if (lastSemester2 != null){
-    var lastTwoOffered = semAbbriviationToWord(semsArray[semsArray.length-1]) + ", " + semAbbriviationToWord(semsArray[semsArray.length-2]);
+  const semsArray = theClass.classSems;
+  const lastSemester2 = semsArray[semsArray.length - 2];
+  if (lastSemester2 != null) {
+    return semAbbriviationToWord(semsArray[semsArray.length - 1]) + ", " + semAbbriviationToWord(semsArray[semsArray.length - 2]);
   }
   else {
-    var lastTwoOffered = semAbbriviationToWord(semsArray[semsArray.length-1]);
+    return semAbbriviationToWord(semsArray[semsArray.length - 1]);
   }
-
-
-  return lastTwoOffered;
 }
 
 // helper function to convert semester abbreviations to a full word
 export function semAbbriviationToWord(sem){
-  var abbreviation  = String(sem);
+  const abbreviation = String(sem);
   switch (abbreviation.substring(0,2)){
     case "SP":
       return "Spring 20" + abbreviation.substring(2);
@@ -35,7 +31,7 @@ export function semAbbriviationToWord(sem){
 
 
 export function lastSem(sem){
-  var semesterList  = String(sem);
+  const semesterList = String(sem);
   return semesterList.substring(semesterList.length-4);
 }
 
@@ -43,17 +39,17 @@ export function lastSem(sem){
 // submitted for this class. Return values for the average difficulty, quality,
 // average grade, and madatory/not mandatory status.
 export function getGaugeValues(allReviews) {
-  newState = {};
+  const newState = {};
   //create initial variables
-  var sumGrade = 0;
-  var sumRating = 0;
-  var sumDiff = 0;
-  var sumWork = 0;
-  
-  var countGrade = 0;
-  var countRatingAndDiff = 0;
-  var countWork = 0;
-  
+  let sumGrade = 0;
+  let sumRating = 0;
+  let sumDiff = 0;
+  let sumWork = 0;
+
+  let countGrade = 0;
+  let countRatingAndDiff = 0;
+  let countWork = 0;
+
   allReviews.forEach(function(review) {
     // console.log("rating: " + review["rating"]);
     // console.log("quality: " + review["quality"]);
@@ -89,7 +85,6 @@ export function getGaugeValues(allReviews) {
   else{
     newState.workload = "-";
   }
-  
 
   if (sumGrade > 0) {
     newState.gradeNum = Math.round(sumGrade/countGrade); //out of 5
@@ -99,7 +94,7 @@ export function getGaugeValues(allReviews) {
 
   //translate grades from numerical value to letters, and assign the correct color.
   if (newState.gradeNum > 0) {
-    var gradeTranslation = ["C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"];
+    const gradeTranslation = ["C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"];
     newState.grade = gradeTranslation[Math.floor(newState.gradeNum) - 1];
   } else {
     newState.grade = '-';

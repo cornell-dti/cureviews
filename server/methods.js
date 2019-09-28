@@ -25,7 +25,7 @@ Meteor.methods({
     const insertUserCall = Meteor.call('insertUser', ticket);
     if (ticket.hd === "cornell.edu"){
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
-        var fullReview = {
+        const fullReview = {
           text: review.text,
           difficulty: review.diff,
           rating: review.rating,
@@ -65,7 +65,7 @@ Meteor.methods({
     if (googleObject.given_name != null
       && googleObject.family_name != null
       && googleObject.email.replace("@cornell.edu", "") != null) {
-      var newUser = {
+      const newUser = {
         firstName: googleObject.given_name,
         lastName: googleObject.family_name,
         netId: googleObject.email.replace("@cornell.edu", ""),
@@ -133,7 +133,7 @@ Meteor.methods({
   makeVisible: function (review, token) {
     // check: make sure review id is valid and non-malicious
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.update(review._id, { $set: { visible: 1 } });
       return 1;
@@ -147,7 +147,7 @@ Meteor.methods({
   removeReview: function (review, token) {
     // check: make sure review id is valid and non-malicious
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.remove({ _id: review._id });
       return 1;
@@ -274,9 +274,9 @@ Meteor.methods({
   getUserByNetId: function (netId) {
     // console.log("This is user in getUserByNetId");
     // console.log(netId);
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
-      var user = Students.find({ netId: netId }).fetch()[0];
+      const user = Students.find({ netId: netId }).fetch()[0];
       // console.log("This is user object");
       // console.log(user);
       return user;
@@ -303,9 +303,9 @@ Meteor.methods({
   // Get a course with this course_id from the Classes collection in the local database.
   getCourseById: function (courseId) {
     // check: make sure course id is valid and non-malicious
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(courseId)) {
-      var c = Classes.find({ _id: courseId }).fetch()[0];
+      const c = Classes.find({ _id: courseId }).fetch()[0];
       return c;
     }
     return null
@@ -328,7 +328,7 @@ Meteor.methods({
   // To be called by a non-admin user from a specific review.
   reportReview: function (review) {
     // check: make sure review id is valid and non-malicious
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i)
     if (regex.test(review._id)) {
       Reviews.update({ _id: review._id }, { $set: { visible: 0, reported: 1 } });
       return 1;
@@ -342,7 +342,7 @@ Meteor.methods({
   undoReportReview: function (review, token) {
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     // check: make sure review id is valid and non-malicious
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i)
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.update({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
       return 1;
@@ -353,7 +353,7 @@ Meteor.methods({
 
   //get all reviews by professor
   getReviewsByProfessor: function (professor) {
-    var regex = new RegExp(/^(?=.*[A-Z])/i)
+    const regex = new RegExp(/^(?=.*[A-Z])/i)
     if (regex.test(professor)) {
       return Reviews.find({ professors: { $elemMatch: { $eq: professor } } }).fetch();
     } else {
@@ -363,7 +363,7 @@ Meteor.methods({
 
   //get all classes by professor
   getClassesByProfessor: function (professor) {
-    var regex = new RegExp(/^(?=.*[A-Z])/i)
+    const regex = new RegExp(/^(?=.*[A-Z])/i)
     if (regex.test(professor)) {
       return Classes.find({ classProfessors: { $elemMatch: { $eq: professor } } }).fetch();
     } else {
@@ -376,7 +376,7 @@ Meteor.methods({
   topSubjects: function () {
     // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
     // to run complex queries
-    var pipeline = [
+    const pipeline = [
       //consider only visible reviews
       { $match: { visible: 1 } },
       //group by class and get count of reviews
@@ -387,21 +387,21 @@ Meteor.methods({
     ];
     // reviewedSubjects is a dictionary-like object of subjects (key) and
     // number of reviews (value) associated with that subject
-    var reviewedSubjects = new defaultDict();
+    const reviewedSubjects = new defaultDict();
     //run the query and return the class name and number of reviews written to it
-    mostReviews = Reviews.aggregate(pipeline).map(function (course) {
+    const mostReviews = Reviews.aggregate(pipeline).map(function (course) {
       // classObject is the Class object associated with course._id
-      var classObject = Classes.find({ _id: course._id }).fetch()[0];
+      const classObject = Classes.find({ _id: course._id }).fetch()[0];
       // classSubject is the string of the full subject of classObject
-      var classSubject = Subjects.find({ subShort: classObject.classSub }).fetch()[0].subFull;
+      const classSubject = Subjects.find({ subShort: classObject.classSub }).fetch()[0].subFull;
       // Adds the number of reviews to the ongoing count of reviews per subject
       reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
       return classObject;
     });
     // Creates a map of subjects (key) and total number of reviews (value)
-    var subjectsMap = new Map(Object.entries(reviewedSubjects));
+    const subjectsMap = new Map(Object.entries(reviewedSubjects));
     subjectsMap.delete("get");
-    var subjectsAndReviewCountArray = Array.from(subjectsMap);
+    let subjectsAndReviewCountArray = Array.from(subjectsMap);
     subjectsAndReviewCountArray = subjectsAndReviewCountArray.sort(function (a, b) {
       //Sorts array by number of reviews each topic has
       return a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0;
@@ -429,7 +429,7 @@ Meteor.methods({
   // Upon success, return 1, else return 0.
   vailidateAdmin: function (pass) {
     // check: make sure review id is valid and non-malicious
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i)
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i)
     if (regex.test(pass)) {
       if (Validation.find({}).fetch()[0].adminPass == pass) {
         return 1;
@@ -520,7 +520,7 @@ function defaultDict() {
       return 0;
     }
   }
-};
+}
 
 // helper function
 function isJSON(str) {

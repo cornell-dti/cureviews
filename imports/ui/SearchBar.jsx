@@ -1,6 +1,5 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
@@ -117,14 +116,10 @@ export class SearchBar extends Component {
     }
   }
 
-  
-
   render() {
-    const {index} = this.state
-    
     return (
       <div className="search-bar text-left" id="searchbar" >
-        <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autocomplete="off"/>
+        <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autoComplete="off"/>
         <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderCourses()}
         </ul>

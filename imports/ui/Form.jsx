@@ -1,7 +1,6 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { Reviews } from '../api/dbDefs.js';
 
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
@@ -101,7 +100,7 @@ export default class Form extends Component {
 
   // Convert the slider's value to a color starting with red and ending with green.
   getSliderColorRedToGreen(value) {
-    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    const colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value]
     }
@@ -109,7 +108,7 @@ export default class Form extends Component {
 
   // Convert the slider's value to a color starting with green and ending with red.
   getSliderColorGreenToRed(value) {
-    var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
+    const colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     return {
       backgroundColor: colors[value],
     }
@@ -142,16 +141,16 @@ export default class Form extends Component {
     event.preventDefault();
 
     // ensure all fields are filled out
-    var text = this.state.text.trim();
-    var rate = this.state.rating;
-    var diff = this.state.diff;
-    var work = this.state.workload;
-    var prof = this.state.selectedProfessors.map(professor => {return professor.label});
+    const text = this.state.text.trim();
+    const rate = this.state.rating;
+    const diff = this.state.diff;
+    const work = this.state.workload;
+    const prof = this.state.selectedProfessors.map(professor => {return professor.label});
     if (text.length > 0
       && text !== null
       && prof !== []) {
         // create new review object
-        var newReview = {
+        const newReview = {
           text: text,
           rating: rate,
           diff: diff,
@@ -163,8 +162,8 @@ export default class Form extends Component {
         this.show();
     }
   }
-  
-  submitReview(response){
+
+  submitReview() {
     // call the api insert function
     Meteor.call('insert', Session.get("token"), this.state.review, this.props.course._id, (error, result) => {
       // if (!error && result === 1) {
@@ -200,8 +199,8 @@ export default class Form extends Component {
   validateInputs(text, prof) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
-    var regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'\/$ ]+$/i);
-    errs = {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
+    const errs = {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
       professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length == 0),
@@ -214,9 +213,9 @@ export default class Form extends Component {
 
   getProfOptions() {
     if (this.props.course.classProfessors != []) {
-      var profOptions = []
-      for(var prof in this.props.course.classProfessors){
-        var professorName = this.props.course.classProfessors[prof]
+      const profOptions = []
+      for(const prof in this.props.course.classProfessors){
+        const professorName = this.props.course.classProfessors[prof]
 
         profOptions.push({
           "value" : professorName,
@@ -248,7 +247,7 @@ export default class Form extends Component {
     // Toggle the form dropdown
     // Takes care of "pushing down" the reviews by the dynamic height of the form
     toggleDropdown(){
-       var nextState = this.state.dropdown == 'open' ? '' : 'open';
+       const nextState = this.state.dropdown == 'open' ? '' : 'open';
        this.setState({ dropdown: nextState });
        this.pushReviewsDown(nextState);
     }
@@ -256,8 +255,8 @@ export default class Form extends Component {
     //Pushes down the reviews from the form depending on how long the form becomes
     //Uses the margin-bottom attribute to do this
     pushReviewsDown(formState){
-      var marginHeight;
-      var offsetHeight;
+      let marginHeight;
+      let offsetHeight;
       // Form is opened
       if (formState == 'open'){
         marginHeight = this.dropdownHeight;
@@ -278,11 +277,10 @@ export default class Form extends Component {
       this.setState({ visible: false });
     }
   render() {
-    var theClass = this.props.course;
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
-    var err = this.validateInputs(this.state.text, this.state.professors);
-    var isEnabled = err.allTrue;
+    const err = this.validateInputs(this.state.text, this.state.professors);
+    const isEnabled = err.allTrue;
     return (
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>

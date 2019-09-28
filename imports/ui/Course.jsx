@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import "./css/Course.css";
-import { Route, Redirect } from 'react-router';
+import { Redirect } from 'react-router';
 
 /*
   Course Component.
@@ -20,8 +20,8 @@ export default class Course extends Component {
   
   render() {
     // generate full human-readable name of class
-    var classInfo = this.props.info;
-    var text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
+    const classInfo = this.props.info;
+    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
     
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
     if(this.props.active && this.props.cursor == 1){
@@ -30,8 +30,8 @@ export default class Course extends Component {
     // check if a query was provided, if so underline parts of the class name
     if (this.props.query) {
       if (text.toLowerCase().indexOf(this.props.query) != -1) {
-        startIndex = text.toLowerCase().indexOf(this.props.query);
-        endIndex = startIndex + this.props.query.length;
+        const startIndex = text.toLowerCase().indexOf(this.props.query);
+        const endIndex = startIndex + this.props.query.length;
         text = <div>{text.substring(0,startIndex)}<span className='found'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</div>
       } else {
         // based on search technique in server/publications, results without a contains match 
@@ -39,11 +39,11 @@ export default class Course extends Component {
         // text in the substring of query after the subject.
 
         // substring of query after the subject, without trailing spaces
-        queryWithoutSubject = this.props.query.substring(classInfo.classSub.length).trim(); 
+        const queryWithoutSubject = this.props.query.substring(classInfo.classSub.length).trim();
         // search substring of text after subject for substring of query.
-        textWithoutSubject = classInfo.classNum + ": " + classInfo.classTitle;
-        startIndex = textWithoutSubject.toLowerCase().indexOf(queryWithoutSubject);
-        endIndex = startIndex + queryWithoutSubject.length;
+        const textWithoutSubject = classInfo.classNum + ": " + classInfo.classTitle;
+        const startIndex = textWithoutSubject.toLowerCase().indexOf(queryWithoutSubject);
+        const endIndex = startIndex + queryWithoutSubject.length;
 
         // underline the subject and any other matching text
         text = 
