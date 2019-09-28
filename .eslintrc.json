@@ -19,6 +19,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "react/prop-types": "warn",
     "meteor/no-session": "warn"
   },
   "settings": {
