@@ -1,8 +1,10 @@
 {
   "name": "course-reviews",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "lint": "eslint . --ext .js --ext .jsx"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
@@ -31,5 +33,10 @@
     "react-summary-gauge-2": "^1.0.0",
     "rodal": "^1.6.3"
   },
-  "license": "UNLICENSED"
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-react": "^7.14.3"
+  }
 }
