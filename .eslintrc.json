@@ -20,6 +20,8 @@
   },
   "rules": {
     "react/prop-types": "warn",
+    "react/no-find-dom-node": "warn",
+    "react/no-string-refs": "warn",
     "meteor/no-session": "warn"
   },
   "settings": {
