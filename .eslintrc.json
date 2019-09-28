@@ -18,7 +18,9 @@
     "ecmaVersion": 2019,
     "sourceType": "module"
   },
-  "rules": {},
+  "rules": {
+    "meteor/no-session": "warn"
+  },
   "settings": {
     "react": {
       "version": "detect"
