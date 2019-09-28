@@ -2,9 +2,11 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "meteor": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react", "meteor"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:meteor/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -13,10 +15,9 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2019,
     "sourceType": "module"
   },
-  "plugins": ["react"],
   "rules": {},
   "settings": {
     "react": {
