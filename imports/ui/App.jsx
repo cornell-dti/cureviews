@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import Form from './Form.jsx';
-import CourseCard from './CourseCard.jsx';
 import SearchBar from './SearchBar.jsx';
-import CourseReviews from './CourseReviews.jsx';
 import "./css/App.css";
-import { sendFeedback } from './js/Feedback.js';
-import { courseVisited } from './js/Feedback.js';
-import { Classes, Users } from '../api/dbDefs.js';
-
-
-
 
 /*
   App Component. Uppermost View component in the component tree,

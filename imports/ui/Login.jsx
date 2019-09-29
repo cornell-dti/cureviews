@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import { Reviews } from '../api/dbDefs.js';
 import Admin from './Admin.jsx';
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import "./css/Login.css";

@@ -37,7 +37,7 @@ export default class CUreviewsGoogleLogin extends Component {
   // }
 
   responseGoogle = (response) => {
-    token = response.tokenId;
+    const token = response.tokenId;
     if (token){
       if (this.saveToken(token) === 1){
         // console.log("Succesfully saved token to session");
@@ -65,7 +65,7 @@ export default class CUreviewsGoogleLogin extends Component {
         currentUser=result;
 
         // Create new user from profile of response if user does not exist yet
-        if(typeof currentUser==="undefined" || typeof currentUser==="null"){
+        if (currentUser == null) {
           var newUser={
             firstName: profile.givenName,
             lastName: profile.familyName,

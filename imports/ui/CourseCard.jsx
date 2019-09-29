@@ -1,6 +1,5 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import Gauge from 'react-summary-gauge-2';
@@ -62,16 +61,16 @@ export class CourseCard extends Component {
   }
 
   render() {
-    var theClass = this.props.course;
+    const theClass = this.props.course;
 
     // Creates Url that points to each class page on Cornell Class Roster
-    var url = "https://classes.cornell.edu/browse/roster/"
+    const url = "https://classes.cornell.edu/browse/roster/"
         + lastSem(theClass.classSems) + "/class/"
         + theClass.classSub.toUpperCase() + "/"
         + theClass.classNum;
 
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
-    var offered = lastOfferedSems(theClass);
+    const offered = lastOfferedSems(theClass);
 
     return (
         <div id="coursedetails">

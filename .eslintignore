@@ -1,5 +1,2 @@
-imports/api/*.js
-imports/ui/js/
-imports/ui/*.jsx
-imports/ui/*.js
-server/
+imports/ui/js/Gauge.js
+imports/ui/gaugeFile.js
