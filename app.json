@@ -6,9 +6,6 @@
     "MONGO_URL": {
       "required": true
     },
-    "MONGODB_URI": {
-      "required": true
-    },
     "PAPERTRAIL_API_TOKEN": {
       "required": true
     },
