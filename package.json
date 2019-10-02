@@ -4,7 +4,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "meteor run",
-    "lint": "eslint . --ext .js --ext .jsx"
+    "lint": "eslint . --ext .js --ext .jsx",
+    "build": "meteor build dist"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",

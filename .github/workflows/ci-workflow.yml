@@ -1,5 +1,5 @@
 name: CI
-on: pull_request
+on: push
 
 jobs:
   build:
@@ -12,3 +12,5 @@ jobs:
         run: npm install
       - name: Run Linter
         run: npm run lint
+      - name: Build
+        run: npm run build
