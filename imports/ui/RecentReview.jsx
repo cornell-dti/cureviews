@@ -28,7 +28,7 @@ export default class RecentReview extends Component {
 
     // Get details about the course this review belongs to, using the courseId
     // assigned to this review.
-    var x = Meteor.call('getCourseById', props.info.class, (error, result) => {
+    Meteor.call('getCourseById', props.info.class, (error, result) => {
       if (!error) {
         this.setState({
           shortName: result.classSub.toUpperCase() + " " + result.classNum,
@@ -43,7 +43,7 @@ export default class RecentReview extends Component {
 
   // Function to get the color of the quality color box based on the quality value.
   getQualColor(value) {
-    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    const colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value],
     };
@@ -51,7 +51,7 @@ export default class RecentReview extends Component {
 
   // Function to get the color of the difficulty color box based on the diffiiculty value.
   getDiffColor(value) {
-    var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
+    const colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     return {
       backgroundColor: colors[value],
     };
@@ -59,7 +59,7 @@ export default class RecentReview extends Component {
 
 
   render() {
-    var review = this.props.info;
+    const review = this.props.info;
 
     return (
         <li>

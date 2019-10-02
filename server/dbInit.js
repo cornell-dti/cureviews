@@ -27,21 +27,21 @@ import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/db
 */
 export function addAllCourses(semesters) {
     console.log(semesters);
-    for (semester in semesters) {
+    for (const semester in semesters) {
         //get all classes in this semester
         console.log("Adding classes for the following semester: " + semesters[semester]);
-        var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+        const result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
         if (result.statusCode !== 200) {
             console.log("Error in addAllCourses: 1");
             return 0;
         } else {
-            response = JSON.parse(result.content);
+            const response = JSON.parse(result.content);
             //console.log(response);
-            var sub = response.data.subjects;
-            for (course in sub) {
-                parent = sub[course];
+            const sub = response.data.subjects;
+            for (const course in sub) {
+                const parent = sub[course];
                 //if subject doesn't exist add to Subjects collection
-                checkSub = Subjects.find({'subShort' : (parent.value).toLowerCase()}).fetch();
+                const checkSub = Subjects.find({'subShort' : (parent.value).toLowerCase()}).fetch();
                 if (checkSub.length === 0) {
                     console.log("new subject: " + parent.value);
                     Subjects.insert({
@@ -51,19 +51,19 @@ export function addAllCourses(semesters) {
                 }
 
                 //for each subject, get all classes in that subject for this semester
-                var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+                const result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
                 if (result2.statusCode !== 200) {
                     console.log("Error in addAllCourses: 2");
                     return 0;
                 } else {
-                    response2 = JSON.parse(result2.content);
-                    courses = response2.data.classes;
+                    const response2 = JSON.parse(result2.content);
+                    const courses = response2.data.classes;
 
                     //add each class to the Classes collection if it doesnt exist already
-                    for (course in courses) {
+                    for (const course in courses) {
                         try {
                           console.log(courses[course].subject + " " + courses[course].catalogNbr);
-                            var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                            const check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
                             console.log(check);
                             if (check.length === 0) {
                                 console.log("new class: " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
@@ -77,8 +77,8 @@ export function addAllCourses(semesters) {
                                     classSems: [semesters[semester]]
                                 });
                             } else {
-                                var matchedCourse = check[0] //only 1 should exist
-                                var oldSems = matchedCourse.classSems;
+                                const matchedCourse = check[0] //only 1 should exist
+                                const oldSems = matchedCourse.classSems;
                                 if (oldSems.indexOf(semesters[semester]) === -1) {
                                     // console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
                                     oldSems.push(semesters[semester]) //add this semester to the list
@@ -105,7 +105,7 @@ export function updateProfessors (semesters){
   //Might want a helper function that returns that professors for you
     console.log("In updateProfessors method")
     semesterLoop:
-     for (semester in semesters) {
+     for (const semester in semesters) {
         //get all classes in this semester
         console.log("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester])
         try{
@@ -116,7 +116,7 @@ export function updateProfessors (semesters){
           console.log(error);
           continue semesterLoop;
         }
-        var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+        const result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
         // console.log(result)
         if (result.statusCode !== 200 || result.status == "error") {
             console.log("Error in updateProfessors: 2");
@@ -125,12 +125,12 @@ export function updateProfessors (semesters){
         }
 
         else {
-            response = JSON.parse(result.content);
+            const response = JSON.parse(result.content);
             //console.log(response);
-            var sub = response.data.subjects; //array of the subjects
+            const sub = response.data.subjects; //array of the subjects
             subjectLoop:
-            for (course in sub) {             //for every subject
-                parent = sub[course];
+            for (const course in sub) {             //for every subject
+                const parent = sub[course];
                 // console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
                 try{
                   HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
@@ -140,7 +140,7 @@ export function updateProfessors (semesters){
                   console.log(error)
                   continue subjectLoop;
                 }
-                var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+                const result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
                 if (result2.statusCode !== 200 || result2.status == "error") {
                     console.log("Error in updateProfessors: 4");
                     console.log(result2.status);
@@ -148,41 +148,41 @@ export function updateProfessors (semesters){
                 }
 
                 else {
-                    response2 = JSON.parse(result2.content);
-                    courses = response2.data.classes;
+                    const response2 = JSON.parse(result2.content);
+                    const courses = response2.data.classes;
 
                     //add each class to the Classes collection if it doesnt exist already
-                    for (course in courses) {
+                    for (const course in courses) {
                         try {
-                            var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
-                            var matchedCourse = check[0]  //catch this if there is no class existing
+                            const check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                            const matchedCourse = check[0]  //catch this if there is no class existing
                             if (typeof matchedCourse !== "undefined"){
                               // console.log(courses[course].subject);
                               // console.log(courses[course].catalogNbr);
                               // console.log("This is the matchedCourse")
                               console.log(matchedCourse)
-                              var oldProfessors = matchedCourse.classProfessors;
+                              let oldProfessors = matchedCourse.classProfessors;
                               if (oldProfessors == undefined){
                                 oldProfessors = [];
                               }
                               // console.log("This is the length of old profs")
                               // console.log(oldProfessors.length)
-                              var classSections = courses[course].enrollGroups[0].classSections     //This returns an array
-                              for (section in classSections){
+                              const classSections = courses[course].enrollGroups[0].classSections     //This returns an array
+                              for (const section in classSections){
                                   if (classSections[section].ssrComponent == "LEC" ||
                                       classSections[section].ssrComponent == "SEM"){
                                     // Checks to see if class has scheduled meetings before checking them
                                     if (classSections[section].meetings.length > 0){
-                                      var professors = classSections[section].meetings[0].instructors
+                                      const professors = classSections[section].meetings[0].instructors
                                       // Checks to see if class has instructors before checking them
                                       // Example of class without professors is:
                                       // ASRC 3113 in FA16
                                       // ASRC 3113 returns an empty array for professors
                                       if (professors.length > 0){
-                                        for (professor in professors){
-                                          var firstName = professors[professor].firstName
-                                          var lastName = professors[professor].lastName
-                                          var fullName = firstName + " " + lastName
+                                        for (const professor in professors){
+                                          const firstName = professors[professor].firstName
+                                          const lastName = professors[professor].lastName
+                                          const fullName = firstName + " " + lastName
                                           if (!oldProfessors.includes(fullName)){
                                               oldProfessors.push(fullName)
                                               // console.log("This is a new professor")
@@ -224,9 +224,9 @@ export function updateProfessors (semesters){
     // we have a uniform empty array to fill with updateProfessors
     // Will only have to be called ONCE
       console.log("In resetProfessorArray method")
-       for (semester in semesters) {
+       for (const semester in semesters) {
           //get all classes in this semester
-          var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+          const result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
           if (result.statusCode !== 200) {
               console.log("Error in resetProfessorArray: 1");
               console.log(result.statusCode);
@@ -234,13 +234,13 @@ export function updateProfessors (semesters){
           }
 
           else {
-              response = JSON.parse(result.content);
+              const response = JSON.parse(result.content);
               //console.log(response);
-              var sub = response.data.subjects; //array of the subjects
-              for (course in sub) {             //for every subject
-                  parent = sub[course];
+              const sub = response.data.subjects; //array of the subjects
+              for (const course in sub) {             //for every subject
+                  const parent = sub[course];
                   console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
-                  var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+                  const result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
 
                   if (result2.statusCode !== 200) {
                       console.log("Error in resetProfessorArray: 2");
@@ -249,23 +249,23 @@ export function updateProfessors (semesters){
                   }
 
                   else {
-                      response2 = JSON.parse(result2.content);
+                      const response2 = JSON.parse(result2.content);
                       //console.log("PRINTING ALL THE COURSES")
-                      courses = response2.data.classes;
+                      const courses = response2.data.classes;
                       //console.log(courses)
 
                       //add each class to the Classes collection if it doesnt exist already
-                      for (course in courses) {
+                      for (const course in courses) {
                           try {
-                              var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
-                              var matchedCourse = check[0]  //catch this if there is no class existing
+                              const check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                              const matchedCourse = check[0]  //catch this if there is no class existing
                               if (typeof matchedCourse !== "undefined"){
                                 console.log(courses[course].subject);
                                 console.log(courses[course].catalogNbr);
                                 console.log("This is the matchedCourse")
                                 console.log(matchedCourse)
                                 // var oldProfessors = matchedCourse.classProfessors
-                                var oldProfessors = []
+                                const oldProfessors = []
                                 console.log("This is the length of old profs")
                                 console.log(oldProfessors.length)
                                 Classes.update({_id: matchedCourse._id}, {$set: {classProfessors: oldProfessors}})
@@ -297,13 +297,13 @@ export function getProfessorsForClass(){
    # Return: String Array (length = 1)
 */
 export function findCurrSemester()  {
-    var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
+    let response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
     if (response.statusCode !== 200) {
         console.log("Error in findCurrSemester");
     } else {
         response = JSON.parse(response.content);
-        allSemesters = response.data.rosters;
-        thisSem = allSemesters[allSemesters.length - 1].slug;
+        const allSemesters = response.data.rosters;
+        const thisSem = allSemesters[allSemesters.length - 1].slug;
         console.log("Updating for following semester: " + thisSem);
         return [thisSem];
     }
@@ -314,16 +314,15 @@ export function findCurrSemester()  {
    # Return: String Array
 */
 export function findAllSemesters() {
-    var response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
+    let response = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/rosters.json", {timeout: 30000});
     if (response.statusCode !== 200) {
         console.log("error");
     } else {
         response = JSON.parse(response.content);
-        allSemesters = response.data.rosters;
-        var allSemestersArray = allSemesters.map(function(semesterObject) {
+        const allSemesters = response.data.rosters;
+        return allSemesters.map(function(semesterObject) {
             return semesterObject.slug;
         });
-        return allSemestersArray
     }
 }
 
@@ -334,40 +333,40 @@ export function findAllSemesters() {
    # Called once during intialization, only after all courses have been added.
 */
 export function addCrossList() {
-  semesters = findAllSemesters()
-  for (semester in semesters) {
+  const semesters = findAllSemesters()
+  for (const semester in semesters) {
       //get all classes in this semester
-      var result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
+      const result = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/config/subjects.json?roster=" + semesters[semester], {timeout: 30000});
       if (result.statusCode !== 200) {
           console.log("Error in addCrossList: 1");
           return 0;
       } else {
-          response = JSON.parse(result.content);
+          const response = JSON.parse(result.content);
           //console.log(response);
-          var sub = response.data.subjects;
-          for (course in sub) {
-              parent = sub[course];
+          const sub = response.data.subjects;
+          for (const course in sub) {
+              const parent = sub[course];
 
               //for each subject, get all classes in that subject for this semester
-              var result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
+              const result2 = HTTP.call("GET", "https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value, {timeout: 30000});
               if (result2.statusCode !== 200) {
                   console.log("Error in addCrossList: 2");
                   return 0;
               } else {
-                  response2 = JSON.parse(result2.content);
-                  courses = response2.data.classes;
+                  const response2 = JSON.parse(result2.content);
+                  const courses = response2.data.classes;
 
-                  for (course in courses) {
+                  for (const course in courses) {
                       try {
-                          var check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
+                          const check = Classes.find({'classSub' : (courses[course].subject).toLowerCase(), 'classNum' : courses[course].catalogNbr}).fetch();
                           // console.log((courses[course].subject).toLowerCase() + " "  + courses[course].catalogNbr);
                           // console.log(check);
                           if (check.length > 0) {
-                            crossList = courses[course].enrollGroups[0].simpleCombinations;
+                            const crossList = courses[course].enrollGroups[0].simpleCombinations;
                             if (crossList.length > 0) {
-                              crossListIDs = crossList.map(function(crossListedCourse) {
+                              const crossListIDs = crossList.map(function(crossListedCourse) {
                                 console.log(crossListedCourse);
-                                var dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
+                                const dbCourse = Classes.find({'classSub' : (crossListedCourse.subject).toLowerCase(), 'classNum' : crossListedCourse.catalogNbr}).fetch();
                                 //Added the following check because MUSIC 2340
                                 //was crosslisted with AMST 2340, which was not in our db
                                 //so was causing an error here when calling 'dbCourse[0]._id'
@@ -381,7 +380,7 @@ export function addCrossList() {
                               })
                               console.log(courses[course].subject + " " + courses[course].catalogNbr);
                               // console.log(crossListIDs);
-                              thisCourse = check[0];
+                              const thisCourse = check[0];
                               Classes.update({_id: thisCourse._id}, {$set: {crossList: crossListIDs}});
                             }
                           }

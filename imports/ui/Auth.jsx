@@ -1,9 +1,4 @@
-import React, { Component} from 'react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Users } from '../api/dbDefs.js';
-import {BrowserRouter, Route } from "react-router-dom";
-import { HTTP } from 'meteor/http';
+import React, { Component } from 'react';
 
 /*
   Auth Component. INCOMPLETE.
@@ -22,7 +17,7 @@ export default class Auth extends Component {
   }
 
   //given a incoming post request, generate a token for this user
-  generateToken(user) {
+  generateToken(/* user */) {
 
   }
 

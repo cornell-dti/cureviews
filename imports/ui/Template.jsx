@@ -26,7 +26,7 @@ export class Template extends Component {
     super(props);
 
     this.state = {
-      somevar1: 1
+      somevar1: 1,
       somevar2: 2
     }
 
@@ -35,13 +35,13 @@ export class Template extends Component {
 
   // some function used in the app
   func1(value) {
-
+    console.log(value);
   }
 
   // another function used in the app. If these get to long, move to a new
   // file under the /js folder named Template.js.
   func2(value) {
-
+    console.log(value);
   }
 
   // function that specifically renders HTML or another component. Keep these
@@ -49,7 +49,7 @@ export class Template extends Component {
   renderElement() {
 
   }
-  
+
   render() {
     return (
       <div>
@@ -67,9 +67,8 @@ export class Template extends Component {
 
 // describe props
 Template.propTypes = {
-  prop1: PropTypes.array.isRequired
-  prop2: PropTypes.string.
-  prop2: PropTypes.func.isRequired
+  prop1: PropTypes.array.isRequired,
+  prop2: PropTypes.func.isRequired,
   collectionAsObjectList: PropTypes.array.isRequired
 };
 
@@ -84,7 +83,8 @@ Template.propTypes = {
 
 // Explain which collections this componet will subscribe to, and what data is expected to be returned.
 export default withTracker((props) => {
-  const subscription = Meteor.subscribe('collection name', parameter1InPublisher, parameter2InPublisher); //get collection as lowercase name from ../api/dbInit.js
+  console.log(props); // Remove props from parameter is it's unused!
+  const subscription = Meteor.subscribe('collection name', /* parameter1InPublisher */ null, /* parameter2InPublisher */ null); // get collection as lowercase name from ../api/dbInit.js
   const loading = !subscription.ready();
   const collectionAsObjectList = CollectionName.find({}).fetch();
   return {

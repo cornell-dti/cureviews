@@ -37,7 +37,7 @@ Meteor.publish('classes', function validClasses(searchString) {
   if (searchString !== undefined && searchString !== "") {
     // check if first digit is a number. Catches searchs like "1100"
     // if so, search only through the course numbers and return classes ordered by full name
-    indexFirstDigit = searchString.search(/\d/)
+    const indexFirstDigit = searchString.search(/\d/)
     if (indexFirstDigit == 0) {
       // console.log("only numbers")
       return Classes.find(
@@ -57,10 +57,10 @@ Meteor.publish('classes', function validClasses(searchString) {
 
     // check if text before space is subject, if so search only classes with this subject.
     // Speeds up searches like "CS 1110"
-    indexFirstSpace = searchString.search(" ")
+    const indexFirstSpace = searchString.search(" ")
     if (indexFirstSpace != -1) {
-      strBeforeSpace = searchString.substring(0, indexFirstSpace)
-      strAfterSpace = searchString.substring(indexFirstSpace + 1)
+      const strBeforeSpace = searchString.substring(0, indexFirstSpace)
+      const strAfterSpace = searchString.substring(indexFirstSpace + 1)
       if (isSubShorthand(strBeforeSpace)) {
         // console.log("matches subject with space: " + strBeforeSpace)
         return searchWithinSubject(strBeforeSpace, strAfterSpace)
@@ -71,8 +71,8 @@ Meteor.publish('classes', function validClasses(searchString) {
     // if so search only classes with this subject.
     // Speeds up searches like "CS1110"
     if (indexFirstDigit != -1) {
-      strBeforeDigit = searchString.substring(0, indexFirstDigit)
-      strAfterDigit = searchString.substring(indexFirstDigit)
+      const strBeforeDigit = searchString.substring(0, indexFirstDigit)
+      const strAfterDigit = searchString.substring(indexFirstDigit)
       if (isSubShorthand(strBeforeDigit)) {
         // console.log("matches subject with digit: " + String(strBeforeDigit))
         return searchWithinSubject(strBeforeDigit, strAfterDigit)
@@ -93,16 +93,16 @@ Meteor.publish('classes', function validClasses(searchString) {
 });
 
 // Helper to check if a string is a subject code
-isSubShorthand = (sub) => {
-  subCheck = Subjects.find({subShort: sub}).fetch()
+const isSubShorthand = (sub) => {
+  const subCheck = Subjects.find({subShort: sub}).fetch()
   return subCheck.length > 0;
 }
 
-// helper to format search within a subject 
-searchWithinSubject = (sub, remainder) => {
+// helper to format search within a subject
+const searchWithinSubject = (sub, remainder) => {
   return Classes.find(
     { 'classSub':  sub, 'classFull': { '$regex' : `.*${remainder}.*`, '$options' : '-i' }},
-    {sort: {classFull: 1}, limit: 200},  
+    {sort: {classFull: 1}, limit: 200},
     {reactive: false});
 }
 
@@ -122,7 +122,8 @@ searchWithinSubject = (sub, remainder) => {
      return none
 */
 Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatus, token) {
-    var ret = null;
+    let ret = null;
+    let userIsAdmin;
     if (token === undefined || token===null || token===""){
       userIsAdmin = false;
     }
@@ -137,8 +138,8 @@ Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatu
     else if (courseId !== undefined && courseId !== "" && visiblity === 1 && reportStatus===0) { //show valid reviews for this course
         //console.log('course valid reviews');
         //get the list of crosslisted courses for this class
-        var crossList;
-        crossListResult = Classes.find({_id: courseId}).fetch()[0];
+        let crossList;
+        const crossListResult = Classes.find({_id: courseId}).fetch()[0];
         if (crossListResult !== undefined) {
             // Why
             crossList = crossListResult.crossList;
@@ -147,7 +148,7 @@ Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatu
         //if there are crossListed Courses, merge the reviews
         if (crossList !== undefined && crossList.length > 0) {
           //format each courseid into an object to input to the find's '$or' search
-          crossListOR = crossList.map(function(courseId) {
+          const crossListOR = crossList.map(function(courseId) {
             return {"class": courseId};
           });
           crossListOR.push({"class": courseId}) //make sure to add the original course to the list
@@ -157,7 +158,7 @@ Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatu
         }
     } else if (courseId !== undefined && courseId !== "" && visiblity === 0 && userIsAdmin) { //invalidated reviews for a class
         console.log('course invalid reviews');
-        crossList = Classes.find({_id : courseId}).fetch()[0].crossList
+        const crossList = Classes.find({_id : courseId}).fetch()[0].crossList
         ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
     } else if (visiblity === 0 && userIsAdmin) { //all invalidated reviews
         console.log('all invalidated reviews');

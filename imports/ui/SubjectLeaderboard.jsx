@@ -1,10 +1,4 @@
-import React, { Component} from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import { Classes } from '../api/dbDefs.js';
-// No longer referenced
-// import Course from './Course.jsx';
-
+import React, { Component } from 'react';
 
 /*
   Subject Leaderboard Component.
@@ -25,7 +19,7 @@ export default class SubjectLeaderboard extends Component {
 
     // get the top subjects by number of reviews, using a Meteor function
     // defined in imports/api/classes
-    var x = Meteor.call('topSubjects', (error, result) => {
+    Meteor.call('topSubjects', (error, result) => {
       if (!error) {
         this.setState({topSubjects: result});
       } else {

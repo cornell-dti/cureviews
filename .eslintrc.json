@@ -1,0 +1,40 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "meteor": true
+  },
+  "plugins": ["react", "meteor"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:meteor/recommended"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-prototype-builtins": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "no-undef": "warn",
+    "no-var": "warn",
+    "react/prop-types": "warn",
+    "react/no-direct-mutation-state": "warn",
+    "react/no-find-dom-node": "warn",
+    "react/no-string-refs": "warn",
+    "meteor/audit-argument-checks": "warn",
+    "meteor/no-session": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

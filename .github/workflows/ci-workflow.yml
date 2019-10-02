@@ -1,0 +1,14 @@
+name: CI
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Node
+        uses: actions/setup-node@v1
+      - name: Install
+        run: npm install
+      - name: Run Linter
+        run: npm run lint

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import Review from './Review.jsx';
@@ -52,7 +51,7 @@ export class CourseReviews extends Component {
   }
 
   render() {
-    var title = "Past Reviews";
+    let title = "Past Reviews";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
     }

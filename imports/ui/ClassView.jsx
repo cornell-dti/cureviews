@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
-// Commented because unecessary but left here just in case
-// import SubjectLeaderboard from './SubjectLeaderboard.jsx';
 import "./css/App.css";
-import { sendFeedback } from './js/Feedback.js';
 import { courseVisited } from './js/Feedback.js';
-import App from './App.jsx';
 import "./css/ClassView.css";
 
 /*
@@ -123,7 +118,7 @@ export default class ClassView extends Component {
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
-              <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
+              <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank" rel="noopener noreferrer"> Report a Bug</a>
             </div>
           </div>
           <div className='clearfix' />
@@ -156,16 +151,15 @@ export default class ClassView extends Component {
               <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
-              <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
+              <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank" rel="noopener noreferrer"> Report a Bug</a>
             </div>
           </div>
           <div id="error">
             <img id="errorgauge" src="/error.png" width="400px" height="auto" />
-            <h2>Sorry, we couldn't find the class you're searching for.</h2>
+            <h2>{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
             <h2>Please search for a different class.</h2>
           </div>
         </div>
-
       );
     } else {
       // While a class is being searched for, render a loading animation.

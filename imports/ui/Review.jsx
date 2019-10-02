@@ -28,21 +28,18 @@ export default class Review extends Component {
   // Function to convert the classId assigned to this review into the
   // full, human-readable name of the class.
   renderClassName(classId) {
-    var toShow = ''; //empty div
     return Meteor.call('getCourseById', classId, (error, result) => {
       if (!error) {
-        toShow = result.classTitle;
         return result.classTitle;
       } else {
         console.log(error);
       }
     });
-    return toShow;
   }
 
   // Convert the reviews's value to a color starting with red and ending with green.
   getColorRedToGreen(value) {
-    var colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
+    const colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value]
     }
@@ -50,7 +47,7 @@ export default class Review extends Component {
 
   // Convert the reviews's value to a color starting with green and ending with red.
   getColorGreenToRed(value) {
-    var colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
+    const colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     if(value == undefined) return {backgroundColor: "#a9a9a9"}
     else return {
       backgroundColor: colors[value],
@@ -90,8 +87,7 @@ export default class Review extends Component {
   }
 
   render() {
-    var review = this.props.info;
-    var classId = review.class;
+    const review = this.props.info;
     // console.log(review);
     // console.log(review.rating);
     return (
