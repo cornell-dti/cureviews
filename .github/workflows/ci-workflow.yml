@@ -12,5 +12,7 @@ jobs:
         run: npm install
       - name: Run Linter
         run: npm run lint
-      - name: Build
+      - name: Setup Meteor
+        run: curl https://install.meteor.com/ | sh
+      - name: Build Website Bundle
         run: npm run build
