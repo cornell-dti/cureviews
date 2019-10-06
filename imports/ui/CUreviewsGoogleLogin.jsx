@@ -158,6 +158,6 @@ export default class CUreviewsGoogleLogin extends Component {
 
 // describe props
 CUreviewsGoogleLogin.propTypes = {
-  executeLogin:PropTypes.func,
-  waitTime:PropTypes.func
+  executeLogin:PropTypes.bool,
+  waitTime:PropTypes.string
 };
