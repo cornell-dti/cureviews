@@ -7,6 +7,7 @@ import CourseReviews from './CourseReviews.jsx';
 import "./css/App.css";
 import { courseVisited } from './js/Feedback.js';
 import "./css/ClassView.css";
+import PropTypes from "prop-types";
 
 /*
   ClassView component.
@@ -174,4 +175,6 @@ export default class ClassView extends Component {
 }
 
 // takes no props
-ClassView.propTypes = {};
+ClassView.propTypes = {
+  match: PropTypes.object
+};

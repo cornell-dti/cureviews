@@ -117,5 +117,6 @@ export default class UpdateReview extends Component {
 UpdateReview.propTypes = {
   info: PropTypes.object.isRequired,
   approveHandler: PropTypes.func.isRequired,
-  removeHandler: PropTypes.func.isRequired
+  removeHandler: PropTypes.func.isRequired,
+  unreportHandler: PropTypes.func
 };

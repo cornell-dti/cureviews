@@ -1,3 +1,4 @@
+/* eslint-disable meteor/audit-argument-checks */
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
@@ -158,7 +159,7 @@ Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatu
         }
     } else if (courseId !== undefined && courseId !== "" && visiblity === 0 && userIsAdmin) { //invalidated reviews for a class
         console.log('course invalid reviews');
-        const crossList = Classes.find({_id : courseId}).fetch()[0].crossList
+        // const crossList = Classes.find({_id : courseId}).fetch()[0].crossList
         ret =  Reviews.find({class : courseId, visible : 0}, {sort: {date: -1}, limit: 700});
     } else if (visiblity === 0 && userIsAdmin) { //all invalidated reviews
         console.log('all invalidated reviews');

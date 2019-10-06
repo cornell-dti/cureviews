@@ -196,7 +196,7 @@ export default class Form extends Component {
 
   // Validation function. Checks if the median are filled out,
   // and checks text for any unaccepted symbols
-  validateInputs(text, prof) {
+  validateInputs(text) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
     const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
