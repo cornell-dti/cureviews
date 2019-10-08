@@ -1,4 +1,3 @@
-/* eslint-disable meteor/audit-argument-checks */
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match} from 'meteor/check';
