@@ -24,6 +24,7 @@ export default class CUreviewsGoogleLogin extends Component {
 
     this.responseGoogle.bind(this);
     this.saveRedirectToSession.bind(this);
+    this.getRedirectURI.bind(this);
     this.saveRedirectToSession(this.props.redirectFrom);
   }
   
@@ -59,6 +60,13 @@ export default class CUreviewsGoogleLogin extends Component {
     }  
   }
   
+  getRedirectURI(){
+    if(window.location.host.includes("localhost")){
+      return "http://" + window.location.host + "/auth/"
+    }
+      return "https://" + window.location.host + "/auth/"
+  }
+  
   render() {
     return (
       <div>
@@ -75,7 +83,7 @@ export default class CUreviewsGoogleLogin extends Component {
                : 1 }</script>
           )}
           uxMode="redirect"
-          redirectUri='http://localhost:3000/auth/'
+          redirectUri={this.getRedirectURI()}
         />
       </div>
     );
