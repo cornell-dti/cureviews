@@ -23,6 +23,8 @@ Meteor.methods({
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
+    // console.log("ticket");
+    // console.log(ticket);
     Meteor.call('insertUser', ticket);
     if (ticket.hd === "cornell.edu"){
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
@@ -49,8 +51,6 @@ Meteor.methods({
           return 0; //fail
         }
       } else {
-        console.log(review);
-        console.log(classId);
         console.log("Error: Some review values are null");
         return 0; //fail
       }
@@ -65,8 +65,6 @@ Meteor.methods({
   //Upon success returns 1, else returns 0
   insertUser: function (googleObject) {
     //Check user object has all required fields
-    console.log("googleObject");
-    console.log(googleObject);
     if (googleObject.given_name != null
       && googleObject.family_name != null
       && googleObject.email.replace("@cornell.edu", "") != null) {
@@ -97,7 +95,7 @@ Meteor.methods({
     }
     else {
       //error handling
-      console.log("Some user values are null")
+      console.log("Some user values are null in insertUser");
       return 0; //fail
     }
   },
@@ -462,22 +460,12 @@ Meteor.methods({
         console.log("Token was undefined in getVerificationTicket")
         return 0; // Token was undefined
       }
-      client.generateAuthUrl({
-      scope: [
-        'https://www.googleapis.com/auth/plus.login',
-        'https://www.googleapis.com/auth/plus.me',
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'email'
-      ]});
       const ticket = await client.verifyIdToken({
         idToken: token,
         audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
         // Or, if multiple clients access the backend:
         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
-      console.log("ticket");
-      console.log(ticket);
       return ticket.getPayload();
       // console.log(ticket);
       const payload = ticket.getPayload();
