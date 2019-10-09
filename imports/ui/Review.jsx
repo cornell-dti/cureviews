@@ -172,5 +172,6 @@ export default class Review extends Component {
 
 // takes in the database object representing this review
 Review.propTypes = {
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
+  reportHandler: PropTypes.func
 };

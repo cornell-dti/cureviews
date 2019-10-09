@@ -57,16 +57,16 @@ export default class CUreviewsGoogleLogin extends Component {
   //creates new user from [response], inserts into database, and returns the new user.
   retrieveUser = (response) =>{
     //Get netID from response and look for in database
-    var profile=response.profileObj;
-    var netId=profile.email.split("@")[0];
-    var currentUser;
+    const profile=response.profileObj;
+    const netId=profile.email.split("@")[0];
+    let currentUser;
     Meteor.call('getUserByNetId', netId, (error, result) =>{
       if(!error || result===1){
         currentUser=result;
 
         // Create new user from profile of response if user does not exist yet
         if (currentUser == null) {
-          var newUser={
+          let newUser={
             firstName: profile.givenName,
             lastName: profile.familyName,
             netId: netId,
@@ -157,4 +157,7 @@ export default class CUreviewsGoogleLogin extends Component {
 // Be sure to include any collections obtained from withTracker!
 
 // describe props
-CUreviewsGoogleLogin.propTypes = {};
+CUreviewsGoogleLogin.propTypes = {
+  executeLogin:PropTypes.bool,
+  waitTime:PropTypes.string
+};

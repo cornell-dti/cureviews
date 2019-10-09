@@ -32,6 +32,18 @@ export default class Form extends Component {
   constructor(props) {
     super(props);
 
+    //Define refs
+    this.ratingSlider=React.createRef();
+    this.diffSlider=React.createRef();
+    this.workloadSlider=React.createRef();
+    this.dropdownMenu=React.createRef();
+    this.noProfMsg=React.createRef();
+    this.profSelect=React.createRef();
+    this.emptyMsg=React.createRef();
+    this.textArea=React.createRef();
+    this.formElement=React.createRef();
+    this.selectHolder=React.createRef();
+
     // define bart alert message constants
     Bert.defaults = {
       hideDelay: 5000, //time alert stays on screen
@@ -53,7 +65,6 @@ export default class Form extends Component {
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
       review: {}
-      // checkedProfs : Array((this.props.course.classProfessors).length).fill(false), //array of false with len of number of profs to represent checked boxes
     };
 
     // store inital values as the default state to revert to after submission
@@ -116,10 +127,10 @@ export default class Form extends Component {
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
-    ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-    ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
-    this.dropdownHeight = ReactDOM.findDOMNode(this.refs.dropdownMenu).clientHeight + 15;
+    this.ratingSlider.current.value = 3;
+    this.diffSlider.current.value = 3;
+    this.workloadSlider.current.value = 3;
+    this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
     this.toggleDropdown(); //Open review dropdown when page loads
   }
 
@@ -127,9 +138,9 @@ export default class Form extends Component {
   // resets the values of the sliders to 3 and sets the state to the default state.
   componentWillReceiveProps(nextProps) {
     if (nextProps.course != this.props.course) {
-      ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
-      ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-      ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
+      this.ratingSlider.current.value = 3;
+      this.diffSlider.current.value = 3;
+      this.workloadSlider.current.value = 3;
       this.setState(this.defaultState);
     }
   }
@@ -169,10 +180,10 @@ export default class Form extends Component {
       // if (!error && result === 1) {
       if (error || result === 1) {
         // Success, so reset form
-        ReactDOM.findDOMNode(this.refs.ratingSlider).value = 3;
-        ReactDOM.findDOMNode(this.refs.diffSlider).value = 3;
-        ReactDOM.findDOMNode(this.refs.workloadSlider).value = 3;
-        ReactDOM.findDOMNode(this.refs.profSelect).value = "none";
+        this.ratingSlider.current.value = 3;
+        this.diffSlider.current.value = 3;
+        this.workloadSlider.current.value = 3;
+        this.profSelect.current.value = "none";
         this.toggleDropdown(); //Close the review dropdown when page loads
     
         this.setState(this.defaultState);
@@ -196,7 +207,7 @@ export default class Form extends Component {
 
   // Validation function. Checks if the median are filled out,
   // and checks text for any unaccepted symbols
-  validateInputs(text, prof) {
+  validateInputs(text) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
     const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
@@ -260,7 +271,7 @@ export default class Form extends Component {
       // Form is opened
       if (formState == 'open'){
         marginHeight = this.dropdownHeight;
-        offsetHeight = ReactDOM.findDOMNode(this.refs.selectHolder).offsetHeight - 46;
+        offsetHeight = this.selectHolder.current.offsetHeight - 46;
       }
       // Form is closed
       else{
@@ -295,14 +306,14 @@ export default class Form extends Component {
               </div>
 
             </button>
-            <ul id="dropdown-menu" className="dropdown-menu" ref="dropdownMenu">
-              <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref="formElement">
+            <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
+              <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">
                           <div className="row" id="reviewTextRow">
-                            <textarea ref="textArea" className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                            <textarea ref={this.textArea} className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
                               placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
-                            <div ref="emptyMsg" className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                            <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
                             <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                           </div>
 
@@ -317,7 +328,7 @@ export default class Form extends Component {
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                 <input ref="ratingSlider" onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
+                                 <input ref={this.ratingSlider} onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
                               </div>
                           </div>
                           <div className="sm-spacing"></div>
@@ -331,7 +342,7 @@ export default class Form extends Component {
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                 <input ref="diffSlider" onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
+                                 <input ref={this.diffSlider} onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
                               </div>
                           </div>
                           <div className="sm-spacing"></div>
@@ -345,7 +356,7 @@ export default class Form extends Component {
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                  <input ref="workloadSlider" onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
+                                  <input ref={this.workloadSlider} onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
                               </div>
                           </div>
                           <div className="sm-spacing"></div>
@@ -353,14 +364,14 @@ export default class Form extends Component {
                               <div className="col-md-3 col-sm-3 col-xs-3">
                                   <div className="secondary-text">Professor</div>
                               </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref="selectHolder">
+                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
                                   <Select value={this.state.selectedProfessors}
                                     onChange={(professors) => this.handleProfChange(professors)}
                                     isMulti
                                     options={this.getProfOptions()}
-                                    ref="profSelect"
+                                    ref={this.profSelect}
                                   />
-                                  <div ref="noProfMsg" className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                                  <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
                               </div>
                           </div>
                           <div className="row">

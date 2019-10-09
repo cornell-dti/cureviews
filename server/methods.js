@@ -1,3 +1,4 @@
+/* eslint-disable meteor/audit-argument-checks */
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
@@ -22,7 +23,7 @@ Meteor.methods({
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
-    const insertUserCall = Meteor.call('insertUser', ticket);
+    Meteor.call('insertUser', ticket);
     if (ticket.hd === "cornell.edu"){
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
         const fullReview = {
@@ -523,10 +524,10 @@ function defaultDict() {
 }
 
 // helper function
-function isJSON(str) {
-  try {
-    return (JSON.parse(str) && !!str);
-  } catch (e) {
-    return false;
-  }
-}
+// function isJSON(str) {
+//   try {
+//     return (JSON.parse(str) && !!str);
+//   } catch (e) {
+//     return false;
+//   }
+// }

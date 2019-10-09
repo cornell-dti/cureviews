@@ -107,4 +107,5 @@ export default class RecentReview extends Component {
 // takes in the database object representing this review
 RecentReview.propTypes = {
   info: PropTypes.object.isRequired,
+  reportHandler: PropTypes.func
 };
