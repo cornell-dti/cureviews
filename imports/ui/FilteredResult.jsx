@@ -11,6 +11,7 @@ export default class FilteredResult extends Component {
     super(props);
     // set gauge values
     this.state = {
+      id: this.props.course._id,
       rating: this.props.course.classRating,
       ratingColor: this.props.course.classRatingColor,
       diff: this.props.course.classDifficulty,
