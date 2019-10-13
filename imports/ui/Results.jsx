@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { CollectionName } from '../api/dbDefs.js';
 import "./css/App.css"; // css files
+import FilteredResult from './FilteredResult.jsx';
+import SearchBar from './SearchBar.jsx';
 
 /*
   Results Component. Short description if needed.
@@ -22,7 +24,18 @@ export class Results extends Component {
     super(props);
     this.state = {
       courseList: this.props.filterResults,
-    }
+      query: '',
+    };
+
+    this.updateQuery = this.updateQuery.bind(this);
+
+  }
+
+  updateQuery(event) {
+    // trim the query to remove trailing spaces      
+    this.setState({ query: event.target.value.trim() });
+    //Session to be able to get info from this.state.query in withTracker
+    Session.set('querySession', this.state.query);
   }
 
 
@@ -54,28 +67,62 @@ export class Results extends Component {
     });
   }
 
-  renderResults() {
-    return this.state.courseList.map((result) => (
-      <FilteredResult course={result} />
-    ));
-    // return this.props.filterResults.map((result) => (
-    //   <FilteredResult course={result} />
-    // ));
+  componentWillReceiveProps(nextProps) {
+    //if this component receives new props from the Redirect, it resets its state so that it can render/mount
+    //a new ClassView component with the new props
+    const number = nextProps.match.params.number;
+    const subject = nextProps.match.params.subject.toLowerCase();
+
+
+    this.state = {
+      number: number,
+      subject: subject,
+      selectedClass: null,
+      classDoesntExist: false,
+      query: '',
+    };
+    this.componentWillMount()
   }
+
+  // renderResults() {
+  //   return this.state.courseList.map((result) => (
+  //     <FilteredResult course={result} />
+  //   ));
+  //   // return this.props.filterResults.map((result) => (
+  //   //   <FilteredResult course={result} />
+  //   // ));
+  // }
 
 
   render() {
     return (
-      <section>
-        <legend className="subheader">{title}</legend>
-        <div className="panel panel-default" id="reviewpanel">
-          <div>
-            <ul id="reviewul">
-              {this.renderResults()}
-            </ul>
+      <div className="container-fluid container-top-gap-fix">
+        <div className="row navbar">
+          <div className="col-md-2 col-sm-2 col-xs-2">
+            <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+              <span>CU Reviews</span>
+            </a>
+          </div>
+          <div className="col-md-7 col-sm-7 col-xs-7">
+            <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+          </div>
+          <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
+            <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
           </div>
         </div>
-      </section>
+      </div>
+
+      // <section>
+      //   <legend className="subheader">Results</legend>
+      //   <div className="panel panel-default" id="reviewpanel">
+      //     <div>
+      //       <ul id="reviewul">
+      //         Hi
+      //         {/* {this.renderResults()} */}
+      //       </ul>
+      //     </div>
+      //   </div>
+      // </section>
     );
   }
 }
@@ -99,11 +146,11 @@ Results.propTypes = {
 // Look at the publishers in server/publications.js for more information about publishers and subscribers.
 
 // Explain which collections this componet will subscribe to, and what data is expected to be returned.
-export default withTracker((props) => {
-  const subscription = Meteor.subscribe('collection name', parameter1InPublisher, parameter2InPublisher); //get collection as lowercase name from ../api/dbInit.js
-  const loading = !subscription.ready();
-  const collectionAsObjectList = CollectionName.find({}).fetch();
-  return {
-    collectionAsObjectList,
-  };
-}, Template);
+// export default withTracker((props) => {
+//   const subscription = Meteor.subscribe('classes', parameter1InPublisher, parameter2InPublisher); //get collection as lowercase name from ../api/dbInit.js
+//   const loading = !subscription.ready();
+//   const collectionAsObjectList = CollectionName.find({}).fetch();
+//   return {
+//     collectionAsObjectList,
+//   };
+// }, Template);
