@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { CollectionName } from '../api/dbDefs.js';
-import "./css/App.css"; // css files
+import "./css/Results.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import SearchBar from './SearchBar.jsx';
 
@@ -109,6 +109,11 @@ export class Results extends Component {
           <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
             <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
           </div>
+        </div>
+        <div>
+          <h1 text-align="center">
+            Here's what we found for Information Science with a rating of average
+          </h1>
         </div>
       </div>
 
