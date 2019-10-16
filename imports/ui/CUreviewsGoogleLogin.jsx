@@ -25,10 +25,13 @@ export default class CUreviewsGoogleLogin extends Component {
     this.responseGoogle.bind(this);
     this.saveRedirectToSession.bind(this);
     this.getRedirectURI.bind(this);
+    
+    //Save redirect page
+    //Will be either "admin" or "course"
     this.saveRedirectToSession(this.props.redirectFrom);
   }
   
-  //Using meteor session to save the token to Session
+  //Using meteor session to save the redirct page to Session
   saveRedirectToSession(from) {
     Session.setPersistent({"redirectFrom": from});
     if (Session.get("redirectFrom") !== from){

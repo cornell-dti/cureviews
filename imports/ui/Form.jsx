@@ -133,6 +133,10 @@ export default class Form extends Component {
     this.workloadSlider.current.value = 3;
     this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
     this.toggleDropdown(); //Open review dropdown when page loads
+    
+    //If there is currently a review stored in the session, this means that we have
+    // come back from the authentication page
+    // In this case, submit the review
     if(Session.get("review") != ""){
       this.submitReview();
     }
@@ -190,6 +194,7 @@ export default class Form extends Component {
         };
         this.setState({"review" : newReview})
         
+        // Call save review object to session so that it is not lost when authenicating (redirecting)
         this.saveReviewToSession(newReview);
         
         this.show();
@@ -211,6 +216,7 @@ export default class Form extends Component {
         this.profSelect.current.value = "none";
         this.toggleDropdown(); //Close the review dropdown when page loads
     
+        // Reset review info to default after review submission
         this.setState(this.defaultState);
         Session.setPersistent({"review": ""});
         Session.setPersistent({"review_major": ""});
@@ -225,7 +231,6 @@ export default class Form extends Component {
         Session.setPersistent({"review": ""});
         Session.setPersistent({"review_major": ""});
         Session.setPersistent({"review_num": ""});
-        // this.setState({message: "A error occurred. Please try again."});
         this.hide();
       }
     });
