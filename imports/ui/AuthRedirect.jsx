@@ -3,22 +3,19 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 
 /*
-Course Component.
+Auth Redirect Component.
 
-Simple styling component that represents a single course (an li element).
-Used to list courses in the results of a search in SearchBar.
+Component mainly for accepting user redirect from Google and redirecting user back to
+the appropriate class (eg. /course/CS/2110) or admin page (eg. /admin)
 
-If a query is provided as a prop, the component is a seach result, so we underline
-and boldface the query text within the title of the course.
+Saves Google ID Token from URL parameters when Google redirects user back to this page
+(eg. /auth/#id_token=abcd123)
 
-Clicking this component will change the route of the app to render the course's ClassView.
 */
 
 export default class AuthRedirect extends Component {
   constructor(props) {
     super(props);
-
-    // grabs class number and subject from the GET parameters
     
     const google_hash = this.props.location.hash;
     if(google_hash !== ""){
@@ -51,6 +48,5 @@ export default class AuthRedirect extends Component {
   }
 }
 
-// Requres course informaiton (database object) to generate course title, and uses the query to
-// determine styling of output
+// No props needed for this component
 AuthRedirect.propTypes = {};
