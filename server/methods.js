@@ -65,12 +65,12 @@ Meteor.methods({
   //Upon success returns 1, else returns 0
   insertUser: function (googleObject) {
     //Check user object has all required fields
-    if (googleObject.given_name != null
-      && googleObject.family_name != null
-      && googleObject.email.replace("@cornell.edu", "") != null) {
+    if (googleObject.email.replace("@cornell.edu", "") != null) {
       const newUser = {
-        firstName: googleObject.given_name,
-        lastName: googleObject.family_name,
+        // Check to see if Google returns first and last name
+        // If not, insert empty string to database
+        firstName: googleObject.given_name ? googleObject.given_name : "",
+        lastName: googleObject.family_name ? googleObject.family_name : "",
         netId: googleObject.email.replace("@cornell.edu", ""),
         affiliation: null,
         token: null,
