@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/Review.css';
+import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
 
 /*
   Filtered Result Component.
