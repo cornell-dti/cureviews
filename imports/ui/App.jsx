@@ -62,12 +62,12 @@ export default class App extends Component {
             classFull: "abc", // full class title to search by, formated as 'classSub classNum: classTitle'
             classSems: ["abc"], // list of semesters this class was offered, like ['FA17', 'FA16']
             classProfessors: ["abc"], //list of professors that have taught the course over past semesters
-            classRating: "abc", // the average class rating from reviews
-            classRatingColor: "abc", //color to indicate rating level
-            classWorkload: "abc", // the average workload rating from reviews
-            classWorkloadColor: "abc", //color to indicate workload level
-            classDifficulty: "abc", // the average difficulty rating from reviews
-            classDifficultyColor: "abc", //color to indicate difficulty level
+            classRating: 3, // the average class rating from reviews
+            classRatingColor: "gold", //color to indicate rating level
+            classWorkload: 3, // the average workload rating from reviews
+            classWorkloadColor: "gold", //color to indicate workload level
+            classDifficulty: 3, // the average difficulty rating from reviews
+            classDifficultyColor: "gold", //color to indicate difficulty level
             classGrade: "abc" // the average grade from reviews
 
           }]} />
