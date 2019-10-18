@@ -6,6 +6,7 @@ import "./css/Results.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import SearchBar from './SearchBar.jsx';
 
+
 /*
   Results Component. Short description if needed.
 
@@ -60,9 +61,10 @@ export class Results extends Component {
       else {
         // No class matches the request.
         console.log("no");
-        this.setState({
-          courseList: []
-        });
+        console.log(this.state.courseList);
+        // this.setState({
+        //   courseList: []
+        // });
       }
     });
   }
@@ -84,14 +86,12 @@ export class Results extends Component {
     this.componentWillMount()
   }
 
-  // renderResults() {
-  //   return this.state.courseList.map((result) => (
-  //     <FilteredResult course={result} />
-  //   ));
-  //   // return this.props.filterResults.map((result) => (
-  //   //   <FilteredResult course={result} />
-  //   // ));
-  // }
+  renderResults() {
+    return this.state.courseList.map((result, index) => (
+      <FilteredResult key={index} course={result} />
+    ));
+
+  }
 
 
   render() {
@@ -110,24 +110,20 @@ export class Results extends Component {
             <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>
           </div>
         </div>
-        <div>
-          <h1 text-align="center">
-            Here's what we found for Information Science with a rating of average
-          </h1>
-        </div>
-      </div>
 
-      // <section>
-      //   <legend className="subheader">Results</legend>
-      //   <div className="panel panel-default" id="reviewpanel">
-      //     <div>
-      //       <ul id="reviewul">
-      //         Hi
-      //         {/* {this.renderResults()} */}
-      //       </ul>
-      //     </div>
-      //   </div>
-      // </section>
+
+        <section>
+          <legend className="subheader">Here's what we found for Information Science with a rating of average</legend>
+          <div className="panel panel-default" id="reviewpanel">
+            <div>
+              <ul id="reviewul">
+
+                {this.renderResults()}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
     );
   }
 }
