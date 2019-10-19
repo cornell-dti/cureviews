@@ -70,6 +70,25 @@ export default class App extends Component {
             classDifficultyColor: "gold", //color to indicate difficulty level
             classGrade: "abc" // the average grade from reviews
 
+          },
+          {
+            _id: "abc",  // mongo-generated random id for this document
+            classSub: "abc", // subject, like "PHIL" or "CS"
+            classNum: 3, // course number, like 1110
+            classTitle: "abc", // class title, like 'Introduction to Algorithms'
+            classPrereq: ["abc"], // list of pre-req classes, a string of Classes _id.
+            crossList: ["abc"], // list of classes that are crosslisted with this one, a string of Classes _id.
+            classFull: "abc", // full class title to search by, formated as 'classSub classNum: classTitle'
+            classSems: ["abc"], // list of semesters this class was offered, like ['FA17', 'FA16']
+            classProfessors: ["abc"], //list of professors that have taught the course over past semesters
+            classRating: 3, // the average class rating from reviews
+            classRatingColor: "gold", //color to indicate rating level
+            classWorkload: 3, // the average workload rating from reviews
+            classWorkloadColor: "gold", //color to indicate workload level
+            classDifficulty: 3, // the average difficulty rating from reviews
+            classDifficultyColor: "gold", //color to indicate difficulty level
+            classGrade: "abc" // the average grade from reviews
+
           }]} />
         </div>
       );
