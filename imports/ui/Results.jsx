@@ -114,14 +114,14 @@ export class Results extends Component {
 
         <section>
           <legend className="subheader">Here's what we found for Information Science with a rating of average</legend>
-          <div className="panel panel-default" id="reviewpanel">
-            <div>
-              <ul id="reviewul">
+          {/* <div className="panel panel-default" id="reviewpanel"> */}
+          <div id="results">
+            <ul>
 
-                {this.renderResults()}
-              </ul>
-            </div>
+              {this.renderResults()}
+            </ul>
           </div>
+          {/* </div> */}
         </section>
       </div>
     );

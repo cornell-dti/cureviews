@@ -1,10 +1,10 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import Gauge from 'react-summary-gauge-2';
 import './css/CourseCard.css';
-import {lastOfferedSems, lastSem, getGaugeValues} from './js/CourseCard.js';
+import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
 
 /*
   Course Card Component.
@@ -71,35 +71,39 @@ export class CourseCard extends Component {
     const offered = lastOfferedSems(theClass);
 
     return (
-        <div id="coursedetails">
-            <h1 className="class-title top-margin">
-              {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}
-            </h1>
-            <div href={url} target="_blank"> {/* Forces link onto next line */}
-              <a className="cornellClassLink" href={url}>Course Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
-            </div>
-            <p className="class-info spacing-large top-margin">
-                <strong className="offered">Offered: </strong>
-                {offered}
-            </p>
-            <div className= "panel panel-default top-margin-medium panel-radius">
-                <div className = "panel-body">
-                    <section>
-                      <div className="row" id="gaugeHolder">
-                          <div className="col-md-4 col-sm-4 col-xs-12">
-                              <Gauge value={this.state.rating} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
-                          </div>
-                          <div className="col-md-4 col-sm-4 col-xs-12">
-                              <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty"/>
-                          </div>
-                          <div className="col-md-4 col-sm-4 col-xs-12">
-                              <Gauge value={this.state.workload} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload"/>
-                          </div>
-                      </div>
-                    </section>
-                </div>
-            </div>
+      <div id="coursedetails">
+        <h1 className="class-title top-margin">
+          {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}
+        </h1>
+        <div href={url} target="_blank"> {/* Forces link onto next line */}
+          <a className="cornellClassLink" href={url}>Course Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
         </div>
+        <p className="class-info spacing-large top-margin">
+          <strong>Offered: </strong>
+          {offered}
+        </p>
+        <p className="review-text spacing-large top-margin-small">
+          <strong>Median Grade: </strong>
+          {this.state.grade}
+        </p>
+        <div className="panel panel-default top-margin-medium panel-radius">
+          <div className="panel-body">
+            <section>
+              <div className="row" id="gaugeHolder">
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge value={this.state.rating} left={0} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge value={this.state.diff} left={0} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty" />
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge value={this.state.workload} left={0} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload" />
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -121,4 +125,4 @@ export default withTracker(props => {
   return {
     reviews, loading,
   };
-}) (CourseCard);
+})(CourseCard);

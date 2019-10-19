@@ -8,3 +8,6 @@
   letter-spacing: 0.1px;
   color: #4a4a4a;
 }
+#results{
+  overflow: hidden;
+}
