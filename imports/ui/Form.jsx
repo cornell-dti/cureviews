@@ -73,6 +73,7 @@ export default class Form extends Component {
     this.toggleDropdown.bind(this)
     this.submitReview = this.submitReview.bind(this)
     this.submitError = this.submitError.bind(this)
+    this.saveReviewToSession = this.saveReviewToSession.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
   }
@@ -132,6 +133,13 @@ export default class Form extends Component {
     this.workloadSlider.current.value = 3;
     this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
     this.toggleDropdown(); //Open review dropdown when page loads
+    
+    //If there is currently a review stored in the session, this means that we have
+    // come back from the authentication page
+    // In this case, submit the review
+    if(Session.get("review") != ""){
+      this.submitReview();
+    }
   }
 
   // Called each time this component receieves new props.
@@ -143,6 +151,22 @@ export default class Form extends Component {
       this.workloadSlider.current.value = 3;
       this.setState(this.defaultState);
     }
+  }
+
+  //Saves review input to session before redirecting to Google Authentication
+  saveReviewToSession(review) {
+    Session.setPersistent({"review": review});
+    Session.setPersistent({"review_major": this.props.course.classSub.toUpperCase()});
+    Session.setPersistent({"review_num": this.props.course.classNum});
+    if (!(_.isEqual(Session.get("review"),review)
+        && Session.get("review_major") === this.props.course.classSub.toUpperCase()
+        && Session.get("review_num") === this.props.course.classNum)){
+      console.log("Error saving review data to session");
+      return 0;
+    }
+    // console.log("This is the session after saving token");
+    // console.log(Session);
+    return 1;
   }
 
   // Form submission handler. This will either add the review to the database
@@ -170,13 +194,19 @@ export default class Form extends Component {
         };
         this.setState({"review" : newReview})
         
+        // Call save review object to session so that it is not lost when authenicating (redirecting)
+        this.saveReviewToSession(newReview);
+        
         this.show();
     }
   }
 
   submitReview() {
-    // call the api insert function
-    Meteor.call('insert', Session.get("token"), this.state.review, this.props.course._id, (error, result) => {
+    // Call the API insert function
+    Meteor.call('insert', Session.get("token"), 
+                Session.get("review") != "" ? Session.get("review") : this.state.review, 
+                this.props.course._id, 
+                (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
         // Success, so reset form
@@ -186,7 +216,11 @@ export default class Form extends Component {
         this.profSelect.current.value = "none";
         this.toggleDropdown(); //Close the review dropdown when page loads
     
+        // Reset review info to default after review submission
         this.setState(this.defaultState);
+        Session.setPersistent({"review": ""});
+        Session.setPersistent({"review_major": ""});
+        Session.setPersistent({"review_num": ""});
         this.hide();
         
         Bert.alert('Thanks! Your review is currently pending approval.');
@@ -194,7 +228,9 @@ export default class Form extends Component {
         // error, alert user
         console.log(error);
         Bert.alert("An unknown error occured, please try again.", "danger");
-        this.setState({message: "A error occurred. Please try again."});
+        Session.setPersistent({"review": ""});
+        Session.setPersistent({"review_major": ""});
+        Session.setPersistent({"review_num": ""});
         this.hide();
       }
     });
@@ -411,9 +447,8 @@ export default class Form extends Component {
                 </p>
                 <CUreviewsGoogleLogin 
                       executeLogin={this.state.visible}
-                      waitTime="3000"  
-                      onSuccessFunction={this.submitReview}
-                      onFailureFunction={this.submitError} />
+                      waitTime="3000"
+                      redirectFrom="course" />
               </div>
             </div>
             

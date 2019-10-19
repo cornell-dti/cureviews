@@ -22,22 +22,34 @@ export default class Login extends Component {
     // input elements are controlled components. Store the value of the
     // user's input password and its validation state.
     this.state = {
-      pass: "",
-      message: ""
+      message: "",
+      executeLogin: false
     };
 
     this.defaultState = this.state;
-    this.changeSession = this.changeSession.bind(this)
   }
-
-  changeSession(){
-    console.log("Change session");
-    Session.set("adminlogin", true);
-    this.setState({"pass" : "two"});
+  
+  componentWillMount() {
+    // The following is used to show admin panel if a user's token is found to be an admin
+    if(Session.get("token") != ""){
+      Meteor.call('tokenIsAdmin', Session.get("token"), (error, result) => {
+        if(result){
+          Session.set("adminlogin", true);
+          this.setState({executeLogin: false}); //This isn't necessary as it should alrady be allFalse
+                                                // but it is used to refresh the render()
+        }
+        else{
+          this.setState({executeLogin: true});
+        }
+      });
+    }
+    else{
+      this.setState({executeLogin: true});
+    }
   }
 
   render() {
-    // if password was valid, show admin interface, otherwise ask for the password.
+    // If Google login was valid, show admin interface.
     if (Session.get("adminlogin") === true) {
       return (
         <Admin />
@@ -51,11 +63,10 @@ export default class Login extends Component {
                 <h3 className="panel-title">Please wait to be authenticated</h3>
               </div>
               <div className="panel-body">
-                <CUreviewsGoogleLogin 
-                      executeLogin={true} 
-                      waitTime="1500"
-                      onSuccessFunction={this.changeSession}
-                      onFailureFunction={this.responseGoogle} />
+              <CUreviewsGoogleLogin 
+                    executeLogin={this.state.executeLogin}
+                    waitTime="1500"
+                    redirectFrom="admin" />
               </div>
             </div>
           </div>

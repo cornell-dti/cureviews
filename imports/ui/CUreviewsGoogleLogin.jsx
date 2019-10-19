@@ -22,24 +22,35 @@ export default class CUreviewsGoogleLogin extends Component {
       lastVerification: (new Date().getTime()) - 5000
     }
 
-    this.responseGoogle.bind(this)
+    this.responseGoogle.bind(this);
+    this.saveRedirectToSession.bind(this);
+    this.getRedirectURI.bind(this);
+    
+    //Save redirect page
+    //Will be either "admin" or "course"
+    this.saveRedirectToSession(this.props.redirectFrom);
   }
-
-  // // some function used in the app
-  // func1(value) {
-  // 
-  // }
-  // 
-  // // another function used in the app. If these get to long, move to a new
-  // // file under the /js folder named Template.js.
-  // func2(value) {
-  // 
-  // }
-
+  
+  //Using meteor session to save the redirct page to Session
+  saveRedirectToSession(from) {
+    Session.setPersistent({"redirectFrom": from});
+    if (Session.get("redirectFrom") !== from){
+      console.log("Error saving redirectFrom to session");
+      return 0;
+    }
+    return 1;
+  }
+  
+  //This callback function is only called when Google Log-In uses a pop-up.  We now use a redirect
+  // instead.  Therefore this callback is never used/called but I'll leave here for furture reference.
+  // Previously called by adding: onSuccess={this.responseGoogle.bind(this)}
+  // as a prop passed into <GoogleLogin> component below.
   responseGoogle = (response) => {
     const token = response.tokenId;
+    console.log(token);
     if (token){
       if (this.saveToken(token) === 1){
+        console.log(Session.get("token"));
         // console.log("Succesfully saved token to session");
       } else{
         console.log("Error saving token");
@@ -49,85 +60,15 @@ export default class CUreviewsGoogleLogin extends Component {
     }
     else{
       this.props.onFailureFunction(response);
-    }
-    
-  }
-
-  //Checks database for user with given netId. If user does not exits,
-  //creates new user from [response], inserts into database, and returns the new user.
-  retrieveUser = (response) =>{
-    //Get netID from response and look for in database
-    const profile=response.profileObj;
-    const netId=profile.email.split("@")[0];
-    let currentUser;
-    Meteor.call('getUserByNetId', netId, (error, result) =>{
-      if(!error || result===1){
-        currentUser=result;
-
-        // Create new user from profile of response if user does not exist yet
-        if (currentUser == null) {
-          let newUser={
-            firstName: profile.givenName,
-            lastName: profile.familyName,
-            netId: netId,
-            affiliation: null,
-            token: response.tokenId,
-            privilege: "regular"
-          }
-          //Insert the new user into the the database
-          Meteor.call('insertUser', newUser, (error, result) =>{
-            if(!error || result===1){
-              currentUser=newUser;
-
-              //Gets the new user from the database. This is done so that
-              //the Mongo generated _id is included in the object
-              Meteor.call('getUserByNetId', netId, (error, result) =>{
-                if(!error || result===1){
-                  currentUser=result;
-                  return currentUser;
-                }
-                else{
-                  console.log(error);
-                }
-              }
-              );
-            }
-            else{
-              console.log(error);
-            }
-          }
-          );
-      
-        }
-        return currentUser;
-      }
-      else{
-        console.log(error);
-      }
-    }
-    );
+    }  
   }
   
-  //Using meteor session to save the netID and token
-  //Saves user's netID and token from response to Session
-  saveToken(token) {
-    // console.log("This is the token in saveToken");
-    // console.log(token);
-    Session.setPersistent({"token": token});
-    if (Session.get("token") != token){
-      console.log("Error saving token to session")
-      return 0;
+  getRedirectURI(){
+    if(window.location.host.includes("localhost")){
+      return "http://" + window.location.host + "/auth/"
     }
-    // console.log("This is the session after saving token");
-    // console.log(Session);
-    return 1;
+      return "https://" + window.location.host + "/auth/"
   }
-  
-  // // function that specifically renders HTML or another component. Keep these
-  // // at the bottom of the list of functions, closer to the final render
-  // renderElement() {
-  // 
-  // }
   
   render() {
     return (
@@ -144,8 +85,8 @@ export default class CUreviewsGoogleLogin extends Component {
               }, this.props.waitTime)
                : 1 }</script>
           )}
-          onSuccess={this.responseGoogle.bind(this)}
-          onFailure={this.responseGoogle.bind(this)}
+          uxMode="redirect"
+          redirectUri={this.getRedirectURI()}
         />
       </div>
     );
@@ -159,5 +100,6 @@ export default class CUreviewsGoogleLogin extends Component {
 // describe props
 CUreviewsGoogleLogin.propTypes = {
   executeLogin:PropTypes.bool,
-  waitTime:PropTypes.string
+  waitTime:PropTypes.string,
+  redirectFrom:PropTypes.string
 };

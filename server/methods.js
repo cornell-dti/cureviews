@@ -23,6 +23,8 @@ Meteor.methods({
       return 0; // Token was undefined
     }
     const ticket = Meteor.call('getVerificationTicket', token);
+    // console.log("ticket");
+    // console.log(ticket);
     Meteor.call('insertUser', ticket);
     if (ticket.hd === "cornell.edu"){
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
@@ -63,12 +65,12 @@ Meteor.methods({
   //Upon success returns 1, else returns 0
   insertUser: function (googleObject) {
     //Check user object has all required fields
-    if (googleObject.given_name != null
-      && googleObject.family_name != null
-      && googleObject.email.replace("@cornell.edu", "") != null) {
+    if (googleObject.email.replace("@cornell.edu", "") != null) {
       const newUser = {
-        firstName: googleObject.given_name,
-        lastName: googleObject.family_name,
+        // Check to see if Google returns first and last name
+        // If not, insert empty string to database
+        firstName: googleObject.given_name ? googleObject.given_name : "",
+        lastName: googleObject.family_name ? googleObject.family_name : "",
         netId: googleObject.email.replace("@cornell.edu", ""),
         affiliation: null,
         token: null,
@@ -82,7 +84,8 @@ Meteor.methods({
           Students.insert(newUser);
           return 1; //success
         } catch (error) {
-          console.log(error)
+          console.log("Error: In inserting Student");
+          console.log(error);
           return 0; //fail
         }
       }
@@ -92,7 +95,7 @@ Meteor.methods({
     }
     else {
       //error handling
-      console.log("Some user values are null")
+      console.log("Some user values are null in insertUser");
       return 0; //fail
     }
   },
@@ -481,6 +484,7 @@ Meteor.methods({
       return valid_email;
 
     } catch (e) {
+      console.log("Error: at getVerificationTicket");
       console.log(e);
       return false;
     }
