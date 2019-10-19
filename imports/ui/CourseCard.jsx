@@ -63,9 +63,9 @@ export class CourseCard extends Component {
 
     // Creates Url that points to each class page on Cornell Class Roster
     const url = "https://classes.cornell.edu/browse/roster/"
-        + lastSem(theClass.classSems) + "/class/"
-        + theClass.classSub.toUpperCase() + "/"
-        + theClass.classNum;
+      + lastSem(theClass.classSems) + "/class/"
+      + theClass.classSub.toUpperCase() + "/"
+      + theClass.classNum;
 
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     const offered = lastOfferedSems(theClass);
