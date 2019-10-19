@@ -1,0 +1,44 @@
+#coursedetails {
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  float: left;
+}
+
+.class-title{
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  color: #4a4a4a;
+}
+
+.class-info{
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  color: #000000;
+}
+
+.panel-radius{
+  border-radius: 8px;
+}
+
+#gauge, #gauge-body{
+  width: 50%;
+}
+
+#gauge{
+  float: right;
+}
+
+#result-li{
+  position: relative;
+}
