@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './css/CourseCard.css';
+import './css/FilteredResult.css';
 import Gauge from 'react-summary-gauge-2';
 import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
 
@@ -41,7 +41,7 @@ export default class FilteredResult extends Component {
     var offered = lastOfferedSems(theClass);
 
     return (
-      <li>
+      <li id="result-li">
         <div id="coursedetails">
           <div>
             <h1 className="class-title top-margin">
@@ -52,24 +52,25 @@ export default class FilteredResult extends Component {
               {offered}
             </p>
           </div>
-          <div className="panel panel-default top-margin-medium panel-radius">
-            <div className="panel-body">
-              <section>
-                <div className="row" id="gaugeHolder">
-                  <div className="col-md-4 col-sm-4 col-xs-12">
-                    <Gauge value={this.state.rating} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
-                  </div>
-                  <div className="col-md-4 col-sm-4 col-xs-12">
-                    <Gauge value={this.state.diff} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty" />
-                  </div>
-                  <div className="col-md-4 col-sm-4 col-xs-12">
-                    <Gauge value={this.state.workload} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload" />
-                  </div>
+        </div>
+        <div className="panel panel-default top-margin-medium panel-radius" id="gauge">
+          <div className="panel-body" id="gauge-body">
+            <section>
+              <div className="row" id="gaugeHolder">
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge value={this.state.rating} left={50} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
                 </div>
-              </section>
-            </div>
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge value={this.state.diff} left={150} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty" />
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge value={this.state.workload} left={250} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload" />
+                </div>
+              </div>
+            </section>
           </div>
         </div>
+
       </li>
     );
   }
