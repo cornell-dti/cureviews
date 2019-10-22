@@ -137,7 +137,7 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if(Session.get("review") != ""){
+    if(Session.get("review") != undefined && Session.get("review") != ""){
       this.submitReview();
     }
   }
