@@ -189,30 +189,30 @@ Meteor.methods({
 
   },
 
-  // Used to update the review metrics for all courses
-  //in the database.
-  updateMetricsForAllCourses: function () {
-    var courses = Classes.find().fetch();
-    courses.forEach(function (course) {
-      Meteor.call("updateCourseMetrics", course._id);
-    });
-  },
+    // Used to update the review metrics for all courses
+    //in the database.
+    updateMetricsForAllCourses: function (){
+      var courses=Classes.find().fetch();
+      courses.forEach(function(course){
+        Meteor.call("updateCourseMetrics", course._id);
+      });
+    },
 
-  // Returns courses with the given parameters.
-  // Takes in a dictionary object of field names
-  // and the desired value, i.e. 
-  // {"classRating":"4.4",
-  //  "classGrade":"A-" }
-  // Returns an empty array if no classes match.
-  getCoursesByFilters: function (parameters) {
-    var courses = [];
-    var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    for (var key in dict) {
-      if (!regex.test(key) || regex.test(parameters[key])) return courses;
-    }
-    courses = Classes.find(parameters).fetch();
-    return courses;
-  },
+    // Returns courses with the given parameters.
+    // Takes in a dictionary object of field names
+    // and the desired value, i.e. 
+    // {classSub: "PHIL"} or
+    // {classDifficulty: 3.0}
+    // Returns an empty array if no classes match.
+    getCoursesByFilters: function(parameters){
+      var courses=[];
+      var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      for(var key in dict){
+        if(!regex.test(key) || regex.test(parameters[key])) return courses;
+      }
+      courses=Classes.find(parameters).fetch();
+      return courses;
+    },
 
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
