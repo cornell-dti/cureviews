@@ -221,8 +221,8 @@ Meteor.methods({
     // Returns courses with the given parameters.
     // Takes in a dictionary object of field names
     // and the desired value, i.e. 
-    // {"classRating":"4.4",
-    //  "classGrade":"A-" }
+    // {classSub: "PHIL"} or
+    // {classDifficulty: 3.0}
     // Returns an empty array if no classes match.
     getCoursesByFilters: function(parameters){
       let courses=[];
