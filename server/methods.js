@@ -488,10 +488,8 @@ Meteor.methods({
     return subjectsAndReviewCountArray.slice(0, 15)
   },
 
-  totalCS: function (){
-    return Classes.find({classSub: "cs"}).count();
-  },
-
+  //returns an array of objects in the form {_id: cs, total: 276}
+  //represnting how many classes each dept (cs, info, coml etc...) offers
   howManyEachClass: function (){
     const pipeline = [
     {
@@ -504,6 +502,30 @@ Meteor.methods({
     }
     ];
     return Classes.aggregate(pipeline)
+  },
+
+  howManyReviewsEachClass: function(){
+    const pipeline = [
+    {
+      $group: {
+        _id: '$class',
+        total: {
+          $sum: 1
+        }
+      }
+    }
+    ];
+
+    let output = [];
+    Reviews.aggregate(pipeline).map(function (data){
+      const subNum = Classes.find({_id: data._id},{'classSub':1,'_id':0, 'classNum':1}).fetch()[0];
+      const id = subNum.classSub + " " +subNum.classNum;
+      console.log(subNum);
+      output.push(
+        {_id: id, total: data.total}
+      );
+    });
+    return output;
   },
   // Print on the server side for API testing. Should print in logs if
   // called by the API (in the Auth component).

@@ -11,23 +11,20 @@ export default class Statistics extends Component{
     super(props);
 
     this.state={
-      totalCS: -1,
-      howManyEachClass: []
+      howManyEachClass: [],
+      howManyReviewsEachClass: []
     }
-    this.getTotalCs();
     this.howManyEachClass();
+    this.howManyReviewsEachClass();
   }
 
-  getTotalCs(){
-      Meteor.call('totalCS', (error, result) =>{
-        if(!error){
-          this.setState({totalCS: result});
-        //  return result;
-      }else{
+  howManyReviewsEachClass(){
+    Meteor.call('howManyReviewsEachClass', (error, result) =>{
+      if(!error)
+        this.setState({howManyReviewsEachClass: result});
+      else
         console.log(error);
-      }
-
-      });
+    });
   }
 
   howManyEachClass(){
@@ -44,8 +41,8 @@ export default class Statistics extends Component{
   render(){
     return(
       <div>
-        <p>{this.state.totalCS}</p>
-        <Accordian data={this.state.howManyEachClass} />
+        <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses"/>
+        <Accordian data={this.state.howManyReviewsEachClass} title="Num of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
       </div>
     )
   }
