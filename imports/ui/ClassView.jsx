@@ -8,6 +8,12 @@ import "./css/App.css";
 import { courseVisited } from './js/Feedback.js';
 import "./css/ClassView.css";
 import PropTypes from "prop-types";
+import { Classes } from '../api/dbDefs.js';
+import { withTracker } from 'meteor/react-meteor-data';
+import Select from 'react-select';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
+import './css/Form.css';
 
 /*
   ClassView component.
@@ -25,7 +31,7 @@ import PropTypes from "prop-types";
   must also support SearchBar functionality.
 */
 
-export default class ClassView extends Component {
+export class ClassView extends Component {
   constructor(props) {
     super(props);
 
@@ -42,6 +48,7 @@ export default class ClassView extends Component {
       selectedClass: null,
       classDoesntExist: false,
       query: '',
+      popUpVisible: true,
     };
 
     this.updateQuery = this.updateQuery.bind(this);
@@ -99,8 +106,24 @@ export default class ClassView extends Component {
       selectedClass: null,
       classDoesntExist: false,
       query: '',
+      popUpVisible: true,
     };
     this.componentWillMount()
+  }
+  
+  getPopUpCourseOptions() {
+    if (this.props.allCourses != []) {
+      const popUpCourseOptions = []
+      for(const course in this.props.allCourses){
+        const courseObj = this.props.allCourses[course]
+
+        popUpCourseOptions.push({
+          "value" : courseObj.classNum,
+          "label" : courseObj.classTitle
+        })
+      }
+      return popUpCourseOptions
+    }
   }
 
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
@@ -136,6 +159,23 @@ export default class ClassView extends Component {
               </div>
             </div>
           </div>
+          <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.popUpVisible}>
+            <div id="modal-background">
+              <div id="popup-top">
+                <p id="modal-title" className="center-block">Submit Quick Review</p>
+              </div>
+              <div id="">
+                <p id="modal-text" className="center-block">
+                  Search for a class to review:
+                </p>
+                <Select value={this.state.selectedPopUpCourse}
+                  options={this.getPopUpCourseOptions()}
+                  ref={this.classSelect}
+                />
+              </div>
+            </div>
+            
+          </Rodal>
         </div>
       );
     } else if (this.state.classDoesntExist) {
@@ -178,3 +218,15 @@ export default class ClassView extends Component {
 ClassView.propTypes = {
   match: PropTypes.object
 };
+
+// wrap in a container class that allows the component to dynamically grab courses
+// that contain this query anywhere in their full name. The component will automatically
+//  re-render when new classes are added to the database.
+export default withTracker(props => {
+  const subscription = Meteor.subscribe('classes', "");
+  const loading = !subscription.ready();
+  const allCourses = Classes.find({}).fetch();
+  return {
+    allCourses, loading,
+  };
+}) (ClassView);

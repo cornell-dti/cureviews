@@ -28,6 +28,7 @@ export class SearchBar extends Component {
       index: 0, //the initial state is the first element
       enter: 0, //to keep track of the initial state of enter as false
       mouse: 0, //keep track of the initial state of mouse hovering in the list cells as false
+      
     }
     
   

@@ -7,11 +7,19 @@
 
 }
 
-
 #loading{
     padding-top: 300px;
 }
 
 .fix-padding{
   padding-top: inherit;
+}
+
+#popup-top{
+  height: 10%;
+  z-index: 1008;
+  box-shadow: 0 2px 3.5px 0 rgba(231, 231, 231, 0.83);
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: #ffffff;
 }
