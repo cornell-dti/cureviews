@@ -488,6 +488,23 @@ Meteor.methods({
     return subjectsAndReviewCountArray.slice(0, 15)
   },
 
+  totalCS: function (){
+    return Classes.find({classSub: "cs"}).count();
+  },
+
+  howManyEachClass: function (){
+    const pipeline = [
+    {
+      $group: {
+        _id: '$classSub',
+        total: {
+          $sum: 1
+        }
+      }
+    }
+    ];
+    return Classes.aggregate(pipeline)
+  },
   // Print on the server side for API testing. Should print in logs if
   // called by the API (in the Auth component).
   printOnServer: function (text) {
@@ -543,11 +560,11 @@ Meteor.methods({
       // console.log(ticket);
       const payload = ticket.getPayload();
       //The REST API uses payloads to pass and return data structures too large to be handled as parameters
-      //The term 'payload' is used to distinguish it as the 'interesting' 
+      //The term 'payload' is used to distinguish it as the 'interesting'
       //information in a chunk of data or similar from the overhead to support it
       const { email } = payload;
 
-      //parse out the netid from email to verify it is the same as the netid 
+      //parse out the netid from email to verify it is the same as the netid
       //passed in (similar to research connect)
       const emailBeforeAt = email.replace((`@${payload.hd}`), '');
       // console.log(emailBeforeAt);

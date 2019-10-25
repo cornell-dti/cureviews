@@ -17,7 +17,6 @@ export default class Review extends Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
     }
@@ -139,7 +138,7 @@ export default class Review extends Component {
                   <p className="professor-text">{prof}</p></div>)) : <div className="col-md-6 col-sm-6 col-xs-6">
                     <p className="professor-text">N/A</p></div>}
               </div>
-              
+
             </div>
             <div className="row">
               <div className="review-text" >{review.text}</div>

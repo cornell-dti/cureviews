@@ -6,7 +6,7 @@ import UpdateReview from './UpdateReview.jsx';
 import "./css/Admin.css";
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 import { Session } from 'meteor/session';
-
+import { Statistics } from './Statistics.jsx';
 /*
   Admin Interface Component.
 
@@ -37,7 +37,7 @@ export class Admin extends Component {
       // 2: database professor update function has completed
       resettingProfs: 0, // 0: starting state, no attempt to clear database,
       // 1: database professor clearing function was called, scraper is running
-      // 2: database professor clearing function has completed      
+      // 2: database professor clearing function has completed
       adminPanelHTML: "Invalid Credentials"
     }
 
@@ -53,7 +53,7 @@ export class Admin extends Component {
     this.removeReview.bind(this);
     this.unReportReview.bind(this);
   }
-  // 
+  //
   // componentWillMount(){
   //   if(Session.get("token") != undefined){
   //     Meteor.call('tokenIsAdmin', Session.get("token"), (error, result) => {
@@ -62,7 +62,7 @@ export class Admin extends Component {
   //                 console.log("here0");
   //         }, 3000);
   //             adminPanelHTML  = (
-  // 
+  //
   //             )
   //             this.setState({adminPanelHTML: adminPanelHTML})
   //       }
@@ -231,10 +231,11 @@ export class Admin extends Component {
     return (
       <div className="container whiteBg">
         <div className="width-90">
+
           <div className="container whiteBg">
             <div className="width-90">
               <h2>Admin Interface</h2>
-
+                <Statistics />
               <br />
 
               <div className="text-right">
