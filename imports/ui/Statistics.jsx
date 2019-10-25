@@ -4,8 +4,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import { Classes } from '../api/dbDefs.js';
 import { Students } from '../api/dbDefs.js';
+import Accordian from './Accordian.jsx';
 
-export class Statistics extends Component{
+export default class Statistics extends Component{
   constructor(props) {
     super(props);
 
@@ -44,26 +45,7 @@ export class Statistics extends Component{
     return(
       <div>
         <p>{this.state.totalCS}</p>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Dept</th>
-                <th scope="col">Num of courses</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.howManyEachClass.map(function(data) {
-                  return(
-                    <tr key={data._id}>
-                      <th scope="row" key={data._id}>{data._id}</th>
-                      <td key={data._id}>{data.total}</td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
+        <Accordian data={this.state.howManyEachClass} />
       </div>
     )
   }

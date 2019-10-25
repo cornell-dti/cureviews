@@ -6,7 +6,7 @@ import UpdateReview from './UpdateReview.jsx';
 import "./css/Admin.css";
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 import { Session } from 'meteor/session';
-import { Statistics } from './Statistics.jsx';
+import Statistics from './Statistics.jsx';
 /*
   Admin Interface Component.
 
