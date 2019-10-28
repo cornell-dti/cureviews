@@ -15,7 +15,8 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
    # which can be initiated by the Client but run on the Server.
 */
 Meteor.methods({
-  // insert a new review into the reviews collection.
+  // insert a new review into the reviews collection. Also updates 
+  // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in

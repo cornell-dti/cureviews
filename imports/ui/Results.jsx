@@ -57,6 +57,8 @@ export class Results extends Component {
         this.setState({
           courseList: courseList
         });
+        console.log("yes");
+        console.log(this.state.courseList);
       }
       else {
         // No class matches the request.
