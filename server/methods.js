@@ -147,16 +147,21 @@ Meteor.methods({
     if (course) {
       var reviews = Reviews.find({ class: courseId }).fetch();
       var state = getGaugeValues(reviews);
-      if (typeof state.rating == 'string' && typeof state.workload == 'string' && typeof state.diff == 'string' && typeof state.grade == 'string') {
-        Classes.update({ _id: courseId }, {
+
+      Classes.update({ _id: courseId },
+        {
           $set: {
-            classRating: state.rating, classRatingColor: state.ratingColor,
-            classWorkload: state.workload, classWorkLoadColor: state.workloadColor,
-            classDifficulty: state.diff, classDifficultyColor: state.diffColor, classGrade: state.grade
+            classGrade: state.gradeNum, classDifficulty: Number(state.diff),
+            classRating: Number(state.rating)
           }
         });
+      //If no data is available, getGaugeValues returns "-" for workload
+      if (state.workload != "-") {
+        Classes.update({ _id: courseId }, { $set: { classWorkload: Number(state.workload) } })
       }
-
+      else {
+        Classes.update({ _id: courseId }, { $set: { classWorkload: null } })
+      }
       return 1;
 
     }
@@ -178,8 +183,8 @@ Meteor.methods({
   // Returns courses with the given parameters.
   // Takes in a dictionary object of field names
   // and the desired value, i.e. 
-  // {"classRating":"4.4",
-  //  "classGrade":"A-" }
+  // {classSub: "PHIL"} or
+  // {classDifficulty: 3.0}
   // Returns an empty array if no classes match.
   getCoursesByFilters: function (parameters) {
     var courses = [];

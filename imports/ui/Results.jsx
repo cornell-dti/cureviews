@@ -49,19 +49,21 @@ export class Results extends Component {
   componentWillMount() {
 
     Meteor.call("getCourseByFilters", {
-      "classRating": "4.4",
-      "classGrade": "A-"
+      "classRating": 4.5,
+      "classGrade": "B"
     }, (err, courseList) => {
       if (!err && courseList) {
         // Save the Class object that matches the request
         this.setState({
           courseList: courseList
         });
+        console.log("yes");
+        console.log(this.state.courseList);
       }
       else {
         // No class matches the request.
         console.log("no");
-        console.log(this.state.courseList);
+        // console.log(this.state.courseList);
         // this.setState({
         //   courseList: []
         // });
