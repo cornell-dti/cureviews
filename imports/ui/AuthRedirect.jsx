@@ -19,7 +19,7 @@ export default class AuthRedirect extends Component {
     
     const google_hash = this.props.location.hash;
     if(google_hash !== ""){
-      const google_token = google_hash.match(/(?=id_token\=)([^&]+)/)[0].split("=")[1];
+      const google_token = google_hash.match(/(?=id_token=)([^&]+)/)[0].split("=")[1];
       this.saveToken(google_token);
     }
   }
