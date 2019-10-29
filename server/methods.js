@@ -185,10 +185,11 @@ Meteor.methods({
     getCoursesByFilters: function(parameters){
       var courses=[];
       var regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      for(var key in dict){
-        if(!regex.test(key) || regex.test(parameters[key])) return courses;
+      //TODO: add regular expression for floating point numbers
+      for(var key in parameters){
+        if(!regex.test(key)) return courses;
       }
-      courses=Classes.find(parameters).fetch();
+      courses=Classes.find().fetch();
       return courses;
     },
 
