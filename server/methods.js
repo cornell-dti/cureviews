@@ -189,7 +189,7 @@ Meteor.methods({
       for(var key in parameters){
         if(!regex.test(key)) return courses;
       }
-      courses=Classes.find().fetch();
+      courses=Classes.find(parameters).fetch();
       return courses;
     },
 
