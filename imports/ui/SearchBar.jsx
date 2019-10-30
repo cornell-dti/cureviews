@@ -121,7 +121,9 @@ export class SearchBar extends Component {
       return this.props.allCourses.slice(0,100).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.props.query} useRedirect={isFind}
-          active={this.state.index == i} cursor={this.state.enter} onClick={this.setCourse(course._id, course.classSub, course.classNum, course.classTitle)} mouse = {this.state.mouse}/>
+          active={this.state.index == i} cursor={this.state.enter} 
+          // onClick={this.setCourse(course._id, course.classSub, course.classNum, course.classTitle)} 
+          mouse = {this.state.mouse}/>
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
         //the index matching with the course
         //the prop "cursor" will pass through the value of the enter state
