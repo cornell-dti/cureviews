@@ -55,9 +55,15 @@ export default class Course extends Component {
         const endIndex = startIndex + queryWithoutSubject.length;
 
         // underline the subject and any other matching text
+        if(!this.props.searchBarHandler)
         text = 
         <div>
           <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>
+          {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
+        </div>
+        else text= 
+          <div>
+          <span>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
         </div>
         
