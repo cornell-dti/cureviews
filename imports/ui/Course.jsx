@@ -16,13 +16,22 @@ import { Redirect } from 'react-router';
 */
 
 export default class Course extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.setCourseOnSearchBar.bind(this);
+  }
+
+  setCourseOnSearchBar(classInfo){
+    this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle);
+  }
   
   
   render() {
     // generate full human-readable name of class
     const classInfo = this.props.info;
-    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
-    
+    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle; 
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
     if(this.props.active && this.props.cursor == 1 && this.props.useRedirect){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
@@ -73,10 +82,8 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <li className={this.props.active && this.props.mouse != 1 ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
-          <a className="text-style-1" ref="class">
-              {text}
-          </a>
+      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+        {text}
       </li>
     );
   }

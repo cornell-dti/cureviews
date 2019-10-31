@@ -17,42 +17,57 @@ import "./css/SearchBar.css";
   meteor database and displays them.
 */
 
+const initState={
+  showDropdown: true,
+  index: 0, //the initial state is the first element
+  enter: 0, //to keep track of the initial state of enter as false
+  mouse: 0, //keep track of the initial state of mouse hovering in the list cells as false
+  courseSubject:"", //course subject that's been selected for pop-up review
+  courseTitle:"", //course title that's been selected for pop-up review
+  courseNumber:null,//course number that's been selected for pop-up review
+  courseId:null, //id of course that's been selected for pop-up review
+};
+
 export class SearchBar extends Component {
 
   constructor(props) {
     super(props);
     
-
-    this.state = {
-      showDropdown: true,
-      index: 0, //the initial state is the first element
-      enter: 0, //to keep track of the initial state of enter as false
-      mouse: 0, //keep track of the initial state of mouse hovering in the list cells as false
-      courseSubject:"", //course subject that's been selected for pop-up review
-      courseTitle:"", //course title that's been selected for pop-up review
-      courseNumber:null,//course number that's been selected for pop-up review
-      courseId:null//id of course that's been selected for pop-up review
-    }
-    
-      this.setCourse.bind(this);
+    this.state = initState;
+      this.handleChange = this.handleChange.bind(this);
+      this.setCourse=this.setCourse.bind(this);
   
+  }
+
+  //This function is only used for the pop-up
+  //search bar. It keeps track of the value inside it
+  handleChange(event) {
+    this.setState({textValue: event.target.value});
+    if(!this.state.showDropdown){
+      this.setState(initState);
+    }
   }
 
   //Handler function passed into Course component to get information on user-clicked course
   //in pop-up review.
   setCourse(id, subject, number, title){
-    console.log("SUBJECT: "+subject);
     this.setState({
       courseId:id,
       courseSubject:subject,
       courseNumber:number,
-      courseTitle:title
-    })
+      courseTitle:title,
+      showDropdown:false,
+      textValue:subject.toUpperCase()+" "+number+" "+title
+    });
   }
   
+
   
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
+    this.setState({showDropdown:true});
+    this.setState(initState);
+
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState( prevState => ({
@@ -120,9 +135,8 @@ export class SearchBar extends Component {
     if (this.props.query !== "") {
       return this.props.allCourses.slice(0,100).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.props.query} useRedirect={isFind}
+        <Course key={course._id} info={course} query={this.props.query} useRedirect={!isFind} handler={this.setCourse}
           active={this.state.index == i} cursor={this.state.enter} 
-          // onClick={this.setCourse(course._id, course.classSub, course.classNum, course.classTitle)} 
           mouse = {this.state.mouse}/>
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
         //the index matching with the course
@@ -139,9 +153,9 @@ export class SearchBar extends Component {
   render() {
     if(this.props.purpose=="find") return (
       <div className="search-bar text-left" id="searchbar" >
-        <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autoComplete="off"/>
+        <input className="search-text" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
         <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-          {this.renderCourses(false)}
+          {this.renderCourses(true)}
         </ul>
       </div>
     );
@@ -149,7 +163,7 @@ export class SearchBar extends Component {
       <div className="search-bar text-left" id="searchbar" >
       <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autoComplete="off"/>
       <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-        {this.renderCourses(false)}
+        {this.renderCourses(true)}
       </ul>
     </div>
     );
