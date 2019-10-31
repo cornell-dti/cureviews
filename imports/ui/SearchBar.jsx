@@ -164,9 +164,9 @@ export class SearchBar extends Component {
 
   render() {
     if(this.props.purpose=="find") return (
-      <div className="search-bar text-left" id="searchbar" >
-        <input className="search-text" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)"/>
-        <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
+      <div className="search-bar text-left" id="searchbar-popup" >
+        <input className="search-text" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class"/>
+        <ul id="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderCourses(true)}
         </ul>
       </div>

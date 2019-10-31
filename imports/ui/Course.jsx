@@ -82,8 +82,8 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
-        {text}
+      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+        <p className="text-style-3">{text}</p>
       </li>
     );
   }
