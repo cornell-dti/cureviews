@@ -1,6 +1,5 @@
 import { HTTP } from 'meteor/http';
-import { check, Match} from 'meteor/check';
-import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
+import { Classes, Subjects } from '../imports/api/dbDefs.js';
 
 /*
   Course API scraper. Uses HTTP requests to get course data from the Cornell
@@ -207,7 +206,7 @@ export function updateProfessors (semesters){
                           console.log("Error in updateProfessors: 5");
                           console.log("Error on course " + courses[course].subject + " " + courses[course].catalogNbr);
                           console.log(error)
-                          
+
                           return 0;
                         }
                     }
@@ -218,7 +217,7 @@ export function updateProfessors (semesters){
     console.log("Finished updateProfessors");
     return 1;
   }
-  
+
   export function resetProfessorArray (semesters){
     // Initializes the classProfessors field in the Classes collection to an empty array so that
     // we have a uniform empty array to fill with updateProfessors

@@ -16,14 +16,14 @@ Saves Google ID Token from URL parameters when Google redirects user back to thi
 export default class AuthRedirect extends Component {
   constructor(props) {
     super(props);
-    
+
     const google_hash = this.props.location.hash;
     if(google_hash !== ""){
       const google_token = google_hash.match(/(?=id_token=)([^&]+)/)[0].split("=")[1];
       this.saveToken(google_token);
     }
   }
-  
+
   //Using meteor session to save the token to Session
   saveToken(token) {
     Session.setPersistent({"token": token});
@@ -33,7 +33,7 @@ export default class AuthRedirect extends Component {
     }
     return 1;
   }
-  
+
   render() {
     if(Session.get("redirectFrom") === "course"){
       return <Redirect push to={`/course/${Session.get("review_major")}/${Session.get("review_num")}`}></Redirect>
@@ -44,9 +44,11 @@ export default class AuthRedirect extends Component {
     else{
       return <Redirect push to={"/"}></Redirect>
     }
-    
+
   }
 }
 
 // No props needed for this component
-AuthRedirect.propTypes = {};
+AuthRedirect.propTypes = {
+  location: PropTypes.object.isRequired
+};

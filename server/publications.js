@@ -1,8 +1,4 @@
-import { Mongo } from 'meteor/mongo';
-import { HTTP } from 'meteor/http';
-import { check, Match} from 'meteor/check';
-import { Classes, Users, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
-import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList } from './dbInit.js';
+import { Classes, Users, Subjects, Reviews } from '../imports/api/dbDefs.js';
 
 /* # Database Publishers
    # Client-side code in meteor only has access to subsets of the local
@@ -25,7 +21,7 @@ import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList } from 
    If searchString is a valid string:
     Return a 'good' search using the following rules:
     - if the first character is a number, return all courses with that number, sorted by number
-    - if the searchstring is a subject shorthand 
+    - if the searchstring is a subject shorthand
       return all courses with that subject ordered by full course title
     - if the searchstring contains both numbers and letters try to split into numbers and letters
       - if letters form a subject, return courses with this subject containing the given number
@@ -41,17 +37,17 @@ Meteor.publish('classes', function validClasses(searchString) {
     if (indexFirstDigit == 0) {
       // console.log("only numbers")
       return Classes.find(
-        {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}, 
-        {sort: {classFull: 1}, limit: 200}, 
+        {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+        {sort: {classFull: 1}, limit: 200},
         {reactive: false});
     }
-   
+
     // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
     if (isSubShorthand(searchString)) {
       // console.log("matches subject: " + searchString)
       return Classes.find(
         { 'classSub':  searchString},
-        {sort: {classFull: 1}, limit: 200},  
+        {sort: {classFull: 1}, limit: 200},
         {reactive: false});
     }
 
@@ -79,11 +75,11 @@ Meteor.publish('classes', function validClasses(searchString) {
       }
     }
 
-    //last resort, search everything 
+    //last resort, search everything
     // console.log("nothing matches");
     return Classes.find(
       { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-      {sort: {classFull: 1}, limit: 200}, 
+      {sort: {classFull: 1}, limit: 200},
       {reactive: false}
     );
   } else {

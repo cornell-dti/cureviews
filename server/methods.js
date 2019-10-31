@@ -1,4 +1,3 @@
-/* eslint-disable meteor/audit-argument-checks */
 import { Mongo } from 'meteor/mongo';
 import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
@@ -236,8 +235,8 @@ Meteor.methods({
   setProfessors: function (initiate, token) {
   const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if (initiate && Meteor.isServer && userIsAdmin) {
-      var semesters = findAllSemesters();
-      
+      const semesters = findAllSemesters();
+
       console.log("These are the semesters");
       console.log(semesters);
       const val = updateProfessors(semesters);
@@ -254,10 +253,10 @@ Meteor.methods({
   we have a uniform empty array to fill with updateProfessors
   This calls the resetProfessorArray in dbInit */
   resetProfessors: function (initiate, token) {
-  const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if (initiate && Meteor.isServer && userIsAdmin) {
-      var semesters = findAllSemesters();
-      
+      const semesters = findAllSemesters();
+
       console.log("These are the semesters");
       console.log(semesters);
       const val = resetProfessorArray(semesters);
@@ -308,8 +307,8 @@ Meteor.methods({
       if (indexFirstDigit == 0) {
         // console.log("only numbers")
         return Classes.find(
-          {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}, 
-          {sort: {classFull: 1}, limit: 200}, 
+          {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+          {sort: {classFull: 1}, limit: 200},
           {reactive: false}).fetch();
       }
 
@@ -317,7 +316,7 @@ Meteor.methods({
       if (isSubShorthand(searchString)) {
         return Classes.find(
           { 'classSub':  searchString},
-          {sort: {classFull: 1}, limit: 200},  
+          {sort: {classFull: 1}, limit: 200},
           {reactive: false}).fetch();
       }
       // check if text before space is subject, if so search only classes with this subject.
@@ -331,7 +330,7 @@ Meteor.methods({
           return searchWithinSubject(strBeforeSpace, strAfterSpace)
         }
       }
-  
+
       // check if text is subject followed by course number (no space)
       // if so search only classes with this subject.
       // Speeds up searches like "CS1110"
@@ -343,12 +342,12 @@ Meteor.methods({
           return searchWithinSubject(strBeforeDigit, strAfterDigit)
         }
       }
-  
-      //last resort, search everything 
+
+      //last resort, search everything
       // console.log("nothing matches");
       return Classes.find(
         { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-        {sort: {classFull: 1}, limit: 200}, 
+        {sort: {classFull: 1}, limit: 200},
         {reactive: false}
       ).fetch();
     } else {
@@ -563,22 +562,6 @@ Meteor.methods({
         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
       return ticket.getPayload();
-      // console.log(ticket);
-      const payload = ticket.getPayload();
-      //The REST API uses payloads to pass and return data structures too large to be handled as parameters
-      //The term 'payload' is used to distinguish it as the 'interesting'
-      //information in a chunk of data or similar from the overhead to support it
-      const { email } = payload;
-
-      //parse out the netid from email to verify it is the same as the netid
-      //passed in (similar to research connect)
-      const emailBeforeAt = email.replace((`@${payload.hd}`), '');
-      // console.log(emailBeforeAt);
-      // console.log(netid);
-      const valid_email = emailBeforeAt == netid;
-
-      return valid_email;
-
     } catch (e) {
       console.log("Error: at getVerificationTicket");
       console.log(e);

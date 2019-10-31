@@ -21,18 +21,14 @@
   },
   "rules": {
     "no-prototype-builtins": "warn",
-    "no-unreachable": "warn",
     "no-unused-vars": "warn",
     "no-undef": "warn",
-    "no-var": "warn",
-    "react/prop-types": "warn",
-    "react/no-direct-mutation-state": "warn",
-    "react/no-find-dom-node": "warn",
+    "no-var": "error",
+    "react/prop-types": "error",
     "react/no-string-refs": "warn",
-    "meteor/audit-argument-checks": "warn",
-    "meteor/no-session": "warn",
+    "react/no-deprecated": "warn",
+    "meteor/no-session": "off",
     "meteor/audit-argument-checks": "off"
-    
   },
   "settings": {
     "react": {

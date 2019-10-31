@@ -241,13 +241,14 @@ export class ClassView extends Component {
 
 // takes no props
 ClassView.propTypes = {
+  allCourses: PropTypes.array.isRequired,
   match: PropTypes.object
 };
 
 // wrap in a container class that allows the component to dynamically grab courses
 // that contain this query anywhere in their full name. The component will automatically
 //  re-render when new classes are added to the database.
-export default withTracker(props => {
+export default withTracker(() => {
   const subscription = Meteor.subscribe('classes', "");
   const loading = !subscription.ready();
   const allCourses = Classes.find({}).fetch();
