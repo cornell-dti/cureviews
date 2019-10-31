@@ -26,6 +26,7 @@ const initState={
   courseTitle:"", //course title that's been selected for pop-up review
   courseNumber:null,//course number that's been selected for pop-up review
   courseId:null, //id of course that's been selected for pop-up review
+  selected:false //whether or not user has clicked yet
 };
 
 export class SearchBar extends Component {
@@ -56,8 +57,8 @@ export class SearchBar extends Component {
       courseSubject:subject,
       courseNumber:number,
       courseTitle:title,
-      showDropdown:false,
-      textValue:subject.toUpperCase()+" "+number+" "+title
+      textValue:subject.toUpperCase()+": "+number+" "+title,
+      selected:true
     });
   }
   
@@ -65,7 +66,6 @@ export class SearchBar extends Component {
   
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-    this.setState({showDropdown:true});
     this.setState(initState);
 
     if (e.key == "ArrowDown") {
@@ -132,7 +132,7 @@ export class SearchBar extends Component {
   // to that class's ClassView. The name of the class will have underline and bold
   // where it matches the query.
   renderCourses(isFind) {
-    if (this.props.query !== "") {
+    if (this.props.query !== "" && !this.state.selected) {
       return this.props.allCourses.slice(0,100).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.props.query} useRedirect={!isFind} handler={this.setCourse}
@@ -144,6 +144,18 @@ export class SearchBar extends Component {
         //the prop "mouse" will pass through the value of the mouse state
       ));
       
+    }
+    else if(this.props.query!=""){
+      return this.props.allCourses.slice(0,1).map((course, i) => (
+        //create a new class "button" that will set the selected class to this class when it is clicked.
+        <Course key={course._id} info={course} query={this.props.query} useRedirect={!isFind} handler={this.setCourse}
+          active={this.state.index == i} cursor={this.state.enter} 
+          mouse = {this.state.mouse}/>
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "cursor" will pass through the value of the enter state
+        //the prop "mouse" will pass through the value of the mouse state
+      ));
     }
     else {
       return <div />;
