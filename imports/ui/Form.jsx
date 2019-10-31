@@ -331,7 +331,7 @@ export default class Form extends Component {
     return (
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
-            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+{/*            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
               <div className="row noLeftRightMargin">
                 <div className="col-md-6">
                   <p className="review-header">Leave a Review</p>
@@ -341,7 +341,7 @@ export default class Form extends Component {
                 </div>
               </div>
 
-            </button>
+            </button>*/}
             <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">

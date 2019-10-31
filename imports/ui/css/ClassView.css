@@ -15,11 +15,50 @@
   padding-top: inherit;
 }
 
-#popup-top{
-  height: 10%;
-  z-index: 1008;
-  box-shadow: 0 2px 3.5px 0 rgba(231, 231, 231, 0.83);
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-  background-color: #ffffff;
+.rodal-dialog{
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.popup-open{
+  bottom: 100%;
+}
+
+.popup-hidden{
+  bottom: 0%;
+}
+
+.popup-form{
+  width: 90%;
+  position: absolute;
+  left: 50%;                            /* These next 3 lines center the */
+  -webkit-transform: translateX(-50%); /* search bar in the pop-up */
+  transform: translateX(-50%);
+}
+
+.popup-button-center{
+  margin-left: 50%;
+}
+
+.popup-background-hidden{
+  background-image: url("/pop-up1.png");
+  background-size: contain;
+}
+
+.popup-background-open{
+  background-color: #4A90E2;
+  background-size: contain;
+}
+
+.popup-main{
+  height: -webkit-fill-available;
+  border-radius: inherit;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.animate-form{
+  transition-property: bottom;  /*NOTE: this only animates movement*/
+  transition-duration: 0.8s;
+  transition-timing-function: cubic-bezier(0.46, 0.03, 0.52, 0.96);
+  transition-delay: 0s;
 }

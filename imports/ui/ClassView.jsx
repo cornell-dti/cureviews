@@ -49,9 +49,11 @@ export class ClassView extends Component {
       classDoesntExist: false,
       query: '',
       popUpVisible: true,
+      popupPos: "hidden",
     };
 
     this.updateQuery = this.updateQuery.bind(this);
+    this.togglePopupForm.bind(this)
   }
 
   // TODO: Redirect the user when they click the sign-in button. This will take the user
@@ -107,6 +109,7 @@ export class ClassView extends Component {
       classDoesntExist: false,
       query: '',
       popUpVisible: true,
+      popupPos: "hidden",
     };
     this.componentWillMount()
   }
@@ -124,6 +127,11 @@ export class ClassView extends Component {
       }
       return popUpCourseOptions
     }
+  }
+  
+  togglePopupForm(){
+    const nextState = this.state.popupPos == "hidden" ? "open" : "hidden";
+    this.setState({ popupPos: nextState });
   }
 
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
@@ -159,20 +167,18 @@ export class ClassView extends Component {
               </div>
             </div>
           </div>
-          <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.popUpVisible}>
-            <div id="modal-background">
-              <div id="popup-top">
-                <p id="modal-title" className="center-block">Submit Quick Review</p>
+          <Rodal animation="zoom" height={520} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible}>
+            <div className={"popup-main animate-form popup-background-" + this.state.popupPos}>
+              <div className={"popup-form animate-form popup-" + this.state.popupPos}>
+                <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}> Test
+                </button>
+                <Form course={this.state.selectedClass} />
               </div>
-              <div id="">
-                <p id="modal-text" className="center-block">
-                  Search for a class to review:
-                </p>
-                <Select value={this.state.selectedPopUpCourse}
-                  options={this.getPopUpCourseOptions()}
-                  ref={this.classSelect}
-                />
+              {/*
+              <div id="popup-bottom">
+                <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
               </div>
+              */}
             </div>
             
           </Rodal>
