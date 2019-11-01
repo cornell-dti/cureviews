@@ -159,7 +159,7 @@ export class ClassView extends Component {
               </div>
             </div>
           </div>
-          <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.popUpVisible}>
+          <Rodal onClose={()=> {}} animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.popUpVisible}>
             <div id="modal-background">
               <div id="popup-top">
                 <p id="modal-title" className="center-block">Submit Quick Review</p>
