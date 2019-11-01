@@ -4,6 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
+import './css/CourseReviews.css';
 
 /*
   Course Reviews Component.
@@ -57,7 +58,7 @@ export class CourseReviews extends Component {
     }
     return (
       <section>
-        <legend className="subheader">{title}</legend>
+        <legend className="past-reviews">{title}</legend>
         <div className="panel panel-default" id="reviewpanel">
           <div>
             <ul id="reviewul">

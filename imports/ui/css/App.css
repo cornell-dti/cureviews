@@ -53,13 +53,6 @@ nav {
   margin-top: 0;
 }
 
-#navname{
-  color: #fff;
-  padding-left: 20px;
-  margin-top: 9px;
-  font-size: 1.8em;
-}
-
 #report-bug {
   float: right;
   color: #fff;
@@ -120,18 +113,6 @@ nav {
 
 .panel-color-gray{
   background-color: rgba(74,74,74,.06);
-}
-
-.cornell-reviews {
-  color: #ffffff;
-  height: 32px;
-  font-size: 27px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-  padding-top: 1%;
-  text-align: left;
-  overflow: visible;
-  white-space: nowrap;
 }
 
 .navbar {

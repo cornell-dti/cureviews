@@ -3,6 +3,18 @@ a.navbar-brand, .class-name, .subheader, .primary-text, .secondary-text, .review
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
+@font-face {
+  font-family:"futura-medium";
+  src:url("https://use.typekit.net/af/2cd6bf/00000000000000000001008f/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3") format("woff2"),
+  url("https://use.typekit.net/af/2cd6bf/00000000000000000001008f/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3") format("woff"),
+  url("https://use.typekit.net/af/2cd6bf/00000000000000000001008f/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3") format("opentype");
+}
+
+@font-face {
+  font-family:"futura-book";
+  src:url("https://use.typekit.net/af/9b05f3/000000000000000000013365/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/9b05f3/000000000000000000013365/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/9b05f3/000000000000000000013365/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+}
+
 body {
     font-family: sans-serif;
 
@@ -24,13 +36,11 @@ body {
     margin-bottom: 0;
 }
 
-a.navbar-brand {
-    font-size: 1.3em /*36px*/;
+/* a.navbar-brand {
+    font-size: 1.3em ;
     padding-left: 30px;
 
-    /* Below value is not valid for font-weight. Use another value. */
-    /*font-weight: medium;*/
-}
+} */
 
 .container {
     background: white;

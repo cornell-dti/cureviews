@@ -1,3 +1,20 @@
+.cornell-reviews, .cornell-reviews a {
+  font-family: "futura-medium", sans-serif; 
+  font-size: 24px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  text-align: left;
+  padding-left: 15%;
+  padding-top: 3%;
+  overflow: visible;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
 #error {
     font-size: 50px;
     color: black;
@@ -6,7 +23,6 @@
     padding-top: 170px;
 
 }
-
 
 #loading{
     padding-top: 300px;
