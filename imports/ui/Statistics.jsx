@@ -41,7 +41,6 @@ export default class Statistics extends Component{
       if(!error){
         result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyEachClass: result});
-        console.log(this.state.howManyEachClass);
       }else{
         console.log(error);
       }
