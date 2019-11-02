@@ -167,7 +167,7 @@ export class ClassView extends Component {
               </div>
             </div>
           </div>
-          <Rodal animation="zoom" height={520} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible}>
+          <Rodal onClose={()=> {}}  animation="zoom" height={520} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible}>
             <div className={"popup-main animate-form popup-background-" + this.state.popupPos}>
               <div className={"popup-form animate-form popup-" + this.state.popupPos}>
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}> Test

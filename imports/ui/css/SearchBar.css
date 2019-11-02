@@ -11,6 +11,20 @@
   position: relative;
 }
 
+#searchbar-popup {
+  width: 51%;
+  height: 4.6%;
+  font-family: sans-serif;
+  font-size: 90%;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align:left;
+  color: rgba(74, 144, 226, 0.4);
+}
+
 #search {
   background-color: white;
   border-color: transparent;
@@ -46,6 +60,24 @@
   position: absolute;
   /* max-width: 1000px; */
   width: 100%;
+  z-index: 1001; /* 1001 to make sure search results are always at the forefront of the page */
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  margin-top: 4px;
+}
+
+#output-popup{
+    background: white;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  margin-top: 0px; /* height of the input element*/
+  max-height: 500px;
+  overflow-y: auto;
+  position: absolute;
+  /* max-width: 1000px; */
+  width: 50%;
   z-index: 1001; /* 1001 to make sure search results are always at the forefront of the page */
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
