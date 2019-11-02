@@ -520,7 +520,6 @@ Meteor.methods({
     Reviews.aggregate(pipeline).map(function (data){
       const subNum = Classes.find({_id: data._id},{'classSub':1,'_id':0, 'classNum':1}).fetch()[0];
       const id = subNum.classSub + " " +subNum.classNum;
-      console.log(subNum);
       output.push(
         {_id: id, total: data.total}
       );

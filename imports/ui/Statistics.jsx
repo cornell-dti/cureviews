@@ -6,6 +6,10 @@ import { Classes } from '../api/dbDefs.js';
 import { Students } from '../api/dbDefs.js';
 import Accordian from './Accordian.jsx';
 
+/*
+  A Statistics component that gives data concerning the
+  database and allows devs to moniter status and progress of the project
+*/
 export default class Statistics extends Component{
   constructor(props) {
     super(props);
@@ -20,16 +24,20 @@ export default class Statistics extends Component{
 
   howManyReviewsEachClass(){
     Meteor.call('howManyReviewsEachClass', (error, result) =>{
-      if(!error)
+      if(!error){
+        //sort decending
+        result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyReviewsEachClass: result});
-      else
-        console.log(error);
+      } else{
+          console.log(error);
+      }
     });
   }
 
   howManyEachClass(){
     Meteor.call('howManyEachClass', (error, result) =>{
       if(!error){
+        result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyEachClass: result});
         console.log(this.state.howManyEachClass);
       }else{

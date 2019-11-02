@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+/*
+  An accordian for the Statistics component.
+*/
 export default class Accordian extends Component{
 
   getRandNum(){
