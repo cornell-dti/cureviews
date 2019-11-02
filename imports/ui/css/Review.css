@@ -238,6 +238,7 @@
    line-height: normal;
    letter-spacing: 0.01em;
    color: #000000;
+   white-space: nowrap;
  }
 
 .reviewNumbers{
