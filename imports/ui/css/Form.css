@@ -33,9 +33,9 @@ form {
 .review-header {
   height: 14px;
   text-align: center;
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 24px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;

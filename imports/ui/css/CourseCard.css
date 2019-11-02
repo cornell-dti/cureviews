@@ -55,9 +55,9 @@ label {
 
 #gaugeHolder > div{
   text-align: center;
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 36px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -67,9 +67,9 @@ label {
 
 #gaugeHolder > div > svg > text{
   text-align: center;
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 36px;
-  font-weight: normal;
+  font-weight: var(--regular-weight) !important;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -79,9 +79,9 @@ label {
 
 .cornellClassLink {
   text-align: center;
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 14px;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -96,9 +96,9 @@ label {
 }
 
 .class-title{
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 36px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -107,9 +107,9 @@ label {
 }
 
 .offered, .median-grade{
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -118,9 +118,9 @@ label {
 }
 
 .class-info, .median{
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;

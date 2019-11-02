@@ -16,9 +16,9 @@
 }
 
 .search-text{
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;

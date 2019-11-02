@@ -3,6 +3,11 @@ a.navbar-brand, .class-name, .subheader, .primary-text, .secondary-text, .review
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
+:root {  
+  --regular-weight: 400;
+  --semi-bold-weight: 600;
+}
+
 body {
     font-family: sans-serif;
 

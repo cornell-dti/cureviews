@@ -46,9 +46,9 @@
 
 .professor-text{
   border-radius: 5px;
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -73,9 +73,9 @@
 
 
 .review-text {
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -87,9 +87,9 @@
 }
 
 .review-date {
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 14px;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -99,9 +99,9 @@
 }
 
 .upvote-text{
-  font-family: "futura-book", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 11px;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -185,9 +185,9 @@
 }
 
 .professor-title {
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -214,9 +214,9 @@
  .review-number-text{
   height: 100%;
   text-align: center;
-  font-family: "futura-medium", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -229,9 +229,9 @@
  }
  
  .review-number-label{
-   font-family: "futura-medium", sans-serif; 
+   font-family: "Source Sans Pro", sans-serif;
    font-size: 18px;
-   font-weight: normal;
+   font-weight: var(--semi-bold-weight);
    font-style: normal;
    font-stretch: normal;
    line-height: normal;
