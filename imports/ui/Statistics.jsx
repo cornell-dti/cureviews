@@ -16,10 +16,12 @@ export default class Statistics extends Component{
 
     this.state={
       howManyEachClass: [],
-      howManyReviewsEachClass: []
+      howManyReviewsEachClass: [],
+      totalReviews: -1
     }
     this.howManyEachClass();
     this.howManyReviewsEachClass();
+    this.totalReviews();
   }
 
   howManyReviewsEachClass(){
@@ -46,12 +48,22 @@ export default class Statistics extends Component{
     });
   }
 
+  totalReviews(){
+    Meteor.call('totalReviews', (error, result)=>{
+      if(!error)
+        this.setState({totalReviews: result});
+      else
+        console.log(error);
+    });
+  }
+
   render(){
     return(
       <div>
         <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses"/>
         <Accordian data={this.state.howManyReviewsEachClass} title="Num of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
-      </div>
+        <p>Total reviews: {this.state.totalReviews}</p>
+    </div>
     )
   }
 

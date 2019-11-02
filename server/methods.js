@@ -526,6 +526,10 @@ Meteor.methods({
     });
     return output;
   },
+
+  totalReviews: function(){
+    return Reviews.find({}).count();
+  },
   // Print on the server side for API testing. Should print in logs if
   // called by the API (in the Auth component).
   printOnServer: function (text) {
