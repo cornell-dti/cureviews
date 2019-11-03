@@ -167,10 +167,10 @@ Meteor.methods({
   // This updates the metrics for an individual class given its Mongo-generated id. 
   // Returns 1 if successful, 0 otherwise.
   updateCourseMetrics: function (courseId) {
-    var course = Meteor.call('getCourseById', courseId)
+    let course = Meteor.call('getCourseById', courseId);
     if (course) {
-      var reviews = Reviews.find({ class: courseId }).fetch();
-      var state = getGaugeValues(reviews);
+      let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
+      let state = getGaugeValues(reviews);
 
       Classes.update({ _id: courseId },
         {
@@ -198,10 +198,11 @@ Meteor.methods({
     // Used to update the review metrics for all courses
     //in the database.
     updateMetricsForAllCourses: function (){
-      var courses=Classes.find().fetch();
+      let courses=Classes.find().fetch();
       courses.forEach(function(course){
         Meteor.call("updateCourseMetrics", course._id);
       });
+      
     },
 
     // Returns courses with the given parameters.

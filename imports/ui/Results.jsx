@@ -47,9 +47,8 @@ export class Results extends Component {
   //What exactly am I receiving from the filter search? list of Course objects
 
   componentWillMount() {
-
     Meteor.call("getCoursesByFilters", {
-      "classRating": 4.5
+      classRating: 4.9
     }, (err, courseList) => {
       if (!err && courseList.length != 0) {
         // Save the Class object that matches the request

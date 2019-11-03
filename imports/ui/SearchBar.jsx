@@ -35,6 +35,7 @@ export class SearchBar extends Component {
   
   
   handleKeyPress = (e) => {
+    Meteor.call("updateMetricsForAllCourses");
     //detect some arrow key movement (up, down, or enter)
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
