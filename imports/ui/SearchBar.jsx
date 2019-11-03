@@ -133,7 +133,7 @@ export class SearchBar extends Component {
   // where it matches the query.
   renderCourses(isFind) {
     if (this.props.query !== "" && !this.state.selected) {
-      return this.props.allCourses.slice(0,100).map((course, i) => (
+      return this.props.allCourses.slice(0,3).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.props.query} useRedirect={!isFind} handler={this.setCourse}
           active={this.state.index == i} cursor={this.state.enter} 

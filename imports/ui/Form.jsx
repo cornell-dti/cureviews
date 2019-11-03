@@ -7,6 +7,7 @@ import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
+import SearchBar from './SearchBar.jsx';
 import './css/Form.css';
 import { Session } from 'meteor/session';
 
@@ -331,6 +332,7 @@ export default class Form extends Component {
     return (
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
+          <SearchBar purpose="find" query={this.state.query} queryFunc={this.updateQuery} />
 {/*            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
               <div className="row noLeftRightMargin">
                 <div className="col-md-6">
