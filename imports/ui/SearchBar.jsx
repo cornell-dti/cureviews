@@ -84,6 +84,7 @@ export default class SearchBar extends Component {
 
   
   handleKeyPress = (e) => {
+    Meteor.call("updateMetricsForAllCourses");
     //detect some arrow key movement (up, down, or enter)
     this.setState(newSearchState);
     if (e.key == "ArrowDown") {

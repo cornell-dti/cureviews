@@ -183,24 +183,28 @@ Meteor.methods({
 
   // This updates the metrics for an individual class given its Mongo-generated id. 
   // Returns 1 if successful, 0 otherwise.
-  updateCourseMetrics : function (courseId){
-    let course = Meteor.call('getCourseById', courseId)
-    if(course){
-        let reviews=Reviews.find({class: courseId }).fetch();
-        let state=getGaugeValues(reviews);
-       
-        Classes.update({ _id: courseId }, 
-          { $set: { classGrade:state.gradeNum, classDifficulty:Number(state.diff), 
-            classRating: Number(state.rating) } });
-        //If no data is available, getGaugeValues returns "-" for workload
-        if(state.workload != "-"){
-         Classes.update({ _id: courseId }, { $set: {classWorkload: Number(state.workload)} } )
-        }
-        else{
-         Classes.update({ _id: courseId }, { $set: {classWorkload:null} } )
-         }
-        return 1;
-      
+  updateCourseMetrics: function (courseId) {
+    let course = Meteor.call('getCourseById', courseId);
+    if (course) {
+      let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
+      let state = getGaugeValues(reviews);
+
+      Classes.update({ _id: courseId },
+        {
+          $set: {
+            classGrade: state.gradeNum, classDifficulty: Number(state.diff),
+            classRating: Number(state.rating)
+          }
+        });
+      //If no data is available, getGaugeValues returns "-" for workload
+      if (state.workload != "-") {
+        Classes.update({ _id: courseId }, { $set: { classWorkload: Number(state.workload) } })
+      }
+      else {
+        Classes.update({ _id: courseId }, { $set: { classWorkload: null } })
+      }
+      return 1;
+
     }
     else {
       return 0;
