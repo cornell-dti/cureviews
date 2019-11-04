@@ -150,6 +150,12 @@ export default class SearchBar extends Component {
   // to that class's ClassView. The name of the class will have underline and bold
   // where it matches the query.
   renderCourses() {
+    //Used to start the timer "popup_timer" to display a popup after 30 seconds post-search
+    //See ClassView.jsx: decidePopup function
+    if(Session.get("seen_popup") == undefined || Session.get("seen_popup") == ""){
+      Session.setPersistent({"popup_timer": new Date().getTime()});
+    }
+    
     if (this.state.query !== "" && !this.state.selected && this.props.isPopup ) {
       return this.state.allCourses.slice(0,3).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.

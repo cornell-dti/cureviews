@@ -47,13 +47,15 @@ export class ClassView extends Component {
       subject: subject,
       selectedClass: null,
       classDoesntExist: false,
-      popUpVisible: true,
+      popUpVisible: false,
       popupPos: "hidden",
     };
 
     this.togglePopupForm.bind(this);
     this.hidePopup = this.hidePopup.bind(this);
     this.showPopup = this.showPopup.bind(this);
+    this.decidePopup = this.decidePopup.bind(this);
+    this.decidePopup();
   }
 
   // TODO: Redirect the user when they click the sign-in button. This will take the user
@@ -113,6 +115,19 @@ export class ClassView extends Component {
 
   hidePopup() {
     this.setState({ popUpVisible: false });
+  }
+
+  decidePopup(){
+    if(Session.get("popup_timer") != undefined 
+        && Session.get("popup_timer") != ""
+        && Session.get("seen_popup") != true
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30/*(seconds)*/ * 1000){
+      this.showPopup();
+      Session.setPersistent({"seen_popup": true});
+    }
+    else{
+      setTimeout(() => { this.decidePopup() }, 5000);
+    }
   }
 
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
