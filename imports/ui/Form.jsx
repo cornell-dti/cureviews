@@ -144,7 +144,8 @@ export default class Form extends Component {
     this.diffSlider.current.value = 3;
     this.workloadSlider.current.value = 3;
     this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
-    this.toggleDropdown(); //Open review dropdown when page loads
+    // NOTE: This is temporary for pre-enroll, uncomment after
+    // this.toggleDropdown(); //Open review dropdown when page loads
     
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
@@ -229,7 +230,8 @@ export default class Form extends Component {
         this.diffSlider.current.value = 3;
         this.workloadSlider.current.value = 3;
         this.profSelect.current.value = "none";
-        this.toggleDropdown(); //Close the review dropdown when page loads
+        // NOTE: This is temporary for pre-enroll, uncomment after
+        // this.toggleDropdown(); //Close the review dropdown when page loads
     
         // Reset review info to default after review submission
         this.setState(this.defaultState);
