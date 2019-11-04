@@ -304,6 +304,8 @@ Meteor.methods({
     return false;
   },
 
+
+
   // Get a course with this course_id from the Classes collection in the local database.
   getCourseById: function (courseId) {
     // check: make sure course id is valid and non-malicious

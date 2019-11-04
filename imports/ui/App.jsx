@@ -26,14 +26,7 @@ export default class App extends Component {
     document.getElementById('googleButton');
   }
 
-  // Set the local state variable 'query' to the current value of the input (given by user)
-  // Passed as a prop to SearchBar component, which calls this when user changes their query.
-  updateQuery = (event) => {
-    // trim the query to remove trailing spaces
-    this.setState({ query: event.target.value.trim() });
-    //Session to be able to get info from this.state.query in withTracker
-    Session.set('querySession', this.state.query);
-  }
+
 
   render() {
     return (
@@ -44,7 +37,7 @@ export default class App extends Component {
         </div>
         <div className="row">
           <div className="col-md-9 col-sm-9 col-xs-9 center-block no-float z-index">
-            <SearchBar purpose="find" query={this.state.query} queryFunc={this.updateQuery} />
+            <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
           </div>
         </div>
 

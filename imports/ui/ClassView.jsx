@@ -53,7 +53,7 @@ export class ClassView extends Component {
     };
 
     this.updateQuery = this.updateQuery.bind(this);
-    this.togglePopupForm.bind(this)
+    // this.togglePopupForm.bind(this)
   }
 
   // TODO: Redirect the user when they click the sign-in button. This will take the user
@@ -96,6 +96,7 @@ export class ClassView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     //if this component receives new props from the Redirect, it resets its state so that it can render/mount
     //a new ClassView component with the new props
     const number = nextProps.match.params.number;
@@ -147,7 +148,7 @@ export class ClassView extends Component {
               </a>
             </div>
             <div className="col-md-7 col-sm-7 col-xs-7">
-              <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+             <SearchBar query={this.state.popUpVisible ? "" : this.state.query} queryFunc={this.updateQuery} />
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
               <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank" rel="noopener noreferrer"> Report a Bug</a>
@@ -172,13 +173,8 @@ export class ClassView extends Component {
               <div className={"popup-form animate-form popup-" + this.state.popupPos}>
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}> Test
                 </button>
-                <Form course={this.state.selectedClass} />
+                <Form searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
               </div>
-              {/*
-              <div id="popup-bottom">
-                <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
-              </div>
-              */}
             </div>
             
           </Rodal>

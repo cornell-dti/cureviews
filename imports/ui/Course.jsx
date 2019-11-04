@@ -55,7 +55,7 @@ export default class Course extends Component {
         const endIndex = startIndex + queryWithoutSubject.length;
 
         // underline the subject and any other matching text
-        if(!this.props.searchBarHandler)
+        if(!this.props.useRedirect)
         text = 
         <div>
           <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>

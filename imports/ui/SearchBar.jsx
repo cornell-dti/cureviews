@@ -37,7 +37,17 @@ export class SearchBar extends Component {
     this.state = initState;
       this.handleChange = this.handleChange.bind(this);
       this.setCourse=this.setCourse.bind(this);
+      this.updateQuery=this.updateQuery.bind(this);
   
+  }
+
+  // Set the local state variable 'query' to the current value of the input (given by user)
+  // Passed as a prop to SearchBar component, which calls this when user changes their query.
+  updateQuery = (event) => {
+    // trim the query to remove trailing spaces
+    this.setState({ query: event.target.value.trim() });
+    //Session to be able to get info from this.state.query in withTracker
+    Session.set('querySession', this.state.query);
   }
 
   //This function is only used for the pop-up
@@ -175,7 +185,7 @@ export class SearchBar extends Component {
       <div className="search-bar text-left" id="searchbar" >
       <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autoComplete="off"/>
       <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-        {this.renderCourses(true)}
+        {this.renderCourses(false)}
       </ul>
     </div>
     );

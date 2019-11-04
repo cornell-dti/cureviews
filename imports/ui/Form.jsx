@@ -332,7 +332,7 @@ export default class Form extends Component {
     return (
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
-          <SearchBar purpose="find" query={this.state.query} queryFunc={this.updateQuery} />
+          
 {/*            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
               <div className="row noLeftRightMargin">
                 <div className="col-md-6">
@@ -347,6 +347,7 @@ export default class Form extends Component {
             <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">
+                     {this.props.searchBar && <SearchBar purpose="find" query={this.props.query} queryFunc={this.props.queryFunc} />}
                           <div className="row" id="reviewTextRow">
                             <textarea ref={this.textArea} className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
@@ -463,4 +464,7 @@ export default class Form extends Component {
 // Form must be provided the course object of the class this review will be for.
 Form.propTypes = {
   course: PropTypes.object.isRequired,
+  query:PropTypes.string,
+  queryFunc: PropTypes.func
 };
+
