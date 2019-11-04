@@ -21,7 +21,7 @@
 }
 
 .popup-open{
-  bottom: 100%;
+  bottom: 102%;
 }
 
 .popup-hidden{
@@ -29,7 +29,7 @@
 }
 
 .popup-form{
-  width: 90%;
+  width: 80%;
   position: absolute;
   left: 50%;                            /* These next 3 lines center the */
   -webkit-transform: translateX(-50%); /* search bar in the pop-up */
@@ -37,7 +37,40 @@
 }
 
 .popup-button-center{
-  margin-left: 50%;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  background-color: #ffffff;
+  border-radius: 8px 8px 0px 0px;
+  color: #5697e3;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  text-align: center;
+  position: relative;
+  margin-bottom: -5px;
+  z-index: 1000;
+  outline:0;
+}
+
+.popup-arrow {
+  border: solid #5697e3;
+  margin: 9px 0px 0px 10px;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+}
+
+.scale-popup-img{
+  max-width: 65%;
+  height: auto;
+  margin-bottom: 10%;
+}
+
+.popup-text1{
+  text-align: center;
+  margin-bottom: 5%;
 }
 
 .popup-background-hidden{
@@ -45,7 +78,7 @@
   background-size: contain;
 }
 
-.popup-background-open{
+.popup-background{
   background-color: #4A90E2;
   background-size: contain;
 }
@@ -58,7 +91,7 @@
 
 .animate-form{
   transition-property: bottom;  /*NOTE: this only animates movement*/
-  transition-duration: 0.8s;
+  transition-duration: 0.7s;
   transition-timing-function: cubic-bezier(0.46, 0.03, 0.52, 0.96);
   transition-delay: 0s;
 }

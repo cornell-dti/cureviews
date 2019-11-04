@@ -158,10 +158,13 @@ export class ClassView extends Component {
               </div>
             </div>
           </div>
-          <Rodal  animation="zoom" height={520} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible}>
-            <div className={"popup-main animate-form popup-background-" + this.state.popupPos}>
+          <Rodal animation="zoom" height={565} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible}>
+            <div className="popup-main animate-form popup-background">
               <div className={"popup-form animate-form popup-" + this.state.popupPos}>
-                <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}> Test
+                <p className="popup-text1" >Want to contribute your opinion?</p>
+                <img src='/popup_background1.png' className="center-block scale-popup-img" alt="Students Chatting" />
+                <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
+                Leave a Review<i className="popup-arrow"></i>
                 </button>
                 <Form searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
               </div>
