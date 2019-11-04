@@ -102,6 +102,7 @@ form {
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
+    margin-top: 13px;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
