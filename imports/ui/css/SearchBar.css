@@ -11,7 +11,33 @@
   position: relative;
 }
 
+#searchbar-popup {
+  width: 100%;
+  height: 4.6%;
+  font-family: sans-serif;
+  font-size: 90%;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align:left;
+}
+
+
 #search {
+
+}
+
+.search-text{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
   background-color: white;
   border-color: transparent;
   color: black;
@@ -24,6 +50,30 @@
   border-radius: 10px;
   height: 46px;
 }
+
+.search-text-popup, .search-text-popup::placeholder{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #B1CFF2;
+  background-color: transparent;
+  border-color: transparent;
+  cursor: text;
+  padding: 5px;
+  text-align: left;
+  text-indent: 10px;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.search-text-popup-selected{
+  color: #000000;
+}
+
 
 #search:focus {
   outline: none;
@@ -46,6 +96,24 @@
   position: absolute;
   /* max-width: 1000px; */
   width: 100%;
+  z-index: 1001; /* 1001 to make sure search results are always at the forefront of the page */
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  margin-top: 4px;
+}
+
+#output-popup{
+    background: white;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  margin-top: 0px; /* height of the input element*/
+  max-height: 500px;
+  overflow-y: auto;
+  position: absolute;
+  /* max-width: 1000px; */
+  width: 77%;
   z-index: 1001; /* 1001 to make sure search results are always at the forefront of the page */
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;

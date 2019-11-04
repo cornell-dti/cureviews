@@ -3,6 +3,11 @@ a.navbar-brand, .class-name, .subheader, .primary-text, .secondary-text, .review
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
+:root {  
+  --regular-weight: 400;
+  --semi-bold-weight: 600;
+}
+
 body {
     font-family: sans-serif;
 
@@ -104,14 +109,14 @@ form {
     position: relative;
 }
 
-.new-task input {
+/* .new-task input {
     box-sizing: border-box;
     background: transparent;
     border: none;
     font-size: 1em;
     padding: 10px 0;
     width: 100%;
-}
+} */
 
 .new-task input:focus{
     outline: 0;
@@ -134,18 +139,19 @@ ul {
 
 li {
     border-bottom: #eee solid 1px;
-    padding: 15px;
+    padding: 15px 15px 15px 0px;
     position: relative;
     list-style: none;
 }
 
-#classbutton li {
-    padding: 0;
+.classbutton {
+    padding: 15px;
 }
 
 #classbutton li a {
     padding: 15px;
 }
+
 
 li .text {
     margin-left: 10px;

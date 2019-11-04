@@ -1,7 +1,7 @@
 /* Font declaration */
-#text, #review_text, #label, #button_text {
+/* #text, #review_text, #label, #button_text {
   font-family: 'Helvetica Neue', Arial, sans-serif;
-}
+} */
 
 .panel-body-3 {
     margin: auto;
@@ -44,22 +44,15 @@
   left: -50%;
 }
 
-#review_text {
-  color:black;
-  font-size: 15px;
-  line-height: 1.38;
-  letter-spacing: 0.1px;
-  text-align: left;
-  padding-left: 50px;
-  padding-bottom: 15px;
-}
-
-#professor-text{
+.professor-text{
   border-radius: 5px;
-  color: black;
-  font-size: 13px;
-  line-height: 1.38;
-  letter-spacing: 0.1px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
   text-align: center;
   background-color: #ececec;
   padding-left: 2px;
@@ -67,6 +60,7 @@
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 5px;
+  margin-bottom: 6px;
 }
 
 #label{
@@ -78,17 +72,43 @@
   margin: 0 7px;
 }
 
-#review-date {
-  text-align: center;
-  color:gray;
-  padding-left : 20px;
-  font-size: 13px;
+
+.review-text {
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  text-align: left;
+  padding-left: 50px;
+  padding-bottom: 15px;
 }
 
-#upvote-text{
+.review-date {
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #A6A6A6;
+  padding-left : 35px;
+}
+
+.upvote-text{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 11px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
   float: right;
   color: #4990e2;
-  font-size: 11px;
   margin-right: 2px;
 }
 
@@ -106,6 +126,7 @@
 
 .report-review {
   color: #9b9b9b;
+  margin-top: 3px;
 }
 
 .upvote{
@@ -164,11 +185,15 @@
   padding-bottom: 15px;
 }
 
-#profLabel {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+.professor-title {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
   color: #000000;
-  font-size: 13px;
-  letter-spacing: 0.1px;
   text-align: left;
   padding-top: 5px;
   padding-left: 35px;
@@ -186,6 +211,35 @@
   border: solid 1px #dddddd;
   width: 100%;
 }
+
+ .review-number-text{
+  height: 100%;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: -75%;
+ }
+ 
+ .review-number-label{
+   font-family: "Source Sans Pro", sans-serif;
+   font-size: 18px;
+   font-weight: var(--semi-bold-weight);
+   font-style: normal;
+   font-stretch: normal;
+   line-height: normal;
+   letter-spacing: 0.01em;
+   color: #000000;
+   white-space: nowrap;
+ }
 
 .reviewNumbers{
   margin-bottom: 8px;

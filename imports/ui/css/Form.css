@@ -16,8 +16,8 @@ form {
 }
 
 #reviewTextRow{
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 13px;
+  padding-right: 13px;  
 }
 
 #dropdown-button{
@@ -32,14 +32,16 @@ form {
 
 .review-header {
   height: 14px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 18px;
-  font-weight: 450;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 24px;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: -0.1px;
+  letter-spacing: 0.001em;
   color: #ffffff;
+  margin-bottom: 15px;
 }
 
 .float-r{
@@ -93,9 +95,15 @@ form {
     opacity: 1;
 }
 
+.dropdown-menu-popup{
+  background-color: #ffffffe6 !important;
+  opacity: 1 !important;
+}
+
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
+    margin-top: 13px;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
@@ -146,8 +154,35 @@ textarea {
     padding-top: 8px;
     padding-left: 8px;
     padding-right: 8px;
-    border-radius: 3px;
+    border-radius: 5px;
     border: 1px solid #999999;
+}
+
+.form-input-text{
+  text-align: left;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
+  background-color: transparent;
+
+}
+
+.form-label{
+  margin-bottom: 0;
+  margin-top: 10px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 17px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #4a4a4abf;
 }
 
 .rating-icon{
@@ -155,6 +190,7 @@ textarea {
   border-radius: 10%;
   height: 33px;
   width: 35px;
+  justify-content: center;
 }
 
 #sm1, #sm2 {
@@ -183,19 +219,20 @@ p {
     margin-top: 10px;
 }
 
-#postbutton{
+.postbutton{
     border: none;
     padding-left: 30px;
     padding-right: 30px;
     background-color: #4a90e2;
     border-radius: 8px;
-    color: #ffffff;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
     font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 0.1px;
-    height: 22px;
-    text-align: center;
+    font-weight: var(--semi-bold-weight);
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.001em;
+    color: #ffffff;
     height: 40px;
     position: relative;
     margin-top: 24px;

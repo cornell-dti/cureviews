@@ -15,13 +15,13 @@
 #second_welcome_text{
   height: 14px;
   padding-top: 6%;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 20px;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 22px;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: -0.1px;
+  letter-spacing: 0.001em;
   text-align: center;
   color: #ffffff;
 }
@@ -51,13 +51,6 @@
 nav {
   background-color: #4990E2;
   margin-top: 0;
-}
-
-#navname{
-  color: #fff;
-  padding-left: 20px;
-  margin-top: 9px;
-  font-size: 1.8em;
 }
 
 #report-bug {
@@ -120,18 +113,6 @@ nav {
 
 .panel-color-gray{
   background-color: rgba(74,74,74,.06);
-}
-
-.cornell-reviews {
-  color: #ffffff;
-  height: 32px;
-  font-size: 27px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-  padding-top: 1%;
-  text-align: left;
-  overflow: visible;
-  white-space: nowrap;
 }
 
 .navbar {

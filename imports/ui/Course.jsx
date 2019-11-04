@@ -16,15 +16,24 @@ import { Redirect } from 'react-router';
 */
 
 export default class Course extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.setCourseOnSearchBar.bind(this);
+  }
+
+  setCourseOnSearchBar(classInfo){
+    this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle, classInfo.classProfessors);
+  }
   
   
   render() {
     // generate full human-readable name of class
     const classInfo = this.props.info;
-    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
-    
+    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle; 
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
-    if(this.props.active && this.props.cursor == 1){
+    if(this.props.active && this.props.cursor == 1 && this.props.useRedirect){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
       }
     // check if a query was provided, if so underline parts of the class name
@@ -46,9 +55,15 @@ export default class Course extends Component {
         const endIndex = startIndex + queryWithoutSubject.length;
 
         // underline the subject and any other matching text
+        if(!this.props.useRedirect)
         text = 
         <div>
           <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>
+          {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
+        </div>
+        else text= 
+          <div>
+          <span>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
         </div>
         
@@ -58,7 +73,7 @@ export default class Course extends Component {
     }
 
     //return classname as a list element
-    
+    if(this.props.useRedirect)
       return (
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
@@ -67,6 +82,14 @@ export default class Course extends Component {
           <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`} ref="class">
               {text}
           </a>
+      </li>
+    );
+    else return(
+      //highlight the element if the indexes matched up (the active prop is true)
+      //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
+      //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
+      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+        <p className="text-style-3">{text}</p>
       </li>
     );
   }
@@ -80,4 +103,7 @@ Course.propTypes = {
   active: PropTypes.bool,
   cursor: PropTypes.number,
   mouse: PropTypes.number,
+  searchBarHandler: PropTypes.func,
+  key:PropTypes.string,
+  useRedirect:PropTypes.bool
 };

@@ -7,6 +7,7 @@ import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
 import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
+import SearchBar from './SearchBar.jsx';
 import './css/Form.css';
 import { Session } from 'meteor/session';
 
@@ -65,7 +66,8 @@ export default class Form extends Component {
       selectedProfessors: [],
       professors: this.props.course.classProfessors ? this.props.course.classProfessors : [], //If class does not have
                                                                                               //in DB init to empty list
-      review: {}
+      review: {},
+      courseId:'',
     };
 
     // store inital values as the default state to revert to after submission
@@ -77,6 +79,15 @@ export default class Form extends Component {
     this.saveReviewToSession = this.saveReviewToSession.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
+    this.setCourseIdInSearchBar=this.setCourseIdInSearchBar.bind(this);
+    this.showDropDownButton = this.showDropDownButton.bind(this);
+  }
+
+  //Handler for setting the form state's course id if using popup.
+  //Passed in as a prop to search bar
+  setCourseIdInSearchBar(courseId, professors){
+    Session.setPersistent({"courseId":courseId});
+    this.setState({courseId:courseId, professors:professors, selectedProfessors:[]})
   }
 
   // Save the current user input text from the text box in the local state.
@@ -133,12 +144,13 @@ export default class Form extends Component {
     this.diffSlider.current.value = 3;
     this.workloadSlider.current.value = 3;
     this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
-    this.toggleDropdown(); //Open review dropdown when page loads
+    // NOTE: This is temporary for pre-enroll, uncomment after
+    // this.toggleDropdown(); //Open review dropdown when page loads
     
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if(Session.get("review") != undefined && Session.get("review") != ""){
+    if(Session.get("review") != undefined && Session.get("review") != "" && this.props.inUse){
       this.submitReview();
     }
   }
@@ -159,6 +171,7 @@ export default class Form extends Component {
     Session.setPersistent({"review": review});
     Session.setPersistent({"review_major": this.props.course.classSub.toUpperCase()});
     Session.setPersistent({"review_num": this.props.course.classNum});
+    Session.setPersistent({"courseId": this.state.courseId});
     if (!(_.isEqual(Session.get("review"),review)
         && Session.get("review_major") === this.props.course.classSub.toUpperCase()
         && Session.get("review_num") === this.props.course.classNum)){
@@ -175,7 +188,6 @@ export default class Form extends Component {
   handleSubmit(event) {
     // 'pause' automatic form submisson
     event.preventDefault();
-
     // ensure all fields are filled out
     const text = this.state.text.trim();
     const rate = this.state.rating;
@@ -205,10 +217,11 @@ export default class Form extends Component {
   }
 
   submitReview() {
+    console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"), 
                 Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                this.props.course._id, 
+                !this.props.searchBar ? this.props.course._id : Session.get("courseId"), 
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
@@ -217,13 +230,15 @@ export default class Form extends Component {
         this.diffSlider.current.value = 3;
         this.workloadSlider.current.value = 3;
         this.profSelect.current.value = "none";
-        this.toggleDropdown(); //Close the review dropdown when page loads
+        // NOTE: This is temporary for pre-enroll, uncomment after
+        // this.toggleDropdown(); //Close the review dropdown when page loads
     
         // Reset review info to default after review submission
         this.setState(this.defaultState);
         Session.setPersistent({"review": ""});
         Session.setPersistent({"review_major": ""});
         Session.setPersistent({"review_num": ""});
+        Session.setPersistent({"courseId":""});
         this.hide();
         
         Bert.alert('Thanks! Your review is currently pending approval.');
@@ -262,10 +277,22 @@ export default class Form extends Component {
   }
 
   getProfOptions() {
-    if (this.props.course.classProfessors != []) {
+    if (this.props.course.classProfessors != [] && !this.props.searchBar) {
       const profOptions = []
       for(const prof in this.props.course.classProfessors){
         const professorName = this.props.course.classProfessors[prof]
+
+        profOptions.push({
+          "value" : professorName,
+          "label" : professorName
+        })
+      }
+      return profOptions
+    }
+    else if(this.state.professors!=[]){
+      const profOptions = []
+      for(const prof in this.state.professors){
+        const professorName = this.state.professors[prof]
 
         profOptions.push({
           "value" : professorName,
@@ -317,7 +344,9 @@ export default class Form extends Component {
         marginHeight = 0;
         offsetHeight = 0;
       }
-      $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+      if(offsetHeight >= 0){
+        $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+      }
     }
     show() {
         this.setState({ visible: true });
@@ -326,6 +355,26 @@ export default class Form extends Component {
      hide() {
       this.setState({ visible: false });
     }
+    
+    showDropDownButton(){
+      if(!this.props.searchBar){
+        return(      
+          <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+            <div className="row noLeftRightMargin">
+              <div className="col-md-6">
+                <p className="review-header">Leave a Review</p>
+              </div>
+              <div className="col-md-6 padding-right-40">
+                <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
+              </div>
+            </div>
+
+          </button>
+        )
+      }
+
+    }
+    
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
@@ -334,22 +383,13 @@ export default class Form extends Component {
     return (
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
-            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-              <div className="row noLeftRightMargin">
-                <div className="col-md-6">
-                  <p className="review-header">Leave a Review</p>
-                </div>
-                <div className="col-md-6 padding-right-40">
-                  <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-                </div>
-              </div>
-
-            </button>
-            <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
+          {this.showDropDownButton()}
+            <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">
+                     {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
                           <div className="row" id="reviewTextRow">
-                            <textarea ref={this.textArea} className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                            <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
                               placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
                             <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
@@ -359,11 +399,11 @@ export default class Form extends Component {
                           <hr className="divider" />
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="secondary-text">Overall Rating</h1>
+                                  <h1 className="form-label">Overall Rating</h1>
                               </div>
                               <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon" id="sm1" style={this.getSliderColorRedToGreen(this.state.rating)}>
-                                      <p>{this.state.rating}</p>
+                                  <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
+                                      {this.state.rating}
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
@@ -373,11 +413,11 @@ export default class Form extends Component {
                           <div className="sm-spacing"></div>
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="secondary-text">Difficulty</h1>
+                                  <h1 className="form-label">Difficulty</h1>
                               </div>
                               <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon" id="sm1" style={this.getSliderColorGreenToRed(this.state.diff)}>
-                                      <p>{this.state.diff}</p>
+                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
+                                      {this.state.diff}
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
@@ -387,11 +427,11 @@ export default class Form extends Component {
                           <div className="sm-spacing"></div>
                           <div className='row'>
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="secondary-text">Workload</h1>
+                                  <h1 className="form-label">Workload</h1>
                               </div>
                               <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon" id="sm2" style={this.getSliderColorGreenToRed(this.state.workload)}>
-                                      <p>{this.state.workload}</p>
+                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
+                                      {this.state.workload}
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
@@ -401,7 +441,7 @@ export default class Form extends Component {
                           <div className="sm-spacing"></div>
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <div className="secondary-text">Professor</div>
+                                  <div className="form-label">Professor</div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
                                   <Select value={this.state.selectedProfessors}
@@ -415,7 +455,7 @@ export default class Form extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12 text-right">
-                                <button disabled={!isEnabled} id ="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                                <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
                             </div>
                           </div>
                       </div>
@@ -464,4 +504,9 @@ export default class Form extends Component {
 // Form must be provided the course object of the class this review will be for.
 Form.propTypes = {
   course: PropTypes.object.isRequired,
+  query:PropTypes.string,
+  queryFunc: PropTypes.func,
+  searchBar: PropTypes.bool, // true if this form is for pop-up,
+  inUse: PropTypes.bool //used to deactivate form in background if pop-up is in focus
 };
+

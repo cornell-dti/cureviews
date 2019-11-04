@@ -8,6 +8,12 @@ import "./css/App.css";
 import { courseVisited } from './js/Feedback.js';
 import "./css/ClassView.css";
 import PropTypes from "prop-types";
+import { Classes } from '../api/dbDefs.js';
+import { withTracker } from 'meteor/react-meteor-data';
+import Select from 'react-select';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
+import './css/Form.css';
 
 /*
   ClassView component.
@@ -25,7 +31,7 @@ import PropTypes from "prop-types";
   must also support SearchBar functionality.
 */
 
-export default class ClassView extends Component {
+export class ClassView extends Component {
   constructor(props) {
     super(props);
 
@@ -41,10 +47,15 @@ export default class ClassView extends Component {
       subject: subject,
       selectedClass: null,
       classDoesntExist: false,
-      query: '',
+      popUpVisible: false,
+      popupPos: "hidden",
     };
 
-    this.updateQuery = this.updateQuery.bind(this);
+    this.togglePopupForm.bind(this);
+    this.hidePopup = this.hidePopup.bind(this);
+    this.showPopup = this.showPopup.bind(this);
+    this.decidePopup = this.decidePopup.bind(this);
+    this.decidePopup();
   }
 
   // TODO: Redirect the user when they click the sign-in button. This will take the user
@@ -53,15 +64,7 @@ export default class ClassView extends Component {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   // }
 
-  // Set the state variable to the current value of the input. Called within SearchBar.jsx, so
-  // it must be bound to this component (in the constructor) so that this component's local state changes.
-  // Searchbar takes the query in this component's local state to render its search suggestions.
-  updateQuery(event) {
-    // trim the query to remove trailing spaces      
-    this.setState({ query: event.target.value.trim() });
-    //Session to be able to get info from this.state.query in withTracker
-    Session.set('querySession', this.state.query);
-  }
+
 
   // Once the component loads, the constructor will have added the GET variables to the local state.
   // Use the get variables to search the local Classes database for a class with the
@@ -85,22 +88,46 @@ export default class ClassView extends Component {
     });
 
   }
+  
+  getPopUpCourseOptions() {
+    if (this.props.allCourses != []) {
+      const popUpCourseOptions = []
+      for(const course in this.props.allCourses){
+        const courseObj = this.props.allCourses[course]
 
-  componentWillReceiveProps(nextProps) {
-    //if this component receives new props from the Redirect, it resets its state so that it can render/mount
-    //a new ClassView component with the new props
-    const number = nextProps.match.params.number;
-    const subject = nextProps.match.params.subject.toLowerCase();
+        popUpCourseOptions.push({
+          "value" : courseObj.classNum,
+          "label" : courseObj.classTitle
+        })
+      }
+      return popUpCourseOptions
+    }
+  }
+  
+  togglePopupForm(){
+    const nextState = this.state.popupPos == "hidden" ? "open" : "hidden";
+    this.setState({ popupPos: nextState });
+  }
+  
+  showPopup() {
+      this.setState({ popUpVisible: true });
+  }
 
+  hidePopup() {
+    this.setState({ popUpVisible: false });
+  }
 
-    this.state = {
-      number: number,
-      subject: subject,
-      selectedClass: null,
-      classDoesntExist: false,
-      query: '',
-    };
-    this.componentWillMount()
+  decidePopup(){
+    if(Session.get("popup_timer") != undefined 
+        && Session.get("popup_timer") != ""
+        && Session.get("seen_popup") != true
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30/*(seconds)*/ * 1000){
+      this.showPopup();
+      Session.setPersistent({"seen_popup": true});
+    }
+    else{
+      setTimeout(() => { this.decidePopup() }, 5000);
+    }
   }
 
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
@@ -111,12 +138,12 @@ export default class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <div className="row navbar">
             <div className="col-md-2 col-sm-2 col-xs-2">
-              <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-                <span>CU Reviews</span>
-              </a>
+              <div className="cornell-reviews">              
+                <a className="title-link" href="/">CU Reviews</a>
+              </div>
             </div>
             <div className="col-md-7 col-sm-7 col-xs-7">
-              <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+             <SearchBar query={this.state.popUpVisible ? "" : this.state.query} queryFunc={this.updateQuery} />
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
               <a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank" rel="noopener noreferrer"> Report a Bug</a>
@@ -129,13 +156,26 @@ export default class ClassView extends Component {
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
               <div>
-                <Form course={this.state.selectedClass} />
+                <Form inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
               <div>
                 <CourseReviews courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
+          <Rodal animation="zoom" height={565} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible} onClose={this.hidePopup.bind(this)}>
+            <div className="popup-main animate-form popup-background">
+              <div className={"popup-form animate-form popup-" + this.state.popupPos}>
+                <p className="popup-text1" >Want to contribute your opinion?</p>
+                <img src='/popup_background1.png' className="center-block scale-popup-img" alt="Students Chatting" />
+                <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
+                Leave a Review<i className="popup-arrow"></i>
+                </button>
+                <Form inUse={this.state.popUpVisible} searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
+              </div>
+            </div>
+            
+          </Rodal>
         </div>
       );
     } else if (this.state.classDoesntExist) {
@@ -144,7 +184,7 @@ export default class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <div className="row navbar">
             <div className="col-md-2 col-sm-2 col-xs-2">
-              <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+              <a className="cornell-reviews title-link" href="/">
                 <span>CU Reviews</span>
               </a>
             </div>
@@ -178,3 +218,15 @@ export default class ClassView extends Component {
 ClassView.propTypes = {
   match: PropTypes.object
 };
+
+// wrap in a container class that allows the component to dynamically grab courses
+// that contain this query anywhere in their full name. The component will automatically
+//  re-render when new classes are added to the database.
+export default withTracker(props => {
+  const subscription = Meteor.subscribe('classes', "");
+  const loading = !subscription.ready();
+  const allCourses = Classes.find({}).fetch();
+  return {
+    allCourses, loading,
+  };
+}) (ClassView);

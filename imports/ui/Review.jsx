@@ -106,47 +106,47 @@ export default class Review extends Component {
             <div className="row reviewNumbers">
               <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
                 <div className="container" id="circlebox" style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
-                  <div id="text">{(review.rating != undefined) ? review.rating : review.quality}</div>
+                  <div className="review-number-text" >{(review.rating != undefined) ? review.rating : review.quality}</div>
                 </div>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
-                <p id="labelName">Overall Rating</p>
+                <p className="review-number-label">Overall Rating</p>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="circle">
                 <div className="container" id="circlebox" style={this.getColorGreenToRed(review.difficulty)}>
-                  <div id="text">{review.difficulty}</div>
+                  <div className="review-number-text" >{review.difficulty}</div>
                 </div>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
-                <p id="labelName">Difficulty</p>
+                <p className="review-number-label">Difficulty</p>
               </div>
               <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
                 <div className="container" id="circlebox" style={this.getColorGreenToRed(review.workload)}>
-                  <div id="text">{(review.workload) ? review.workload : "-"}</div>
+                  <div className="review-number-text" >{(review.workload) ? review.workload : "-"}</div>
                 </div>
               </div>
               <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
-                <p id="labelName">Workload</p>
+                <p className="review-number-label">Workload</p>
               </div>
             </div>
             <div className="row noLeftRightPadding">
               <div className="col-md-3 col-sm-3 col-xs-3">
-                <p id="profLabel">Professor: </p>
+                <p className="professor-title">Professor: </p>
               </div>
               <div className="col-md-9 col-sm-9 col-xs-9">
                 {/*The following adds a grey professor box for each professor listed in the review*/}
-                {(review.professors) ? review.professors.map((prof, index) => (<div key={index} className="col-md-4 col-sm-4 col-xs-6">
-                  <p id="professor-text">{prof}</p></div>)) : <div className="col-md-4 col-sm-4 col-xs-6">
-                    <p id="professor-text">N/A</p></div>}
+                {(review.professors) ? review.professors.map((prof, index) => (<div key={index} className="col-md-6 col-sm-6 col-xs-6">
+                  <p className="professor-text">{prof}</p></div>)) : <div className="col-md-6 col-sm-6 col-xs-6">
+                    <p className="professor-text">N/A</p></div>}
               </div>
               
             </div>
             <div className="row">
-              <div className="review-text" id="review_text">{review.text}</div>
+              <div className="review-text" >{review.text}</div>
             </div>
             <div className="row noLeftRightPadding">
               <div className="col-md-3 col-sm-3 col-xs-3">
-                <p id="review-date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
+                <p className="review-date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
               </div>
               <div className="col-md-9 col-sm-9 col-xs-9">
                 <button className= //if the review has been liked, the button will be filled in.
@@ -159,7 +159,7 @@ export default class Review extends Component {
               </div>
             </div>
             <div className="row">
-              <p id="upvote-text">Helpful
+              <p className="upvote-text">Helpful
               ({(review.likes == undefined ? 0 : review.likes)})</p>
             </div>
           </div>
