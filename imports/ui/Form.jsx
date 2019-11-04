@@ -64,9 +64,10 @@ export default class Form extends Component {
       message: null,
       postClicks: 0,
       selectedProfessors: [],
-      professors: this.props.course.classProfessors,
+      professors: this.props.course.classProfessors ? this.props.course.classProfessors : [], //If class does not have
+                                                                                              //in DB init to empty list
       review: {},
-      courseId:''
+      courseId:'',
     };
 
     // store inital values as the default state to revert to after submission
@@ -191,10 +192,12 @@ export default class Form extends Component {
     const rate = this.state.rating;
     const diff = this.state.diff;
     const work = this.state.workload;
-    const prof = this.state.selectedProfessors.map(professor => {return professor.label});
+    const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0  
+                    this.state.selectedProfessors.map(professor => {return professor.label}) //set to this
+                    : //else
+                    [] //set to this
     if (text.length > 0
-      && text !== null
-      && prof !== []) {
+      && text !== null) {
         // create new review object
         const newReview = {
           text: text,

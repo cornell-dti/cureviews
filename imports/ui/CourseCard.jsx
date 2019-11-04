@@ -81,11 +81,11 @@ export class CourseCard extends Component {
               <a className="cornellClassLink" href={url}>Course Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
             </div>
             <p className="class-info spacing-large top-margin">
-                <strong>Offered: </strong>
+                <strong className="offered">Offered: </strong>
                 {offered}
             </p>
-            <p className="review-text spacing-large top-margin-small">
-                <strong>Median Grade: </strong>
+            <p className="median spacing-large top-margin-small">
+                <strong className="median-grade">Median Grade: </strong>
                 {this.state.grade}
             </p>
             <div className= "panel panel-default top-margin-medium panel-radius">

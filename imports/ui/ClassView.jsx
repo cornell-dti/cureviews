@@ -138,9 +138,9 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <div className="row navbar">
             <div className="col-md-2 col-sm-2 col-xs-2">
-              <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-                <span>CU Reviews</span>
-              </a>
+              <div className="cornell-reviews">              
+                <a className="title-link" href="/">CU Reviews</a>
+              </div>
             </div>
             <div className="col-md-7 col-sm-7 col-xs-7">
              <SearchBar query={this.state.popUpVisible ? "" : this.state.query} queryFunc={this.updateQuery} />
@@ -184,7 +184,7 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <div className="row navbar">
             <div className="col-md-2 col-sm-2 col-xs-2">
-              <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
+              <a className="cornell-reviews title-link" href="/">
                 <span>CU Reviews</span>
               </a>
             </div>

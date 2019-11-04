@@ -1,7 +1,3 @@
-.cornellClassLink {
-  color: #9b9b9b;
-}
-
 .spacing-small{
   line-height: 10px;
 }
@@ -40,13 +36,6 @@
   margin-top:20px;
 }
 
-
-.review-text {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 18px;
-  color: #333333;
-}
-
 .overall-rank {
   font-size: 30px;
   color: white;
@@ -66,6 +55,38 @@ label {
 
 #gaugeHolder > div{
   text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 36px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
+}
+
+#gaugeHolder > div > svg > text{
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 36px;
+  font-weight: var(--regular-weight) !important;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
+}
+
+.cornellClassLink {
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #9b9b9b;
 }
 
 #coursedetails {
@@ -75,25 +96,36 @@ label {
 }
 
 .class-title{
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 30px;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 36px;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.1px;
-  color: #4a4a4a;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
 }
 
-.class-info{
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+.offered, .median-grade{
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.2px;
-  color: #000000;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
+}
+
+.class-info, .median{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
 }
 
 .padding-bottom{
