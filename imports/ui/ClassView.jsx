@@ -51,7 +51,9 @@ export class ClassView extends Component {
       popupPos: "hidden",
     };
 
-    // this.togglePopupForm.bind(this)
+    this.togglePopupForm.bind(this);
+    this.hidePopup = this.hidePopup.bind(this);
+    this.showPopup = this.showPopup.bind(this);
   }
 
   // TODO: Redirect the user when they click the sign-in button. This will take the user
@@ -84,26 +86,6 @@ export class ClassView extends Component {
     });
 
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps);
-  //   //if this component receives new props from the Redirect, it resets its state so that it can render/mount
-  //   //a new ClassView component with the new props
-  //   const number = nextProps.match.params.number;
-  //   const subject = nextProps.match.params.subject.toLowerCase();
-
-
-  //   this.state = {
-  //     number: number,
-  //     subject: subject,
-  //     selectedClass: null,
-  //     classDoesntExist: false,
-  //     query: '',
-  //     popUpVisible: true,
-  //     popupPos: "hidden",
-  //   };
-  //   this.componentWillMount()
-  // }
   
   getPopUpCourseOptions() {
     if (this.props.allCourses != []) {
@@ -123,6 +105,14 @@ export class ClassView extends Component {
   togglePopupForm(){
     const nextState = this.state.popupPos == "hidden" ? "open" : "hidden";
     this.setState({ popupPos: nextState });
+  }
+  
+  showPopup() {
+      this.setState({ popUpVisible: true });
+  }
+
+  hidePopup() {
+    this.setState({ popUpVisible: false });
   }
 
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
@@ -158,7 +148,7 @@ export class ClassView extends Component {
               </div>
             </div>
           </div>
-          <Rodal animation="zoom" height={565} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible}>
+          <Rodal animation="zoom" height={565} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible} onClose={this.hidePopup.bind(this)}>
             <div className="popup-main animate-form popup-background">
               <div className={"popup-form animate-form popup-" + this.state.popupPos}>
                 <p className="popup-text1" >Want to contribute your opinion?</p>
