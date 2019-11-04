@@ -60,10 +60,13 @@
   background-color: #ffffffe6;
   border-radius: 8px 8px 0px 0px;
   color: #5697e3;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
-  font-weight: normal;
-  text-align: center;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
   position: relative;
   margin-bottom: -5px;
   z-index: 1000;

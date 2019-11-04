@@ -15,13 +15,13 @@
 #second_welcome_text{
   height: 14px;
   padding-top: 6%;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 20px;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 22px;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: -0.1px;
+  letter-spacing: 0.001em;
   text-align: center;
   color: #ffffff;
 }
