@@ -151,7 +151,7 @@ export class ClassView extends Component {
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
               <div>
-                <Form course={this.state.selectedClass} />
+                <Form inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
               <div>
                 <CourseReviews courseId={this.state.selectedClass._id} />
@@ -163,7 +163,7 @@ export class ClassView extends Component {
               <div className={"popup-form animate-form popup-" + this.state.popupPos}>
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}> Test
                 </button>
-                <Form searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
+                <Form inUse={this.state.popUpVisible} searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
               </div>
             </div>
             

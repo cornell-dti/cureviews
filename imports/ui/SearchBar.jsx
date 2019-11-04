@@ -75,7 +75,7 @@ export default class SearchBar extends Component {
       courseSubject:subject,
       courseNumber:number,
       courseTitle:title,
-      textValue:subject.toUpperCase()+": "+number+" "+title,
+      textValue:subject.toUpperCase()+number+": "+title,
       selected:true
     });
     this.props.formPopupHandler(id, professors);

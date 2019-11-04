@@ -65,7 +65,8 @@ export default class Form extends Component {
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors,
-      review: {}
+      review: {},
+      courseId:''
     };
 
     // store inital values as the default state to revert to after submission
@@ -83,6 +84,7 @@ export default class Form extends Component {
   //Handler for setting the form state's course id if using popup.
   //Passed in as a prop to search bar
   setCourseIdInSearchBar(courseId, professors){
+    Session.setPersistent({"courseId":courseId});
     this.setState({courseId:courseId, professors:professors, selectedProfessors:[]})
   }
 
@@ -145,7 +147,7 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if(Session.get("review") != undefined && Session.get("review") != ""){
+    if(Session.get("review") != undefined && Session.get("review") != "" && this.props.inUse){
       this.submitReview();
     }
   }
@@ -166,6 +168,7 @@ export default class Form extends Component {
     Session.setPersistent({"review": review});
     Session.setPersistent({"review_major": this.props.course.classSub.toUpperCase()});
     Session.setPersistent({"review_num": this.props.course.classNum});
+    Session.setPersistent({"courseId": this.state.courseId});
     if (!(_.isEqual(Session.get("review"),review)
         && Session.get("review_major") === this.props.course.classSub.toUpperCase()
         && Session.get("review_num") === this.props.course.classNum)){
@@ -182,7 +185,6 @@ export default class Form extends Component {
   handleSubmit(event) {
     // 'pause' automatic form submisson
     event.preventDefault();
-
     // ensure all fields are filled out
     const text = this.state.text.trim();
     const rate = this.state.rating;
@@ -210,10 +212,11 @@ export default class Form extends Component {
   }
 
   submitReview() {
+    console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"), 
                 Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                !this.props.searchBar ? this.props.course._id : this.state.courseId, 
+                !this.props.searchBar ? this.props.course._id : Session.get("courseId"), 
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
@@ -229,6 +232,7 @@ export default class Form extends Component {
         Session.setPersistent({"review": ""});
         Session.setPersistent({"review_major": ""});
         Session.setPersistent({"review_num": ""});
+        Session.setPersistent({"courseId":""});
         this.hide();
         
         Bert.alert('Thanks! Your review is currently pending approval.');
@@ -485,6 +489,7 @@ Form.propTypes = {
   course: PropTypes.object.isRequired,
   query:PropTypes.string,
   queryFunc: PropTypes.func,
-  searchBar: PropTypes.bool // true if this form is for pop-up
+  searchBar: PropTypes.bool, // true if this form is for pop-up,
+  inUse: PropTypes.bool //used to deactivate form in background if pop-up is in focus
 };
 
