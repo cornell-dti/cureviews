@@ -87,7 +87,15 @@
 
 .popup-text1{
   text-align: center;
-  margin-bottom: 5%;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 22px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #FFFFFF;
+  margin-bottom: 10%;
 }
 
 .popup-background-hidden{

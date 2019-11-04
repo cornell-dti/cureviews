@@ -144,8 +144,8 @@ li {
     list-style: none;
 }
 
-#classbutton li {
-    padding: 0;
+.classbutton {
+    padding: 15px;
 }
 
 #classbutton li a {

@@ -387,7 +387,7 @@ export default class Form extends Component {
                       <div className="panel-body-2" id="form">
                      {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
                           <div className="row" id="reviewTextRow">
-                            <textarea ref={this.textArea} className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
+                            <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
                               placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
                             <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
@@ -397,11 +397,11 @@ export default class Form extends Component {
                           <hr className="divider" />
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="secondary-text">Overall Rating</h1>
+                                  <h1 className="form-label">Overall Rating</h1>
                               </div>
                               <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon" id="sm1" style={this.getSliderColorRedToGreen(this.state.rating)}>
-                                      <p>{this.state.rating}</p>
+                                  <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
+                                      {this.state.rating}
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
@@ -411,11 +411,11 @@ export default class Form extends Component {
                           <div className="sm-spacing"></div>
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="secondary-text">Difficulty</h1>
+                                  <h1 className="form-label">Difficulty</h1>
                               </div>
                               <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon" id="sm1" style={this.getSliderColorGreenToRed(this.state.diff)}>
-                                      <p>{this.state.diff}</p>
+                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
+                                      {this.state.diff}
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
@@ -425,11 +425,11 @@ export default class Form extends Component {
                           <div className="sm-spacing"></div>
                           <div className='row'>
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="secondary-text">Workload</h1>
+                                  <h1 className="form-label">Workload</h1>
                               </div>
                               <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon" id="sm2" style={this.getSliderColorGreenToRed(this.state.workload)}>
-                                      <p>{this.state.workload}</p>
+                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
+                                      {this.state.workload}
                                   </div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
@@ -439,7 +439,7 @@ export default class Form extends Component {
                           <div className="sm-spacing"></div>
                           <div className="row">
                               <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <div className="secondary-text">Professor</div>
+                                  <div className="form-label">Professor</div>
                               </div>
                               <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
                                   <Select value={this.state.selectedProfessors}
@@ -453,7 +453,7 @@ export default class Form extends Component {
                           </div>
                           <div className="row">
                             <div className="col-md-12 text-right">
-                                <button disabled={!isEnabled} id ="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                                <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
                             </div>
                           </div>
                       </div>
