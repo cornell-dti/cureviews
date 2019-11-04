@@ -79,6 +79,7 @@ export default class Form extends Component {
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
     this.setCourseIdInSearchBar=this.setCourseIdInSearchBar.bind(this);
+    this.showDropDownButton = this.showDropDownButton.bind(this);
   }
 
   //Handler for setting the form state's course id if using popup.
@@ -338,7 +339,9 @@ export default class Form extends Component {
         marginHeight = 0;
         offsetHeight = 0;
       }
-      $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+      if(offsetHeight >= 0){
+        $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+      }
     }
     show() {
         this.setState({ visible: true });
@@ -347,6 +350,26 @@ export default class Form extends Component {
      hide() {
       this.setState({ visible: false });
     }
+    
+    showDropDownButton(){
+      if(!this.props.searchBar){
+        return(      
+          <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+            <div className="row noLeftRightMargin">
+              <div className="col-md-6">
+                <p className="review-header">Leave a Review</p>
+              </div>
+              <div className="col-md-6 padding-right-40">
+                <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
+              </div>
+            </div>
+
+          </button>
+        )
+      }
+
+    }
+    
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
@@ -355,18 +378,7 @@ export default class Form extends Component {
     return (
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
-          
-{/*            <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-              <div className="row noLeftRightMargin">
-                <div className="col-md-6">
-                  <p className="review-header">Leave a Review</p>
-                </div>
-                <div className="col-md-6 padding-right-40">
-                  <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-                </div>
-              </div>
-
-            </button>*/}
+          {this.showDropDownButton()}
             <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">
