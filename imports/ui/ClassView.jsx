@@ -85,25 +85,25 @@ export class ClassView extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    //if this component receives new props from the Redirect, it resets its state so that it can render/mount
-    //a new ClassView component with the new props
-    const number = nextProps.match.params.number;
-    const subject = nextProps.match.params.subject.toLowerCase();
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps);
+  //   //if this component receives new props from the Redirect, it resets its state so that it can render/mount
+  //   //a new ClassView component with the new props
+  //   const number = nextProps.match.params.number;
+  //   const subject = nextProps.match.params.subject.toLowerCase();
 
 
-    this.state = {
-      number: number,
-      subject: subject,
-      selectedClass: null,
-      classDoesntExist: false,
-      query: '',
-      popUpVisible: true,
-      popupPos: "hidden",
-    };
-    this.componentWillMount()
-  }
+  //   this.state = {
+  //     number: number,
+  //     subject: subject,
+  //     selectedClass: null,
+  //     classDoesntExist: false,
+  //     query: '',
+  //     popUpVisible: true,
+  //     popupPos: "hidden",
+  //   };
+  //   this.componentWillMount()
+  // }
   
   getPopUpCourseOptions() {
     if (this.props.allCourses != []) {
@@ -151,7 +151,7 @@ export class ClassView extends Component {
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
               <div>
-                <Form course={this.state.selectedClass} />
+                <Form inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
               <div>
                 <CourseReviews courseId={this.state.selectedClass._id} />
@@ -166,7 +166,7 @@ export class ClassView extends Component {
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
                 Leave a Review<i className="popup-arrow"></i>
                 </button>
-                <Form searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
+                <Form inUse={this.state.popUpVisible} searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
               </div>
             </div>
             

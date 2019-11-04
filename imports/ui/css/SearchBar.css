@@ -22,7 +22,6 @@
   line-height: normal;
   letter-spacing: normal;
   text-align:left;
-  background-color: ;
 }
 
 
@@ -40,9 +39,6 @@
   height: 46px;
 }
 
-#search-text-popup{
-  color: rgba(74, 144, 226, 0.4);
-}
 
 #search:focus {
   outline: none;
