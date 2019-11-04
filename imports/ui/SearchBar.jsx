@@ -26,10 +26,12 @@ const initState={
   courseTitle:"", //course title that's been selected for pop-up review
   courseNumber:null,//course number that's been selected for pop-up review
   courseId:null, //id of course that's been selected for pop-up review
-  selected:false //whether or not user has clicked yet
+  selected:false, //whether or not user has clicked yet,
+  query:"", //user's query,
+  allCourses:[]
 };
 
-export class SearchBar extends Component {
+export default class SearchBar extends Component {
 
   constructor(props) {
     super(props);
@@ -38,7 +40,6 @@ export class SearchBar extends Component {
       this.handleChange = this.handleChange.bind(this);
       this.setCourse=this.setCourse.bind(this);
       this.updateQuery=this.updateQuery.bind(this);
-  
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -48,7 +49,12 @@ export class SearchBar extends Component {
     this.setState({ query: event.target.value.trim() });
     //Session to be able to get info from this.state.query in withTracker
     Session.set('querySession', this.state.query);
+    Meteor.call("getClassesByQuery", this.state.query, (err, classes)=>{
+      this.setState({allCourses:classes})
+    });
   }
+
+
 
   //This function is only used for the pop-up
   //search bar. It keeps track of the value inside it
@@ -77,7 +83,6 @@ export class SearchBar extends Component {
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
     this.setState(initState);
-
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState( prevState => ({
@@ -105,7 +110,7 @@ export class SearchBar extends Component {
     
     
     else{
-      this.props.queryFunc(e);
+      this.updateQuery(e);
     }
     
   }
@@ -142,10 +147,10 @@ export class SearchBar extends Component {
   // to that class's ClassView. The name of the class will have underline and bold
   // where it matches the query.
   renderCourses(isFind) {
-    if (this.props.query !== "" && !this.state.selected) {
-      return this.props.allCourses.slice(0,3).map((course, i) => (
+    if (this.state.query !== "" && !this.state.selected) {
+      return this.state.allCourses.slice(0,3).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.props.query} useRedirect={!isFind} handler={this.setCourse}
+        <Course key={course._id} info={course} query={this.state.query} useRedirect={!isFind} handler={this.setCourse}
           active={this.state.index == i} cursor={this.state.enter} 
           mouse = {this.state.mouse}/>
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
@@ -155,18 +160,6 @@ export class SearchBar extends Component {
       ));
       
     }
-    else if(this.props.query!=""){
-      return this.props.allCourses.slice(0,1).map((course, i) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.props.query} useRedirect={!isFind} handler={this.setCourse}
-          active={this.state.index == i} cursor={this.state.enter} 
-          mouse = {this.state.mouse}/>
-        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
-        //the index matching with the course
-        //the prop "cursor" will pass through the value of the enter state
-        //the prop "mouse" will pass through the value of the mouse state
-      ));
-    }
     else {
       return <div />;
     }
@@ -175,7 +168,7 @@ export class SearchBar extends Component {
   render() {
     if(this.props.purpose=="find") return (
       <div className="search-bar text-left" id="searchbar-popup" >
-        <input className="search-text" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class"/>
+        <input className="search-text-popup" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off"/>
         <ul id="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderCourses(true)}
         </ul>
@@ -196,21 +189,18 @@ export class SearchBar extends Component {
 // to call when the query changes so the parent can update its copy of the query,
 // and a list of all courses that satisfy the query.
 SearchBar.propTypes = {
-  allCourses: PropTypes.array.isRequired,
   loading: PropTypes.bool, // optional
-  query: PropTypes.string.isRequired,
-  queryFunc: PropTypes.func.isRequired,
   purpose: PropTypes.string
 };
 
 // wrap in a container class that allows the component to dynamically grab courses
 // that contain this query anywhere in their full name. The component will automatically
 //  re-render when new classes are added to the database.
-export default withTracker(props => {
-  const subscription = Meteor.subscribe('classes', props.query);
-  const loading = !subscription.ready();
-  const allCourses = Classes.find({}).fetch();
-  return {
-    allCourses, loading,
-  };
-}) (SearchBar);
+// export default withTracker(props => {
+//   const subscription = Meteor.subscribe('classes', props.query);
+//   const loading = !subscription.ready();
+//   const allCourses = Classes.find({}).fetch();
+//   return {
+//     allCourses, loading,
+//   };
+// }) (SearchBar);

@@ -13,6 +13,21 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
    # Instead, the Client interacts with the database through the functions definied below,
    # which can be initiated by the Client but run on the Server.
 */
+
+// Helper to check if a string is a subject code
+const isSubShorthand = (sub) => {
+  const subCheck = Subjects.find({subShort: sub}).fetch()
+  return subCheck.length > 0;
+}
+
+// helper to format search within a subject
+const searchWithinSubject = (sub, remainder) => {
+  return Classes.find(
+    { 'classSub':  sub, 'classFull': { '$regex' : `.*${remainder}.*`, '$options' : '-i' }},
+    {sort: {classFull: 1}, limit: 200},
+    {reactive: false}).fetch();
+}
+
 Meteor.methods({
   // insert a new review into the reviews collection.
   // Upon success returns 1, else returns 0.
@@ -304,6 +319,62 @@ Meteor.methods({
     return false;
   },
 
+  getClassesByQuery: function (searchString) {
+    if (searchString !== undefined && searchString !== "") {
+      // check if first digit is a number. Catches searchs like "1100"
+      // if so, search only through the course numbers and return classes ordered by full name
+      const indexFirstDigit = searchString.search(/\d/)
+      if (indexFirstDigit == 0) {
+        // console.log("only numbers")
+        return Classes.find(
+          {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}, 
+          {sort: {classFull: 1}, limit: 200}, 
+          {reactive: false}).fetch();
+      }
+
+      // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
+      if (isSubShorthand(searchString)) {
+        return Classes.find(
+          { 'classSub':  searchString},
+          {sort: {classFull: 1}, limit: 200},  
+          {reactive: false}).fetch();
+      }
+      // check if text before space is subject, if so search only classes with this subject.
+      // Speeds up searches like "CS 1110"
+      const indexFirstSpace = searchString.search(" ")
+      if (indexFirstSpace != -1) {
+        const strBeforeSpace = searchString.substring(0, indexFirstSpace)
+        const strAfterSpace = searchString.substring(indexFirstSpace + 1)
+        if (isSubShorthand(strBeforeSpace)) {
+          // console.log("matches subject with space: " + strBeforeSpace)
+          return searchWithinSubject(strBeforeSpace, strAfterSpace)
+        }
+      }
+  
+      // check if text is subject followed by course number (no space)
+      // if so search only classes with this subject.
+      // Speeds up searches like "CS1110"
+      if (indexFirstDigit != -1) {
+        const strBeforeDigit = searchString.substring(0, indexFirstDigit)
+        const strAfterDigit = searchString.substring(indexFirstDigit)
+        if (isSubShorthand(strBeforeDigit)) {
+          // console.log("matches subject with digit: " + String(strBeforeDigit))
+          return searchWithinSubject(strBeforeDigit, strAfterDigit)
+        }
+      }
+  
+      //last resort, search everything 
+      // console.log("nothing matches");
+      return Classes.find(
+        { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+        {sort: {classFull: 1}, limit: 200}, 
+        {reactive: false}
+      ).fetch();
+    } else {
+      //console.log("no search");
+      return Classes.find({}, {sort: {classFull: 1}, limit: 200}, {reactive: false}).fetch();
+    }
+  },
 
 
   // Get a course with this course_id from the Classes collection in the local database.

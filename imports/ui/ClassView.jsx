@@ -47,12 +47,10 @@ export class ClassView extends Component {
       subject: subject,
       selectedClass: null,
       classDoesntExist: false,
-      query: '',
       popUpVisible: true,
       popupPos: "hidden",
     };
 
-    this.updateQuery = this.updateQuery.bind(this);
     // this.togglePopupForm.bind(this)
   }
 
@@ -62,15 +60,7 @@ export class ClassView extends Component {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   // }
 
-  // Set the state variable to the current value of the input. Called within SearchBar.jsx, so
-  // it must be bound to this component (in the constructor) so that this component's local state changes.
-  // Searchbar takes the query in this component's local state to render its search suggestions.
-  updateQuery(event) {
-    // trim the query to remove trailing spaces      
-    this.setState({ query: event.target.value.trim() });
-    //Session to be able to get info from this.state.query in withTracker
-    Session.set('querySession', this.state.query);
-  }
+
 
   // Once the component loads, the constructor will have added the GET variables to the local state.
   // Use the get variables to search the local Classes database for a class with the

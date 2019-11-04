@@ -22,8 +22,9 @@
   line-height: normal;
   letter-spacing: normal;
   text-align:left;
-  color: rgba(74, 144, 226, 0.4);
+  background-color: ;
 }
+
 
 #search {
   background-color: white;
@@ -37,6 +38,10 @@
   width: 100%;
   border-radius: 10px;
   height: 46px;
+}
+
+#search-text-popup{
+  color: rgba(74, 144, 226, 0.4);
 }
 
 #search:focus {
