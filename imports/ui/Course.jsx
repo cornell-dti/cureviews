@@ -24,7 +24,7 @@ export default class Course extends Component {
   }
 
   setCourseOnSearchBar(classInfo){
-    this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle);
+    this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle, classInfo.classProfessors);
   }
   
   

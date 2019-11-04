@@ -77,6 +77,13 @@ export default class Form extends Component {
     this.saveReviewToSession = this.saveReviewToSession.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
+    this.setCourseIdInSearchBar=this.setCourseIdInSearchBar.bind(this);
+  }
+
+  //Handler for setting the form state's course id if using popup.
+  //Passed in as a prop to search bar
+  setCourseIdInSearchBar(courseId, professors){
+    this.setState({courseId:courseId, professors:professors, selectedProfessors:[]})
   }
 
   // Save the current user input text from the text box in the local state.
@@ -206,7 +213,7 @@ export default class Form extends Component {
     // Call the API insert function
     Meteor.call('insert', Session.get("token"), 
                 Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                this.props.course._id, 
+                !this.props.searchBar ? this.props.course._id : this.state.courseId, 
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
@@ -260,10 +267,22 @@ export default class Form extends Component {
   }
 
   getProfOptions() {
-    if (this.props.course.classProfessors != []) {
+    if (this.props.course.classProfessors != [] && !this.props.searchBar) {
       const profOptions = []
       for(const prof in this.props.course.classProfessors){
         const professorName = this.props.course.classProfessors[prof]
+
+        profOptions.push({
+          "value" : professorName,
+          "label" : professorName
+        })
+      }
+      return profOptions
+    }
+    else if(this.state.professors!=[]){
+      const profOptions = []
+      for(const prof in this.state.professors){
+        const professorName = this.state.professors[prof]
 
         profOptions.push({
           "value" : professorName,
@@ -347,7 +366,7 @@ export default class Form extends Component {
             <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">
-                     {this.props.searchBar && <SearchBar isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
+                     {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
                           <div className="row" id="reviewTextRow">
                             <textarea ref={this.textArea} className={err.text || err.textEmpty ? "error" : ""} type="text" value={this.state.text}
                               onChange={(event) => this.handleTextChange(event)}
@@ -465,6 +484,7 @@ export default class Form extends Component {
 Form.propTypes = {
   course: PropTypes.object.isRequired,
   query:PropTypes.string,
-  queryFunc: PropTypes.func
+  queryFunc: PropTypes.func,
+  searchBar: PropTypes.bool // true if this form is for pop-up
 };
 

@@ -69,7 +69,7 @@ export default class SearchBar extends Component {
 
   //Handler function passed into Course component to get information on user-clicked course
   //in pop-up review.
-  setCourse(id, subject, number, title){
+  setCourse(id, subject, number, title, professors){
     this.setState({
       courseId:id,
       courseSubject:subject,
@@ -78,6 +78,7 @@ export default class SearchBar extends Component {
       textValue:subject.toUpperCase()+": "+number+" "+title,
       selected:true
     });
+    this.props.formPopupHandler(id, professors);
   }
   
 
@@ -204,7 +205,8 @@ export default class SearchBar extends Component {
 // and a list of all courses that satisfy the query.
 SearchBar.propTypes = {
   loading: PropTypes.bool, // optional
-  isPopup: PropTypes.bool // true if rendered in pop-up
+  isPopup: PropTypes.bool, // true if rendered in pop-up
+  formPopupHandler: PropTypes.func //handler to set state for form if in popup
 };
 
 // wrap in a container class that allows the component to dynamically grab courses
