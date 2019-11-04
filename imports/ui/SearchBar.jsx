@@ -17,6 +17,8 @@ import "./css/SearchBar.css";
   meteor database and displays them.
 */
 
+let newSearchState= {selected:false, mouse:0, enter:0};
+
 const initState={
   showDropdown: true,
   index: 0, //the initial state is the first element
@@ -61,7 +63,7 @@ export default class SearchBar extends Component {
   handleChange(event) {
     this.setState({textValue: event.target.value});
     if(!this.state.showDropdown){
-      this.setState(initState);
+      this.setState(newSearchState);
     }
   }
 
@@ -82,7 +84,7 @@ export default class SearchBar extends Component {
   
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-    this.setState(initState);
+    this.setState(newSearchState);
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState( prevState => ({
@@ -146,11 +148,11 @@ export default class SearchBar extends Component {
   // Each one will act as a button, such that clicking a course will take the user
   // to that class's ClassView. The name of the class will have underline and bold
   // where it matches the query.
-  renderCourses(isFind) {
-    if (this.state.query !== "" && !this.state.selected) {
+  renderCourses() {
+    if (this.state.query !== "" && !this.state.selected && this.props.isPopup ) {
       return this.state.allCourses.slice(0,3).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.state.query} useRedirect={!isFind} handler={this.setCourse}
+        <Course key={course._id} info={course} query={this.state.query} useRedirect={false} handler={this.setCourse}
           active={this.state.index == i} cursor={this.state.enter} 
           mouse = {this.state.mouse}/>
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
@@ -160,17 +162,29 @@ export default class SearchBar extends Component {
       ));
       
     }
+    else if (this.state.query !== "" && !this.state.selected){
+      return this.state.allCourses.slice(0,100).map((course, i) => (
+        //create a new class "button" that will set the selected class to this class when it is clicked.
+        <Course key={course._id} info={course} query={this.state.query} useRedirect={true} handler={this.setCourse}
+          active={this.state.index == i} cursor={this.state.enter} 
+          mouse = {this.state.mouse}/>
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "cursor" will pass through the value of the enter state
+        //the prop "mouse" will pass through the value of the mouse state
+      ));
+    }
     else {
       return <div />;
     }
   }
 
   render() {
-    if(this.props.purpose=="find") return (
+    if(this.props.isPopup) return (
       <div className="search-bar text-left" id="searchbar-popup" >
         <input className="search-text-popup" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off"/>
         <ul id="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-          {this.renderCourses(true)}
+          {this.renderCourses()}
         </ul>
       </div>
     );
@@ -178,7 +192,7 @@ export default class SearchBar extends Component {
       <div className="search-bar text-left" id="searchbar" >
       <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autoComplete="off"/>
       <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-        {this.renderCourses(false)}
+        {this.renderCourses()}
       </ul>
     </div>
     );
@@ -190,7 +204,7 @@ export default class SearchBar extends Component {
 // and a list of all courses that satisfy the query.
 SearchBar.propTypes = {
   loading: PropTypes.bool, // optional
-  purpose: PropTypes.string
+  isPopup: PropTypes.bool // true if rendered in pop-up
 };
 
 // wrap in a container class that allows the component to dynamically grab courses
