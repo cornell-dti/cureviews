@@ -189,7 +189,7 @@ export default class SearchBar extends Component {
   render() {
     if(this.props.isPopup) return (
       <div className="search-bar text-left" id="searchbar-popup" >
-        <input className="search-text-popup" value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off"/>
+        <input className={"search-text-popup " + (this.state.selected ? "search-text-popup-selected" : "")} value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off"/>
         <ul id="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderCourses()}
         </ul>

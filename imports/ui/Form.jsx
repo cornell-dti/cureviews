@@ -382,7 +382,7 @@ export default class Form extends Component {
         <div>
           <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
           {this.showDropDownButton()}
-            <ul id="dropdown-menu" className="dropdown-menu" ref={this.dropdownMenu}>
+            <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                       <div className="panel-body-2" id="form">
                      {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}

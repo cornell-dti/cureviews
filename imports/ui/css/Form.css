@@ -94,6 +94,10 @@ form {
     opacity: 1;
 }
 
+.dropdown-menu-popup{
+  background-color: #ffffffe6 !important;
+}
+
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
@@ -161,8 +165,7 @@ textarea {
   line-height: normal;
   letter-spacing: 0.001em;
   color: #4A4A4A;
-  ​
-  mix-blend-mode: normal;
+  background-color: transparent;
 
 }
 

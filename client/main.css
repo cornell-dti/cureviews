@@ -109,14 +109,14 @@ form {
     position: relative;
 }
 
-.new-task input {
+/* .new-task input {
     box-sizing: border-box;
     background: transparent;
     border: none;
     font-size: 1em;
     padding: 10px 0;
     width: 100%;
-}
+} */
 
 .new-task input:focus{
     outline: 0;
