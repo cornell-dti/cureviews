@@ -171,7 +171,7 @@ export class ClassView extends Component {
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
                 Leave a Review<i className="popup-arrow"></i>
                 </button>
-                <Form inUse={this.state.popUpVisible} searchBar={true} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
+                <Form searchBar={true} inUse={this.state.popUpVisible} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
               </div>
             </div>
             
