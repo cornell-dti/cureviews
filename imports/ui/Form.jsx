@@ -221,10 +221,11 @@ export default class Form extends Component {
     // Call the API insert function
     Meteor.call('insert', Session.get("token"), 
                 Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                !this.props.searchBar ? this.props.course._id : Session.get("courseId"), 
+                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"), 
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
+        console.log("course id: "+Session.get("courseId"));
         // Success, so reset form
         this.ratingSlider.current.value = 3;
         this.diffSlider.current.value = 3;
