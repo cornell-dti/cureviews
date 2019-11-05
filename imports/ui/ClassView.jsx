@@ -50,7 +50,8 @@ export class ClassView extends Component {
       popUpVisible: false,
       popupPos: "hidden",
     };
-
+    
+    //Used to prevent endless reloading in componentDidUpdate
     this.firstLoad = true;
     
     this.togglePopupForm.bind(this);
@@ -67,6 +68,8 @@ export class ClassView extends Component {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   // }
 
+  // Once the component loads, make a call to the backend for class object.
+  // Update the local state accordingly.  Called from componentDidUpdate()
   updateCurrentClass(classNumber, classSubject){
     Meteor.call("getCourseByInfo", classNumber, classSubject, (err, selectedClass) => {
       if (!err && selectedClass) {
