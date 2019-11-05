@@ -51,10 +51,13 @@ export class ClassView extends Component {
       popupPos: "hidden",
     };
 
+    this.firstLoad = true;
+    
     this.togglePopupForm.bind(this);
     this.hidePopup = this.hidePopup.bind(this);
     this.showPopup = this.showPopup.bind(this);
     this.decidePopup = this.decidePopup.bind(this);
+    this.updateCurrentClass = this.updateCurrentClass.bind(this);
     this.decidePopup();
   }
 
@@ -64,14 +67,8 @@ export class ClassView extends Component {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   // }
 
-
-
-  // Once the component loads, the constructor will have added the GET variables to the local state.
-  // Use the get variables to search the local Classes database for a class with the
-  // requested subject and course number. Update the local state accordingly.
-  componentWillMount() {
-
-    Meteor.call("getCourseByInfo", this.state.number, this.state.subject, (err, selectedClass) => {
+  updateCurrentClass(classNumber, classSubject){
+    Meteor.call("getCourseByInfo", classNumber, classSubject, (err, selectedClass) => {
       if (!err && selectedClass) {
         // Save the Class object that matches the request
         this.setState({
@@ -80,13 +77,34 @@ export class ClassView extends Component {
       }
       else {
         // No class matches the request.
-        console.log("no");
+        console.log("No match");
         this.setState({
           classDoesntExist: true
         });
       }
     });
-
+  }
+  
+  componentDidUpdate(prevProps){
+    //if this component receives new props from the Redirect, it resets its state so that it can render/mount
+    //a new ClassView component with the new props
+    const number = this.props.match.params.number;
+    const subject = this.props.match.params.subject.toLowerCase();
+    
+    if(prevProps.match.params.number !== number
+        && prevProps.match.params.subject !== subject
+        || this.firstLoad){
+      this.setState({
+        number: number,
+        subject: subject,
+        selectedClass: null,
+        classDoesntExist: false,
+        popUpVisible: false,
+        popupPos: "hidden",
+      });
+      this.firstLoad = false;
+      this.updateCurrentClass(number, subject);
+    }
   }
   
   getPopUpCourseOptions() {
