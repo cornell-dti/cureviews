@@ -32,16 +32,12 @@ export default class FilteredResult extends Component {
   }
 
   updateColors() {
-    console.log("in here");
-    console.log(this.state.rating);
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
-      console.log("bad rating");
       this.setState({
         ratingColor: "#f9cc30"
       })
     }
     else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
-      console.log("rating");
       this.setState({
         ratingColor: "#53B277"
       })
