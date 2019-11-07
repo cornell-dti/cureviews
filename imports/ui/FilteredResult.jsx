@@ -15,15 +15,59 @@ export default class FilteredResult extends Component {
     this.state = {
       id: this.props.course._id,
       rating: this.props.course.classRating,
-      ratingColor: this.props.course.classRatingColor,
+      ratingColor: "E64458",
       diff: this.props.course.classDifficulty,
-      diffColor: this.props.course.classDifficultyColor,
+      diffColor: "E64458",
       workload: this.props.course.classWorkload,
-      workloadColor: this.props.course.classWorkloadColor,
+      workloadColor: "E64458",
       grade: this.props.course.classGrade,
       gradeNum: 0,
     };
 
+
+  }
+
+  componentDidMount() {
+    this.updateColors();
+  }
+
+  updateColors() {
+    console.log("in here");
+    console.log(this.state.rating);
+    if (3.0 <= this.state.rating && this.state.rating < 4.0) {
+      console.log("bad rating");
+      this.setState({
+        ratingColor: "#f9cc30"
+      })
+    }
+    else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
+      console.log("rating");
+      this.setState({
+        ratingColor: "#53B277"
+      })
+    }
+
+    if (0 <= this.state.diff && this.state.diff < 3.0) {
+      this.setState({
+        diffColor: "#53B277"
+      })
+    }
+    else if (3.0 <= this.state.diff && this.state.diff < 4.0) {
+      this.setState({
+        diffColor: "#f9cc30"
+      })
+    }
+
+    if (0 <= this.state.workload && this.state.workload < 3.0) {
+      this.setState({
+        workloadColor: "#53B277"
+      })
+    }
+    else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
+      this.setState({
+        workloadColor: "#f9cc30"
+      })
+    }
 
   }
 
