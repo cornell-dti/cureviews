@@ -55,7 +55,7 @@ export default class Accordian extends Component{
     }
 }
 
-Accordian.propTyes ={
+Accordian.propTypes ={
   data: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   col1: PropTypes.string.isRequired,
