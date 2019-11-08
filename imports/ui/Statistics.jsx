@@ -67,17 +67,3 @@ export default class Statistics extends Component{
   }
 
 }
-
-//Statistics.propTypes = {
-/*  classes: PropTypes.object.isRequired,
-  course: PropTypes.object.isRequired,
-  reviews: PropTypes.array.isRequired*/
-  //totalCs: PropTypes.number.isRequired
-//};
-
-/*export default withTracker(props => {
-  const totalCS = Reviews.find({classSub: "cs"}).count();
-  return {
-    totalCS
-  };
-}) (Statistics);*/
