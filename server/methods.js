@@ -65,7 +65,6 @@ Meteor.methods({
           Reviews.insert(fullReview);
           console.log("Success: Submitted review");
           //Update the course metrics
-          Meteor.call("updateCourseMetrics", classId);
           return 1; //success
         } catch (error) {
           console.log(error)
@@ -161,6 +160,7 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.update(review._id, { $set: { visible: 1 } });
+      Meteor.call("updateCourseMetrics", review.class);
       return 1;
     } else {
       return 0;
@@ -175,6 +175,7 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.remove({ _id: review._id });
+      Meteor.call("updateCourseMetrics", review.class);
       return 1;
     } else {
       return 0;
