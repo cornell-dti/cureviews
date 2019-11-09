@@ -48,7 +48,7 @@ export class ClassView extends Component {
       selectedClass: null,
       classDoesntExist: false,
       popUpVisible: false,
-      popupPos: "hidden",
+      popupPos: "hidden"
     };
 
     this.togglePopupForm.bind(this);
@@ -56,6 +56,7 @@ export class ClassView extends Component {
     this.showPopup = this.showPopup.bind(this);
     this.decidePopup = this.decidePopup.bind(this);
     this.decidePopup();
+    this.onFormChange= this.onFormChange.bind(this);
   }
 
   // TODO: Redirect the user when they click the sign-in button. This will take the user
@@ -64,6 +65,10 @@ export class ClassView extends Component {
   //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
   // }
 
+  onFormChange(e){
+      console.log("change");
+      this.setState({lastTyped:new Date().getTime()});
+  }
 
 
   // Once the component loads, the constructor will have added the GET variables to the local state.
@@ -121,7 +126,8 @@ export class ClassView extends Component {
     if(Session.get("popup_timer") != undefined 
         && Session.get("popup_timer") != ""
         && Session.get("seen_popup") != true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30/*(seconds)*/ * 1000){
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30/*(seconds)*/ * 1000
+        && (!this.state.lastTyped || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000)){
       this.showPopup();
       Session.setPersistent({"seen_popup": true});
     }
@@ -156,7 +162,7 @@ export class ClassView extends Component {
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
               <div>
-                <Form inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
+                <Form onChange={this.onFormChange} inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
               <div>
                 <CourseReviews courseId={this.state.selectedClass._id} />
