@@ -11,6 +11,7 @@ export default class Auth extends Component {
     super(props);
 
     console.log(this.props.params);
+    console.log("hello");
     Meteor.call('printOnServer', this.props.params);
     //send back some random token
 
