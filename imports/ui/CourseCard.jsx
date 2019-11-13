@@ -30,8 +30,6 @@ export class CourseCard extends Component {
       diffColor: "#E64458",
       workload: 0,
       workloadColor: "#E64458",
-      grade: "-",
-      gradeNum: 0,
     };
 
     // initialize state as default gauge values
@@ -83,10 +81,6 @@ export class CourseCard extends Component {
             <p className="class-info spacing-large top-margin">
                 <strong className="offered">Offered: </strong>
                 {offered}
-            </p>
-            <p className="median spacing-large top-margin-small">
-                <strong className="median-grade">Median Grade: </strong>
-                {this.state.grade}
             </p>
             <div className= "panel panel-default top-margin-medium panel-radius">
                 <div className = "panel-body">

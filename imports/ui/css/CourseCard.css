@@ -106,7 +106,7 @@ label {
   color: #4A4A4A;
 }
 
-.offered, .median-grade{
+.offered{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--semi-bold-weight);
