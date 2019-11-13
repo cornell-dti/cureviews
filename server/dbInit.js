@@ -160,7 +160,7 @@ export function updateProfessors (semesters){
                               // console.log(courses[course].subject);
                               // console.log(courses[course].catalogNbr);
                               // console.log("This is the matchedCourse")
-                              console.log(matchedCourse)
+                              // console.log(matchedCourse)
                               let oldProfessors = matchedCourse.classProfessors;
                               if (oldProfessors == undefined){
                                 oldProfessors = [];

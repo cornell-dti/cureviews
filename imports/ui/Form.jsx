@@ -91,7 +91,11 @@ export default class Form extends Component {
 
   // Save the current user input text from the text box in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
+  // Updates time user last typed for regular review form, if applicable.
   handleTextChange = (event) => {
+    if(this.props.onChange){ //If onChange prop exists, call it
+      this.props.onChange();
+    }
     this.setState({text: event.target.value});
   }
 
@@ -490,6 +494,7 @@ Form.propTypes = {
   query:PropTypes.string,
   queryFunc: PropTypes.func,
   searchBar: PropTypes.bool, // true if this form is for pop-up,
-  inUse: PropTypes.bool //used to deactivate form in background if pop-up is in focus
+  inUse: PropTypes.bool, //used to deactivate form in background if pop-up is in focus
+  onChange: PropTypes.func
 };
 

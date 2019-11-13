@@ -48,25 +48,20 @@ export class ClassView extends Component {
       selectedClass: null,
       classDoesntExist: false,
       popUpVisible: false,
-      popupPos: "hidden",
+      popupPos: "hidden"
     };
-    
+
     //Used to prevent endless reloading in componentDidUpdate
     this.firstLoad = true;
-    
+
     this.togglePopupForm.bind(this);
     this.hidePopup = this.hidePopup.bind(this);
     this.showPopup = this.showPopup.bind(this);
     this.decidePopup = this.decidePopup.bind(this);
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
     this.decidePopup();
+    this.onFormChange = this.onFormChange.bind(this);
   }
-
-  // TODO: Redirect the user when they click the sign-in button. This will take the user
-  // to a google login, and back to the homepage.
-  // forceLogin() {
-  //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
-  // }
 
   // Once the component loads, make a call to the backend for class object.
   // Update the local state accordingly.  Called from componentDidUpdate()
@@ -87,13 +82,13 @@ export class ClassView extends Component {
       }
     });
   }
-  
+
   componentDidUpdate(prevProps){
     //if this component receives new props from the Redirect, it resets its state so that it can render/mount
     //a new ClassView component with the new props
     const number = this.props.match.params.number;
     const subject = this.props.match.params.subject.toLowerCase();
-    
+
     if(prevProps.match.params.number !== number
         && prevProps.match.params.subject !== subject
         || this.firstLoad){
@@ -109,7 +104,13 @@ export class ClassView extends Component {
       this.updateCurrentClass(number, subject);
     }
   }
-  
+
+  // Updates the last time user typed in the form textbox
+  // Used so that the popup doesn't show while user is typing where
+  onFormChange(e) {
+      this.setState({lastTyped:new Date().getTime()});
+  }
+
   getPopUpCourseOptions() {
     if (this.props.allCourses != []) {
       const popUpCourseOptions = []
@@ -124,12 +125,12 @@ export class ClassView extends Component {
       return popUpCourseOptions
     }
   }
-  
+
   togglePopupForm(){
     const nextState = this.state.popupPos == "hidden" ? "open" : "hidden";
     this.setState({ popupPos: nextState });
   }
-  
+
   showPopup() {
       this.setState({ popUpVisible: true });
   }
@@ -139,10 +140,13 @@ export class ClassView extends Component {
   }
 
   decidePopup(){
-    if(Session.get("popup_timer") != undefined 
+    if(Session.get("popup_timer") != undefined
         && Session.get("popup_timer") != ""
-        && Session.get("seen_popup") != true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30/*(seconds)*/ * 1000){
+        && (Session.get("seen_popup") != true /*(eligible to show popup again after 4 hours even if already seen)*/
+            || Math.abs(Session.get("popup_timer") - new Date().getTime()) > 4 * 60 * 60 * 1000)
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
+        && (!this.state.lastTyped
+            || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
       this.showPopup();
       Session.setPersistent({"seen_popup": true});
     }
@@ -159,7 +163,7 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <div className="row navbar">
             <div className="col-md-2 col-sm-2 col-xs-2">
-              <div className="cornell-reviews">              
+              <div className="cornell-reviews">
                 <a className="title-link" href="/">CU Reviews</a>
               </div>
             </div>
@@ -177,7 +181,7 @@ export class ClassView extends Component {
             </div>
             <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
               <div>
-                <Form inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
+                <Form onChange={this.onFormChange} inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
               <div>
                 <CourseReviews courseId={this.state.selectedClass._id} />
@@ -195,7 +199,7 @@ export class ClassView extends Component {
                 <Form searchBar={true} inUse={this.state.popUpVisible} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
               </div>
             </div>
-            
+
           </Rodal>
         </div>
       );
