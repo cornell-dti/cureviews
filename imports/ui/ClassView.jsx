@@ -59,18 +59,6 @@ export class ClassView extends Component {
     this.onFormChange= this.onFormChange.bind(this);
   }
 
-  // TODO: Redirect the user when they click the sign-in button. This will take the user
-  // to a google login, and back to the homepage.
-  // forceLogin() {
-  //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
-  // }
-
-  onFormChange(e){
-      console.log("change");
-      this.setState({lastTyped:new Date().getTime()});
-  }
-
-
   // Once the component loads, the constructor will have added the GET variables to the local state.
   // Use the get variables to search the local Classes database for a class with the
   // requested subject and course number. Update the local state accordingly.
@@ -92,6 +80,12 @@ export class ClassView extends Component {
       }
     });
 
+  }
+  
+  // Updates the last time user typed in the form textbox
+  // Used so that the popup doesn't show while user is typing where
+  onFormChange(e){
+      this.setState({lastTyped:new Date().getTime()});
   }
   
   getPopUpCourseOptions() {
@@ -126,8 +120,9 @@ export class ClassView extends Component {
     if(Session.get("popup_timer") != undefined 
         && Session.get("popup_timer") != ""
         && Session.get("seen_popup") != true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30/*(seconds)*/ * 1000
-        && (!this.state.lastTyped || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000)){
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
+        && (!this.state.lastTyped 
+            || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
       this.showPopup();
       Session.setPersistent({"seen_popup": true});
     }

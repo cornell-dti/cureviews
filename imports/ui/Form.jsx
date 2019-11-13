@@ -94,7 +94,7 @@ export default class Form extends Component {
   // Called whenever this form element changes to trigger re-render to run validation.
   // Updates time user last typed for regular review form, if applicable.
   handleTextChange = (event) => {
-    if(this.props.onChange){
+    if(this.props.onChange){ //If onChange prop exists, call it
       this.props.onChange();
     }
     this.setState({text: event.target.value});

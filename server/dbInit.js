@@ -178,7 +178,6 @@ export function updateProfessors (semesters){
                                       // Example of class without professors is:
                                       // ASRC 3113 in FA16
                                       // ASRC 3113 returns an empty array for professors
-                                      if(course.classSub=="span" && course.classNum=="3440") console.log(professors);
                                       if (professors.length > 0){
                                         for (const professor in professors){
                                           const firstName = professors[professor].firstName
