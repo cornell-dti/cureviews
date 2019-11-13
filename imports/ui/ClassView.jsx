@@ -119,7 +119,8 @@ export class ClassView extends Component {
   decidePopup(){
     if(Session.get("popup_timer") != undefined 
         && Session.get("popup_timer") != ""
-        && Session.get("seen_popup") != true
+        && (Session.get("seen_popup") != true /*(eligible to show popup again after 4 hours even if already seen)*/
+            || Math.abs(Session.get("popup_timer") - new Date().getTime()) > 4 * 60 * 60 * 1000) 
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
         && (!this.state.lastTyped 
             || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
