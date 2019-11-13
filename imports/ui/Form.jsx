@@ -245,7 +245,7 @@ export default class Form extends Component {
         Session.setPersistent({"courseId":""});
         this.hide();
         
-        Bert.alert('Thanks! Your review is currently pending approval.');
+        Bert.alert('Thanks for reviewing! New reviews are updated every 24 hours.');
       } else {
         // error, alert user
         console.log(error);
