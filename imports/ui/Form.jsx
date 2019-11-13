@@ -268,7 +268,7 @@ export default class Form extends Component {
   validateInputs(text) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
-    const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
+    // const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
     const errs = {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
@@ -346,15 +346,10 @@ export default class Form extends Component {
     showDropDownButton(){
       if(!this.props.searchBar){
         return(      
-          <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-            <div className="row noLeftRightMargin">
-              <div className="col-md-6">
-                <p className="review-header">Leave a Review</p>
-              </div>
-              <div className="col-md-6 padding-right-40">
-                <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-              </div>
-            </div>
+          <button className="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+
+              <p className="review-header">Leave a Review</p>
+
 
           </button>
         )
@@ -454,6 +449,9 @@ export default class Form extends Component {
                       </div>
                   </div>
               </form>
+            </ul>
+            <ul className="dropdown-tab" onClick={this.toggleDropdown.bind(this)}>
+              <i className={'arrow '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
             </ul>
           </div>
           
