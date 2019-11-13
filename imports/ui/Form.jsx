@@ -59,7 +59,6 @@ export default class Form extends Component {
       rating: 3,
       diff: 3,
       workload: 3,
-      // median: { value: 0, label: 'I don\'t know' }, //Default for median selecter
       text: "",
       message: null,
       postClicks: 0,
@@ -225,10 +224,11 @@ export default class Form extends Component {
     // Call the API insert function
     Meteor.call('insert', Session.get("token"), 
                 Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                !this.props.searchBar ? this.props.course._id : Session.get("courseId"), 
+                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"), 
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
+        console.log("course id: "+Session.get("courseId"));
         // Success, so reset form
         this.ratingSlider.current.value = 3;
         this.diffSlider.current.value = 3;
@@ -307,24 +307,7 @@ export default class Form extends Component {
     }
   }
 
-  // Return the options for median grades
-  // TODO deprecate this as we are no longer collecting this metric
-  getMedianOptions() {
 
-    const medianGrades = [
-      { value: 0, label: 'I don\'t know' },
-      { value: 9, label: 'A+' },
-      { value: 8, label: 'A' },
-      { value: 7, label: 'A-' },
-      { value: 6, label: 'B+' },
-      { value: 5, label: 'B' },
-      { value: 4, label: 'B-' },
-      { value: 3, label: 'C+' },
-      { value: 2, label: 'C' },
-      { value: 1, label: 'C-' }
-    ]
-    return medianGrades
-  }
     // Toggle the form dropdown
     // Takes care of "pushing down" the reviews by the dynamic height of the form
     toggleDropdown(){
