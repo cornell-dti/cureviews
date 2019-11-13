@@ -1,9 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Reviews } from '../api/dbDefs.js';
-import { Classes } from '../api/dbDefs.js';
-import { Students } from '../api/dbDefs.js';
 import Accordian from './Accordian.jsx';
 
 /*
@@ -62,8 +57,7 @@ export default class Statistics extends Component{
         <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses"/>
         <Accordian data={this.state.howManyReviewsEachClass} title="Num of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
         <p>Total reviews: {this.state.totalReviews}</p>
-    </div>
+      </div>
     )
   }
-
 }
