@@ -327,8 +327,8 @@ Meteor.methods({
       if (indexFirstDigit == 0) {
         // console.log("only numbers")
         return Classes.find(
-          {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }}, 
-          {sort: {classFull: 1}, limit: 200}, 
+          {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
+          {sort: {classFull: 1}, limit: 200},
           {reactive: false}).fetch();
       }
 
@@ -336,7 +336,7 @@ Meteor.methods({
       if (isSubShorthand(searchString)) {
         return Classes.find(
           { 'classSub':  searchString},
-          {sort: {classFull: 1}, limit: 200},  
+          {sort: {classFull: 1}, limit: 200},
           {reactive: false}).fetch();
       }
       // check if text before space is subject, if so search only classes with this subject.
@@ -350,7 +350,7 @@ Meteor.methods({
           return searchWithinSubject(strBeforeSpace, strAfterSpace)
         }
       }
-  
+
       // check if text is subject followed by course number (no space)
       // if so search only classes with this subject.
       // Speeds up searches like "CS1110"
@@ -362,12 +362,12 @@ Meteor.methods({
           return searchWithinSubject(strBeforeDigit, strAfterDigit)
         }
       }
-  
-      //last resort, search everything 
+
+      //last resort, search everything
       // console.log("nothing matches");
       return Classes.find(
         { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-        {sort: {classFull: 1}, limit: 200}, 
+        {sort: {classFull: 1}, limit: 200},
         {reactive: false}
       ).fetch();
     } else {
@@ -518,8 +518,8 @@ Meteor.methods({
 
     let output = [];
     Reviews.aggregate(pipeline).map(function (data){
-      const subNum = Classes.find({_id: data._id},{'classSub':1,'_id':0, 'classNum':1}).fetch()[0];
-      const id = subNum.classSub + " " +subNum.classNum;
+      const sub = Classes.find({_id: data._id},{'classSub':1,'_id':0, 'classNum':1}).fetch()[0];
+      const id = sub.classSub + " " +sub.classNum;
       output.push(
         {_id: id, total: data.total}
       );
@@ -529,6 +529,95 @@ Meteor.methods({
 
   totalReviews: function(){
     return Reviews.find({}).count();
+  },
+
+  getReviewsOverTimeTop15: function(){
+    const top15 = Meteor.call('topSubjects');
+    //contains cs, math, gov etc...
+    let retArr = [];
+
+    top15.forEach((classs)=>{
+      var subject = Subjects.find({subFull: classs[0]}, {'_id':0, 'subShort':1, 'subFull':0}).fetch()[0]; //EX: computer science--> cs
+      var subshort = subject.subShort;
+      retArr.push(subshort);
+    });
+  //  console.log(retArr);
+    //last 14 days
+    let arrHM = [];//[ {"cs": {date1: totalNum}, math: {date1, totalNum} },
+                   // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
+    for(var i=0; i<14;i++){
+      let dateAssociativeArr ={}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
+      //run on reviews. gets all classes and num of reviewa for each class, in x day
+      const pipeline = [
+        {
+            $match:{
+              date: {
+                $lte: new Date(new Date().setDate(new Date().getDate()-i))
+              }
+            }
+        },
+        {
+            $group: {
+              _id: '$class',
+              total: {
+                $sum: 1
+              }
+            }
+        }
+
+      ];
+        let hashMap = {}; //Object {"cs": {date1: totalNum}, math: {date1, totalNum} }
+        Reviews.aggregate(pipeline).map(function (data){ // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
+            let arr = [];
+            const sub = Classes.find({_id: data._id},{'classSub':1,'_id':0, 'classNum':0}).fetch()[0]; //finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
+            var timeStringYMD= new Date(new Date().setDate(new Date().getDate()-i)).toISOString().split("T")[0];
+            if(retArr.includes(sub.classSub)){ //if thos review is one of the top 15 we want.
+              //date of this review minus the hrs mins sec
+              if(hashMap["total"]==null)
+                  hashMap["total"]={[timeStringYMD]: data.total};
+              else
+                hashMap["total"]={[timeStringYMD]: hashMap["total"][timeStringYMD]+data.total};
+
+              if(hashMap[sub.classSub]==null) //if not in hm then add
+                hashMap[sub.classSub]={[timeStringYMD]: data.total};
+              else //increment totalnum
+                hashMap[sub.classSub]={[timeStringYMD]: hashMap[sub.classSub][timeStringYMD]+data.total};
+
+
+            }else{
+              if(hashMap["total"]==null)
+                  hashMap["total"]={[timeStringYMD]: data.total};
+              else
+                hashMap["total"]={[timeStringYMD]: hashMap["total"][timeStringYMD]+data.total};
+            }
+        });
+        arrHM.push(hashMap);
+
+    }
+
+
+  let hm2={}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
+    //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
+
+  //for (var entry in arrHM) {
+    var entry = arrHM[0];
+    let keys = Object.keys(entry);
+
+  //"cs"
+    keys.map(key =>{
+      var t = arrHM.map(a=>a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
+      hm2[key]=t;
+    });
+  /*  for(var key in entry){
+    //  console.log(key);
+      var t = arrHM.map(a=>a[key]); // gets all the dates for one class ("key") [{date1: totalNum}, {date2: totalNum}]
+    //  console.log(t);
+      hm2[key]=t;
+
+    }*/
+  //}
+  console.log(hm2);
+    return hm2;
   },
   // Print on the server side for API testing. Should print in logs if
   // called by the API (in the Auth component).

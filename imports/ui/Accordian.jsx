@@ -24,7 +24,7 @@ export default class Accordian extends Component{
                 </a>
               </h4>
             </div>
-            <div id={collapseOneId} className="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div id={collapseOneId} className="panel-collapse collapse" role="tabpanel" aria-labelledby={headingOneId}>
               <div className="panel-body">
               <table className="table table-striped">
                 <thead>
@@ -55,7 +55,7 @@ export default class Accordian extends Component{
     }
 }
 
-Accordian.propTyes ={
+Accordian.propTypes ={
   data: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   col1: PropTypes.string.isRequired,
