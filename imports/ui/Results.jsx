@@ -69,17 +69,13 @@ export class Results extends Component {
   componentWillReceiveProps(nextProps) {
     //if this component receives new props from the Redirect, it resets its state so that it can render/mount
     //a new ClassView component with the new props
-    const number = nextProps.match.params.number;
-    const subject = nextProps.match.params.subject.toLowerCase();
 
 
-    this.state = {
-      number: number,
-      subject: subject,
+    this.setState({
       selectedClass: null,
       classDoesntExist: false,
       query: '',
-    };
+    });
     this.componentDidMount()
   }
 
@@ -88,7 +84,7 @@ export class Results extends Component {
   }
 
   render() {
-    var content = null;
+    let content = null;
     if (this.state.courseList.length != 0) {
       content = (
         <div className="container-fluid container-top-gap-fix">

@@ -111,15 +111,15 @@ export default class PreviewCard extends Component {
   }
 
   render() {
-    var theClass = this.props.course;
+    let theClass = this.props.course;
     // Creates Url that points to each class page on Cornell Class Roster
-    var url = "https://classes.cornell.edu/browse/roster/"
+    let url = "https://classes.cornell.edu/browse/roster/"
       + lastSem(theClass.classSems) + "/class/"
       + theClass.classSub.toUpperCase() + "/"
       + theClass.classNum;
 
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
-    var offered = lastOfferedSems(theClass);
+    let offered = lastOfferedSems(theClass);
 
     return (
         <div className="preview-panel">
