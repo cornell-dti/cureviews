@@ -32,10 +32,21 @@
   border-radius: 8px;
 }
 
+.preview-panel{
+  width: 100%;
+  border-radius: 2.5px;
+  background-color: #fafafa;
+  padding: 35px;
+}
+
+#gaugeHolder svg{
+  overflow: visible !important;
+}
+
 #gauge, #gauge-body{
   width: 50%;
 }
 
 #result-li{
-  padding-bottom: 300px;
+  /* padding-bottom: 300px; */
 }

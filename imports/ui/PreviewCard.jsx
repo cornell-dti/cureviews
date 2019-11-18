@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
 import Gauge from 'react-summary-gauge-2';
 import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
+import Review from './Review.jsx';
 
 /*
   Filtered Result Component.
@@ -19,7 +20,8 @@ export default class PreviewCard extends Component {
       diff: this.props.course.classDifficulty,
       diffColor: "E64458",
       workload: this.props.course.classWorkload,
-      workloadColor: "E64458"
+      workloadColor: "E64458",
+      topReview: {}
     };
 
     this.updateColors = this.updateColors.bind(this);
@@ -37,7 +39,21 @@ export default class PreviewCard extends Component {
         rating: this.props.course.classRating,
         diff: this.props.course.classDifficulty,
         workload: this.props.course.classWorkload,
-      }, () => this.updateColors());
+      },() => this.updateColors());
+      
+      Meteor.call("getReviewsByProfessor", "David Gries", (err, reviews) => {
+        if (!err && reviews) {
+          console.log("returned reviews");
+          // Sort reviews according to most likes
+          reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
+          this.setState({
+            topReview: reviews[0]
+          });
+        }
+        else {
+          console.log("no prof reviews");
+        }
+      });
 
     }
   }
@@ -94,10 +110,6 @@ export default class PreviewCard extends Component {
 
   }
 
-
-
-
-
   render() {
     var theClass = this.props.course;
     // Creates Url that points to each class page on Cornell Class Roster
@@ -110,41 +122,46 @@ export default class PreviewCard extends Component {
     var offered = lastOfferedSems(theClass);
 
     return (
-      <li id="result-li">
-        <div id="course-details">
-          <div>
-            <h1 className="class-title top-margin">
-              {theClass.classTitle}
-            </h1>
-            <h2>
-              {theClass.classSub.toUpperCase() + " " + theClass.classNum}
-            </h2>
+        <div className="preview-panel">
+          <div className="row">
+            <div className="col-md-12 col-sm-12">
+              <p className="">
+                {theClass.classTitle}
+              </p>
+              <p>
+                {theClass.classSub.toUpperCase() + " " + theClass.classNum}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="panel panel-default top-margin-medium panel-radius" id="gauge">
-          <div className="panel-body" id="gauge-body">
-            <section>
-              <div className="row" id="gaugeHolder">
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.rating} left={50} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.diff} left={150} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.workload} left={250} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload" />
-                </div>
+          <div className="row" id="gaugeHolder">
+            <div className="col-md-12 col-sm-12">
+              <div className="col-md-4 col-sm-4 col-xs-12">
+                <Gauge value={this.state.rating} left={50} width={100} height={75} color={this.state.ratingColor} max={5} label="Overall Rating" />
               </div>
-            </section>
+              <div className="col-md-4 col-sm-4 col-xs-12">
+                <Gauge value={this.state.diff} left={150} width={100} height={75} color={this.state.diffColor} max={5} label="Difficulty" />
+              </div>
+              <div className="col-md-4 col-sm-4 col-xs-12">
+                <Gauge value={this.state.workload} left={250} width={100} height={75} color={this.state.workloadColor} max={5} label="Workload" />
+              </div>
+            </div>
           </div>
-          <div>
-            <p>
-              Top Review
-          </p>
+          <div className="row">
+            <div className="col-md-12 col-sm-12">
+              <p>Top Review</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 col-sm-12">
+              {Object.keys(this.state.topReview).length !== 0 && 
+              
+              <Review key={this.state.topReview._id} info={this.state.topReview} />
+              
+              }
+            </div>
           </div>
         </div>
 
-      </li>
     );
   }
 }

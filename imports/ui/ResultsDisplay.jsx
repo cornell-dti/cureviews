@@ -49,13 +49,13 @@ export default class ResultsDisplay extends Component {
   render() {
     return (
       <div>
-        <div id="results">
+        <div className="col-md-6 col-sm-6">
           <ul>
 
             {this.renderResults()}
           </ul>
         </div>
-        <div id="preview">
+        <div className="col-md-6 col-sm-6">
           <PreviewCard course={this.state.card_course} />
         </div>
       </div>
