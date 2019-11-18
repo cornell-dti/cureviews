@@ -34,20 +34,18 @@ export default class FilteredResult extends Component {
     let offered = lastOfferedSems(theClass);
 
     return (
-      <li id="result-li" onClick={() => this.props.previewHandler(this.state.course)}>
-        <div id="course-details">
-          <div>
-            <h1 className="class-title top-margin">
-              {theClass.classTitle}
-            </h1>
-            <h2>
-              {theClass.classSub.toUpperCase() + " " + theClass.classNum}
-            </h2>
-            <p className="class-info spacing-large top-margin">
-              <strong>Overall Rating: </strong>
-              {this.state.rating}/5
+      <li className="card" id="result-li" onClick={() => this.props.previewHandler(this.state.course)}>
+        <div className="card-body">
+          <h1 className="card-title">
+            {theClass.classTitle}
+          </h1>
+          <h2 className="card-subtitle mb-2 text-muted">
+            {theClass.classSub.toUpperCase() + " " + theClass.classNum}
+          </h2>
+          <p className="class-info spacing-large top-margin">
+            <strong>Overall Rating: </strong>
+            {this.state.rating}/5
             </p>
-          </div>
         </div>
       </li>
     );

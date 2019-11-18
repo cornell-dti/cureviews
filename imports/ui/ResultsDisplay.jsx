@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import { CollectionName } from '../api/dbDefs.js';
-import "./css/Results.css"; // css files
+import "./css/ResultsDisplay.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
-import SearchBar from './SearchBar.jsx';
 import PreviewCard from './PreviewCard.jsx';
 
 
@@ -48,14 +45,16 @@ export default class ResultsDisplay extends Component {
 
   render() {
     return (
-      <div>
-        <div className="col-md-6 col-sm-6">
+      <div className="row">
+        <div className="col-md-2 col-sm-2 col-xs-2">
+          Filters
+        </div>
+        <div className="col-md-6 col-sm-6 col-xs-6" id="results">
           <ul>
-
             {this.renderResults()}
           </ul>
         </div>
-        <div className="col-md-6 col-sm-6">
+        <div className="col-md-4 col-sm-4 col-xs-4" id="preview">
           <PreviewCard course={this.state.card_course} />
         </div>
       </div>
