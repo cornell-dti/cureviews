@@ -1,6 +1,5 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
@@ -149,7 +148,7 @@ export default class Form extends Component {
     this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
     // NOTE: This is temporary for pre-enroll, uncomment after
     // this.toggleDropdown(); //Open review dropdown when page loads
-    
+
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
@@ -196,7 +195,7 @@ export default class Form extends Component {
     const rate = this.state.rating;
     const diff = this.state.diff;
     const work = this.state.workload;
-    const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0  
+    const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0
                     this.state.selectedProfessors.map(professor => {return professor.label}) //set to this
                     : //else
                     [] //set to this
@@ -211,10 +210,10 @@ export default class Form extends Component {
           professors: prof,
         };
         this.setState({"review" : newReview})
-        
+
         // Call save review object to session so that it is not lost when authenicating (redirecting)
         this.saveReviewToSession(newReview);
-        
+
         this.show();
     }
   }
@@ -222,9 +221,9 @@ export default class Form extends Component {
   submitReview() {
     console.log(Session.get("review"));
     // Call the API insert function
-    Meteor.call('insert', Session.get("token"), 
-                Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"), 
+    Meteor.call('insert', Session.get("token"),
+                Session.get("review") != "" ? Session.get("review") : this.state.review,
+                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
@@ -236,7 +235,7 @@ export default class Form extends Component {
         this.profSelect.current.value = "none";
         // NOTE: This is temporary for pre-enroll, uncomment after
         // this.toggleDropdown(); //Close the review dropdown when page loads
-    
+
         // Reset review info to default after review submission
         this.setState(this.defaultState);
         Session.setPersistent({"review": ""});
@@ -244,7 +243,6 @@ export default class Form extends Component {
         Session.setPersistent({"review_num": ""});
         Session.setPersistent({"courseId":""});
         this.hide();
-        
         Bert.alert('Thanks for reviewing! New reviews are updated every 24 hours.');
       } else {
         // error, alert user
@@ -257,7 +255,7 @@ export default class Form extends Component {
       }
     });
   }
-  
+
   submitError(){
     this.hide();
     Bert.alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
@@ -342,7 +340,7 @@ export default class Form extends Component {
      hide() {
       this.setState({ visible: false });
     }
-    
+
     showDropDownButton(){
       if(!this.props.searchBar){
         return(      
@@ -350,13 +348,12 @@ export default class Form extends Component {
 
               <p className="review-header">Leave a Review</p>
 
-
           </button>
         )
       }
 
     }
-    
+
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
@@ -463,7 +460,7 @@ export default class Form extends Component {
              }
 
           </div>
-          
+
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
             <div id="modal-background">
               <div id="modal-top">
@@ -473,7 +470,7 @@ export default class Form extends Component {
               <div id="">
                 <p id="modal-text" className="center-block">
                   You’re almost there! - log in with cornell.edu to
-                  verify you are a student. 
+                  verify you are a student.
                 </p>
                 <p id="modal-text" className="center-block">
                   (Don’t worry, your identity will always be kept secret!)
@@ -482,13 +479,13 @@ export default class Form extends Component {
                   You will be redirected to our login page.
                   Not seeing it? Click here.
                 </p>
-                <CUreviewsGoogleLogin 
+                <CUreviewsGoogleLogin
                       executeLogin={this.state.visible}
                       waitTime="3000"
                       redirectFrom="course" />
               </div>
             </div>
-            
+
           </Rodal>
         </div>
     );

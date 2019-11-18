@@ -85,6 +85,7 @@ Template.propTypes = {
 export default withTracker((props) => {
   console.log(props); // Remove props from parameter is it's unused!
   const subscription = Meteor.subscribe('collection name', /* parameter1InPublisher */ null, /* parameter2InPublisher */ null); // get collection as lowercase name from ../api/dbInit.js
+  // eslint-disable-next-line no-unused-vars
   const loading = !subscription.ready();
   const collectionAsObjectList = CollectionName.find({}).fetch();
   return {
