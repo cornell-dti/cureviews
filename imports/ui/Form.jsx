@@ -243,8 +243,7 @@ export default class Form extends Component {
         Session.setPersistent({"review_num": ""});
         Session.setPersistent({"courseId":""});
         this.hide();
-
-        Bert.alert('Thanks! Your review is currently pending approval.');
+        Bert.alert('Thanks for reviewing! New reviews are updated every 24 hours.');
       } else {
         // error, alert user
         console.log(error);
@@ -344,16 +343,10 @@ export default class Form extends Component {
 
     showDropDownButton(){
       if(!this.props.searchBar){
-        return(
-          <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-            <div className="row noLeftRightMargin">
-              <div className="col-md-6">
-                <p className="review-header">Leave a Review</p>
-              </div>
-              <div className="col-md-6 padding-right-40">
-                <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-              </div>
-            </div>
+        return(      
+          <button className="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+
+              <p className="review-header">Leave a Review</p>
 
           </button>
         )
@@ -372,88 +365,100 @@ export default class Form extends Component {
           {this.showDropDownButton()}
             <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
-                      <div className="panel-body-2" id="form">
-                     {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
-                          <div className="row" id="reviewTextRow">
-                            <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
-                              onChange={(event) => this.handleTextChange(event)}
-                              placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
-                            <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
-                            <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                          </div>
-
-                          <hr className="divider" />
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="form-label">Overall Rating</h1>
-                              </div>
-                              <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
-                                      {this.state.rating}
-                                  </div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                 <input ref={this.ratingSlider} onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
-                              </div>
-                          </div>
-                          <div className="sm-spacing"></div>
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="form-label">Difficulty</h1>
-                              </div>
-                              <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
-                                      {this.state.diff}
-                                  </div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                 <input ref={this.diffSlider} onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
-                              </div>
-                          </div>
-                          <div className="sm-spacing"></div>
-                          <div className='row'>
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="form-label">Workload</h1>
-                              </div>
-                              <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
-                                      {this.state.workload}
-                                  </div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                  <input ref={this.workloadSlider} onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
-                              </div>
-                          </div>
-                          <div className="sm-spacing"></div>
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <div className="form-label">Professor</div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
-                                  <Select value={this.state.selectedProfessors}
-                                    onChange={(professors) => this.handleProfChange(professors)}
-                                    isMulti
-                                    options={this.getProfOptions()}
-                                    ref={this.profSelect}
-                                  />
-                                  <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                              </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-12 text-right">
-                                <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                            </div>
-                          </div>
+                <div className="panel-body-2" id="form">
+                 {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
+                      <div className="row" id="reviewTextRow">
+                        <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+                          onChange={(event) => this.handleTextChange(event)}
+                          placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
+                        <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                        <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                       </div>
 
-
-                  <div className="row">
-                      <div className="col-sm-12">
-                          <h2 className="secondary-text">{this.state.message}</h2>
+                      <hr className="divider" />
+                      <div className="row">
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <h1 className="form-label">Overall Rating</h1>
+                          </div>
+                          <div className="col-md-1 col-sm-1 col-xs-1">
+                              <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
+                                  {this.state.rating}
+                              </div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                             <input ref={this.ratingSlider} onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
+                          </div>
                       </div>
-                  </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <h1 className="form-label">Difficulty</h1>
+                          </div>
+                          <div className="col-md-1 col-sm-1 col-xs-1">
+                              <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
+                                  {this.state.diff}
+                              </div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                             <input ref={this.diffSlider} onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className='row'>
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <h1 className="form-label">Workload</h1>
+                          </div>
+                          <div className="col-md-1 col-sm-1 col-xs-1">
+                              <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
+                                  {this.state.workload}
+                              </div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                              <input ref={this.workloadSlider} onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <div className="form-label">Professor</div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
+                              <Select value={this.state.selectedProfessors}
+                                onChange={(professors) => this.handleProfChange(professors)}
+                                isMulti
+                                options={this.getProfOptions()}
+                                ref={this.profSelect}
+                              />
+                              <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                          </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12 text-right">
+                            <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                        </div>
+                      </div>
+                    {/*Only show tab if not in popup*/}
+                     {!this.props.searchBar && 
+                       <ul className="dropdown-tab-close" onClick={this.toggleDropdown.bind(this)}>
+                         <i className="arrow up"></i>
+                       </ul>
+                     }
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <h2 className="secondary-text">{this.state.message}</h2>
+                    </div>
+                </div>
+
               </form>
             </ul>
+              {/*Only show tab if not in popup*/}
+             {!this.props.searchBar && 
+               <ul className="dropdown-tab" onClick={this.toggleDropdown.bind(this)}>
+                 <i className={'arrow '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
+               </ul>
+             }
+
           </div>
 
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
