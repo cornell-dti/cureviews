@@ -87,7 +87,6 @@ export default class PreviewCard extends Component {
       })
     }
     else {
-      console.log("in here");
       this.setState({
         workloadColor: "#E64458"
       })
