@@ -450,9 +450,13 @@ export default class Form extends Component {
                   </div>
               </form>
             </ul>
-            <ul className="dropdown-tab" onClick={this.toggleDropdown.bind(this)}>
-              <i className={'arrow '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-            </ul>
+              {/*Only show tab if not in popup*/}
+             {!this.props.searchBar && 
+               <ul className="dropdown-tab" onClick={this.toggleDropdown.bind(this)}>
+                 <i className={'arrow '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
+               </ul>
+             }
+
           </div>
           
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
