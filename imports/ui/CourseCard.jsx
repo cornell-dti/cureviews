@@ -13,7 +13,7 @@ import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
   Displays:
     - course title
     - link to course roster
-    - gauges for quality, difficulty and estimated median
+    - gauges for quality, difficulty, workload
     - semsters last offered
     - attendance requirement
 */
@@ -81,10 +81,6 @@ export class CourseCard extends Component {
         <p className="class-info spacing-large top-margin">
           <strong>Offered: </strong>
           {offered}
-        </p>
-        <p className="review-text spacing-large top-margin-small">
-          <strong>Median Grade: </strong>
-          {this.state.grade}
         </p>
         <div className="panel panel-default top-margin-medium panel-radius">
           <div className="panel-body">

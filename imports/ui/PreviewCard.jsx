@@ -40,7 +40,7 @@ export default class PreviewCard extends Component {
         diff: this.props.course.classDifficulty,
         workload: this.props.course.classWorkload,
       },() => this.updateColors());
-      
+      // NOTE: this is just a test, change "getReviewsByProfessor" to get reviews for class
       Meteor.call("getReviewsByProfessor", "David Gries", (err, reviews) => {
         if (!err && reviews) {
           console.log("returned reviews");

@@ -27,7 +27,6 @@ Classes.schema = new SimpleSchema({
     classRating: { type: Number }, // the average class rating from reviews
     classWorkload: { type: Number }, // the average workload rating from reviews
     classDifficulty: { type: Number }, // the average difficulty rating from reviews
-    classGrade: { type: Number } // the average grade from reviews
 
 });
 

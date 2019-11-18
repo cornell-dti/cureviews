@@ -193,7 +193,7 @@ Meteor.methods({
       Classes.update({ _id: courseId },
         {
           $set: {
-            classGrade: state.gradeNum, classDifficulty: Number(state.diff),
+            classDifficulty: Number(state.diff),
             classRating: Number(state.rating)
           }
         });

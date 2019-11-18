@@ -102,6 +102,6 @@ CUreviewsGoogleLogin.propTypes = {
   executeLogin:PropTypes.bool,
   waitTime:PropTypes.string,
   redirectFrom:PropTypes.string,
-  onSuccessFunction:PropTypes.func.isRequired,
-  onFailureFunction:PropTypes.func.isRequired
+  onSuccessFunction:PropTypes.func, //Not required and actually not used anymore now that method is redirect
+  onFailureFunction:PropTypes.func // and not popup like it used to be.  Will refactor and remove later.
 };

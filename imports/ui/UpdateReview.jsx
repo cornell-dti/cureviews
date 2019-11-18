@@ -118,5 +118,5 @@ UpdateReview.propTypes = {
   info: PropTypes.object.isRequired,
   approveHandler: PropTypes.func.isRequired,
   removeHandler: PropTypes.func.isRequired,
-  unReportHandler: PropTypes.func.isRequired
+  unReportHandler: PropTypes.func //NOTE: this is not required if review is not reported
 };
