@@ -1,8 +1,9 @@
-#coursedetails {
+#course-details {
   padding-top: 10px;
   padding-left: 30px;
   padding-right: 30px;
   float: left;
+  width: 50%;
 }
 
 .class-title{
@@ -31,7 +32,10 @@
   border-radius: 8px;
 }
 
+#gauge, #gauge-body{
+  width: 50%;
+}
 
 #result-li{
-  padding-bottom: 200px;
+  padding-bottom: 300px;
 }
