@@ -22,6 +22,7 @@ export default class PreviewCard extends Component {
       workloadColor: "E64458"
     };
 
+    this.updateColors = this.updateColors.bind(this);
 
   }
 
@@ -34,17 +35,15 @@ export default class PreviewCard extends Component {
       this.setState({
         id: this.props.course._id,
         rating: this.props.course.classRating,
-        ratingColor: "E64458",
         diff: this.props.course.classDifficulty,
-        diffColor: "E64458",
         workload: this.props.course.classWorkload,
-        workloadColor: "E64458"
-      });
-      this.updateColors();
+      }, () => this.updateColors());
+
     }
   }
 
   updateColors() {
+    console.log("workload" + this.state.workload);
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
         ratingColor: "#f9cc30"
@@ -55,8 +54,13 @@ export default class PreviewCard extends Component {
         ratingColor: "#53B277"
       })
     }
+    else {
+      this.setState({
+        ratingColor: "#E64458"
+      })
+    }
 
-    if (0 <= this.state.diff && this.state.diff < 3.0) {
+    if (0 < this.state.diff && this.state.diff < 3.0) {
       this.setState({
         diffColor: "#53B277"
       })
@@ -66,8 +70,13 @@ export default class PreviewCard extends Component {
         diffColor: "#f9cc30"
       })
     }
+    else {
+      this.setState({
+        diffColor: "#E64458"
+      })
+    }
 
-    if (0 <= this.state.workload && this.state.workload < 3.0) {
+    if (0 < this.state.workload && this.state.workload < 3.0) {
       this.setState({
         workloadColor: "#53B277"
       })
@@ -75,6 +84,12 @@ export default class PreviewCard extends Component {
     else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
       this.setState({
         workloadColor: "#f9cc30"
+      })
+    }
+    else {
+      console.log("in here");
+      this.setState({
+        workloadColor: "#E64458"
       })
     }
 
@@ -86,8 +101,6 @@ export default class PreviewCard extends Component {
 
   render() {
     var theClass = this.props.course;
-    console.log(this.props.course);
-    console.log(this.state.workload);
     // Creates Url that points to each class page on Cornell Class Roster
     var url = "https://classes.cornell.edu/browse/roster/"
       + lastSem(theClass.classSems) + "/class/"

@@ -20,46 +20,6 @@ export default class FilteredResult extends Component {
 
   }
 
-  // componentDidMount() {
-  //   this.updateColors();
-  // }
-
-  // updateColors() {
-  //   if (3.0 <= this.state.rating && this.state.rating < 4.0) {
-  //     this.setState({
-  //       ratingColor: "#f9cc30"
-  //     })
-  //   }
-  //   else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
-  //     this.setState({
-  //       ratingColor: "#53B277"
-  //     })
-  //   }
-
-  //   if (0 <= this.state.diff && this.state.diff < 3.0) {
-  //     this.setState({
-  //       diffColor: "#53B277"
-  //     })
-  //   }
-  //   else if (3.0 <= this.state.diff && this.state.diff < 4.0) {
-  //     this.setState({
-  //       diffColor: "#f9cc30"
-  //     })
-  //   }
-
-  //   if (0 <= this.state.workload && this.state.workload < 3.0) {
-  //     this.setState({
-  //       workloadColor: "#53B277"
-  //     })
-  //   }
-  //   else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
-  //     this.setState({
-  //       workloadColor: "#f9cc30"
-  //     })
-  //   }
-
-  // }
-
 
   render() {
     let theClass = this.props.course;
