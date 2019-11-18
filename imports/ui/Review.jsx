@@ -82,7 +82,23 @@ export default class Review extends Component {
         }
       });
     }
-
+  }
+  
+  reviewToSemester(review){
+    let semester = ""
+    // Get last 2 digits of review year
+    let review_year = String(moment(review.date.toISOString()).year()).substring(2);
+    let review_month = moment(review.date.toISOString()).month() + 1;
+    if(review_month >= 1 && review_month <= 5){
+      semester = "SP"
+    }
+    else if(review_month >= 6 && review_month <= 8){
+      semester = "SU"
+    }
+    else{
+      semester = "FA"
+    }
+    return semester + review_year;
   }
 
   render() {
@@ -145,7 +161,7 @@ export default class Review extends Component {
             </div>
             <div className="row noLeftRightPadding">
               <div className="col-md-3 col-sm-3 col-xs-3">
-                <p className="review-date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
+                <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
               </div>
               <div className="col-md-9 col-sm-9 col-xs-9">
                 <button className= //if the review has been liked, the button will be filled in.
