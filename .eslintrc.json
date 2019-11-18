@@ -30,7 +30,7 @@
     "react/no-find-dom-node": "warn",
     "react/no-string-refs": "warn",
     "meteor/audit-argument-checks": "warn",
-    "meteor/no-session": "warn",
+    "meteor/no-session": "off",
     "meteor/audit-argument-checks": "off"
     
   },

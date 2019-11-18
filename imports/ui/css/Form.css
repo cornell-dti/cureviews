@@ -20,14 +20,14 @@ form {
   padding-right: 13px;  
 }
 
-#dropdown-button{
+.dropdown-button{
   width: 100%;
   border: none;
   height: 54px;
   border-radius: 1.5px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   background-color: #4a90e2;
-
+  outline: 0;
 }
 
 .review-header {
@@ -53,11 +53,11 @@ form {
 }
 
 .arrow {
-  border: solid #ffffff;
-  margin-top: 9px;
-  border-width: 0 3px 3px 0;
+  border: solid #4a90e2;
+  margin: 6px 0px;
+  border-width: 0 2px 2px 0;
   display: inline-block;
-  padding: 3px;
+  padding: 5px;
 
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -88,16 +88,42 @@ form {
     display: block;
     overflow: visible;
     opacity: 0;
+    border-radius: 0px 0px 4px 4px;
+    padding: 0;
+    margin: 0px 0 0 0;
+    /* z-index: 1003; */
 }
 
 .dropdown.open .dropdown-menu {
-    max-height: 650px;
-    opacity: 1;
+  max-height: 650px;
+  opacity: 1;
 }
 
 .dropdown-menu-popup{
   background-color: #ffffffe6 !important;
   opacity: 1 !important;
+}
+
+.dropdown-tab{
+  text-align: center;
+  border-radius: 0px 0px 5px 5px;
+  border: solid 1px #4a90e2;
+  border-top-style: none;
+  height: 32px;
+  margin: -3px 4px;
+  cursor: pointer;
+}
+
+.dropdown-tab-close{
+  text-align: center;
+  height: 32px;
+  margin: -10px 0;
+  cursor: pointer;
+}
+
+.dropdown.open .dropdown-tab{
+  display: none;
+  opacity: 0;
 }
 
 input[type="range"] {
