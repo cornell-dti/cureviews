@@ -155,7 +155,7 @@ export class ClassView extends Component {
     }
     else{
       if(Session.get("seen_popup") === true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 4 * 60 * 60 * 1000)/*(4 hours)*/{
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) >  1000)/*(4 hours)*/{
           Session.setPersistent({"seen_popup": false});
           Session.setPersistent({"popup_timer": new Date().getTime()});
         } 

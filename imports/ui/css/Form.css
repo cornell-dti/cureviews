@@ -114,6 +114,13 @@ form {
   cursor: pointer;
 }
 
+.dropdown-tab-close{
+  text-align: center;
+  height: 32px;
+  margin: -10px 0;
+  cursor: pointer;
+}
+
 .dropdown.open .dropdown-tab{
   display: none;
   opacity: 0;
