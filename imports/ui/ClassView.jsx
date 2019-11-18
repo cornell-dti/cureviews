@@ -59,7 +59,6 @@ export class ClassView extends Component {
     this.showPopup = this.showPopup.bind(this);
     this.decidePopup = this.decidePopup.bind(this);
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
-    this.decidePopup();
     this.onFormChange = this.onFormChange.bind(this);
   }
 
@@ -102,6 +101,8 @@ export class ClassView extends Component {
       });
       this.firstLoad = false;
       this.updateCurrentClass(number, subject);
+      
+      this.decidePopup();
     }
   }
 
@@ -139,11 +140,13 @@ export class ClassView extends Component {
     this.setState({ popUpVisible: false });
   }
 
+  // Decides to show popup. Wait 30 seconds before user can see popup.
+  // If user hasn't seen popup in over 4 hours, set up 30 second timer.
+  // Checks every 5 seconds for this condition
   decidePopup(){
     if(Session.get("popup_timer") != undefined
         && Session.get("popup_timer") != ""
-        && (Session.get("seen_popup") != true /*(eligible to show popup again after 4 hours even if already seen)*/
-            || Math.abs(Session.get("popup_timer") - new Date().getTime()) > 4 * 60 * 60 * 1000)
+        && Session.get("seen_popup") != true 
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
         && (!this.state.lastTyped
             || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
@@ -151,6 +154,11 @@ export class ClassView extends Component {
       Session.setPersistent({"seen_popup": true});
     }
     else{
+      if(Session.get("seen_popup") === true
+        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 4 * 60 * 60 * 1000)/*(4 hours)*/{
+          Session.setPersistent({"seen_popup": false});
+          Session.setPersistent({"popup_timer": new Date().getTime()});
+        } 
       setTimeout(() => { this.decidePopup() }, 5000);
     }
   }
