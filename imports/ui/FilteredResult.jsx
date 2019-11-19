@@ -14,7 +14,8 @@ export default class FilteredResult extends Component {
     super(props);
     // set gauge values
     this.state = {
-      course: this.props.course
+      course: this.props.course,
+      current_index: this.props.index
     };
 
 
@@ -34,7 +35,8 @@ export default class FilteredResult extends Component {
     let offered = lastOfferedSems(theClass);
 
     return (
-      <li className="card" id="result-li" onClick={() => this.props.previewHandler(this.state.course)}>
+      <li className="card" style={{ border: this.props.border_color }}
+        onClick={() => { this.props.previewHandler(this.state.course, this.state.current_index) }}>
         <div className="card-body">
           <h1 className="card-title">
             {theClass.classTitle}
@@ -42,9 +44,9 @@ export default class FilteredResult extends Component {
           <h2 className="card-subtitle mb-2 text-muted">
             {theClass.classSub.toUpperCase() + " " + theClass.classNum}
           </h2>
-          <p className="class-info spacing-large top-margin">
+          <p>
             <strong>Overall Rating: </strong>
-            {this.state.rating}/5
+            {this.state.course.classRating}/5
             </p>
         </div>
       </li>
@@ -56,5 +58,7 @@ export default class FilteredResult extends Component {
 // takes in the database object representing this review
 FilteredResult.propTypes = {
   course: PropTypes.object.isRequired,
-  previewHandler: PropTypes.func.isRequired
+  previewHandler: PropTypes.func.isRequired,
+  border_color: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired
 };

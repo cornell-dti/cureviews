@@ -24,22 +24,25 @@ export default class ResultsDisplay extends Component {
     this.state = {
       courseList: this.props.courses,
       card_course: this.props.courses[0],
+      active_card: 0,
     };
 
     this.previewHandler = this.previewHandler.bind(this);
 
   }
 
-
   renderResults() {
     return this.state.courseList.map((result, index) => (
-      <FilteredResult key={index} course={result} previewHandler={this.previewHandler} />
+      <FilteredResult key={index} index={index} border_color={index == this.state.active_card ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8"} course={result} previewHandler={this.previewHandler} />
     ));
 
   }
 
-  previewHandler(course) {
-    this.setState({ card_course: course });
+  previewHandler(course, index) {
+    this.setState({
+      card_course: course,
+      active_card: index
+    });
   }
 
 
@@ -49,12 +52,12 @@ export default class ResultsDisplay extends Component {
         <div className="col-md-2 col-sm-2 col-xs-2">
           Filters
         </div>
-        <div className="col-md-6 col-sm-6 col-xs-6" id="results">
+        <div className="col-md-5 col-sm-5 col-xs-5" id="results">
           <ul>
             {this.renderResults()}
           </ul>
         </div>
-        <div className="col-md-4 col-sm-4 col-xs-4" id="preview">
+        <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
           <PreviewCard course={this.state.card_course} />
         </div>
       </div>
