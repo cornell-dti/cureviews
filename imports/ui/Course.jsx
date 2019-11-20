@@ -26,12 +26,12 @@ export default class Course extends Component {
   setCourseOnSearchBar(classInfo){
     this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle, classInfo.classProfessors);
   }
-  
-  
+
+
   render() {
     // generate full human-readable name of class
     const classInfo = this.props.info;
-    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle; 
+    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
     if(this.props.active && this.props.cursor == 1 && this.props.useRedirect){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
@@ -43,8 +43,8 @@ export default class Course extends Component {
         const endIndex = startIndex + this.props.query.length;
         text = <div>{text.substring(0,startIndex)}<span className='found'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</div>
       } else {
-        // based on search technique in server/publications, results without a contains match 
-        // must be of the form "CS21" or "CS 21". The subject must be a 'match', as well as some 
+        // based on search technique in server/publications, results without a contains match
+        // must be of the form "CS21" or "CS 21". The subject must be a 'match', as well as some
         // text in the substring of query after the subject.
 
         // substring of query after the subject, without trailing spaces
@@ -56,17 +56,17 @@ export default class Course extends Component {
 
         // underline the subject and any other matching text
         if(!this.props.useRedirect)
-        text = 
+        text =
         <div>
           <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
         </div>
-        else text= 
+        else text=
           <div>
           <span>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
         </div>
-        
+
       }
     } else {
       text = <div>{text}</div>
@@ -103,7 +103,7 @@ Course.propTypes = {
   active: PropTypes.bool,
   cursor: PropTypes.number,
   mouse: PropTypes.number,
-  searchBarHandler: PropTypes.func,
-  key:PropTypes.string,
-  useRedirect:PropTypes.bool
+  handler: PropTypes.func.isRequired,
+  key: PropTypes.string,
+  useRedirect: PropTypes.bool
 };

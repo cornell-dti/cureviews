@@ -1,6 +1,5 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
@@ -59,7 +58,6 @@ export default class Form extends Component {
       rating: 3,
       diff: 3,
       workload: 3,
-      // median: { value: 0, label: 'I don\'t know' }, //Default for median selecter
       text: "",
       message: null,
       postClicks: 0,
@@ -92,7 +90,11 @@ export default class Form extends Component {
 
   // Save the current user input text from the text box in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
+  // Updates time user last typed for regular review form, if applicable.
   handleTextChange = (event) => {
+    if(this.props.onChange){ //If onChange prop exists, call it
+      this.props.onChange();
+    }
     this.setState({text: event.target.value});
   }
 
@@ -146,7 +148,7 @@ export default class Form extends Component {
     this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
     // NOTE: This is temporary for pre-enroll, uncomment after
     // this.toggleDropdown(); //Open review dropdown when page loads
-    
+
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
@@ -193,7 +195,7 @@ export default class Form extends Component {
     const rate = this.state.rating;
     const diff = this.state.diff;
     const work = this.state.workload;
-    const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0  
+    const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0
                     this.state.selectedProfessors.map(professor => {return professor.label}) //set to this
                     : //else
                     [] //set to this
@@ -208,10 +210,10 @@ export default class Form extends Component {
           professors: prof,
         };
         this.setState({"review" : newReview})
-        
+
         // Call save review object to session so that it is not lost when authenicating (redirecting)
         this.saveReviewToSession(newReview);
-        
+
         this.show();
     }
   }
@@ -219,9 +221,9 @@ export default class Form extends Component {
   submitReview() {
     console.log(Session.get("review"));
     // Call the API insert function
-    Meteor.call('insert', Session.get("token"), 
-                Session.get("review") != "" ? Session.get("review") : this.state.review, 
-                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"), 
+    Meteor.call('insert', Session.get("token"),
+                Session.get("review") != "" ? Session.get("review") : this.state.review,
+                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
                 (error, result) => {
       // if (!error && result === 1) {
       if (error || result === 1) {
@@ -233,7 +235,7 @@ export default class Form extends Component {
         this.profSelect.current.value = "none";
         // NOTE: This is temporary for pre-enroll, uncomment after
         // this.toggleDropdown(); //Close the review dropdown when page loads
-    
+
         // Reset review info to default after review submission
         this.setState(this.defaultState);
         Session.setPersistent({"review": ""});
@@ -241,8 +243,7 @@ export default class Form extends Component {
         Session.setPersistent({"review_num": ""});
         Session.setPersistent({"courseId":""});
         this.hide();
-        
-        Bert.alert('Thanks! Your review is currently pending approval.');
+        Bert.alert('Thanks for reviewing! New reviews are updated every 24 hours.');
       } else {
         // error, alert user
         console.log(error);
@@ -254,7 +255,7 @@ export default class Form extends Component {
       }
     });
   }
-  
+
   submitError(){
     this.hide();
     Bert.alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
@@ -304,24 +305,7 @@ export default class Form extends Component {
     }
   }
 
-  // Return the options for median grades
-  // TODO deprecate this as we are no longer collecting this metric
-  getMedianOptions() {
 
-    const medianGrades = [
-      { value: 0, label: 'I don\'t know' },
-      { value: 9, label: 'A+' },
-      { value: 8, label: 'A' },
-      { value: 7, label: 'A-' },
-      { value: 6, label: 'B+' },
-      { value: 5, label: 'B' },
-      { value: 4, label: 'B-' },
-      { value: 3, label: 'C+' },
-      { value: 2, label: 'C' },
-      { value: 1, label: 'C-' }
-    ]
-    return medianGrades
-  }
     // Toggle the form dropdown
     // Takes care of "pushing down" the reviews by the dynamic height of the form
     toggleDropdown(){
@@ -356,26 +340,20 @@ export default class Form extends Component {
      hide() {
       this.setState({ visible: false });
     }
-    
+
     showDropDownButton(){
       if(!this.props.searchBar){
         return(      
-          <button id="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-            <div className="row noLeftRightMargin">
-              <div className="col-md-6">
-                <p className="review-header">Leave a Review</p>
-              </div>
-              <div className="col-md-6 padding-right-40">
-                <i className={'arrow float-r '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-              </div>
-            </div>
+          <button className="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
+
+              <p className="review-header">Leave a Review</p>
 
           </button>
         )
       }
 
     }
-    
+
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
@@ -387,90 +365,102 @@ export default class Form extends Component {
           {this.showDropDownButton()}
             <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
-                      <div className="panel-body-2" id="form">
-                     {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
-                          <div className="row" id="reviewTextRow">
-                            <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
-                              onChange={(event) => this.handleTextChange(event)}
-                              placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
-                            <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
-                            <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                          </div>
-
-                          <hr className="divider" />
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="form-label">Overall Rating</h1>
-                              </div>
-                              <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
-                                      {this.state.rating}
-                                  </div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                 <input ref={this.ratingSlider} onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
-                              </div>
-                          </div>
-                          <div className="sm-spacing"></div>
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="form-label">Difficulty</h1>
-                              </div>
-                              <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
-                                      {this.state.diff}
-                                  </div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                 <input ref={this.diffSlider} onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
-                              </div>
-                          </div>
-                          <div className="sm-spacing"></div>
-                          <div className='row'>
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <h1 className="form-label">Workload</h1>
-                              </div>
-                              <div className="col-md-1 col-sm-1 col-xs-1">
-                                  <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
-                                      {this.state.workload}
-                                  </div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                                  <input ref={this.workloadSlider} onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
-                              </div>
-                          </div>
-                          <div className="sm-spacing"></div>
-                          <div className="row">
-                              <div className="col-md-3 col-sm-3 col-xs-3">
-                                  <div className="form-label">Professor</div>
-                              </div>
-                              <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
-                                  <Select value={this.state.selectedProfessors}
-                                    onChange={(professors) => this.handleProfChange(professors)}
-                                    isMulti
-                                    options={this.getProfOptions()}
-                                    ref={this.profSelect}
-                                  />
-                                  <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                              </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-12 text-right">
-                                <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                            </div>
-                          </div>
+                <div className="panel-body-2" id="form">
+                 {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
+                      <div className="row" id="reviewTextRow">
+                        <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+                          onChange={(event) => this.handleTextChange(event)}
+                          placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
+                        <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                        <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                       </div>
 
-
-                  <div className="row">
-                      <div className="col-sm-12">
-                          <h2 className="secondary-text">{this.state.message}</h2>
+                      <hr className="divider" />
+                      <div className="row">
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <h1 className="form-label">Overall Rating</h1>
+                          </div>
+                          <div className="col-md-1 col-sm-1 col-xs-1">
+                              <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
+                                  {this.state.rating}
+                              </div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                             <input ref={this.ratingSlider} onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
+                          </div>
                       </div>
-                  </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <h1 className="form-label">Difficulty</h1>
+                          </div>
+                          <div className="col-md-1 col-sm-1 col-xs-1">
+                              <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
+                                  {this.state.diff}
+                              </div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                             <input ref={this.diffSlider} onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className='row'>
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <h1 className="form-label">Workload</h1>
+                          </div>
+                          <div className="col-md-1 col-sm-1 col-xs-1">
+                              <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
+                                  {this.state.workload}
+                              </div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
+                              <input ref={this.workloadSlider} onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
+                          </div>
+                      </div>
+                      <div className="sm-spacing"></div>
+                      <div className="row">
+                          <div className="col-md-3 col-sm-3 col-xs-3">
+                              <div className="form-label">Professor</div>
+                          </div>
+                          <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
+                              <Select value={this.state.selectedProfessors}
+                                onChange={(professors) => this.handleProfChange(professors)}
+                                isMulti
+                                options={this.getProfOptions()}
+                                ref={this.profSelect}
+                              />
+                              <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
+                          </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12 text-right">
+                            <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                        </div>
+                      </div>
+                    {/*Only show tab if not in popup*/}
+                     {!this.props.searchBar && 
+                       <ul className="dropdown-tab-close" onClick={this.toggleDropdown.bind(this)}>
+                         <i className="arrow up"></i>
+                       </ul>
+                     }
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <h2 className="secondary-text">{this.state.message}</h2>
+                    </div>
+                </div>
+
               </form>
             </ul>
+              {/*Only show tab if not in popup*/}
+             {!this.props.searchBar && 
+               <ul className="dropdown-tab" onClick={this.toggleDropdown.bind(this)}>
+                 <i className={'arrow '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
+               </ul>
+             }
+
           </div>
-          
+
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
             <div id="modal-background">
               <div id="modal-top">
@@ -480,7 +470,7 @@ export default class Form extends Component {
               <div id="">
                 <p id="modal-text" className="center-block">
                   You’re almost there! - log in with cornell.edu to
-                  verify you are a student. 
+                  verify you are a student.
                 </p>
                 <p id="modal-text" className="center-block">
                   (Don’t worry, your identity will always be kept secret!)
@@ -489,13 +479,13 @@ export default class Form extends Component {
                   You will be redirected to our login page.
                   Not seeing it? Click here.
                 </p>
-                <CUreviewsGoogleLogin 
+                <CUreviewsGoogleLogin
                       executeLogin={this.state.visible}
                       waitTime="3000"
                       redirectFrom="course" />
               </div>
             </div>
-            
+
           </Rodal>
         </div>
     );
@@ -508,6 +498,7 @@ Form.propTypes = {
   query:PropTypes.string,
   queryFunc: PropTypes.func,
   searchBar: PropTypes.bool, // true if this form is for pop-up,
-  inUse: PropTypes.bool //used to deactivate form in background if pop-up is in focus
+  inUse: PropTypes.bool, //used to deactivate form in background if pop-up is in focus
+  onChange: PropTypes.func
 };
 

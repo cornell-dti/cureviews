@@ -37,16 +37,14 @@ export function lastSem(sem){
 
 // collect aggregate information from allReviews, the list of all reviews
 // submitted for this class. Return values for the average difficulty, quality,
-// average grade, and madatory/not mandatory status.
+// and madatory/not mandatory status.
 export function getGaugeValues(allReviews) {
   const newState = {};
   //create initial variables
-  let sumGrade = 0;
   let sumRating = 0;
   let sumDiff = 0;
   let sumWork = 0;
 
-  let countGrade = 0;
   let countRatingAndDiff = 0;
   let countWork = 0;
 
@@ -68,11 +66,7 @@ export function getGaugeValues(allReviews) {
       countWork++;
       sumWork += Number(review["workload"]);
     }
-    
-    if (review["grade"] != undefined && review["grade"] > 0) {
-      countGrade++;
-      sumGrade += Number(review["grade"]);
-    }
+
   });
 
   //Update the gauge variable values for rating, difficulty, and workload using averages
@@ -86,19 +80,7 @@ export function getGaugeValues(allReviews) {
     newState.workload = "-";
   }
 
-  if (sumGrade > 0) {
-    newState.gradeNum = Math.round(sumGrade/countGrade); //out of 5
-  } else {
-    newState.gradeNum = 0;
-  }
 
-  //translate grades from numerical value to letters, and assign the correct color.
-  if (newState.gradeNum > 0) {
-    const gradeTranslation = ["C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"];
-    newState.grade = gradeTranslation[Math.floor(newState.gradeNum) - 1];
-  } else {
-    newState.grade = '-';
-  }
 
   //Set gauge color for rating
   if (newState.rating <= 2 ) {

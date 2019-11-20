@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 /*
   Auth Component. INCOMPLETE.
@@ -36,4 +37,5 @@ export default class Auth extends Component {
 
 // takes no props
 Auth.propTypes = {
+  params: PropTypes.object.isRequired
 };
