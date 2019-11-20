@@ -40,3 +40,13 @@
   margin: 20px;
 }
 
+.p-display{
+  display: inline-block;
+  padding-right: 5px;
+}
+
+#over-5{
+  color: #979797;
+  font-size: 10px;
+
+}
