@@ -11,7 +11,7 @@ import 'chart.js';
 export default class Statistics extends Component{
   constructor(props) {
     super(props);
-//
+
     this.state={
       howManyEachClass: [],
       howManyReviewsEachClass: [],
@@ -30,15 +30,13 @@ export default class Statistics extends Component{
       Meteor.call('getReviewsOverTimeTop15', (err, res)=>{
         //key-> EX: cs
         for(var key in res){
-      // /    console.log(key);
           var finalDateObj={};//{date1:totalNum, date2:totalNum}
           var obj ={}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
           obj.name=key;
 
           //[{date1:totalNum}, {date2: totalNum}, ...]
           var arrDates = res[key];
-          //console.log(arrDates);
-          //arrEntry= {date1:totalNum}
+
           arrDates.forEach((arrEntry, index)=>{
             let dateObject = Object.keys(arrEntry); //[date1]
             dateObject.map(date=>{
@@ -46,18 +44,9 @@ export default class Statistics extends Component{
             });
           });
 
-
-          /*for(arrEntry in arrDates){
-            //console.log(arrEntry);
-            let dateObject = Object.keys(arrEntry); //[date1]
-            dateObject.map(date=>{
-              finalDateObj[date]=arrEntry[date]
-            });
-          }*/
           obj.data=finalDateObj;
           data.push(obj);
         }
-        console.log(data);
         this.setState({chartData: data});
       });
   }
@@ -65,7 +54,7 @@ export default class Statistics extends Component{
   howManyReviewsEachClass(){
     Meteor.call('howManyReviewsEachClass', (error, result) =>{
       if(!error){
-        //sort decending
+        //sort descending
         result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyReviewsEachClass: result});
       } else{
@@ -98,7 +87,7 @@ export default class Statistics extends Component{
     return(
       <div>
         <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses"/>
-        <Accordian data={this.state.howManyReviewsEachClass} title="Num of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
+        <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
         <p>Total reviews: {this.state.totalReviews}</p>
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
     </div>
