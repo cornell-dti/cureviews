@@ -667,8 +667,8 @@ Meteor.methods({
     let arrHM = []; //[ {"cs": {date1: totalNum}, math: {date1, totalNum} },
     // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
 
-    //last 14 days
-    for (let i = 0; i < 30; i=i+2) {
+    //last 1 yr step of 14
+    for (let i = 0; i < 12*30; i=i+14) {
       let dateAssociativeArr = {}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
       //run on reviews. gets all classes and num of reviewa for each class, in x day
       const pipeline = [{
@@ -686,7 +686,6 @@ Meteor.methods({
             }
           }
         }
-
       ];
       let hashMap = {}; //Object {"cs": {date1: totalNum}, math: {date1, totalNum} }
       Reviews.aggregate(pipeline).map(function(data) { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
@@ -709,8 +708,6 @@ Meteor.methods({
             hashMap[sub.classSub] = {
               [timeStringYMD]: hashMap[sub.classSub][timeStringYMD] + data.total
             };
-
-
         }
         if (hashMap["total"] == null)
           hashMap["total"] = {
@@ -725,10 +722,9 @@ Meteor.methods({
 
     }
 
-
     let hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
-    //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
 
+    //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
     let entry = arrHM[0];
     let keys = Object.keys(entry);
 
@@ -737,7 +733,6 @@ Meteor.methods({
       let t = arrHM.map(a => a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
       hm2[key] = t;
     });
-
     return hm2;
   },
 
