@@ -4,6 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
 import "./css/SearchBar.css";
+import Select from 'react-select';
 
 /*
   SearchBar Component.
@@ -30,7 +31,8 @@ const initState={
   courseId:null, //id of course that's been selected for pop-up review
   selected:false, //whether or not user has clicked yet,
   query:"", //user's query,
-  allCourses:[]
+  allCourses:[],
+  selectedFilter: {value: "course", label: "By Course Name"}
 };
 
 export default class SearchBar extends Component {
@@ -39,9 +41,11 @@ export default class SearchBar extends Component {
     super(props);
     
     this.state = initState;
-      this.handleChange = this.handleChange.bind(this);
-      this.setCourse=this.setCourse.bind(this);
-      this.updateQuery=this.updateQuery.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.setCourse=this.setCourse.bind(this);
+    this.updateQuery=this.updateQuery.bind(this);
+    this.handleFilterChange.bind(this)
+    
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -56,8 +60,6 @@ export default class SearchBar extends Component {
     });
   }
 
-
-
   //This function is only used for the pop-up
   //search bar. It keeps track of the value inside it
   handleChange(event) {
@@ -65,6 +67,11 @@ export default class SearchBar extends Component {
     if(!this.state.showDropdown){
       this.setState(newSearchState);
     }
+  }
+  
+  handleFilterChange(selectedFilter){
+    selectedFilter.label = "By " + selectedFilter.label
+    this.setState({ selectedFilter: selectedFilter });
   }
 
   //Handler function passed into Course component to get information on user-clicked course
@@ -186,7 +193,18 @@ export default class SearchBar extends Component {
     }
   }
 
-  render() {
+  getFilterOptions(){
+    let options = [
+                    {value: "course", label: "Course Name"},
+                    {value: "keyword", label: "Keyword"},
+                    {value: "major", label: "Major"},
+                    {value: "professor", label: "Professor"}
+                  ]
+                  
+    return options.filter(x => x.value !== this.state.selectedFilter.value);
+  }
+
+  render() {    
     if(this.props.isPopup) return (
       <div className="search-bar text-left" id="searchbar-popup" >
         <input className={"search-text-popup " + (this.state.selected ? "search-text-popup-selected" : "")} value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off"/>
@@ -196,12 +214,25 @@ export default class SearchBar extends Component {
       </div>
     );
     else return (
-      <div className="search-bar text-left" id="searchbar" >
-      <input className="search-text" id="search" onKeyUp={this.handleKeyPress} placeholder="Search for classes (e.g. CS 2110, Introduction to Creative Writing)" autoComplete="off"/>
-      <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-        {this.renderCourses()}
-      </ul>
-    </div>
+      <div className="row">
+        <div className="col-lg-9 col-md-9 col-sm-9 col-lg-9-altered col-md-9-altered col-sm-9-altered search-bar">
+          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “CALS” or “CS 2110" autoComplete="off"/>
+
+          <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
+            {this.renderCourses()}
+          </ul>
+        </div>
+        <div className="col-lg-3 col-md-3 col-sm-3 col-lg-3-altered col-md-3-altered col-sm-3-altered select-padding-left">
+          <Select
+            value={this.state.selectedFilter}
+            onChange={(newFilter) => this.handleFilterChange(newFilter)}
+            options={this.getFilterOptions()}
+            classNamePrefix='react-select'
+            className='react-select'
+            isSearchable={false}
+           />
+        </div>
+      </div>
     );
   }
 }
