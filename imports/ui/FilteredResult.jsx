@@ -14,12 +14,26 @@ export default class FilteredResult extends Component {
     super(props);
     // set gauge values
     this.state = {
-      course: this.props.course
+      course: this.props.course,
+      current_index: this.props.index,
     };
+
+    this.getColor = this.getColor.bind(this);
 
 
   }
 
+  getColor(metric) {
+    if (3.0 <= metric && metric < 4.0) {
+      return "#f9cc30";
+    }
+    else if (4.0 <= metric && metric <= 5.0) {
+      return "#53B277";
+    }
+    else {
+      return "#E64458";
+    }
+  }
 
   render() {
     let theClass = this.props.course;
@@ -34,7 +48,8 @@ export default class FilteredResult extends Component {
     let offered = lastOfferedSems(theClass);
 
     return (
-      <li className="card" id="result-li" onClick={() => this.props.previewHandler(this.state.course)}>
+      <li className="card" style={{ border: this.props.border_color }}
+        onClick={() => { this.props.previewHandler(this.state.course, this.state.current_index) }}>
         <div className="card-body">
           <h1 className="card-title">
             {theClass.classTitle}
@@ -42,10 +57,17 @@ export default class FilteredResult extends Component {
           <h2 className="card-subtitle mb-2 text-muted">
             {theClass.classSub.toUpperCase() + " " + theClass.classNum}
           </h2>
-          <p className="class-info spacing-large top-margin">
-            <strong>Overall Rating: </strong>
-            {this.state.rating}/5
+          <div>
+            <p className="p-display">
+              <strong>Overall Rating</strong>
             </p>
+            <p className="p-display" style={{ color: this.getColor(this.state.course.classRating) }}>
+              {this.state.course.classRating}
+            </p>
+            <p className="p-display" id="over-5">
+              /5
+          </p>
+          </div>
         </div>
       </li>
     );
@@ -56,5 +78,7 @@ export default class FilteredResult extends Component {
 // takes in the database object representing this review
 FilteredResult.propTypes = {
   course: PropTypes.object.isRequired,
-  previewHandler: PropTypes.func.isRequired
+  previewHandler: PropTypes.func.isRequired,
+  border_color: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired
 };
