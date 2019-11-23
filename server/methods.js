@@ -522,14 +522,14 @@ Meteor.methods({
     let retArr = [];
 
     top15.forEach((classs) => {
-      var subject = Subjects.find({
+      let subject = Subjects.find({
         subFull: classs[0]
       }, {
         '_id': 0,
         'subShort': 1,
         'subFull': 0
       }).fetch()[0]; //EX: computer science--> cs
-      var subshort = subject.subShort;
+      let subshort = subject.subShort;
       retArr.push(subshort);
     });
 
@@ -537,7 +537,7 @@ Meteor.methods({
     // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
 
     //last 1 yr step of 14
-    for (var i = 0; i < 12*30; i=i+14) {
+    for (let i = 0; i < 12*30; i=i+14) {
       let dateAssociativeArr = {}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
       //run on reviews. gets all classes and num of reviewa for each class, in x day
       const pipeline = [{
@@ -566,7 +566,7 @@ Meteor.methods({
           '_id': 0,
           'classNum': 0
         }).fetch()[0]; //finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
-        var timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split("T")[0];
+        let timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split("T")[0];
         if (retArr.includes(sub.classSub)) { //if thos review is one of the top 15 we want.
           //date of this review minus the hrs mins sec
           if (hashMap[sub.classSub] == null) //if not in hm then add
@@ -594,12 +594,12 @@ Meteor.methods({
     let hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
 
     //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
-    var entry = arrHM[0];
+    let entry = arrHM[0];
     let keys = Object.keys(entry);
 
     //"cs"
     keys.map(key => {
-      var t = arrHM.map(a => a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
+      let t = arrHM.map(a => a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
       hm2[key] = t;
     });
     return hm2;
