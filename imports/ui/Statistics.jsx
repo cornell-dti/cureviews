@@ -29,13 +29,13 @@ export default class Statistics extends Component{
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
       Meteor.call('getReviewsOverTimeTop15', (err, res)=>{
         //key-> EX: cs
-        for(var key in res){
-          var finalDateObj={};//{date1:totalNum, date2:totalNum}
-          var obj ={}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
+        for(let key in res){
+          let finalDateObj={};//{date1:totalNum, date2:totalNum}
+          let obj ={}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
           obj.name=key;
 
           //[{date1:totalNum}, {date2: totalNum}, ...]
-          var arrDates = res[key];
+          let arrDates = res[key];
 
           arrDates.forEach((arrEntry, index)=>{
             let dateObject = Object.keys(arrEntry); //[date1]
