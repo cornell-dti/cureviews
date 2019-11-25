@@ -90,7 +90,7 @@ export default class FilteredResult extends Component {
         onClick={() => { this.props.previewHandler(this.state.course, this.state.current_index) }}>
         <div className="card-body">
           <h1 className="card-title">
-            {theClass.classTitle}
+            <strong>{theClass.classTitle}</strong>
           </h1>
           <h2 className="card-subtitle mb-2 text-muted">
             {theClass.classSub.toUpperCase() + " " + theClass.classNum}

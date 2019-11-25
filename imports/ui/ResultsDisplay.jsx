@@ -28,7 +28,7 @@ export default class ResultsDisplay extends Component {
       selected: "rating",
       filters: {
         "Fall": false, "Spring": false, "1000": false, "2000": false,
-        "3000": false, "4000+": false
+        "3000": false, "4000": false, "5000+": false
       }, // key value pair name:checked
       filteredItems: [],
       noResults: this.props.noResults
@@ -47,7 +47,7 @@ export default class ResultsDisplay extends Component {
         selected: "rating",
         filters: {
           "Fall": false, "Spring": false, "1000": false, "2000": false,
-          "3000": false, "4000+": false
+          "3000": false, "4000": false, "5000+": false
         }, // key value pair name:checked
         filteredItems: [],
         noResults: this.props.noResults
@@ -127,8 +127,8 @@ export default class ResultsDisplay extends Component {
     let classLevel = course.classNum;
     let classLevelString = course.classNum.toString().substring(0, 1);
     let filterClassLevel = filterName.substring(0, 1);
-    if (filterClassLevel == "4") {
-      if (Math.floor(classLevel / 1000) >= 4) {
+    if (filterClassLevel == "5") {
+      if (Math.floor(classLevel / 1000) >= 5) {
         return true;
       }
     }
@@ -143,7 +143,7 @@ export default class ResultsDisplay extends Component {
 
   filterCondition(course, activeFilters) {
     let sems = ["Fall", "Spring"];
-    let classLevels = ["1000", "2000", "3000", "4000+"];
+    let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
     const found = activeFilters.some(filterName => sems.includes(filterName)) &&
       activeFilters.some(filterName => classLevels.includes(filterName))
     if (found) {
@@ -231,14 +231,14 @@ export default class ResultsDisplay extends Component {
           checked={this.state.filters[name]}
           name={name}
         />
-        {name}
+        <label className="checkbox-label">{name} </label>
       </div>
     ))
 
   }
 
   renderClassLevelCheckBoxes() {
-    let classLevels = ["1000", "2000", "3000", "4000+"];
+    let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
     return classLevels.map((name, index) => (
       <div key={index}>
         <input
@@ -247,7 +247,7 @@ export default class ResultsDisplay extends Component {
           checked={this.state.filters[name]}
           name={name}
         />
-        {name}
+        <label className="checkbox-label">{name}</label>
       </div>
     ))
   }
@@ -256,23 +256,26 @@ export default class ResultsDisplay extends Component {
     if (!this.state.noResults) {
       return (
         <div className="row">
-          <div className="col-md-2 col-sm-2 col-xs-2">
-            Filter
-          <div>
-              <p> Semester</p>
+          <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
+            <p className="overall-filter">Filter</p>
+            <div className="filter-sub">
+              <p className="filter-title"> Semester</p>
               {this.renderSemesterCheckboxes()}
             </div>
-            <div>
-              <p>Level</p>
+            <div className="filter-sub">
+              <p className="filter-title">Level</p>
               {this.renderClassLevelCheckBoxes()}
             </div>
           </div>
-          <div className="col-md-5 col-sm-5 col-xs-5" id="results">
+          <div className="col-md-4 col-sm-4 col-xs-4" id="results">
+            <div className="sort-by">
+              Sort By:
             <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
-              <option value="rating">Overall Rating</option>
-              <option value="diff" >Difficulty</option>
-              <option value="work">Workload</option>
-            </select>
+                <option value="rating">Overall Rating</option>
+                <option value="diff" >Difficulty</option>
+                <option value="work">Workload</option>
+              </select>
+            </div>
             <ul>
               {this.renderResults()}
             </ul>
