@@ -30,12 +30,29 @@ export default class ResultsDisplay extends Component {
         "Fall": false, "Spring": false, "1000": false, "2000": false,
         "3000": false, "4000+": false
       }, // key value pair name:checked
-      filteredItems: []
+      filteredItems: [],
+      noResults: this.props.noResults
     };
-
     this.previewHandler = this.previewHandler.bind(this);
     this.sort = this.sort.bind(this);
 
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps != this.props) {
+      this.setState({
+        courseList: this.props.courses,
+        card_course: this.props.courses[0],
+        active_card: 0,
+        selected: "rating",
+        filters: {
+          "Fall": false, "Spring": false, "1000": false, "2000": false,
+          "3000": false, "4000+": false
+        }, // key value pair name:checked
+        filteredItems: [],
+        noResults: this.props.noResults
+      })
+    }
   }
 
   handleSelect = (event) => {
@@ -56,7 +73,9 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        var data = this.state.courseList.sort((a, b) => ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) - (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        var data = this.state.courseList.sort((a, b) =>
+          ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
+            (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
         this.setState({ courseList: data });
       }
     }
@@ -71,7 +90,9 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        var data = this.state.filteredItems.sort((a, b) => ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) - (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        var data = this.state.filteredItems.sort((a, b) =>
+          ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
+            (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
         this.setState({ filteredItems: data });
       }
     }
@@ -119,36 +140,33 @@ export default class ResultsDisplay extends Component {
   onChange = e => {
     const name = e.target.name;
     const checked = e.target.checked;
+    const filters = {
+      ...this.state.filters,
+      [name]: checked
+    };
 
-    this.setState(prevState => {
-      const filters = {
-        ...prevState.filters,
-        [name]: checked
-      };
+    const activeFilterNames = Object.keys(filters).filter(
+      filterName => filters[filterName]
+    );
+    const filteredItems = this.state.courseList.filter(course =>
+      this.filterCondition(course, activeFilterNames)
+    );
+    if (filteredItems.length == 0 && checked) {
+      this.setState({
+        filters: filters,
+        filteredItems: filteredItems,
+        noResults: true
+      })
+    }
+    else {
+      this.setState({
+        filters: filters,
+        filteredItems: filteredItems,
+        noResults: false
+      }, () => this.sort());
+    }
 
-      const activeFilterNames = Object.keys(filters).filter(
-        filterName => filters[filterName]
-      );
-      const filteredItems = prevState.courseList.filter(course =>
-        // For each item, we loop over
-        //     all checked filters
-        // some() means: return true if any of the
-        //    array elements in `activeFilterNames`
-        //    matches the condition
-        this.filterCondition(course, activeFilterNames)
-      );
-
-      return {
-        // this is the same as
-        // { filter: filters,
-        //    filteredItems: filteredItems }
-        // Just taking advantage of how const names
-        //    are the same as prop names
-        filters,
-        filteredItems
-      };
-    }, () => this.sort());
-  };
+  }
 
   previewHandler(course, index) {
     this.setState({
@@ -162,15 +180,18 @@ export default class ResultsDisplay extends Component {
       ? this.state.filteredItems
       : this.state.courseList;
     return items.map((result, index) => (
-      <FilteredResult key={index} index={index} border_color={index == this.state.active_card ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8"} course={result} previewHandler={this.previewHandler} sortBy={this.state.selected} />
+      <FilteredResult key={index} index={index}
+        border_color={index == this.state.active_card ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8"}
+        course={result} previewHandler={this.previewHandler}
+        sortBy={this.state.selected} />
     ));
 
   }
 
   renderSemesterCheckboxes() {
     var sems = ["Fall", "Spring"];
-    return sems.map((name) => (
-      <div>
+    return sems.map((name, index) => (
+      <div key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
@@ -185,8 +206,8 @@ export default class ResultsDisplay extends Component {
 
   renderClassLevelCheckBoxes() {
     var classLevels = ["1000", "2000", "3000", "4000+"];
-    return classLevels.map((name) => (
-      <div>
+    return classLevels.map((name, index) => (
+      <div key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
@@ -199,38 +220,69 @@ export default class ResultsDisplay extends Component {
   }
 
   render() {
-    return (
-      <div className="row">
-        <div className="col-md-2 col-sm-2 col-xs-2">
-          Filter
+    if (!this.state.noResults) {
+      return (
+        <div className="row">
+          <div className="col-md-2 col-sm-2 col-xs-2">
+            Filter
           <div>
-            <p> Semester</p>
-            {this.renderSemesterCheckboxes()}
+              <p> Semester</p>
+              {this.renderSemesterCheckboxes()}
+            </div>
+            <div>
+              <p>Level</p>
+              {this.renderClassLevelCheckBoxes()}
+            </div>
           </div>
+          <div className="col-md-5 col-sm-5 col-xs-5" id="results">
+            <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
+              <option value="rating">Overall Rating</option>
+              <option value="diff" >Difficulty</option>
+              <option value="work">Workload</option>
+            </select>
+            <ul>
+              {this.renderResults()}
+            </ul>
+          </div>
+          <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
+            <PreviewCard course={this.state.card_course} />
+          </div>
+        </div >
+      );
+    }
+    else {
+      return (
+        <div className="row">
+          <div className="col-md-2 col-sm-2 col-xs-2">
+            Filter
           <div>
-            <p>Level</p>
-            {this.renderClassLevelCheckBoxes()}
+              <p> Semester</p>
+              {this.renderSemesterCheckboxes()}
+            </div>
+            <div>
+              <p>Level</p>
+              {this.renderClassLevelCheckBoxes()}
+            </div>
+          </div>
+          <div className="col-md-10 col-sm-10 col-xs-10">
+            <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
+              <option value="rating">Overall Rating</option>
+              <option value="diff" >Difficulty</option>
+              <option value="work">Workload</option>
+            </select>
+            <div>
+              Sorry! No classes matched your search.
+            </div>
           </div>
         </div>
-        <div className="col-md-5 col-sm-5 col-xs-5" id="results">
-          <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
-            <option value="rating">Overall Rating</option>
-            <option value="diff" >Difficulty</option>
-            <option value="work">Workload</option>
-          </select>
-          <ul>
-            {this.renderResults()}
-          </ul>
-        </div>
-        <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
-          <PreviewCard course={this.state.card_course} />
-        </div>
-      </div >
-    );
+      )
+
+    }
   }
 }
 
 ResultsDisplay.propTypes = {
-  courses: PropTypes.array.isRequired
+  courses: PropTypes.array.isRequired,
+  noResults: PropTypes.bool.isRequired
 };
 
