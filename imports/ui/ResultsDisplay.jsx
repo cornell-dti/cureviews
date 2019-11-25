@@ -90,7 +90,7 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        var data = this.state.filteredItems.sort((a, b) =>
+        data = this.state.filteredItems.sort((a, b) =>
           ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
             (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
         this.setState({ filteredItems: data });
@@ -100,9 +100,9 @@ export default class ResultsDisplay extends Component {
   }
 
   classLevelCheck(course, filterName) {
-    var classLevel = course.classNum;
-    var classLevelString = course.classNum.toString().substring(0, 1);
-    var filterClassLevel = filterName.substring(0, 1);
+    let classLevel = course.classNum;
+    let classLevelString = course.classNum.toString().substring(0, 1);
+    let filterClassLevel = filterName.substring(0, 1);
     if (filterClassLevel == "4") {
       if (Math.floor(classLevel / 1000) >= 4) {
         return true;
@@ -118,14 +118,14 @@ export default class ResultsDisplay extends Component {
   }
 
   filterCondition(course, activeFilters) {
-    var sems = ["Fall", "Spring"];
-    var classLevels = ["1000", "2000", "3000", "4000+"];
+    let sems = ["Fall", "Spring"];
+    let classLevels = ["1000", "2000", "3000", "4000+"];
     const found = activeFilters.some(filterName => sems.includes(filterName)) &&
       activeFilters.some(filterName => classLevels.includes(filterName))
     if (found) {
-      var foundSem = activeFilters.some(activeFilterName =>
+      let foundSem = activeFilters.some(activeFilterName =>
         lastOfferedSems(course).includes(activeFilterName));
-      var foundClassLevel = activeFilters.some(activeFilterName =>
+      let foundClassLevel = activeFilters.some(activeFilterName =>
         this.classLevelCheck(course, activeFilterName));
       return foundSem && foundClassLevel;
     }
@@ -189,7 +189,7 @@ export default class ResultsDisplay extends Component {
   }
 
   renderSemesterCheckboxes() {
-    var sems = ["Fall", "Spring"];
+    let sems = ["Fall", "Spring"];
     return sems.map((name, index) => (
       <div key={index}>
         <input
@@ -205,7 +205,7 @@ export default class ResultsDisplay extends Component {
   }
 
   renderClassLevelCheckBoxes() {
-    var classLevels = ["1000", "2000", "3000", "4000+"];
+    let classLevels = ["1000", "2000", "3000", "4000+"];
     return classLevels.map((name, index) => (
       <div key={index}>
         <input
