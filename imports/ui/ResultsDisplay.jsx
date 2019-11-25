@@ -289,23 +289,26 @@ export default class ResultsDisplay extends Component {
     else {
       return (
         <div className="row">
-          <div className="col-md-2 col-sm-2 col-xs-2">
-            Filter
-          <div>
-              <p> Semester</p>
+          <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
+            <p className="overall-filter">Filter</p>
+            <div className="filter-sub">
+              <p className="filter-title"> Semester</p>
               {this.renderSemesterCheckboxes()}
             </div>
-            <div>
-              <p>Level</p>
+            <div className="filter-sub">
+              <p className="filter-title">Level</p>
               {this.renderClassLevelCheckBoxes()}
             </div>
           </div>
-          <div className="col-md-10 col-sm-10 col-xs-10">
+          <div className="col-md-4 col-sm-4 col-xs-4" id="results">
+            <div className="sort-by">
+              Sort By:
             <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
-              <option value="rating">Overall Rating</option>
-              <option value="diff" >Difficulty</option>
-              <option value="work">Workload</option>
-            </select>
+                <option value="rating">Overall Rating</option>
+                <option value="diff" >Difficulty</option>
+                <option value="work">Workload</option>
+              </select>
+            </div>
             <div>
               Sorry! No classes matched your search.
             </div>
