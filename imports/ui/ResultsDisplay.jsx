@@ -67,14 +67,16 @@ export default class ResultsDisplay extends Component {
         let data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
         this.setState({
           courseList: data,
-          card_course: data[0]
+          card_course: data[0],
+          active_card: 0
         });
       }
       else if (this.state.selected == "diff") {
         data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
         this.setState({
           courseList: data,
-          card_course: data[0]
+          card_course: data[0],
+          active_card: 0
         });
 
       }
@@ -84,7 +86,8 @@ export default class ResultsDisplay extends Component {
             (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
         this.setState({
           courseList: data,
-          card_course: data[0]
+          card_course: data[0],
+          active_card: 0
         });
       }
     }
@@ -93,14 +96,16 @@ export default class ResultsDisplay extends Component {
         data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
         this.setState({
           filteredItems: data,
-          card_course: data[0]
+          card_course: data[0],
+          active_card: 0
         });
       }
       else if (this.state.selected == "diff") {
         data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
         this.setState({
           filteredItems: data,
-          card_course: data[0]
+          card_course: data[0],
+          active_card: 0
         });
 
       }
@@ -110,7 +115,8 @@ export default class ResultsDisplay extends Component {
             (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
         this.setState({
           filteredItems: data,
-          card_course: data[0]
+          card_course: data[0],
+          active_card: 0
         });
       }
     }
