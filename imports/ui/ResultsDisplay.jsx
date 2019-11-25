@@ -65,35 +65,53 @@ export default class ResultsDisplay extends Component {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "rating") {
         let data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
-        this.setState({ courseList: data });
+        this.setState({
+          courseList: data,
+          card_course: data[0]
+        });
       }
       else if (this.state.selected == "diff") {
         data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
-        this.setState({ courseList: data });
+        this.setState({
+          courseList: data,
+          card_course: data[0]
+        });
 
       }
       else if (this.state.selected == "work") {
         data = this.state.courseList.sort((a, b) =>
           ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
             (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
-        this.setState({ courseList: data });
+        this.setState({
+          courseList: data,
+          card_course: data[0]
+        });
       }
     }
     else {
       if (this.state.selected == "rating") {
         data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
-        this.setState({ filteredItems: data });
+        this.setState({
+          filteredItems: data,
+          card_course: data[0]
+        });
       }
       else if (this.state.selected == "diff") {
         data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
-        this.setState({ filteredItems: data });
+        this.setState({
+          filteredItems: data,
+          card_course: data[0]
+        });
 
       }
       else if (this.state.selected == "work") {
         data = this.state.filteredItems.sort((a, b) =>
           ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
             (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
-        this.setState({ filteredItems: data });
+        this.setState({
+          filteredItems: data,
+          card_course: data[0]
+        });
       }
     }
 
@@ -158,10 +176,19 @@ export default class ResultsDisplay extends Component {
         noResults: true
       })
     }
+    else if (checked) {
+      this.setState({
+        filters: filters,
+        filteredItems: filteredItems,
+        card_course: filteredItems[0],
+        noResults: false
+      }, () => this.sort());
+    }
     else {
       this.setState({
         filters: filters,
         filteredItems: filteredItems,
+        card_course: this.state.courseList[0],
         noResults: false
       }, () => this.sort());
     }
