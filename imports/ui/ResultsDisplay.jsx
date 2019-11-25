@@ -56,7 +56,7 @@ export default class ResultsDisplay extends Component {
   }
 
   handleSelect = (event) => {
-    var opt = event.target.value;
+    let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
 
   }
@@ -64,16 +64,16 @@ export default class ResultsDisplay extends Component {
   sort() {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "rating") {
-        var data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
+        let data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
         this.setState({ courseList: data });
       }
       else if (this.state.selected == "diff") {
-        var data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
-        this.setState({ courseLIst: data });
+        data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        this.setState({ courseList: data });
 
       }
       else if (this.state.selected == "work") {
-        var data = this.state.courseList.sort((a, b) =>
+        data = this.state.courseList.sort((a, b) =>
           ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
             (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
         this.setState({ courseList: data });
@@ -81,11 +81,11 @@ export default class ResultsDisplay extends Component {
     }
     else {
       if (this.state.selected == "rating") {
-        var data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
+        data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
         this.setState({ filteredItems: data });
       }
       else if (this.state.selected == "diff") {
-        var data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
         this.setState({ filteredItems: data });
 
       }
