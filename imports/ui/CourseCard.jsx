@@ -72,7 +72,7 @@ export class CourseCard extends Component {
 
     return (
       <div id="coursedetails">
-        <h1 className="class-title top-margin">
+        <h1 className="coursecard-class-title top-margin">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}
         </h1>
         <div href={url} target="_blank"> {/* Forces link onto next line */}

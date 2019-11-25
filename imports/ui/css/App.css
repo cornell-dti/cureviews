@@ -2,28 +2,27 @@
   font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-#welcome_text{
-  color: #ffffff;
-  font-size: 48px;
-  font-weight: 500;
-  letter-spacing: -0.4px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  width: 100%;
-}
-
-#second_welcome_text{
-  height: 14px;
-  padding-top: 6%;
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 22px;
-  font-weight: var(--semi-bold-weight);
+.welcome_text{
+  /* height: 14px; */
+  /* padding-top: 6%; */
+  margin-bottom: 40px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 30px;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
-  text-align: center;
-  color: #ffffff;
+  color: #356BD0;
+}
+
+.homepage-left-padding{
+  padding-left: 10.5%;
+}
+
+.no-side-padding{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .outline{
@@ -43,9 +42,9 @@
 }
 
 .scale-logo{
-  max-height: 220px;
+  height: 75px;
   width: auto;
-  margin-bottom: 55px;
+  margin: 50px 0px 78px 71px;
 }
 
 nav {
@@ -76,12 +75,15 @@ nav {
 }
 
 .background-gradient{
-  background-image: linear-gradient(to top, #80c3f3, #4a90e2);
+  background-image:url("/slope2.svg"),linear-gradient(180deg, #68A5EC -80%, rgba(168, 211, 245, .85) 40%, #A8D3F5 80%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position: bottom; 
 }
 
 .full-height{
-  min-height: 100%;
-  height: 100%;
+  min-height: 100.1%; /* Needed so that background is flush against bottom */
+  height: 100.09%;
 }
 
 
@@ -139,10 +141,6 @@ nav {
 }
 .noPadding {
   padding: 0 !important;
-}
-
-#img-padding-top{
-  margin-top: 4%;
 }
 
 .nav-center {
