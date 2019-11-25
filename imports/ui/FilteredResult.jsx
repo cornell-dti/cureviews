@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/FilteredResult.css';
-import Gauge from 'react-summary-gauge-2';
-import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
-import PreviewCard from './PreviewCard';
+import { lastOfferedSems } from './js/CourseCard.js';
 
 /*
   Filtered Result Component.
@@ -16,36 +14,76 @@ export default class FilteredResult extends Component {
     this.state = {
       course: this.props.course,
       current_index: this.props.index,
+      sortBy: this.props.sortBy
     };
 
     this.getColor = this.getColor.bind(this);
-
+    this.updateSortBy = this.updateSortBy.bind(this);
+    this.updateSortByTitle = this.updateSortByTitle.bind(this);
 
   }
 
-  getColor(metric) {
-    if (3.0 <= metric && metric < 4.0) {
-      return "#f9cc30";
+  componentDidUpdate(prevProps) {
+    if (prevProps != this.props) {
+      this.setState({
+        course: this.props.course,
+        current_index: this.props.index,
+        sortBy: this.props.sortBy
+      })
     }
-    else if (4.0 <= metric && metric <= 5.0) {
-      return "#53B277";
+  }
+
+  getColor(metric, val) {
+    if (metric === "Overall Rating") {
+      if (3.0 <= val && val < 4.0) {
+        return "#f9cc30";
+      }
+      else if (4.0 <= val && val <= 5.0) {
+        return "#53B277";
+      }
+      else {
+        return "#E64458";
+      }
     }
-    else {
-      return "#E64458";
+    else if (metric === "Difficulty" || metric === "Workload") {
+      if (3.0 <= val && val < 4.0) {
+        return "#f9cc30";
+      }
+      else if ((4.0 <= val && val <= 5.0) || val == "-") {
+        return "#E64458";
+      }
+      else {
+        return "#53B277";
+      }
+    }
+  }
+
+  updateSortBy() {
+    if (this.state.sortBy === "rating") {
+      return this.state.course.classRating;
+    }
+    else if (this.state.sortBy === "diff") {
+      return this.state.course.classDifficulty;
+    }
+    else if (this.state.sortBy === "work") {
+      return this.state.course.classWorkload == null ? "-" : this.state.course.classWorkload;
+    }
+  }
+
+  updateSortByTitle() {
+    if (this.state.sortBy === "rating") {
+      return "Overall Rating";
+    }
+    else if (this.state.sortBy === "diff") {
+      return "Difficulty";
+    }
+    else if (this.state.sortBy === "work") {
+      return "Workload";
     }
   }
 
   render() {
     let theClass = this.props.course;
-
-    // Creates Url that points to each class page on Cornell Class Roster
-    let url = "https://classes.cornell.edu/browse/roster/"
-      + lastSem(theClass.classSems) + "/class/"
-      + theClass.classSub.toUpperCase() + "/"
-      + theClass.classNum;
-
-    // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
-    let offered = lastOfferedSems(theClass);
 
     return (
       <li className="card" style={{ border: this.props.border_color }}
@@ -59,10 +97,10 @@ export default class FilteredResult extends Component {
           </h2>
           <div>
             <p className="p-display">
-              <strong>Overall Rating</strong>
+              <strong>{this.updateSortByTitle()}</strong>
             </p>
-            <p className="p-display" style={{ color: this.getColor(this.state.course.classRating) }}>
-              {this.state.course.classRating}
+            <p className="p-display" style={{ color: this.getColor(this.updateSortByTitle(), this.updateSortBy()) }}>
+              {this.updateSortBy()}
             </p>
             <p className="p-display" id="over-5">
               /5
@@ -80,5 +118,6 @@ FilteredResult.propTypes = {
   course: PropTypes.object.isRequired,
   previewHandler: PropTypes.func.isRequired,
   border_color: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  sortBy: PropTypes.string.isRequired
 };

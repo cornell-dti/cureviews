@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import "./css/ResultsDisplay.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
-
+import { lastOfferedSems } from './js/CourseCard.js';
 
 /*
   Results Component. Short description if needed.
@@ -25,11 +25,16 @@ export default class ResultsDisplay extends Component {
       courseList: this.props.courses,
       card_course: this.props.courses[0],
       active_card: 0,
-      selected: "rating"
+      selected: "rating",
+      filters: {
+        "Fall": false, "Spring": false, "1000": false, "2000": false,
+        "3000": false, "4000+": false
+      }, // key value pair name:checked
+      filteredItems: []
     };
 
     this.previewHandler = this.previewHandler.bind(this);
-    this.sortDesc = this.sort.bind(this);
+    this.sort = this.sort.bind(this);
 
   }
 
@@ -40,29 +45,110 @@ export default class ResultsDisplay extends Component {
   }
 
   sort() {
-    if (this.state.selected == "rating") {
-      var data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
-      this.setState({ courseList: data });
-    }
-    else if (this.state.selected == "diff") {
-      var data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
-      this.setState({ courseLIst: data });
+    if (this.state.filteredItems.length == 0) {
+      if (this.state.selected == "rating") {
+        var data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
+        this.setState({ courseList: data });
+      }
+      else if (this.state.selected == "diff") {
+        var data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        this.setState({ courseLIst: data });
 
+      }
+      else if (this.state.selected == "work") {
+        var data = this.state.courseList.sort((a, b) => ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) - (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        this.setState({ courseList: data });
+      }
     }
-    else if (this.state.selected == "work") {
-      var data = this.state.courseList.sort((a, b) => ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) - (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
-      this.setState({ courseList: data });
+    else {
+      if (this.state.selected == "rating") {
+        var data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
+        this.setState({ filteredItems: data });
+      }
+      else if (this.state.selected == "diff") {
+        var data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        this.setState({ filteredItems: data });
+
+      }
+      else if (this.state.selected == "work") {
+        var data = this.state.filteredItems.sort((a, b) => ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) - (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        this.setState({ filteredItems: data });
+      }
     }
 
   }
 
-  renderResults() {
-    console.log("current state " + this.state.courseList[0].classDifficulty);
-    return this.state.courseList.map((result, index) => (
-      <FilteredResult key={index} index={index} border_color={index == this.state.active_card ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8"} course={result} previewHandler={this.previewHandler} />
-    ));
+  classLevelCheck(course, filterName) {
+    var classLevel = course.classNum;
+    var classLevelString = course.classNum.toString().substring(0, 1);
+    var filterClassLevel = filterName.substring(0, 1);
+    if (filterClassLevel == "4") {
+      if (Math.floor(classLevel / 1000) >= 4) {
+        return true;
+      }
+    }
+    else if (classLevelString == filterClassLevel) {
+      return true;
+    }
+    else {
+      return false;
+    }
 
   }
+
+  filterCondition(course, activeFilters) {
+    var sems = ["Fall", "Spring"];
+    var classLevels = ["1000", "2000", "3000", "4000+"];
+    const found = activeFilters.some(filterName => sems.includes(filterName)) &&
+      activeFilters.some(filterName => classLevels.includes(filterName))
+    if (found) {
+      var foundSem = activeFilters.some(activeFilterName =>
+        lastOfferedSems(course).includes(activeFilterName));
+      var foundClassLevel = activeFilters.some(activeFilterName =>
+        this.classLevelCheck(course, activeFilterName));
+      return foundSem && foundClassLevel;
+    }
+    else {
+      return activeFilters.some(
+        activeFilterName => lastOfferedSems(course).includes(activeFilterName) ||
+          this.classLevelCheck(course, activeFilterName)
+      )
+    }
+  }
+
+  onChange = e => {
+    const name = e.target.name;
+    const checked = e.target.checked;
+
+    this.setState(prevState => {
+      const filters = {
+        ...prevState.filters,
+        [name]: checked
+      };
+
+      const activeFilterNames = Object.keys(filters).filter(
+        filterName => filters[filterName]
+      );
+      const filteredItems = prevState.courseList.filter(course =>
+        // For each item, we loop over
+        //     all checked filters
+        // some() means: return true if any of the
+        //    array elements in `activeFilterNames`
+        //    matches the condition
+        this.filterCondition(course, activeFilterNames)
+      );
+
+      return {
+        // this is the same as
+        // { filter: filters,
+        //    filteredItems: filteredItems }
+        // Just taking advantage of how const names
+        //    are the same as prop names
+        filters,
+        filteredItems
+      };
+    }, () => this.sort());
+  };
 
   previewHandler(course, index) {
     this.setState({
@@ -71,21 +157,67 @@ export default class ResultsDisplay extends Component {
     });
   }
 
+  renderResults() {
+    const items = this.state.filteredItems.length
+      ? this.state.filteredItems
+      : this.state.courseList;
+    return items.map((result, index) => (
+      <FilteredResult key={index} index={index} border_color={index == this.state.active_card ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8"} course={result} previewHandler={this.previewHandler} sortBy={this.state.selected} />
+    ));
+
+  }
+
+  renderSemesterCheckboxes() {
+    var sems = ["Fall", "Spring"];
+    return sems.map((name) => (
+      <div>
+        <input
+          onChange={(e) => this.onChange(e)}
+          type="checkbox"
+          checked={this.state.filters[name]}
+          name={name}
+        />
+        {name}
+      </div>
+    ))
+
+  }
+
+  renderClassLevelCheckBoxes() {
+    var classLevels = ["1000", "2000", "3000", "4000+"];
+    return classLevels.map((name) => (
+      <div>
+        <input
+          onChange={(e) => this.onChange(e)}
+          type="checkbox"
+          checked={this.state.filters[name]}
+          name={name}
+        />
+        {name}
+      </div>
+    ))
+  }
 
   render() {
     return (
       <div className="row">
-        <div className="col-md-1 col-sm-1 col-xs-1">
-          Filters
+        <div className="col-md-2 col-sm-2 col-xs-2">
+          Filter
+          <div>
+            <p> Semester</p>
+            {this.renderSemesterCheckboxes()}
+          </div>
+          <div>
+            <p>Level</p>
+            {this.renderClassLevelCheckBoxes()}
+          </div>
         </div>
-        <div className="col-md-1 col-sm-1 col-xs-1">
+        <div className="col-md-5 col-sm-5 col-xs-5" id="results">
           <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
             <option value="rating">Overall Rating</option>
             <option value="diff" >Difficulty</option>
             <option value="work">Workload</option>
           </select>
-        </div>
-        <div className="col-md-5 col-sm-5 col-xs-5" id="results">
           <ul>
             {this.renderResults()}
           </ul>
@@ -93,7 +225,7 @@ export default class ResultsDisplay extends Component {
         <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
           <PreviewCard course={this.state.card_course} />
         </div>
-      </div>
+      </div >
     );
   }
 }
