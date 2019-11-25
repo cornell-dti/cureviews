@@ -447,6 +447,24 @@ Meteor.methods({
     }
   },
 
+  // Searches the database on Classes's text index and returns matching courses
+  getCoursesByKeyword: function(keyword){
+      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if(regex.test(keyword)){
+        return Classes.find({$text:{$search:keyword}}).fetch();
+      }
+      else return null;
+  },
+
+  // Searches the database on Subjects's text index and returns matching subjects (which we're equating to majors)
+  getMajorsByKeyword: function(keyword){
+      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if(regex.test(keyword)){
+        return Subjects.find({$text:{$search:keyword}}).fetch();
+      }
+      else return null;
+  },
+
   // Flag a review - mark it as reported and make it invisible to non-admin users.
   // To be called by a non-admin user from a specific review.
   reportReview: function (review) {
