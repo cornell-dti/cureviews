@@ -41,43 +41,36 @@ export class Results extends Component {
   componentDidMount() {
     this._isMounted = true;
     if(this.props.match.params.type =="major"){
-
-    Meteor.call("getCoursesByFilters", 
-      {classSub:this.props.match.input}
-    , (err, courseList) => {
-      if (!err && courseList.length != 0 && this._isMounted) {
-        // Save the Class object that matches the request
-        this.setState({
-          courseList: courseList
-        });
-      }
-      else {
-        this.setState({
-          courseList: []
-        });
-      }
-    });
-
+      Meteor.call("getCoursesByFilters", this.props.match.params.input.toLowerCase(), (err, courseList) => {
+        if (!err && courseList.length != 0 && this._isMounted) {
+          // Save the Class object that matches the request
+          this.setState({
+            courseList: courseList
+          });
+        }
+        else {
+          this.setState({
+            courseList: []
+          });
+        }
+      });
     }
     else if(this.props.match.params.type == "keyword"){
       let userQuery=this.props.match.params.input.split("+").join();
-      Meteor.call("getCoursesByKeyword", 
-      userQuery
-    , (err, courseList) => {
-      if (!err && courseList.length != 0 && this._isMounted) {
-        // Save the Class object that matches the request
-        this.setState({
-          courseList: courseList
-        });
-      }
-      else {
-        this.setState({
-          courseList: []
-        });
-      }
-    });
+      Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
+        if (!err && courseList.length != 0 && this._isMounted) {
+          // Save the Class object that matches the request
+          this.setState({
+            courseList: courseList
+          });
+        }
+        else {
+          this.setState({
+            courseList: []
+          });
+        }
+      });
     }
-
   }
 
   componentWillReceiveProps(nextProps) {

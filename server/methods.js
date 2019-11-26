@@ -229,6 +229,8 @@ Meteor.methods({
   // {classSub: "PHIL"} or
   // {classDifficulty: 3.0}
   // Returns an empty array if no classes match.
+  // NOTE/TODO: I don't think this actually works as intended
+  // let's refactor in future - Julian
   getCoursesByFilters: function (parameters) {
     let courses = [];
     let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -237,6 +239,19 @@ Meteor.methods({
       if (!regex.test(key)) return courses;
     }
     courses = Classes.find(parameters).fetch();
+    return courses;
+  },
+
+  // Returns courses with the given parameters.
+  // Takes in a major abbreviation
+  // e.g. CS, INFO, PHIL
+  // Returns an empty array if no classes match.
+  getCoursesByMajor: function (major) {
+    let courses = [];
+    let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(major)) {
+      courses = Classes.find({classSub:major}).fetch();
+    }
     return courses;
   },
 
