@@ -2,3 +2,42 @@
   overflow: hidden;
  
 }
+#preview{
+  overflow: hidden;
+
+}
+#filters{
+  font-family: "Source Sans Pro", sans-serif; 
+  padding-left: 55px;
+}
+
+.overall-filter{
+  margin-bottom: 20px;
+}
+
+.sort-by{
+  font-family: "Source Sans Pro", sans-serif; 
+  margin-bottom: 25px;
+  padding-right: 15px;
+  text-align: right;
+}
+
+.browser-default{
+  background-color: white;
+    border-color: white;
+    color: #4a90e2;
+    padding-right: 0px;
+}
+
+.filter-sub{
+  padding-bottom: 20px;
+}
+.filter-title{
+  color: #979797;
+}
+
+.checkbox-label{
+  font-family: "Source Sans Pro", sans-serif; 
+  margin: 0px 0px 0px 10px;
+}
+

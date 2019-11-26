@@ -150,7 +150,7 @@ export default class Review extends Component {
               </div>
               <div className="col-md-9 col-sm-9 col-xs-9">
                 {/*The following adds a grey professor box for each professor listed in the review*/}
-                {(review.professors) ? review.professors.map((prof, index) => (<div key={index} className="col-md-6 col-sm-6 col-xs-6">
+                {(review.professors && review.professors.length  !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-6 col-sm-6 col-xs-6">
                   <p className="professor-text">{prof}</p></div>)) : <div className="col-md-6 col-sm-6 col-xs-6">
                     <p className="professor-text">N/A</p></div>}
               </div>

@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import { CollectionName } from '../api/dbDefs.js';
 import "./css/Results.css"; // css files
-import FilteredResult from './FilteredResult.jsx';
 import SearchBar from './SearchBar.jsx';
 import ResultsDisplay from './ResultsDisplay.jsx';
 
@@ -51,17 +47,11 @@ export class Results extends Component {
         this.setState({
           courseList: courseList
         });
-        console.log("yes");
-        console.log(this.state.courseList);
       }
       else {
-        // No class matches the request.
-        console.log(courseList);
-        console.log("no");
-        console.log(this.state.courseList);
-        // this.setState({
-        //   courseList: []
-        // });
+        this.setState({
+          courseList: []
+        });
       }
     });
   }
@@ -84,9 +74,8 @@ export class Results extends Component {
   }
 
   render() {
-    let content = null;
-    if (this.state.courseList.length != 0) {
-      content = (
+    return (
+      <div>
         <div className="container-fluid container-top-gap-fix">
           <div className="row navbar">
             <div className="col-md-2 col-sm-2 col-xs-2">
@@ -105,20 +94,17 @@ export class Results extends Component {
 
           <div className="row">
             <div className="col-md-12 col-sm-12 col-xs-12">
-              <p>We found <b>{this.state.courseList.length}</b> courses</p>
+              <p id="found">We found <strong>{this.state.courseList.length}</strong> courses</p>
             </div>
           </div>
-          <ResultsDisplay courses={this.state.courseList} />
+          <ResultsDisplay courses={this.state.courseList} noResults={this.state.courseList.length == 0} />
         </div>
-      );
-    }
-    return (
-      <div>
-        {content}
       </div>
     )
   }
+
 }
+
 
 // Define the names, types and optional status of the props that will be passed
 // to this component from the parent component that creates it.
