@@ -25,7 +25,7 @@ export default class Statistics extends Component{
   }
 
   getChartData(){
-    data=[];
+    let data=[];
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
       Meteor.call('getReviewsOverTimeTop15', (err, res)=>{
         //key-> EX: cs
