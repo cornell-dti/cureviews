@@ -138,7 +138,7 @@ ul {
 }
 
 li {
-    border-bottom: #eee solid 1px;
+    /* border-bottom: #eee solid 1px; */
     padding: 15px 15px 15px 0px;
     position: relative;
     list-style: none;

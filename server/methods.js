@@ -484,6 +484,16 @@ Meteor.methods({
     }
   },
 
+  //get list of review objects for given class from class _id
+  getReviewsByCourseId: function (course_id) {
+    const regex = new RegExp(/^(?=.*[A-Z])/i)
+    if (regex.test(course_id)) {
+      return Reviews.find({ class: course_id }).fetch();
+    } else {
+      return null;
+    }
+  },
+
   //get all classes by professor
   getClassesByProfessor: function (professor) {
     const regex = new RegExp(/^(?=.*[A-Z])/i)
