@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./css/Results.css"; // css files
 import SearchBar from './SearchBar.jsx';
 import ResultsDisplay from './ResultsDisplay.jsx';
+import PropTypes from "prop-types";
 
 
 /*
@@ -39,9 +40,11 @@ export class Results extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    Meteor.call("getCoursesByFilters", {
-      classRating: 4.5
-    }, (err, courseList) => {
+    if(this.props.match.params.type =="major"){
+
+    Meteor.call("getCoursesByFilters", 
+      {classSub:this.props.match.input}
+    , (err, courseList) => {
       if (!err && courseList.length != 0 && this._isMounted) {
         // Save the Class object that matches the request
         this.setState({
@@ -54,6 +57,27 @@ export class Results extends Component {
         });
       }
     });
+
+    }
+    else if(this.props.match.params.type == "keyword"){
+      let userQuery=this.props.match.params.input.split("+").join();
+      Meteor.call("getCoursesByKeyword", 
+      userQuery
+    , (err, courseList) => {
+      if (!err && courseList.length != 0 && this._isMounted) {
+        // Save the Class object that matches the request
+        this.setState({
+          courseList: courseList
+        });
+      }
+      else {
+        this.setState({
+          courseList: []
+        });
+      }
+    });
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -132,3 +156,7 @@ export class Results extends Component {
 //     collectionAsObjectList,
 //   };
 // }, Template);
+
+Results.propTypes = {
+  match: PropTypes.object
+};
