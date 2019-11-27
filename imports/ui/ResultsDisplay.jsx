@@ -27,10 +27,10 @@ export default class ResultsDisplay extends Component {
       active_card: 0,
       selected: "rating",
       filters: {
-        "Fall": false, "Spring": false, 
-        "1000": false, "2000": false,
-        "3000": false, "4000": false, 
-        "5000+": false
+        "Fall": true, "Spring": true, 
+        "1000": true, "2000": true,
+        "3000": true, "4000": true, 
+        "5000+": true
       }, // key value pair name:checked
       filteredItems: [],
       noResults: this.props.noResults
@@ -48,8 +48,8 @@ export default class ResultsDisplay extends Component {
         active_card: 0,
         selected: "rating",
         filters: {
-          "Fall": false, "Spring": false, "1000": false, "2000": false,
-          "3000": false, "4000": false, "5000+": false
+          "Fall": true, "Spring": true, "1000": true, "2000": true,
+          "3000": true, "4000": true, "5000+": true
         }, // key value pair => name:checked
         filteredItems: [],
         noResults: this.props.noResults
