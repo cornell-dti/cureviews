@@ -5,6 +5,7 @@ import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
 import { lastOfferedSems } from './js/CourseCard.js';
 
+
 /*
   Results Component. Short description if needed.
 
@@ -27,9 +28,9 @@ export default class ResultsDisplay extends Component {
       active_card: 0,
       selected: "rating",
       filters: {
-        "Fall": true, "Spring": true, 
+        "Fall": true, "Spring": true,
         "1000": true, "2000": true,
-        "3000": true, "4000": true, 
+        "3000": true, "4000": true,
         "5000+": true
       }, // key value pair name:checked
       filteredItems: [],
@@ -290,7 +291,7 @@ export default class ResultsDisplay extends Component {
     else {
       return (
         <div className="row">
-          <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
+          <div className="col-md-4 col-sm-4 col-xs-4" id="filters" >
             <p className="overall-filter">Filter</p>
             <div className="filter-sub">
               <p className="filter-title"> Semester</p>
@@ -301,18 +302,8 @@ export default class ResultsDisplay extends Component {
               {this.renderClassLevelCheckBoxes()}
             </div>
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-4" id="results">
-            <div className="sort-by">
-              Sort By:
-            <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
-                <option value="rating">Overall Rating</option>
-                <option value="diff" >Difficulty</option>
-                <option value="work">Workload</option>
-              </select>
-            </div>
-            <div>
-              <img src="./noClassImage.jpg"></img>
-            </div>
+          <div className="col-md-6 col-sm-6 col-xs-6" id="results">
+            <img src="/noClassImage.jpg" className="img-responsive no-results" alt="No class found"></img>
           </div>
         </div>
       )
