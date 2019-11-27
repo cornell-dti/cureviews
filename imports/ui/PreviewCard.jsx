@@ -27,23 +27,27 @@ export default class PreviewCard extends Component {
 
     this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
+    this.updateGauges = this.updateGauges.bind(this);
 
   }
 
   componentDidMount() {
-    this.updateColors();
-    this.updateTopReview();
+    this.updateGauges();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
-      this.setState({
-        id: this.props.course._id,
-        rating: this.props.course.classRating,
-        diff: this.props.course.classDifficulty,
-        workload: this.props.course.classWorkload == null ? "-" : this.props.course.classWorkload,
-      },() => this.updateColors(), this.updateTopReview());
+      this.updateGauges();
     }
+  }
+  
+  updateGauges(){
+    this.setState({
+      id: this.props.course._id,
+      rating: this.props.course.classRating == null ? "-" : this.props.course.classRating,
+      diff: this.props.course.classDifficulty == null ? "-" : this.props.course.classDifficulty,
+      workload: this.props.course.classWorkload == null ? "-" : this.props.course.classWorkload,
+    },() => this.updateColors(), this.updateTopReview());
   }
   
   updateTopReview(){
@@ -59,10 +63,15 @@ export default class PreviewCard extends Component {
         }
         else{
           this.setState({
+<<<<<<< HEAD
             topReview: {},
             numReviews:0
           });
           console.log("no prof reviews");
+=======
+            topReview: {}
+          });
+>>>>>>> b94f73a4529cfbeab07fcdf3a885bbfa45c58fa6
         }
 
       }
