@@ -2,8 +2,12 @@
   overflow: hidden;
  
 }
+
+
 #preview{
   overflow: hidden;
+  position:sticky;
+  top: 35px;
 
 }
 #filters{

@@ -63,15 +63,10 @@ export default class PreviewCard extends Component {
         }
         else{
           this.setState({
-<<<<<<< HEAD
             topReview: {},
             numReviews:0
           });
           console.log("no prof reviews");
-=======
-            topReview: {}
-          });
->>>>>>> b94f73a4529cfbeab07fcdf3a885bbfa45c58fa6
         }
 
       }

@@ -288,6 +288,7 @@ export default class ResultsDisplay extends Component {
                 {this.renderResults()}
               </ul>
             </div>
+          <div></div>
           <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
             <PreviewCard course={this.state.card_course} />
           </div>
