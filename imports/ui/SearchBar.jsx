@@ -211,11 +211,11 @@ export default class SearchBar extends Component {
       }
       
       let exact_search = (
-        <li key={"search"} className={this.state.index == 0 && this.state.mouse != 1 ? 'active classbutton' : 'classbutton'}>
-          <a className="text-style-1" href={`/results/keyword/${this.state.query.split(" ").join("+")}`}>
-            {"Search: \"" + this.state.query+ "\""}
-          </a>
-        </li>
+        <a key={"search"} 
+          className={this.state.index == 0 && this.state.mouse != 1 ? 'active resultbutton' : 'resultbutton'} 
+          href={`/results/keyword/${this.state.query.split(" ").join("+")}`}>
+          <p className="result-text">{"Search: \"" + this.state.query+ "\""}</p>
+        </a>
       )
       
       results.push(exact_search);

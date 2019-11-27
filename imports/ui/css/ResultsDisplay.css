@@ -2,8 +2,12 @@
   overflow: hidden;
  
 }
+
+
 #preview{
   overflow: hidden;
+  position:sticky;
+  top: 80px;
 
 }
 #filters{
@@ -15,18 +19,46 @@
   margin-bottom: 20px;
 }
 
+.num-classes-found{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #000000;
+  margin: 0;
+}
+
+.margin-top{
+  margin-top: 55px;
+}
+
+.display-inline{
+  display: inline-flex;
+}
+
 .sort-by{
-  font-family: "Source Sans Pro", sans-serif; 
-  margin-bottom: 25px;
-  padding-right: 15px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #000000;
   text-align: right;
+  margin: 0 0 0 auto; 
 }
 
 .browser-default{
   background-color: white;
-    border-color: white;
-    color: #4a90e2;
-    padding-right: 0px;
+  border-color: transparent;
+  border: 0px;
+  color: #4a90e2;
+  margin-top: 2px;
+  outline: none;
 }
 
 .filter-sub{
@@ -44,5 +76,10 @@
 .no-results{
   width: auto;
   height: 400px;
+}
+
+.no-results-cap{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 25px;
 }
 

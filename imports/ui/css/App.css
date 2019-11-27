@@ -125,6 +125,7 @@ nav {
   z-index: 980;
   top: 0px;
   position: sticky;
+  margin-bottom:5px;
 }
 
 .pushDown {
