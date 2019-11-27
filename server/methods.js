@@ -466,7 +466,9 @@ Meteor.methods({
   getCoursesByKeyword: function(keyword){
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if(regex.test(keyword)){
-        return Classes.find({$text:{$search:keyword}}).fetch();
+        const options = {fields: {score: {$meta: "textScore"}},
+                        sort: {score: {$meta: "textScore"}}}
+        return Classes.find({"$text": {"$search": keyword}}, options).fetch();
       }
       else return null;
   },
@@ -475,7 +477,9 @@ Meteor.methods({
   getSubjectsByKeyword: function(keyword){
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if(regex.test(keyword)){
-        return Subjects.find({$text:{$search:keyword}}).fetch();
+        const options = {fields: {score: {$meta: "textScore"}},
+                        sort: {score: {$meta: "textScore"}}}
+        return Subjects.find({"$text": {"$search": keyword}}, options).fetch();
       }
       else return null;
   },
