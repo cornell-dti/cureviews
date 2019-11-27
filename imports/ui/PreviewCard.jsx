@@ -132,7 +132,9 @@ export default class PreviewCard extends Component {
           <div className="row">
             <div className="col-md-12 col-sm-12">
               <p className="preview-class-title">
-                {theClass.classTitle}
+                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  {theClass.classTitle}
+                </a>
               </p>
               <p className="preview-class-info">
                 {theClass.classSub.toUpperCase() + " " + theClass.classNum}
