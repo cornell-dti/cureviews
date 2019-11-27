@@ -38,8 +38,8 @@ export default class PreviewCard extends Component {
     if (prevProps != this.props) {
       this.setState({
         id: this.props.course._id,
-        rating: this.props.course.classRating,
-        diff: this.props.course.classDifficulty,
+        rating: this.props.course.classRating == null ? "-" : this.props.course.classRating,
+        diff: this.props.course.classDifficulty == null ? "-" : this.props.course.classDifficulty,
         workload: this.props.course.classWorkload == null ? "-" : this.props.course.classWorkload,
       },() => this.updateColors(), this.updateTopReview());
     }

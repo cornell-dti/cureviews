@@ -189,21 +189,15 @@ Meteor.methods({
     if (course) {
       let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
       let state = getGaugeValues(reviews);
-
       Classes.update({ _id: courseId },
         {
           $set: {
-            classDifficulty: Number(state.diff),
-            classRating: Number(state.rating)
+            //If no data is available, getGaugeValues returns "-" for metric
+            classDifficulty: (state.diff !== "-" ? Number(state.diff) : null ),
+            classRating: (state.rating !== "-" ? Number(state.rating) : null ),
+            classWorkload: (state.workload !== "-" ? Number(state.workload) : null )
           }
         });
-      //If no data is available, getGaugeValues returns "-" for workload
-      if (state.workload != "-") {
-        Classes.update({ _id: courseId }, { $set: { classWorkload: Number(state.workload) } })
-      }
-      else {
-        Classes.update({ _id: courseId }, { $set: { classWorkload: null } })
-      }
       return 1;
 
     }
