@@ -256,7 +256,7 @@ export default class ResultsDisplay extends Component {
   render() {
     if (!this.state.noResults) {
       return (
-        <div className="row">
+        <div className="row margin-top">
           <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
             <p className="overall-filter">Filter</p>
             <div className="filter-sub">
@@ -269,18 +269,25 @@ export default class ResultsDisplay extends Component {
             </div>
           </div>
           <div className="col-md-5 col-sm-5 col-xs-5" id="results">
-            <div className="sort-by">
-              Sort By:
-            <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
-                <option value="rating">Overall Rating</option>
-                <option value="diff" >Difficulty</option>
-                <option value="work">Workload</option>
-              </select>
+            <div className="row">
+              <div className="col-md-5 col-sm-5 col-xs-5">
+                <p className="num-classes-found">We found <strong>{this.props.courses.length}</strong> courses</p>
+              </div>
+              <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
+                <p className="sort-by">
+                  Sort By:
+                </p>
+                <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
+                    <option value="rating">Overall Rating</option>
+                    <option value="diff" >Difficulty</option>
+                    <option value="work">Workload</option>
+                  </select>
+                </div>
+              </div>
+              <ul>
+                {this.renderResults()}
+              </ul>
             </div>
-            <ul>
-              {this.renderResults()}
-            </ul>
-          </div>
           <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
             <PreviewCard course={this.state.card_course} />
           </div>
@@ -304,7 +311,7 @@ export default class ResultsDisplay extends Component {
           <div className="col-md-4 col-sm-4 col-xs-4" id="results">
             <div className="sort-by">
               Sort By:
-            <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
+              <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
                 <option value="rating">Overall Rating</option>
                 <option value="diff" >Difficulty</option>
                 <option value="work">Workload</option>

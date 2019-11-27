@@ -102,12 +102,6 @@ export class Results extends Component {
               Report a Bug (inactive)
             </div>
           </div>
-
-          <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12">
-              <p id="found">We found <strong>{this.state.courseList.length}</strong> courses</p>
-            </div>
-          </div>
           <ResultsDisplay courses={this.state.courseList} noResults={this.state.courseList.length == 0} />
         </div>
       </div>

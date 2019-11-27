@@ -29,14 +29,14 @@
 
 .card{
   border-radius: 10px;
-  border: solid 0.5px #d8d8d8;
+  border: solid 1.5px #d8d8d8;
   padding: 15px 15px 0px 15px;
-  margin: 20px;
+  margin: 20px 0;
 }
 
 .card-clicked{
   border-radius: 10px;
-  border: solid 1px #4a90e2;
+  border: solid 2px #4a90e2;
   padding: 20px;
   margin: 20px;
 }
