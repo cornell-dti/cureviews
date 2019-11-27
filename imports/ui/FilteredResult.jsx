@@ -86,7 +86,7 @@ export default class FilteredResult extends Component {
     let theClass = this.props.course;
 
     return (
-      <li className="card" style={{ border: this.props.border_color }}
+      <li className={this.props.selected === true ? "card card-clicked" : " card"}
         onClick={() => { this.props.previewHandler(this.state.course, this.state.current_index) }}>
         <div className="card-body">
           <h1 className="card-title">
@@ -117,7 +117,7 @@ export default class FilteredResult extends Component {
 FilteredResult.propTypes = {
   course: PropTypes.object.isRequired,
   previewHandler: PropTypes.func.isRequired,
-  border_color: PropTypes.string.isRequired,
+  selected: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   sortBy: PropTypes.string.isRequired
 };

@@ -26,7 +26,7 @@
   letter-spacing: 0.2px;
   color: #000000;
 }
-
+/* ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8" */
 .card{
   border-radius: 10px;
   border: solid 1.5px #d8d8d8;
@@ -35,10 +35,7 @@
 }
 
 .card-clicked{
-  border-radius: 10px;
   border: solid 2px #4a90e2;
-  padding: 20px;
-  margin: 20px;
 }
 
 .p-display{

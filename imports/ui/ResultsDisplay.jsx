@@ -215,7 +215,7 @@ export default class ResultsDisplay extends Component {
       : this.state.courseList;
     return items.map((result, index) => (
       <FilteredResult key={index} index={index}
-        border_color={index == this.state.active_card ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8"}
+        selected={index === this.state.active_card}
         course={result} previewHandler={this.previewHandler}
         sortBy={this.state.selected} />
     ));
