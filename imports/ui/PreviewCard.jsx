@@ -21,7 +21,8 @@ export default class PreviewCard extends Component {
       diffColor: "E64458",
       workload: this.props.course.classWorkload,
       workloadColor: "E64458",
-      topReview: {}
+      topReview: {},
+      numReviews:0
     };
 
     this.updateColors = this.updateColors.bind(this);
@@ -52,10 +53,15 @@ export default class PreviewCard extends Component {
         if(reviews.length > 0){
           reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
           this.setState({
-            topReview: reviews[0]
+            topReview: reviews[0],
+            numReviews:reviews.length
           });
         }
         else{
+          this.setState({
+            topReview: {},
+            numReviews:0
+          });
           console.log("no prof reviews");
         }
 
@@ -161,9 +167,17 @@ export default class PreviewCard extends Component {
             <div className="col-md-12 col-sm-12">
               {Object.keys(this.state.topReview).length !== 0 && 
               
-              <Review key={this.state.topReview._id} info={this.state.topReview} />
-              
+              <Review key={this.state.topReview._id} info={this.state.topReview} /> 
               }
+
+              {
+                Object.keys(this.state.topReview).length !== 0
+                &&
+                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                See {this.state.numReviews} more reviews
+              </a>
+              }
+
               {Object.keys(this.state.topReview).length === 0 && 
               
                 <p className="preview-empty-top-review">No reviews yet</p>
