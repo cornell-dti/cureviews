@@ -310,7 +310,7 @@ export default class ResultsDisplay extends Component {
               </select>
             </div>
             <div>
-              Sorry! No classes matched your search.
+              <img src="./noClassImage.jpg"></img>
             </div>
           </div>
         </div>
