@@ -23,6 +23,10 @@ export default class FilteredResult extends Component {
 
   }
 
+  componentDidMount() {
+    this.updateSortBy();
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
       this.setState({
@@ -60,10 +64,10 @@ export default class FilteredResult extends Component {
 
   updateSortBy() {
     if (this.state.sortBy === "rating") {
-      return this.state.course.classRating === null ? "-" : this.state.course.classRating;
+      return this.state.course.classRating === NaN ? "-" : this.state.course.classRating;
     }
     else if (this.state.sortBy === "diff") {
-      return this.state.course.classDifficulty === null ? "-" : this.state.course.classDifficulty;
+      return this.state.course.classDifficulty === NaN ? "-" : this.state.course.classDifficulty;
     }
     else if (this.state.sortBy === "work") {
       return this.state.course.classWorkload === null ? "-" : this.state.course.classWorkload;

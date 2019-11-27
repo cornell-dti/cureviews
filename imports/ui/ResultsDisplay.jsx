@@ -41,6 +41,10 @@ export default class ResultsDisplay extends Component {
 
   }
 
+  componentDidMount() {
+    this.sort();
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
       this.setState({
@@ -66,7 +70,9 @@ export default class ResultsDisplay extends Component {
   sort() {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "rating") {
-        let data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
+        let data = this.state.courseList.sort((a, b) =>
+          ((b.classRating == null ? Number.MAX_SAFE_INTEGER : b.classRating) -
+            (a.classRating == null ? Number.MAX_SAFE_INTEGER : a.classRating)));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -74,7 +80,9 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        data = this.state.courseList.sort((a, b) =>
+          ((a.classDifficulty == null ? Number.MAX_SAFE_INTEGER : a.classDifficulty) -
+            (b.classDifficulty == null ? Number.MAX_SAFE_INTEGER : b.classDifficulty)));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -95,7 +103,9 @@ export default class ResultsDisplay extends Component {
     }
     else {
       if (this.state.selected == "rating") {
-        data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
+        let data = this.state.filteredItems.sort((a, b) =>
+          ((b.classRating == null ? Number.MAX_SAFE_INTEGER : b.classRating) -
+            (a.classRating == null ? Number.MAX_SAFE_INTEGER : a.classRating)));
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -103,7 +113,9 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        data = this.state.filteredItems.sort((a, b) =>
+          ((a.classDifficulty == null ? Number.MAX_SAFE_INTEGER : a.classDifficulty) -
+            (b.classDifficulty == null ? Number.MAX_SAFE_INTEGER : b.classDifficulty)));
         this.setState({
           filteredItems: data,
           card_course: data[0],
