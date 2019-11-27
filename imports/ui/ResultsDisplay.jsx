@@ -33,16 +33,12 @@ export default class ResultsDisplay extends Component {
         "3000": true, "4000": true,
         "5000+": true
       }, // key value pair name:checked
-      filteredItems: [],
+      filteredItems: this.props.courses,
       noResults: this.props.noResults
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sort = this.sort.bind(this);
 
-  }
-
-  componentDidMount() {
-    this.sort();
   }
 
   componentDidUpdate(prevProps) {
@@ -56,9 +52,9 @@ export default class ResultsDisplay extends Component {
           "Fall": true, "Spring": true, "1000": true, "2000": true,
           "3000": true, "4000": true, "5000+": true
         }, // key value pair => name:checked
-        filteredItems: [],
+        filteredItems: this.props.courses,
         noResults: this.props.noResults
-      })
+      }, () => this.sort())
     }
   }
 
@@ -67,12 +63,26 @@ export default class ResultsDisplay extends Component {
     this.setState({ selected: opt }, () => this.sort());
   }
 
+  defaultSort() {
+    let data = this.props.courses.sort((a, b) =>
+      ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
+        (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
+    this.setState({
+      courseList: data,
+      card_course: data[0],
+      active_card: 0
+    });
+  }
+
   sort() {
+    console.log("enterd");
     if (this.state.filteredItems.length == 0) {
+      console.log("first");
       if (this.state.selected == "rating") {
+        console.log("rating");
         let data = this.state.courseList.sort((a, b) =>
-          ((b.classRating == null ? Number.MAX_SAFE_INTEGER : b.classRating) -
-            (a.classRating == null ? Number.MAX_SAFE_INTEGER : a.classRating)));
+          ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
+            (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -102,10 +112,14 @@ export default class ResultsDisplay extends Component {
       }
     }
     else {
+      console.log("in sorting");
       if (this.state.selected == "rating") {
+        console.log("here");
+        console.log(this.state.filteredItems[0]);
         let data = this.state.filteredItems.sort((a, b) =>
-          ((b.classRating == null ? Number.MAX_SAFE_INTEGER : b.classRating) -
-            (a.classRating == null ? Number.MAX_SAFE_INTEGER : a.classRating)));
+          ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
+            (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
+        console.log(data[0]);
         this.setState({
           filteredItems: data,
           card_course: data[0],
