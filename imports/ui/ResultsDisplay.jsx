@@ -298,8 +298,8 @@ export default class ResultsDisplay extends Component {
     }
     else {
       return (
-        <div className="row">
-          <div className="col-md-4 col-sm-4 col-xs-4" id="filters" >
+        <div className="row margin-top">
+          <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
             <p className="overall-filter">Filter</p>
             <div className="filter-sub">
               <p className="filter-title"> Semester</p>
@@ -310,10 +310,17 @@ export default class ResultsDisplay extends Component {
               {this.renderClassLevelCheckBoxes()}
             </div>
           </div>
-          <div className="col-md-6 col-sm-6 col-xs-6" id="results">
-            <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
-            <div className="no-results-cap">Sorry! No classes match your search.</div>
-          </div>
+          <div className="col-md-10 col-sm-10 col-xs-10" id="results">
+            <div className="row">
+              <div className="col-md-2 col-sm-2 col-xs-2">
+                <p className="num-classes-found">We found <strong>{this.props.courses.length}</strong> courses</p>
+              </div>
+              <div className="col-md-6 col-sm-6 col-xs-6" id="results">
+                <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
+                <div className="no-results-cap">Sorry! No classes match your search.</div>
+              </div>
+            </div>
+          </div >
         </div>
       )
     }
