@@ -27,8 +27,10 @@ export default class ResultsDisplay extends Component {
       active_card: 0,
       selected: "rating",
       filters: {
-        "Fall": false, "Spring": false, "1000": false, "2000": false,
-        "3000": false, "4000": false, "5000+": false
+        "Fall": true, "Spring": true, 
+        "1000": true, "2000": true,
+        "3000": true, "4000": true, 
+        "5000+": true
       }, // key value pair name:checked
       filteredItems: [],
       noResults: this.props.noResults
@@ -46,9 +48,9 @@ export default class ResultsDisplay extends Component {
         active_card: 0,
         selected: "rating",
         filters: {
-          "Fall": false, "Spring": false, "1000": false, "2000": false,
-          "3000": false, "4000": false, "5000+": false
-        }, // key value pair name:checked
+          "Fall": true, "Spring": true, "1000": true, "2000": true,
+          "3000": true, "4000": true, "5000+": true
+        }, // key value pair => name:checked
         filteredItems: [],
         noResults: this.props.noResults
       })
@@ -58,7 +60,6 @@ export default class ResultsDisplay extends Component {
   handleSelect = (event) => {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
-
   }
 
   sort() {
@@ -267,7 +268,7 @@ export default class ResultsDisplay extends Component {
               {this.renderClassLevelCheckBoxes()}
             </div>
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-4" id="results">
+          <div className="col-md-5 col-sm-5 col-xs-5" id="results">
             <div className="sort-by">
               Sort By:
             <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
@@ -283,7 +284,7 @@ export default class ResultsDisplay extends Component {
           <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
             <PreviewCard course={this.state.card_course} />
           </div>
-        </div >
+        </div>
       );
     }
     else {
@@ -315,7 +316,6 @@ export default class ResultsDisplay extends Component {
           </div>
         </div>
       )
-
     }
   }
 }

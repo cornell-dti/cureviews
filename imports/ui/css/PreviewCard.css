@@ -6,40 +6,92 @@
   width: 50%;
 }
 
-.class-title{
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 30px;
-  font-weight: normal;
+.preview-class-title{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 24px;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.1px;
-  color: #4a4a4a;
+  letter-spacing: 0.01em;
+  color: #4A90E2;
 }
 
-.class-info{
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 18px;
-  font-weight: normal;
+.preview-class-info{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 14px;
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.01em;
+  color: #979797;
+}
+
+.gaugeHolder{
+  padding: 35px 55px 70px 55px;
+}
+
+.gaugeHolder svg text:first-of-type{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px !important;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  fill: #000000 !important;
+}
+
+.gaugeHolder svg text:last-of-type{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 19px !important;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
   color: #000000;
+}
+
+.preview-top-review-label{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+}
+
+.preview-empty-top-review{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #979797;
+  padding-bottom: 330px;
 }
 
 .panel-radius{
   border-radius: 8px;
 }
 
+.preview-holder{
+  margin-right: 30px;
+}
+
 .preview-panel{
   width: 100%;
-  border-radius: 2.5px;
+  border-radius: 5px;
   background-color: #fafafa;
   padding: 35px;
 }
 
-#gaugeHolder svg{
+.gaugeHolder svg{
   overflow: visible !important;
 }
 

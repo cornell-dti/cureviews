@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
 import Gauge from 'react-summary-gauge-2';
-import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
+import { getGaugeValues } from './js/CourseCard.js';
 import Review from './Review.jsx';
 
 /*
@@ -25,41 +25,48 @@ export default class PreviewCard extends Component {
     };
 
     this.updateColors = this.updateColors.bind(this);
+    this.updateTopReview = this.updateTopReview.bind(this);
 
   }
 
   componentDidMount() {
     this.updateColors();
+    this.updateTopReview();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
       this.setState({
         id: this.props.course._id,
-        rating: this.props.course.classRating,
-        diff: this.props.course.classDifficulty,
-        workload: this.props.course.classWorkload,
-      },() => this.updateColors());
-      // NOTE: this is just a test, change "getReviewsByProfessor" to get reviews for class
-      Meteor.call("getReviewsByProfessor", "David Gries", (err, reviews) => {
-        if (!err && reviews) {
-          console.log("returned reviews");
-          // Sort reviews according to most likes
+        rating: this.props.course.classRating == null ? "-" : this.props.course.classRating,
+        diff: this.props.course.classDifficulty == null ? "-" : this.props.course.classDifficulty,
+        workload: this.props.course.classWorkload == null ? "-" : this.props.course.classWorkload,
+      },() => this.updateColors(), this.updateTopReview());
+    }
+  }
+  
+  updateTopReview(){
+    Meteor.call("getReviewsByCourseId", this.props.course._id, (err, reviews) => {
+      if (!err && reviews) {
+        // Sort reviews according to most likes
+        if(reviews.length > 0){
           reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
           this.setState({
             topReview: reviews[0]
           });
         }
-        else {
+        else{
           console.log("no prof reviews");
         }
-      });
 
-    }
+      }
+      else {
+        console.log("Error in retriving reviews.");
+      }
+    });
   }
 
   updateColors() {
-    console.log("workload" + this.state.workload);
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
         ratingColor: "#f9cc30"
@@ -112,43 +119,40 @@ export default class PreviewCard extends Component {
 
   render() {
     let theClass = this.props.course;
-    // Creates Url that points to each class page on Cornell Class Roster
-    let url = "https://classes.cornell.edu/browse/roster/"
-      + lastSem(theClass.classSems) + "/class/"
-      + theClass.classSub.toUpperCase() + "/"
-      + theClass.classNum;
-
-    // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
-    let offered = lastOfferedSems(theClass);
 
     return (
+      <div className="preview-holder">
         <div className="preview-panel">
           <div className="row">
             <div className="col-md-12 col-sm-12">
-              <p className="">
+              <p className="preview-class-title">
                 {theClass.classTitle}
               </p>
-              <p>
+              <p className="preview-class-info">
                 {theClass.classSub.toUpperCase() + " " + theClass.classNum}
               </p>
             </div>
           </div>
-          <div className="row" id="gaugeHolder">
-            <div className="col-md-12 col-sm-12">
+          <div className="row gaugeHolder">
+
               <div className="col-md-4 col-sm-4 col-xs-12">
-                <Gauge value={this.state.rating} left={50} width={100} height={75} color={this.state.ratingColor} max={5} label="Overall Rating" />
+                <Gauge value={this.state.rating} left={50} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
               </div>
               <div className="col-md-4 col-sm-4 col-xs-12">
-                <Gauge value={this.state.diff} left={150} width={100} height={75} color={this.state.diffColor} max={5} label="Difficulty" />
+                <Gauge value={this.state.diff} left={150} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
               </div>
               <div className="col-md-4 col-sm-4 col-xs-12">
-                <Gauge value={this.state.workload} left={250} width={100} height={75} color={this.state.workloadColor} max={5} label="Workload" />
+                <Gauge value={this.state.workload} left={250} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
               </div>
-            </div>
+
           </div>
           <div className="row">
             <div className="col-md-12 col-sm-12">
-              <p>Top Review</p>
+            {Object.keys(this.state.topReview).length !== 0 && 
+            
+              <p className="preview-top-review-label">Top Review</p>
+            
+            }
             </div>
           </div>
           <div className="row">
@@ -158,9 +162,16 @@ export default class PreviewCard extends Component {
               <Review key={this.state.topReview._id} info={this.state.topReview} />
               
               }
+              {Object.keys(this.state.topReview).length === 0 && 
+              
+                <p className="preview-empty-top-review">No reviews yet</p>
+              
+              }
             </div>
           </div>
         </div>
+      </div>
+
 
     );
   }

@@ -189,21 +189,15 @@ Meteor.methods({
     if (course) {
       let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
       let state = getGaugeValues(reviews);
-
       Classes.update({ _id: courseId },
         {
           $set: {
-            classDifficulty: Number(state.diff),
-            classRating: Number(state.rating)
+            //If no data is available, getGaugeValues returns "-" for metric
+            classDifficulty: (state.diff !== "-" ? Number(state.diff) : null ),
+            classRating: (state.rating !== "-" ? Number(state.rating) : null ),
+            classWorkload: (state.workload !== "-" ? Number(state.workload) : null )
           }
         });
-      //If no data is available, getGaugeValues returns "-" for workload
-      if (state.workload != "-") {
-        Classes.update({ _id: courseId }, { $set: { classWorkload: Number(state.workload) } })
-      }
-      else {
-        Classes.update({ _id: courseId }, { $set: { classWorkload: null } })
-      }
       return 1;
 
     }
@@ -229,6 +223,8 @@ Meteor.methods({
   // {classSub: "PHIL"} or
   // {classDifficulty: 3.0}
   // Returns an empty array if no classes match.
+  // NOTE/TODO: I don't think this actually works as intended
+  // let's refactor in future - Julian
   getCoursesByFilters: function (parameters) {
     let courses = [];
     let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -237,6 +233,19 @@ Meteor.methods({
       if (!regex.test(key)) return courses;
     }
     courses = Classes.find(parameters).fetch();
+    return courses;
+  },
+
+  // Returns courses with the given parameters.
+  // Takes in a major abbreviation
+  // e.g. CS, INFO, PHIL
+  // Returns an empty array if no classes match.
+  getCoursesByMajor: function (major) {
+    let courses = [];
+    let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(major)) {
+      courses = Classes.find({classSub:major}).fetch();
+    }
     return courses;
   },
 
@@ -451,16 +460,20 @@ Meteor.methods({
   getCoursesByKeyword: function(keyword){
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if(regex.test(keyword)){
-        return Classes.find({$text:{$search:keyword}}).fetch();
+        const options = {fields: {score: {$meta: "textScore"}},
+                        sort: {score: {$meta: "textScore"}}}
+        return Classes.find({"$text": {"$search": keyword}}, options).fetch();
       }
       else return null;
   },
 
   // Searches the database on Subjects's text index and returns matching subjects (which we're equating to majors)
-  getMajorsByKeyword: function(keyword){
+  getSubjectsByKeyword: function(keyword){
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if(regex.test(keyword)){
-        return Subjects.find({$text:{$search:keyword}}).fetch();
+        const options = {fields: {score: {$meta: "textScore"}},
+                        sort: {score: {$meta: "textScore"}}}
+        return Subjects.find({"$text": {"$search": keyword}}, options).fetch();
       }
       else return null;
   },
@@ -497,6 +510,16 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z])/i)
     if (regex.test(professor)) {
       return Reviews.find({ professors: { $elemMatch: { $eq: professor } } }).fetch();
+    } else {
+      return null;
+    }
+  },
+
+  //get list of review objects for given class from class _id
+  getReviewsByCourseId: function (course_id) {
+    const regex = new RegExp(/^(?=.*[A-Z])/i)
+    if (regex.test(course_id)) {
+      return Reviews.find({ class: course_id }).fetch();
     } else {
       return null;
     }

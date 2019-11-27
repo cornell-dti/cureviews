@@ -33,7 +33,7 @@ export default class Course extends Component {
     const classInfo = this.props.info;
     let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
-    if(this.props.active && this.props.cursor == 1 && this.props.useRedirect){
+    if(this.props.active && this.props.enter == 1 && this.props.useRedirect){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
       }
     // check if a query was provided, if so underline parts of the class name
@@ -101,7 +101,7 @@ Course.propTypes = {
   info: PropTypes.object.isRequired,
   query: PropTypes.string, //optional
   active: PropTypes.bool,
-  cursor: PropTypes.number,
+  enter: PropTypes.number,
   mouse: PropTypes.number,
   handler: PropTypes.func.isRequired,
   key: PropTypes.string,

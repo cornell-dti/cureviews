@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./css/Results.css"; // css files
 import SearchBar from './SearchBar.jsx';
 import ResultsDisplay from './ResultsDisplay.jsx';
+import PropTypes from "prop-types";
 
 
 /*
@@ -20,7 +21,6 @@ import ResultsDisplay from './ResultsDisplay.jsx';
 export class Results extends Component {
   constructor(props) {
     super(props);
-    _isMounted = false;
     this.state = {
       courseList: [],
       query: '',
@@ -38,22 +38,37 @@ export class Results extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    Meteor.call("getCoursesByFilters", {
-      classRating: 4.5
-    }, (err, courseList) => {
-      if (!err && courseList.length != 0 && this._isMounted) {
-        // Save the Class object that matches the request
-        this.setState({
-          courseList: courseList
-        });
-      }
-      else {
-        this.setState({
-          courseList: []
-        });
-      }
-    });
+    if(this.props.match.params.type === "major"){
+      Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
+        if (!err && courseList.length != 0) {
+          // Save the Class object that matches the request
+          this.setState({
+            courseList: courseList
+          });
+        }
+        else {
+          this.setState({
+            courseList: []
+          });
+        }
+      });
+    }
+    else if(this.props.match.params.type === "keyword"){
+      let userQuery=this.props.match.params.input.split("+").join();
+      Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
+        if (!err && courseList.length != 0) {
+          // Save the Class object that matches the request
+          this.setState({
+            courseList: courseList
+          });
+        }
+        else {
+          this.setState({
+            courseList: []
+          });
+        }
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,10 +82,6 @@ export class Results extends Component {
       query: '',
     });
     this.componentDidMount()
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
   }
 
   render() {
@@ -97,9 +108,7 @@ export class Results extends Component {
               <p id="found">We found <strong>{this.state.courseList.length}</strong> courses</p>
             </div>
           </div>
-          <div className="result-display">
-            <ResultsDisplay courses={this.state.courseList} noResults={this.state.courseList.length == 0} />
-          </div>
+          <ResultsDisplay courses={this.state.courseList} noResults={this.state.courseList.length == 0} />
         </div>
       </div>
     )
@@ -132,3 +141,7 @@ export class Results extends Component {
 //     collectionAsObjectList,
 //   };
 // }, Template);
+
+Results.propTypes = {
+  match: PropTypes.object
+};

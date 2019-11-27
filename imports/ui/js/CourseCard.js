@@ -71,8 +71,17 @@ export function getGaugeValues(allReviews) {
 
   //Update the gauge variable values for rating, difficulty, and workload using averages
   //Fixed to 1 decimal place
-  newState.rating = (sumRating/countRatingAndDiff).toFixed(1); //out of 5
-  newState.diff = (sumDiff/countRatingAndDiff).toFixed(1); //out of 5
+  
+  
+  if(countRatingAndDiff > 0){
+    newState.rating = (sumRating/countRatingAndDiff).toFixed(1); //out of 5
+    newState.diff = (sumDiff/countRatingAndDiff).toFixed(1); //out of 5
+  }
+  else{
+    newState.rating = "-";
+    newState.diff = "-";
+  }
+  
   if(countWork > 0){
     newState.workload = (sumWork/countWork).toFixed(1); //out of 5
   }

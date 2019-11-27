@@ -35,10 +35,10 @@ export default class FilteredResult extends Component {
 
   getColor(metric, val) {
     if (metric === "Overall Rating") {
-      if (3.0 <= val && val < 4.0) {
+      if (val !== "-" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
       }
-      else if (4.0 <= val && val <= 5.0) {
+      else if (val !== "-" && 4.0 <= val && val <= 5.0) {
         return "#53B277";
       }
       else {
@@ -46,10 +46,10 @@ export default class FilteredResult extends Component {
       }
     }
     else if (metric === "Difficulty" || metric === "Workload") {
-      if (3.0 <= val && val < 4.0) {
+      if (val !== "-" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
       }
-      else if ((4.0 <= val && val <= 5.0) || val == "-") {
+      else if (val === "-" || 4.0 <= val && val <= 5.0) {
         return "#E64458";
       }
       else {
@@ -60,13 +60,13 @@ export default class FilteredResult extends Component {
 
   updateSortBy() {
     if (this.state.sortBy === "rating") {
-      return this.state.course.classRating;
+      return this.state.course.classRating === null ? "-" : this.state.course.classRating;
     }
     else if (this.state.sortBy === "diff") {
-      return this.state.course.classDifficulty;
+      return this.state.course.classDifficulty === null ? "-" : this.state.course.classDifficulty;
     }
     else if (this.state.sortBy === "work") {
-      return this.state.course.classWorkload == null ? "-" : this.state.course.classWorkload;
+      return this.state.course.classWorkload === null ? "-" : this.state.course.classWorkload;
     }
   }
 
@@ -104,7 +104,7 @@ export default class FilteredResult extends Component {
             </p>
             <p className="p-display" id="over-5">
               /5
-          </p>
+            </p>
           </div>
         </div>
       </li>
