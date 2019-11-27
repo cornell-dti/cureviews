@@ -472,7 +472,7 @@ Meteor.methods({
   },
 
   // Searches the database on Subjects's text index and returns matching subjects (which we're equating to majors)
-  getMajorsByKeyword: function(keyword){
+  getSubjectsByKeyword: function(keyword){
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if(regex.test(keyword)){
         return Subjects.find({$text:{$search:keyword}}).fetch();

@@ -144,14 +144,6 @@ li {
     list-style: none;
 }
 
-.classbutton {
-    padding: 15px;
-}
-
-#classbutton li a {
-    padding: 15px;
-}
-
 
 li .text {
     margin-left: 10px;

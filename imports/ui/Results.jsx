@@ -21,7 +21,6 @@ import PropTypes from "prop-types";
 export class Results extends Component {
   constructor(props) {
     super(props);
-    _isMounted = false;
     this.state = {
       courseList: [],
       query: '',
@@ -39,10 +38,9 @@ export class Results extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    if(this.props.match.params.type =="major"){
-      Meteor.call("getCoursesByFilters", this.props.match.params.input.toLowerCase(), (err, courseList) => {
-        if (!err && courseList.length != 0 && this._isMounted) {
+    if(this.props.match.params.type === "major"){
+      Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
+        if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
           this.setState({
             courseList: courseList
@@ -55,10 +53,10 @@ export class Results extends Component {
         }
       });
     }
-    else if(this.props.match.params.type == "keyword"){
+    else if(this.props.match.params.type === "keyword"){
       let userQuery=this.props.match.params.input.split("+").join();
       Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
-        if (!err && courseList.length != 0 && this._isMounted) {
+        if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
           this.setState({
             courseList: courseList
@@ -84,10 +82,6 @@ export class Results extends Component {
       query: '',
     });
     this.componentDidMount()
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
   }
 
   render() {

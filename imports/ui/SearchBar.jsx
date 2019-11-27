@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
+import Subject from './Subject.jsx';
 import "./css/SearchBar.css";
 import Select from 'react-select';
+import { Redirect } from 'react-router';
 
 /*
   SearchBar Component.
@@ -32,7 +34,7 @@ const initState={
   selected:false, //whether or not user has clicked yet,
   query:"", //user's query,
   allCourses:[],
-  selectedFilter: {value: "course", label: "By Course Name"}
+  allSubjects:[]
 };
 
 export default class SearchBar extends Component {
@@ -44,7 +46,6 @@ export default class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.setCourse=this.setCourse.bind(this);
     this.updateQuery=this.updateQuery.bind(this);
-    this.handleFilterChange.bind(this)
     
   }
 
@@ -52,12 +53,39 @@ export default class SearchBar extends Component {
   // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
     // trim the query to remove trailing spaces
-    this.setState({ query: event.target.value.trim() });
-    //Session to be able to get info from this.state.query in withTracker
-    Session.set('querySession', this.state.query);
-    Meteor.call("getClassesByQuery", this.state.query, (err, classes)=>{
-      this.setState({allCourses:classes})
-    });
+    this.setState({ query: event.target.value.trim()});
+  }
+  
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.query.length !== prevState.query.length || this.props !== prevProps){
+      Meteor.call("getCoursesByKeyword", this.state.query, (err, courseList) => {
+        if (!err && courseList && courseList.length !== 0) {
+          // Save the list of Class objects that matches the request
+          this.setState({
+            allCourses: courseList
+          });
+        }
+        else {
+          this.setState({
+            allCourses:[]
+          });
+        }
+      });
+      
+      Meteor.call("getSubjectsByKeyword", this.state.query, (err, subjectList) => {
+        if (!err && subjectList && subjectList.length !== 0) {
+          // Save the list of Subject objects that matches the request
+          this.setState({
+            allSubjects: subjectList
+          });
+        }
+        else {
+          this.setState({
+            allSubjects:[]
+          });
+        }
+      });
+    }
   }
 
   //This function is only used for the pop-up
@@ -67,11 +95,6 @@ export default class SearchBar extends Component {
     if(!this.state.showDropdown){
       this.setState(newSearchState);
     }
-  }
-  
-  handleFilterChange(selectedFilter){
-    selectedFilter.label = "By " + selectedFilter.label
-    this.setState({ selectedFilter: selectedFilter });
   }
 
   //Handler function passed into Course component to get information on user-clicked course
@@ -92,8 +115,6 @@ export default class SearchBar extends Component {
   
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-
-    Meteor.call("getCoursesByKeyword", "fish", (err, res)=>{ console.log(res)});
 
     this.setState(newSearchState);
     if (e.key == "ArrowDown") {
@@ -155,11 +176,12 @@ export default class SearchBar extends Component {
     this.setState({showDropdown: false})
   }
 
-  // Convert the class objects that satisfy this query into a styled list of search results.
+  // Convert the class amd major objects that satisfy this query into a styled list of search results.
   // Each one will act as a button, such that clicking a course will take the user
   // to that class's ClassView. The name of the class will have underline and bold
   // where it matches the query.
-  renderCourses() {
+  // Clicking a major will take the user to the results page for that major's Classes
+  renderResults() {
     //Used to start the timer "popup_timer" to display a popup after 30 seconds post-search
     //See ClassView.jsx: decidePopup function
     if(Session.get("seen_popup") == undefined || Session.get("seen_popup") == ""){
@@ -170,41 +192,64 @@ export default class SearchBar extends Component {
       return this.state.allCourses.slice(0,3).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.state.query} useRedirect={false} handler={this.setCourse}
-          active={this.state.index == i} cursor={this.state.enter} 
+          active={this.state.index == i} enter={this.state.enter} 
           mouse = {this.state.mouse}/>
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
         //the index matching with the course
-        //the prop "cursor" will pass through the value of the enter state
+        //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       ));
       
     }
     else if (this.state.query !== "" && !this.state.selected){
-      return this.state.allCourses.slice(0,100).map((course, i) => (
+      let results = [];
+      
+      // Used for "enter" key on 'Search: "query" ' button for exact search
+      // Sends user to /results/keyword/query+query
+      if(this.state.index == 0 && this.state.enter == 1){
+         return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
+      }
+      
+      let exact_search = (
+        <li key={"search"} className={this.state.index == 0 && this.state.mouse != 1 ? 'active classbutton' : 'classbutton'}>
+          <a className="text-style-1" href={`/results/keyword/${this.state.query.split(" ").join("+")}`}>
+            {"Search: \"" + this.state.query+ "\""}
+          </a>
+        </li>
+      )
+      
+      results.push(exact_search);
+      
+      let subjectList = this.state.allSubjects.slice(0,3).map((subject, i) => (
+        //create a new class "button" that will set the selected class to this class when it is clicked.
+        <Subject key={subject._id} info={subject} query={this.state.query}
+          active={this.state.index == (i + 1 /* plus 1 because of exact search */)} 
+          enter={this.state.enter} mouse = {this.state.mouse}/>
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "enter" will pass through the value of the enter state
+        //the prop "mouse" will pass through the value of the mouse state
+      ));
+      
+      results.push(subjectList)
+      
+      results.push(this.state.allCourses.slice(0,5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.state.query} useRedirect={true} handler={this.setCourse}
-          active={this.state.index == i} cursor={this.state.enter} 
+          active={this.state.index == (i + subjectList.length + 1 /* plus because of exact search and subjects */)} 
+          enter={this.state.enter} 
           mouse = {this.state.mouse}/>
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
         //the index matching with the course
-        //the prop "cursor" will pass through the value of the enter state
+        //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
-      ));
+      )));
+      
+      return results;
     }
     else {
       return <div />;
     }
-  }
-
-  getFilterOptions(){
-    let options = [
-                    {value: "course", label: "Course Name"},
-                    {value: "keyword", label: "Keyword"},
-                    {value: "major", label: "Major"},
-                    {value: "professor", label: "Professor"}
-                  ]
-                  
-    return options.filter(x => x.value !== this.state.selectedFilter.value);
   }
 
   render() {    
@@ -212,28 +257,18 @@ export default class SearchBar extends Component {
       <div className="search-bar text-left" id="searchbar-popup" >
         <input className={"search-text-popup " + (this.state.selected ? "search-text-popup-selected" : "")} value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off"/>
         <ul id="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-          {this.renderCourses()}
+          {this.renderResults()}
         </ul>
       </div>
     );
     else return (
       <div className="row">
-        <div className="col-lg-9 col-md-9 col-sm-9 col-lg-9-altered col-md-9-altered col-sm-9-altered search-bar">
-          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “CALS” or “CS 2110" autoComplete="off"/>
+        <div className="col-lg-12 col-md-12 col-sm-12 search-bar">
+          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “CALS” or “CS 2110”" autoComplete="off"/>
 
-          <ul id="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-            {this.renderCourses()}
+          <ul className="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
+            {this.renderResults()}
           </ul>
-        </div>
-        <div className="col-lg-3 col-md-3 col-sm-3 col-lg-3-altered col-md-3-altered col-sm-3-altered select-padding-left">
-          <Select
-            value={this.state.selectedFilter}
-            onChange={(newFilter) => this.handleFilterChange(newFilter)}
-            options={this.getFilterOptions()}
-            classNamePrefix='react-select'
-            className='react-select'
-            isSearchable={false}
-           />
         </div>
       </div>
     );
@@ -249,14 +284,3 @@ SearchBar.propTypes = {
   formPopupHandler: PropTypes.func //handler to set state for form if in popup
 };
 
-// wrap in a container class that allows the component to dynamically grab courses
-// that contain this query anywhere in their full name. The component will automatically
-//  re-render when new classes are added to the database.
-// export default withTracker(props => {
-//   const subscription = Meteor.subscribe('classes', props.query);
-//   const loading = !subscription.ready();
-//   const allCourses = Classes.find({}).fetch();
-//   return {
-//     allCourses, loading,
-//   };
-// }) (SearchBar);
