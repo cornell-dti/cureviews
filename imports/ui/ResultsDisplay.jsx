@@ -75,14 +75,10 @@ export default class ResultsDisplay extends Component {
   }
 
   sort() {
-    console.log("enterd");
     if (this.state.filteredItems.length == 0) {
-      console.log("first");
       if (this.state.selected == "rating") {
-        console.log("rating");
-        let data = this.state.courseList.sort((a, b) =>
-          ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
-            (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
+        let data = this.state.courseList.sort(
+          (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -90,9 +86,8 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.courseList.sort((a, b) =>
-          ((a.classDifficulty == null ? Number.MAX_SAFE_INTEGER : a.classDifficulty) -
-            (b.classDifficulty == null ? Number.MAX_SAFE_INTEGER : b.classDifficulty)));
+        data = this.state.courseList.sort(
+          (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -101,9 +96,8 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        data = this.state.courseList.sort((a, b) =>
-          ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
-            (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        data = this.state.courseList.sort(
+          (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -112,14 +106,9 @@ export default class ResultsDisplay extends Component {
       }
     }
     else {
-      console.log("in sorting");
       if (this.state.selected == "rating") {
-        console.log("here");
-        console.log(this.state.filteredItems[0]);
-        let data = this.state.filteredItems.sort((a, b) =>
-          ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
-            (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
-        console.log(data[0]);
+        let data = this.state.filteredItems.sort(
+          (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -127,9 +116,8 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.filteredItems.sort((a, b) =>
-          ((a.classDifficulty == null ? Number.MAX_SAFE_INTEGER : a.classDifficulty) -
-            (b.classDifficulty == null ? Number.MAX_SAFE_INTEGER : b.classDifficulty)));
+        data = this.state.filteredItems.sort(
+          (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -138,9 +126,8 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        data = this.state.filteredItems.sort((a, b) =>
-          ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
-            (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        data = this.state.filteredItems.sort(
+          (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
         this.setState({
           filteredItems: data,
           card_course: data[0],
