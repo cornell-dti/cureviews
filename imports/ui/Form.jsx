@@ -366,7 +366,7 @@ export default class Form extends Component {
             <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
               <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
                 <div className="panel-body-2" id="form">
-                 {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} query={this.props.query} queryFunc={this.props.queryFunc} />}
+                 {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
                       <div className="row" id="reviewTextRow">
                         <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
                           onChange={(event) => this.handleTextChange(event)}
