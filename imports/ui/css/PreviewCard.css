@@ -83,7 +83,7 @@
   line-height: normal;
   letter-spacing: 0.01em;
   color: #979797;
-  padding-bottom: 330px;
+  padding-bottom: 100px;
 }
 
 .panel-radius{
@@ -114,4 +114,15 @@
 
 #gauge, #gauge-body{
   width: 50%;
+}
+
+#leave-review{
+  background-color: #4a90e2;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif; 
+  text-align: center;
+  border-radius: 5px;
+  height: auto;
+  padding: 10px;
+  font-size: 15px;
 }
