@@ -63,16 +63,6 @@ export default class ResultsDisplay extends Component {
     this.setState({ selected: opt }, () => this.sort());
   }
 
-  defaultSort() {
-    let data = this.props.courses.sort((a, b) =>
-      ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
-        (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
-    this.setState({
-      courseList: data,
-      card_course: data[0],
-      active_card: 0
-    });
-  }
 
   sort() {
     if (this.state.filteredItems.length == 0) {
