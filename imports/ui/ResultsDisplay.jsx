@@ -333,7 +333,7 @@ export default class ResultsDisplay extends Component {
                 <div className="no-results-cap">Sorry! No classes match your search.</div>
               </div>
             </div>
-          </div >
+          </div>
         </div>
       )
     }
