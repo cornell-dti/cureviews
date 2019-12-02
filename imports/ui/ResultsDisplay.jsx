@@ -5,6 +5,7 @@ import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
 import { lastOfferedSems } from './js/CourseCard.js';
 
+
 /*
   Results Component. Short description if needed.
 
@@ -27,12 +28,12 @@ export default class ResultsDisplay extends Component {
       active_card: 0,
       selected: "rating",
       filters: {
-        "Fall": true, "Spring": true, 
+        "Fall": true, "Spring": true,
         "1000": true, "2000": true,
-        "3000": true, "4000": true, 
+        "3000": true, "4000": true,
         "5000+": true
       }, // key value pair name:checked
-      filteredItems: [],
+      filteredItems: this.props.courses,
       noResults: this.props.noResults
     };
     this.previewHandler = this.previewHandler.bind(this);
@@ -51,9 +52,9 @@ export default class ResultsDisplay extends Component {
           "Fall": true, "Spring": true, "1000": true, "2000": true,
           "3000": true, "4000": true, "5000+": true
         }, // key value pair => name:checked
-        filteredItems: [],
+        filteredItems: this.props.courses,
         noResults: this.props.noResults
-      })
+      }, () => this.sort())
     }
   }
 
@@ -62,10 +63,22 @@ export default class ResultsDisplay extends Component {
     this.setState({ selected: opt }, () => this.sort());
   }
 
+  defaultSort() {
+    let data = this.props.courses.sort((a, b) =>
+      ((b.classRating == null ? Number.MIN_SAFE_INTEGER : b.classRating) -
+        (a.classRating == null ? Number.MIN_SAFE_INTEGER : a.classRating)));
+    this.setState({
+      courseList: data,
+      card_course: data[0],
+      active_card: 0
+    });
+  }
+
   sort() {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "rating") {
-        let data = this.state.courseList.sort((a, b) => (b.classRating - a.classRating));
+        let data = this.state.courseList.sort(
+          (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -73,7 +86,8 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.courseList.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        data = this.state.courseList.sort(
+          (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -82,9 +96,8 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        data = this.state.courseList.sort((a, b) =>
-          ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
-            (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        data = this.state.courseList.sort(
+          (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -94,7 +107,8 @@ export default class ResultsDisplay extends Component {
     }
     else {
       if (this.state.selected == "rating") {
-        data = this.state.filteredItems.sort((a, b) => (b.classRating - a.classRating));
+        let data = this.state.filteredItems.sort(
+          (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -102,7 +116,8 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.filteredItems.sort((a, b) => (a.classDifficulty - b.classDifficulty));
+        data = this.state.filteredItems.sort(
+          (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -111,9 +126,8 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        data = this.state.filteredItems.sort((a, b) =>
-          ((a.classWorkload == null ? Number.MAX_SAFE_INTEGER : a.classWorkload) -
-            (b.classWorkload == null ? Number.MAX_SAFE_INTEGER : b.classWorkload)));
+        data = this.state.filteredItems.sort(
+          (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -278,16 +292,17 @@ export default class ResultsDisplay extends Component {
                   Sort By:
                 </p>
                 <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
-                    <option value="rating">Overall Rating</option>
-                    <option value="diff" >Difficulty</option>
-                    <option value="work">Workload</option>
-                  </select>
-                </div>
+                  <option value="rating">Overall Rating</option>
+                  <option value="diff" >Difficulty</option>
+                  <option value="work">Workload</option>
+                </select>
               </div>
-              <ul>
-                {this.renderResults()}
-              </ul>
             </div>
+            <ul>
+              {this.renderResults()}
+            </ul>
+          </div>
+          <div></div>
           <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
             <PreviewCard course={this.state.card_course} />
           </div>
@@ -296,7 +311,7 @@ export default class ResultsDisplay extends Component {
     }
     else {
       return (
-        <div className="row">
+        <div className="row margin-top">
           <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
             <p className="overall-filter">Filter</p>
             <div className="filter-sub">
@@ -308,19 +323,17 @@ export default class ResultsDisplay extends Component {
               {this.renderClassLevelCheckBoxes()}
             </div>
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-4" id="results">
-            <div className="sort-by">
-              Sort By:
-              <select className="browser-default custom-select" onChange={(e) => this.handleSelect(e)}>
-                <option value="rating">Overall Rating</option>
-                <option value="diff" >Difficulty</option>
-                <option value="work">Workload</option>
-              </select>
+          <div className="col-md-10 col-sm-10 col-xs-10" id="results">
+            <div className="row">
+              <div className="col-md-2 col-sm-2 col-xs-2">
+                <p className="num-classes-found">We found <strong>{this.props.courses.length}</strong> courses</p>
+              </div>
+              <div className="col-md-6 col-sm-6 col-xs-6" id="results">
+                <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
+                <div className="no-results-cap">Sorry! No classes match your search.</div>
+              </div>
             </div>
-            <div>
-              Sorry! No classes matched your search.
-            </div>
-          </div>
+          </div >
         </div>
       )
     }

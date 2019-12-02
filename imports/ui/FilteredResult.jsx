@@ -60,13 +60,13 @@ export default class FilteredResult extends Component {
 
   updateSortBy() {
     if (this.state.sortBy === "rating") {
-      return this.state.course.classRating === null ? "-" : this.state.course.classRating;
+      return Number(this.state.course.classRating) ? this.state.course.classRating : "-";
     }
     else if (this.state.sortBy === "diff") {
-      return this.state.course.classDifficulty === null ? "-" : this.state.course.classDifficulty;
+      return Number(this.state.course.classDifficulty) ? this.state.course.classDifficulty : "-";
     }
     else if (this.state.sortBy === "work") {
-      return this.state.course.classWorkload === null ? "-" : this.state.course.classWorkload;
+      return Number(this.state.course.classWorkload) ? this.state.course.classWorkload : "-";
     }
   }
 
