@@ -1,9 +1,10 @@
 #results{
+  height: 70vh;
   overflow:auto
 }
 
 #listOfClassResults{
-  height:500px;
+  height:100%;
   overflow-y: scroll;
 }
 
