@@ -46,7 +46,7 @@ export class CourseReviews extends Component {
       ));
     } else {
       return this.props.reviews.map((review) => (
-        <Review key={review._id} info={review} reportHandler={this.reportReview} />
+        <Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false}/>
       ));
     }
   }

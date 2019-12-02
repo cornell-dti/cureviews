@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./css/Results.css"; // css files
-import SearchBar from './SearchBar.jsx';
+import Navbar from './Navbar.jsx';
 import ResultsDisplay from './ResultsDisplay.jsx';
 import PropTypes from "prop-types";
 
@@ -88,20 +88,7 @@ export class Results extends Component {
     return (
       <div>
         <div className="container-fluid container-top-gap-fix">
-          <div className="row navbar">
-            <div className="col-md-2 col-sm-2 col-xs-2">
-              <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-                <span>CU Reviews</span>
-              </a>
-            </div>
-            <div className="col-md-7 col-sm-7 col-xs-7">
-              <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
-            </div>
-            <div className="col-md-3 col-sm-3 col-xs-3 fix-padding">
-              {/*<a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a>*/}
-              Report a Bug (inactive)
-            </div>
-          </div>
+          <Navbar />
           <ResultsDisplay courses={this.state.courseList} noResults={this.state.courseList.length == 0} />
         </div>
       </div>

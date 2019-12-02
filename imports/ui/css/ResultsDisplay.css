@@ -51,6 +51,7 @@
 }
 
 .browser-default{
+  font-family: "Source Sans Pro", sans-serif;
   background-color: white;
   border-color: transparent;
   border: 0px;
@@ -69,5 +70,15 @@
 .checkbox-label{
   font-family: "Source Sans Pro", sans-serif; 
   margin: 0px 0px 0px 10px;
+}
+
+.no-results{
+  width: auto;
+  height: 400px;
+}
+
+.no-results-cap{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 25px;
 }
 

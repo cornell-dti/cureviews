@@ -47,7 +47,7 @@ export default class App extends Component {
             <div className="row">
               <p className="welcome_text">Search for Cornell courses, rate past classes, and share feedback</p>
             </div>
-            <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
+            <SearchBar />
           </div>
         </div>
 

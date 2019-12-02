@@ -147,13 +147,13 @@ export default class PreviewCard extends Component {
           </div>
           <div className="row gaugeHolder">
 
-              <div className="col-md-4 col-sm-4 col-xs-12">
+              <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
                 <Gauge value={this.state.rating} left={50} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
               </div>
-              <div className="col-md-4 col-sm-4 col-xs-12">
+              <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
                 <Gauge value={this.state.diff} left={150} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
               </div>
-              <div className="col-md-4 col-sm-4 col-xs-12">
+              <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
                 <Gauge value={this.state.workload} left={250} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
               </div>
 
@@ -168,10 +168,11 @@ export default class PreviewCard extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-12 col-sm-12">
+            <div className="review-holder">
               {Object.keys(this.state.topReview).length !== 0 && 
               
-              <Review key={this.state.topReview._id} info={this.state.topReview} /> 
+              <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true}/>
+              
               }
 
               {
