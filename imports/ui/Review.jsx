@@ -21,6 +21,12 @@ export default class Review extends Component {
       liked: false, //indicates whether or not the review has been liked in the current state
     }
 
+    this.circlebox_class = props.isPreview ? "circlebox-preview" : "circlebox";
+    this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
+    this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
+    this.professor_title_class = props.isPreview ? "professor-title-preview" : "professor-title";
+    this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
+    this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
 
   }
 
@@ -106,8 +112,8 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <li>
-        <div className="review">
+      <div className="review">
+        <div className="row noLeftRightSpacing">
           <div className="col-md-12 col-xs-12 col-xs-12">
             <button className="report-review" onClick={() => {
               this.props.reportHandler(review);
@@ -117,69 +123,68 @@ export default class Review extends Component {
               ></span>
             </button>
           </div>
-          <div className="panel-body-3">
-            <div className="row reviewNumbers">
-              <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
-                <div className="container" id="circlebox" style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
-                  <div className="review-number-text" >{(review.rating != undefined) ? review.rating : review.quality}</div>
-                </div>
-              </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
-                <p className="review-number-label">Overall Rating</p>
-              </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" id="circle">
-                <div className="container" id="circlebox" style={this.getColorGreenToRed(review.difficulty)}>
-                  <div className="review-number-text" >{review.difficulty}</div>
-                </div>
-              </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
-                <p className="review-number-label">Difficulty</p>
-              </div>
-              <div className="col-md-2 col-xs-2 col-xs-2" id="circle">
-                <div className="container" id="circlebox" style={this.getColorGreenToRed(review.workload)}>
-                  <div className="review-number-text" >{(review.workload) ? review.workload : "-"}</div>
-                </div>
-              </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" id="label-wrap">
-                <p className="review-number-label">Workload</p>
-              </div>
-            </div>
-            <div className="row noLeftRightPadding">
-              <div className="col-md-3 col-sm-3 col-xs-3">
-                <p className="professor-title">Professor: </p>
-              </div>
-              <div className="col-md-9 col-sm-9 col-xs-9">
-                {/*The following adds a grey professor box for each professor listed in the review*/}
-                {(review.professors && review.professors.length  !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-6 col-sm-6 col-xs-6">
-                  <p className="professor-text">{prof}</p></div>)) : <div className="col-md-6 col-sm-6 col-xs-6">
-                    <p className="professor-text">N/A</p></div>}
-              </div>
+        </div>
+        <div className="panel-body-3">
+          <div className="row reviewNumbers noLeftRightSpacing">
+
+              <div className="container" id={this.circlebox_class} style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
+                <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
 
             </div>
-            <div className="row">
-              <div className="review-text" >{review.text}</div>
-            </div>
-            <div className="row noLeftRightPadding">
-              <div className="col-md-3 col-sm-3 col-xs-3">
-                <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
+
+              <p className={this.review_number_label_class}>Overall Rating</p>
+
+
+              <div className="container" id={this.circlebox_class} style={this.getColorGreenToRed(review.difficulty)}>
+                <p className={this.review_number_text_class} >{review.difficulty}</p>
               </div>
-              <div className="col-md-9 col-sm-9 col-xs-9">
-                <button className= //if the review has been liked, the button will be filled in.
-                  {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
-                  onClick={() => {
-                    this.increment(review);
-                  }}>
-                  <span className="glyphicon glyphicon-thumbs-up"></span>
-                </button>
+
+
+              <p className={this.review_number_label_class}>Difficulty</p>
+
+
+              <div className="container" id={this.circlebox_class} style={this.getColorGreenToRed(review.workload)}>
+                <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
               </div>
+
+
+              <p className={this.review_number_label_class}>Workload</p>
+
+          </div>
+          <div className="row noLeftRightSpacing">
+            <div className="col-md-3 col-sm-3 col-xs-3 noLeftRightSpacing review-padding-left">
+              <p className={this.professor_title_class}>Professor: </p>
             </div>
-            <div className="row">
-              <p className="upvote-text">Helpful
-              ({(review.likes == undefined ? 0 : review.likes)})</p>
+            <div className="col-md-9 col-sm-9 col-xs-9">
+              {/*The following adds a grey professor box for each professor listed in the review*/}
+              {(review.professors && review.professors.length  !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-6 col-sm-6 col-xs-6">
+                <p className={this.professor_text_class}>{prof}</p></div>)) : <div className="col-md-6 col-sm-6 col-xs-6">
+                  <p className={this.professor_text_class}>N/A</p></div>}
             </div>
           </div>
+          <div className="row noLeftRightSpacing review-padding-left">
+            <div className={this.review_text_class} >{review.text}</div>
+          </div>
         </div>
-      </li>
+        <div className="row noLeftRightSpacing">
+          <div className="col-md-3 col-sm-3 col-xs-3 noLeftRightSpacing">
+            <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
+          </div>
+          <div className="col-md-9 col-sm-9 col-xs-9">
+            <button className= //if the review has been liked, the button will be filled in.
+              {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+              onClick={() => {
+                this.increment(review);
+              }}>
+              <span className="glyphicon glyphicon-thumbs-up"></span>
+            </button>
+          </div>
+        </div>
+        <div className="row noLeftRightSpacing">
+          <p className="upvote-text">Helpful
+          ({(review.likes == undefined ? 0 : review.likes)})</p>
+        </div>
+      </div>
     );
   }
 }
@@ -188,5 +193,6 @@ export default class Review extends Component {
 // takes in the database object representing this review
 Review.propTypes = {
   info: PropTypes.object.isRequired,
-  reportHandler: PropTypes.func
+  reportHandler: PropTypes.func,
+  isPreview: PropTypes.bool.isRequired
 };

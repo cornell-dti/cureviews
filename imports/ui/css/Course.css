@@ -10,6 +10,11 @@
   text-decoration: none;
 }
 
+.contrasting-result-background .resultbutton, .contrasting-result-background .resultbutton:hover {
+  /* background-color: rgba(250, 250, 250, 0.9); */
+  background-color: rgba(250, 250, 250, 0.9);
+}
+
 #resultbutton li a {
   padding: 15px;
 }
@@ -52,6 +57,10 @@
 
 .resultbutton:hover, .active{
   background-color: rgba(73, 144, 226, 0.5) !important;
+}
+
+.contrasting-result-background .resultbutton:hover, .contrasting-result-background .active{
+  background-color: rgba(73, 144, 226, 0.9) !important;
 }
 
 .resultbutton-popup{

@@ -117,17 +117,6 @@ nav {
   background-color: rgba(74,74,74,.06);
 }
 
-.navbar {
-  min-height: 72px;
-  padding-top: 1em;
-  padding-left: 10px;
-  padding-right: 10px;
-  z-index: 980;
-  top: 0px;
-  position: sticky;
-  margin-bottom:5px;
-}
-
 .pushDown {
   padding-top: 4%;
 }

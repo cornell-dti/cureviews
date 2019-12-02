@@ -1,0 +1,33 @@
+.navbar {
+  min-height: 150px;
+  padding-top: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 980;
+  top: 0px;
+  position: sticky;
+  background: linear-gradient(#68a5ec, #a8d3f5, #a8d3f5);
+  border: 0;
+  margin-bottom: 0;
+}
+
+.scale-logo-navbar{
+  height: 60px;
+  width: auto;
+  margin: 0 0 0 50px;
+}
+
+#reportBugText{
+  font-family: "Source Sans Pro", sans-serif;
+  text-align:right;
+  font-weight: var(--semi-bold-weight);
+  font-size: 16px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  color: #ffffff;
+  margin-right: 22px;
+  margin-top:-35px;
+}

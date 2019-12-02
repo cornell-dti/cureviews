@@ -1,12 +1,11 @@
 /* Font declaration */
 /* #text, #review_text, #label, #button_text {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+font-family: 'Helvetica Neue', Arial, sans-serif;
 } */
 
 .panel-body-3 {
-    margin: auto;
-    padding: 25px 30px 0px;
-    margin-bottom: 5px;
+  margin: auto;
+  padding: 0px 50px 5px 50px;
 }
 
 #rectangle, .review {
@@ -22,15 +21,22 @@
 #circlebox {
   border-radius: 25px;
   height: 34px;
-  /*background-color: #e64558;*/
   padding-top: 0;
   width: 34px;
-  left: 50%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
-#circle {
-  padding-right: 0px;
-  margin-right: 0px;
+#circlebox-preview {
+  border-radius: 25px;
+  height: 25px;
+  padding-top: 0;
+  min-width: 25px !important;
+  max-width: 25px !important;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 #text {
@@ -57,10 +63,23 @@
   background-color: #E0F0FF;
   padding-left: 2px;
   padding-right: 2px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 5px;
-  margin-bottom: 6px;
+  margin: 5px 0 6px 0;
+}
+
+.professor-text-preview{
+  border-radius: 5px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  text-align: center;
+  background-color: #E0F0FF;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin: 5px 0 6px 0;
 }
 
 #label{
@@ -72,7 +91,6 @@
   margin: 0 7px;
 }
 
-
 .review-text {
   font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
@@ -83,7 +101,19 @@
   letter-spacing: 0.01em;
   color: #000000;
   text-align: left;
-  padding-left: 50px;
+  padding-bottom: 15px;
+}
+
+.review-text-preview {
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  text-align: left;
   padding-bottom: 15px;
 }
 
@@ -96,7 +126,8 @@
   line-height: normal;
   letter-spacing: 0.01em;
   color: #A6A6A6;
-  padding-left : 35px;
+  float: left;
+  padding-left: 50px;
 }
 
 .upvote-text{
@@ -109,30 +140,30 @@
   letter-spacing: 0.01em;
   float: right;
   color: #4990e2;
-  margin-right: 2px;
+  margin-right: 10px;
 }
 
 .report-review, .upvote, .voted {
   width: 30px;
   height: 30px;
-  padding: 0px 0px 0px 0px;
+  padding: 0;
   text-align: center;
   line-height: 1.42857;
-  background-color: white;
+  background-color: transparent;
   float: right;
   margin-right: 10px;
-  border-color: white;
+  border-color: transparent;
 }
 
 .report-review {
   color: #9b9b9b;
-  margin-top: 3px;
+  padding-top: 14px;
 }
 
 .upvote{
   color: #4990e2;
   margin-right: 0px;
-  padding-right: 0px;
+  padding-right: 8px;
   border-radius: 30px;
 }
 
@@ -178,11 +209,9 @@
 }
 
 #label-wrap{
-  padding-left: 0px;
-  padding-right: 0px;
-  margin: 0 0px;
-  padding-top: 4px;
-  padding-bottom: 15px;
+  margin: 0 0;
+  padding: 4px 0 15px 0;
+  text-align: left;
 }
 
 .professor-title {
@@ -195,10 +224,20 @@
   letter-spacing: 0.01em;
   color: #000000;
   text-align: left;
-  padding-top: 5px;
-  padding-left: 35px;
-  padding-right: 0px;
-  padding-bottom: 10px;
+  padding: 5px 0 10px 0;
+}
+
+.professor-title-preview {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  text-align: left;
+  padding: 5px 0 10px 0;
 }
 
 #agreeNumber {
@@ -210,9 +249,14 @@
   border-radius: 8px;
   border: solid 1px #dddddd;
   width: 100%;
+  margin-bottom: 15px;
 }
 
- .review-number-text{
+.review-padding-left{
+  /* padding-left: 50px !important; */
+}
+
+.review-number-text{
   height: 100%;
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;
@@ -223,33 +267,70 @@
   line-height: normal;
   letter-spacing: 0.01em;
   color: #ffffff;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   position: relative;
-  left: -75%;
- }
- 
- .review-number-label{
-   font-family: "Source Sans Pro", sans-serif;
-   font-size: 18px;
-   font-weight: var(--semi-bold-weight);
-   font-style: normal;
-   font-stretch: normal;
-   line-height: normal;
-   letter-spacing: 0.01em;
-   color: #000000;
-   white-space: nowrap;
- }
+  margin: auto;
+}
+
+.review-number-text-preview{
+  height: 100%;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin: auto;
+}
+
+.review-number-label{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  white-space: nowrap;
+  margin: 0;
+  padding: 5px 5%;
+}
+
+.review-number-label-preview{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  white-space: nowrap;
+  margin: 0;
+  padding: 3px 1.1vw;
+}
 
 .reviewNumbers{
   margin-bottom: 8px;
+  display: inline-flex;
+  width: 100%;
 }
 
 .space-review-buttons {
   margin-left: 5px;
 }
 
-.noLeftRightPadding{
-  padding-left: 0px;
-  padding-right: 0px;
+.noLeftRightSpacing{
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
