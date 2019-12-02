@@ -34,6 +34,9 @@ export default class Navbar extends Component {
         <div className={"col-md-7 col-sm-7 col-xs-7"}>
           <SearchBar contrastingResultsBackground={true}/>
         </div>
+        <div id="reportBugText">
+          <a href="https://forms.gle/iDPXCywvm266yf457">Report a bug</a>
+        </div>
       </div>
     )
   }
