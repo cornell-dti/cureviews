@@ -1,12 +1,15 @@
 #results{
-  overflow: hidden;
- 
+  overflow:auto
+}
+
+#listOfClassResults{
+  height:500px;
+  overflow-y: scroll;
 }
 
 
 #preview{
   overflow: hidden;
-
 }
 #filters{
   font-family: "Source Sans Pro", sans-serif; 
