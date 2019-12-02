@@ -262,7 +262,7 @@ export default class SearchBar extends Component {
       </div>
     );
     else return (
-      <div className="row">
+      <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
         <div className="col-lg-12 col-md-12 col-sm-12 search-bar">
           <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “CALS” or “CS 2110”" autoComplete="off"/>
 
@@ -281,6 +281,7 @@ export default class SearchBar extends Component {
 SearchBar.propTypes = {
   loading: PropTypes.bool, // optional
   isPopup: PropTypes.bool, // true if rendered in pop-up
-  formPopupHandler: PropTypes.func //handler to set state for form if in popup
+  formPopupHandler: PropTypes.func, //handler to set state for form if in popup
+  contrastingResultsBackground: PropTypes.bool // Used to display contrasting background for search results
 };
 

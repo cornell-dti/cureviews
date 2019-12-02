@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./css/Navbar.css";
 import SearchBar from './SearchBar.jsx';
+import PropTypes from 'prop-types';
 
 
 /*
@@ -30,8 +31,8 @@ export default class Navbar extends Component {
             <img src='/logo.svg' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
           </a>
         </div>
-        <div className="col-md-7 col-sm-7 col-xs-7">
-          <SearchBar />
+        <div className={"col-md-7 col-sm-7 col-xs-7"}>
+          <SearchBar contrastingResultsBackground={true}/>
         </div>
       </div>
     )
