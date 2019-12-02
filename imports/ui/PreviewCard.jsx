@@ -129,128 +129,83 @@ export default class PreviewCard extends Component {
 
   render() {
     let theClass = this.props.course;
-    if (Object.keys(this.state.topReview).length !== 0) {
-      return (
-        <div className="preview-holder">
-          <div className="preview-panel">
-            <div className="row">
-              <div className="col-md-12 col-sm-12">
-                <p className="preview-class-title">
-                  <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                    {theClass.classTitle}
-                  </a>
-                </p>
-                <p className="preview-class-info">
-                  {theClass.classSub.toUpperCase() + " " + theClass.classNum}
-                </p>
-              </div>
-            </div>
-            <div className="row gaugeHolder">
 
-              <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
-                <Gauge value={this.state.rating} left={50} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
-              </div>
-              <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
-                <Gauge value={this.state.diff} left={150} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
-              </div>
-              <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
-                <Gauge value={this.state.workload} left={250} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
-              </div>
-
-            </div>
-            <div className="row">
-              <div className="col-md-12 col-sm-12">
-                {Object.keys(this.state.topReview).length !== 0 &&
-
-                  <p className="preview-top-review-label">Top Review</p>
-
-                }
-              </div>
-            </div>
-            <div className="row">
-              <div className="review-holder">
-                {Object.keys(this.state.topReview).length !== 0 &&
-
-                  <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} />
-
-                }
-
-                {
-                  Object.keys(this.state.topReview).length !== 0
-                  &&
-                  <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                    See {this.state.numReviews} more reviews
-              </a>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-      );
-
-    }
-
-    else {
-      return (
-        <div className="preview-holder">
-          <div className="preview-panel">
-            <div className="row">
-              <div className="col-md-12 col-sm-12">
-                <p className="preview-class-title">
-                  <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                    {theClass.classTitle}
-                  </a>
-                </p>
-                <p className="preview-class-info">
-                  {theClass.classSub.toUpperCase() + " " + theClass.classNum}
-                </p>
-              </div>
-            </div>
-            <div className="row gaugeHolder">
-
-              <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
-                <Gauge value={this.state.rating} left={50} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
-              </div>
-              <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
-                <Gauge value={this.state.diff} left={150} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
-              </div>
-              <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
-                <Gauge value={this.state.workload} left={250} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
-              </div>
-
-            </div>
-            <div className="row">
-              <div className="col-md-12 col-sm-12">
-                {Object.keys(this.state.topReview).length !== 0 &&
-
-                  <p className="preview-top-review-label">Top Review</p>
-
-                }
-              </div>
-            </div>
-            <div className="row">
-              <div className="review-holder">
-                {Object.keys(this.state.topReview).length !== 0 &&
-
-                  <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} />
-
-                }
-
-                <div>
-                  <p className="preview-empty-top-review">No reviews yet</p>
-                  <a className="col-md-12 col-sm-12" id="leave-review"
-                    href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                    Leave a review
+    return (
+      <div className="preview-holder">
+        <div className="preview-panel">
+          <div className="row">
+            <div className="col-md-12 col-sm-12">
+              <p className="preview-class-title">
+                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  {theClass.classTitle}
                 </a>
-                </div>
-              </div>
+              </p>
+              <p className="preview-class-info">
+                {theClass.classSub.toUpperCase() + " " + theClass.classNum}
+              </p>
+            </div>
+          </div>
+          <div className="row gaugeHolder">
+
+            <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
+              <Gauge value={this.state.rating} left={50} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
+            </div>
+            <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
+              <Gauge value={this.state.diff} left={150} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
+            </div>
+            <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
+              <Gauge value={this.state.workload} left={250} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
+            </div>
+
+          </div>
+          <div className="row">
+            <div className="col-md-12 col-sm-12">
+              {Object.keys(this.state.topReview).length !== 0 &&
+
+                <p className="preview-top-review-label">Top Review</p>
+
+              }
+            </div>
+          </div>
+          <div className="row">
+            <div className="review-holder">
+              {/*If class has review show top review and link*/}
+              {Object.keys(this.state.topReview).length !== 0 &&
+
+                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} />
+
+              }
+
+              {
+                Object.keys(this.state.topReview).length !== 0
+                &&
+                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  See {this.state.numReviews} more reviews
+                </a>
+              }
+              
+              {/*If class has 0 reviews text and button*/}
+              {
+                Object.keys(this.state.topReview).length === 0
+                &&
+                <p className="preview-empty-top-review">
+                  No reviews yet
+                </p>
+              }
+              {
+                Object.keys(this.state.topReview).length === 0
+                &&
+                <a className="col-md-12 col-sm-12" id="leave-review"
+                  href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  Leave a review
+                </a>
+              }
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+
   }
 }
 
