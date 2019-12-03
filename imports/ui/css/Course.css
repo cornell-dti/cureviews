@@ -3,6 +3,10 @@
   background-color: #f2f2f2 !important;
 }
 
+.top-resultbutton{
+  padding-top: 20px;
+}
+
 .resultbutton, .resultbutton:hover {
   padding: 15px;
   background-color: rgba(255, 255, 255, 0.62);

@@ -213,7 +213,7 @@ export default class SearchBar extends Component {
       
       let exact_search = (
         <a key={"search"} 
-          className={this.state.index == 0 && this.state.mouse != 1 ? 'active resultbutton' : 'resultbutton'} 
+          className={this.state.index == 0 && this.state.mouse != 1 ? 'active resultbutton top-resultbutton' : 'resultbutton top-resultbutton'} 
           href={`/results/keyword/${this.state.query.split(" ").join("+")}`}>
           <p className="result-text">{"Search: \"" + this.state.query+ "\""}</p>
         </a>
@@ -272,7 +272,7 @@ export default class SearchBar extends Component {
         <div className="col-lg-12 col-md-12 col-sm-12 search-bar">
           <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “CALS” or “CS 2110”" autoComplete="off"/>
 
-          <ul className="output" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
+          <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}
           </ul>
         </div>
