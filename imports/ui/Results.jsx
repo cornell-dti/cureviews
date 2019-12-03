@@ -6,16 +6,11 @@ import PropTypes from "prop-types";
 
 
 /*
-  Results Component. Short description if needed.
+  Results Component.
 
-  Identify as one of the following components:
-  Simple styling: mainly renders HTML and CSS,
-  Container: combines multiple components into a single feature
-  View: top-level component accessed by a URL endpoint defined by the router in main.jsx
-
-  Include a breif description of the component's purpose, where it falls in the
-  component tree, and any inportant information it accesses or modifies.
-  Include the route for View components.
+  Used to render the results page. Uses Navbar and ResultsDisplay components directly.
+  
+  Props: uses params from URL
 */
 
 export class Results extends Component {
@@ -26,15 +21,6 @@ export class Results extends Component {
       query: '',
     };
 
-    this.updateQuery = this.updateQuery.bind(this);
-
-  }
-
-  updateQuery(event) {
-    // trim the query to remove trailing spaces      
-    this.setState({ query: event.target.value.trim() });
-    //Session to be able to get info from this.state.query in withTracker
-    Session.set('querySession', this.state.query);
   }
 
   componentDidMount() {

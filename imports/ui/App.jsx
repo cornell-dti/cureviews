@@ -50,17 +50,6 @@ export default class App extends Component {
             <SearchBar />
           </div>
         </div>
-
-        {/*<div className="row">
-          <div className="col-md-10 col-md-offset-1">
-            
-          </div>
-        </div>*/}
-        {/*<div className="row footer navbar-fixed-bottom">
-          <div className="col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
-            <img src='/skyline.svg' className="center-block outline" id="" alt="" />
-          </div>
-        </div>*/}
       </div>
     );
   }
