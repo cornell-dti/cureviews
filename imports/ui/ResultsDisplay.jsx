@@ -9,13 +9,13 @@ import Loading from 'react-loading-animation';
 
 /*
   ResultsDisplay Component.
-  
-  Used by Results component, renders filters, 
+
+  Used by Results component, renders filters,
   list of class objects (results), and PreviewCard.
-  
+
   Props:  courses - is a list of class objects
           loading - bool, true if back-end has no returned from search yet
-  
+
 */
 
 export default class ResultsDisplay extends Component {
@@ -63,7 +63,7 @@ export default class ResultsDisplay extends Component {
   sort() {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "rating") {
-        let data = this.state.courseList.sort(
+        const data = this.state.courseList.sort(
           (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
         this.setState({
           courseList: data,
@@ -72,7 +72,7 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.courseList.sort(
+        const data = this.state.courseList.sort(
           (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
         this.setState({
           courseList: data,
@@ -82,7 +82,7 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        data = this.state.courseList.sort(
+        const data = this.state.courseList.sort(
           (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
         this.setState({
           courseList: data,
@@ -93,7 +93,7 @@ export default class ResultsDisplay extends Component {
     }
     else {
       if (this.state.selected == "rating") {
-        let data = this.state.filteredItems.sort(
+        const data = this.state.filteredItems.sort(
           (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
         this.setState({
           filteredItems: data,
@@ -102,7 +102,7 @@ export default class ResultsDisplay extends Component {
         });
       }
       else if (this.state.selected == "diff") {
-        data = this.state.filteredItems.sort(
+        const data = this.state.filteredItems.sort(
           (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
         this.setState({
           filteredItems: data,
@@ -112,7 +112,7 @@ export default class ResultsDisplay extends Component {
 
       }
       else if (this.state.selected == "work") {
-        data = this.state.filteredItems.sort(
+        const data = this.state.filteredItems.sort(
           (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
         this.setState({
           filteredItems: data,
