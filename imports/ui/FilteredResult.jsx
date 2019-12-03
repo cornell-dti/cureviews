@@ -35,10 +35,10 @@ export default class FilteredResult extends Component {
 
   getColor(metric, val) {
     if (metric === "Overall Rating") {
-      if (val !== "-" && 3.0 <= val && val < 4.0) {
+      if (val !== "?" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
       }
-      else if (val !== "-" && 4.0 <= val && val <= 5.0) {
+      else if (val !== "?" && 4.0 <= val && val <= 5.0) {
         return "#53B277";
       }
       else {
@@ -46,10 +46,10 @@ export default class FilteredResult extends Component {
       }
     }
     else if (metric === "Difficulty" || metric === "Workload") {
-      if (val !== "-" && 3.0 <= val && val < 4.0) {
+      if (val !== "?" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
       }
-      else if (val === "-" || 4.0 <= val && val <= 5.0) {
+      else if (val === "?" || 4.0 <= val && val <= 5.0) {
         return "#E64458";
       }
       else {
@@ -60,13 +60,13 @@ export default class FilteredResult extends Component {
 
   updateSortBy() {
     if (this.state.sortBy === "rating") {
-      return Number(this.state.course.classRating) ? this.state.course.classRating : "-";
+      return Number(this.state.course.classRating) ? this.state.course.classRating : "?";
     }
     else if (this.state.sortBy === "diff") {
-      return Number(this.state.course.classDifficulty) ? this.state.course.classDifficulty : "-";
+      return Number(this.state.course.classDifficulty) ? this.state.course.classDifficulty : "?";
     }
     else if (this.state.sortBy === "work") {
-      return Number(this.state.course.classWorkload) ? this.state.course.classWorkload : "-";
+      return Number(this.state.course.classWorkload) ? this.state.course.classWorkload : "?";
     }
   }
 
@@ -96,13 +96,13 @@ export default class FilteredResult extends Component {
             {theClass.classSub.toUpperCase() + " " + theClass.classNum}
           </h2>
           <div>
-            <p className="p-display">
+            <p className="sort-by-text">
               <strong>{this.updateSortByTitle()}</strong>
             </p>
-            <p className="p-display" style={{ color: this.getColor(this.updateSortByTitle(), this.updateSortBy()) }}>
+            <p className="sort-by-number" style={{ color: this.getColor(this.updateSortByTitle(), this.updateSortBy()) }}>
               {this.updateSortBy()}
             </p>
-            <p className="p-display" id="over-5">
+            <p className="sort-by-five" id="over-5">
               /5
             </p>
           </div>

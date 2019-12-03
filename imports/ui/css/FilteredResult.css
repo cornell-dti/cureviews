@@ -38,13 +38,19 @@
   border: solid 2px #4a90e2;
 }
 
-.p-display{
+.sort-by-text{
   display: inline-block;
-  padding-right: 5px;
   font-family: "Source Sans Pro", sans-serif; 
 }
 
-#over-5{
+.sort-by-number{
+  display: inline-block;
+  font-family: "Source Sans Pro", sans-serif;
+  padding: 0 0 0 5px;
+}
+
+.sort-by-five{
+  display: inline-block;
   color: #979797;
   font-size: 10px;
   font-family: "Source Sans Pro", sans-serif; 
