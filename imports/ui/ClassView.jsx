@@ -10,7 +10,6 @@ import "./css/ClassView.css";
 import PropTypes from "prop-types";
 import { Classes } from '../api/dbDefs.js';
 import { withTracker } from 'meteor/react-meteor-data';
-import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import './css/Form.css';
@@ -48,7 +47,9 @@ export class ClassView extends Component {
       selectedClass: null,
       classDoesntExist: false,
       popUpVisible: false,
-      popupPos: "hidden"
+      popupPos: "hidden",
+      popUpIsEnabled: false //Note: popup is currently disabled, should be refactored
+                            // and tested before enabling
     };
 
     //Used to prevent endless reloading in componentDidUpdate
@@ -101,8 +102,9 @@ export class ClassView extends Component {
       });
       this.firstLoad = false;
       this.updateCurrentClass(number, subject);
-      
-      this.decidePopup();
+      if(this.state.popUpIsEnabled){
+        this.decidePopup();
+      }
     }
   }
 
