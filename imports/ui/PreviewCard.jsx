@@ -44,9 +44,9 @@ export default class PreviewCard extends Component {
   updateGauges() {
     this.setState({
       id: this.props.course._id,
-      rating: this.props.course.classRating == null ? "-" : this.props.course.classRating,
-      diff: this.props.course.classDifficulty == null ? "-" : this.props.course.classDifficulty,
-      workload: this.props.course.classWorkload == null ? "-" : this.props.course.classWorkload,
+      rating: Number(this.props.course.classRating) ? this.props.course.classRating : "-",
+      diff: Number(this.props.course.classDifficulty) ? this.props.course.classDifficulty : "-",
+      workload: Number(this.props.course.classWorkload) ? this.props.course.classWorkload : "-",
     }, () => this.updateColors(), this.updateTopReview());
   }
 
@@ -183,7 +183,7 @@ export default class PreviewCard extends Component {
                   See {this.state.numReviews} more reviews
                 </a>
               }
-              
+
               {/*If class has 0 reviews text and button*/}
               {
                 Object.keys(this.state.topReview).length === 0

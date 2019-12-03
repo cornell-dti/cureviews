@@ -288,11 +288,11 @@ export default class ResultsDisplay extends Component {
                 </select>
               </div>
             </div>
-              <div id="listOfClassResults">
-                <ul>
-                  {this.renderResults()}
-                </ul>
-              </div>
+            <div id="listOfClassResults">
+              <ul>
+                {this.renderResults()}
+              </ul>
+            </div>
           </div>
           <div></div>
           <div className="col-md-5 col-sm-5 col-xs-5" id="preview">

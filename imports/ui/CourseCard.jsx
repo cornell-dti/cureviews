@@ -24,11 +24,11 @@ export class CourseCard extends Component {
 
     // default gauge values
     this.defaultGaugeState = {
-      rating: 0,
+      rating: "-",
       ratingColor: "#E64458",
-      diff: 0,
+      diff: "-",
       diffColor: "#E64458",
-      workload: 0,
+      workload: "-",
       workloadColor: "#E64458",
     };
 

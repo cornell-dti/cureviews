@@ -38,7 +38,7 @@ export class Results extends Component {
   }
 
   componentDidMount() {
-    if(this.props.match.params.type === "major"){
+    if (this.props.match.params.type === "major") {
       Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
         if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
@@ -53,8 +53,8 @@ export class Results extends Component {
         }
       });
     }
-    else if(this.props.match.params.type === "keyword"){
-      let userQuery=this.props.match.params.input.split("+").join();
+    else if (this.props.match.params.type === "keyword") {
+      let userQuery = this.props.match.params.input.split("+").join();
       Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
         if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
