@@ -18,13 +18,14 @@ export class Results extends Component {
     super(props);
     this.state = {
       courseList: [],
-      query: '',
       loading: true
     };
 
+    this.updateResults = this.updateResults.bind(this);
+
   }
 
-  componentDidMount() {
+  updateResults(){
     if (this.props.match.params.type === "major") {
       Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
         if (!err && courseList.length != 0) {
@@ -62,17 +63,18 @@ export class Results extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    //if this component receives new props from the Redirect, it resets its state so that it can render/mount
-    //a new ClassView component with the new props
+  componentDidUpdate(prevProps){
+    if (prevProps != this.props) {
+      this.setState({
+        courseList: [],
+        loading: true
+      });
+      this.updateResults();
+    }
+  }
 
-
-    this.setState({
-      selectedClass: null,
-      classDoesntExist: false,
-      query: '',
-    });
-    this.componentDidMount()
+  componentDidMount() {
+    this.updateResults();
   }
 
   render() {

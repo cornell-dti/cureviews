@@ -207,7 +207,8 @@ export default class SearchBar extends Component {
       // Used for "enter" key on 'Search: "query" ' button for exact search
       // Sends user to /results/keyword/query+query
       if(this.state.index == 0 && this.state.enter == 1){
-         return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
+        this.setState(initState);
+        return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
       }
       
       let exact_search = (
@@ -230,6 +231,11 @@ export default class SearchBar extends Component {
         //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       ));
+      
+      // Resets searchbar if user hit "enter" on a major in dropdown
+      if(this.state.enter == 1){
+        this.setState(initState);
+      }
       
       results.push(subjectList)
       
