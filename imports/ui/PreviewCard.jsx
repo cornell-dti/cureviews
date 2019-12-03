@@ -6,7 +6,10 @@ import { getGaugeValues } from './js/CourseCard.js';
 import Review from './Review.jsx';
 
 /*
-  Filtered Result Component.
+  Preview Card component.
+  
+  Props: course - course object used to render a preview card for ResultsDisplay
+                  to use.
 */
 
 export default class PreviewCard extends Component {
@@ -47,7 +50,7 @@ export default class PreviewCard extends Component {
       rating: this.props.course.classRating == null ? "-" : this.props.course.classRating,
       diff: this.props.course.classDifficulty == null ? "-" : this.props.course.classDifficulty,
       workload: this.props.course.classWorkload == null ? "-" : this.props.course.classWorkload,
-    }, () => this.updateColors(), this.updateTopReview());
+    }, () => this.updateColors());
   }
 
   updateTopReview() {
@@ -124,7 +127,7 @@ export default class PreviewCard extends Component {
         workloadColor: "#E64458"
       })
     }
-
+    this.updateTopReview();
   }
 
   render() {

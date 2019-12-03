@@ -7,16 +7,14 @@ import { lastOfferedSems } from './js/CourseCard.js';
 
 
 /*
-  Results Component. Short description if needed.
-
-  Identify as one of the following components:
-  Simple styling: mainly renders HTML and CSS,
-  Container: combines multiple components into a single feature
-  View: top-level component accessed by a URL endpoint defined by the router in main.jsx
-
-  Include a breif description of the component's purpose, where it falls in the
-  component tree, and any inportant information it accesses or modifies.
-  Include the route for View components.
+  ResultsDisplay Component.
+  
+  Used by Results component, renders filters, 
+  list of class objects (results), and PreviewCard.
+  
+  Props:  courses - is a list of class objects
+          noResults - boolean, true if no results are returned.
+  
 */
 
 export default class ResultsDisplay extends Component {
@@ -258,25 +256,37 @@ export default class ResultsDisplay extends Component {
   }
 
   render() {
-    if (!this.state.noResults) {
-      return (
-        <div className="row margin-top">
-          <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
-            <p className="overall-filter">Filter</p>
-            <div className="filter-sub">
-              <p className="filter-title"> Semester</p>
-              {this.renderSemesterCheckboxes()}
-            </div>
-            <div className="filter-sub">
-              <p className="filter-title">Level</p>
-              {this.renderClassLevelCheckBoxes()}
-            </div>
+    return (
+      <div className="row margin-top">
+        <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
+          <p className="overall-filter">Filter</p>
+          <div className="filter-sub">
+            <p className="filter-title"> Semester</p>
+            {this.renderSemesterCheckboxes()}
           </div>
-          <div className="col-md-5 col-sm-5 col-xs-5" id="results">
-            <div className="row">
-              <div className="col-md-5 col-sm-5 col-xs-5">
-                <p className="num-classes-found">We found <strong>{this.props.courses.length}</strong> courses</p>
+          <div className="filter-sub">
+            <p className="filter-title">Level</p>
+            {this.renderClassLevelCheckBoxes()}
+          </div>
+        </div>
+        <div className="col-md-5 col-sm-5 col-xs-5" id="results">
+          <div className="row">
+            <div className="col-md-5 col-sm-5 col-xs-5">
+              <p className="num-classes-found">We found <strong>{this.props.courses.length}</strong> courses</p>
+            </div>
+            {/* Case where no results returned */}
+            {
+              this.state.noResults === true
+              &&
+              <div className="col-md-6 col-sm-6 col-xs-6" id="results">
+                <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
+                <div className="no-results-cap">Sorry! No classes match your search.</div>
               </div>
+            }
+            {/* Case where results are returned (non-empty) */}
+            {
+              this.state.noResults === false
+              &&
               <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
                 <p className="sort-by">
                   Sort By:
@@ -287,48 +297,30 @@ export default class ResultsDisplay extends Component {
                   <option value="work">Workload</option>
                 </select>
               </div>
-            </div>
-              <div id="listOfClassResults">
-                <ul>
-                  {this.renderResults()}
-                </ul>
-              </div>
+            }
           </div>
-          <div></div>
+          {/* Case where results are returned (non-empty) (continued) */}
+          {
+            this.state.noResults === false
+            &&
+            <div id="listOfClassResults">
+              <ul>
+                {this.renderResults()}
+              </ul>
+            </div>
+          }
+        </div>
+        {/* Case where results are returned (non-empty) (continued)*/}
+        {
+          this.state.noResults === false
+          &&
           <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
             <PreviewCard course={this.state.card_course} />
           </div>
-        </div>
-      );
-    }
-    else {
-      return (
-        <div className="row margin-top">
-          <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
-            <p className="overall-filter">Filter</p>
-            <div className="filter-sub">
-              <p className="filter-title"> Semester</p>
-              {this.renderSemesterCheckboxes()}
-            </div>
-            <div className="filter-sub">
-              <p className="filter-title">Level</p>
-              {this.renderClassLevelCheckBoxes()}
-            </div>
-          </div>
-          <div className="col-md-10 col-sm-10 col-xs-10" id="results">
-            <div className="row">
-              <div className="col-md-2 col-sm-2 col-xs-2">
-                <p className="num-classes-found">We found <strong>{this.props.courses.length}</strong> courses</p>
-              </div>
-              <div className="col-md-6 col-sm-6 col-xs-6" id="results">
-                <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
-                <div className="no-results-cap">Sorry! No classes match your search.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
+        }
+
+      </div>
+    );
   }
 }
 
