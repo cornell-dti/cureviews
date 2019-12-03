@@ -160,7 +160,7 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.update(review._id, { $set: { visible: 1 } });
-      Meteor.call("updateCourseMetrics", review.class);
+      Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     } else {
       return 0;
@@ -175,7 +175,7 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.remove({ _id: review._id });
-      Meteor.call("updateCourseMetrics", review.class);
+      Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     } else {
       return 0;
@@ -184,23 +184,27 @@ Meteor.methods({
 
   // This updates the metrics for an individual class given its Mongo-generated id. 
   // Returns 1 if successful, 0 otherwise.
-  updateCourseMetrics: function (courseId) {
-    let course = Meteor.call('getCourseById', courseId);
-    if (course) {
-      let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
-      let state = getGaugeValues(reviews);
-      Classes.update({ _id: courseId },
-        {
-          $set: {
-            //If no data is available, getGaugeValues returns "-" for metric
-            classDifficulty: (state.diff !== "-" ? Number(state.diff) : null ),
-            classRating: (state.rating !== "-" ? Number(state.rating) : null ),
-            classWorkload: (state.workload !== "-" ? Number(state.workload) : null )
-          }
-        });
-      return 1;
+  updateCourseMetrics: function (courseId, token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if(userIsAdmin){
+      let course = Meteor.call('getCourseById', courseId);
+      if (course) {
+        let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
+        let state = getGaugeValues(reviews);
+        Classes.update({ _id: courseId },
+          {
+            $set: {
+              //If no data is available, getGaugeValues returns "-" for metric
+              classDifficulty: (state.diff !== "-" ? Number(state.diff) : null ),
+              classRating: (state.rating !== "-" ? Number(state.rating) : null ),
+              classWorkload: (state.workload !== "-" ? Number(state.workload) : null )
+            }
+          });
+        return 1;
 
-    }
+      }
+        else return 0
+  }
     else {
       return 0;
     }
@@ -208,12 +212,14 @@ Meteor.methods({
   },
   // Used to update the review metrics for all courses
   //in the database.
-  updateMetricsForAllCourses: function () {
-    let courses = Classes.find().fetch();
-    courses.forEach(function (course) {
-      Meteor.call("updateCourseMetrics", course._id);
-    });
-    console.log("done");
+  updateMetricsForAllCourses: function (token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if(userIsAdmin){  
+      let courses = Classes.find().fetch();
+      courses.forEach(function (course) {
+        Meteor.call("updateCourseMetrics", course._id, token);
+      });
+      console.log("done");}
 
   },
 
