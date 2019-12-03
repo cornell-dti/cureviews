@@ -203,7 +203,7 @@ Meteor.methods({
         return 1;
 
       }
-        else return 0
+        else return 0;
   }
     else {
       return 0;
@@ -219,7 +219,8 @@ Meteor.methods({
       courses.forEach(function (course) {
         Meteor.call("updateCourseMetrics", course._id, token);
       });
-      console.log("done");}
+      console.log("done");
+    }
 
   },
 
