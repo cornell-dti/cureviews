@@ -4,6 +4,7 @@ import "./css/ResultsDisplay.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
 import { lastOfferedSems } from './js/CourseCard.js';
+import Loading from 'react-loading-animation';
 
 
 /*
@@ -13,7 +14,7 @@ import { lastOfferedSems } from './js/CourseCard.js';
   list of class objects (results), and PreviewCard.
   
   Props:  courses - is a list of class objects
-          noResults - boolean, true if no results are returned.
+          loading - bool, true if back-end has no returned from search yet
   
 */
 
@@ -31,8 +32,7 @@ export default class ResultsDisplay extends Component {
         "3000": true, "4000": true,
         "5000+": true
       }, // key value pair name:checked
-      filteredItems: this.props.courses,
-      noResults: this.props.noResults
+      filteredItems: this.props.courses
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sort = this.sort.bind(this);
@@ -50,8 +50,7 @@ export default class ResultsDisplay extends Component {
           "Fall": true, "Spring": true, "1000": true, "2000": true,
           "3000": true, "4000": true, "5000+": true
         }, // key value pair => name:checked
-        filteredItems: this.props.courses,
-        noResults: this.props.noResults
+        filteredItems: this.props.courses
       }, () => this.sort())
     }
   }
@@ -60,7 +59,6 @@ export default class ResultsDisplay extends Component {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
   }
-
 
   sort() {
     if (this.state.filteredItems.length == 0) {
@@ -182,7 +180,6 @@ export default class ResultsDisplay extends Component {
       this.setState({
         filters: filters,
         filteredItems: filteredItems,
-        noResults: true
       })
     }
     else if (checked) {
@@ -190,7 +187,6 @@ export default class ResultsDisplay extends Component {
         filters: filters,
         filteredItems: filteredItems,
         card_course: filteredItems[0],
-        noResults: false
       }, () => this.sort());
     }
     else {
@@ -198,7 +194,6 @@ export default class ResultsDisplay extends Component {
         filters: filters,
         filteredItems: filteredItems,
         card_course: this.state.courseList[0],
-        noResults: false
       }, () => this.sort());
     }
 
@@ -258,67 +253,66 @@ export default class ResultsDisplay extends Component {
   render() {
     return (
       <div className="row margin-top">
-        <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
-          <p className="overall-filter">Filter</p>
-          <div className="filter-sub">
-            <p className="filter-title"> Semester</p>
-            {this.renderSemesterCheckboxes()}
-          </div>
-          <div className="filter-sub">
-            <p className="filter-title">Level</p>
-            {this.renderClassLevelCheckBoxes()}
-          </div>
-        </div>
-        <div className="col-md-5 col-sm-5 col-xs-5" id="results">
-          <div className="row">
-            <div className="col-md-5 col-sm-5 col-xs-5">
-              <p className="num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
-            </div>
-            {/* Case where no results returned */}
-            {
-              this.state.noResults === true
-              &&
-              <div className="col-md-6 col-sm-6 col-xs-6" id="results">
-                <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
-                <div className="no-results-cap">Sorry! No classes match your search.</div>
-              </div>
-            }
-            {/* Case where results are returned (non-empty) */}
-            {
-              this.state.noResults === false
-              &&
-              <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
-                <p className="sort-by">
-                  Sort By:
-                </p>
-                <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
-                  <option value="rating">Overall Rating</option>
-                  <option value="diff" >Difficulty</option>
-                  <option value="work">Workload</option>
-                </select>
-              </div>
-            }
-          </div>
-          {/* Case where results are returned (non-empty) (continued) */}
-          {
-            this.state.noResults === false
-            &&
-            <div id="listOfClassResults">
-              <ul>
-                {this.renderResults()}
-              </ul>
-            </div>
-          }
-        </div>
-        {/* Case where results are returned (non-empty) (continued)*/}
+        {/* Case where results are still being loaded */}
         {
-          this.state.noResults === false
+          this.props.loading === true
           &&
-          <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
-            <PreviewCard course={this.state.card_course} />
+          <div className="results-loading">
+            <Loading />;
           </div>
         }
-
+        {/* Case where no results returned */}
+        {
+          this.state.courseList.length === 0 && this.props.loading === false
+          &&
+          <div className="col-md-12 col-sm-12 col-xs-12" id="results">
+            <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
+            <div className="no-results-cap">Sorry! No classes match your search.</div>
+          </div>
+        }
+        {/* Case where results are returned (non-empty) */}
+        {
+          this.state.courseList.length !== 0 && this.props.loading !== true
+          &&
+          <div>
+            <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
+              <p className="overall-filter">Filter</p>
+              <div className="filter-sub">
+                <p className="filter-title"> Semester</p>
+                {this.renderSemesterCheckboxes()}
+              </div>
+              <div className="filter-sub">
+                <p className="filter-title">Level</p>
+                {this.renderClassLevelCheckBoxes()}
+              </div>
+            </div>
+            <div className="col-md-5 col-sm-5 col-xs-5" id="results">
+              <div className="row">
+                  <div className="col-md-5 col-sm-5 col-xs-5">
+                    <p className="num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
+                  </div>
+                  <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
+                    <p className="sort-by">
+                      Sort By:
+                    </p>
+                    <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
+                      <option value="rating">Overall Rating</option>
+                      <option value="diff" >Difficulty</option>
+                      <option value="work">Workload</option>
+                    </select>
+                  </div>
+              </div>
+                <div id="listOfClassResults">
+                  <ul>
+                    {this.renderResults()}
+                  </ul>
+                </div>
+            </div>
+            <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
+              <PreviewCard course={this.state.card_course} />
+            </div>
+          </div>
+        }
       </div>
     );
   }
@@ -326,6 +320,6 @@ export default class ResultsDisplay extends Component {
 
 ResultsDisplay.propTypes = {
   courses: PropTypes.array.isRequired,
-  noResults: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired
 };
 

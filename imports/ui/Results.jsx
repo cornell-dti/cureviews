@@ -19,6 +19,7 @@ export class Results extends Component {
     this.state = {
       courseList: [],
       query: '',
+      loading: true
     };
 
   }
@@ -29,12 +30,14 @@ export class Results extends Component {
         if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
           this.setState({
-            courseList: courseList
+            courseList: courseList,
+            loading: false
           });
         }
         else {
           this.setState({
-            courseList: []
+            courseList: [],
+            loading: false
           });
         }
       });
@@ -45,12 +48,14 @@ export class Results extends Component {
         if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
           this.setState({
-            courseList: courseList
+            courseList: courseList,
+            loading: false
           });
         }
         else {
           this.setState({
-            courseList: []
+            courseList: [],
+            loading: false
           });
         }
       });
@@ -75,39 +80,13 @@ export class Results extends Component {
       <div>
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
-          <ResultsDisplay courses={this.state.courseList} noResults={this.state.courseList.length == 0} />
+          <ResultsDisplay courses={this.state.courseList} loading={this.state.loading} />
         </div>
       </div>
     )
   }
 
 }
-
-
-// Define the names, types and optional status of the props that will be passed
-// to this component from the parent component that creates it.
-// Be sure to include any collections obtained from withTracker!
-
-// describe props
-
-// If the component needs to access data from the database, it must be wrapped
-// inside a container that can subscribe to a meteor collection.
-//
-// withTracker encapsulates the component and subscribes to the published version
-// of a specified Meteor collections (defined in server/publications.js),
-// passing it to the component as a prop. This subscription will automatically
-// update whenever its database collection changes and will trigger a component re-render.
-// Look at the publishers in server/publications.js for more information about publishers and subscribers.
-
-// Explain which collections this componet will subscribe to, and what data is expected to be returned.
-// export default withTracker((props) => {
-//   const subscription = Meteor.subscribe('classes', parameter1InPublisher, parameter2InPublisher); //get collection as lowercase name from ../api/dbInit.js
-//   const loading = !subscription.ready();
-//   const collectionAsObjectList = CollectionName.find({}).fetch();
-//   return {
-//     collectionAsObjectList,
-//   };
-// }, Template);
 
 Results.propTypes = {
   match: PropTypes.object

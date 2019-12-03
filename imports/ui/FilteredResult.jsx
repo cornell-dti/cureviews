@@ -117,7 +117,7 @@ export default class FilteredResult extends Component {
 FilteredResult.propTypes = {
   course: PropTypes.object.isRequired,
   previewHandler: PropTypes.func.isRequired,
-  selected: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
   index: PropTypes.number.isRequired,
   sortBy: PropTypes.string.isRequired
 };

@@ -3,6 +3,12 @@
   overflow:auto
 }
 
+.results-loading{
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20vh;
+}
+
 #listOfClassResults{
   height:100%;
   overflow-y: scroll;
@@ -79,10 +85,13 @@
 .no-results{
   width: auto;
   height: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .no-results-cap{
   font-family: "Source Sans Pro", sans-serif; 
   font-size: 25px;
+  text-align: center;
 }
 
