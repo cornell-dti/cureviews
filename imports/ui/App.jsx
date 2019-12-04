@@ -40,7 +40,7 @@ export default class App extends Component {
     return (
       <div className="container-fluid full-height background-gradient">
         <div className="row">
-          <img src='/logo.svg' className="img-responsive scale-logo" alt="CU Reviews Logo" />
+          <img src='/logo.png' className="img-responsive scale-logo" alt="CU Reviews Logo" />
         </div>
         <div className="row homepage-left-padding">
           <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
