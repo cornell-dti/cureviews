@@ -89,8 +89,8 @@ export class ClassView extends Component {
     const number = this.props.match.params.number;
     const subject = this.props.match.params.subject.toLowerCase();
 
-    if(prevProps.match.params.number !== number
-        && prevProps.match.params.subject !== subject
+    if((prevProps.match.params.number !== number
+        || prevProps.match.params.subject.toLowerCase() !== subject)
         || this.firstLoad){
       this.setState({
         number: number,
