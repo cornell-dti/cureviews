@@ -41,6 +41,7 @@
   max-width: 14%;
 }
 
+
 .result-label-subject{
   border: 1px solid #F3A953;
   box-sizing: border-box;
@@ -62,6 +63,16 @@
 .resultbutton:hover, .active{
   background-color: rgba(73, 144, 226, 0.5) !important;
 }
+
+.resultbutton:hover .result-text{
+  color: #ffffff !important;
+}
+
+.resultbutton:hover .result-label-course{
+  color: #ffffff !important;
+  border: 1px solid #ffffff;
+}
+
 
 .contrasting-result-background .resultbutton:hover, .contrasting-result-background .active{
   background-color: rgba(73, 144, 226, 0.9) !important;
@@ -97,6 +108,7 @@
   display: flex;
   margin: 0;
 }
+
 
 .text-style-2{
   display: inline-block;
