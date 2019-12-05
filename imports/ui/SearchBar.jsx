@@ -66,9 +66,19 @@ export default class SearchBar extends Component {
           });
         }
         else {
-          this.setState({
-            allCourses:[]
-          });
+          Meteor.call("getClassesByQuery", this.state.query, (err, queryCourseList) => {
+            if (!err && queryCourseList && queryCourseList.length !== 0) {
+              // Save the list of Class objects that matches the request
+              this.setState({
+                allCourses: queryCourseList
+              });
+            }
+            else {
+              this.setState({
+                allCourses:[]
+              });
+            }
+          })
         }
       });
       

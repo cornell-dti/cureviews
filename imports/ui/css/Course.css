@@ -68,6 +68,10 @@
   color: #ffffff !important;
 }
 
+.resultbutton:hover .found{
+  color: #ffffff !important;
+}
+
 .resultbutton:hover .result-label-course{
   color: #ffffff !important;
   border: 1px solid #ffffff;
