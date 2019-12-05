@@ -50,16 +50,15 @@ export default class SearchBar extends Component {
     
   }
 
-  checkForCourseMatch(queryNum, queryTitle){
+  checkForCourseMatch(querySub, queryNum){
+    let isMatch=false;
     this.state.allCourses.forEach(course=>{
-      let classNum=course.classNum;
-      let classTitle=course.classTitle;
-      if(querySplit.length==2){
-        if(classNum==queryNum && classTitle==queryTitle) return true;
-      }
+      let classNum=course.classNum.toLowerCase();
+      let classSub=course.classSub.toLowerCase();
+        if(classNum===queryNum && classSub===querySub) isMatch=true;
     });
 
-    return false;
+    return isMatch;
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -231,18 +230,18 @@ export default class SearchBar extends Component {
       // Sends user to /results/keyword/query+query
       if(this.state.index == 0 && this.state.enter == 1){
         this.setState(initState);
-        let querySplit=this.state.query.toLowerCase();
+        let querySplit=this.state.query.toLowerCase().split(" ");
         let queryNum="";
-        let queryTitle="";
+        let querySub="";
         if(querySplit.length==2){
-          queryNum=querySplit[0];
-          queryTitle=querySplit[1];
+          querySub=querySplit[0];
+          queryNum=querySplit[1];
         }
-        if( querySplit.length==2 && !this.checkForCourseMatch(queryNum, queryTitle)){
+        if(!this.checkForCourseMatch(querySub, queryNum)){
           return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
         }
         else{
-          return <Redirect push to={`/course/${this.state.query.split(" ").join("/")}`}></Redirect>
+          return <Redirect push to={`/course/${querySub.toUpperCase()}/${queryNum}`}></Redirect>;
         }
       }
       
