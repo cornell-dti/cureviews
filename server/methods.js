@@ -219,10 +219,10 @@ Meteor.methods({
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if(userIsAdmin){  
       let courses = Classes.find().fetch();
-      courses.forEach(function (course) {
+      if(courses.crossList) courses.forEach(function (course) {
         Meteor.call("updateCourseMetrics", course._id, token);
       });
-      console.log("done");
+      console.log("Updated metrics for all courses");
     }
 
   },
