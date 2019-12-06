@@ -36,8 +36,10 @@ export default class ResultsDisplay extends Component {
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sort = this.sort.bind(this);
+    this.initialSort = this.initialSort.bind(this);
 
   }
+
 
   componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
@@ -51,7 +53,7 @@ export default class ResultsDisplay extends Component {
           "3000": true, "4000": true, "5000+": true
         }, // key value pair => name:checked
         filteredItems: this.props.courses
-      }, () => this.sort())
+      }, () => this.initialSort())
     }
   }
 
@@ -60,11 +62,42 @@ export default class ResultsDisplay extends Component {
     this.setState({ selected: opt }, () => this.sort());
   }
 
+  initialSort() {
+    const data = this.props.courses.sort(
+      (a, b) => {
+        let first = (Number(b.classRating) || 0);
+        let second = (Number(a.classRating) || 0);
+
+        if (first === second) {
+          return (a.classNum - b.classNum);
+        }
+        else {
+          return (first - second);
+        }
+      });
+    this.setState({
+      filteredItems: data,
+      courseList: data,
+      card_course: data[0],
+      active_card: 0
+    });
+  }
+
   sort() {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "rating") {
         const data = this.state.courseList.sort(
-          (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
+          (a, b) => {
+            let first = (Number(b.classRating) || 0);
+            let second = (Number(a.classRating) || 0);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -73,7 +106,17 @@ export default class ResultsDisplay extends Component {
       }
       else if (this.state.selected == "diff") {
         const data = this.state.courseList.sort(
-          (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
+          (a, b) => {
+            let first = (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER);
+            let second = (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -83,7 +126,17 @@ export default class ResultsDisplay extends Component {
       }
       else if (this.state.selected == "work") {
         const data = this.state.courseList.sort(
-          (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
+          (a, b) => {
+            let first = (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER);
+            let second = (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -94,7 +147,17 @@ export default class ResultsDisplay extends Component {
     else {
       if (this.state.selected == "rating") {
         const data = this.state.filteredItems.sort(
-          (a, b) => (Number(b.classRating) || 0) - (Number(a.classRating) || 0));
+          (a, b) => {
+            let first = (Number(b.classRating) || 0);
+            let second = (Number(a.classRating) || 0);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -103,7 +166,17 @@ export default class ResultsDisplay extends Component {
       }
       else if (this.state.selected == "diff") {
         const data = this.state.filteredItems.sort(
-          (a, b) => (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER) - (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER));
+          (a, b) => {
+            let first = (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER);
+            let second = (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -113,7 +186,17 @@ export default class ResultsDisplay extends Component {
       }
       else if (this.state.selected == "work") {
         const data = this.state.filteredItems.sort(
-          (a, b) => (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER) - (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER));
+          (a, b) => {
+            let first = (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER);
+            let second = (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });
         this.setState({
           filteredItems: data,
           card_course: data[0],
@@ -288,25 +371,25 @@ export default class ResultsDisplay extends Component {
             </div>
             <div className="col-md-5 col-sm-5 col-xs-5" id="results">
               <div className="row">
-                  <div className="col-md-5 col-sm-5 col-xs-5">
-                    <p className="num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
-                  </div>
-                  <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
-                    <p className="sort-by">
-                      Sort By:
-                    </p>
-                    <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
-                      <option value="rating">Overall Rating</option>
-                      <option value="diff" >Difficulty</option>
-                      <option value="work">Workload</option>
-                    </select>
-                  </div>
-              </div>
-                <div id="listOfClassResults">
-                  <ul>
-                    {this.renderResults()}
-                  </ul>
+                <div className="col-md-5 col-sm-5 col-xs-5">
+                  <p className="num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
                 </div>
+                <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
+                  <p className="sort-by">
+                    Sort By:
+                    </p>
+                  <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
+                    <option value="rating">Overall Rating</option>
+                    <option value="diff" >Difficulty</option>
+                    <option value="work">Workload</option>
+                  </select>
+                </div>
+              </div>
+              <div id="listOfClassResults">
+                <ul>
+                  {this.renderResults()}
+                </ul>
+              </div>
             </div>
             <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
               <PreviewCard course={this.state.card_course} />
