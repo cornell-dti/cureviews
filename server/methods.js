@@ -190,6 +190,9 @@ Meteor.methods({
       let course = Meteor.call('getCourseById', courseId);
       if (course) {
         let reviews = Reviews.find({ class: courseId, reported:0, visible:1}).fetch();
+        course.crossList.forEach(crossListed => 
+          reviews.push(Reviews.find({ class: crossListed, reported:0, visible:1}).fetch())
+        );
         let state = getGaugeValues(reviews);
         Classes.update({ _id: courseId },
           {
