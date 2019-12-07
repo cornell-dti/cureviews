@@ -184,16 +184,19 @@ Meteor.publish('classInfo', function (subject, number) {
   const numberRegex = new RegExp(/^(?=.*[0-9])/i);
   const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
   if (numberRegex.test(number) && subjectRegex.test(subject)) {
-    // var classRating = Classes.find({ classSub: subject.toLowerCase(), classNum: number }).fetch()[0]['classRating']
     return Classes.find({ classSub: subject.toLowerCase(), classNum: number }, 
-                        {fields: {'classDifficulty': 1, 'classRating': 1, 'classWorkload': 1}})
-    // return Classes.find({ classSub: subject.toLowerCase(), classNum: number })
-
+                        { fields: {'classSub': 1,
+                                   'classNum': 1,
+                                   'classTitle': 1,
+                                   'classSub': 1,
+                                   'classDifficulty': 1, 
+                                   'classRating': 1, 
+                                   'classWorkload': 1}})
   }
   else {
     return null;
   }
 }, {
-  url: "classInfo/:0/:1",
+  url: "classInfo/Z8S9B/:0/:1",
   httpMethod: "get"
 });
