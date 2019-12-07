@@ -1,6 +1,11 @@
 import { HTTP } from 'meteor/http';
 import { Classes, Subjects } from '../imports/api/dbDefs.js';
 
+// For courseplan API
+SimpleRest.configure({
+  collections: ['classes']
+});
+
 /*
   Course API scraper. Uses HTTP requests to get course data from the Cornell
   Course API and stores the results in the local database.

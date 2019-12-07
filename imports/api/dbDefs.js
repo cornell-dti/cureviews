@@ -1,5 +1,10 @@
 import { Mongo } from 'meteor/mongo';
 
+// For courseplan API
+SimpleRest.configure({
+    collections: ['classes']
+  });
+  
 /*
 
  Database definitions file. Defines all collections in the local database,
