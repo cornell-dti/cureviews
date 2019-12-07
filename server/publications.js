@@ -178,11 +178,10 @@ Meteor.publish('users', function getUser(netId) {
    Use simple:rest package to create endpoint out of this.
  */
 Meteor.publish('classInfo', function (subject, number) {
-  console.log(subject);
-  console.log(number);
   // check: make sure number and subject are valid, non-malicious strings
   const numberRegex = new RegExp(/^(?=.*[0-9])/i);
   const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
+  
   if (numberRegex.test(number) && subjectRegex.test(subject)) {
     return Classes.find({ classSub: subject.toLowerCase(), classNum: number }, 
                         { fields: {'classSub': 1,
