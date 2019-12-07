@@ -16,7 +16,6 @@ import './css/Review.css';
 export default class Review extends Component {
   constructor(props) {
     super(props);
-    console.log("isLiked " + this.props.isLiked);
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
       numLikes: this.props.likes
