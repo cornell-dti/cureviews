@@ -175,7 +175,7 @@ Meteor.publish('users', function getUser(netId) {
 
 
 /* To get class info for Courseplan API. 
-   Used simple:rest package to create endpoint out of this.
+   Used simple:rest package (https://atmospherejs.com/simple/rest) to create endpoint out of this.
  */
 Meteor.publish('classInfo', function (subject, number) {
   // check: make sure number and subject are valid, non-malicious strings
