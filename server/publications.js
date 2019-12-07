@@ -188,7 +188,7 @@ Meteor.publish('classInfo', function (subject, number) {
                         { fields: {'classSub': 1,
                                    'classNum': 1,
                                    'classTitle': 1,
-                                   'classSub': 1,
+                                   'classFull': 1,
                                    'classDifficulty': 1, 
                                    'classRating': 1, 
                                    'classWorkload': 1}})
