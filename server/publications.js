@@ -185,11 +185,10 @@ Meteor.publish('classInfo', function (subject, number) {
   const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
   if (numberRegex.test(number) && subjectRegex.test(subject)) {
     // var classRating = Classes.find({ classSub: subject.toLowerCase(), classNum: number }).fetch()[0]['classRating']
-    let classRating = Classes.find({ classSub: subject.toLowerCase(), classNum: number }, fields={classRating: 1})
+    return Classes.find({ classSub: subject.toLowerCase(), classNum: number }, 
+                        {fields: {'classDifficulty': 1, 'classRating': 1, 'classWorkload': 1}})
+    // return Classes.find({ classSub: subject.toLowerCase(), classNum: number })
 
-    return classRating;
-    // console.log(JSON.parse(JSON.stringify({"classRatingValue": classRating}));
-    // return JSON.parse(JSON.stringify({"classRatingValue": classRating}));
   }
   else {
     return null;
