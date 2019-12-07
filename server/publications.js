@@ -172,3 +172,29 @@ Meteor.publish('reviews', function validReviews(courseId, visiblity, reportStatu
 Meteor.publish('users', function getUser(netId) {
     return Users.find({netId: netId}, {limit: 20});
 });
+
+
+/* To get class info for Courseplan API. 
+   Use simple:rest package to create endpoint out of this.
+ */
+Meteor.publish('classInfo', function (subject, number) {
+  console.log(subject);
+  console.log(number);
+  // check: make sure number and subject are valid, non-malicious strings
+  const numberRegex = new RegExp(/^(?=.*[0-9])/i);
+  const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
+  if (numberRegex.test(number) && subjectRegex.test(subject)) {
+    // var classRating = Classes.find({ classSub: subject.toLowerCase(), classNum: number }).fetch()[0]['classRating']
+    let classRating = Classes.find({ classSub: subject.toLowerCase(), classNum: number }, fields={classRating: 1})
+
+    return classRating;
+    // console.log(JSON.parse(JSON.stringify({"classRatingValue": classRating}));
+    // return JSON.parse(JSON.stringify({"classRatingValue": classRating}));
+  }
+  else {
+    return null;
+  }
+}, {
+  url: "classInfo/:0/:1",
+  httpMethod: "get"
+});
