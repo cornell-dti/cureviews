@@ -4,7 +4,6 @@ import Navbar from './Navbar.jsx';
 import ResultsDisplay from './ResultsDisplay.jsx';
 import PropTypes from "prop-types";
 
-
 /*
   Results Component.
 
@@ -25,7 +24,7 @@ export class Results extends Component {
 
   }
 
-  updateResults(){
+  updateResults() {
     if (this.props.match.params.type === "major") {
       Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
         if (!err && courseList.length != 0) {
@@ -63,7 +62,7 @@ export class Results extends Component {
     }
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     if (prevProps != this.props) {
       this.setState({
         courseList: [],

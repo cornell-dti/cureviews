@@ -25,7 +25,9 @@ export default class PreviewCard extends Component {
       workload: this.props.course.classWorkload,
       workloadColor: "E64458",
       topReview: {},
-      numReviews: 0
+      numReviews: 0,
+      topReviewLikes: 0,
+      isLiked: false
     };
 
     this.updateColors = this.updateColors.bind(this);
@@ -61,6 +63,7 @@ export default class PreviewCard extends Component {
           reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
           this.setState({
             topReview: reviews[0],
+            topReviewLikes: reviews[0].likes,
             numReviews: reviews.length
           });
         }
@@ -130,8 +133,15 @@ export default class PreviewCard extends Component {
     this.updateTopReview();
   }
 
+  likeHandler(liked) {
+    this.setState({
+      isLiked: liked
+    })
+  }
+
   render() {
     let theClass = this.props.course;
+    console.log("likes:" + this.state.topReviewLikes);
 
     return (
       <div className="preview-holder">
@@ -175,7 +185,7 @@ export default class PreviewCard extends Component {
               {/*If class has review show top review and link*/}
               {Object.keys(this.state.topReview).length !== 0 &&
 
-                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} />
+                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
 
               }
 
