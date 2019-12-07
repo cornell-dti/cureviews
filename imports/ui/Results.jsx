@@ -53,10 +53,21 @@ export class Results extends Component {
           });
         }
         else {
-          this.setState({
-            courseList: [],
-            loading: false
-          });
+          Meteor.call("getClassesByQuery", userQuery, (err, queryCourseList) => {
+            if (!err && queryCourseList.length != 0) {
+              // Save the Class object that matches the request
+              this.setState({
+                courseList: queryCourseList,
+                loading: false
+              });
+            }
+            else {
+              this.setState({
+                courseList: [],
+                loading: false
+              });
+            }
+          })
         }
       });
     }

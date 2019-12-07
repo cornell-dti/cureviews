@@ -46,7 +46,19 @@ export default class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.setCourse=this.setCourse.bind(this);
     this.updateQuery=this.updateQuery.bind(this);
+    this.checkForCourseMatch=this.checkForCourseMatch.bind(this);
     
+  }
+
+  checkForCourseMatch(querySub, queryNum){
+    let isMatch=false;
+    this.state.allCourses.forEach(course=>{
+      let classNum=course.classNum.toLowerCase();
+      let classSub=course.classSub.toLowerCase();
+        if(classNum===queryNum && classSub===querySub) isMatch=true;
+    });
+
+    return isMatch;
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -66,9 +78,19 @@ export default class SearchBar extends Component {
           });
         }
         else {
-          this.setState({
-            allCourses:[]
-          });
+          Meteor.call("getClassesByQuery", this.state.query, (err, queryCourseList) => {
+            if (!err && queryCourseList && queryCourseList.length !== 0) {
+              // Save the list of Class objects that matches the request
+              this.setState({
+                allCourses: queryCourseList
+              });
+            }
+            else {
+              this.setState({
+                allCourses:[]
+              });
+            }
+          })
         }
       });
       
@@ -115,7 +137,6 @@ export default class SearchBar extends Component {
   
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-
     this.setState(newSearchState);
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
@@ -208,7 +229,19 @@ export default class SearchBar extends Component {
       // Sends user to /results/keyword/query+query
       if(this.state.index == 0 && this.state.enter == 1){
         this.setState(initState);
-        return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
+        let querySplit=this.state.query.toLowerCase().split(" ");
+        let queryNum="";
+        let querySub="";
+        if(querySplit.length==2){
+          querySub=querySplit[0];
+          queryNum=querySplit[1];
+        }
+        if(!this.checkForCourseMatch(querySub, queryNum)){
+          return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
+        }
+        else{
+          return <Redirect push to={`/course/${querySub.toUpperCase()}/${queryNum}`}></Redirect>;
+        }
       }
       
       let exact_search = (

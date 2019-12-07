@@ -192,6 +192,9 @@ Meteor.methods({
       let course = Meteor.call('getCourseById', courseId);
       if (course) {
         let reviews = Reviews.find({ class: courseId, reported: 0, visible: 1 }).fetch();
+        course.crossList.forEach(crossListed =>
+          reviews.push(Reviews.find({ class: crossListed, reported: 0, visible: 1 }).fetch())
+        );
         let state = getGaugeValues(reviews);
         Classes.update({ _id: courseId },
           {
@@ -218,10 +221,10 @@ Meteor.methods({
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if (userIsAdmin) {
       let courses = Classes.find().fetch();
-      courses.forEach(function (course) {
+      if (courses.crossList) courses.forEach(function (course) {
         Meteor.call("updateCourseMetrics", course._id, token);
       });
-      console.log("done");
+      console.log("Updated metrics for all courses");
     }
 
   },

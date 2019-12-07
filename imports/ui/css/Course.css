@@ -23,6 +23,14 @@
   padding: 15px;
 }
 
+
+.found {
+  text-decoration: underline;
+  font-weight: bold;
+  color:#4990E2;
+
+}
+
 .result-label-course{
   border: 1px solid #4A90E2;
   box-sizing: border-box;
@@ -40,6 +48,7 @@
   color: #4A90E2;
   max-width: 14%;
 }
+
 
 .result-label-subject{
   border: 1px solid #F3A953;
@@ -62,6 +71,36 @@
 .resultbutton:hover, .active{
   background-color: rgba(73, 144, 226, 0.5) !important;
 }
+
+
+.resultbutton:hover .result-text{
+  color: #ffffff !important;
+}
+
+.active  .found{
+  color: #ffffff !important;
+}
+
+.resultbutton:hover .found{
+  color: #ffffff !important;
+}
+
+.resultbutton:hover .result-label-course{
+  color: #ffffff !important;
+  border: 1px solid #ffffff;
+}
+
+.active > .result-text{
+  color: #ffffff !important;
+}
+
+.active > .result-label-course{
+  color: #ffffff !important;
+  border: 1px solid #ffffff;
+}
+
+
+
 
 .contrasting-result-background .resultbutton:hover, .contrasting-result-background .active{
   background-color: rgba(73, 144, 226, 0.9) !important;
@@ -97,6 +136,7 @@
   display: flex;
   margin: 0;
 }
+
 
 .text-style-2{
   display: inline-block;
@@ -136,11 +176,4 @@
   color: inherit;
 }
 
-.found {
-  text-decoration: underline;
-  font-weight: bold;
-  color:#4990E2;
-
-  
-}
 
