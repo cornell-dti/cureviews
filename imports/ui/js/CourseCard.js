@@ -46,7 +46,7 @@ export function getCrossListOR(course){
       courseId = course._id;
   }
   else{
-    return []
+    return [{"class": courseId}]
   }
   
   //if there are crossListed Courses, merge the reviews
@@ -57,6 +57,9 @@ export function getCrossListOR(course){
     });
     crossListOR.push({"class": courseId}) //make sure to add the original course to the list
     return crossListOR
+  }
+  else{
+    return [{"class": courseId}]
   }
 }
 
