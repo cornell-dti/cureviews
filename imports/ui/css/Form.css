@@ -44,6 +44,10 @@ form {
   margin-bottom: 15px;
 }
 
+.rodal{
+  z-index: 1000;
+}
+
 .float-r{
   float: right;
 }
@@ -296,6 +300,7 @@ input[type="range"] {
 
 #modal-top{
   height: 35%;
+  padding-top: 15px;
   z-index: 1008;
   box-shadow: 0 2px 3.5px 0 rgba(231, 231, 231, 0.83);
   border-bottom-right-radius: 5px;
