@@ -34,7 +34,7 @@ export default class FilteredResult extends Component {
   }
 
   getColor(metric, val) {
-    if (metric === "Overall Rating") {
+    if (metric === "Overall Rating" || metric === "Relevance") {
       if (val !== "?" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
       }
@@ -59,7 +59,7 @@ export default class FilteredResult extends Component {
   }
 
   updateSortBy() {
-    if (this.state.sortBy === "rating") {
+    if (this.state.sortBy === "rating" || this.state.sortBy === "relevance") {
       return Number(this.state.course.classRating) ? this.state.course.classRating : "?";
     }
     else if (this.state.sortBy === "diff") {
@@ -71,7 +71,7 @@ export default class FilteredResult extends Component {
   }
 
   updateSortByTitle() {
-    if (this.state.sortBy === "rating") {
+    if (this.state.sortBy === "rating" || this.state.sortBy === "relevance") {
       return "Overall Rating";
     }
     else if (this.state.sortBy === "diff") {

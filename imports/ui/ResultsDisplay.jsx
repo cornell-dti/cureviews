@@ -25,7 +25,7 @@ export default class ResultsDisplay extends Component {
       courseList: this.props.courses,
       card_course: this.props.courses[0],
       active_card: 0,
-      selected: "rating",
+      selected: "relevance",
       filters: {
         "Fall": true, "Spring": true,
         "1000": true, "2000": true,
@@ -45,9 +45,10 @@ export default class ResultsDisplay extends Component {
     if (prevProps != this.props) {
       this.setState({
         courseList: this.props.courses,
+        relevantCourseList: this.props.courses,
         card_course: this.props.courses[0],
         active_card: 0,
-        selected: "rating",
+        selected: "relevance",
         filters: {
           "Fall": true, "Spring": true, "1000": true, "2000": true,
           "3000": true, "4000": true, "5000+": true
@@ -65,8 +66,8 @@ export default class ResultsDisplay extends Component {
   initialSort() {
     const data = this.props.courses.sort(
       (a, b) => {
-        let first = (Number(b.classRating) || 0);
-        let second = (Number(a.classRating) || 0);
+        let first = (Number(b.score) || 0);
+        let second = (Number(a.score) || 0);
 
         if (first === second) {
           return (a.classNum - b.classNum);
@@ -85,7 +86,26 @@ export default class ResultsDisplay extends Component {
 
   sort() {
     if (this.state.filteredItems.length == 0) {
-      if (this.state.selected == "rating") {
+      if (this.state.selected == "relevance") {
+        const data = this.state.courseList.sort(
+          (a, b) => {
+            let first = (Number(b.score) || 0);
+            let second = (Number(a.score) || 0);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });;
+        this.setState({
+          courseList: data,
+          card_course: data[0],
+          active_card: 0
+        });
+      }
+      else if (this.state.selected == "rating") {
         const data = this.state.courseList.sort(
           (a, b) => {
             let first = (Number(b.classRating) || 0);
@@ -145,7 +165,26 @@ export default class ResultsDisplay extends Component {
       }
     }
     else {
-      if (this.state.selected == "rating") {
+      if (this.state.selected == "relevance") {
+        const data = this.state.filteredItems.sort(
+          (a, b) => {
+            let first = (Number(b.score) || 0);
+            let second = (Number(a.score) || 0);
+
+            if (first === second) {
+              return (a.classNum - b.classNum);
+            }
+            else {
+              return (first - second);
+            }
+          });;
+        this.setState({
+          filteredItems: data,
+          card_course: data[0],
+          active_card: 0
+        });
+      }
+      else if (this.state.selected == "rating") {
         const data = this.state.filteredItems.sort(
           (a, b) => {
             let first = (Number(b.classRating) || 0);
@@ -256,7 +295,11 @@ export default class ResultsDisplay extends Component {
     const activeFilterNames = Object.keys(filters).filter(
       filterName => filters[filterName]
     );
-    const filteredItems = this.state.courseList.filter(course =>
+    let list = this.state.courseList;
+    if (this.state.selected === "relevance") {
+      list = this.state.relevantCourseList;
+    }
+    const filteredItems = list.filter(course =>
       this.filterCondition(course, activeFilterNames)
     );
     if (filteredItems.length == 0 && checked) {
@@ -379,6 +422,7 @@ export default class ResultsDisplay extends Component {
                     Sort By:
                     </p>
                   <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
+                    <option value="relevance">Relevance</option>
                     <option value="rating">Overall Rating</option>
                     <option value="diff" >Difficulty</option>
                     <option value="work">Workload</option>
