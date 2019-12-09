@@ -56,7 +56,12 @@ export default class SearchBar extends Component {
     // Reset index, enter, mouse, and selected
     this.setState(newSearchState);
     // trim the query to remove trailing spaces
-    let query = event.target.value.trim()
+    let query = event.target.value.trim();
+    
+    // This is used to make "cs2110" and "cs 2110" equivalent
+    if(query && query.split(" ").length === 1){
+      query = query.match(/[a-z]+|[^a-z]+/gi).join(" ");
+    }
     
     if(this.checkForCourseMatch(query)){
       // If query is exact match to a class,
