@@ -98,7 +98,7 @@ export default class ResultsDisplay extends Component {
             else {
               return (first - second);
             }
-          });;
+          });
         this.setState({
           courseList: data,
           card_course: data[0],
@@ -177,7 +177,7 @@ export default class ResultsDisplay extends Component {
             else {
               return (first - second);
             }
-          });;
+          });
         this.setState({
           filteredItems: data,
           card_course: data[0],
