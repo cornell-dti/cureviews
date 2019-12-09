@@ -556,7 +556,7 @@ Meteor.methods({
           }
         }
       ];
-      let hashMap = {}; //Object {"cs": {date1: totalNum}, math: {date1, totalNum} }
+      let hashMap = {}; //Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
       Reviews.aggregate(pipeline).map(function(data) { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
         let arr = [];
         const sub = Classes.find({
@@ -566,9 +566,9 @@ Meteor.methods({
           '_id': 0,
           'classNum': 0
         }).fetch()[0]; //finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
+        //date of this review minus the hrs mins sec
         let timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split("T")[0];
         if (retArr.includes(sub.classSub)) { //if thos review is one of the top 15 we want.
-          //date of this review minus the hrs mins sec
           if (hashMap[sub.classSub] == null) //if not in hm then add
             hashMap[sub.classSub] = {
               [timeStringYMD]: data.total
