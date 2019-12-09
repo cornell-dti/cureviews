@@ -117,17 +117,20 @@ export default class Review extends Component {
     // console.log(review.rating);
     return (
       <div className="review">
-        <div className="row noLeftRightSpacing">
-          <div className="col-md-12 col-xs-12 col-xs-12">
-            <button className="report-review" onClick={() => {
-              this.props.reportHandler(review);
-              alert('This post has been reported and will be reviewed.');
-            }}>
-              <span className="glyphicon glyphicon-flag"
-              ></span>
-            </button>
+        {
+          !this.props.isPreview && 
+          <div className="row noLeftRightSpacing">
+            <div className="col-md-12 col-xs-12 col-xs-12">
+              <button className="report-review" onClick={() => {
+                this.props.reportHandler(review);
+                alert('This post has been reported and will be reviewed.');
+              }}>
+                <span className="glyphicon glyphicon-flag"
+                ></span>
+              </button>
+            </div>
           </div>
-        </div>
+        }
         <div className="panel-body-3">
           <div className="row reviewNumbers noLeftRightSpacing">
 
@@ -167,7 +170,11 @@ export default class Review extends Component {
             </div>
           </div>
           <div className="row noLeftRightSpacing review-padding-left">
-            <div className={this.review_text_class} >{review.text}</div>
+            <div className={this.review_text_class} >
+              <span className={this.props.isPreview ? "preview-review-overflow" : ""}>
+                {review.text}
+              </span>
+            </div>
           </div>
         </div>
         <div className="row noLeftRightSpacing">

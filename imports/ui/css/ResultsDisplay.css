@@ -1,5 +1,5 @@
 #results{
-  height: 70vh;
+  height: calc(100vh - 189px);
   overflow:auto
 }
 
