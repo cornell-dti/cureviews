@@ -35,6 +35,31 @@ export function lastSem(sem){
   return semesterList.substring(semesterList.length-4);
 }
 
+// Returns an array of objects of containing courseIds
+// of cross-listed classes
+export function getCrossListOR(course){
+  let crossList;
+  let courseId;
+  if (course !== undefined) {
+      // Why
+      crossList = course.crossList;
+      courseId = course._id;
+  }
+  else{
+    return []
+  }
+  
+  //if there are crossListed Courses, merge the reviews
+  if (crossList !== undefined && crossList.length > 0) {
+    //format each courseid into an object to input to the find's '$or' search
+    const crossListOR = crossList.map(function(courseId) {
+      return {"class": courseId};
+    });
+    crossListOR.push({"class": courseId}) //make sure to add the original course to the list
+    return crossListOR
+  }
+}
+
 // collect aggregate information from allReviews, the list of all reviews
 // submitted for this class. Return values for the average difficulty, quality,
 // and madatory/not mandatory status.
@@ -49,29 +74,26 @@ export function getGaugeValues(allReviews) {
   let countWork = 0;
 
   allReviews.forEach(function(review) {
-    // console.log("rating: " + review["rating"]);
-    // console.log("quality: " + review["quality"]);
-    // console.log("work: " + review["workload"]);
-
-    countRatingAndDiff++;
-    sumDiff += review["difficulty"];
-    if(review["rating"] != undefined){
-      sumRating += review["rating"];
-    }
-    else{
-      sumRating += review["quality"];
+    if(review){
+      countRatingAndDiff++;
+      sumDiff += Number(review["difficulty"]);
+      if(review["rating"] !== undefined){
+        sumRating += Number(review["rating"]);
+      }
+      else{
+        sumRating += Number(review["quality"]);
+      }
+      if (review["workload"] != undefined) {
+        countWork++;
+        sumWork += Number(review["workload"]);
+      }
     }
     
-    if (review["workload"] != undefined) {
-      countWork++;
-      sumWork += Number(review["workload"]);
-    }
 
   });
 
   //Update the gauge variable values for rating, difficulty, and workload using averages
   //Fixed to 1 decimal place
-  
   
   if(countRatingAndDiff > 0){
     newState.rating = (sumRating/countRatingAndDiff).toFixed(1); //out of 5
@@ -123,6 +145,6 @@ export function getGaugeValues(allReviews) {
   else {
     newState.workloadColor = "#E64458";
   }
-
+  
   return newState;
 }

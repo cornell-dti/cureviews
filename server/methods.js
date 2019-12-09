@@ -3,7 +3,7 @@ import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
-import { getGaugeValues } from '../imports/ui/js/CourseCard.js';
+import { getGaugeValues, getCrossListOR } from '../imports/ui/js/CourseCard.js';
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
@@ -191,11 +191,10 @@ Meteor.methods({
     if (userIsAdmin) {
       let course = Meteor.call('getCourseById', courseId);
       if (course) {
-        let reviews = Reviews.find({ class: courseId, reported: 0, visible: 1 }).fetch();
-        course.crossList.forEach(crossListed =>
-          reviews.push(Reviews.find({ class: crossListed, reported: 0, visible: 1 }).fetch())
-        );
+        let crossListOR = getCrossListOR(course);
+        let reviews =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700}).fetch();
         let state = getGaugeValues(reviews);
+        
         Classes.update({ _id: courseId },
           {
             $set: {
@@ -221,8 +220,8 @@ Meteor.methods({
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if (userIsAdmin) {
       let courses = Classes.find().fetch();
-      if (courses.crossList) courses.forEach(function (course) {
-        Meteor.call("updateCourseMetrics", course._id, token);
+      courses.forEach(function (course) {
+        Meteor.call("updateCourseMetrics", course._id);
       });
       console.log("Updated metrics for all courses");
     }
@@ -531,11 +530,20 @@ Meteor.methods({
     }
   },
 
-  //get list of review objects for given class from class _id
+  // Get list of review objects for given class from class _id
+  // Accounts for cross-listed reviews
   getReviewsByCourseId: function (course_id) {
     const regex = new RegExp(/^(?=.*[A-Z])/i)
     if (regex.test(course_id)) {
-      return Reviews.find({ class: course_id }).fetch();
+      let course = Meteor.call('getCourseById', course_id);
+      if(course){
+        let crossListOR = getCrossListOR(course);
+        let reviews =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700}).fetch();
+        return reviews;
+      }
+      else{
+        return null;
+      }
     } else {
       return null;
     }
