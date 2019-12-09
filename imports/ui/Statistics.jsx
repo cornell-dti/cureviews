@@ -3,7 +3,6 @@ import Accordian from './Accordian.jsx';
 
 import { LineChart, PieChart } from 'react-chartkick';
 import 'chart.js';
-
 /*
   A Statistics component that gives data concerning the
   database and allows devs to moniter status and progress of the project
