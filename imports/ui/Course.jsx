@@ -33,7 +33,7 @@ export default class Course extends Component {
     const classInfo = this.props.info;
     let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
-    if(this.props.active && this.props.cursor == 1 && this.props.useRedirect){
+    if(this.props.active && this.props.enter == 1 && this.props.useRedirect){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
       }
     // check if a query was provided, if so underline parts of the class name
@@ -41,7 +41,7 @@ export default class Course extends Component {
       if (text.toLowerCase().indexOf(this.props.query) != -1) {
         const startIndex = text.toLowerCase().indexOf(this.props.query);
         const endIndex = startIndex + this.props.query.length;
-        text = <div>{text.substring(0,startIndex)}<span className='found'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</div>
+        text = <span className="ellipsis">{text.substring(0,startIndex)}<span className='found'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</span>
       } else {
         // based on search technique in server/publications, results without a contains match
         // must be of the form "CS21" or "CS 21". The subject must be a 'match', as well as some
@@ -57,19 +57,17 @@ export default class Course extends Component {
         // underline the subject and any other matching text
         if(!this.props.useRedirect)
         text =
-        <div>
+        <span className="ellipsis">
           <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
-        </div>
+        </span>
         else text=
-          <div>
+          <span className="ellipsis">
           <span>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
-        </div>
+        </span>
 
       }
-    } else {
-      text = <div>{text}</div>
     }
 
     //return classname as a list element
@@ -78,11 +76,16 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <li className={this.props.active && this.props.mouse != 1 ? 'active classbutton' : 'classbutton'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
-          <a className="text-style-1" href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`} ref="class">
+      <a className={this.props.active && this.props.mouse != 1 ? 'active resultbutton' : 'resultbutton'} 
+          id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } 
+          href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
+          <p className="result-label-course">
+            Course
+          </p>
+          <p className="result-text">
               {text}
-          </a>
-      </li>
+          </p>
+      </a>
     );
     else return(
       //highlight the element if the indexes matched up (the active prop is true)
@@ -101,7 +104,7 @@ Course.propTypes = {
   info: PropTypes.object.isRequired,
   query: PropTypes.string, //optional
   active: PropTypes.bool,
-  cursor: PropTypes.number,
+  enter: PropTypes.number,
   mouse: PropTypes.number,
   handler: PropTypes.func.isRequired,
   key: PropTypes.string,

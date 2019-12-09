@@ -23,7 +23,11 @@ Classes.schema = new SimpleSchema({
     crossList: { type: [String], optional: true }, // list of classes that are crosslisted with this one, a string of Classes _id.
     classFull: { type: String }, // full class title to search by, formated as 'classSub classNum: classTitle'
     classSems: { type: [String] }, // list of semesters this class was offered, like ['FA17', 'FA16']
-    classProfessors: { type: [String] } //list of professors that have taught the course over past semesters
+    classProfessors: { type: [String] }, //list of professors that have taught the course over past semesters
+    classRating: { type: Number }, // the average class rating from reviews
+    classWorkload: { type: Number }, // the average workload rating from reviews
+    classDifficulty: { type: Number }, // the average difficulty rating from reviews
+
 });
 
 /* # Users collection.

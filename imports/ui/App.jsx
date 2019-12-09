@@ -39,24 +39,15 @@ export default class App extends Component {
   render() {
     return (
       <div className="container-fluid full-height background-gradient">
-
         <div className="row">
-          <img src='/logo.png' className="img-responsive center-block scale-logo" id="img-padding-top" alt="CU Reviews Logo" />
+          <img src='/logo.png' className="img-responsive scale-logo" alt="CU Reviews Logo" />
         </div>
-        <div className="row">
-          <div className="col-md-9 col-sm-9 col-xs-9 center-block no-float z-index">
-            <SearchBar query={this.state.query} queryFunc={this.updateQuery} />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-10 col-md-offset-1">
-            <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
-          </div>
-        </div>
-        <div className="row footer navbar-fixed-bottom">
-          <div className="col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
-            <img src='/skyline.svg' className="center-block outline" id="" alt="" />
+        <div className="row homepage-left-padding">
+          <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+            <div className="row">
+              <p className="welcome_text">Search for Cornell courses, rate past classes, and share feedback</p>
+            </div>
+            <SearchBar />
           </div>
         </div>
       </div>

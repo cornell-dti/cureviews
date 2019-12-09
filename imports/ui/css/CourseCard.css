@@ -95,7 +95,7 @@ label {
   padding-right: 30px;
 }
 
-.class-title{
+.coursecard-class-title{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 36px;
   font-weight: var(--semi-bold-weight);
@@ -117,7 +117,7 @@ label {
   color: #4A4A4A;
 }
 
-.class-info, .median{
+.class-info{
   font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
   font-weight: var(--regular-weight);

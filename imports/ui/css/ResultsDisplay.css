@@ -1,0 +1,97 @@
+#results{
+  height: calc(100vh - 189px);
+  overflow:auto
+}
+
+.results-loading{
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20vh;
+}
+
+#listOfClassResults{
+  height:100%;
+  overflow-y: scroll;
+}
+
+
+#preview{
+  overflow: hidden;
+}
+#filters{
+  font-family: "Source Sans Pro", sans-serif; 
+  padding-left: 55px;
+}
+
+.overall-filter{
+  margin-bottom: 20px;
+}
+
+.num-classes-found{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #000000;
+  margin: 0;
+}
+
+.margin-top{
+  margin-top: 55px;
+}
+
+.display-inline{
+  display: inline-flex;
+}
+
+.sort-by{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #000000;
+  text-align: right;
+  margin: 0 0 0 auto; 
+}
+
+.browser-default{
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: white;
+  border-color: transparent;
+  border: 0px;
+  color: #4a90e2;
+  outline: none;
+  font-size: 14px;
+}
+
+.filter-sub{
+  padding-bottom: 20px;
+}
+.filter-title{
+  color: #979797;
+}
+
+.checkbox-label{
+  font-family: "Source Sans Pro", sans-serif; 
+  margin: 0px 0px 0px 10px;
+}
+
+.no-results{
+  width: auto;
+  height: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.no-results-cap{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 25px;
+  text-align: center;
+}
+

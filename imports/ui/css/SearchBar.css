@@ -1,14 +1,129 @@
-#searchbar {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px 0 rgba(0,0,0,0.5);
+.search-bar {
+  background-color: transparent;
   display: inline-block;
-  /* max-width: 1000px; */
-  /* margin-top: 20px; */
-  width: 100%;
   height: 100%;
-  /*padding: 0 10px;*/
+  padding: 0;
   position: relative;
+  outline: 0;
+}
+
+.react-select__menu, 
+.react-select__single-value, 
+.react-select__control{
+  background-color: #ffffff;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 1.2vw; /* Hacky eye-bally solution to font size for this dropdown but seems to work */
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #4A90E2 !important;
+  border-radius: 0px 3px 3px 0px !important;
+  outline:0 !important;
+  border-color: transparent !important;
+  border-style: none !important;
+  border-width: 0px !important;
+  box-shadow: none !important;
+}
+
+.react-select__menu, .react-select__menu-list{
+  margin-top: 0px !important;
+  padding: 0px !important;
+  background-color: rgba(255,255,255,.5) !important;
+}
+
+.react-select__option{
+  height: 40px !important;
+  height: 40px !important;
+  padding: 0px !important;
+  padding-left: 3.3vw !important;
+  line-height: 40px;
+}
+
+.react-select__option--is-focused{
+  background: rgba(53, 107, 208, 0.1) !important;
+}
+
+.select-padding-left{
+  padding-left: 1.5px;
+}
+
+.react-select__control{
+  opacity: 1;
+  height: 52px;
+  padding-left: 1.1vw;
+}
+
+.search-text{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 22px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  background-color: white;
+  border-color: transparent;
+  border-radius: 10px;
+  cursor: text;
+  text-align: left;
+  width: 100%;
+  height: 52px;
+  background-image: url(/magnifying_glass.svg);
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 10px;
+  background-size: 20px;
+  padding-left: 40px;
+  outline: 0;
+  position: relative;
+  z-index: 1020;
+}
+
+.search-text::placeholder{
+  color: #C9C9C9;
+  font-weight: var(--regular-weight);
+}
+
+.react-select__indicator-separator{
+  display: none;
+}
+
+.react-select__indicator{
+  color: #4A90E2 !important;
+  padding: 8px 10px 8px 8px !important;
+}
+
+@media (min-width: 1200px){
+  .col-lg-9-altered {
+    width: 72% !important;
+  }
+  
+  .col-lg-3-altered {
+    width: 28% !important;
+  }
+}
+
+@media (min-width: 992px){
+  .col-md-9-altered {
+    width: 72% !important;
+  }
+  
+  .col-md-3-altered {
+    width: 28% !important;
+  }
+}
+
+@media (min-width: 768px){
+  .col-sm-9-altered {
+    width: 72% !important;
+  }
+  
+  .col-sm-3-altered {
+    width: 28% !important;
+  }
 }
 
 #searchbar-popup {
@@ -22,33 +137,6 @@
   line-height: normal;
   letter-spacing: normal;
   text-align:left;
-}
-
-
-#search {
-
-}
-
-.search-text{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 18px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  background-color: white;
-  border-color: transparent;
-  color: black;
-  cursor: text;
-  font-weight: normal;
-  padding: 5px;
-  text-align: center;
-  text-indent: 10px;
-  width: 100%;
-  border-radius: 10px;
-  height: 46px;
 }
 
 .search-text-popup, .search-text-popup::placeholder{
@@ -84,22 +172,23 @@
   height: 48px;
 }
 
-#output {
-  background: white;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+.output {
+  background: transparent;
   cursor: pointer;
-  margin-top: 0px; /* height of the input element*/
-  max-height: 500px;
+  margin-top: 0px;
+  max-height: 300px;
   overflow-y: auto;
   position: absolute;
-  /* max-width: 1000px; */
   width: 100%;
-  z-index: 1001; /* 1001 to make sure search results are always at the forefront of the page */
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  margin-top: 4px;
+  z-index: 1001;
+  border-radius: 0 0 10px 10px;
+  margin-top: -5px;
+}
+
+.contrasting-result-background .output {
+  border-style: solid;
+  border-color: #6ba7ec;
+  border-width:  0 1px 1px 1px;
 }
 
 #output-popup{

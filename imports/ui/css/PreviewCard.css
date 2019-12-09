@@ -1,0 +1,130 @@
+#course-details {
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  float: left;
+  width: 50%;
+}
+
+.left-gauge{
+  text-align: left;
+}
+.center-gauge{
+  text-align: center;
+}
+.right-gauge{
+  text-align: right;
+}
+
+.preview-class-title{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 24px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #4A90E2;
+}
+
+.preview-class-info{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #979797;
+}
+
+.gaugeHolder{
+  padding: 25px 35px 40px 35px;
+}
+
+.gaugeHolder svg text:first-of-type{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px !important;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  fill: #000000 !important;
+}
+
+.gaugeHolder svg text:last-of-type{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 19px !important;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+}
+
+.preview-top-review-label{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+}
+
+.preview-empty-top-review{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #979797;
+  padding-bottom: 100px;
+}
+
+.panel-radius{
+  border-radius: 8px;
+}
+
+.preview-holder{
+  margin-right: 2vw;
+  margin-left: 20px;
+}
+
+.review-holder{
+  width: 31vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.preview-panel{
+  width: 100%;
+  border-radius: 5px;
+  background-color: #fafafa;
+  padding: 30px 40px 40px 40px;
+}
+
+.gaugeHolder svg{
+  overflow: visible !important;
+}
+
+#gauge, #gauge-body{
+  width: 50%;
+}
+
+.preview-review-button{
+  background-color: #4a90e2;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif; 
+  text-align: center;
+  border-radius: 5px;
+  height: auto;
+  padding: 10px;
+  font-size: 15px;
+  width: 100%;
+  display: inline-grid;;
+}

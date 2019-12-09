@@ -3,6 +3,7 @@ import { HTTP } from 'meteor/http';
 import { check, Match } from 'meteor/check';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
+import { getGaugeValues, getCrossListOR } from '../imports/ui/js/CourseCard.js';
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
@@ -15,20 +16,24 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
 
 // Helper to check if a string is a subject code
 const isSubShorthand = (sub) => {
-  const subCheck = Subjects.find({subShort: sub}).fetch()
+  const subCheck = Subjects.find({ subShort: sub }).fetch()
   return subCheck.length > 0;
 }
 
 // helper to format search within a subject
 const searchWithinSubject = (sub, remainder) => {
   return Classes.find(
-    { 'classSub':  sub, 'classFull': { '$regex' : `.*${remainder}.*`, '$options' : '-i' }},
-    {sort: {classFull: 1}, limit: 200},
-    {reactive: false}).fetch();
+    { 'classSub': sub, 'classFull': { '$regex': `.*${remainder}.*`, '$options': '-i' } },
+    { sort: { classFull: 1 }, limit: 200 },
+    { reactive: false }).fetch();
 }
 
 Meteor.methods({
-  // insert a new review into the reviews collection.
+  // insert a new review into the reviews collection. Also updates 
+  // course metrics upon successfully inserting review.
+  // Upon success returns 1, else returns 0.
+  // insert a new review into the reviews collection. Also updates 
+  // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
   insert: function (token, review, classId) {
     // check: only insert if all form fields are filled in
@@ -40,7 +45,7 @@ Meteor.methods({
     // console.log("ticket");
     // console.log(ticket);
     Meteor.call('insertUser', ticket);
-    if (ticket.hd === "cornell.edu"){
+    if (ticket.hd === "cornell.edu") {
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
         const fullReview = {
           text: review.text,
@@ -59,6 +64,7 @@ Meteor.methods({
           //check(fullReview, Reviews);
           Reviews.insert(fullReview);
           console.log("Success: Submitted review");
+          //Update the course metrics
           return 1; //success
         } catch (error) {
           console.log(error)
@@ -115,13 +121,14 @@ Meteor.methods({
   },
 
   //Increment the number of likes a review has gotten by 1.
-  incrementLike: function (review) {
+  incrementLike: function (id) {
     try {
+      let review = Reviews.find({ _id: id }).fetch()[0];
       if (review.likes == undefined) {
-        Reviews.update(review._id, { $set: { likes: 1 } });
+        Reviews.update(id, { $set: { likes: 1 } });
       }
       else {
-        Reviews.update(review._id, { $set: { likes: review.likes + 1 } });
+        Reviews.update(id, { $set: { likes: review.likes + 1 } });
       }
       return 1;
     }
@@ -131,13 +138,14 @@ Meteor.methods({
   },
 
   //Decrement the number of likes a review has gotten by 1.
-  decrementLike: function (review) {
+  decrementLike: function (id) {
     try {
+      let review = Reviews.find({ _id: id }).fetch()[0];
       if (review.likes == undefined) {
-        Reviews.update(review._id, { $set: { likes: 1 } });
+        Reviews.update(id, { $set: { likes: 1 } });
       }
       else {
-        Reviews.update(review._id, { $set: { likes: review.likes - 1 } });
+        Reviews.update(id, { $set: { likes: review.likes - 1 } });
       }
       return 1;
     }
@@ -154,6 +162,7 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.update(review._id, { $set: { visible: 1 } });
+      Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     } else {
       return 0;
@@ -168,10 +177,87 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       Reviews.remove({ _id: review._id });
+      Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     } else {
       return 0;
     }
+  },
+
+  // This updates the metrics for an individual class given its Mongo-generated id. 
+  // Returns 1 if successful, 0 otherwise.
+  updateCourseMetrics: function (courseId, token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if (userIsAdmin) {
+      let course = Meteor.call('getCourseById', courseId);
+      if (course) {
+        let crossListOR = getCrossListOR(course);
+        let reviews =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700}).fetch();
+        let state = getGaugeValues(reviews);
+        
+        Classes.update({ _id: courseId },
+          {
+            $set: {
+              //If no data is available, getGaugeValues returns "-" for metric
+              classDifficulty: (state.diff !== "-" ? Number(state.diff) : null),
+              classRating: (state.rating !== "-" ? Number(state.rating) : null),
+              classWorkload: (state.workload !== "-" ? Number(state.workload) : null)
+            }
+          });
+        return 1;
+
+      }
+      else return 0;
+    }
+    else {
+      return 0;
+    }
+
+  },
+  // Used to update the review metrics for all courses
+  //in the database.
+  updateMetricsForAllCourses: function (token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if (userIsAdmin) {
+      let courses = Classes.find().fetch();
+      courses.forEach(function (course) {
+        Meteor.call("updateCourseMetrics", course._id);
+      });
+      console.log("Updated metrics for all courses");
+    }
+
+  },
+
+  // Returns courses with the given parameters.
+  // Takes in a dictionary object of field names
+  // and the desired value, i.e. 
+  // {classSub: "PHIL"} or
+  // {classDifficulty: 3.0}
+  // Returns an empty array if no classes match.
+  // NOTE/TODO: I don't think this actually works as intended
+  // let's refactor in future - Julian
+  getCoursesByFilters: function (parameters) {
+    let courses = [];
+    let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    //TODO: add regular expression for floating point numbers
+    for (let key in parameters) {
+      if (!regex.test(key)) return courses;
+    }
+    courses = Classes.find(parameters).fetch();
+    return courses;
+  },
+
+  // Returns courses with the given parameters.
+  // Takes in a major abbreviation
+  // e.g. CS, INFO, PHIL
+  // Returns an empty array if no classes match.
+  getCoursesByMajor: function (major) {
+    let courses = [];
+    let regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(major)) {
+      courses = Classes.find({ classSub: major }).fetch();
+    }
+    return courses;
   },
 
   // Update the local database when Cornell Course API adds data for the
@@ -233,7 +319,7 @@ Meteor.methods({
   /* Update the database so we have the professors information.
   This calls updateProfessors in dbInit */
   setProfessors: function (initiate, token) {
-  const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if (initiate && Meteor.isServer && userIsAdmin) {
       const semesters = findAllSemesters();
 
@@ -307,17 +393,17 @@ Meteor.methods({
       if (indexFirstDigit == 0) {
         // console.log("only numbers")
         return Classes.find(
-          {classNum : { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-          {sort: {classFull: 1}, limit: 200},
-          {reactive: false}).fetch();
+          { classNum: { '$regex': `.*${searchString}.*`, '$options': '-i' } },
+          { sort: { classFull: 1 }, limit: 200 },
+          { reactive: false }).fetch();
       }
 
       // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
       if (isSubShorthand(searchString)) {
         return Classes.find(
-          { 'classSub':  searchString},
-          {sort: {classFull: 1}, limit: 200},
-          {reactive: false}).fetch();
+          { 'classSub': searchString },
+          { sort: { classFull: 1 }, limit: 200 },
+          { reactive: false }).fetch();
       }
       // check if text before space is subject, if so search only classes with this subject.
       // Speeds up searches like "CS 1110"
@@ -346,13 +432,13 @@ Meteor.methods({
       //last resort, search everything
       // console.log("nothing matches");
       return Classes.find(
-        { 'classFull': { '$regex' : `.*${searchString}.*`, '$options' : '-i' }},
-        {sort: {classFull: 1}, limit: 200},
-        {reactive: false}
+        { 'classFull': { '$regex': `.*${searchString}.*`, '$options': '-i' } },
+        { sort: { classFull: 1 }, limit: 200 },
+        { reactive: false }
       ).fetch();
     } else {
       //console.log("no search");
-      return Classes.find({}, {sort: {classFull: 1}, limit: 200}, {reactive: false}).fetch();
+      return Classes.find({}, { sort: { classFull: 1 }, limit: 200 }, { reactive: false }).fetch();
     }
   },
 
@@ -379,6 +465,32 @@ Meteor.methods({
     else {
       return null;
     }
+  },
+
+  // Searches the database on Classes's text index and returns matching courses
+  getCoursesByKeyword: function (keyword) {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(keyword)) {
+      const options = {
+        fields: { score: { $meta: "textScore" } },
+        sort: { score: { $meta: "textScore" } }
+      }
+      return Classes.find({ "$text": { "$search": keyword } }, options).fetch();
+    }
+    else return null;
+  },
+
+  // Searches the database on Subjects's text index and returns matching subjects (which we're equating to majors)
+  getSubjectsByKeyword: function (keyword) {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(keyword)) {
+      const options = {
+        fields: { score: { $meta: "textScore" } },
+        sort: { score: { $meta: "textScore" } }
+      }
+      return Subjects.find({ "$text": { "$search": keyword } }, options).fetch();
+    }
+    else return null;
   },
 
   // Flag a review - mark it as reported and make it invisible to non-admin users.
@@ -413,6 +525,25 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z])/i)
     if (regex.test(professor)) {
       return Reviews.find({ professors: { $elemMatch: { $eq: professor } } }).fetch();
+    } else {
+      return null;
+    }
+  },
+
+  // Get list of review objects for given class from class _id
+  // Accounts for cross-listed reviews
+  getReviewsByCourseId: function (course_id) {
+    const regex = new RegExp(/^(?=.*[A-Z])/i)
+    if (regex.test(course_id)) {
+      let course = Meteor.call('getCourseById', course_id);
+      if(course){
+        let crossListOR = getCrossListOR(course);
+        let reviews =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700}).fetch();
+        return reviews;
+      }
+      else{
+        return null;
+      }
     } else {
       return null;
     }
@@ -470,44 +601,44 @@ Meteor.methods({
 
   //returns an array of objects in the form {_id: cs, total: 276}
   //represnting how many classes each dept (cs, info, coml etc...) offers
-  howManyEachClass: function (){
+  howManyEachClass: function () {
     const pipeline = [
-    {
-      $group: {
-        _id: '$classSub',
-        total: {
-          $sum: 1
+      {
+        $group: {
+          _id: '$classSub',
+          total: {
+            $sum: 1
+          }
         }
       }
-    }
     ];
     return Classes.aggregate(pipeline)
   },
 
-  howManyReviewsEachClass: function(){
+  howManyReviewsEachClass: function () {
     const pipeline = [
-    {
-      $group: {
-        _id: '$class',
-        total: {
-          $sum: 1
+      {
+        $group: {
+          _id: '$class',
+          total: {
+            $sum: 1
+          }
         }
       }
-    }
     ];
 
     let output = [];
-    Reviews.aggregate(pipeline).map(function (data){
-      const subNum = Classes.find({_id: data._id},{'classSub':1,'_id':0, 'classNum':1}).fetch()[0];
-      const id = subNum.classSub + " " +subNum.classNum;
+    Reviews.aggregate(pipeline).map(function (data) {
+      const subNum = Classes.find({ _id: data._id }, { 'classSub': 1, '_id': 0, 'classNum': 1 }).fetch()[0];
+      const id = subNum.classSub + " " + subNum.classNum;
       output.push(
-        {_id: id, total: data.total}
+        { _id: id, total: data.total }
       );
     });
     return output;
   },
 
-  totalReviews: function(){
+  totalReviews: function () {
     return Reviews.find({}).count();
   },
   // Print on the server side for API testing. Should print in logs if
