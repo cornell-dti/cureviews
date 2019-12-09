@@ -63,7 +63,7 @@ export default class PreviewCard extends Component {
           reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
           this.setState({
             topReview: reviews[0],
-            topReviewLikes: reviews[0].likes,
+            topReviewLikes: reviews[0].likes ? reviews[0].likes : 0,  //Account for undefined likes in review obj
             numReviews: reviews.length
           });
         }
