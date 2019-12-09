@@ -25,7 +25,7 @@ export default class ResultsDisplay extends Component {
       courseList: this.props.courses,
       card_course: this.props.courses[0],
       active_card: 0,
-      selected: "relevance",
+      selected: props.type === "major" ? "rating" : "relevance",
       filters: {
         "Fall": true, "Spring": true,
         "1000": true, "2000": true,
@@ -35,8 +35,8 @@ export default class ResultsDisplay extends Component {
       filteredItems: this.props.courses
     };
     this.previewHandler = this.previewHandler.bind(this);
+    this.sortBy = this.sortBy.bind(this);
     this.sort = this.sort.bind(this);
-    this.initialSort = this.initialSort.bind(this);
 
   }
 
@@ -48,13 +48,13 @@ export default class ResultsDisplay extends Component {
         relevantCourseList: this.props.courses,
         card_course: this.props.courses[0],
         active_card: 0,
-        selected: "relevance",
+        selected: this.props.type === "major" ? "rating" : "relevance",
         filters: {
           "Fall": true, "Spring": true, "1000": true, "2000": true,
           "3000": true, "4000": true, "5000+": true
         }, // key value pair => name:checked
         filteredItems: this.props.courses
-      }, () => this.initialSort())
+      }, () => this.sort())
     }
   }
 
@@ -62,12 +62,13 @@ export default class ResultsDisplay extends Component {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
   }
-
-  initialSort() {
-    const data = this.props.courses.sort(
+  
+  // Helper function to sort()
+  sortBy(courseList, sortByField, fieldDefault){
+    const data = courseList.sort(
       (a, b) => {
-        let first = (Number(b.score) || 0);
-        let second = (Number(a.score) || 0);
+        let first = (Number(b[sortByField]) || fieldDefault);
+        let second = (Number(a[sortByField]) || fieldDefault);
 
         if (first === second) {
           return (a.classNum - b.classNum);
@@ -77,173 +78,34 @@ export default class ResultsDisplay extends Component {
         }
       });
     this.setState({
-      filteredItems: data,
       courseList: data,
       card_course: data[0],
       active_card: 0
     });
   }
 
+  // Sorts list of class results by category selected in this.state.selected
   sort() {
-    if (this.state.filteredItems.length == 0) {
-      if (this.state.selected == "relevance") {
-        const data = this.state.courseList.sort(
-          (a, b) => {
-            let first = (Number(b.score) || 0);
-            let second = (Number(a.score) || 0);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          courseList: data,
-          card_course: data[0],
-          active_card: 0
-        });
-      }
-      else if (this.state.selected == "rating") {
-        const data = this.state.courseList.sort(
-          (a, b) => {
-            let first = (Number(b.classRating) || 0);
-            let second = (Number(a.classRating) || 0);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          courseList: data,
-          card_course: data[0],
-          active_card: 0
-        });
-      }
-      else if (this.state.selected == "diff") {
-        const data = this.state.courseList.sort(
-          (a, b) => {
-            let first = (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER);
-            let second = (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          courseList: data,
-          card_course: data[0],
-          active_card: 0
-        });
-
-      }
-      else if (this.state.selected == "work") {
-        const data = this.state.courseList.sort(
-          (a, b) => {
-            let first = (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER);
-            let second = (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          courseList: data,
-          card_course: data[0],
-          active_card: 0
-        });
-      }
+    let availableClasses;
+    if (this.state.filteredItems.length == 0){
+      availableClasses = this.state.courseList;
     }
-    else {
-      if (this.state.selected == "relevance") {
-        const data = this.state.filteredItems.sort(
-          (a, b) => {
-            let first = (Number(b.score) || 0);
-            let second = (Number(a.score) || 0);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          filteredItems: data,
-          card_course: data[0],
-          active_card: 0
-        });
-      }
-      else if (this.state.selected == "rating") {
-        const data = this.state.filteredItems.sort(
-          (a, b) => {
-            let first = (Number(b.classRating) || 0);
-            let second = (Number(a.classRating) || 0);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          filteredItems: data,
-          card_course: data[0],
-          active_card: 0
-        });
-      }
-      else if (this.state.selected == "diff") {
-        const data = this.state.filteredItems.sort(
-          (a, b) => {
-            let first = (Number(a.classDifficulty) || Number.MAX_SAFE_INTEGER);
-            let second = (Number(b.classDifficulty) || Number.MAX_SAFE_INTEGER);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          filteredItems: data,
-          card_course: data[0],
-          active_card: 0
-        });
-
-      }
-      else if (this.state.selected == "work") {
-        const data = this.state.filteredItems.sort(
-          (a, b) => {
-            let first = (Number(a.classWorkload) || Number.MAX_SAFE_INTEGER);
-            let second = (Number(b.classWorkload) || Number.MAX_SAFE_INTEGER);
-
-            if (first === second) {
-              return (a.classNum - b.classNum);
-            }
-            else {
-              return (first - second);
-            }
-          });
-        this.setState({
-          filteredItems: data,
-          card_course: data[0],
-          active_card: 0
-        });
-      }
+    else{
+      availableClasses = this.state.filteredItems;
     }
-
+    
+    if (this.state.selected == "relevance"){
+      this.sortBy(availableClasses, "score", 0);
+    }
+    else if (this.state.selected == "rating"){
+      this.sortBy(availableClasses, "classRating", 0);
+    }
+    else if (this.state.selected == "diff"){
+      this.sortBy(availableClasses, "classDifficulty", Number.MAX_SAFE_INTEGER);
+    }
+    else if (this.state.selected == "work"){
+      this.sortBy(availableClasses, "classWorkload", Number.MAX_SAFE_INTEGER);
+    }
   }
 
   classLevelCheck(course, filterName) {
@@ -421,7 +283,7 @@ export default class ResultsDisplay extends Component {
                   <p className="sort-by">
                     Sort By:
                     </p>
-                  <select className="browser-default" onChange={(e) => this.handleSelect(e)}>
+                  <select value={this.state.selected} className="browser-default" onChange={(e) => this.handleSelect(e)}>
                     <option value="relevance">Relevance</option>
                     <option value="rating">Overall Rating</option>
                     <option value="diff" >Difficulty</option>
@@ -447,6 +309,7 @@ export default class ResultsDisplay extends Component {
 
 ResultsDisplay.propTypes = {
   courses: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired
 };
 
