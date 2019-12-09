@@ -64,7 +64,7 @@ export default class ResultsDisplay extends Component {
   }
   
   // Helper function to sort()
-  sortBy(courseList, sortByField, fieldDefault){
+  sortBy(courseList, sortByField, fieldDefault, increasing){
     const data = courseList.sort(
       (a, b) => {
         let first = (Number(b[sortByField]) || fieldDefault);
@@ -74,7 +74,13 @@ export default class ResultsDisplay extends Component {
           return (a.classNum - b.classNum);
         }
         else {
-          return (first - second);
+          if(increasing){
+            return (first - second);
+          }
+          else{
+            return (second - first);
+          }
+          
         }
       });
     this.setState({
@@ -95,16 +101,16 @@ export default class ResultsDisplay extends Component {
     }
     
     if (this.state.selected == "relevance"){
-      this.sortBy(availableClasses, "score", 0);
+      this.sortBy(availableClasses, "score", 0, true);
     }
     else if (this.state.selected == "rating"){
-      this.sortBy(availableClasses, "classRating", 0);
+      this.sortBy(availableClasses, "classRating", 0, true);
     }
     else if (this.state.selected == "diff"){
-      this.sortBy(availableClasses, "classDifficulty", Number.MAX_SAFE_INTEGER);
+      this.sortBy(availableClasses, "classDifficulty", Number.MAX_SAFE_INTEGER, false);
     }
     else if (this.state.selected == "work"){
-      this.sortBy(availableClasses, "classWorkload", Number.MAX_SAFE_INTEGER);
+      this.sortBy(availableClasses, "classWorkload", Number.MAX_SAFE_INTEGER, false);
     }
   }
 
