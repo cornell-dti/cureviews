@@ -192,8 +192,8 @@ export default class PreviewCard extends Component {
               {
                 Object.keys(this.state.topReview).length !== 0
                 &&
-                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  See {this.state.numReviews} more reviews
+                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
                 </a>
               }
 
@@ -208,7 +208,7 @@ export default class PreviewCard extends Component {
               {
                 Object.keys(this.state.topReview).length === 0
                 &&
-                <a className="col-md-12 col-sm-12" id="leave-review"
+                <a className="col-md-12 col-sm-12 preview-review-button"
                   href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                   Leave a review
                 </a>

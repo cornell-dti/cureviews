@@ -116,7 +116,7 @@
   width: 50%;
 }
 
-#leave-review{
+.preview-review-button{
   background-color: #4a90e2;
   color: white;
   font-family: "Source Sans Pro", sans-serif; 
@@ -125,4 +125,6 @@
   height: auto;
   padding: 10px;
   font-size: 15px;
+  width: 100%;
+  display: inline-grid;;
 }
