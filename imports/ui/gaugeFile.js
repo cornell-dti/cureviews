@@ -151,7 +151,7 @@ var Gauge = function (_Component) {
 }(_react.Component);
 
 Gauge.defaultProps = {
-  label: "React SVG Gauge",
+	label: "React SVG Gauge",
 	min: 0,
 	max: 100,
 	value: 40,

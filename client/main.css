@@ -23,12 +23,6 @@ body {
     font-size: 14px;
 }
 
-.navbar {
-    background-color: #4990E2;
-    border-radius: 0;
-    margin-bottom: 0;
-}
-
 a.navbar-brand {
     font-size: 1.3em /*36px*/;
     padding-left: 30px;
@@ -138,18 +132,10 @@ ul {
 }
 
 li {
-    border-bottom: #eee solid 1px;
+    /* border-bottom: #eee solid 1px; */
     padding: 15px 15px 15px 0px;
     position: relative;
     list-style: none;
-}
-
-.classbutton {
-    padding: 15px;
-}
-
-#classbutton li a {
-    padding: 15px;
 }
 
 
