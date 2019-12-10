@@ -1,9 +1,14 @@
 import { Mongo } from 'meteor/mongo';
 
 // For courseplan API
-SimpleRest.configure({
-    collections: ['classes']
-  });
+try {
+  SimpleRest.configure({
+      collections: []
+    });
+} catch (e) {
+  console.log(e);
+}
+
   
 /*
 

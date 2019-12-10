@@ -177,17 +177,17 @@ Meteor.publish('users', function getUser(netId) {
 /* To get class info for Courseplan API. 
    Used simple:rest package (https://atmospherejs.com/simple/rest) to create endpoint out of this.
  */
-Meteor.publish('classInfo', function (subject, number) {
+Meteor.publish('classInfo', function (subject, number, api_key) {
   // check: make sure number and subject are valid, non-malicious strings
   const numberRegex = new RegExp(/^(?=.*[0-9])/i);
   const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
+  const keyRegex = new RegExp(/^(?=.*[A-Za-z0-9])/i);
   
-  if (numberRegex.test(number) && subjectRegex.test(subject)) {
+  if (numberRegex.test(number) && subjectRegex.test(subject) && keyRegex.test(api_key)) {
+    if( process.env.NODE_ENV === "development" || api_key === process.env.API_KEY1 )
     return Classes.find({ classSub: subject.toLowerCase(), classNum: number }, 
                         { fields: {'classSub': 1,
                                    'classNum': 1,
-                                   'classTitle': 1,
-                                   'classFull': 1,
                                    'classDifficulty': 1, 
                                    'classRating': 1, 
                                    'classWorkload': 1}})
@@ -196,6 +196,6 @@ Meteor.publish('classInfo', function (subject, number) {
     return null;
   }
 }, {
-  url: "classInfo/Z8S9B/:0/:1",
+  url: "classInfo/:0/:1/:2",
   httpMethod: "get"
 });
