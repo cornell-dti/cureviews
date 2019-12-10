@@ -29,10 +29,10 @@ const searchWithinSubject = (sub, remainder) => {
 }
 
 Meteor.methods({
-  // insert a new review into the reviews collection. Also updates 
+  // insert a new review into the reviews collection. Also updates
   // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
-  // insert a new review into the reviews collection. Also updates 
+  // insert a new review into the reviews collection. Also updates
   // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
   insert: function (token, review, classId) {
@@ -184,7 +184,7 @@ Meteor.methods({
     }
   },
 
-  // This updates the metrics for an individual class given its Mongo-generated id. 
+  // This updates the metrics for an individual class given its Mongo-generated id.
   // Returns 1 if successful, 0 otherwise.
   updateCourseMetrics: function (courseId, token) {
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
@@ -194,7 +194,7 @@ Meteor.methods({
         let crossListOR = getCrossListOR(course);
         let reviews =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700}).fetch();
         let state = getGaugeValues(reviews);
-        
+
         Classes.update({ _id: courseId },
           {
             $set: {
@@ -230,7 +230,7 @@ Meteor.methods({
 
   // Returns courses with the given parameters.
   // Takes in a dictionary object of field names
-  // and the desired value, i.e. 
+  // and the desired value, i.e.
   // {classSub: "PHIL"} or
   // {classDifficulty: 3.0}
   // Returns an empty array if no classes match.
