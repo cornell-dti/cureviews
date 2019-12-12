@@ -29,10 +29,10 @@ const searchWithinSubject = (sub, remainder) => {
 }
 
 Meteor.methods({
-  // insert a new review into the reviews collection. Also updates 
+  // insert a new review into the reviews collection. Also updates
   // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
-  // insert a new review into the reviews collection. Also updates 
+  // insert a new review into the reviews collection. Also updates
   // course metrics upon successfully inserting review.
   // Upon success returns 1, else returns 0.
   insert: function (token, review, classId) {
@@ -184,7 +184,7 @@ Meteor.methods({
     }
   },
 
-  // This updates the metrics for an individual class given its Mongo-generated id. 
+  // This updates the metrics for an individual class given its Mongo-generated id.
   // Returns 1 if successful, 0 otherwise.
   updateCourseMetrics: function (courseId, token) {
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
@@ -194,7 +194,7 @@ Meteor.methods({
         let crossListOR = getCrossListOR(course);
         let reviews =  Reviews.find({visible : 1, reported: 0, '$or': crossListOR}, {sort: {date: -1}, limit: 700}).fetch();
         let state = getGaugeValues(reviews);
-        
+
         Classes.update({ _id: courseId },
           {
             $set: {
@@ -230,7 +230,7 @@ Meteor.methods({
 
   // Returns courses with the given parameters.
   // Takes in a dictionary object of field names
-  // and the desired value, i.e. 
+  // and the desired value, i.e.
   // {classSub: "PHIL"} or
   // {classDifficulty: 3.0}
   // Returns an empty array if no classes match.
@@ -581,9 +581,13 @@ Meteor.methods({
       // classObject is the Class object associated with course._id
       const classObject = Classes.find({ _id: course._id }).fetch()[0];
       // classSubject is the string of the full subject of classObject
-      const classSubject = Subjects.find({ subShort: classObject.classSub }).fetch()[0].subFull;
-      // Adds the number of reviews to the ongoing count of reviews per subject
-      reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
+      let subject_arr = Subjects.find({ subShort: classObject.classSub }).fetch();
+      if(subject_arr.length > 0){
+        const classSubject = subject_arr[0].subFull;
+        // Adds the number of reviews to the ongoing count of reviews per subject
+        reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
+      }
+
       return classObject;
     });
     // Creates a map of subjects (key) and total number of reviews (value)
@@ -615,7 +619,8 @@ Meteor.methods({
     return Classes.aggregate(pipeline)
   },
 
-  howManyReviewsEachClass: function () {
+  //returns an array of objs in the form {_id: cs 2112, total: 227}
+  howManyReviewsEachClass: function(){
     const pipeline = [
       {
         $group: {
@@ -638,9 +643,103 @@ Meteor.methods({
     return output;
   },
 
-  totalReviews: function () {
+  // returns a count of the total reviews in the db
+  totalReviews: function(){
     return Reviews.find({}).count();
   },
+
+  //Returns an array in the form {cs: [{date1:totalNum}, {date2: totalNum}, ...],
+  //math: [{date1:total}, {date2: total}, ...], ... } for the top 15 majors where
+  //totalNum is the totalNum of reviews for classes in that major at date date1, date2 etc...
+  getReviewsOverTimeTop15: function() {
+    const top15 = Meteor.call('topSubjects');
+    //contains cs, math, gov etc...
+    let retArr = [];
+
+    top15.forEach((classs) => {
+      let subject = Subjects.find({
+        subFull: classs[0]
+      }, {
+        '_id': 0,
+        'subShort': 1,
+        'subFull': 0
+      }).fetch()[0]; //EX: computer science--> cs
+      let subshort = subject.subShort;
+      retArr.push(subshort);
+    });
+
+    let arrHM = []; //[ {"cs": {date1: totalNum}, math: {date1, totalNum} },
+    // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
+
+    //last 1 yr step of 14
+    for (let i = 0; i < 12*30; i=i+14) {
+      let dateAssociativeArr = {}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
+      //run on reviews. gets all classes and num of reviewa for each class, in x day
+      const pipeline = [{
+          $match: {
+            date: {
+              $lte: new Date(new Date().setDate(new Date().getDate() - i))
+            }
+          }
+        },
+        {
+          $group: {
+            _id: '$class',
+            total: {
+              $sum: 1
+            }
+          }
+        }
+      ];
+      let hashMap = {}; //Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
+      Reviews.aggregate(pipeline).map(function(data) { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
+        let arr = [];
+        const sub = Classes.find({
+          _id: data._id
+        }, {
+          'classSub': 1,
+          '_id': 0,
+          'classNum': 0
+        }).fetch()[0]; //finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
+        //date of this review minus the hrs mins sec
+        let timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split("T")[0];
+        if (retArr.includes(sub.classSub)) { //if thos review is one of the top 15 we want.
+          if (hashMap[sub.classSub] == null) //if not in hm then add
+            hashMap[sub.classSub] = {
+              [timeStringYMD]: data.total
+            };
+          else //increment totalnum
+            hashMap[sub.classSub] = {
+              [timeStringYMD]: hashMap[sub.classSub][timeStringYMD] + data.total
+            };
+        }
+        if (hashMap["total"] == null)
+          hashMap["total"] = {
+            [timeStringYMD]: data.total
+          };
+        else
+          hashMap["total"] = {
+            [timeStringYMD]: hashMap["total"][timeStringYMD] + data.total
+          };
+      });
+      arrHM.push(hashMap);
+
+    }
+
+    let hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
+
+    //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
+    let entry = arrHM[0];
+    let keys = Object.keys(entry);
+
+    //"cs"
+    keys.map(key => {
+      let t = arrHM.map(a => a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
+      hm2[key] = t;
+    });
+    return hm2;
+  },
+
   // Print on the server side for API testing. Should print in logs if
   // called by the API (in the Auth component).
   printOnServer: function (text) {
