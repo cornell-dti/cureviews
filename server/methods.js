@@ -581,9 +581,13 @@ Meteor.methods({
       // classObject is the Class object associated with course._id
       const classObject = Classes.find({ _id: course._id }).fetch()[0];
       // classSubject is the string of the full subject of classObject
-      const classSubject = Subjects.find({ subShort: classObject.classSub }).fetch()[0].subFull;
-      // Adds the number of reviews to the ongoing count of reviews per subject
-      reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
+      let subject_arr = Subjects.find({ subShort: classObject.classSub }).fetch();
+      if(subject_arr.length > 0){
+        const classSubject = subject_arr[0].subFull;
+        // Adds the number of reviews to the ongoing count of reviews per subject
+        reviewedSubjects[classSubject] = reviewedSubjects.get(classSubject) + course.reviewCount;
+      }
+
       return classObject;
     });
     // Creates a map of subjects (key) and total number of reviews (value)
