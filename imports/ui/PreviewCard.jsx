@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
 import Gauge from 'react-summary-gauge-2';
-import { getGaugeValues } from './js/CourseCard.js';
 import Review from './Review.jsx';
 
 /*
@@ -27,7 +26,6 @@ export default class PreviewCard extends Component {
       topReview: {},
       numReviews: 0,
       topReviewLikes: 0,
-      isLiked: false
     };
 
     this.updateColors = this.updateColors.bind(this);
@@ -46,6 +44,7 @@ export default class PreviewCard extends Component {
     }
   }
 
+  //If the value of the metric is null, set the Gauge value to "-"
   updateGauges() {
     this.setState({
       id: this.props.course._id,
@@ -55,6 +54,7 @@ export default class PreviewCard extends Component {
     }, () => this.updateColors());
   }
 
+  //Updates the top review to be the one with the most likes
   updateTopReview() {
     Meteor.call("getReviewsByCourseId", this.props.course._id, (err, reviews) => {
       if (!err && reviews) {
@@ -82,6 +82,7 @@ export default class PreviewCard extends Component {
     });
   }
 
+  //Updates the colors of the metrics 
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
@@ -131,12 +132,6 @@ export default class PreviewCard extends Component {
       })
     }
     this.updateTopReview();
-  }
-
-  likeHandler(liked) {
-    this.setState({
-      isLiked: liked
-    })
   }
 
   render() {

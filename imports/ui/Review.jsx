@@ -18,7 +18,7 @@ export default class Review extends Component {
     super(props);
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
-      numLikes: this.props.likes
+      numLikes: this.props.likes //the number of likes on the PreviewCard review
     }
 
     this.circlebox_class = props.isPreview ? "circlebox-preview" : "circlebox";
@@ -69,7 +69,7 @@ export default class Review extends Component {
         if (!error && result === 1) {
           this.setState({
             liked: true,
-            numLikes: this.state.numLikes + 1
+            numLikes: this.state.numLikes + 1 //updates the likes on the PreviewCard review in realtime
           })
           console.log(this.state.liked);
           console.log("Likes: " + review.likes);

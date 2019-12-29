@@ -58,11 +58,13 @@ export default class ResultsDisplay extends Component {
     }
   }
 
+  // Handles selecting different sort bys
   handleSelect = (event) => {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
   }
 
+  //Sorts the results by relevance on initial mount
   initialSort() {
     const data = this.props.courses.sort(
       (a, b) => {
@@ -84,6 +86,7 @@ export default class ResultsDisplay extends Component {
     });
   }
 
+  //Sorts the results by selected "sort by"
   sort() {
     if (this.state.filteredItems.length == 0) {
       if (this.state.selected == "relevance") {
@@ -164,6 +167,7 @@ export default class ResultsDisplay extends Component {
         });
       }
     }
+    //sorts the filtered items
     else {
       if (this.state.selected == "relevance") {
         const data = this.state.filteredItems.sort(
@@ -246,6 +250,7 @@ export default class ResultsDisplay extends Component {
 
   }
 
+  //Returns true if the [course]'s class level falls under the filter [filterName]
   classLevelCheck(course, filterName) {
     let classLevel = course.classNum;
     let classLevelString = course.classNum.toString().substring(0, 1);
@@ -264,9 +269,12 @@ export default class ResultsDisplay extends Component {
 
   }
 
+  //Returns true if the [course] falls under the [activeFilters]
   filterCondition(course, activeFilters) {
     let sems = ["Fall", "Spring"];
     let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
+
+    //checks if the filters checked are across both the semester and classLevel categories
     const found = activeFilters.some(filterName => sems.includes(filterName)) &&
       activeFilters.some(filterName => classLevels.includes(filterName))
     if (found) {
@@ -274,16 +282,17 @@ export default class ResultsDisplay extends Component {
         lastOfferedSems(course).includes(activeFilterName));
       let foundClassLevel = activeFilters.some(activeFilterName =>
         this.classLevelCheck(course, activeFilterName));
-      return foundSem && foundClassLevel;
+      return foundSem && foundClassLevel; //returns true if the course satsifies any of the filters for BOTH categories
     }
     else {
       return activeFilters.some(
         activeFilterName => lastOfferedSems(course).includes(activeFilterName) ||
-          this.classLevelCheck(course, activeFilterName)
+          this.classLevelCheck(course, activeFilterName) //returns true if the course satsifies any of the filters for one of the categories
       )
     }
   }
 
+  //Updates the list of filtered items when filters are checked/unchecked
   onChange = e => {
     const name = e.target.name;
     const checked = e.target.checked;
@@ -325,6 +334,8 @@ export default class ResultsDisplay extends Component {
 
   }
 
+  //Updates the displayed PreviewCard to the correct [course] 
+  //if the course's [index] in the list of FilteredResult components is clicked
   previewHandler(course, index) {
     this.setState({
       card_course: course,
@@ -332,6 +343,8 @@ export default class ResultsDisplay extends Component {
     });
   }
 
+  //Displays the filtered items as FilteredResult components if there are any
+  //The original list as FilteredResult components otherwise
   renderResults() {
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
