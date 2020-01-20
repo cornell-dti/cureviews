@@ -9,7 +9,19 @@ try {
   console.log(e);
 }
 
-  
+try {
+  JsonRoutes.setResponseHeaders({
+    "Cache-Control": "no-store",
+    "Pragma": "no-cache",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+  });  
+} catch (e) {
+  console.log(e);
+}
+
+
 /*
 
  Database definitions file. Defines all collections in the local database,
