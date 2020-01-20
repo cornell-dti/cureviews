@@ -651,93 +651,97 @@ Meteor.methods({
   //Returns an array in the form {cs: [{date1:totalNum}, {date2: totalNum}, ...],
   //math: [{date1:total}, {date2: total}, ...], ... } for the top 15 majors where
   //totalNum is the totalNum of reviews for classes in that major at date date1, date2 etc...
-  getReviewsOverTimeTop15: function() {
-    const top15 = Meteor.call('topSubjects');
-    //contains cs, math, gov etc...
-    let retArr = [];
+  getReviewsOverTimeTop15: function(token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if(userIsAdmin){
+      const top15 = Meteor.call('topSubjects');
+      //contains cs, math, gov etc...
+      let retArr = [];
 
-    top15.forEach((classs) => {
-      let subject = Subjects.find({
-        subFull: classs[0]
-      }, {
-        '_id': 0,
-        'subShort': 1,
-        'subFull': 0
-      }).fetch()[0]; //EX: computer science--> cs
-      let subshort = subject.subShort;
-      retArr.push(subshort);
-    });
-
-    let arrHM = []; //[ {"cs": {date1: totalNum}, math: {date1, totalNum} },
-    // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
-
-    //last 1 yr step of 14
-    for (let i = 0; i < 12*30; i=i+14) {
-      let dateAssociativeArr = {}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
-      //run on reviews. gets all classes and num of reviewa for each class, in x day
-      const pipeline = [{
-          $match: {
-            date: {
-              $lte: new Date(new Date().setDate(new Date().getDate() - i))
-            }
-          }
-        },
-        {
-          $group: {
-            _id: '$class',
-            total: {
-              $sum: 1
-            }
-          }
-        }
-      ];
-      let hashMap = {}; //Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
-      Reviews.aggregate(pipeline).map(function(data) { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
-        let arr = [];
-        const sub = Classes.find({
-          _id: data._id
+      top15.forEach((classs) => {
+        let subject = Subjects.find({
+          subFull: classs[0]
         }, {
-          'classSub': 1,
           '_id': 0,
-          'classNum': 0
-        }).fetch()[0]; //finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
-        //date of this review minus the hrs mins sec
-        let timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split("T")[0];
-        if (retArr.includes(sub.classSub)) { //if thos review is one of the top 15 we want.
-          if (hashMap[sub.classSub] == null) //if not in hm then add
-            hashMap[sub.classSub] = {
+          'subShort': 1,
+          'subFull': 0
+        }).fetch()[0]; //EX: computer science--> cs
+        let subshort = subject.subShort;
+        retArr.push(subshort);
+      });
+
+      let arrHM = []; //[ {"cs": {date1: totalNum}, math: {date1, totalNum} },
+      // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
+
+      //last 1 yr step of 14
+      for (let i = 0; i < 12*30; i=i+14) {
+        let dateAssociativeArr = {}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
+        //run on reviews. gets all classes and num of reviewa for each class, in x day
+        const pipeline = [{
+            $match: {
+              date: {
+                $lte: new Date(new Date().setDate(new Date().getDate() - i))
+              }
+            }
+          },
+          {
+            $group: {
+              _id: '$class',
+              total: {
+                $sum: 1
+              }
+            }
+          }
+        ];
+        let hashMap = {}; //Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
+        Reviews.aggregate(pipeline).map(function(data) { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
+          let arr = [];
+          const sub = Classes.find({
+            _id: data._id
+          }, {
+            'classSub': 1,
+            '_id': 0,
+            'classNum': 0
+          }).fetch()[0]; //finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
+          //date of this review minus the hrs mins sec
+          let timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split("T")[0];
+          if (retArr.includes(sub.classSub)) { //if thos review is one of the top 15 we want.
+            if (hashMap[sub.classSub] == null) //if not in hm then add
+              hashMap[sub.classSub] = {
+                [timeStringYMD]: data.total
+              };
+            else //increment totalnum
+              hashMap[sub.classSub] = {
+                [timeStringYMD]: hashMap[sub.classSub][timeStringYMD] + data.total
+              };
+          }
+          if (hashMap["total"] == null)
+            hashMap["total"] = {
               [timeStringYMD]: data.total
             };
-          else //increment totalnum
-            hashMap[sub.classSub] = {
-              [timeStringYMD]: hashMap[sub.classSub][timeStringYMD] + data.total
+          else
+            hashMap["total"] = {
+              [timeStringYMD]: hashMap["total"][timeStringYMD] + data.total
             };
-        }
-        if (hashMap["total"] == null)
-          hashMap["total"] = {
-            [timeStringYMD]: data.total
-          };
-        else
-          hashMap["total"] = {
-            [timeStringYMD]: hashMap["total"][timeStringYMD] + data.total
-          };
-      });
-      arrHM.push(hashMap);
+        });
+        arrHM.push(hashMap);
 
+      }
+
+      let hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
+
+      //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
+      let entry = arrHM[0];
+      let keys = Object.keys(entry);
+
+      //"cs"
+      keys.map(key => {
+        let t = arrHM.map(a => a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
+        hm2[key] = t;
+      });
+      return hm2;
     }
 
-    let hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
-
-    //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
-    let entry = arrHM[0];
-    let keys = Object.keys(entry);
-
-    //"cs"
-    keys.map(key => {
-      let t = arrHM.map(a => a[key]); //for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
-      hm2[key] = t;
-    });
-    return hm2;
   },
 
   // Print on the server side for API testing. Should print in logs if

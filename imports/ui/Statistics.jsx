@@ -31,7 +31,7 @@ export default class Statistics extends Component{
   getChartData(){
     let data=[];
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-      Meteor.call('getReviewsOverTimeTop15', (err, res)=>{
+      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), (err, res)=>{
         //key-> EX: cs
         for(let key in res){
           let finalDateObj={};//{date1:totalNum, date2:totalNum}
