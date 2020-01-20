@@ -1,5 +1,15 @@
 import { Mongo } from 'meteor/mongo';
 
+// For courseplan API
+try {
+  SimpleRest.configure({
+      collections: []
+    });
+} catch (e) {
+  console.log(e);
+}
+
+  
 /*
 
  Database definitions file. Defines all collections in the local database,
