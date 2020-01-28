@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Reviews } from '../api/dbDefs.js';
-import { Classes } from '../api/dbDefs.js';
-import { Students } from '../api/dbDefs.js';
+
 import Accordian from './Accordian.jsx';
 
-import { LineChart, PieChart } from 'react-chartkick';
+import { LineChart } from 'react-chartkick';
 import 'chart.js';
 /*
   A Statistics component that gives data concerning the
@@ -41,7 +37,7 @@ export default class Statistics extends Component{
           //[{date1:totalNum}, {date2: totalNum}, ...]
           let arrDates = res[key];
 
-          arrDates.forEach((arrEntry, index)=>{
+          arrDates.forEach((arrEntry)=>{
             let dateObject = Object.keys(arrEntry); //[date1]
             dateObject.map(date=>{
               finalDateObj[date]=arrEntry[date]
