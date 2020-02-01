@@ -605,47 +605,56 @@ Meteor.methods({
 
   //returns an array of objects in the form {_id: cs, total: 276}
   //represnting how many classes each dept (cs, info, coml etc...) offers
-  howManyEachClass: function () {
-    const pipeline = [
-      {
-        $group: {
-          _id: '$classSub',
-          total: {
-            $sum: 1
+  howManyEachClass: function (token) {
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if(userIsAdmin){
+      const pipeline = [
+        {
+          $group: {
+            _id: '$classSub',
+            total: {
+              $sum: 1
+            }
           }
         }
-      }
-    ];
-    return Classes.aggregate(pipeline)
+      ];
+      return Classes.aggregate(pipeline)
+    }
   },
 
   //returns an array of objs in the form {_id: cs 2112, total: 227}
-  howManyReviewsEachClass: function(){
-    const pipeline = [
-      {
-        $group: {
-          _id: '$class',
-          total: {
-            $sum: 1
+  howManyReviewsEachClass: function(token){
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if(userIsAdmin){
+      const pipeline = [
+        {
+          $group: {
+            _id: '$class',
+            total: {
+              $sum: 1
+            }
           }
         }
-      }
-    ];
+      ];
 
-    let output = [];
-    Reviews.aggregate(pipeline).map(function (data) {
-      const subNum = Classes.find({ _id: data._id }, { 'classSub': 1, '_id': 0, 'classNum': 1 }).fetch()[0];
-      const id = subNum.classSub + " " + subNum.classNum;
-      output.push(
-        { _id: id, total: data.total }
-      );
-    });
-    return output;
+      let output = [];
+      Reviews.aggregate(pipeline).map(function (data) {
+        const subNum = Classes.find({ _id: data._id }, { 'classSub': 1, '_id': 0, 'classNum': 1 }).fetch()[0];
+        const id = subNum.classSub + " " + subNum.classNum;
+        output.push(
+          { _id: id, total: data.total }
+        );
+      });
+      return output;
+    }
   },
 
   // returns a count of the total reviews in the db
-  totalReviews: function(){
-    return Reviews.find({}).count();
+  totalReviews: function(token){
+    const userIsAdmin = Meteor.call('tokenIsAdmin', token);
+    if(userIsAdmin){
+      return Reviews.find({}).count();
+    }
   },
 
   //Returns an array in the form {cs: [{date1:totalNum}, {date2: totalNum}, ...],
@@ -675,7 +684,7 @@ Meteor.methods({
 
       //last 1 yr step of 14
       for (let i = 0; i < 12*30; i=i+14) {
-        let dateAssociativeArr = {}; //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
+        //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
         //run on reviews. gets all classes and num of reviewa for each class, in x day
         const pipeline = [{
             $match: {
@@ -695,7 +704,6 @@ Meteor.methods({
         ];
         let hashMap = {}; //Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
         Reviews.aggregate(pipeline).map(function(data) { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
-          let arr = [];
           const sub = Classes.find({
             _id: data._id
           }, {

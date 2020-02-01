@@ -52,7 +52,7 @@ export default class Statistics extends Component{
   }
 
   howManyReviewsEachClass(){
-    Meteor.call('howManyReviewsEachClass', (error, result) =>{
+    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error, result) =>{
       if(!error){
         //sort descending
         result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
@@ -64,7 +64,7 @@ export default class Statistics extends Component{
   }
 
   howManyEachClass(){
-    Meteor.call('howManyEachClass', (error, result) =>{
+    Meteor.call('howManyEachClass', Session.get("token"), (error, result) =>{
       if(!error){
         result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyEachClass: result});
@@ -75,7 +75,7 @@ export default class Statistics extends Component{
   }
 
   totalReviews(){
-    Meteor.call('totalReviews', (error, result)=>{
+    Meteor.call('totalReviews', Session.get("token"),(error, result)=>{
       if(!error)
         this.setState({totalReviews: result});
       else
