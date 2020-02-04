@@ -660,7 +660,8 @@ Meteor.methods({
   //Returns an array in the form {cs: [{date1:totalNum}, {date2: totalNum}, ...],
   //math: [{date1:total}, {date2: total}, ...], ... } for the top 15 majors where
   //totalNum is the totalNum of reviews for classes in that major at date date1, date2 etc...
-  getReviewsOverTimeTop15: function(token) {
+  getReviewsOverTimeTop15: function(token, step, range) {
+    console.log("step: "+ step + " range: "+ range);
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if(userIsAdmin){
       const top15 = Meteor.call('topSubjects');
@@ -683,7 +684,8 @@ Meteor.methods({
       // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
 
       //last 1 yr step of 14
-      for (let i = 0; i < 12*30; i=i+14) {
+      for (let i = 0; i < range*30; i=i+step) {
+        console.log("inside "+ i);
         //"data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
         //run on reviews. gets all classes and num of reviewa for each class, in x day
         const pipeline = [{

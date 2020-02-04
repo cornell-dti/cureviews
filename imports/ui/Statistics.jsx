@@ -16,18 +16,21 @@ export default class Statistics extends Component{
       howManyEachClass: [],
       howManyReviewsEachClass: [],
       totalReviews: -1,
-      chartData: []
+      chartData: [],
+      step: 14,
+      range: 12
     }
     this.howManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
     this.getChartData();
+    this.handleClick=this.handleClick.bind(this);
   }
 
   getChartData(){
     let data=[];
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), (err, res)=>{
+      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range,(err, res)=>{
         //key-> EX: cs
         for(let key in res){
           let finalDateObj={};//{date1:totalNum, date2:totalNum}
@@ -47,6 +50,7 @@ export default class Statistics extends Component{
           obj.data=finalDateObj;
           data.push(obj);
         }
+        console.log("clicked");
         this.setState({chartData: data});
       });
   }
@@ -83,6 +87,10 @@ export default class Statistics extends Component{
     });
   }
 
+  handleClick = (e) =>{
+    this.getChartData();
+  }
+
   render(){
     return(
       <div>
@@ -90,6 +98,15 @@ export default class Statistics extends Component{
         <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
         <p>Total reviews: {this.state.totalReviews}</p>
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
+
+        <label htmlFor="range">Range in months</label>
+        <input type="number" id="range" name="range" min="1" value={this.state.range} onInput={e => this.setState({range: parseInt(e.target.value,10)}) }/>
+
+        <label htmlFor="step">Step in days</label>
+        <input type="number" id="step" name="step" min="1" value={this.state.step} onInput={e => this.setState({step: parseInt(e.target.value,10)})}/>
+
+        <button type="button" className="btn btn-primary" onClick={this.handleClick}>Primary</button>
+
     </div>
     )
   }
