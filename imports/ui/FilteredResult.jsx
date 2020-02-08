@@ -5,6 +5,16 @@ import { lastOfferedSems } from './js/CourseCard.js';
 
 /*
   Filtered Result Component.
+
+  Takes each result and creates a view of the result with its s
+
+  Props:  course- the class to be displayed
+          previewHandler: if this class is clicked, this function will update 
+                          the selected class to display a PreviewCard 
+                          in the ResultsDisplay component to be itself
+          selected: bool, if true, the border of this class is outlined blue to indicate being clicked
+          index: number, the position of this class in the list of results
+          sortBy: string, the metric to display on this component
 */
 
 export default class FilteredResult extends Component {
@@ -33,6 +43,7 @@ export default class FilteredResult extends Component {
     }
   }
 
+  //Returns the color corresponding to the [val] for the [metric]
   getColor(metric, val) {
     if (metric === "Overall Rating" || metric === "Relevance") {
       if (val !== "?" && 3.0 <= val && val < 4.0) {
@@ -58,6 +69,8 @@ export default class FilteredResult extends Component {
     }
   }
 
+  //Returns the corresponding number of the class's metric based on the [sortBy] metric
+  //Returns ? if it is null
   updateSortBy() {
     if (this.state.sortBy === "rating" || this.state.sortBy === "relevance") {
       return Number(this.state.course.classRating) ? this.state.course.classRating : "?";
@@ -70,6 +83,7 @@ export default class FilteredResult extends Component {
     }
   }
 
+  //Returns the corresponding name of the class's metric based on the [sortBy] metric
   updateSortByTitle() {
     if (this.state.sortBy === "rating" || this.state.sortBy === "relevance") {
       return "Overall Rating";
