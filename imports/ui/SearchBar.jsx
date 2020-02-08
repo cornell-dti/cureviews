@@ -20,7 +20,7 @@ import { Redirect } from 'react-router';
   meteor database and displays them.
 */
 
-let newSearchState = { selected: false, mouse: 0, enter: 0 };
+let newSearchState = { selected: false, mouse: 0, enter: 0, index: 0};
 
 const initState = {
   showDropdown: true,
@@ -50,26 +50,30 @@ export default class SearchBar extends Component {
 
   }
 
-  checkForCourseMatch(querySub, queryNum) {
-    let isMatch = false;
-    this.state.allCourses.forEach(course => {
-      let classNum = course.classNum.toLowerCase();
-      let classSub = course.classSub.toLowerCase();
-      if (classNum === queryNum && classSub === querySub) isMatch = true;
-    });
-
-    return isMatch;
-  }
-
   // Set the local state variable 'query' to the current value of the input (given by user)
   // Passed as a prop to SearchBar component, which calls this when user changes their query.
   updateQuery = (event) => {
+    // Reset index, enter, mouse, and selected
+    this.setState(newSearchState);
     // trim the query to remove trailing spaces
-    this.setState({ query: event.target.value.trim() });
+    let query = event.target.value.trim();
+    
+    // This is used to make "cs2110" and "cs 2110" equivalent
+    if(query && query.split(" ").length === 1){
+      query = query.match(/[a-z]+|[^a-z]+/gi).join(" ");
+    }
+    
+    if(this.checkForCourseMatch(query)){
+      // If query is exact match to a class,
+      //  highlight this class by setting index to index of this class
+      //  in search results dropdown
+      this.setState({index: this.state.allSubjects.length + 1});
+    }
+    this.setState({ query: query });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.query.length !== prevState.query.length || this.props !== prevProps) {
+    if (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps) {
       Meteor.call("getCoursesByKeyword", this.state.query, (err, courseList) => {
         if (!err && courseList && courseList.length !== 0) {
           // Save the list of Class objects that matches the request
@@ -137,7 +141,6 @@ export default class SearchBar extends Component {
 
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-    this.setState(newSearchState);
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState(prevState => ({
@@ -186,15 +189,32 @@ export default class SearchBar extends Component {
     })
   }
 
-
-
-
   showDropdown = () => {
     this.setState({ showDropdown: true })
   }
 
   hideDropdown = () => {
     this.setState({ showDropdown: false })
+  }
+
+  checkForCourseMatch(query) {
+    let isMatch = false;
+    let querySplit = query.toLowerCase().split(" ");
+    let queryNum = "";
+    let querySub = "";
+    if (querySplit.length == 2) {
+      querySub = querySplit[0];
+      queryNum = querySplit[1];
+    }
+    this.state.allCourses.forEach(course => {
+      let classNum = course.classNum.toLowerCase();
+      let classSub = course.classSub.toLowerCase();
+      if (classNum === queryNum && classSub === querySub){
+        isMatch = true;
+      }
+    });
+
+    return isMatch;
   }
 
   // Convert the class amd major objects that satisfy this query into a styled list of search results.
@@ -229,19 +249,7 @@ export default class SearchBar extends Component {
       // Sends user to /results/keyword/query+query
       if (this.state.index == 0 && this.state.enter == 1) {
         this.setState(initState);
-        let querySplit = this.state.query.toLowerCase().split(" ");
-        let queryNum = "";
-        let querySub = "";
-        if (querySplit.length == 2) {
-          querySub = querySplit[0];
-          queryNum = querySplit[1];
-        }
-        if (!this.checkForCourseMatch(querySub, queryNum)) {
-          return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
-        }
-        else {
-          return <Redirect push to={`/course/${querySub.toUpperCase()}/${queryNum}`}></Redirect>;
-        }
+        return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
       }
 
       let exact_search = (
@@ -283,7 +291,7 @@ export default class SearchBar extends Component {
         //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       )));
-
+      
       return results;
     }
     else {

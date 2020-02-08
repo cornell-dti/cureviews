@@ -43,7 +43,10 @@ export class Results extends Component {
       });
     }
     else if (this.props.match.params.type === "keyword") {
-      let userQuery = this.props.match.params.input.split("+").join();
+      let userQuery = this.props.match.params.input.split("+").join(" ");
+      if(userQuery && userQuery.split(" ").length === 1){
+        userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(" ");
+      }
       Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
         if (!err && courseList.length != 0) {
           // Save the Class object that matches the request
@@ -92,7 +95,8 @@ export class Results extends Component {
       <div>
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
-          <ResultsDisplay courses={this.state.courseList} loading={this.state.loading} />
+          <ResultsDisplay courses={this.state.courseList} 
+          loading={this.state.loading} type={this.props.match.params.type}/>
         </div>
       </div>
     )

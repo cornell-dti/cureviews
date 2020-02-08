@@ -2,10 +2,23 @@
 /* #text, #review_text, #label, #button_text {
 font-family: 'Helvetica Neue', Arial, sans-serif;
 } */
+:root{
+  --preview-lines-to-trunkate: 2;
+}
+
+.preview-review-overflow {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-height: calc(1.25em * var(--preview-lines-to-trunkate));
+  -webkit-line-clamp: var(--preview-lines-to-trunkate);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .panel-body-3 {
   margin: auto;
-  padding: 0px 50px 5px 50px;
+  padding: 8px 50px 5px 50px;
 }
 
 #rectangle, .review {
@@ -114,7 +127,6 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   letter-spacing: 0.01em;
   color: #000000;
   text-align: left;
-  padding-bottom: 15px;
 }
 
 .review-date {

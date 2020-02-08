@@ -30,3 +30,5 @@ monbro:mongodb-mapreduce-aggregation
 underscore
 u2622:persistent-session
 force-ssl
+simple:rest
+simple:json-routes

@@ -117,17 +117,20 @@ export default class Review extends Component {
     // console.log(review.rating);
     return (
       <div className="review">
-        <div className="row noLeftRightSpacing">
-          <div className="col-md-12 col-xs-12 col-xs-12">
-            <button className="report-review" onClick={() => {
-              this.props.reportHandler(review);
-              alert('This post has been reported and will be reviewed.');
-            }}>
-              <span className="glyphicon glyphicon-flag"
-              ></span>
-            </button>
+        {
+          !this.props.isPreview && 
+          <div className="row noLeftRightSpacing">
+            <div className="col-md-12 col-xs-12 col-xs-12">
+              <button className="report-review" onClick={() => {
+                this.props.reportHandler(review);
+                alert('This post has been reported and will be reviewed.');
+              }}>
+                <span className="glyphicon glyphicon-flag"
+                ></span>
+              </button>
+            </div>
           </div>
-        </div>
+        }
         <div className="panel-body-3">
           <div className="row reviewNumbers noLeftRightSpacing">
 
@@ -156,18 +159,22 @@ export default class Review extends Component {
 
           </div>
           <div className="row noLeftRightSpacing">
-            <div className="col-md-3 col-sm-3 col-xs-3 noLeftRightSpacing review-padding-left">
+            <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing review-padding-left">
               <p className={this.professor_title_class}>Professor: </p>
             </div>
-            <div className="col-md-9 col-sm-9 col-xs-9">
+            <div className="col-md-10 col-sm-10 col-xs-10">
               {/*The following adds a grey professor box for each professor listed in the review*/}
-              {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-6 col-sm-6 col-xs-6">
-                <p className={this.professor_text_class}>{prof}</p></div>)) : <div className="col-md-6 col-sm-6 col-xs-6">
+              {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-12 col-sm-12 col-xs-12">
+                <p className={this.professor_text_class}>{prof}</p></div>)) : <div className="col-md-12 col-sm-12 col-xs-12">
                   <p className={this.professor_text_class}>N/A</p></div>}
             </div>
           </div>
           <div className="row noLeftRightSpacing review-padding-left">
-            <div className={this.review_text_class} >{review.text}</div>
+            <div className={this.review_text_class} >
+              <span className={this.props.isPreview ? "preview-review-overflow" : ""}>
+                {review.text}
+              </span>
+            </div>
           </div>
         </div>
         <div className="row noLeftRightSpacing">

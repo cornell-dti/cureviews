@@ -9,6 +9,7 @@ export default class Accordian extends Component{
   getRandNum(){
     return Math.floor((Math.random() * 1000000) + 0);
   }
+
   render(){
     let accId = "accordion"+this.getRandNum();
     let headingOneId = "headingOne"+this.getRandNum();
@@ -24,7 +25,7 @@ export default class Accordian extends Component{
               </a>
             </h4>
           </div>
-          <div id={collapseOneId} className="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id={collapseOneId} className="panel-collapse collapse" role="tabpanel" aria-labelledby={headingOneId}>
             <div className="panel-body">
             <table className="table table-striped">
               <thead>
