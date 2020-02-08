@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+
 import Accordian from './Accordian.jsx';
 
-import { LineChart, PieChart } from 'react-chartkick';
+import { LineChart } from 'react-chartkick';
 import 'chart.js';
 /*
   A Statistics component that gives data concerning the
@@ -26,7 +27,7 @@ export default class Statistics extends Component{
   getChartData(){
     let data=[];
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-      Meteor.call('getReviewsOverTimeTop15', (err, res)=>{
+      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), (err, res)=>{
         //key-> EX: cs
         for(let key in res){
           let finalDateObj={};//{date1:totalNum, date2:totalNum}
@@ -36,7 +37,7 @@ export default class Statistics extends Component{
           //[{date1:totalNum}, {date2: totalNum}, ...]
           let arrDates = res[key];
 
-          arrDates.forEach((arrEntry, index)=>{
+          arrDates.forEach((arrEntry)=>{
             let dateObject = Object.keys(arrEntry); //[date1]
             dateObject.map(date=>{
               finalDateObj[date]=arrEntry[date]
@@ -51,7 +52,7 @@ export default class Statistics extends Component{
   }
 
   howManyReviewsEachClass(){
-    Meteor.call('howManyReviewsEachClass', (error, result) =>{
+    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error, result) =>{
       if(!error){
         //sort descending
         result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
@@ -63,7 +64,7 @@ export default class Statistics extends Component{
   }
 
   howManyEachClass(){
-    Meteor.call('howManyEachClass', (error, result) =>{
+    Meteor.call('howManyEachClass', Session.get("token"), (error, result) =>{
       if(!error){
         result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyEachClass: result});
@@ -74,7 +75,7 @@ export default class Statistics extends Component{
   }
 
   totalReviews(){
-    Meteor.call('totalReviews', (error, result)=>{
+    Meteor.call('totalReviews', Session.get("token"),(error, result)=>{
       if(!error)
         this.setState({totalReviews: result});
       else
@@ -92,4 +93,5 @@ export default class Statistics extends Component{
     </div>
     )
   }
+
 }
