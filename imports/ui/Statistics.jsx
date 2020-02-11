@@ -50,7 +50,6 @@ export default class Statistics extends Component{
           obj.data=finalDateObj;
           data.push(obj);
         }
-        console.log("clicked");
         this.setState({chartData: data});
       });
   }
