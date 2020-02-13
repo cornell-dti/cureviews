@@ -8,35 +8,45 @@ export default class Gauge extends Component{
   constructor(props) {
     super(props);
 
-    let percentage = 20*this.props.rating;
-    let color= "rgba(0, 118, 255,"+percentage/100+")";
-
     this.state={
-      color:color,
-      percentage: percentage
+      color:"#00000",
+      percentage: 0.0,
+      rating: 0.0
     }
   }
 
+    componentDidUpdate(prevProps) {
+      if (prevProps != this.props) {
+        if(!isNaN(this.props.rating)){
+          let percentage = 20*this.props.rating;
+          console.log(this.props);
+          let color= "rgba(0, 118, 255,"+percentage/100+")";
+
+          this.setState({percentage: percentage, color: color, rating: this.props.rating});
+        }
+      }
+    }
+
   render(){
     return (
-      <div style={{width: this.props.width, height: this.props.height}} className="gauge-center">
-        <div className="row">
-          <div className="col-md-5 col-md-offset-1 no-side-padding">
-            <h1 className="gauge-text rating">
-                {this.props.rating}
-            </h1>
-            <h1 className="gauge-bottom-text">
-              {this.props.text}
-            </h1>
-          </div>
-          <div className="col-md-6 no-side-padding">
-            <div className="gauge-container">
-              <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
+      <div className="h-align">
+        <div style={{width: this.props.width, height: this.props.height}} className="gauge-center">
+          <div className="row">
+            <div className="col-md-5 col-md-offset-1 no-side-padding">
+              <h1 className="gauge-text rating">
+                  {this.state.rating}
+              </h1>
+              <h1 className="gauge-bottom-text">
+                {this.props.text}
+              </h1>
+            </div>
+            <div className="col-md-6 no-side-padding">
+              <div className="gauge-container">
+                <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
+              </div>
             </div>
           </div>
         </div>
-
-
       </div>
     )
   }

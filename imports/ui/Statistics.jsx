@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
 import Accordian from './Accordian.jsx';
+import Gauge from './Gauge.jsx';
 
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
+
 /*
   A Statistics component that gives data concerning the
   database and allows devs to moniter status and progress of the project
@@ -50,6 +52,7 @@ export default class Statistics extends Component{
           obj.data=finalDateObj;
           data.push(obj);
         }
+        console.log("clicked");
         this.setState({chartData: data});
       });
   }
@@ -114,7 +117,18 @@ export default class Statistics extends Component{
           </div>
         </div>
 
+        <div className="row">
+          <div className="col-md-4">
+            <Gauge width="14vw" height="18vh" rating="5.0" text="Overall"/>
+          </div>
+          <div className="col-md-4">
+            <Gauge width="16vw" height="16vh" rating="3.7" text="Difficulty"/>
+          </div>
+          <div className="col-md-4">
+            <Gauge width="16vw" height="16vh" rating="1.2" text="Workload"/>
 
+          </div>
+        </div>
     </div>
     )
   }
