@@ -82,7 +82,7 @@ export class CourseCard extends Component {
           <strong>Offered: </strong>
           {offered}
         </p>
-        
+
         <div className="row">
           <div className="col-md-4 col-sm-4 col-xs-12">
             <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.rating)} text="Overall"/>
@@ -91,7 +91,7 @@ export class CourseCard extends Component {
             <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.diff)} text="Difficulty"/>
           </div>
           <div className="col-md-4 col-sm-4 col-xs-12">
-            <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.workload)} text="Overall"/>
+            <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.workload)} text="Workload"/>
           </div>
         </div>
       </div>
