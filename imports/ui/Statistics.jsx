@@ -116,19 +116,6 @@ export default class Statistics extends Component{
           <button type="button" className="btn btn-primary" onClick={this.handleClick}>Load Chart</button>
           </div>
         </div>
-
-        <div className="row">
-          <div className="col-md-4">
-            <Gauge width="14vw" height="18vh" rating="5.0" text="Overall"/>
-          </div>
-          <div className="col-md-4">
-            <Gauge width="16vw" height="16vh" rating="3.7" text="Difficulty"/>
-          </div>
-          <div className="col-md-4">
-            <Gauge width="16vw" height="16vh" rating="1.2" text="Workload"/>
-
-          </div>
-        </div>
     </div>
     )
   }
