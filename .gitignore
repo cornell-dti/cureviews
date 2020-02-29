@@ -5,3 +5,13 @@ simple-todos
 dist
 mongo_backups/*
 !mongo_backups/.gitkeep
+
+ngrok
+
+classes.bson
+
+reviews.bson
+
+subjects.bson
+
+token

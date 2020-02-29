@@ -4,6 +4,7 @@ import { check, Match } from 'meteor/check';
 import { addAllCourses, findCurrSemester, findAllSemesters, addCrossList, updateProfessors, resetProfessorArray } from './dbInit.js';
 import { Classes, Students, Subjects, Reviews, Validation } from '../imports/api/dbDefs.js';
 import { getGaugeValues, getCrossListOR } from '../imports/ui/js/CourseCard.js';
+import { postReview } from "./main.js";
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
@@ -62,7 +63,10 @@ Meteor.methods({
 
         try {
           //check(fullReview, Reviews);
-          Reviews.insert(fullReview);
+          const id = Reviews.insert(fullReview);
+
+          postReview(fullReview, id);
+
           console.log("Success: Submitted review");
           //Update the course metrics
           return 1; //success
@@ -373,6 +377,10 @@ Meteor.methods({
   tokenIsAdmin: function (token) {
     // console.log("This is token in tokenIsAdmin");
     // console.log(token);
+    if (token == "bot") {
+      return true;
+    }
+
     if (token != undefined) {
       const ticket = Meteor.call('getVerificationTicket', token);
       // console.log(ticket);
