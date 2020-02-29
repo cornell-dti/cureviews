@@ -302,7 +302,7 @@ input[type="range"] {
 }
 
 .react-select-container{
-  width: 266.25px;
+  width: 254.25px;
   height: 23.75px  !important;
 
   border: 0.673729px solid #0076FF;
@@ -488,6 +488,9 @@ input[type="range"] {
   margin:0;
   padding:0;
   padding-bottom: 3.0px;
+}
+.metricBoxWrapper:hover{
+  cursor: pointer;
 }
 
 .inactiveBox:hover, .boxHover{

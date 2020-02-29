@@ -58,8 +58,11 @@ export default class Form extends Component {
       dropdown: '', //empty as opposed to 'open'
       visible: false,
       "rating": 3,
+      "ratinglastSelect": 3,
       "diff": 3,
+      "difflastSelect": 3,
       "workload": 3,
+      "workloadlastSelect": 3,
       text: "",
       message: null,
       postClicks: 0,
@@ -87,7 +90,8 @@ export default class Form extends Component {
     this.show = this.show.bind(this)
     this.setCourseIdInSearchBar=this.setCourseIdInSearchBar.bind(this);
     this.createMetricBoxes=this.createMetricBoxes.bind(this);
-    this.handleBoxHover=this.handleBoxHover.bind(this);
+    this.handleBoxHoverEnter=this.handleBoxHoverEnter.bind(this);
+    this.handleBoxHoverLeave=this.handleBoxHoverLeave.bind(this);
     this.clickMetricBox=this.clickMetricBox.bind(this);
   }
 
@@ -118,22 +122,38 @@ export default class Form extends Component {
     this.pushReviewsDown(this.state.dropdown);
   }
 
-  //Called when mouse leaves or enters a metric box to chane highlighting
-  handleBoxHover(metric, i){
+  //Called when mouse  enters a metric box to chane highlighting
+  handleBoxHoverEnter(metric, i){
     let currState=this.state[metric+" "+i];
+    let lastSelection= this.state[metric+"lastSelect"];
+    if(i<lastSelection) this.setState({[metric]:i});
       for(let j=i; j>this.state[metric]; j--){
         this.setState({[metric+" "+j]:!currState});
       }
+      
       for(let j=i+1; j<=5; j++){
         this.setState({[metric+" "+j]:false});
       }
   }
 
+    //Called when mouse  enters a metric box to chane highlighting
+    handleBoxHoverLeave(metric, i){
+      let currState=this.state[metric+" "+i];
+      let lastSelection= this.state[metric+"lastSelect"];
+      this.setState({[metric]:lastSelection});
+        for(let j=i; j>this.state[metric]; j--){
+          this.setState({[metric+" "+j]:!currState});
+        }
+        for(let j=i+1; j<=5; j++){
+          this.setState({[metric+" "+j]:false});
+        }
+    }
+
   //Updates the given metric when a box is clicked
   clickMetricBox(metric, i){
     this.setState({[metric]: i});
     for(let j=5; j>this.state[metric]; j--){
-      this.setState({[metric+" "+j]:false});
+      this.setState({[metric+" "+j]:false, [metric+"lastSelect"]:i});
     }
   }
 
@@ -143,7 +163,7 @@ export default class Form extends Component {
       for(let i=1; i<=max; i++){
           let isHovered=this.state[metric+" "+i] ? "boxHover" : "";
           boxes.push(<div className="metricBoxWrapper" 
-          onClick={() => this.clickMetricBox(metric, i)}  onMouseEnter={() => this.handleBoxHover(metric, i)} onMouseLeave={() => this.handleBoxHover(metric, i)}>
+          onClick={() => this.clickMetricBox(metric, i)}  onMouseEnter={() => this.handleBoxHoverEnter(metric, i)} onMouseLeave={() => this.handleBoxHoverLeave(metric, i)}>
               <div id={metric+" "+i} className={this.state[metric]<i ? "metricBox inactiveBox "+isHovered: "metricBox activeBox"}></div>
               <p className={this.state[metric]<i ? "inactiveText": "activeText"}>{i}</p>
               
