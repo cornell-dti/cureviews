@@ -13,3 +13,13 @@ db
 .meteor
 mongo/
 *error.log
+
+ngrok
+
+classes.bson
+
+reviews.bson
+
+subjects.bson
+
+token
