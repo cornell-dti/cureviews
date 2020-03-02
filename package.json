@@ -8,7 +8,7 @@
     "build": "meteor build dist"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.42",
+    "@babel/runtime": "^7.8.4",
     "babel-runtime": "^6.20.0",
     "bootstrap": "^3.4.1",
     "chart.js": "^2.9.2",
@@ -16,7 +16,7 @@
     "google-auth-library": "^3.1.0",
     "history": "^4.7.2",
     "jquery": "^2.2.4",
-    "meteor-node-stubs": "^0.4.1",
+    "meteor-node-stubs": "^1.0.0",
     "moment": "^2.24.0",
     "nw-react-slider": "^2.0.1",
     "prop-types": "^15.7.2",
@@ -34,10 +34,16 @@
     "rodal": "^1.6.3"
   },
   "devDependencies": {
+    "@types/meteor": "^1.4.40",
+    "@types/node": "^13.7.7",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-router-dom": "^5.1.3",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.6.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-meteor": "^6.0.0",
-    "eslint-plugin-react": "^7.16.0"
+    "eslint-plugin-react": "^7.16.0",
+    "typescript": "^3.8.3"
   }
 }
