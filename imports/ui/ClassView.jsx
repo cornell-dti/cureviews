@@ -170,7 +170,7 @@ export class ClassView extends Component {
     if (this.state.selectedClass) {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
-        <div className="container-fluid container-top-gap-fix">
+        <div className="container-fluid container-top-gap-fix classViewContainer">
           <Navbar />
           <div className='clearfix' />
           <div className='container noPadding'>

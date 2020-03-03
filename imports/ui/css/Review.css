@@ -22,7 +22,11 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 #rectangle, .review {
-  background-color: #ffffff;
+  background: #FFFFFF;
+  border: 0.625px solid #B7D8FF;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 32px;
 }
 
 #rectangle {
@@ -63,20 +67,14 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   left: -50%;
 }
 
-.professor-text{
-  border-radius: 5px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
+.professor-text, .professor-title{
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  text-align: center;
-  background-color: #E0F0FF;
-  padding-left: 2px;
-  padding-right: 2px;
-  margin: 5px 0 6px 0;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  
+  color: #000000;
 }
 
 .professor-text-preview{
@@ -105,13 +103,11 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .review-text {
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 18px;
-  font-weight: var(--regular-weight);
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 19px;
   color: #000000;
   text-align: left;
   padding-bottom: 15px;
@@ -130,28 +126,29 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .review-date {
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 14px;
-  font-weight: var(--regular-weight);
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #A6A6A6;
-  float: left;
-  padding-left: 50px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+
+  color: #9B9B9B;
+
 }
 
 .upvote-text{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 11px;
-  font-weight: var(--regular-weight);
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  float: right;
-  color: #4990e2;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  color: #807B7B;
   margin-right: 10px;
 }
 
@@ -226,18 +223,7 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   text-align: left;
 }
 
-.professor-title {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  text-align: left;
-  padding: 5px 0 10px 0;
-}
+
 
 .professor-title-preview {
   font-family: "Source Sans Pro", sans-serif;
@@ -257,33 +243,13 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 20px;
 }
 
-.review {
-  border-radius: 8px;
-  border: solid 1px #dddddd;
-  width: 100%;
-  margin-bottom: 15px;
-}
+
 
 .review-padding-left{
   /* padding-left: 50px !important; */
 }
 
-.review-number-text{
-  height: 100%;
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-  margin: auto;
-}
+
 
 .review-number-text-preview{
   height: 100%;
@@ -302,18 +268,14 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   margin: auto;
 }
 
-.review-number-label{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
+.review-number-label, .review-number-text{
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  
   color: #000000;
-  white-space: nowrap;
-  margin: 0;
-  padding: 5px 5%;
 }
 
 .review-number-label-preview{

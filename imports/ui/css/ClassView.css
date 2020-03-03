@@ -15,6 +15,10 @@
   text-decoration: none;
 }
 
+.classViewsContainer{
+  overflow:hidden;
+}
+
 #error {
     font-size: 50px;
     color: black;

@@ -1,11 +1,38 @@
 .past-reviews{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 24px;
-  font-weight: var(--semi-bold-weight);
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.001em;
-  color: #000000;
-  padding-top: 20px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 11px;
+  /* or 45% */
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  /* Gray */
+
+  color: #A2A1A1;
+  border-radius: 19.6611px;
+}
+
+#reviewul{
+  overflow-y:scroll !important;
+  height:600px;;
+}
+
+#reviewul::-webkit-scrollbar {
+  width: 8px;
+  height: 332.25px;
+
+}
+
+#reviewul::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #ECECEC;;
+}
+
+#reviewul::-webkit-scrollbar-thumb {
+  background: #807B7B;
+  border-radius: 13.5731px;
+  height: 332.25px;
 }

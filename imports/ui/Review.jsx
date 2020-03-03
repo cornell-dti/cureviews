@@ -27,7 +27,7 @@ export default class Review extends Component {
     this.professor_title_class = props.isPreview ? "professor-title-preview" : "professor-title";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
-
+    this.reviewToSemester=this.reviewToSemester.bind(this);
   }
 
   // Function to convert the classId assigned to this review into the
@@ -94,20 +94,12 @@ export default class Review extends Component {
   }
 
   reviewToSemester(review) {
-    let semester = ""
-    // Get last 2 digits of review year
-    let review_year = String(moment(review.date.toISOString()).year()).substring(2);
-    let review_month = moment(review.date.toISOString()).month() + 1;
-    if (review_month >= 1 && review_month <= 5) {
-      semester = "SP"
-    }
-    else if (review_month >= 6 && review_month <= 8) {
-      semester = "SU"
-    }
-    else {
-      semester = "FA"
-    }
-    return semester + review_year;
+
+    let review_year = review.date.getFullYear();
+    let review_month = review.date.getMonth()+1; 
+    let review_day = review.date.getDate();
+
+    return review_month+"/"+review_day+"/"+review_year;
   }
 
   render() {
@@ -132,9 +124,20 @@ export default class Review extends Component {
           </div>
         }
         <div className="panel-body-3">
+          <div className="row noLeftRightSpacing">
+              <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing review-padding-left">
+                <p className={this.professor_title_class}>Professor: </p>
+              </div>
+              <div className="col-md-10 col-sm-10 col-xs-10">
+                {/*The following adds a grey professor box for each professor listed in the review*/}
+                {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-12 col-sm-12 col-xs-12">
+                  <p className={this.professor_text_class}>{prof}</p></div>)) : <div className="col-md-12 col-sm-12 col-xs-12">
+                    <p className={this.professor_text_class}>N/A</p></div>}
+              </div>
+            </div>
           <div className="row reviewNumbers noLeftRightSpacing">
 
-            <div className="container" id={this.circlebox_class} style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
+            <div className="container" id={this.circlebox_class}>
               <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
 
             </div>
@@ -142,7 +145,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Overall Rating</p>
 
 
-            <div className="container" id={this.circlebox_class} style={this.getColorGreenToRed(review.difficulty)}>
+            <div className="container" id={this.circlebox_class} >
               <p className={this.review_number_text_class} >{review.difficulty}</p>
             </div>
 
@@ -150,7 +153,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Difficulty</p>
 
 
-            <div className="container" id={this.circlebox_class} style={this.getColorGreenToRed(review.workload)}>
+            <div className="container" id={this.circlebox_class} >
               <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
             </div>
 
@@ -158,17 +161,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Workload</p>
 
           </div>
-          <div className="row noLeftRightSpacing">
-            <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing review-padding-left">
-              <p className={this.professor_title_class}>Professor: </p>
-            </div>
-            <div className="col-md-10 col-sm-10 col-xs-10">
-              {/*The following adds a grey professor box for each professor listed in the review*/}
-              {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-12 col-sm-12 col-xs-12">
-                <p className={this.professor_text_class}>{prof}</p></div>)) : <div className="col-md-12 col-sm-12 col-xs-12">
-                  <p className={this.professor_text_class}>N/A</p></div>}
-            </div>
-          </div>
+          
           <div className="row noLeftRightSpacing review-padding-left">
             <div className={this.review_text_class} >
               <span className={this.props.isPreview ? "preview-review-overflow" : ""}>

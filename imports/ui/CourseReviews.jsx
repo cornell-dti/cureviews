@@ -52,7 +52,7 @@ export class CourseReviews extends Component {
   }
 
   render() {
-    let title = "Past Reviews";
+    let title = "Past Reviews ("+this.props.reviews.length+")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
     }
