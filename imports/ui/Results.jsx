@@ -92,12 +92,10 @@ export class Results extends Component {
 
   render() {
     return (
-      <div>
-        <div className="container-fluid container-top-gap-fix">
-          <Navbar />
-          <ResultsDisplay courses={this.state.courseList} 
-          loading={this.state.loading} type={this.props.match.params.type}/>
-        </div>
+      <div className="full-height">
+        <Navbar />
+        <ResultsDisplay courses={this.state.courseList} 
+        loading={this.state.loading} type={this.props.match.params.type}/>
       </div>
     )
   }

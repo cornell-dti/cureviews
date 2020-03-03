@@ -1,8 +1,8 @@
 #welcome_text, #second_welcome_text, .cornell-reviews {
   font-family: 'Helvetica Neue', Arial, sans-serif;
 }
-
-.welcome_text{
+/* Keep */
+.homepage-text{
   /* height: 14px; */
   /* padding-top: 6%; */
   margin-bottom: 40px;
@@ -15,8 +15,8 @@
   letter-spacing: 0.001em;
   color: #356BD0;
 }
-
-.homepage-left-padding{
+/* Keep */
+.homepage-text-padding{
   padding-left: 10.5%;
 }
 
@@ -41,7 +41,8 @@
   float: none;
 }
 
-.scale-logo{
+/* Keep */
+.scale-logo-homepage{
   height: 75px;
   width: auto;
   margin: 50px 0px 78px 71px;
@@ -81,8 +82,9 @@ nav {
   background-position: bottom; 
 }
 
+ /* Needed so that background is flush against bottom */
 .full-height{
-  min-height: 100.1%; /* Needed so that background is flush against bottom */
+  min-height: 100.1%;
   height: 100.09%;
 }
 

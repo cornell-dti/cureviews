@@ -31,7 +31,7 @@ export default class Course extends Component {
     //highlight the element if the indexes matched up (the active prop is true)
     //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
     //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <a className={this.props.active && this.props.mouse != 1 ? 'active resultbutton' : 'resultbutton'}
+      <a className={this.props.active && this.props.mouse != 1 ? 'active-class resultbutton' : 'resultbutton'}
           href={`/results/major/${subjectInfo.subShort.toUpperCase()}`}>
         <p className="result-label-subject">
           Major

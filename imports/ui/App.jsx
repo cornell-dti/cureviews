@@ -19,12 +19,12 @@ export default class App extends Component {
     return (
       <div className="container-fluid full-height background-gradient">
         <div className="row">
-          <img src='/logo.png' className="img-responsive scale-logo" alt="CU Reviews Logo" />
+          <img src='/logo.png' className="img-responsive scale-logo-homepage" alt="CU Reviews Logo" />
         </div>
-        <div className="row homepage-left-padding">
+        <div className="row homepage-text-padding">
           <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
             <div className="row">
-              <p className="welcome_text">Search for Cornell courses, rate past classes, and share feedback</p>
+              <p className="homepage-text">Search for Cornell courses, rate past classes, and share feedback</p>
             </div>
             <SearchBar />
           </div>
