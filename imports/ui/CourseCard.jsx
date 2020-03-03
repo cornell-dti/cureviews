@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
-import Gauge from 'react-summary-gauge-2';
+import Gauge from './Gauge.jsx';
 import './css/CourseCard.css';
 import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
 
@@ -82,21 +82,16 @@ export class CourseCard extends Component {
           <strong>Offered: </strong>
           {offered}
         </p>
-        <div className="panel panel-default top-margin-medium panel-radius">
-          <div className="panel-body">
-            <section>
-              <div className="row" id="gaugeHolder">
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.rating} left={0} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.diff} left={0} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.workload} left={0} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload" />
-                </div>
-              </div>
-            </section>
+
+        <div className="row">
+          <div className="col-md-4 col-sm-4 col-xs-12">
+            <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.rating)} text="Overall"/>
+          </div>
+          <div className="col-md-4 col-sm-4 col-xs-12">
+            <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.diff)} text="Difficulty"/>
+          </div>
+          <div className="col-md-4 col-sm-4 col-xs-12">
+            <Gauge width="14vw" height="23vh" rating={parseFloat(this.state.workload)} text="Workload"/>
           </div>
         </div>
       </div>

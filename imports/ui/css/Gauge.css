@@ -1,0 +1,32 @@
+.gauge-text {
+  text-align: center;
+  margin: 0;
+  width: 100%;
+}
+
+.h-align{
+  text-align: center;
+}
+.gauge-bottom-text {
+  text-align: center;
+  margin: 0;
+  width: 100%;
+}
+
+.rating {
+  font-size: 70px;
+}
+
+.gauge-center {
+  /*margin-left: 25%;*/
+  display: inline-block;
+}
+
+.gauge-container {
+  width: 70%;
+}
+
+.no-side-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
