@@ -100,23 +100,23 @@ export default class FilteredResult extends Component {
     let theClass = this.props.course;
 
     return (
-      <li className={this.props.selected === true ? "card card-clicked" : " card"}
+      <li className={this.props.selected === true ? "result-card result-card-clicked" : " result-card"}
         onClick={() => { this.props.previewHandler(this.state.course, this.state.current_index) }}>
-        <div className="card-body">
-          <h1 className="card-title">
+        <div className="">
+          <h1 className="result-card-title">
             <strong>{theClass.classTitle}</strong>
           </h1>
-          <h2 className="card-subtitle mb-2 text-muted">
+          <h2 className="result-card-subtitle mb-2 text-muted">
             {theClass.classSub.toUpperCase() + " " + theClass.classNum}
           </h2>
           <div>
-            <p className="sort-by-text">
+            <p className="result-card-sort-by-text">
               <strong>{this.updateSortByTitle()}</strong>
             </p>
-            <p className="sort-by-number" style={{ color: this.getColor(this.updateSortByTitle(), this.updateSortBy()) }}>
+            <p className="result-card-sort-by-value" style={{ color: this.getColor(this.updateSortByTitle(), this.updateSortBy()) }}>
               {this.updateSortBy()}
             </p>
-            <p className="sort-by-five" id="over-5">
+            <p className="result-card-sort-by-five">
               /5
             </p>
           </div>
