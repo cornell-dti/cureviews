@@ -166,8 +166,8 @@ export class ClassView extends Component {
       return (
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
-          <div className='clearfix' />
-          <div className='container noPadding'>
+          <div className="clearfix" />
+          <div className="container-width noPadding">
             <div className="col-md-6 col-sm-12 col-xs-12 sticky">
               <CourseCard course={this.state.selectedClass} />
             </div>
@@ -196,7 +196,7 @@ export class ClassView extends Component {
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
                 Leave a Review<i className="popup-arrow"></i>
                 </button>
-                <Form searchBar={true} inUse={this.state.popUpVisible} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
+                <Form searchBar={true} inUse={this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
             </div>
 
@@ -208,7 +208,7 @@ export class ClassView extends Component {
       return (
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
-          <div id="error">
+          <div className="class-error-container">
             <img id="errorgauge" src="/error.png" width="400px" height="auto" />
             <h2>{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
             <h2>Please search for a different class.</h2>
@@ -219,7 +219,7 @@ export class ClassView extends Component {
       // While a class is being searched for, render a loading animation.
       const Loading = require('react-loading-animation');
       return (
-        <div id="loading">
+        <div className="class-loading">
           <Loading />;
               </div>
       )

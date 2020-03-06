@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import './css/Review.css';
-import './css/RecentReview.css';
+
 
 /*
   Recent Review Component.

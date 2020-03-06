@@ -84,7 +84,7 @@ export class CourseCard extends Component {
           {theClass.classTitle}
         </h1>
         <div href={url} target="_blank"> {/* Forces link onto next line */}
-          <a className="cornellClassLink" href={url}>Class Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
+          <a className="coursecard-class-link" href={url}>Class Roster <img className="cousecard-class-link-padding" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
         </div>
         <p className="class-info spacing-large top-margin">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + offered}

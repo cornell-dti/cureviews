@@ -1,4 +1,15 @@
-.card-title{
+.result-card{
+  border-radius: 10px;
+  border: solid 1.5px #d8d8d8;
+  padding: 15px 15px 0px 15px;
+  margin: 20px 0;
+}
+
+.result-card-clicked{
+  border: solid 2px #4a90e2;
+}
+
+.result-card-title{
   font-family: "Source Sans Pro", sans-serif; 
   font-size: 20px;
   font-weight: 500;
@@ -10,46 +21,25 @@
   margin-bottom: 5px;
 }
 
-.card-subtitle{
+.result-card-subtitle{
   font-size: 15px;
   font-family: "Source Sans Pro", sans-serif; 
   margin-top: 5px;
 }
 
-.class-info{
-  font-family: "Source Sans Pro", sans-serif;   
-  font-size: 18px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.2px;
-  color: #000000;
-}
-/* ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8" */
-.card{
-  border-radius: 10px;
-  border: solid 1.5px #d8d8d8;
-  padding: 15px 15px 0px 15px;
-  margin: 20px 0;
-}
 
-.card-clicked{
-  border: solid 2px #4a90e2;
-}
-
-.sort-by-text{
+.result-card-sort-by-text{
   display: inline-block;
   font-family: "Source Sans Pro", sans-serif; 
 }
 
-.sort-by-number{
+.result-card-sort-by-value{
   display: inline-block;
   font-family: "Source Sans Pro", sans-serif;
   padding: 0 0 0 5px;
 }
 
-.sort-by-five{
+.result-card-sort-by-five{
   display: inline-block;
   color: #979797;
   font-size: 10px;

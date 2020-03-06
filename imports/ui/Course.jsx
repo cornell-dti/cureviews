@@ -41,7 +41,7 @@ export default class Course extends Component {
       if (text.toLowerCase().indexOf(this.props.query) != -1) {
         const startIndex = text.toLowerCase().indexOf(this.props.query);
         const endIndex = startIndex + this.props.query.length;
-        text = <span className="ellipsis">{text.substring(0,startIndex)}<span className='found'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</span>
+        text = <span className="ellipsis">{text.substring(0,startIndex)}<span className='matching-text'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</span>
       } else {
         // based on search technique in server/publications, results without a contains match
         // must be of the form "CS21" or "CS 21". The subject must be a 'match', as well as some
@@ -58,13 +58,13 @@ export default class Course extends Component {
         if(!this.props.useRedirect)
         text =
         <span className="ellipsis">
-          <span className='found'>{classInfo.classSub.toUpperCase() + " "}</span>
-          {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
+          <span className='matching-text'>{classInfo.classSub.toUpperCase() + " "}</span>
+          {textWithoutSubject.substring(0,startIndex)}<span className='matching-text'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
         </span>
         else text=
           <span className="ellipsis">
           <span>{classInfo.classSub.toUpperCase() + " "}</span>
-          {textWithoutSubject.substring(0,startIndex)}<span className='found'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
+          {textWithoutSubject.substring(0,startIndex)}<span className='matching-text'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
         </span>
 
       }
@@ -76,7 +76,7 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <a className={this.props.active && this.props.mouse != 1 ? 'active resultbutton' : 'resultbutton'} 
+      <a className={this.props.active && this.props.mouse != 1 ? 'active-class resultbutton' : 'resultbutton'} 
           id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } 
           href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
           <p className="result-label-course">
@@ -91,7 +91,7 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active-class classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
         <p className="text-style-3">{text}</p>
       </li>
     );

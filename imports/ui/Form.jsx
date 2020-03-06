@@ -500,8 +500,6 @@ export default class Form extends Component {
 // Form must be provided the course object of the class this review will be for.
 Form.propTypes = {
   course: PropTypes.object.isRequired,
-  query:PropTypes.string,
-  queryFunc: PropTypes.func,
   searchBar: PropTypes.bool, // true if this form is for pop-up,
   inUse: PropTypes.bool, //used to deactivate form in background if pop-up is in focus
   onChange: PropTypes.func
