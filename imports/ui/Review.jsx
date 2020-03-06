@@ -21,12 +21,12 @@ export default class Review extends Component {
       numLikes: this.props.likes //the number of likes on the PreviewCard review
     }
 
-    this.circlebox_class = props.isPreview ? "circlebox-preview" : "circlebox";
+    this.circlebox_class = props.isPreview ? "review-circlebox-preview" : "review-circlebox";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
-    this.professor_title_class = props.isPreview ? "professor-title-preview" : "professor-title";
+    this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
-    this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
+    this.professor_text_class = props.isPreview ? "review-professor-text-preview" : "review-professor-text";
 
   }
 
@@ -116,12 +116,12 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <div className="review">
+      <div className="review-container">
         {
           !this.props.isPreview && 
           <div className="row noLeftRightSpacing">
             <div className="col-md-12 col-xs-12 col-xs-12">
-              <button className="report-review" onClick={() => {
+              <button className="review-report" onClick={() => {
                 this.props.reportHandler(review);
                 alert('This post has been reported and will be reviewed.');
               }}>
@@ -131,10 +131,10 @@ export default class Review extends Component {
             </div>
           </div>
         }
-        <div className="panel-body-3">
-          <div className="row reviewNumbers noLeftRightSpacing">
+        <div className="review">
+          <div className="row review-numbers noLeftRightSpacing">
 
-            <div className="container" id={this.circlebox_class} style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
+            <div className={this.circlebox_class} style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
               <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
 
             </div>
@@ -142,7 +142,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Overall Rating</p>
 
 
-            <div className="container" id={this.circlebox_class} style={this.getColorGreenToRed(review.difficulty)}>
+            <div className={this.circlebox_class} style={this.getColorGreenToRed(review.difficulty)}>
               <p className={this.review_number_text_class} >{review.difficulty}</p>
             </div>
 
@@ -150,7 +150,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Difficulty</p>
 
 
-            <div className="container" id={this.circlebox_class} style={this.getColorGreenToRed(review.workload)}>
+            <div className={this.circlebox_class} style={this.getColorGreenToRed(review.workload)}>
               <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
             </div>
 
@@ -159,7 +159,7 @@ export default class Review extends Component {
 
           </div>
           <div className="row noLeftRightSpacing">
-            <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing review-padding-left">
+            <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing">
               <p className={this.professor_title_class}>Professor: </p>
             </div>
             <div className="col-md-10 col-sm-10 col-xs-10">
@@ -169,7 +169,7 @@ export default class Review extends Component {
                   <p className={this.professor_text_class}>N/A</p></div>}
             </div>
           </div>
-          <div className="row noLeftRightSpacing review-padding-left">
+          <div className="row noLeftRightSpacing">
             <div className={this.review_text_class} >
               <span className={this.props.isPreview ? "preview-review-overflow" : ""}>
                 {review.text}
@@ -183,7 +183,7 @@ export default class Review extends Component {
           </div>
           <div className="col-md-9 col-sm-9 col-xs-9">
             <button className= //if the review has been liked, the button will be filled in.
-              {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+              {(this.state.liked == false ? "review-upvote btn-lg" : "review-voted btn-lg")}
               onClick={() => {
                 this.increment(review);
               }}>
@@ -192,7 +192,7 @@ export default class Review extends Component {
           </div>
         </div>
         <div className="row noLeftRightSpacing">
-          <p className="upvote-text">Helpful
+          <p className="review-upvote-text">Helpful
           ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
         </div>
       </div>

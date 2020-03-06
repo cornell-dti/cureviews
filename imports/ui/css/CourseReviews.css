@@ -1,4 +1,6 @@
-.past-reviews{
+/* Review Column Styling */
+
+.past-reviews-title-text{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 24px;
   font-weight: var(--semi-bold-weight);
@@ -8,4 +10,14 @@
   letter-spacing: 0.001em;
   color: #000000;
   padding-top: 20px;
+}
+
+/* Review Containers Styling */
+
+.review-panel, .review-panel-ul {
+  background-color: #f2f2f2;
+}
+
+.review-panel {
+  border-color: transparent;
 }

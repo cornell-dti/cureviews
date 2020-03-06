@@ -1,4 +1,3 @@
-/* Keep */
 .navbar {
   min-height: 105px;
   padding-top: 25px;
@@ -11,13 +10,13 @@
   border: 0;
   margin-bottom: 0;
 }
-/* Keep */
+
 .scale-logo-navbar{
   height: 60px;
   width: auto;
   margin: 0 0 0 50px;
 }
-/* Keep */
+
 .text-report-bug{
   font-family: "Source Sans Pro", sans-serif;
   font-weight: var(--semi-bold-weight);

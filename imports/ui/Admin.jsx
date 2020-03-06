@@ -229,10 +229,10 @@ export class Admin extends Component {
 
   render() {
     return (
-      <div className="container whiteBg">
+      <div className="container-width whiteBg">
         <div className="width-90">
 
-          <div className="container whiteBg">
+          <div className="container-width whiteBg">
             <div className="width-90">
               <h2>Admin Interface</h2>
                 <Statistics />
