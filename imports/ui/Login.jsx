@@ -56,7 +56,7 @@ export default class Login extends Component {
       );
     } else {
       return (
-        <div className="container whiteBg">
+        <div className="container-width whiteBg">
           <div className="pushDown">
             <div className="panel panel-default">
               <div className="panel-heading">

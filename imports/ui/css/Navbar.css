@@ -3,7 +3,7 @@
   padding-top: 25px;
   padding-left: 10px;
   padding-right: 10px;
-  z-index: 980;
+  z-index: 110; 
   top: 0px;
   position: sticky;
   background: linear-gradient(#68a5ec, #a8d3f5, #a8d3f5);
@@ -17,17 +17,12 @@
   margin: 0 0 0 50px;
 }
 
-#reportBugText{
+.text-report-bug{
   font-family: "Source Sans Pro", sans-serif;
   font-weight: var(--semi-bold-weight);
   font-size: 18px;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
   text-decoration: none;
-  color: #ffffff;
-  margin-top:12px;
-  text-align:right;
-  padding-right:30px;
+  margin-top: 12px;
+  text-align: right;
+  padding-right: 30px;
 }

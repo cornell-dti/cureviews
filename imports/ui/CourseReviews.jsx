@@ -57,16 +57,14 @@ export class CourseReviews extends Component {
       title = "Recent Reviews";
     }
     return (
-      <section>
-        <legend className="past-reviews">{title}</legend>
-        <div className="panel panel-default" id="reviewpanel">
-          <div>
-            <ul id="reviewul">
-              {this.renderReviews()}
-            </ul>
-          </div>
+      <div>
+        <p className="past-reviews-title-text">{title}</p>
+        <div className="panel panel-default review-panel">
+          <ul className="review-panel-ul">
+            {this.renderReviews()}
+          </ul>
         </div>
-      </section>
+      </div>
     );
   }
 }
