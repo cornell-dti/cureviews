@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
+import Gauge from './Gauge.jsx';
 import Navbar from './Navbar.jsx';
 import CourseReviews from './CourseReviews.jsx';
 import "./css/App.css";
@@ -60,7 +61,6 @@ export class ClassView extends Component {
     this.showPopup = this.showPopup.bind(this);
     this.decidePopup = this.decidePopup.bind(this);
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
-    this.onFormChange = this.onFormChange.bind(this);
   }
 
   // Once the component loads, make a call to the backend for class object.
@@ -106,12 +106,6 @@ export class ClassView extends Component {
         this.decidePopup();
       }
     }
-  }
-
-  // Updates the last time user typed in the form textbox
-  // Used so that the popup doesn't show while user is typing where
-  onFormChange(e) {
-      this.setState({lastTyped:new Date().getTime()});
   }
 
   getPopUpCourseOptions() {
@@ -177,11 +171,19 @@ export class ClassView extends Component {
             <div className="col-md-6 col-sm-12 col-xs-12 sticky">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-6 col-sm-12 col-xs-12 right-panel-container">
-              <div>
-                <Form onChange={this.onFormChange} inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
+            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
+              <div className="row">
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-12">
+                  <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
+                </div>
               </div>
-              <div>
+              <div className="row">
                 <CourseReviews courseId={this.state.selectedClass._id} />
               </div>
             </div>

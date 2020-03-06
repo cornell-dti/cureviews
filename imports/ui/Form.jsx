@@ -193,9 +193,8 @@ export default class Form extends Component {
 
   // Called each time this component receieves new props.
   // resets the values of the sliders to 3 and sets the state to the default state.
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.course != this.props.course) {
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.course != this.props.course) {
       this.setState(this.defaultState);
     }
   }
