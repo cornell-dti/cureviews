@@ -1,34 +1,7 @@
-/* Overrides the hover color from .resultbutton:hover */
-.no-hover:hover {
-  background-color: #f2f2f2 !important;
-}
+/* General Result Component Styling */
 
 .top-resultbutton{
   padding-top: 20px;
-}
-
-.resultbutton, .resultbutton:hover {
-  padding: 15px;
-  background-color: rgba(255, 255, 255, 0.62);
-  display: flex;
-  text-decoration: none;
-}
-
-.contrasting-result-background .resultbutton, .contrasting-result-background .resultbutton:hover {
-  /* background-color: rgba(250, 250, 250, 0.9); */
-  background-color: rgba(250, 250, 250, 0.9);
-}
-
-#resultbutton li a {
-  padding: 15px;
-}
-
-
-.found {
-  text-decoration: underline;
-  font-weight: bold;
-  color:#4990E2;
-
 }
 
 .result-label-course{
@@ -41,81 +14,22 @@
   font-family: "Source Sans Pro", sans-serif; 
   font-size: 10px;
   font-weight: var(--regular-weight) !important;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.001em;
   color: #4A90E2;
-  max-width: 14%;
 }
-
 
 .result-label-subject{
   border: 1px solid #F3A953;
   box-sizing: border-box;
   border-radius: 10px;
   padding: 5px 18px;
-  margin:0 14px 0 0;
+  margin: 0 14px 0 0;
   height: 25px;
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 10px;
   font-weight: var(--regular-weight) !important;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.001em;
   color: #F3A953;
-  max-width: 14%;
-}
-
-.resultbutton:hover, .active{
-  background-color: rgba(73, 144, 226, 0.5) !important;
-}
-
-
-.resultbutton:hover .result-text{
-  color: #ffffff !important;
-}
-
-.active  .found{
-  color: #ffffff !important;
-}
-
-.resultbutton:hover .found{
-  color: #ffffff !important;
-}
-
-.resultbutton:hover .result-label-course{
-  color: #ffffff !important;
-  border: 1px solid #ffffff;
-}
-
-.active > .result-text{
-  color: #ffffff !important;
-}
-
-.active > .result-label-course{
-  color: #ffffff !important;
-  border: 1px solid #ffffff;
-}
-
-
-
-
-.contrasting-result-background .resultbutton:hover, .contrasting-result-background .active{
-  background-color: rgba(73, 144, 226, 0.9) !important;
-}
-
-.resultbutton-popup{
-  background-color: rgba(0, 0, 0, 0.7);
-  
-}
-
-.ellipsis{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
 }
 
 .result-text{
@@ -124,8 +38,6 @@
   font-family: "Source Sans Pro", sans-serif; 
   font-size: 18px;
   font-weight: var(--regular-weight) !important;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
   color: #000000;
@@ -137,43 +49,70 @@
   margin: 0;
 }
 
-
-.text-style-2{
-  display: inline-block;
-  text-overflow: ellipsis;
-  color: #4a4a4a;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  line-height: 1.11;
-  padding-bottom: 5px;
-  text-align: left;
-  width: 100%;
+.matching-text {
+  text-decoration: underline;
+  font-weight: bold;
+  color:#4990E2;
 }
 
-.text-style-3{
-  display: inline;
-  text-overflow: ellipsis;
-  color: #ffffff;
-  font-family: sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  line-height: 1.11;
-  padding-bottom: 5px;
-  text-align: left;
-  width: 50%;
+.ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
-.float-right{
-  padding-right: 10%;
-  float:right;
-}
 
-.text-style-1:hover {
+
+/* Button distinctions for selected/hovered result */
+
+.resultbutton, .resultbutton:hover {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.62);
+  display: flex;
   text-decoration: none;
-  color: inherit;
 }
 
+.contrasting-result-background .resultbutton, .contrasting-result-background .resultbutton:hover {
+  background-color: rgba(250, 250, 250, 0.9);
+}
+
+.contrasting-result-background .resultbutton:hover, .contrasting-result-background .active-class{
+  background-color: rgba(73, 144, 226, 0.9) !important;
+}
+
+.resultbutton:hover, .active-class{
+  background-color: rgba(73, 144, 226, 0.5) !important;
+}
+
+.resultbutton:hover .result-text{
+  color: #ffffff !important;
+}
+
+.active-class  .matching-text{
+  color: #ffffff !important;
+}
+
+.resultbutton:hover .matching-text{
+  color: #ffffff !important;
+}
+
+.resultbutton:hover .result-label-course{
+  color: #ffffff !important;
+  border: 1px solid #ffffff;
+}
+
+.active-class > .result-text{
+  color: #ffffff !important;
+}
+
+.active-class > .result-label-course{
+  color: #ffffff !important;
+  border: 1px solid #ffffff;
+}
+
+.resultbutton-popup{
+  background-color: rgba(0, 0, 0, 0.7);
+  
+}
 

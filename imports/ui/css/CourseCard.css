@@ -1,95 +1,4 @@
-.spacing-small{
-  line-height: 10px;
-}
-
-.spacing-medium {
-  line-height: 20px;
-}
-
-.spacing-large {
-  line-height: 20px;
-}
-
-.top-margin-small {
-  margin-top: 20px;
-}
-
-.top-margin-medium {
-  margin-top: 40px;
-}
-
-.top-margin {
-  margin-top: 50px;
-}
-
-.subheader {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 35px;
-}
-
-.courseNum{
-  text-align: center;
-  font-size: 23.5px;
-  color: #ffffff;
-  margin-left: center;
-  margin-right: center;
-  margin-top:20px;
-}
-
-.overall-rank {
-  font-size: 30px;
-  color: white;
-  vertical-align: center;
-  text-align:center;
-  align-items: center;
-}
-
-label {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.2px;
-}
-
-#gaugeHolder > div{
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 36px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.001em;
-  color: #4A4A4A;
-}
-
-#gaugeHolder > div > svg > text{
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 36px;
-  font-weight: var(--regular-weight) !important;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.001em;
-  color: #4A4A4A;
-}
-
-.cornellClassLink {
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 14px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.001em;
-  color: #9b9b9b;
-}
-
-#coursedetails {
+.coursecard-container {
   padding-top: 10px;
   padding-left: 30px;
   padding-right: 30px;
@@ -104,34 +13,33 @@ label {
   line-height: normal;
   letter-spacing: 0.001em;
   color: #4A4A4A;
+  margin-top: 50px;
 }
 
-.offered{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.001em;
-  color: #4A4A4A;
-}
-
-.class-info{
+.coursecard-class-link {
+  text-align: center;
   font-family: "Source Sans Pro", sans-serif; 
-  font-size: 18px;
+  font-size: 14px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
+  color: #9b9b9b;
+}
+
+.cousecard-class-offered{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 20px;
+  letter-spacing: 0.001em;
   color: #4A4A4A;
+  margin-top: 50px;
 }
 
-.padding-bottom{
+.cousecard-class-link-padding{
   padding-bottom: 5px;
-}
-
-.panel-radius{
-  border-radius: 8px;
 }

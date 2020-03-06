@@ -1,8 +1,4 @@
-#welcome_text, #second_welcome_text, .cornell-reviews {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-}
-
-.welcome_text{
+.homepage-text{
   /* height: 14px; */
   /* padding-top: 6%; */
   margin-bottom: 40px;
@@ -16,62 +12,14 @@
   color: #356BD0;
 }
 
-.homepage-left-padding{
+.homepage-text-padding{
   padding-left: 10.5%;
 }
 
-.no-side-padding{
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-}
-
-.outline{
-  display: block;
-  max-width: 150%;
-  width: 100%;
-  height: auto;
-  margin-bottom: -2%;
-}
-
-.z-index{
-  z-index: 1045;
-}
-
-.no-float{
-  float: none;
-}
-
-.scale-logo{
+.scale-logo-homepage{
   height: 75px;
   width: auto;
   margin: 50px 0px 78px 71px;
-}
-
-nav {
-  background-color: #4990E2;
-  margin-top: 0;
-}
-
-#report-bug {
-  float: right;
-  color: #fff;
-  font-weight: normal;
-  padding-top: 0;
-}
-
-#report-bug:hover {
-  background-color: transparent;
-  opacity: .7;
-}
-
-#yes{
-  color: #4990E2;
-  font-weight: bold;
-  cursor: pointer;
-}
-#no{
-  color: #4990E2;
-  font-weight: bold;
 }
 
 .background-gradient{
@@ -81,84 +29,12 @@ nav {
   background-position: bottom; 
 }
 
+ /* Needed so that background is flush against bottom */
 .full-height{
-  min-height: 100.1%; /* Needed so that background is flush against bottom */
+  min-height: 100.1%;
   height: 100.09%;
 }
-
-
-.background-image{
-  background: url('backgroundNew-edited.jpg') fixed no-repeat;
-  background-size: cover;
-  object-fit: contain;
-}
-
+/* I believe this is only used in recentreview.jsx so will remove soon TODO */
 .container{
   background-color: rgba(255, 255, 255, 0);
-}
-
-.container-top-gap-fix{
-  padding-top: 0 !important;
-  padding: 0;
-}
-
-.panel-container{
-  background-color: rgba(255, 255, 255, 0.0);
-  height: 100%;
-}
-
-.moveDown {margin-top: 72px;}
-
-.panel-color-translucent{
-  background-color: rgba(255, 255, 255, 0.93);
-}
-
-.panel-color-gray{
-  background-color: rgba(74,74,74,.06);
-}
-
-.pushDown {
-  padding-top: 4%;
-}
-
-.title-link a {
-  color: white;
-  text-decoration: none;
-}
-
-.sticky{
-  position: relative;
-}
-.noPadding {
-  padding: 0 !important;
-}
-
-.nav-center {
-  margin-top: 15px;
-  background-color: transparent !important;
-}
-
-.nav-right {
-  margin-top: 15px;
-  float: right !important;
-  background-color: transparent !important;
-}
-
-.reportButton {
-  border: none !important;
-  padding: 0;
-}
-
-.reportButtonWidth {
-  width: 20% !important;
-}
-
-#logoImg {
-  margin-top: -5px;
-}
-
-@media (min-width: 992px) {
-  .sticky{
-    position: sticky;
-  }
 }

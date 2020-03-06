@@ -1,19 +1,21 @@
-#course-details {
-  padding-top: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
-  float: left;
-  width: 50%;
+/* Panel Styling */
+
+.preview-holder{
+  margin-right: 2vw;
+  margin-left: 20px;
 }
 
-.left-gauge{
-  text-align: left;
+.review-holder{
+  width: 31vw;
+  margin-left: auto;
+  margin-right: auto;
 }
-.center-gauge{
-  text-align: center;
-}
-.right-gauge{
-  text-align: right;
+
+.preview-panel{
+  width: 100%;
+  border-radius: 5px;
+  background-color: #fafafa;
+  padding: 30px 40px 40px 40px;
 }
 
 .preview-class-title{
@@ -38,8 +40,57 @@
   color: #979797;
 }
 
+/* Preview Review Styling */
+
+.preview-top-review-label{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+}
+
+.preview-empty-top-review{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #979797;
+  padding-bottom: 100px;
+}
+
+.preview-review-button{
+  background-color: #4a90e2;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif; 
+  text-align: center;
+  border-radius: 5px;
+  height: auto;
+  padding: 10px;
+  font-size: 15px;
+  width: 100%;
+  display: inline-grid;
+}
+
+/* Gauge Styling */
+
 .gaugeHolder{
   padding: 25px 35px 40px 35px;
+}
+
+.left-gauge{
+  text-align: left;
+}
+.center-gauge{
+  text-align: center;
+}
+.right-gauge{
+  text-align: right;
 }
 
 .gaugeHolder svg text:first-of-type{
@@ -64,67 +115,10 @@
   color: #000000;
 }
 
-.preview-top-review-label{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 12px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-}
-
-.preview-empty-top-review{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 12px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #979797;
-  padding-bottom: 100px;
-}
-
-.panel-radius{
-  border-radius: 8px;
-}
-
-.preview-holder{
-  margin-right: 2vw;
-  margin-left: 20px;
-}
-
-.review-holder{
-  width: 31vw;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.preview-panel{
-  width: 100%;
-  border-radius: 5px;
-  background-color: #fafafa;
-  padding: 30px 40px 40px 40px;
-}
-
 .gaugeHolder svg{
   overflow: visible !important;
 }
 
 #gauge, #gauge-body{
   width: 50%;
-}
-
-.preview-review-button{
-  background-color: #4a90e2;
-  color: white;
-  font-family: "Source Sans Pro", sans-serif; 
-  text-align: center;
-  border-radius: 5px;
-  height: auto;
-  padding: 10px;
-  font-size: 15px;
-  width: 100%;
-  display: inline-grid;;
 }

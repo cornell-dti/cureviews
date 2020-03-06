@@ -24,7 +24,7 @@ export default class Gauge extends Component{
           this.setState({percentage: percentage, color: color, rating: this.props.rating});
         }
       }
-    }
+  }
 
   render(){
     return (
@@ -52,8 +52,8 @@ export default class Gauge extends Component{
 }
 
 Gauge.propTypes ={
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
+  width: PropTypes.string.isRequired,
+  height: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired
 };
