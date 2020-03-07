@@ -16,15 +16,22 @@
   border-radius: 19.6611px;
 }
 
+section{
+  width:761px;
+}
+
 #reviewul{
   overflow-y:scroll !important;
-  height:600px;;
+  height:600px;
+}
+
+.review{
+  margin-right:33px;
 }
 
 #reviewul::-webkit-scrollbar {
   width: 8px;
   height: 332.25px;
-
 }
 
 #reviewul::-webkit-scrollbar-track {

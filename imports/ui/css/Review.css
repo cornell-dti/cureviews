@@ -16,6 +16,11 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   text-overflow: ellipsis;
 }
 
+.metric-text{
+  display:block;
+  margin-right:11px;
+}
+
 .panel-body-3 {
   margin: auto;
   padding: 8px 50px 5px 50px;
@@ -27,6 +32,8 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 32px;
+  height:186px;
+  width:720px;
 }
 
 #rectangle {
@@ -35,15 +42,7 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   margin-top: 10px;
 }
 
-#circlebox {
-  border-radius: 25px;
-  height: 34px;
-  padding-top: 0;
-  width: 34px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
+
 
 #circlebox-preview {
   border-radius: 25px;
@@ -131,9 +130,9 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   font-weight: normal;
   font-size: 12px;
   line-height: 15px;
-  display: flex;
+  display: inline;
   align-items: center;
-
+  width:20px;
   color: #9B9B9B;
 
 }
@@ -278,6 +277,8 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #000000;
 }
 
+
+
 .review-number-label-preview{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
@@ -293,9 +294,14 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .reviewNumbers{
-  margin-bottom: 8px;
-  display: inline-flex;
-  width: 100%;
+  padding:0px;
+  display: block;
+  width: 75px;
+  margin-right:11px;
+}
+
+reviewNumbers p{
+  display:block;
 }
 
 .space-review-buttons {
@@ -307,4 +313,24 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   padding-right: 0;
   margin-left: 0;
   margin-right: 0;
+  display:block;
 }
+
+.prof p, .btn-lg, .upvote-text{
+  display:inline;
+}
+
+.prof{
+  margin-bottom:8px;
+}
+
+.numbers{
+  width:7px;
+  margin-right:64px;
+  height:120px;
+}
+
+.rightCol{
+  width:549px;
+}
+
