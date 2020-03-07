@@ -166,9 +166,10 @@ export default class Review extends Component {
                     this.increment(review);
                   }}>
                   <span className="glyphicon glyphicon-thumbs-up"></span>
-                </button>
-                <p className="upvote-text">Helpful
+                  <p className="upvote-text">Helpful
                   ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
+                </button>
+
               </div>
 
             </div>

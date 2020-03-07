@@ -143,7 +143,7 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   font-weight: normal;
   font-size: 12px;
   line-height: 15px;
-  display: flex;
+  display: inline;
   align-items: center;
   text-align: right;
 
@@ -320,6 +320,10 @@ reviewNumbers p{
   display:inline;
 }
 
+.btn-lg{
+  width:90px;
+}
+
 .prof{
   margin-bottom:8px;
 }
@@ -331,6 +335,9 @@ reviewNumbers p{
 }
 
 .rightCol{
-  width:549px;
+  width:615px;
 }
 
+.glyphicon{
+  display:inline;
+}
