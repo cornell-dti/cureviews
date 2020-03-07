@@ -89,7 +89,7 @@ export class CourseCard extends Component {
         <p className="class-info spacing-large top-margin">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + offered}
         </p>
-        <Form onChange={this.onFormChange} course={theClass} />
+        <Form onChange={this.onFormChange} course={theClass} inUse={true}/>
       </div>
     );
   }

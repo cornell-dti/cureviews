@@ -12,10 +12,6 @@ form {
 
 }
 
-.row{
-  margin-top:8px;
-}
-
 #form-dropdown{
   z-index: 100;
 }
@@ -434,7 +430,7 @@ input[type="range"] {
   margin-top:8px;
 }
 
-.metricBoxWrapper, p{
+.metricBoxWrapper p {
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
