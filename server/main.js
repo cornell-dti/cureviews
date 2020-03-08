@@ -1,107 +1,177 @@
 import { Meteor } from 'meteor/meteor';
 import { Classes, Reviews } from '../imports/api/dbDefs.js';
 
-const fs = require("fs");
 const path = require("path");
+const fullpath = path.resolve("");
+// This hack allows me to load in environment variables
+// It requires that the code is run from a path containing "course-reviews-react-2.0"
+// This will be fixed in a future release
+// Reason for this hack:
+// Meteor makes the cwd strange, and putting the .env where it SAYS the cwd is doesn't work, 
+// neither did many other places. This hack however, works.
+require('dotenv').config({path: fullpath.substr(0, fullpath.indexOf("course-reviews-react-2.0")) + "/course-reviews-react-2.0/.env"});
 const { WebClient } = require('@slack/web-api');
 const { createEventAdapter } = require('@slack/events-api');
 
+// which channel should we post any and all messages to?
+const channel_name = "cu-reviews";
+
+/**
+ * Initialze the 2 Slack APIs:
+ * Web: Sending any kind of request (messages/emoji post, getting history)
+ * Events: Listen for messages & reactions
+ * 
+ * Local Testing: REQUIRES ngrok: https://ngrok.com/
+ * Why? Because the Slack Events API ** HTTP-POSTS ** to you whenever a message is posted by a user 
+ * For reference:
+ * You need to verify the url to post to on the slack developer portal!
+ * You can verify your ngrok url using this command ./node_modules/.bin/slack-verify --secret [Slack Events Token] --port=3002
+ * Setting up ngrok: https://api.slack.com/tutorials/tunneling-with-ngrok
+ * How the events api works: https://api.slack.com/events-api
+ * 
+ * @returns 
+ * An interface to the Web API (used by the postMessage function) on a success
+ * undefined on an error. This will disable the bot.
+ */
 function initializeBot() {
-  const cwd = path.resolve("");
-  console.log("Current working directory: " + cwd);
-  const basedir = cwd.substr(0, cwd.indexOf("course-reviews-react-2.0"));
-  const content = fs.readFileSync(basedir + "course-reviews-react-2.0/token").toString().split("\n");
+  try {
+    // create the clients
+    const web = new WebClient(process.env.WebToken);
+    const slackEvents = createEventAdapter(process.env.EventsToken);
 
-  const web = new WebClient(content[0]);
-  const slackEvents = createEventAdapter(content[1]);
+    // listen for a reaction added event
+    slackEvents.on('reaction_added', (event) => {
+      // make sure that the reaction wasn't by the bot, and was on a message that was sent by the bot
+      if (event.user != process.env.BotId && event.item_user == process.env.BotId) {
+        (async () => {
+          // get the timestamp (Slack's way of identifying messages) of the message in question
+          const ts = event.item.ts;
 
-  slackEvents.on('reaction_added', (event) => {
-    if (event.user != 'UU2KKF4KT' && event.item_user == 'UU2KKF4KT') {
-      const ts = event.item.ts;
+          // get the message in question
+          const hist = await web.conversations.history({
+            channel: event.item.channel,
+            latest: ts,
+            inclusive: true,
+            limit: 1,
+          });
+    
+          // if we found no messages, do nothing
+          if (hist.messages.length == 0) {
+            return;
+          }
 
-      (async () => {
-        const hist = await web.conversations.history({
-          channel: event.item.channel,
-          latest: ts,
-          inclusive: true,
-          limit: 2,
+          // extract the id from the text of the message we retrived
+          const text = hist.messages[0].text;
+          const lower = text.indexOf("Id: ");
+          const id = text.substring(lower + 4, text.indexOf("\n", lower));
+    
+          // if the message posted by the bot isn't a valid id let the user know we are dissatisfied
+          if (lower == -1) {
+            await web.chat.postMessage({
+              channel: channel_name,
+              text: "",
+              attachments: [{
+                  text: "You have displeased CU-Reviews Bot. React to a review next time.", 
+                  image_url: "https://hoderle.in/me-robot.jpg"
+                }]
+            });
+            return;
+          }
+
+          if (event.reaction == 'heavy_check_mark') {
+            // approve a review
+            console.log("Slack approved a review with id: " + id + "!");
+            Meteor.call("makeVisible", Reviews.find({_id: id}).fetch()[0], process.env.WebToken);
+
+            // notify user that the review has been approved
+            const res = await web.chat.postMessage({
+              channel: channel_name,
+              text: "Published review with id: " + id,
+            });
+          } else if (event.reaction == 'x') {
+            // deny a review
+            // TODO remove it?
+
+            console.log("Slack denied a review with id: " + id + "!");
+          }
+        })(); 
+      }
+    });
+
+    // send an online message
+    (async () => {
+      try {
+        const currentTime = new Date().toTimeString();
+
+        const res = await web.chat.postMessage({
+          channel: channel_name,
+          text: "Onlining CU-Reviews at " + currentTime,
         });
-  
-        if (hist.messages.length == 0) {
-          return;
-        }
 
-        const text = hist.messages[0].text;
-        const lower = text.indexOf("Id: ");
-        const id = text.substring(lower + 4, text.indexOf("\n", lower));
-  
-        if (lower == -1) {
-          return;
-        }
-
-        if (event.reaction == 'heavy_check_mark') {
-          console.log("Slack approved a review with id: " + id + "!");
-          Meteor.call("makeVisible", Reviews.find({_id: id}).fetch()[0], "bot");
-        } else if (event.reaction == 'x') {
-          console.log("Slack denied a review with id: " + id + "!");
-          // TODO remove it?
-        }
-
-        await web.chat.delete({
-          channel: event.item.channel,
-          ts: ts
+        await web.reactions.add({
+          timestamp: res.ts,
+          channel: res.channel,
+          name: "face_with_cowboy_hat",
         });
-      })(); 
-    }
-  });
 
-  (async () => {
-    try {
-      const currentTime = new Date().toTimeString();
+      } catch (error) {
+        console.log("Unable to initialze the bot. Sorry about that.");
+        return undefined;
+      }
 
-      const res = await web.chat.postMessage({
-        channel: '#cu-reviews',
-        text: "Onlining CU-Reviews at " + currentTime,
-      });
+      const server = await slackEvents.start(3002);
 
-      const emoji_res = await web.reactions.add({
-        timestamp: res.ts,
-        channel: res.channel,
-        name: "face_with_cowboy_hat",
-      });
+      console.log("Listening for events on " + server.address().port);
+    })();
 
-    } catch (error) {
-      console.log(error);
-    }
-
-    const server = await slackEvents.start(3002);
-
-    console.log("Listening for events on " + server.address().port);
-  })();
-
-  return web;
+    // everything initialized properly, so return the Web API interface
+    console.log("Bot initialized!");
+    return web;
+  } catch (e) {
+    console.log("Unable to initialze the bot. Sorry about that.");
+    return undefined;
+  }
 }
 
+// save the Web API interface for later use
 const web = initializeBot();
 
+/**
+ * Post a review using the Slack Web API
+ * Works only if the web constant has been set by initialzeBot();
+ * 
+ * @param {*} review A review in the database
+ * @param {*} id the Id of that review in the database
+ * 
+ * @returns nothing
+ */
 export async function postReview(review, id) {
+  // if the bot initialization failed, do not post messages!
+  if (web == undefined) {
+    return;
+  }
+
+  // get the course in question from mongodb, and build a little description
   const course = Meteor.call('getCourseById', review.class);
   const classText = course.classSub + " " + course.classNum;
 
+  // notify slack that a new review has been posted
   const res = await web.chat.postMessage({
-    channel: '#cu-reviews',
+    channel: channel_name,
     text: "A new review has been posted for *" + classText.toUpperCase() + "*!\n" +
       "Id: " + id + "\n\n" + 
       "*Rating: " + review.rating + " Difficulty: " + review.difficulty + " Workload: " + review.workload + "*\n" +
       "```" + review.text + "```",
   });
 
+  // add a confirm reaction to let the users know what to click
   await web.reactions.add({
     timestamp: res.ts,
     channel: res.channel,
     name: "heavy_check_mark",
   });
 
+  // add a deny reaction
   await web.reactions.add({
     timestamp: res.ts,
     channel: res.channel,

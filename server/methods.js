@@ -377,7 +377,7 @@ Meteor.methods({
   tokenIsAdmin: function (token) {
     // console.log("This is token in tokenIsAdmin");
     // console.log(token);
-    if (token == "bot") {
+    if (token == process.env.WebToken) {
       return true;
     }
 
