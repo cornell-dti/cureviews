@@ -63,7 +63,7 @@ export default class ResultsDisplay extends Component {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
   }
-  
+
   // Helper function to sort()
   sortBy(courseList, sortByField, fieldDefault, increasing){
     const data = courseList.sort(
@@ -81,7 +81,7 @@ export default class ResultsDisplay extends Component {
           else{
             return (second - first);
           }
-          
+
         }
       });
     this.setState({
@@ -90,7 +90,7 @@ export default class ResultsDisplay extends Component {
       active_card: 0
     });
   }
-  
+
   // Sorts list of class results by category selected in this.state.selected
   sort() {
     let availableClasses;
@@ -100,7 +100,7 @@ export default class ResultsDisplay extends Component {
     else{
       availableClasses = this.state.filteredItems;
     }
-    
+
     if (this.state.selected == "relevance"){
       this.sortBy(availableClasses, "score", 0, true);
     }
@@ -199,7 +199,7 @@ export default class ResultsDisplay extends Component {
 
   }
 
-  //Updates the displayed PreviewCard to the correct [course] 
+  //Updates the displayed PreviewCard to the correct [course]
   //if the course's [index] in the list of FilteredResult components is clicked
   previewHandler(course, index) {
     this.setState({
@@ -328,4 +328,3 @@ ResultsDisplay.propTypes = {
   loading: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired
 };
-

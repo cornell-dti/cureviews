@@ -6,7 +6,7 @@ import Review from './Review.jsx';
 
 /*
   Preview Card component.
-  
+
   Props: course - course object used to render a preview card for ResultsDisplay
                   to use.
 */
@@ -82,7 +82,7 @@ export default class PreviewCard extends Component {
     });
   }
 
-  //Updates the colors of the metrics 
+  //Updates the colors of the metrics
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({

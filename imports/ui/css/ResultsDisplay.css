@@ -1,12 +1,29 @@
 /* Filter Sidebar Styling */
 
 .filters{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   padding-left: 55px;
 }
 
 .filter-title{
   margin-bottom: 20px;
+  width: 74px;
+  height: 8px;
+  left: 79px;
+  top: 223px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 9px;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.104749px;
+  text-decoration-line: underline;
+
+  color: #000000;
 }
 
 
@@ -14,14 +31,34 @@
   padding-bottom: 20px;
 }
 .filter-sub-title{
-  color: #979797;
+  width: 84px;
+  height: 9px;
+  left: 80px;
+  top: 265px;
+
+  padding-top: 15px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 9px;
+  /* identical to box height, or 48% */
+
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.104749px;
+
+  color: #807B7B;
 }
 
 .filter-checkbox-label{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   margin: 0px 0px 0px 10px;
 }
 
+.checkbox {
+
+}
 /* Class Results List Styling */
 
 .results{
@@ -45,15 +82,16 @@
 }
 
 .results-num-classes-found{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 15px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
   color: #000000;
   margin: 0;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
 }
 
 .results-sort-by-container{
@@ -61,26 +99,40 @@
 }
 
 .results-sort-by-text{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 15px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
   font-stretch: normal;
-  line-height: normal;
   letter-spacing: 0.001em;
   color: #000000;
   text-align: right;
-  margin: 0 0 0 auto; 
+  margin: 0 0 0 auto;
+  padding-right: 10px;
+  width: 74.83px;
+  left: 536px;
+  top: 217px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 19px;
+
+  text-decoration-line: underline;
+
+  color: #807B7B;
+
 }
 
 .results-sort-by-select{
-  font-family: "Source Sans Pro", sans-serif;
-  background-color: white;
+  font-family: "Source Sans Pro";
+  background-color: #f4f9fe;
   border-color: transparent;
   border: 0px;
-  color: #4a90e2;
   outline: none;
-  font-size: 14px;
+  font-size: 18px;
+  color: #0076FF;
+  font-weight: 600;
+  letter-spacing: -0.225605px;
+  color: #0076FF;
+  text-align: top
 }
 
 .no-results{
@@ -91,7 +143,7 @@
 }
 
 .no-results-text{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 25px;
   text-align: center;
 }
@@ -101,6 +153,3 @@
 .preview{
   overflow: hidden;
 }
-
-
-
