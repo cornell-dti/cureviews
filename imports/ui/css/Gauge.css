@@ -11,10 +11,11 @@
   text-align: center;
   margin: 0;
   width: 100%;
+  font-size: 15px;
 }
 
 .rating {
-  font-size: 70px;
+  font-size: 50px;
 }
 
 .gauge-center {

@@ -93,6 +93,7 @@ export default class Statistics extends Component{
         <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
         <p>Total reviews: {this.state.totalReviews}</p>
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
+          <Gauge width="14vw" height="14vh" rating={2.6} text="Workload"/>
       </div>
     )
   }

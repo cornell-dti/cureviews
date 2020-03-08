@@ -1,8 +1,8 @@
 .result-card{
   border-radius: 10px;
-  border: solid 1.5px #d8d8d8;
   padding: 15px 15px 0px 15px;
   margin: 20px 0;
+  background-color: white;
 }
 
 .result-card-clicked{
@@ -10,8 +10,8 @@
 }
 
 .result-card-title{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 20px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
   font-weight: 500;
   font-style: normal;
   font-stretch: normal;
@@ -19,18 +19,21 @@
   letter-spacing: 0.1px;
   color: #4a4a4a;
   margin-bottom: 5px;
+
 }
 
 .result-card-subtitle{
-  font-size: 15px;
-  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 12px;
+  font-family: "Source Sans Pro", sans-serif;
   margin-top: 5px;
 }
 
 
 .result-card-sort-by-text{
   display: inline-block;
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
+  color: #0076FF;
+  font-size: 16px;
 }
 
 .result-card-sort-by-value{
@@ -41,7 +44,7 @@
 
 .result-card-sort-by-five{
   display: inline-block;
-  color: #979797;
   font-size: 10px;
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
+  color: #0076FF;
 }

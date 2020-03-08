@@ -14,12 +14,12 @@
 .preview-panel{
   width: 100%;
   border-radius: 5px;
-  background-color: #fafafa;
+  background-color: white;
   padding: 30px 40px 40px 40px;
 }
 
 .preview-class-title{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 24px;
   font-weight: var(--regular-weight);
   font-style: normal;
@@ -30,7 +30,7 @@
 }
 
 .preview-class-info{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--regular-weight);
   font-style: normal;
@@ -43,7 +43,7 @@
 /* Preview Review Styling */
 
 .preview-top-review-label{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
@@ -53,7 +53,7 @@
 }
 
 .preview-empty-top-review{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--regular-weight);
   font-style: normal;
@@ -67,7 +67,7 @@
 .preview-review-button{
   background-color: #4a90e2;
   color: white;
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   text-align: center;
   border-radius: 5px;
   height: auto;
@@ -80,7 +80,11 @@
 /* Gauge Styling */
 
 .gaugeHolder{
-  padding: 25px 35px 40px 35px;
+  padding: 25px 0px 40px 0px;
+}
+
+.gauge-remove-left-padding {
+  padding-left: 0px;
 }
 
 .left-gauge{
@@ -94,7 +98,7 @@
 }
 
 .gaugeHolder svg text:first-of-type{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px !important;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
@@ -105,7 +109,7 @@
 }
 
 .gaugeHolder svg text:last-of-type{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 19px !important;
   font-weight: var(--semi-bold-weight);
   font-style: normal;

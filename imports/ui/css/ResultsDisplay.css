@@ -63,7 +63,7 @@
 
 .results{
   height: calc(100vh - 189px);
-  overflow:auto
+  overflow:hidden
 }
 
 .loading-results{
@@ -146,6 +146,10 @@
   font-family: "Source Sans Pro", sans-serif;
   font-size: 25px;
   text-align: center;
+}
+
+ul {
+  background: #f4f9fe
 }
 
 /* Class Preview Styling */

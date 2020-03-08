@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
-import Gauge from 'react-summary-gauge-2';
+import Gauge from './Gauge.jsx';
 import Review from './Review.jsx';
 
 /*
@@ -155,14 +155,17 @@ export default class PreviewCard extends Component {
           </div>
           <div className="row gaugeHolder">
 
-            <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
-              <Gauge value={this.state.rating} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
+            <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
+              <Gauge width="13vw" height="13vh" rating={2.3} text="Overall"/>
+
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
-              <Gauge value={this.state.diff} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
+            <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
+              <Gauge width="13vw" height="13vh" rating={4.9} text="Difficulty"/>
+
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
-              <Gauge value={this.state.workload} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
+            <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
+              <Gauge width="13vw" height="13vh" rating={4.6} text="Workload"/>
+
             </div>
 
           </div>
