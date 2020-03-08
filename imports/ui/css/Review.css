@@ -32,7 +32,6 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 32px;
-  height:186px;
   width:720px;
 }
 
@@ -65,6 +64,8 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   position: relative;
   left: -50%;
 }
+
+
 
 .professor-text, .professor-title{
   font-family: Source Sans Pro;
@@ -188,13 +189,7 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #4990e2;
 }
 
-.upvote:hover {
-  border-color: #4990e2;
-}
 
-.voted:hover {
-  border-color: black;
-}
 
 #reviewpanel, #reviewul {
   background-color: #f2f2f2;
@@ -322,6 +317,8 @@ reviewNumbers p{
 
 .btn-lg{
   width:90px;
+  margin-right:-45px;
+  padding:2px;
 }
 
 .prof{
@@ -331,7 +328,7 @@ reviewNumbers p{
 .numbers{
   width:7px;
   margin-right:64px;
-  height:120px;
+  height:140px;
 }
 
 .rightCol{
@@ -340,4 +337,17 @@ reviewNumbers p{
 
 .glyphicon{
   display:inline;
+}
+
+.showMoreText{
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 19px;
+  /* or 104% */
+
+  letter-spacing: -0.225605px;
+
+  color: #0076FF;
 }

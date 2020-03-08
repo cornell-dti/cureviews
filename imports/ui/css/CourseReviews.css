@@ -6,7 +6,7 @@
   line-height: 11px;
   /* or 45% */
 
-  display: flex;
+  display: inline;
   align-items: flex-end;
   letter-spacing: -0.128928px;
 
@@ -42,4 +42,41 @@ section{
   background: #807B7B;
   border-radius: 13.5731px;
   height: 332.25px;
+}
+
+.sort{
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 19px;
+  display:inline;
+  letter-spacing: -0.225605px;
+  text-decoration-line: underline;
+
+  color: #807B7B;
+}
+
+.browser-default{
+  margin-left:10px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px !important;
+  line-height: 19px !important;
+  background-color: transparent !important;
+  /* or 104% */
+
+  letter-spacing: -0.225605px;
+
+  color: #0076FF;
+}
+
+.sortWrapper{
+  margin-left:325px;
+  display:inline;
+}
+
+.reviewHeader{
+  margin-bottom:34.5px;
 }

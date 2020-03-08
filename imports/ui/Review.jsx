@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/Review.css';
+import ShowMoreText from 'react-show-more-text';
 
 /*
   Review Component.
@@ -18,7 +19,9 @@ export default class Review extends Component {
     super(props);
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
-      numLikes: this.props.likes //the number of likes on the PreviewCard review
+      numLikes: this.props.likes, //the number of likes on the PreviewCard review,
+      expanded:false,
+      height:186
     }
 
     this.circlebox_class = props.isPreview ? "circlebox-preview" : "circlebox";
@@ -28,7 +31,20 @@ export default class Review extends Component {
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
     this.reviewToSemester=this.reviewToSemester.bind(this);
+    this.executeOnClick=this.executeOnClick.bind(this);
   }
+
+  executeOnClick(){
+    
+    if(!this.state.expanded){
+      let newHeight=186+(this.props.info.text.length%270)/10*15;
+      this.setState({expanded:!this.state.expanded, height:newHeight});
+    }
+    else{
+      this.setState({expanded:!this.state.expanded, height:186});
+    }
+  }
+
 
   // Function to convert the classId assigned to this review into the
   // full, human-readable name of the class.
@@ -108,7 +124,7 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <div className="review">
+      <div className="review" styling={"height:"+this.state.height+"px"}>
         {
           !this.props.isPreview && 
           <div className="row noLeftRightSpacing">
@@ -155,9 +171,17 @@ export default class Review extends Component {
 
               <div className="row noLeftRightSpacing review-padding-left">
                 <div className={this.review_text_class} >
-                  <span className={this.props.isPreview ? "preview-review-overflow" : ""}>
+                    <ShowMoreText
+                    lines={2}
+                    more='Show more'
+                    less='Show less'
+                    anchorClass='review'
+                    onClick={this.executeOnClick}
+                    expanded={this.state.expanded}
+                    width={615}
+                >
                     {review.text}
-                  </span>
+                </ShowMoreText>
                 </div>
                 <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
                 <button className= //if the review has been liked, the button will be filled in.
@@ -186,6 +210,7 @@ export default class Review extends Component {
 Review.propTypes = {
   info: PropTypes.object.isRequired,
   reportHandler: PropTypes.func,
+  sortHandler:PropTypes.func,
   isPreview: PropTypes.bool.isRequired,
   likes: PropTypes.number
 };
