@@ -37,7 +37,7 @@ export default class Review extends Component {
   executeOnClick(){
     
     if(!this.state.expanded){
-      let newHeight=186+(this.props.info.text.length%270)/10*15;
+      let newHeight=this.state.height+(this.props.info.text.length%500)/20*10;
       this.setState({expanded:!this.state.expanded, height:newHeight});
     }
     else{
@@ -124,7 +124,7 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <div className="review" styling={"height:"+this.state.height+"px"}>
+      <div className="review" style={this.expanded ? {height:this.state.height} : {}} >
         {
           !this.props.isPreview && 
           <div className="row noLeftRightSpacing">
@@ -149,7 +149,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Workload</p>
 
             </div>
-          <div className="col-md-2 numbers">
+          <div className="col-md-2 numbers" style={this.state.expanded ? {height:this.state.height-70} :{height:this.state.height-90}}>
             <div className="metric-text" id={this.circlebox_class}>
                 <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
               </div>
