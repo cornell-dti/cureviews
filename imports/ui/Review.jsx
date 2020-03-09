@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/Review.css';
+import ShowMoreText from 'react-show-more-text';
 
 /*
   Review Component.
@@ -18,7 +19,9 @@ export default class Review extends Component {
     super(props);
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
-      numLikes: this.props.likes //the number of likes on the PreviewCard review
+      numLikes: this.props.likes, //the number of likes on the PreviewCard review,
+      expanded:false,
+      height:186
     }
 
     this.circlebox_class = props.isPreview ? "review-circlebox-preview" : "review-circlebox";
@@ -26,9 +29,22 @@ export default class Review extends Component {
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
     this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
-    this.professor_text_class = props.isPreview ? "review-professor-text-preview" : "review-professor-text";
-
+    this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
+    this.reviewToSemester=this.reviewToSemester.bind(this);
+    this.executeOnClick=this.executeOnClick.bind(this);
   }
+
+  executeOnClick(){
+    
+    if(!this.state.expanded){
+      let newHeight=this.state.height+(this.props.info.text.length%500)/20*10;
+      this.setState({expanded:!this.state.expanded, height:newHeight});
+    }
+    else{
+      this.setState({expanded:!this.state.expanded, height:186});
+    }
+  }
+
 
   // Function to convert the classId assigned to this review into the
   // full, human-readable name of the class.
@@ -94,20 +110,12 @@ export default class Review extends Component {
   }
 
   reviewToSemester(review) {
-    let semester = ""
-    // Get last 2 digits of review year
-    let review_year = String(moment(review.date.toISOString()).year()).substring(2);
-    let review_month = moment(review.date.toISOString()).month() + 1;
-    if (review_month >= 1 && review_month <= 5) {
-      semester = "SP"
-    }
-    else if (review_month >= 6 && review_month <= 8) {
-      semester = "SU"
-    }
-    else {
-      semester = "FA"
-    }
-    return semester + review_year;
+
+    let review_year = review.date.getFullYear();
+    let review_month = review.date.getMonth()+1; 
+    let review_day = review.date.getDate();
+
+    return review_month+"/"+review_day+"/"+review_year;
   }
 
   render() {
@@ -116,7 +124,7 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <div className="review-container">
+      <div className="review" style={this.expanded ? {height:this.state.height} : {}} >
         {
           !this.props.isPreview && 
           <div className="row noLeftRightSpacing">
@@ -131,70 +139,67 @@ export default class Review extends Component {
             </div>
           </div>
         }
-        <div className="review">
-          <div className="row review-numbers noLeftRightSpacing">
-
-            <div className={this.circlebox_class} style={this.getColorRedToGreen((review.rating != undefined) ? review.rating : review.quality)}>
-              <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
-
-            </div>
-
-            <p className={this.review_number_label_class}>Overall Rating</p>
-
-
-            <div className={this.circlebox_class} style={this.getColorGreenToRed(review.difficulty)}>
-              <p className={this.review_number_text_class} >{review.difficulty}</p>
-            </div>
-
-
+        <div className="panel-body-3">
+        <div className="col-md-2 reviewNumbers">
+        
+            <p className={this.review_number_label_class}>Overall</p>
+            
             <p className={this.review_number_label_class}>Difficulty</p>
-
-
-            <div className={this.circlebox_class} style={this.getColorGreenToRed(review.workload)}>
-              <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
-            </div>
-
 
             <p className={this.review_number_label_class}>Workload</p>
 
+            </div>
+          <div className="col-md-2 numbers" style={this.state.expanded ? {height:this.state.height-70} :{height:this.state.height-90}}>
+            <div className="metric-text" id={this.circlebox_class}>
+                <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
+              </div>
+              <div className="metric-text" id={this.circlebox_class} >
+                <p className={this.review_number_text_class} >{review.difficulty}</p>
+              </div>
+              <div className="metric-text" id={this.circlebox_class} >
+                <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
+            </div>
           </div>
-          <div className="row noLeftRightSpacing">
-            <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing">
+          <div className="col rightCol">
+            <div className="noLeftRightSpacing prof">
               <p className={this.professor_title_class}>Professor: </p>
+                {/*The following adds a grey professor box for each professor listed in the review*/}
+                {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<p className={this.professor_text_class} key={index}>
+                  {prof}</p>)) : <div>
+                    <p className={this.professor_text_class}>N/A</p></div>}
+              </div>
+
+              <div className="row noLeftRightSpacing review-padding-left">
+                <div className={this.review_text_class} >
+                    <ShowMoreText
+                    lines={2}
+                    more='Show more'
+                    less='Show less'
+                    anchorClass='review'
+                    onClick={this.executeOnClick}
+                    expanded={this.state.expanded}
+                    width={615}
+                >
+                    {review.text}
+                </ShowMoreText>
+                </div>
+                <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
+                <button className= //if the review has been liked, the button will be filled in.
+                  {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+                  onClick={() => {
+                    this.increment(review);
+                  }}>
+                  <span className="glyphicon glyphicon-thumbs-up"></span>
+                  <p className="upvote-text">Helpful
+                  ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
+                </button>
+
+              </div>
+
             </div>
-            <div className="col-md-10 col-sm-10 col-xs-10">
-              {/*The following adds a grey professor box for each professor listed in the review*/}
-              {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<div key={index} className="col-md-12 col-sm-12 col-xs-12">
-                <p className={this.professor_text_class}>{prof}</p></div>)) : <div className="col-md-12 col-sm-12 col-xs-12">
-                  <p className={this.professor_text_class}>N/A</p></div>}
-            </div>
+
           </div>
-          <div className="row noLeftRightSpacing">
-            <div className={this.review_text_class} >
-              <span className={this.props.isPreview ? "preview-review-overflow" : ""}>
-                {review.text}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="row noLeftRightSpacing">
-          <div className="col-md-3 col-sm-3 col-xs-3 noLeftRightSpacing">
-            <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
-          </div>
-          <div className="col-md-9 col-sm-9 col-xs-9">
-            <button className= //if the review has been liked, the button will be filled in.
-              {(this.state.liked == false ? "review-upvote btn-lg" : "review-voted btn-lg")}
-              onClick={() => {
-                this.increment(review);
-              }}>
-              <span className="glyphicon glyphicon-thumbs-up"></span>
-            </button>
-          </div>
-        </div>
-        <div className="row noLeftRightSpacing">
-          <p className="review-upvote-text">Helpful
-          ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
-        </div>
+          
       </div>
     );
   }
@@ -205,6 +210,7 @@ export default class Review extends Component {
 Review.propTypes = {
   info: PropTypes.object.isRequired,
   reportHandler: PropTypes.func,
+  sortHandler:PropTypes.func,
   isPreview: PropTypes.bool.isRequired,
   likes: PropTypes.number
 };
