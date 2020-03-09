@@ -104,7 +104,7 @@ export class CourseReviews extends Component {
     }
     return (
 
-      <section>
+      <div>
           <div className="reviewHeader">
             <div className="past-reviews">{title}</div>
               <div className="sortWrapper">
@@ -116,14 +116,14 @@ export class CourseReviews extends Component {
                 </div>
             </div>  
           </div>
-          <div className="panel panel-default" id="reviewpanel">
+          <div className="panel-default" id="reviewpanel">
             <div>
               <ul id="reviewul">
                 {this.state.reviews}
               </ul>
             </div>
           </div>
-      </section>
+      </div>
     );
   }
 }

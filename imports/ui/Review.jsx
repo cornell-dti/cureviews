@@ -160,7 +160,7 @@ export default class Review extends Component {
                 <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
             </div>
           </div>
-          <div className="col rightCol">
+          <div className="col">
             <div className="noLeftRightSpacing prof">
               <p className={this.professor_title_class}>Professor: </p>
                 {/*The following adds a grey professor box for each professor listed in the review*/}

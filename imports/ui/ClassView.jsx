@@ -183,8 +183,8 @@ export class ClassView extends Component {
                   <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
-              <div className="row">
-                <CourseReviews courseId={this.state.selectedClass._id} />
+              <div className="row w-100">
+                <CourseReviews  courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
