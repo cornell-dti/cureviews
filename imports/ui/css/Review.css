@@ -1,20 +1,4 @@
-/* Font declaration */
-/* #text, #review_text, #label, #button_text {
-font-family: 'Helvetica Neue', Arial, sans-serif;
-} */
-:root{
-  --preview-lines-to-trunkate: 2;
-}
-
-.preview-review-overflow {
-  display: block; /* Fallback for non-webkit */
-  display: -webkit-box;
-  max-height: calc(1.25em * var(--preview-lines-to-trunkate));
-  -webkit-line-clamp: var(--preview-lines-to-trunkate);
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/* Individual Review Styling */
 
 .metric-text{
   display:block;
@@ -35,34 +19,43 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   width:720px;
 }
 
-#rectangle {
-  border: solid 1px #dddddd;
-  border-radius: 8px;
-  margin-top: 10px;
+.review-numbers{
+  margin-bottom: 8px;
+  display: inline-flex;
+  width: 100%;
 }
 
 
 
-#circlebox-preview {
-  border-radius: 25px;
-  height: 25px;
-  padding-top: 0;
-  min-width: 25px !important;
-  max-width: 25px !important;
+.review-number-label{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #000000;
+  white-space: nowrap;
   margin: 0;
-  padding: 0;
-  text-align: center;
+  padding: 5px 5%;
 }
 
-#text {
-  color: #ffffff;
+.review-number-text{
   height: 100%;
-  font-size: 16px;
-  letter-spacing: 0.1px;
-  display: flex;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  display: inline-flex;
   align-items: center;
   position: relative;
-  left: -50%;
+  margin: auto;
 }
 
 
@@ -77,10 +70,10 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #000000;
 }
 
-.professor-text-preview{
+.review-professor-text{
   border-radius: 5px;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
@@ -93,15 +86,6 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   margin: 5px 0 6px 0;
 }
 
-#label{
-  color: #4a4a4a;
-  font-size: 16px;
-  letter-spacing: 0.1px;
-  opacity: 0.5;
-  text-align: left;
-  margin: 0 7px;
-}
-
 .review-text {
   font-family: Source Sans Pro;
   font-style: normal;
@@ -111,18 +95,6 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #000000;
   text-align: left;
   padding-bottom: 15px;
-}
-
-.review-text-preview {
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 14px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  text-align: left;
 }
 
 .review-date {
@@ -152,7 +124,7 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   margin-right: 10px;
 }
 
-.report-review, .upvote, .voted {
+.review-report, .review-upvote, .review-voted {
   width: 30px;
   height: 30px;
   padding: 0;
@@ -164,19 +136,19 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   border-color: transparent;
 }
 
-.report-review {
+.review-report {
   color: #9b9b9b;
   padding-top: 14px;
 }
 
-.upvote{
+.review-upvote{
   color: #4990e2;
   margin-right: 0px;
   padding-right: 8px;
   border-radius: 30px;
 }
 
-.voted{
+.review-voted{
   color: #fff;
   background-color:#4990e2;
   border-color: #4990e2;
@@ -185,41 +157,32 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   border-radius: 30px;
 }
 
-.report-review:hover {
+.review-report:hover {
   color: #4990e2;
 }
 
 
 
-#reviewpanel, #reviewul {
-  background-color: #f2f2f2;
+/* Preview Review Styling */
+
+/* Variable used to trunkate lines in preview review on results page */
+:root{
+  --preview-lines-to-trunkate: 2;
 }
 
-#reviewpanel {
-  border-color: transparent;
-}
-
-#labelName {
-  padding-left: 0px;
-  padding-right: 0px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #000000;
-  font-size: 14.5px;
-  letter-spacing: 0.1px;
-  text-align: left;
-  margin: 0 0px;
-  padding-top: 4px;
-}
-
-#label-wrap{
-  margin: 0 0;
-  padding: 4px 0 15px 0;
-  text-align: left;
+.preview-review-overflow {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-height: calc(1.25em * var(--preview-lines-to-trunkate));
+  -webkit-line-clamp: var(--preview-lines-to-trunkate);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 
-.professor-title-preview {
+.review-number-label-preview{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--semi-bold-weight);
@@ -245,9 +208,7 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
 
 
 
-.review-number-text-preview{
-  height: 100%;
-  text-align: center;
+.review-professor-title-preview {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--semi-bold-weight);
@@ -255,11 +216,9 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-  margin: auto;
+  color: #000000;
+  text-align: left;
+  padding: 5px 0 10px 0;
 }
 
 .review-number-label, .review-number-text{
@@ -277,15 +236,13 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
 .review-number-label-preview{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
-  font-weight: var(--semi-bold-weight);
+  font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
   color: #000000;
-  white-space: nowrap;
-  margin: 0;
-  padding: 3px 1.1vw;
+  text-align: left;
 }
 
 .reviewNumbers{

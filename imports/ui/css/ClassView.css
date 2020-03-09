@@ -1,18 +1,9 @@
-.cornell-reviews, .cornell-reviews a {
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: var(--semi-bold-weight);
-  font-size: 24px;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #ffffff;
-  text-align: left;
-  padding-left: 15%;
-  padding-top: 3%;
-  overflow: visible;
-  white-space: nowrap;
-  text-decoration: none;
+/* Classview Layout Styling */
+
+.right-panel-container {
+    padding: 20px 50px 0;
+    height: 100%;
+    background-color: rgba(74,74,74,.06);
 }
 
 .classViewsContainer{
@@ -28,13 +19,21 @@
 
 }
 
-#loading{
+.class-loading{
     padding-top: 300px;
 }
 
-.fix-padding{
-  padding-top: inherit;
+.container-top-gap-fix{
+  padding-top: 0 !important;
+  padding: 0;
 }
+
+.noPadding {
+  padding: 0 !important;
+}
+
+/* Popup Styling */
+/* The following was not yet refactored and will be when pop-up component is re-implemented */
 
 .rodal-dialog{
   border-radius: 30px;

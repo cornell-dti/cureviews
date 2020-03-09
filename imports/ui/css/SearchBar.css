@@ -1,4 +1,6 @@
-.search-bar {
+/* Searchbar Normal (Non-Popup) */
+
+.searchbar {
   background-color: transparent;
   display: inline-block;
   height: 100%;
@@ -7,61 +9,10 @@
   outline: 0;
 }
 
-.react-select__menu, 
-.react-select__single-value, 
-.react-select__control{
-  background-color: #ffffff;
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 1.2vw; /* Hacky eye-bally solution to font size for this dropdown but seems to work */
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #4A90E2 !important;
-  border-radius: 0px 3px 3px 0px !important;
-  outline:0 !important;
-  border-color: transparent !important;
-  border-style: none !important;
-  border-width: 0px !important;
-  box-shadow: none !important;
-}
-
-.react-select__menu, .react-select__menu-list{
-  margin-top: 0px !important;
-  padding: 0px !important;
-  background-color: rgba(255,255,255,.5) !important;
-}
-
-.react-select__option{
-  height: 40px !important;
-  height: 40px !important;
-  padding: 0px !important;
-  padding-left: 3.3vw !important;
-  line-height: 40px;
-}
-
-.react-select__option--is-focused{
-  background: rgba(53, 107, 208, 0.1) !important;
-}
-
-.select-padding-left{
-  padding-left: 1.5px;
-}
-
-.react-select__control{
-  opacity: 1;
-  height: 52px;
-  padding-left: 1.1vw;
-}
-
 .search-text{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 22px;
   font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
   letter-spacing: 0.01em;
   color: #000000;
   background-color: white;
@@ -79,7 +30,7 @@
   padding-left: 40px;
   outline: 0;
   position: relative;
-  z-index: 1020;
+  z-index: 1002;
 }
 
 .search-text::placeholder{
@@ -87,46 +38,33 @@
   font-weight: var(--regular-weight);
 }
 
-.react-select__indicator-separator{
-  display: none;
+.output {
+  background: transparent;
+  cursor: pointer;
+  max-height: 300px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1001;
+  border-radius: 0 0 10px 10px;
+  margin-top: -5px;
 }
 
-.react-select__indicator{
-  color: #4A90E2 !important;
-  padding: 8px 10px 8px 8px !important;
+/* Selects all 'output' class objects that are decendents
+    of 'contrasting-result-background' class .
+    Used to add background contrasting color to searchbar
+    search results */
+.contrasting-result-background .output {
+  border-style: solid;
+  border-color: #6ba7ec;
+  border-width:  0 1px 1px 1px;
 }
 
-@media (min-width: 1200px){
-  .col-lg-9-altered {
-    width: 72% !important;
-  }
-  
-  .col-lg-3-altered {
-    width: 28% !important;
-  }
-}
+/* Searchbar Pop-Up */
 
-@media (min-width: 992px){
-  .col-md-9-altered {
-    width: 72% !important;
-  }
-  
-  .col-md-3-altered {
-    width: 28% !important;
-  }
-}
-
-@media (min-width: 768px){
-  .col-sm-9-altered {
-    width: 72% !important;
-  }
-  
-  .col-sm-3-altered {
-    width: 28% !important;
-  }
-}
-
-#searchbar-popup {
+.searchbar-popup {
+  background-color: transparent;
+  padding: 0;
   width: 100%;
   height: 4.6%;
   font-family: sans-serif;
@@ -162,37 +100,13 @@
   color: #000000;
 }
 
-
-#search:focus {
+.search-text-popup:focus {
   outline: none;
   box-shadow: 0 0 3pt 2pt #99c2e7;
 }
 
-#search-wide{
-  height: 48px;
-}
-
-.output {
-  background: transparent;
-  cursor: pointer;
-  margin-top: 0px;
-  max-height: 300px;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  z-index: 1001;
-  border-radius: 0 0 10px 10px;
-  margin-top: -5px;
-}
-
-.contrasting-result-background .output {
-  border-style: solid;
-  border-color: #6ba7ec;
-  border-width:  0 1px 1px 1px;
-}
-
-#output-popup{
-    background: white;
+.output-popup{
+  background: white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
@@ -209,17 +123,4 @@
   margin-top: 4px;
 }
 
-.nav-search-holder {
-  width: 100%;
-}
 
-.navbar-flex{
-  height: auto !important;
-  display: flex;
-}
-
-.navbar-text{
-  margin-left: 13px;
-  color: #fff;
-  font-weight: bold;
-}

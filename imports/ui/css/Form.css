@@ -9,6 +9,7 @@ form {
     padding-right: 10%;
     padding-left: 10%;
     padding-bottom: 20px;
+
 }
 
 #form-dropdown{
@@ -32,7 +33,7 @@ form {
 
 .review-header {
   height: 14px;
-  text-align: center;
+  text-align: left;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 24px;
   font-weight: var(--semi-bold-weight);
@@ -41,7 +42,18 @@ form {
   line-height: normal;
   letter-spacing: 0.001em;
   color: #ffffff;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.header-text{
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22.5px;
+  line-height: 28px;
+  margin-bottom:38px;
+  text-align:left;
+  color: #807B7B;
 }
 
 .rodal{
@@ -80,26 +92,17 @@ form {
   -webkit-transform: rotate(45deg);
 }
 
-.dropdown .dropdown-menu {
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -ms-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
 
-    /* max-height: 0;*/ /* uncomment to have more of a 'slide' animation; however, this breaks dynamic resizing 'push down' */
-    width: 100%;
-    display: block;
-    overflow: visible;
-    opacity: 0;
-    border-radius: 0px 0px 4px 4px;
-    padding: 0;
-    margin: 0px 0 0 0;
-    /* z-index: 1003; */
-}
 
 .dropdown.open .dropdown-menu {
-  max-height: 650px;
+  width: 443.75px;
+  height: 533.75px;
+
+  
+  background: #FFFFFF;
+  border: 1.25px solid #D8D8D8;
+  box-sizing: border-box;
+  border-radius: 7.19803px;
   opacity: 1;
 }
 
@@ -199,20 +202,25 @@ textarea {
   letter-spacing: 0.001em;
   color: #4A4A4A;
   background-color: transparent;
-
+  border: 0.673729px solid #65ACFF;
+  box-sizing: border-box;
+  border-radius: 3.36864px;
 }
 
 .form-label{
-  margin-bottom: 0;
-  margin-top: 10px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 17px;
-  font-weight: var(--regular-weight);
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.001em;
-  color: #4a4a4abf;
+  font-weight: normal;
+  font-size: 17.5px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  
+  color: #000000;
+}
+
+.prof{
+  padding-top:10px;
 }
 
 .rating-icon{
@@ -246,29 +254,25 @@ textarea {
 }
 
 .postbutton{
-    border: none;
-    padding-left: 30px;
-    padding-right: 30px;
-    background-color: #4a90e2;
-    border-radius: 8px;
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 18px;
-    font-weight: var(--semi-bold-weight);
+    margin-top: 30px;
+
+    width: 187.5px;
+    height: 28.75px;
+    font-family: Source Sans Pro;
     font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.001em;
-    color: #ffffff;
-    height: 40px;
-    position: relative;
-    margin-top: 24px;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 19px;
+    margin:auto;
+    align-items: center;
+    text-align: center !important;
+    background: #0076FF;
+    border-radius: 6.73729px;
+    color: #FFFFFF;
+    border-width: 0px;
 }
 
-#postbutton:focus {
-  cursor: pointer;
-  outline: none;
-  box-shadow: 0 0 3pt 2pt #99c2e7;
-}
+
 
 .sliderHolder {
     padding-left: 10%;
@@ -292,6 +296,47 @@ input[type="range"] {
 .selectAlignment {
   padding-top: 8px;
 }
+
+.react-select-container{
+  width: 254.25px;
+  height: 23.75px  !important;
+
+  border: 0.673729px solid #0076FF;
+  box-sizing: border-box;
+  border-radius: 6.73729px;
+
+
+  color: #979797;
+}
+
+.react-select__control{
+  margin-top:2px;
+  margin-left:1px;
+  width: 252.25px;
+  max-height: 15.54px !important;
+  min-height: 15.54px !important;
+  border-radius: 14px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+
+  color: #979797;
+}
+
+.react-select__placeholder{
+  padding-bottom:9px;
+  text-align:left;
+}
+
+.react-select__indicators{
+  height: 16.54px;
+  padding:2px;
+}
+
+
 
 .noLeftRightMargin{
   margin-right: 0;
@@ -366,4 +411,92 @@ input[type="range"] {
 
 .rodal-dialog{
   padding: 0;
+}
+
+.metricBox{
+  width: 48.75px;
+  height: 7.5px;
+  border-radius: 3.36864px;
+  vertical-align: top;
+  padding:0;
+  margin:auto;
+}
+
+.metricBoxWrapper{
+  display:inline-block;
+  text-align: center;
+  padding:0px;
+  margin-left:5px;
+  margin-top:8px;
+}
+
+.metricBoxWrapper p {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+    font-size: 12.5px;
+  text-align: center;
+  height:10px;
+}
+
+.metricDescR,.metricDescL {
+  margin:0;
+  padding:0;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 15px;
+  color: #979797;
+}
+
+.metricDescR{
+  float: right;
+}
+
+.metricDescL{
+  float: left;
+}
+
+.textSpacing{
+  padding-left:95px;
+  padding-right:17px;
+}
+
+.inactiveBox{
+  background: #979797 !important;
+}
+
+
+.activeBox{
+  background: #0076FF !important;
+}
+
+.inactiveText{
+  color: #979797;
+}
+
+
+.activeText{
+  color: #0076FF;
+}
+
+.activeText, .inactiveText{
+  margin:0;
+  padding:0;
+  padding-bottom: 3.0px;
+}
+.metricBoxWrapper:hover{
+  cursor: pointer;
+}
+
+.inactiveBox:hover, .boxHover{
+  background: #86BEFF !important;
+}
+
+.inactiveBox:hover .inactiveText{
+  color: #86BEFF;
+}
+
+.metricBoxWrapper:hover .inactiveText{
+  color: #86BEFF;
 }

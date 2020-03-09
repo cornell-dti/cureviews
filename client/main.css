@@ -1,8 +1,3 @@
-/* Unified font declaration */
-a.navbar-brand, .class-name, .subheader, .primary-text, .secondary-text, .review-container .text {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-}
-
 :root {  
   --regular-weight: 400;
   --semi-bold-weight: 600;
@@ -23,56 +18,9 @@ body {
     font-size: 14px;
 }
 
-a.navbar-brand {
-    font-size: 1.3em /*36px*/;
-    padding-left: 30px;
-
-    /* Below value is not valid for font-weight. Use another value. */
-    /*font-weight: medium;*/
-}
-
-.container {
-    background: white;
-    padding-top: 70px;
+.container-width {
     width: 100%;
 }
-
-header {
-    padding: 100px 50px 15px 30px;
-    position: fixed;
-    width: 50%;
-}
-
-#login-buttons {
-    display: block;
-}
-
-#past{
-    background-color: #3399ff;
-}
-
-h1 {
-    display: inline-block;
-    font-size: 1.5em;
-    margin: 0 1em 10px 0;
-}
-
-.class-name {
-    font-size: 36px;
-    /*font-weight: medium;*/
-}
-
-.subheader {
-    font-size: 27px;
-    /*font-weight: medium;*/
-    padding-top: 20px;
-}
-
-.primary-text {
-    font-size: 18px;
-    font-weight: bold;
-}
-
 .secondary-text {
     color: #4A4A4A;
     font-size: 14px;
@@ -80,84 +28,8 @@ h1 {
     opacity: .75;
 }
 
-.review-container {
-    background: #fff;
-    border: 2px solid #a4a4a4;
-    border-radius: 15px;
-    padding: 10px 40px;
-}
-
-.review-container .text {
-    color: #4A4A4A;
-    font-size: 16px;
-    font-weight: normal;
-}
-
-div.caption_wrapper {
-    display: inline-block;
-    text-align: left;
-}
-
-form {
-    margin: 10px 0 -10px 0;
-    position: relative;
-}
-
-/* .new-task input {
-    box-sizing: border-box;
-    background: transparent;
-    border: none;
-    font-size: 1em;
-    padding: 10px 0;
-    width: 100%;
-} */
-
-.new-task input:focus{
-    outline: 0;
-}
-
-ul {
-    background: white;
+h1 {
     margin: 0;
-    padding: 0;
-}
-
-.delete {
-    background: none;
-    border: none;
-    float: right;
-    font-weight: bold;
-    font-size: 1em;
-    position: relative;
-}
-
-li {
-    /* border-bottom: #eee solid 1px; */
-    padding: 15px 15px 15px 0px;
-    position: relative;
-    list-style: none;
-}
-
-
-li .text {
-    margin-left: 10px;
-}
-
-li.checked {
-    color: #888;
-}
-
-li.checked .text {
-    text-decoration: line-through;
-}
-
-li.private {
-    background: #eee;
-    border-color: #ddd;
-}
-
-header .hide-completed {
-    float: right;
 }
 
 .divider {
@@ -165,27 +37,6 @@ header .hide-completed {
     color: #ddd;
     margin: 5px 0 10px 0;
  }
-
-.toggle-private {
-    margin-left: 5px;
-}
-
-.panel-container {
-    background-color: rgba(74,74,74,.06);
-    padding: 20px 50px 0;
-}
-
-.fix-contain {
-    float: right;
-}
-
-.no-border {
-    border-color: rgba(221,221,221,0);
-}
-
-.no-background {
-    background-color: rgba(221,221,221,0);
-}
 
 div.sm-spacing {
     padding: 10px;
@@ -199,42 +50,11 @@ div.lrg-spacing {
     padding: 40px;
 }
 
-div.small-icon {
-    background: black;
-    border-radius: 100%;
-    height: 33px;
-    width: 35px;
+ul {
+    background: white;
+    margin: 0;
+    padding: 0;
 }
-
-div.large-icon {
-    border-radius: 8px;
-    height: 52px;
-    width: 58px;
-}
-.review-container {
-    width: 100%;
-}
-
-select {
-    width: 150px;
-}
-
-@media (max-width: 600px) {
-    li {
-        padding: 12px 15px;
-    }
-
-    .search {
-        clear: both;
-        width: 150px;
-
-    }
-
-    .new-task input {
-        padding-bottom: 5px;
-    }
-}
-
 .noLeftRightPadding{
   padding-left: 0px;
   padding-right: 0px;

@@ -103,25 +103,26 @@ export class CourseReviews extends Component {
       title = "Recent Reviews";
     }
     return (
+
       <section>
-        <div className="reviewHeader">
-          <div className="past-reviews">{title}</div>
-          <div className="sortWrapper">
-            <div className="sort"> Sort By: 
-              <select onClick={this.handleSelect} className="browser-default">
-                          <option value="helpful">Most Helpful</option>
-                          <option value="rating">Recent</option>
-                        </select>
-            </div>
-        </div>  
-        </div>
-        <div className="panel panel-default" id="reviewpanel">
-          <div>
-            <ul id="reviewul">
-              {this.state.reviews}
-            </ul>
+          <div className="reviewHeader">
+            <div className="past-reviews">{title}</div>
+              <div className="sortWrapper">
+                <div className="sort"> Sort By: 
+                  <select onClick={this.handleSelect} className="browser-default">
+                              <option value="helpful">Most Helpful</option>
+                              <option value="rating">Recent</option>
+                            </select>
+                </div>
+            </div>  
           </div>
-        </div>
+          <div className="panel panel-default" id="reviewpanel">
+            <div>
+              <ul id="reviewul">
+                {this.state.reviews}
+              </ul>
+            </div>
+          </div>
       </section>
     );
   }

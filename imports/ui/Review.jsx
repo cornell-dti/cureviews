@@ -24,10 +24,10 @@ export default class Review extends Component {
       height:186
     }
 
-    this.circlebox_class = props.isPreview ? "circlebox-preview" : "circlebox";
+    this.circlebox_class = props.isPreview ? "review-circlebox-preview" : "review-circlebox";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
-    this.professor_title_class = props.isPreview ? "professor-title-preview" : "professor-title";
+    this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
     this.reviewToSemester=this.reviewToSemester.bind(this);
@@ -129,7 +129,7 @@ export default class Review extends Component {
           !this.props.isPreview && 
           <div className="row noLeftRightSpacing">
             <div className="col-md-12 col-xs-12 col-xs-12">
-              <button className="report-review" onClick={() => {
+              <button className="review-report" onClick={() => {
                 this.props.reportHandler(review);
                 alert('This post has been reported and will be reviewed.');
               }}>
