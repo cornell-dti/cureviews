@@ -20,15 +20,17 @@
 #reviewul{
   overflow-y:scroll !important;
   height:600px;
+  margin-right:3%;
 }
 
 .review{
-  margin-right:33px;
+  margin-right:25px;
 }
 
 #reviewul::-webkit-scrollbar {
   width: 8px;
   height: 332.25px;
+  padding-right:8px;
 }
 
 #reviewul::-webkit-scrollbar-track {
@@ -63,7 +65,7 @@
   line-height: 19px !important;
   background-color: transparent !important;
   /* or 104% */
-
+  border:none;
   letter-spacing: -0.225605px;
 
   color: #0076FF;

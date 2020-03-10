@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './css/Review.css';
 import ShowMoreText from 'react-show-more-text';
 
+
 /*
   Review Component.
 
@@ -37,7 +38,7 @@ export default class Review extends Component {
   executeOnClick(){
     
     if(!this.state.expanded){
-      let newHeight=this.state.height+(this.props.info.text.length%500)/20*10;
+      let newHeight=this.state.height+(this.props.info.text.length%500)/20*10.25;
       this.setState({expanded:!this.state.expanded, height:newHeight});
     }
     else{
@@ -58,22 +59,8 @@ export default class Review extends Component {
     });
   }
 
-  // Convert the reviews's value to a color starting with red and ending with green.
-  getColorRedToGreen(value) {
-    const colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
-    return {
-      backgroundColor: colors[value]
-    }
-  }
 
-  // Convert the reviews's value to a color starting with green and ending with red.
-  getColorGreenToRed(value) {
-    const colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
-    if (value == undefined) return { backgroundColor: "#a9a9a9" }
-    else return {
-      backgroundColor: colors[value],
-    }
-  }
+  
 
   // Function that checks whether or not the review has already been liked
   // in the current state. If so, the number of likes decreases by 1 as if removing a like.
@@ -149,14 +136,14 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Workload</p>
 
             </div>
-          <div className="col-md-2 numbers" style={this.state.expanded ? {height:this.state.height-70} :{height:this.state.height-90}}>
-            <div className="metric-text" id={this.circlebox_class}>
+          <div className="col-md-2" style={this.state.expanded ? {height:this.state.height-70} :{height:this.state.height-90}}>
+            <div  id={this.circlebox_class}>
                 <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
               </div>
-              <div className="metric-text" id={this.circlebox_class} >
+              <div  id={this.circlebox_class} >
                 <p className={this.review_number_text_class} >{review.difficulty}</p>
               </div>
-              <div className="metric-text" id={this.circlebox_class} >
+              <div  id={this.circlebox_class} >
                 <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
             </div>
           </div>
@@ -175,7 +162,7 @@ export default class Review extends Component {
                     lines={2}
                     more='Show more'
                     less='Show less'
-                    anchorClass='review'
+                    anchorClass='showMoreText'
                     onClick={this.executeOnClick}
                     expanded={this.state.expanded}
                     width={615}
@@ -183,17 +170,21 @@ export default class Review extends Component {
                     {review.text}
                 </ShowMoreText>
                 </div>
-                <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
-                <button className= //if the review has been liked, the button will be filled in.
-                  {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
-                  onClick={() => {
-                    this.increment(review);
-                  }}>
-                  <span className="glyphicon glyphicon-thumbs-up"></span>
-                  <p className="upvote-text">Helpful
-                  ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
-                </button>
+                <div className="row lastRow">
 
+                    <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
+                  
+                    <button className= //if the review has been liked, the button will be filled in.
+                      {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+                      onClick={() => {
+                        this.increment(review);
+                      }}>
+                      <img src="/handClap.svg"></img>
+                      <p className="upvote-text">Helpful
+                      ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
+                    </button>
+                  
+                </div>
               </div>
 
             </div>

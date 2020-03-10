@@ -30,8 +30,8 @@ export class CourseReviews extends Component {
 
   componentDidMount(){
     Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
-      this.setState({reviews:this.sort(this.renderReviews(reviews))});
-
+      this.setState({reviews:this.renderReviews(reviews)});
+      this.sort();
     });
   }
 
@@ -40,11 +40,15 @@ export class CourseReviews extends Component {
   handleSelect = (event) => {
     let opt = event.target.value;
     this.setState({ comparator: opt });
-    this.setState({reviews:this.sort(this.state.reviews)});
+    this.sort();
   }
 
-  sort(reviews){if(this.state.comparator==="helpful") return reviews.sort(function(a,b){
+  sort(){
+    let reviews=this.state.reviews;
+    let data=[];
+    if(this.state.comparator==="helpful") data= reviews.sort(function(a,b){
     if( b.props.info && a.props.info){
+      console.log(a.props.info.likes+" "+a.props.info.likes);
       if (a.props.info.likes < b.props.info.likes) {
         return -1;
       }
@@ -55,7 +59,7 @@ export class CourseReviews extends Component {
 
     else return 0;
   })
-  else return reviews.sort(function(a,b){
+  else data= reviews.sort(function(a,b){
     if (b.props.info && a.props.info){
       if (a.props.info.date > b.props.info.date) {
         return -1;
@@ -67,6 +71,7 @@ export class CourseReviews extends Component {
     else return 0;
   });
     
+  this.setState({reviews:data});
   }
 
   // Report this review. Find the review in the local database and change
@@ -111,7 +116,7 @@ export class CourseReviews extends Component {
                 <div className="sort"> Sort By: 
                   <select onClick={this.handleSelect} className="browser-default">
                               <option value="helpful">Most Helpful</option>
-                              <option value="rating">Recent</option>
+                              <option value="recent">Recent</option>
                             </select>
                 </div>
             </div>  

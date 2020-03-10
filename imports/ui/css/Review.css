@@ -1,10 +1,5 @@
 /* Individual Review Styling */
 
-.metric-text{
-  display:block;
-  margin-right:11px;
-}
-
 
 .panel-body-3 {
   margin: auto;
@@ -58,7 +53,6 @@
   display: inline-flex;
   align-items: center;
   position: relative;
-  margin: auto;
 }
 
 
@@ -106,9 +100,8 @@
   font-weight: normal;
   font-size: 12px;
   line-height: 15px;
-  display: inline;
-  align-items: center;
   color: #9B9B9B;
+  display:inline;
 
 }
 
@@ -123,7 +116,6 @@
   text-align: right;
 
   color: #807B7B;
-  margin-right: 10px;
 }
 
 .review-report, .review-upvote, .review-voted {
@@ -134,7 +126,6 @@
   line-height: 1.42857;
   background-color: transparent;
   float: right;
-  margin-right: 10px;
   border-color: transparent;
 }
 
@@ -274,18 +265,15 @@ reviewNumbers p{
 }
 
 .btn-lg{
-  width:90px;
-  margin-right:-45px;
   padding:2px;
+  font-size:12px;
+  padding-left:65%;
 }
 
 .prof{
   margin-bottom:8px;
 }
 
-.numbers{
-  margin-right:64px;
-}
 
 .glyphicon{
   display:inline;
@@ -302,4 +290,13 @@ reviewNumbers p{
   letter-spacing: -0.225605px;
 
   color: #0076FF;
+}
+
+button{
+  background-color:#FFFFFF;
+  border:none;
+}
+
+.lastRow{
+  padding-left:36%;
 }
