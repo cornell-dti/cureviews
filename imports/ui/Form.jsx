@@ -297,7 +297,7 @@ export default class Form extends Component {
   validateInputs(text) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
-    const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
+    // const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
     const errs = {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
@@ -399,7 +399,7 @@ export default class Form extends Component {
                           <div className="col-md-3 col-sm-3 col-xs-3">
                               <div className="form-label prof">Professor</div>
                           </div>
-                          <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
+                          <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
                               <Select className='react-select-container' classNamePrefix="react-select" value={this.state.selectedProfessors}
                                 onChange={(professors) => this.handleProfChange(professors)}
                                 isMulti
