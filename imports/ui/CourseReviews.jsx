@@ -30,8 +30,8 @@ export class CourseReviews extends Component {
 
   componentDidMount(){
     Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
-      this.setState({reviews:this.sort(this.renderReviews(reviews))});
-
+      this.setState({reviews:this.renderReviews(reviews)});
+      this.sort("helpful");
     });
   }
 
@@ -40,23 +40,31 @@ export class CourseReviews extends Component {
   handleSelect = (event) => {
     let opt = event.target.value;
     this.setState({ comparator: opt });
-    this.setState({reviews:this.sort(this.state.reviews)});
+    this.sort(opt);
   }
 
-  sort(reviews){if(this.state.comparator==="helpful") return reviews.sort(function(a,b){
+  sort(comp){
+    let reviews=this.state.reviews;
+    let data=[];
+    if(comp==="helpful") data= reviews.sort(function(a,b){
+      if( !b.props.info.likes) return -1;
+      if( !a.props.info.likes) return 1;
     if( b.props.info && a.props.info){
-      if (a.props.info.likes < b.props.info.likes) {
+      if (a.props.info.likes > b.props.info.likes) {
         return -1;
       }
-      if (a.props.info.likes > b.props.info.likes) {
+      if (a.props.info.likes < b.props.info.likes) {
         return 1;
       }
     }
 
     else return 0;
   })
-  else return reviews.sort(function(a,b){
+  else data= reviews.sort(function(a,b){
+    if( !b.props.info.date) return 1;
+    if( !a.props.info.date) return -1;
     if (b.props.info && a.props.info){
+      console.log(a.props.info.date+" "+a.props.info.date);
       if (a.props.info.date > b.props.info.date) {
         return -1;
       }
@@ -67,6 +75,7 @@ export class CourseReviews extends Component {
     else return 0;
   });
     
+  this.setState({reviews:data});
   }
 
   // Report this review. Find the review in the local database and change
@@ -104,26 +113,26 @@ export class CourseReviews extends Component {
     }
     return (
 
-      <section>
+      <div>
           <div className="reviewHeader">
             <div className="past-reviews">{title}</div>
               <div className="sortWrapper">
                 <div className="sort"> Sort By: 
-                  <select onClick={this.handleSelect} className="browser-default">
-                              <option value="helpful">Most Helpful</option>
-                              <option value="rating">Recent</option>
+                  <select onChange={this.handleSelect} className="browser-default">
+                              <option  value="helpful">Most Helpful</option>
+                              <option value="recent">Recent</option>
                             </select>
                 </div>
             </div>  
           </div>
-          <div className="panel panel-default" id="reviewpanel">
+          <div className="panel-default" id="reviewpanel">
             <div>
               <ul id="reviewul">
                 {this.state.reviews}
               </ul>
             </div>
           </div>
-      </section>
+      </div>
     );
   }
 }
