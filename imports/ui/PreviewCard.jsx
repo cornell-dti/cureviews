@@ -156,15 +156,15 @@ export default class PreviewCard extends Component {
           <div className="row gaugeHolder">
 
             <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
-              <Gauge width="13vw" height="13vh" rating={2.3} text="Overall"/>
+              <Gauge width="12vw" height="12vh" rating={this.state.rating} text="Overall"/>
 
             </div>
             <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
-              <Gauge width="13vw" height="13vh" rating={4.9} text="Difficulty"/>
+              <Gauge width="12vw" height="12vh" rating={this.state.diff} text="Difficulty"/>
 
             </div>
             <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
-              <Gauge width="13vw" height="13vh" rating={4.6} text="Workload"/>
+              <Gauge width="12vw" height="12vh" rating={this.state.workload} text="Workload"/>
 
             </div>
 
