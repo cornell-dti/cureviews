@@ -31,7 +31,7 @@ export default class Review extends Component {
     this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
-    this.reviewToSemester=this.reviewToSemester.bind(this);
+    this.reviewToDate=this.reviewToDate.bind(this);
     this.executeOnClick=this.executeOnClick.bind(this);
   }
 
@@ -96,9 +96,9 @@ export default class Review extends Component {
     }
   }
 
-  reviewToSemester(review) {
+  reviewToDate(review) {
 
-    let review_year = review.date.getFullYear();
+    let review_year = String(review.date.getFullYear()).substring(2);
     let review_month = review.date.getMonth()+1; 
     let review_day = review.date.getDate();
 
@@ -111,7 +111,7 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <div className="review" style={this.expanded ? {height:this.state.height} : {}} >
+      <div className="review" style={this.expanded ? {margin:32-this.state.height/80} : {}} >
         {
           !this.props.isPreview && 
           <div className="row noLeftRightSpacing">
@@ -136,7 +136,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>Workload</p>
 
             </div>
-          <div className="col-md-2" style={this.state.expanded ? {height:this.state.height-70} :{height:this.state.height-90}}>
+          <div className="col-md-2" style={this.state.expanded ? {height:this.state.height-60} :{height:this.state.height-80}}>
             <div  id={this.circlebox_class}>
                 <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
               </div>
@@ -172,7 +172,7 @@ export default class Review extends Component {
                 </div>
                 <div className="row lastRow">
 
-                    <p className="review-date"><i>{this.reviewToSemester(review)}</i></p>
+                    <p className="review-date"><i>{this.reviewToDate(review)}</i></p>
                   
                     <button className= //if the review has been liked, the button will be filled in.
                       {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
