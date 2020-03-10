@@ -31,7 +31,7 @@ export class CourseReviews extends Component {
   componentDidMount(){
     Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
       this.setState({reviews:this.renderReviews(reviews)});
-      this.sort();
+      this.sort("helpful");
     });
   }
 
@@ -40,19 +40,20 @@ export class CourseReviews extends Component {
   handleSelect = (event) => {
     let opt = event.target.value;
     this.setState({ comparator: opt });
-    this.sort();
+    this.sort(opt);
   }
 
-  sort(){
+  sort(comp){
     let reviews=this.state.reviews;
     let data=[];
-    if(this.state.comparator==="helpful") data= reviews.sort(function(a,b){
+    if(comp==="helpful") data= reviews.sort(function(a,b){
+      if( !b.props.info.likes) return -1;
+      if( !a.props.info.likes) return 1;
     if( b.props.info && a.props.info){
-      console.log(a.props.info.likes+" "+a.props.info.likes);
-      if (a.props.info.likes < b.props.info.likes) {
+      if (a.props.info.likes > b.props.info.likes) {
         return -1;
       }
-      if (a.props.info.likes > b.props.info.likes) {
+      if (a.props.info.likes < b.props.info.likes) {
         return 1;
       }
     }
@@ -60,7 +61,10 @@ export class CourseReviews extends Component {
     else return 0;
   })
   else data= reviews.sort(function(a,b){
+    if( !b.props.info.date) return 1;
+    if( !a.props.info.date) return -1;
     if (b.props.info && a.props.info){
+      console.log(a.props.info.date+" "+a.props.info.date);
       if (a.props.info.date > b.props.info.date) {
         return -1;
       }
@@ -114,8 +118,8 @@ export class CourseReviews extends Component {
             <div className="past-reviews">{title}</div>
               <div className="sortWrapper">
                 <div className="sort"> Sort By: 
-                  <select onClick={this.handleSelect} className="browser-default">
-                              <option value="helpful">Most Helpful</option>
+                  <select onChange={this.handleSelect} className="browser-default">
+                              <option  value="helpful">Most Helpful</option>
                               <option value="recent">Recent</option>
                             </select>
                 </div>
