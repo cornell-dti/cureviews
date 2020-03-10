@@ -35,6 +35,7 @@
     "react-router-dom": "^5.0.0",
     "react-s-alert": "^1.4.1",
     "react-select": "^2.4.3",
+    "react-show-more-text": "^1.3.0",
     "react-summary-gauge-2": "^1.0.0",
     "rodal": "^1.6.3"
   },

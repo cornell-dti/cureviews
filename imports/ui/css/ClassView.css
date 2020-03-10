@@ -6,7 +6,11 @@
     background-color: rgba(74,74,74,.06);
 }
 
-.class-error-container {
+.classViewsContainer{
+  overflow:hidden;
+}
+
+#error {
     font-size: 50px;
     color: black;
     text-align: center;

@@ -164,7 +164,7 @@ export class ClassView extends Component {
     if (this.state.selectedClass) {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
-        <div className="container-fluid container-top-gap-fix">
+        <div className="container-fluid container-top-gap-fix classViewContainer">
           <Navbar />
           <div className="clearfix" />
           <div className="container-width noPadding">
@@ -183,8 +183,8 @@ export class ClassView extends Component {
                   <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
-              <div className="row">
-                <CourseReviews courseId={this.state.selectedClass._id} />
+              <div className="row w-100">
+                <CourseReviews  courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
