@@ -20,7 +20,7 @@ export default class Review extends Component {
     super(props);
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
-      numLikes: this.props.likes, //the number of likes on the PreviewCard review,
+      numLikes: this.props.info.likes, //the number of likes on the PreviewCard review,
       expanded:false,
       height:186
     }
@@ -181,7 +181,7 @@ export default class Review extends Component {
                       }}>
                       <img src="/handClap.svg"></img>
                       <p className="upvote-text">Helpful
-                      ({(this.props.isPreview ? this.state.numLikes : ((review.likes == undefined) ? 0 : review.likes))})</p>
+                       ({this.state.numLikes})</p>
                     </button>
                   
                 </div>
