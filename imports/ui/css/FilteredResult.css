@@ -1,6 +1,6 @@
 .result-card{
   border-radius: 10px;
-  padding: 15px 15px 0px 15px;
+  padding: 15px 24px 0px 24px;
   margin: 20px 0;
   background-color: white;
 }
@@ -17,23 +17,25 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.1px;
-  color: #4a4a4a;
-  margin-bottom: 5px;
+  color: #0076FF;;
+  margin-bottom: 7px;
 
 }
 
 .result-card-subtitle{
   font-size: 12px;
   font-family: "Source Sans Pro", sans-serif;
-  margin-top: 5px;
+  margin-top: 0px;
+  margin-bottom:15px
 }
 
 
 .result-card-sort-by-text{
   display: inline-block;
   font-family: "Source Sans Pro", sans-serif;
-  color: #0076FF;
+  color: black;
   font-size: 16px;
+  margin-bottom: 16px;
 }
 
 .result-card-sort-by-value{
@@ -46,5 +48,5 @@
   display: inline-block;
   font-size: 10px;
   font-family: "Source Sans Pro", sans-serif;
-  color: #0076FF;
+  color: black;
 }

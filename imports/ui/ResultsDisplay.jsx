@@ -290,14 +290,17 @@ export default class ResultsDisplay extends Component {
                 {this.renderClassLevelCheckBoxes()}
               </div>
             </div>
-            <div className="col-md-5 col-sm-5 col-xs-5 results">
+            <div className="col-md-3 col-sm-3 col-xs-3 results">
+
               <div className="row">
-                <div className="col-md-5 col-sm-5 col-xs-5">
+                <div>
                   <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
                 </div>
-                <div className="col-md-7 col-sm-7 col-xs-7 results-sort-by-container">
+              </div>
+              <div className="row">
+                <div className="results-sort-by-container">
                   <p className="results-sort-by-text">
-                    Sort By:
+                  Sort By:
                     </p>
                   <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
                     <option value="relevance">Relevance</option>
@@ -307,13 +310,14 @@ export default class ResultsDisplay extends Component {
                   </select>
                 </div>
               </div>
+
               <div className="results-classes-list">
                 <ul>
                   {this.renderResults()}
                 </ul>
               </div>
             </div>
-            <div className="col-md-5 col-sm-5 col-xs-5 preview">
+            <div className="col-md-7 col-sm-7 col-xs-7 preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>

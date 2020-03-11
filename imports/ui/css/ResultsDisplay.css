@@ -96,15 +96,13 @@
 
 .results-sort-by-container{
   display: inline-flex;
+  margin-top:10px
 }
 
 .results-sort-by-text{
   font-stretch: normal;
   letter-spacing: 0.001em;
-  color: #000000;
-  text-align: right;
   margin: 0 0 0 auto;
-  padding-right: 10px;
   width: 74.83px;
   left: 536px;
   top: 217px;
@@ -131,8 +129,6 @@
   color: #0076FF;
   font-weight: 600;
   letter-spacing: -0.225605px;
-  color: #0076FF;
-  text-align: top
 }
 
 .no-results{
