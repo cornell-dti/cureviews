@@ -17,16 +17,19 @@
   background-color: white;
   padding: 30px 40px 40px 40px;
 }
+.preview-class-link{
+  color: #0076FF;
+  font-size: 32px;
+}
 
 .preview-class-title{
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  color: #4A90E2;
 }
 
 .preview-class-info{
@@ -37,7 +40,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  color: #979797;
+  color: #A2A1A1;
 }
 
 /* Preview Review Styling */

@@ -137,14 +137,15 @@ export default class PreviewCard extends Component {
   render() {
     let theClass = this.props.course;
     console.log("likes:" + this.state.topReviewLikes);
+    console.log(theClass);
 
     return (
       <div className="preview-holder">
         <div className="preview-panel">
           <div className="row">
             <div className="col-md-12 col-sm-12">
-              <p className="preview-class-title">
-                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                <p className="preview-class-title">
+                <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                   {theClass.classTitle}
                 </a>
               </p>
@@ -156,15 +157,15 @@ export default class PreviewCard extends Component {
           <div className="row gaugeHolder">
 
             <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
-              <Gauge width="12vw" height="12vh" rating={this.state.rating} text="Overall"/>
+              <Gauge width="12vw" height="12vh" rating={parseInt(this.state.rating,10)} text="Overall"/>
 
             </div>
             <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
-              <Gauge width="12vw" height="12vh" rating={this.state.diff} text="Difficulty"/>
+              <Gauge width="12vw" height="12vh" rating={parseInt(this.state.diff,10)} text="Difficulty"/>
 
             </div>
             <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
-              <Gauge width="12vw" height="12vh" rating={this.state.workload} text="Workload"/>
+              <Gauge width="12vw" height="12vh" rating={parseInt(this.state.workload,10)} text="Workload"/>
 
             </div>
 
