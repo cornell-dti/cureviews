@@ -20,11 +20,6 @@
   width: 100%;
 }
 
-::after{
-  display:inline !important;
-}
-
-
 .review-number-label{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
@@ -220,7 +215,7 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 18px;
-  
+
   color: #000000;
 }
 

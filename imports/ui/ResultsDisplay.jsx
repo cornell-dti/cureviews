@@ -292,12 +292,12 @@ export default class ResultsDisplay extends Component {
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 results">
 
-              <div className="row">
+              <div className="row no-left-margin">
                 <div>
                   <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
                 </div>
               </div>
-              <div className="row">
+              <div className="row no-left-margin">
                 <div className="results-sort-by-container">
                   <p className="results-sort-by-text">
                   Sort By:

@@ -6,7 +6,6 @@
 }
 
 .review-holder{
-  width: 31vw;
   margin-left: auto;
   margin-right: auto;
 }
@@ -41,7 +40,7 @@
   line-height: normal;
   letter-spacing: 0.01em;
   color: #A2A1A1;
-  margin-bottom: 56px;
+  margin-bottom: 17px;
 }
 
 /* Preview Review Styling */
@@ -54,6 +53,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
+  color: #807B7B;
 }
 
 .preview-empty-top-review{
@@ -84,10 +84,10 @@
 /* Gauge Styling */
 
 .gaugeHolder{
-  padding: 25px 0px 40px 0px;
+  padding: 25px 0px 0px 0px;
 }
 
-.gauge-remove-left-padding {
+.remove-left-padding {
   padding-left: 0px;
 }
 

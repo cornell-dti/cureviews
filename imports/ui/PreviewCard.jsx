@@ -156,22 +156,22 @@ export default class PreviewCard extends Component {
           </div>
           <div className="row gaugeHolder">
 
-            <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
+            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
               <Gauge width="16vw" height="16vh" rating={parseInt(this.state.rating,10)} text="Overall"/>
 
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
+            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
               <Gauge width="16vw" height="16vh" rating={parseInt(this.state.diff,10)} text="Difficulty"/>
 
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 gauge-remove-left-padding">
+            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
               <Gauge width="16vw" height="16vh" rating={parseInt(this.state.workload,10)} text="Workload"/>
 
             </div>
 
           </div>
           <div className="row">
-            <div className="col-md-12 col-sm-12">
+            <div className="col-md-12 col-sm-12 remove-left-padding">
               {Object.keys(this.state.topReview).length !== 0 &&
 
                 <p className="preview-top-review-label">Top Review</p>

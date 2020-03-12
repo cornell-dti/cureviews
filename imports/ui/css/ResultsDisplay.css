@@ -64,6 +64,12 @@
 .results{
   height: calc(100vh - 189px);
   overflow:hidden
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
+.no-left-margin{
+  margin-left:0px;
 }
 
 .loading-results{
