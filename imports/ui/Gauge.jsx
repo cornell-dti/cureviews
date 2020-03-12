@@ -31,7 +31,7 @@ export default class Gauge extends Component{
       <div className="h-align">
         <div style={{width: this.props.width, height: this.props.height}} className="gauge-center">
           <div className="row">
-            <div className="col-md-5 col-md-offset-1 no-side-padding">
+            <div className="col-md-5 col-md-offset-1 no-side-padding no-left-margin">
               <h1 className="gauge-text rating">
                   {this.state.rating}
               </h1>

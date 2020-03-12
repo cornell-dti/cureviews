@@ -13,9 +13,9 @@
 
 .preview-panel{
   width: 100%;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: white;
-  padding: 30px 40px 40px 40px;
+  padding: 40px 40px 40px 70px;
 }
 .preview-class-link{
   color: #0076FF;
@@ -41,6 +41,7 @@
   line-height: normal;
   letter-spacing: 0.01em;
   color: #A2A1A1;
+  margin-bottom: 56px;
 }
 
 /* Preview Review Styling */

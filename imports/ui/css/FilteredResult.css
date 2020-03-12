@@ -1,7 +1,7 @@
 .result-card{
   border-radius: 10px;
   padding: 15px 24px 0px 24px;
-  margin: 20px 0;
+  margin: 32px 0;
   background-color: white;
 }
 
@@ -35,13 +35,13 @@
   font-family: "Source Sans Pro", sans-serif;
   color: black;
   font-size: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
 }
 
 .result-card-sort-by-value{
   display: inline-block;
   font-family: "Source Sans Pro", sans-serif;
-  padding: 0 0 0 5px;
+  padding: 0 0 0 14px;
 }
 
 .result-card-sort-by-five{
