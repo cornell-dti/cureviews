@@ -38,7 +38,7 @@ export default class Review extends Component {
   executeOnClick(){
     
     if(!this.state.expanded){
-      let newHeight=this.state.height+(this.props.info.text.length%500)/20*10.25;
+      let newHeight=this.state.height+(this.props.info.text.length%500)/20*(this.props.isPreview ?4.25: 10.25);
       this.setState({expanded:!this.state.expanded, height:newHeight});
     }
     else{
