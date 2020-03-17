@@ -3,18 +3,15 @@ import { Classes, Reviews } from '../imports/api/dbDefs.js';
 
 const path = require("path");
 const fullpath = path.resolve("");
-// This hack allows me to load in environment variables
-// It requires that the code is run from a path containing "course-reviews-react-2.0"
-// This will be fixed in a future release
-// Reason for this hack:
-// Meteor makes the cwd strange, and putting the .env where it SAYS the cwd is doesn't work, 
-// neither did many other places. This hack however, works.
+// if there exists an env file in our current path, load it in
+// if the path does not contain course-reviews-react-2.0 or the env file does not exist no error is thrown, 
+// but the bot will not start unless the relevant enironment variables are initialized some other way
 require('dotenv').config({path: fullpath.substr(0, fullpath.indexOf("course-reviews-react-2.0")) + "/course-reviews-react-2.0/.env"});
 const { WebClient } = require('@slack/web-api');
 const { createEventAdapter } = require('@slack/events-api');
 
 // which channel should we post any and all messages to?
-const channel_name = "cu-reviews";
+const channel_name = "cu-reviews-bot";
 
 /**
  * Initialze the 2 Slack APIs:
@@ -84,14 +81,13 @@ function initializeBot() {
             Meteor.call("makeVisible", Reviews.find({_id: id}).fetch()[0], process.env.WebToken);
 
             // notify user that the review has been approved
-            const res = await web.chat.postMessage({
+            await web.chat.postMessage({
               channel: channel_name,
               text: "Published review with id: " + id,
             });
           } else if (event.reaction == 'x') {
             // deny a review
             // TODO remove it?
-
             console.log("Slack denied a review with id: " + id + "!");
           }
         })(); 
@@ -105,7 +101,7 @@ function initializeBot() {
 
         const res = await web.chat.postMessage({
           channel: channel_name,
-          text: "Onlining CU-Reviews at " + currentTime,
+          text: "Hello, Cornell DTI! CU Reviews is onlining at " + currentTime,
         });
 
         await web.reactions.add({
