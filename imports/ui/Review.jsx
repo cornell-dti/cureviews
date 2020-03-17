@@ -22,7 +22,7 @@ export default class Review extends Component {
       liked: false, //indicates whether or not the review has been liked in the current state
       numLikes: this.props.info.likes, //the number of likes on the PreviewCard review,
       expanded:false,
-      height:186
+      height:this.props.isPreview ? 206:196
     }
 
     this.circlebox_class = props.isPreview ? "review-circlebox-preview" : "review-circlebox";
@@ -42,7 +42,7 @@ export default class Review extends Component {
       this.setState({expanded:!this.state.expanded, height:newHeight});
     }
     else{
-      this.setState({expanded:!this.state.expanded, height:186});
+      this.setState({expanded:!this.state.expanded, height:this.props.isPreview ? 206:196});
     }
   }
 
@@ -153,7 +153,7 @@ export default class Review extends Component {
                 {/*The following adds a grey professor box for each professor listed in the review*/}
                 {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<p className={this.professor_text_class} key={index}>
                   {prof}</p>)) : <div>
-                    <p className={this.professor_text_class}>N/A</p></div>}
+                    <span className={this.professor_text_class}>N/A</span></div>}
               </div>
 
               <div className="row noLeftRightSpacing review-padding-left">

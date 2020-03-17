@@ -231,6 +231,12 @@
   letter-spacing: 0.01em;
   color: #000000;
   text-align: left;
+  margin-top:6%;
+}
+
+.review-number-text-preview{
+  margin-top:20%;
+  padding-bottom:12%;
 }
 
 .reviewNumbers{
