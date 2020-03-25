@@ -21,8 +21,8 @@ export default class Review extends Component {
     this.state = {
       liked: false, //indicates whether or not the review has been liked in the current state
       numLikes: this.props.info.likes, //the number of likes on the PreviewCard review,
-      expanded:false,
-      height:this.props.isPreview ? 206:196
+      expanded: false,
+      height: this.props.isPreview ? 206 : 196
     }
 
     this.circlebox_class = props.isPreview ? "review-circlebox-preview" : "review-circlebox";
@@ -31,18 +31,18 @@ export default class Review extends Component {
     this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
-    this.reviewToDate=this.reviewToDate.bind(this);
-    this.executeOnClick=this.executeOnClick.bind(this);
+    this.reviewToDate = this.reviewToDate.bind(this);
+    this.executeOnClick = this.executeOnClick.bind(this);
   }
 
-  executeOnClick(){
-    
-    if(!this.state.expanded){
-      let newHeight=this.state.height+(this.props.info.text.length%500)/20*(this.props.isPreview ?4.25: 10.25);
-      this.setState({expanded:!this.state.expanded, height:newHeight});
+  executeOnClick() {
+
+    if (!this.state.expanded) {
+      let newHeight = this.state.height + (this.props.info.text.length % 500) / 20 * (this.props.isPreview ? 4.25 : 10.25);
+      this.setState({ expanded: !this.state.expanded, height: newHeight });
     }
-    else{
-      this.setState({expanded:!this.state.expanded, height:this.props.isPreview ? 206:196});
+    else {
+      this.setState({ expanded: !this.state.expanded, height: this.props.isPreview ? 206 : 196 });
     }
   }
 
@@ -60,7 +60,7 @@ export default class Review extends Component {
   }
 
 
-  
+
 
   // Function that checks whether or not the review has already been liked
   // in the current state. If so, the number of likes decreases by 1 as if removing a like.
@@ -99,10 +99,10 @@ export default class Review extends Component {
   reviewToDate(review) {
 
     let review_year = String(review.date.getFullYear()).substring(2);
-    let review_month = review.date.getMonth()+1; 
+    let review_month = review.date.getMonth() + 1;
     let review_day = review.date.getDate();
 
-    return review_month+"/"+review_day+"/"+review_year;
+    return review_month + "/" + review_day + "/" + review_year;
   }
 
   render() {
@@ -111,9 +111,9 @@ export default class Review extends Component {
     // console.log(review);
     // console.log(review.rating);
     return (
-      <div className="review" style={this.expanded ? {margin:32-this.state.height/80} : {}} >
+      <div className="review" style={this.expanded ? { margin: 32 - this.state.height / 80 } : {}} >
         {
-          !this.props.isPreview && 
+          !this.props.isPreview &&
           <div className="row noLeftRightSpacing">
             <div className="col-md-12 col-xs-12 col-xs-12">
               <button className="review-report" onClick={() => {
@@ -127,70 +127,70 @@ export default class Review extends Component {
           </div>
         }
         <div className="panel-body-3">
-        <div className="col-md-2 reviewNumbers">
-        
+          <div className="col-md-2 reviewNumbers">
+
             <p className={this.review_number_label_class}>Overall</p>
-            
+
             <p className={this.review_number_label_class}>Difficulty</p>
 
             <p className={this.review_number_label_class}>Workload</p>
 
+          </div>
+          <div className="col-md-2" style={this.state.expanded ? { height: this.state.height - 60 } : { height: this.state.height - 80 }}>
+            <div id={this.circlebox_class}>
+              <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
             </div>
-          <div className="col-md-2" style={this.state.expanded ? {height:this.state.height-60} :{height:this.state.height-80}}>
-            <div  id={this.circlebox_class}>
-                <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
-              </div>
-              <div  id={this.circlebox_class} >
-                <p className={this.review_number_text_class} >{review.difficulty}</p>
-              </div>
-              <div  id={this.circlebox_class} >
-                <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
+            <div id={this.circlebox_class} >
+              <p className={this.review_number_text_class} >{review.difficulty}</p>
+            </div>
+            <div id={this.circlebox_class} >
+              <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
             </div>
           </div>
           <div className="col">
             <div className="noLeftRightSpacing prof">
               <p className={this.professor_title_class}>Professor: </p>
-                {/*The following adds a grey professor box for each professor listed in the review*/}
-                {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<p className={this.professor_text_class} key={index}>
-                  {prof}</p>)) : <div>
-                    <span className={this.professor_text_class}>N/A</span></div>}
-              </div>
+              {/*The following adds a grey professor box for each professor listed in the review*/}
+              {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<p className={this.professor_text_class} key={index}>
+                {prof}</p>)) : <div>
+                  <span className={this.professor_text_class}>N/A</span></div>}
+            </div>
 
-              <div className="row noLeftRightSpacing review-padding-left">
-                <div className={this.review_text_class} >
-                    <ShowMoreText
-                    lines={2}
-                    more='Show more'
-                    less='Show less'
-                    anchorClass='showMoreText'
-                    onClick={this.executeOnClick}
-                    expanded={this.state.expanded}
-                    width={615}
+            <div className="row noLeftRightSpacing review-padding-left">
+              <div className={this.review_text_class} >
+                <ShowMoreText
+                  lines={2}
+                  more='Show more'
+                  less='Show less'
+                  anchorClass='showMoreText'
+                  onClick={this.executeOnClick}
+                  expanded={this.state.expanded}
+                  width={615}
                 >
-                    {review.text}
+                  {review.text}
                 </ShowMoreText>
-                </div>
-                <div className="row lastRow">
-
-                    <p className="review-date"><i>{this.reviewToDate(review)}</i></p>
-                  
-                    <button className= //if the review has been liked, the button will be filled in.
-                      {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
-                      onClick={() => {
-                        this.increment(review);
-                      }}>
-                      <img src="/handClap.svg"></img>
-                      <p className="upvote-text">Helpful
-                       ({this.state.numLikes})</p>
-                    </button>
-                  
-                </div>
               </div>
+              <div className="row lastRow">
 
+                <p className="review-date"><i>{this.reviewToDate(review)}</i></p>
+                {!this.props.isPreview &&
+                  <button className= //if the review has been liked, the button will be filled in.
+                    {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+                    onClick={() => {
+                      this.increment(review);
+                    }}>
+                    <img src="/handClap.svg"></img>
+                    <p className="upvote-text">Helpful
+                        ({this.state.numLikes})</p>
+                  </button>
+                }
+              </div>
             </div>
 
           </div>
-          
+
+        </div>
+
       </div>
     );
   }
@@ -201,7 +201,7 @@ export default class Review extends Component {
 Review.propTypes = {
   info: PropTypes.object.isRequired,
   reportHandler: PropTypes.func,
-  sortHandler:PropTypes.func,
+  sortHandler: PropTypes.func,
   isPreview: PropTypes.bool.isRequired,
   likes: PropTypes.number
 };
