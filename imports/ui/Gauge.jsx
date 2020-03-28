@@ -20,7 +20,6 @@ export default class Gauge extends Component{
         if(!isNaN(this.props.rating)){
           let percentage = 20*this.props.rating;
           let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
-          console.log(color);
           this.setState({percentage: percentage, color: color, rating: this.props.rating});
         }
       }
