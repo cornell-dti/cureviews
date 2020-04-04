@@ -82,9 +82,20 @@
   margin-top: 55px;
 }
 
-.results-classes-list{
-  height:100%;
-  overflow-y: scroll;
+.results::-webkit-scrollbar {
+  width: 8px;
+  height: 332.25px;
+  padding-right:8px;
+}
+
+.results::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #ECECEC;;
+}
+
+.results::-webkit-scrollbar-thumb {
+  background: #807B7B;
+  border-radius: 13.5731px;
+  height: 332.25px;
 }
 
 .results-num-classes-found{
