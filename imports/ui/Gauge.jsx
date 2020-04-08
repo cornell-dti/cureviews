@@ -15,13 +15,14 @@ export default class Gauge extends Component{
     }
   }
 
-  componentDidMount() {
-    if(!isNaN(this.props.rating)){
-      let percentage = 20*this.props.rating;
-      console.log(this.props);
-      let color= "rgba(0, 118, 255,"+percentage/100+")";
-      this.setState({percentage: percentage, color: color, rating: this.props.rating});
-    }
+    componentDidUpdate(prevProps) {
+      if (prevProps != this.props) {
+        if(!isNaN(this.props.rating)){
+          let percentage = 20*this.props.rating;
+          let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
+          this.setState({percentage: percentage, color: color, rating: this.props.rating});
+        }
+      }
   }
 
   render(){
@@ -29,7 +30,7 @@ export default class Gauge extends Component{
       <div className="h-align">
         <div style={{width: this.props.width, height: this.props.height}} className="gauge-center">
           <div className="row">
-            <div className="col-md-5 col-md-offset-1 no-side-padding">
+            <div className="col-md-5 col-md-offset-1 no-side-padding no-left-margin">
               <h1 className="gauge-text rating">
                   {this.state.rating}
               </h1>

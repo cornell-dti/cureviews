@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
-import Gauge from 'react-summary-gauge-2';
+import Gauge from './Gauge.jsx';
 import Review from './Review.jsx';
 
 /*
   Preview Card component.
-  
+
   Props: course - course object used to render a preview card for ResultsDisplay
                   to use.
 */
@@ -82,7 +82,7 @@ export default class PreviewCard extends Component {
     });
   }
 
-  //Updates the colors of the metrics 
+  //Updates the colors of the metrics
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
@@ -137,14 +137,15 @@ export default class PreviewCard extends Component {
   render() {
     let theClass = this.props.course;
     console.log("likes:" + this.state.topReviewLikes);
+    console.log(theClass);
 
     return (
       <div className="preview-holder">
         <div className="preview-panel">
           <div className="row">
             <div className="col-md-12 col-sm-12">
-              <p className="preview-class-title">
-                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                <p className="preview-class-title">
+                <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                   {theClass.classTitle}
                 </a>
               </p>
@@ -155,19 +156,22 @@ export default class PreviewCard extends Component {
           </div>
           <div className="row gaugeHolder">
 
-            <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
-              <Gauge value={this.state.rating} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
+            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
+              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.rating,10)} text="Overall"/>
+
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
-              <Gauge value={this.state.diff} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
+            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
+              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.diff,10)} text="Difficulty"/>
+
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
-              <Gauge value={this.state.workload} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
+            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
+              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.workload,10)} text="Workload"/>
+
             </div>
 
           </div>
           <div className="row">
-            <div className="col-md-12 col-sm-12">
+            <div className="col-md-12 col-sm-12 remove-left-padding">
               {Object.keys(this.state.topReview).length !== 0 &&
 
                 <p className="preview-top-review-label">Top Review</p>

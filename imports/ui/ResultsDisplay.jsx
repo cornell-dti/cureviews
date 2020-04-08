@@ -63,7 +63,7 @@ export default class ResultsDisplay extends Component {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
   }
-  
+
   // Helper function to sort()
   sortBy(courseList, sortByField, fieldDefault, increasing){
     const data = courseList.sort(
@@ -81,7 +81,7 @@ export default class ResultsDisplay extends Component {
           else{
             return (second - first);
           }
-          
+
         }
       });
     this.setState({
@@ -90,7 +90,7 @@ export default class ResultsDisplay extends Component {
       active_card: 0
     });
   }
-  
+
   // Sorts list of class results by category selected in this.state.selected
   sort() {
     let availableClasses;
@@ -100,7 +100,7 @@ export default class ResultsDisplay extends Component {
     else{
       availableClasses = this.state.filteredItems;
     }
-    
+
     if (this.state.selected == "relevance"){
       this.sortBy(availableClasses, "score", 0, true);
     }
@@ -199,7 +199,7 @@ export default class ResultsDisplay extends Component {
 
   }
 
-  //Updates the displayed PreviewCard to the correct [course] 
+  //Updates the displayed PreviewCard to the correct [course]
   //if the course's [index] in the list of FilteredResult components is clicked
   previewHandler(course, index) {
     this.setState({
@@ -290,14 +290,17 @@ export default class ResultsDisplay extends Component {
                 {this.renderClassLevelCheckBoxes()}
               </div>
             </div>
-            <div className="col-md-5 col-sm-5 col-xs-5 results">
-              <div className="row">
-                <div className="col-md-5 col-sm-5 col-xs-5">
+            <div className="col-md-3 col-sm-3 col-xs-3 results">
+
+              <div className="row no-left-margin">
+                <div>
                   <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
                 </div>
-                <div className="col-md-7 col-sm-7 col-xs-7 results-sort-by-container">
+              </div>
+              <div className="row no-left-margin">
+                <div className="results-sort-by-container">
                   <p className="results-sort-by-text">
-                    Sort By:
+                  Sort By:
                     </p>
                   <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
                     <option value="relevance">Relevance</option>
@@ -307,13 +310,14 @@ export default class ResultsDisplay extends Component {
                   </select>
                 </div>
               </div>
+
               <div className="results-classes-list">
                 <ul>
                   {this.renderResults()}
                 </ul>
               </div>
             </div>
-            <div className="col-md-5 col-sm-5 col-xs-5 preview">
+            <div className="col-md-7 col-sm-7 col-xs-7 preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>
@@ -328,4 +332,3 @@ ResultsDisplay.propTypes = {
   loading: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired
 };
-

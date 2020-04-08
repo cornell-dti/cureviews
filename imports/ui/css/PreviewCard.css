@@ -6,54 +6,58 @@
 }
 
 .review-holder{
-  width: 31vw;
   margin-left: auto;
   margin-right: auto;
 }
 
 .preview-panel{
   width: 100%;
-  border-radius: 5px;
-  background-color: #fafafa;
-  padding: 30px 40px 40px 40px;
+  border-radius: 10px;
+  background-color: white;
+  padding: 40px 40px 25px 70px;
+}
+.preview-class-link{
+  color: #0076FF;
+  font-size: 32px;
 }
 
 .preview-class-title{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 24px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 32px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  color: #4A90E2;
 }
 
 .preview-class-info{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  color: #979797;
+  color: #A2A1A1;
+  margin-bottom: 17px;
 }
 
 /* Preview Review Styling */
 
 .preview-top-review-label{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
+  color: #807B7B;
 }
 
 .preview-empty-top-review{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--regular-weight);
   font-style: normal;
@@ -65,22 +69,26 @@
 }
 
 .preview-review-button{
-  background-color: #4a90e2;
+  background: #0076FF;
   color: white;
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 10px;
   height: auto;
   padding: 10px;
-  font-size: 15px;
-  width: 100%;
+  font-size: 18px;
+  width: 95%;
   display: inline-grid;
 }
 
 /* Gauge Styling */
 
 .gaugeHolder{
-  padding: 25px 35px 40px 35px;
+  padding: 25px 0px 0px 0px;
+}
+
+.remove-left-padding {
+  padding-left: 0px;
 }
 
 .left-gauge{
@@ -94,7 +102,7 @@
 }
 
 .gaugeHolder svg text:first-of-type{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px !important;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
@@ -105,7 +113,7 @@
 }
 
 .gaugeHolder svg text:last-of-type{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 19px !important;
   font-weight: var(--semi-bold-weight);
   font-style: normal;

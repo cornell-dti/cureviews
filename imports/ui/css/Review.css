@@ -20,11 +20,6 @@
   width: 100%;
 }
 
-::after{
-  display:inline !important;
-}
-
-
 .review-number-label{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
@@ -220,7 +215,7 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 18px;
-  
+
   color: #000000;
 }
 
@@ -236,6 +231,12 @@
   letter-spacing: 0.01em;
   color: #000000;
   text-align: left;
+  margin-top:6%;
+}
+
+.review-number-text-preview{
+  margin-top:20%;
+  padding-bottom:12%;
 }
 
 .reviewNumbers{
