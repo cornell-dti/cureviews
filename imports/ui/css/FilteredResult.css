@@ -3,6 +3,7 @@
   padding: 15px 24px 0px 24px;
   margin: 32px 0;
   background-color: white;
+  list-style: none; 
 }
 
 .result-card-clicked{

@@ -31,7 +31,8 @@ export default class PreviewCard extends Component {
     this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
     this.updateGauges = this.updateGauges.bind(this);
-
+    console.log("props",this.props);
+    console.log("state",this.state);
   }
 
   componentDidMount() {
@@ -157,15 +158,15 @@ export default class PreviewCard extends Component {
           <div className="row gaugeHolder">
 
             <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.rating,10)} text="Overall"/>
+              <Gauge width="16vw" height="16vh" rating={parseFloat(this.state.rating)} text="Overall"/>
 
             </div>
             <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.diff,10)} text="Difficulty"/>
+              <Gauge width="16vw" height="16vh" rating={parseFloat(this.state.diff)} text="Difficulty"/>
 
             </div>
             <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.workload,10)} text="Workload"/>
+              <Gauge width="16vw" height="16vh" rating={parseFloat(this.state.workload)} text="Workload"/>
 
             </div>
 
