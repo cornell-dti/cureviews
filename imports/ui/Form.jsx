@@ -64,7 +64,6 @@ export default class Form extends Component {
       "workload": 3,
       "workloadlastSelect": 3,
       text: "",
-      message: null,
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors ? this.props.course.classProfessors : [], //If class does not have
@@ -176,13 +175,6 @@ export default class Form extends Component {
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
-
-    this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
-    if(this.openByDefault){
-      this.toggleDropdown(); //Open review dropdown when page loads
-    }
-    
-
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
@@ -380,91 +372,89 @@ export default class Form extends Component {
     const isEnabled = err.allTrue;
     return (
         <div>
-          <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
-            <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
-              <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
-                <div className="panel-body-2" id="form">
-                  <p className="header-text">Leave a Review</p>
-                 {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
-                      <div className="row" id="reviewTextRow">
-                        <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
-                          onChange={(event) => this.handleTextChange(event)}
-                           />
-                        <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
-                        <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                      </div>
+          <div className="form-menu">
+            <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
+              <p className="form-header-text">Leave a Review</p>
+             {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
+                  <div className="row" id="reviewTextRow">
+                    <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+                      onChange={(event) => this.handleTextChange(event)}
+                       />
+                    <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                    <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                  </div>
 
-                      
-                      <div className="row">
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <div className="form-label prof">Professor</div>
-                          </div>
-                          <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
-                              <Select className='react-select-container' classNamePrefix="react-select" value={this.state.selectedProfessors}
-                                onChange={(professors) => this.handleProfChange(professors)}
-                                isMulti
-                                options={this.getProfOptions()}
-                                ref={this.profSelect}
-                                placeholder="Select"
-                              />
-                              <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                          </div>
+                  
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+                          <div className="form-label prof">Professor</div>
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <h1 className="form-label">Overall</h1>
-                          </div>
-                          {this.createMetricBoxes(5, "rating")}
-                          <div className="textSpacing">
-                            <div className="metricDescL">Not for me</div>
-                            <div className="metricDescR">Loved it</div>
-                          </div>
+                      <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                          <Select className='react-select-container' classNamePrefix="react-select" value={this.state.selectedProfessors}
+                            onChange={(professors) => this.handleProfChange(professors)}
+                            isMulti
+                            options={this.getProfOptions()}
+                            ref={this.profSelect}
+                            placeholder="Select"
+                          />
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <h1 className="form-label">Difficulty</h1>
-                          </div>
-                          {this.createMetricBoxes(5, "diff")}
-                          <div className="textSpacing">
-                            <div className="metricDescL">Piece of cake</div>
-                            <div className="metricDescR">Challenging</div>
-                          </div>
+                  </div>
+                  
+                  <div className="row">
+                    <div className="col-md-12 col-sm-12 col-xs-12">
+                      <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
+                        Please select the professor(s) you took this class with!
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className='row'>
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <h1 className="form-label">Workload</h1>
-                          </div>
-                          {this.createMetricBoxes(5, "workload")}
-                          <div className="textSpacing">
-                            <div className="metricDescL">Not much at all</div>
-                            <div className="metricDescR">Lots of work</div>
-                          </div>
-                      </div>
-                      <div className="sm-spacing"></div>
-
-                      <div className="row">
-                        <div className="col-md-12 text-center">
-                            <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Submit</button>
-                        </div>
-                      </div>
-                    {/*Only show tab if not in popup*/}
-
-                </div>
-                <div className="row">
-                    <div className="col-sm-12">
-                        <h2 className="secondary-text">{this.state.message}</h2>
                     </div>
-                </div>
+                  </div>
+                  
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3">
+                        <h1 className="form-label">Overall</h1>
+                      </div>
+                      {this.createMetricBoxes(5, "rating")}
+                  </div>
+                  <div className="row form-bottom-row-spacing">
+                    <div className="col-md-offset-3 col-md-9">
+                      <div className="metricDescL">Not for me</div>
+                      <div className="metricDescR">Loved it</div>
+                    </div>
+                  </div>
 
-              </form>
-            </ul>
-              {/*Only show tab if not in popup*/}
-             
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3">
+                          <h1 className="form-label">Difficulty</h1>
+                      </div>
+                      {this.createMetricBoxes(5, "diff")}
+                  </div>
+                  <div className="row form-bottom-row-spacing">
+                    <div className="col-md-offset-3 col-md-9">
+                      <div className="metricDescL">Piece of cake</div>
+                      <div className="metricDescR">Challenging</div>
+                    </div>
+                  </div>
 
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3">
+                          <h1 className="form-label">Workload</h1>
+                      </div>
+                      {this.createMetricBoxes(5, "workload")}
+                  </div>
+                  <div className="row">
+                    <div className="col-md-offset-3 col-md-9">
+                      <div className="metricDescL">Not much at all</div>
+                      <div className="metricDescR">Lots of work</div>
+                    </div>
+                  </div>
+                  
+                  <div className="row form-button-top-bottom-spacing">
+                    <div className="col-md-12 col-sm-12 col-xs-12">
+                        <button disabled={!isEnabled} className="form-postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Submit</button>
+                    </div>
+                  </div>
+          </form>
           </div>
+              {/*Only show tab if not in popup*/}
 
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
             <div id="modal-background">
