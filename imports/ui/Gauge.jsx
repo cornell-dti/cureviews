@@ -13,17 +13,27 @@ export default class Gauge extends Component{
       percentage: 0.0,
       rating: 0.0
     }
+    this.updateRating=this.updateRating.bind(this);
+    this.componentDidUpdate=this.componentDidUpdate.bind(this);
   }
 
     componentDidUpdate(prevProps) {
       if (prevProps != this.props) {
-        if(!isNaN(this.props.rating)){
-          let percentage = 20*this.props.rating;
-          let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
-          this.setState({percentage: percentage, color: color, rating: this.props.rating});
-        }
+        this.updateRating();
       }
-  }
+    }
+
+    updateRating(){
+      if(!isNaN(this.props.rating)){
+        let percentage = 20*this.props.rating;
+        let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
+        this.setState({percentage: percentage, color: color, rating: this.props.rating});
+      }
+    }
+
+    componentDidMount(){
+      this.updateRating();
+    }
 
   render(){
     return (
