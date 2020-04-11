@@ -3,7 +3,7 @@
   padding: 15px 24px 0px 24px;
   margin: 32px 0;
   background-color: white;
-  list-style: none; 
+  list-style-type: none;
 }
 
 .result-card-clicked{
@@ -32,22 +32,23 @@
 
 
 .result-card-sort-by-text{
-  display: inline-block;
-  font-family: "Source Sans Pro", sans-serif;
-  color: black;
+  margin-bottom: 20px;
+}
+
+.result-card-rating-text p{
+  display:inline-block;
+}
+
+.result-card-rating-text{
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
   font-size: 16px;
-  margin-bottom: 15px;
+  line-height: 7px;
+  letter-spacing: -0.0819218px;
+  color: #000000;
 }
 
 .result-card-sort-by-value{
-  display: inline-block;
-  font-family: "Source Sans Pro", sans-serif;
   padding: 0 0 0 14px;
-}
-
-.result-card-sort-by-five{
-  display: inline-block;
-  font-size: 10px;
-  font-family: "Source Sans Pro", sans-serif;
-  color: black;
 }
