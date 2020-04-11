@@ -2,7 +2,9 @@
 
 .filters{
   font-family: "Source Sans Pro", sans-serif;
-  padding-left: 55px;
+  padding-left: 95px;
+  padding-top: 65px;
+  line-height: 37px;
 }
 
 .filter-title{
@@ -174,4 +176,6 @@ ul {
 
 .preview{
   overflow: hidden;
+  padding-top: 50px;
+  padding-right: 130px;
 }

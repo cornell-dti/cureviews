@@ -140,79 +140,77 @@ export default class PreviewCard extends Component {
     console.log(theClass);
 
     return (
-      <div className="preview-holder">
-        <div className="preview-panel">
-          <div className="row">
-            <div className="col-md-12 col-sm-12">
-                <p className="preview-class-title">
-                <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  {theClass.classTitle}
-                </a>
+      <div className="preview-panel">
+        <div className="row">
+          <div className="col-md-12 col-sm-12">
+              <p className="preview-class-title">
+              <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                {theClass.classTitle}
+              </a>
+            </p>
+            <p className="preview-class-info">
+              {theClass.classSub.toUpperCase() + " " + theClass.classNum}
+            </p>
+          </div>
+        </div>
+        <div className="row gaugeHolder">
+
+          <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
+            <Gauge width="16vw" height="16vh" rating={parseInt(this.state.rating,10)} text="Overall"/>
+
+          </div>
+          <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
+            <Gauge width="16vw" height="16vh" rating={parseInt(this.state.diff,10)} text="Difficulty"/>
+
+          </div>
+          <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
+            <Gauge width="16vw" height="16vh" rating={parseInt(this.state.workload,10)} text="Workload"/>
+
+          </div>
+
+        </div>
+        <div className="row">
+          <div className="col-md-12 col-sm-12 remove-left-padding">
+            {Object.keys(this.state.topReview).length !== 0 &&
+
+              <p className="preview-top-review-label">Top Review</p>
+
+            }
+          </div>
+        </div>
+        <div className="row">
+          <div className="review-holder">
+            {/*If class has review show top review and link*/}
+            {Object.keys(this.state.topReview).length !== 0 &&
+
+              <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
+
+            }
+
+            {
+              Object.keys(this.state.topReview).length !== 0
+              &&
+              <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
+              </a>
+            }
+
+            {/*If class has 0 reviews text and button*/}
+            {
+              Object.keys(this.state.topReview).length === 0
+              &&
+              <p className="preview-empty-top-review">
+                No reviews yet
               </p>
-              <p className="preview-class-info">
-                {theClass.classSub.toUpperCase() + " " + theClass.classNum}
-              </p>
-            </div>
-          </div>
-          <div className="row gaugeHolder">
-
-            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.rating,10)} text="Overall"/>
-
-            </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.diff,10)} text="Difficulty"/>
-
-            </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-              <Gauge width="16vw" height="16vh" rating={parseInt(this.state.workload,10)} text="Workload"/>
-
-            </div>
-
-          </div>
-          <div className="row">
-            <div className="col-md-12 col-sm-12 remove-left-padding">
-              {Object.keys(this.state.topReview).length !== 0 &&
-
-                <p className="preview-top-review-label">Top Review</p>
-
-              }
-            </div>
-          </div>
-          <div className="row">
-            <div className="review-holder">
-              {/*If class has review show top review and link*/}
-              {Object.keys(this.state.topReview).length !== 0 &&
-
-                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
-
-              }
-
-              {
-                Object.keys(this.state.topReview).length !== 0
-                &&
-                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
-                </a>
-              }
-
-              {/*If class has 0 reviews text and button*/}
-              {
-                Object.keys(this.state.topReview).length === 0
-                &&
-                <p className="preview-empty-top-review">
-                  No reviews yet
-                </p>
-              }
-              {
-                Object.keys(this.state.topReview).length === 0
-                &&
-                <a className="col-md-12 col-sm-12 preview-review-button"
-                  href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  Leave a review
-                </a>
-              }
-            </div>
+            }
+            {
+              Object.keys(this.state.topReview).length === 0
+              &&
+              <a className="col-md-12 col-sm-12 preview-review-button"
+                href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                Leave a review
+              </a>
+            }
           </div>
         </div>
       </div>
