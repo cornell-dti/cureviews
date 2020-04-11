@@ -101,6 +101,8 @@ Reviews.schema = new SimpleSchema({
     // The full functional code for counting reviews can be found on the following branch:
     // review-counting-feature
     // memberReferral: { type: String, optional: true }, // DTI member referral for review contest
+    virtual: { type: Boolean }, // whether or not this review is for a class was taught virtually at least part of the time
+                                // added due to COVID-19 situation. Possible future compatility if/when Cornell adds more virtual options
 });
 
 /* # Validation Collection.

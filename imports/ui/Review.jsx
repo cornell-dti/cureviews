@@ -157,6 +157,7 @@ export default class Review extends Component {
 
             <p className={this.review_number_label_class}>Workload</p>
 
+            <p className={this.review_number_label_class}>{review.virtual ? "VIRTUAL!": ""}</p>
           </div>
           <div className="row noLeftRightSpacing">
             <div className="col-md-2 col-sm-2 col-xs-2 noLeftRightSpacing review-padding-left">
