@@ -139,6 +139,7 @@ export default class PreviewCard extends Component {
     let theClass = this.props.course;
     console.log("likes:" + this.state.topReviewLikes);
     console.log(theClass);
+    console.log("props",this.props);
 
     return (
       <div className="preview-holder">

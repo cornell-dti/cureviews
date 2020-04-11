@@ -56,12 +56,12 @@ export default class SearchBar extends Component {
     this.setState(newSearchState);
     // trim the query to remove trailing spaces
     let query = event.target.value.trim();
-    
+
     // This is used to make "cs2110" and "cs 2110" equivalent
     if(query && query.split(" ").length === 1){
       query = query.match(/[a-z]+|[^a-z]+/gi).join(" ");
     }
-    
+
     if(this.checkForCourseMatch(query)){
       // If query is exact match to a class,
       //  highlight this class by setting index to index of this class
@@ -290,7 +290,7 @@ export default class SearchBar extends Component {
         //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       )));
-      
+
       return results;
     }
     else {
@@ -310,7 +310,7 @@ export default class SearchBar extends Component {
     else return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
         <div className="col-lg-12 col-md-12 col-sm-12 searchbar">
-          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”" autoComplete="off" />
+          <input className="search-text" onKeyUp={this.handleKeyPress} autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}
@@ -330,4 +330,3 @@ SearchBar.propTypes = {
   formPopupHandler: PropTypes.func, //handler to set state for form if in popup
   contrastingResultsBackground: PropTypes.bool // Used to display contrasting background for search results
 };
-

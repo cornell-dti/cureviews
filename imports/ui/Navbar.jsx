@@ -28,14 +28,11 @@ export default class Navbar extends Component {
       <div className="row navbar">
         <div className="col-md-2 col-sm-2 col-xs-2">
           <a className="" href="/">
-            <img src='/logo.png' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
+            <img src='/blueRedesignLogo.svg' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
           </a>
         </div>
-        <div className={"col-md-7 col-sm-7 col-xs-7"}>
+        <div className={"col-md-9 col-sm-9 col-xs-9"}>
           <SearchBar contrastingResultsBackground={true}/>
-        </div>
-        <div className="text-report-bug">
-          <a href="https://forms.gle/iDPXCywvm266yf457">Report a bug</a>
         </div>
       </div>
     )
