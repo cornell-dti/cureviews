@@ -109,14 +109,14 @@ export default class FilteredResult extends Component {
           <h2 className="result-card-subtitle mb-2 text-muted">
             {theClass.classSub.toUpperCase() + " " + theClass.classNum}
           </h2>
-          <div>
+          <div className="result-card-rating-text">
             <p className="result-card-sort-by-text">
               <strong>{this.updateSortByTitle()}</strong>
             </p>
-            <p className="result-card-sort-by-value" style={{ color: this.getColor(this.updateSortByTitle(), this.updateSortBy()) }}>
+            <p className="result-card-sort-by-value">
               {this.updateSortBy()}
             </p>
-            <p className="result-card-sort-by-five">
+            <p>
               /5
             </p>
           </div>

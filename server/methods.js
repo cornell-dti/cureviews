@@ -219,9 +219,10 @@ Meteor.methods({
   updateMetricsForAllCourses: function (token) {
     const userIsAdmin = Meteor.call('tokenIsAdmin', token);
     if (userIsAdmin) {
+      console.log("Starting update for metrics");
       let courses = Classes.find().fetch();
       courses.forEach(function (course) {
-        Meteor.call("updateCourseMetrics", course._id);
+        Meteor.call("updateCourseMetrics", course._id, token);
       });
       console.log("Updated metrics for all courses");
     }

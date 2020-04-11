@@ -4,26 +4,44 @@ import 'react-circular-progressbar/dist/styles.css';
 import PropTypes from 'prop-types';
 import './css/Gauge.css';
 
+let initState={  
+  color:"#00000",
+  percentage: 0.0,
+  rating: 0.0};
+
 export default class Gauge extends Component{
   constructor(props) {
     super(props);
 
-    this.state={
-      color:"#00000",
-      percentage: 0.0,
-      rating: 0.0
-    }
+    this.state=initState;
+    this.updateRating=this.updateRating.bind(this);
+    this.componentDidUpdate=this.componentDidUpdate.bind(this);
   }
 
     componentDidUpdate(prevProps) {
       if (prevProps != this.props) {
-        if(!isNaN(this.props.rating)){
-          let percentage = 20*this.props.rating;
-          let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
-          this.setState({percentage: percentage, color: color, rating: this.props.rating});
-        }
+        this.updateRating();
       }
-  }
+    }
+
+    updateRating(){
+      if(!isNaN(this.props.rating)){
+        let percentage = 20*this.props.rating;
+        let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
+        this.setState({percentage: percentage, color: color, rating: this.props.rating});
+      }
+      else{
+        this.setState(initState);
+      }
+    }
+
+
+    componentWillUnmount(){
+      this.setState({
+        color:"#00000",
+        percentage: 0.0,
+        rating: 0.0});
+    }
 
   render(){
     return (
