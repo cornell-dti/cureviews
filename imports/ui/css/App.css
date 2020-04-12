@@ -33,6 +33,7 @@
 .full-height{
   min-height: 100.1%;
   height: 100.09%;
+  background-color: #F4F9FE;
 }
 /* I believe this is only used in recentreview.jsx so will remove soon TODO */
 .container{

@@ -114,24 +114,26 @@ export class CourseReviews extends Component {
     return (
 
       <div>
-          <div className="reviewHeader">
-            <div className="past-reviews">{title}</div>
-              <div className="sortWrapper">
-                <div className="sort"> Sort By: 
-                  <select onChange={this.handleSelect} className="browser-default">
-                              <option  value="helpful">Most Helpful</option>
-                              <option value="recent">Recent</option>
-                            </select>
-                </div>
-            </div>  
+        <div className="coursereviews-header">
+          <div className="coursereviews-past-reviews-text">
+            {title}
           </div>
-          <div className="panel-default" id="reviewpanel">
-            <div>
-              <ul id="reviewul">
-                {this.state.reviews}
-              </ul>
+          <div className="coursereviews-sort-container">
+            <div className="coursereviews-sort"> Sort By: 
+              <select onChange={this.handleSelect} className="coursereviews-sort-options">
+                <option  value="helpful">Most Helpful</option>
+                <option value="recent">Recent</option>
+              </select>
             </div>
+          </div>  
+        </div>
+        <div className="panel-default" id="reviewpanel">
+          <div>
+            <ul className="coursereviews-review-ul">
+              {this.state.reviews}
+            </ul>
           </div>
+        </div>
       </div>
     );
   }

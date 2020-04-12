@@ -1,81 +1,72 @@
-.past-reviews{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 11px;
-  /* or 45% */
-
-  display: inline;
-  align-items: flex-end;
-  letter-spacing: -0.128928px;
-
-  /* Gray */
-
-  color: #A2A1A1;
-  border-radius: 19.6611px;
+.coursereviews-header{
+  margin-bottom:34px;
+  padding-right: 35px;
 }
 
+.coursereviews-past-reviews-text{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 24px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  display: inline;
+  color: #A1A1A1;
+}
 
-#reviewul{
+.coursereviews-sort-container{
+  float: right;
+  display:inline;
+  margin-top: 8px;
+}
+
+.coursereviews-sort{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  display:inline;
+  text-decoration-line: underline;
+  color: #807B7B;
+}
+
+.coursereviews-sort-options{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  margin-left:10px;
+  background-color: transparent !important;
+  border:none;
+
+  color: #0076FF;
+}
+
+.coursereviews-review-ul{
   overflow-y:scroll !important;
-  height:600px;
-  margin-right:3%;
+  height:55vh;
 }
 
 .review{
   margin-right:25px;
 }
 
-#reviewul::-webkit-scrollbar {
+.coursereviews-review-ul::-webkit-scrollbar {
   width: 8px;
-  height: 332.25px;
   padding-right:8px;
 }
 
-#reviewul::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px #ECECEC;;
+.coursereviews-review-ul::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #ECECEC;
 }
 
-#reviewul::-webkit-scrollbar-thumb {
+.coursereviews-review-ul::-webkit-scrollbar-thumb {
   background: #807B7B;
   border-radius: 13.5731px;
   height: 332.25px;
 }
 
-.sort{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 19px;
-  display:inline;
-  letter-spacing: -0.225605px;
-  text-decoration-line: underline;
-
-  color: #807B7B;
-}
-
-.browser-default{
-  margin-left:10px;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px !important;
-  line-height: 19px !important;
-  background-color: transparent !important;
-  /* or 104% */
-  border:none;
-  letter-spacing: -0.225605px;
-
-  color: #0076FF;
-}
-
-.sortWrapper{
-  margin-left:325px;
-  display:inline;
-}
-
-.reviewHeader{
-  margin-bottom:34.5px;
-}
