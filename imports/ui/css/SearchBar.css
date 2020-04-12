@@ -7,6 +7,10 @@
   padding: 0;
   position: relative;
   outline: 0;
+  background: #FFFFFF;
+  border: 1.24929px solid #ECECEC;
+  box-sizing: border-box;
+  border-radius: 10px;
 }
 
 .search-text{
@@ -78,7 +82,7 @@
 }
 
 .search-text-popup, .search-text-popup::placeholder{
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
@@ -122,5 +126,3 @@
   border-top-left-radius: 10px;
   margin-top: 4px;
 }
-
-

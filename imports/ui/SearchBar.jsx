@@ -46,7 +46,6 @@ export default class SearchBar extends Component {
     this.setCourse = this.setCourse.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
     this.checkForCourseMatch = this.checkForCourseMatch.bind(this);
-
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -56,12 +55,12 @@ export default class SearchBar extends Component {
     this.setState(newSearchState);
     // trim the query to remove trailing spaces
     let query = event.target.value.trim();
-    
+
     // This is used to make "cs2110" and "cs 2110" equivalent
     if(query && query.split(" ").length === 1){
       query = query.match(/[a-z]+|[^a-z]+/gi).join(" ");
     }
-    
+
     if(this.checkForCourseMatch(query)){
       // If query is exact match to a class,
       //  highlight this class by setting index to index of this class
@@ -140,7 +139,6 @@ export default class SearchBar extends Component {
 
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState(prevState => ({
@@ -291,7 +289,7 @@ export default class SearchBar extends Component {
         //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       )));
-      
+
       return results;
     }
     else {
@@ -331,4 +329,3 @@ SearchBar.propTypes = {
   formPopupHandler: PropTypes.func, //handler to set state for form if in popup
   contrastingResultsBackground: PropTypes.bool // Used to display contrasting background for search results
 };
-
