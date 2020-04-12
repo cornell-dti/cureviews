@@ -134,7 +134,7 @@ export function getGaugeValues(allReviews) {
   } else if (ratingRatioVirtual == 0) {
     newState.rating = ratingRatioNormal.toFixed(1);
   } else {
-    newState.rating = ((ratingRatioNormal + virtualWeightFactor * ratingRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);;
+    newState.rating = ((ratingRatioNormal + virtualWeightFactor * ratingRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);
   }
 
   // these behave the same as their counterparts for ratings
@@ -148,7 +148,7 @@ export function getGaugeValues(allReviews) {
   } else if (diffRatioVirtual == 0) {
     newState.diff = diffRatioNormal.toFixed(1);
   } else {
-    newState.diff = ((diffRatioNormal + virtualWeightFactor * diffRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);;
+    newState.diff = ((diffRatioNormal + virtualWeightFactor * diffRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);
   }
 
   // these behave the same as their counterparts for ratings
