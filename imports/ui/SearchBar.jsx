@@ -46,7 +46,6 @@ export default class SearchBar extends Component {
     this.setCourse = this.setCourse.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
     this.checkForCourseMatch = this.checkForCourseMatch.bind(this);
-
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -140,7 +139,6 @@ export default class SearchBar extends Component {
 
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-
     if (e.key == "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState(prevState => ({
@@ -311,7 +309,7 @@ export default class SearchBar extends Component {
     else return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
         <div className="col-lg-12 col-md-12 col-sm-12 searchbar">
-          <input className="search-text" onKeyUp={this.handleKeyPress} autoComplete="off" />
+          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”" autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}
