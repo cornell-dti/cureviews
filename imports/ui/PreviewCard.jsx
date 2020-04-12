@@ -31,8 +31,6 @@ export default class PreviewCard extends Component {
     this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
     this.updateGauges = this.updateGauges.bind(this);
-    console.log("props",this.props);
-    console.log("state",this.state);
   }
 
   componentDidMount() {
@@ -137,9 +135,6 @@ export default class PreviewCard extends Component {
 
   render() {
     let theClass = this.props.course;
-    console.log("likes:" + this.state.topReviewLikes);
-    console.log(theClass);
-    console.log("props",this.props);
 
     return (
       <div className="preview-panel">

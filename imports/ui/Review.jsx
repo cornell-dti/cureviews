@@ -24,8 +24,6 @@ export default class Review extends Component {
       expanded: false,
       height: this.props.isPreview ? 206 : 196
     }
-
-    this.circlebox_class = props.isPreview ? "review-circlebox-preview" : "review-circlebox";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
     this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
@@ -137,13 +135,13 @@ export default class Review extends Component {
 
           </div>
           <div className="col-md-2" style={this.state.expanded ? { height: this.state.height - 60 } : { height: this.state.height - 80 }}>
-            <div id={this.circlebox_class}>
+            <div>
               <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
             </div>
-            <div id={this.circlebox_class} >
+            <div>
               <p className={this.review_number_text_class} >{review.difficulty}</p>
             </div>
-            <div id={this.circlebox_class} >
+            <div>
               <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
             </div>
           </div>
