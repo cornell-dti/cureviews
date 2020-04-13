@@ -79,15 +79,12 @@ export class CourseCard extends Component {
     const offered = lastOfferedSems(theClass);
 
     return (
-      <div id="coursedetails">
+      <div className="coursecard-container">
         <h1 className="coursecard-class-title top-margin">
           {theClass.classTitle}
         </h1>
-        <div href={url} target="_blank"> {/* Forces link onto next line */}
-          <a className="coursecard-class-link" href={url}>Class Roster <img className="cousecard-class-link-padding" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
-        </div>
-        <p className="class-info spacing-large top-margin">
-          {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + offered}
+        <p className="coursecard-class-info top-margin">
+          {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
         </p>
         <Form onChange={this.onFormChange} course={theClass} inUse={true}/>
       </div>

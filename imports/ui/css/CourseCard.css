@@ -1,31 +1,30 @@
 .coursecard-container {
-  padding-top: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-top: 22px;
+  padding-left: 70px;
 }
 
 .coursecard-class-title{
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.001em;
-  color: #4A4A4A;
-  margin-top: 50px;
+  letter-spacing: -0.13px;
+  color: #000000;
+  margin-top: 45px;
 }
 
-.coursecard-class-link {
-  text-align: center;
+.coursecard-class-info {
   font-family: "Source Sans Pro", sans-serif; 
-  font-size: 14px;
+  font-size: 24px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.001em;
-  color: #9b9b9b;
+  letter-spacing: -0.128928px;
+  color: #A2A1A1;
+  margin: 16px 0 0 0;
 }
 
 .cousecard-class-offered{

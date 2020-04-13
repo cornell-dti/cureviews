@@ -63,7 +63,6 @@ form {
 
 .form-button-top-bottom-spacing {
   padding-top: 35px;
-  padding-bottom: 30px;
 }
 
 
@@ -107,9 +106,10 @@ form {
 
 
 .form-menu {
+  margin-top: 70px;
   width: 443.75px;
   background: #FFFFFF;
-  border: 1.25px solid #D8D8D8;
+  border: none;
   box-sizing: border-box;
   border-radius: 10px;
   opacity: 1;
@@ -263,7 +263,6 @@ textarea {
 }
 
 .form-postbutton{
-    margin-bottom: 40px;
     width: 100%;
     height: 32px;
     font-family:  "Source Sans Pro", sans-serif;
