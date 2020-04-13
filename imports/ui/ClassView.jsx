@@ -168,22 +168,22 @@ export class ClassView extends Component {
           <Navbar removePlaceholder={true}/>
           <div className="clearfix" />
           <div className="container-width noPadding">
-            <div className="col-md-6 col-sm-12 col-xs-12 sticky">
+            <div className="col-md-5 col-sm-12 col-xs-12 sticky noPadding">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
-              <div className="row">
+            <div className="col-md-7 col-sm-12 col-xs-12 noPadding">
+              <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
+                  <Gauge width="14vw" height="11vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
+                  <Gauge width="14vw" height="11vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="14vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
+                  <Gauge width="14vw" height="11vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
-              <div className="row w-100">
+              <div className="row noPadding classview-reviews-container">
                 <CourseReviews  courseId={this.state.selectedClass._id} />
               </div>
             </div>

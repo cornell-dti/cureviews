@@ -18,6 +18,10 @@ export default class Gauge extends Component{
     this.componentDidUpdate=this.componentDidUpdate.bind(this);
   }
 
+    componentDidMount(){
+      this.updateRating(); 
+    }
+
     componentDidUpdate(prevProps) {
       if (prevProps != this.props) {
         this.updateRating();

@@ -32,6 +32,19 @@
   padding: 0 !important;
 }
 
+.classview-gauge-container{
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin-top: 65px;
+  padding-top: 20px;
+  margin-right: 90px;
+}
+
+.classview-reviews-container{
+  margin-top: 35px;
+  margin-right: 80px;
+}
+
 /* Popup Styling */
 /* The following was not yet refactored and will be when pop-up component is re-implemented */
 
