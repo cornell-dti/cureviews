@@ -19,7 +19,7 @@ export default class Gauge extends Component{
   }
 
     componentDidMount(){
-      this.updateRating();
+      this.updateRating(); 
     }
 
     componentDidUpdate(prevProps) {
