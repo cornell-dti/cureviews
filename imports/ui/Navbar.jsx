@@ -41,5 +41,5 @@ export default class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-  removePlaceholder: PropTypes.bool, // optional
+  removePlaceholder: PropTypes.bool, // optional. True if placeholder text in searchbar should be removed
 };
