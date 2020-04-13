@@ -32,7 +32,7 @@ export default class Navbar extends Component {
           </a>
         </div>
         <div className={"col-md-9 col-sm-9 col-xs-9"}>
-          <SearchBar contrastingResultsBackground={true} removePlaceholder={removePH ?? false} />
+          <SearchBar contrastingResultsBackground={true} removePlaceholder={removePH ? removePH : false} />
         </div>
       </div>
     )

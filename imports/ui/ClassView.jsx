@@ -142,7 +142,7 @@ export class ClassView extends Component {
   decidePopup(){
     if(Session.get("popup_timer") != undefined
         && Session.get("popup_timer") != ""
-        && Session.get("seen_popup") != true 
+        && Session.get("seen_popup") != true
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
         && (!this.state.lastTyped
             || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
@@ -154,7 +154,7 @@ export class ClassView extends Component {
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) >  1000)/*(4 hours)*/{
           Session.setPersistent({"seen_popup": false});
           Session.setPersistent({"popup_timer": new Date().getTime()});
-        } 
+        }
       setTimeout(() => { this.decidePopup() }, 5000);
     }
   }
@@ -165,7 +165,7 @@ export class ClassView extends Component {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
         <div className="container-fluid container-top-gap-fix classViewContainer">
-          <Navbar />
+          <Navbar removePlaceholder={true}/>
           <div className="clearfix" />
           <div className="container-width noPadding">
             <div className="col-md-6 col-sm-12 col-xs-12 sticky">
