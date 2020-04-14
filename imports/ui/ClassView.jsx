@@ -165,7 +165,7 @@ export class ClassView extends Component {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
         <div className="container-fluid container-top-gap-fix classViewContainer">
-          <Navbar removePlaceholder={true}/>
+          <Navbar />
           <div className="clearfix" />
           <div className="container-width no-padding">
             <div className="col-md-5 col-sm-12 col-xs-12 sticky no-padding navbar-margin">
