@@ -20,10 +20,10 @@ import PropTypes from 'prop-types';
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {
+    const removePH = this.props.removePlaceholder
     return (
       <div className="row navbar">
         <div className="col-md-2 col-sm-2 col-xs-2">
@@ -32,10 +32,14 @@ export default class Navbar extends Component {
           </a>
         </div>
         <div className={"col-md-9 col-sm-9 col-xs-9"}>
-          <SearchBar contrastingResultsBackground={true} isInNavbar={true}/>
+          <SearchBar contrastingResultsBackground={true} removePlaceholder={removePH ? removePH : false} />
         </div>
       </div>
     )
   }
 
 }
+
+Navbar.propTypes = {
+  removePlaceholder: PropTypes.bool, // optional. True if placeholder text in searchbar should be removed
+};
