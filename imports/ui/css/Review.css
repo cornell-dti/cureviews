@@ -8,7 +8,7 @@
 
 #rectangle, .review {
   background: #FFFFFF;
-  border: 0.625px solid #B7D8FF;
+  border: 0.625px solid #D0E5F5;
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 32px;
@@ -90,13 +90,12 @@
 }
 
 .review-date {
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
-  line-height: 15px;
+  font-weight: var(--regular-weight);
   color: #9B9B9B;
-  display:inline;
+  padding-top: 10px;
+  padding-left: 18px;
 
 }
 
@@ -203,7 +202,6 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.01em;
   color: #000000;
   text-align: left;
   padding: 5px 0 10px 0;
@@ -281,14 +279,12 @@ reviewNumbers p{
 }
 
 .showMoreText{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 15px;
-  line-height: 19px;
-  /* or 104% */
-
-  letter-spacing: -0.225605px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
 
   color: #0076FF;
 }
@@ -299,5 +295,5 @@ button{
 }
 
 .lastRow{
-  padding-left:36%;
+  /* padding-left:36%; */
 }

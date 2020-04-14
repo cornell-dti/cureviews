@@ -150,8 +150,7 @@ export default class Review extends Component {
               <p className={this.professor_title_class}>Professor: </p>
               {/*The following adds a grey professor box for each professor listed in the review*/}
               {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<p className={this.professor_text_class} key={index}>
-                {prof}</p>)) : <div>
-                  <span className={this.professor_text_class}>N/A</span></div>}
+                {prof}</p>)) : <span className={this.professor_text_class}>N/A</span>}
             </div>
 
             <div className="row noLeftRightSpacing review-padding-left">
@@ -163,14 +162,14 @@ export default class Review extends Component {
                   anchorClass='showMoreText'
                   onClick={this.executeOnClick}
                   expanded={this.state.expanded}
-                  width={615}
+                  width={500}
                 >
                   {review.text}
                 </ShowMoreText>
               </div>
               <div className="row lastRow">
 
-                <p className="review-date"><i>{this.reviewToDate(review)}</i></p>
+                <p className="col-md-offset-4 review-date"><i>{this.reviewToDate(review)}</i></p>
                 {!this.props.isPreview &&
                   <button className= //if the review has been liked, the button will be filled in.
                     {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
@@ -184,7 +183,6 @@ export default class Review extends Component {
                 }
               </div>
             </div>
-
           </div>
 
         </div>

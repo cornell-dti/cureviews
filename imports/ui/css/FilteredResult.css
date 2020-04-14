@@ -13,19 +13,21 @@
 .result-card-title{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: var(--semi-bold-weight);
   font-style: normal;
-  font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.1px;
-  color: #0076FF;;
+  color: #0076FF;
   margin-bottom: 7px;
 
 }
 
 .result-card-subtitle{
-  font-size: 12px;
   font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #777777;
   margin-top: 0px;
   margin-bottom:15px
 }
@@ -40,12 +42,11 @@
 }
 
 .result-card-rating-text{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 16px;
-  line-height: 7px;
-  letter-spacing: -0.0819218px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
   color: #000000;
 }
 

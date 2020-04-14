@@ -279,10 +279,10 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
           <div>
-            <div className="col-md-2 col-sm-2 col-xs-2 filters" >
+            <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
-                <p className="filter-sub-title"> Semester</p>
+                <p className="filter-sub-title">Semester</p>
                 {this.renderSemesterCheckboxes()}
               </div>
               <div className="filter-sub">

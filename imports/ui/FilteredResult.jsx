@@ -98,16 +98,16 @@ export default class FilteredResult extends Component {
 
   render() {
     let theClass = this.props.course;
-
+    let offered = lastOfferedSems(theClass);
     return (
       <li className={this.props.selected === true ? "result-card result-card-clicked" : " result-card"}
         onClick={() => { this.props.previewHandler(this.state.course, this.state.current_index) }}>
         <div className="">
           <h1 className="result-card-title">
-            <strong>{theClass.classTitle}</strong>
+            {theClass.classTitle}
           </h1>
-          <h2 className="result-card-subtitle mb-2 text-muted">
-            {theClass.classSub.toUpperCase() + " " + theClass.classNum}
+          <h2 className="result-card-subtitle">
+            {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
           </h2>
           <div className="result-card-rating-text">
             <p className="result-card-sort-by-text">

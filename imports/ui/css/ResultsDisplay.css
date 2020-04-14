@@ -1,71 +1,105 @@
 /* Filter Sidebar Styling */
 
-.filters{
+.filter-container{
   font-family: "Source Sans Pro", sans-serif;
   padding-left: 95px;
-  padding-top: 65px;
+  padding-top: 28px;
   line-height: 37px;
 }
 
 .filter-title{
-  margin-bottom: 20px;
-  width: 74px;
-  height: 8px;
-  left: 79px;
-  top: 223px;
-
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  line-height: 9px;
-
-  display: flex;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
   align-items: center;
-  letter-spacing: -0.104749px;
   text-decoration-line: underline;
-
+  margin-bottom: 23px;
   color: #000000;
 }
-
 
 .filter-sub-category{
   padding-bottom: 20px;
 }
+
 .filter-sub-title{
-  width: 84px;
-  height: 9px;
-  left: 80px;
-  top: 265px;
-
-  padding-top: 15px;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
-  line-height: 9px;
-  /* identical to box height, or 48% */
-
-  display: flex;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
   align-items: center;
-  letter-spacing: -0.104749px;
-
   color: #807B7B;
 }
 
 .filter-checkbox-label{
   font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: normal;
+  align-items: center;
+  color: #000000;
   margin: 0px 0px 0px 10px;
 }
 
-.checkbox {
 
-}
 /* Class Results List Styling */
+
+.results-sort-by-container{
+  display: inline-flex;
+  margin-top: 10px
+}
+
+.results-sort-by-select{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: normal;
+  border-color: transparent;
+  border: none;
+  outline: none;
+  background-color: #f4f9fe;
+  color: #0076FF;
+}
+
+.results-sort-by-text{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: normal;
+  text-decoration-line: underline;
+  margin: 0;
+  color: #807B7B;
+}
+
+.results-classes-list{
+  overflow-y: scroll !important;
+  height: 90%;
+  padding-right: 30px;
+}
+
+.results-classes-list::-webkit-scrollbar {
+  width: 8px;
+  padding-right:8px;
+}
+
+.results-classes-list::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #ECECEC;
+}
+
+.results-classes-list::-webkit-scrollbar-thumb {
+  background: #807B7B;
+  height: 332.25px;
+  border-radius: 13.5731px;
+}
 
 .results{
   height: calc(100vh - 189px);
-  overflow:hidden
+  overflow: hidden;
   padding-left: 0px;
   margin-left: 0px;
 }
@@ -81,29 +115,9 @@
 }
 
 .loading-margin-top{
-  margin-top: 55px;
+  margin-top: 52px;
 }
 
-.results-classes-list::-webkit-scrollbar {
-  width: 8px;
-  height: 332.25px;
-  padding-right:8px;
-}
-
-.results-classes-list::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px #ECECEC;;
-}
-
-.results-classes-list::-webkit-scrollbar-thumb {
-  background: #807B7B;
-  border-radius: 13.5731px;
-}
-
-.results-classes-list{
-  overflow-y: scroll !important;
-  height: 90%;
-  padding-right:2%;
-}
 
 .results-num-classes-found{
   font-stretch: normal;
@@ -118,42 +132,7 @@
   font-size: 18px;
 }
 
-.results-sort-by-container{
-  display: inline-flex;
-  margin-top:10px
-}
 
-.results-sort-by-text{
-  font-stretch: normal;
-  letter-spacing: 0.001em;
-  margin: 0 0 0 auto;
-  width: 74.83px;
-  left: 536px;
-  top: 217px;
-
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 19px;
-
-  text-decoration-line: underline;
-
-  color: #807B7B;
-
-}
-
-.results-sort-by-select{
-  font-family: "Source Sans Pro";
-  background-color: #f4f9fe;
-  border-color: transparent;
-  border: 0px;
-  outline: none;
-  font-size: 18px;
-  color: #0076FF;
-  font-weight: 600;
-  letter-spacing: -0.225605px;
-}
 
 .no-results{
   width: auto;
@@ -176,6 +155,6 @@ ul {
 
 .preview{
   overflow: hidden;
-  padding-top: 50px;
+  padding-top: 28px;
   padding-right: 130px;
 }

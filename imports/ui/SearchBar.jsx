@@ -308,7 +308,7 @@ export default class SearchBar extends Component {
     );
     else return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
-        <div className="col-lg-12 col-md-12 col-sm-12 searchbar">
+        <div className={"col-lg-12 col-md-12 col-sm-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
           <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “CALS” or “CS 2110”" autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
@@ -327,5 +327,6 @@ SearchBar.propTypes = {
   loading: PropTypes.bool, // optional
   isPopup: PropTypes.bool, // true if rendered in pop-up
   formPopupHandler: PropTypes.func, //handler to set state for form if in popup
-  contrastingResultsBackground: PropTypes.bool // Used to display contrasting background for search results
+  contrastingResultsBackground: PropTypes.bool, // Used to display contrasting background for search results
+  isInNavbar: PropTypes.bool // Used to make slight stylistic changes to searchbar in the navbar context
 };

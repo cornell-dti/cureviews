@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
 import Gauge from './Gauge.jsx';
 import Review from './Review.jsx';
+import { lastOfferedSems } from './js/CourseCard.js';
 
 /*
   Preview Card component.
@@ -135,7 +136,7 @@ export default class PreviewCard extends Component {
 
   render() {
     let theClass = this.props.course;
-
+    const offered = lastOfferedSems(theClass);
     return (
       <div className="preview-panel">
         <div className="row">
@@ -146,22 +147,22 @@ export default class PreviewCard extends Component {
               </a>
             </p>
             <p className="preview-class-info">
-              {theClass.classSub.toUpperCase() + " " + theClass.classNum}
+              {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
             </p>
           </div>
         </div>
         <div className="row gaugeHolder">
 
           <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-            <Gauge width="16vw" height="16vh" rating={parseFloat(this.state.rating)} text="Overall"/>
+            <Gauge width="16vw" height="10vh" rating={parseFloat(this.state.rating)} text="Overall"/>
 
           </div>
           <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-            <Gauge width="16vw" height="16vh" rating={parseFloat(this.state.diff)} text="Difficulty"/>
+            <Gauge width="16vw" height="10vh" rating={parseFloat(this.state.diff)} text="Difficulty"/>
 
           </div>
           <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-            <Gauge width="16vw" height="16vh" rating={parseFloat(this.state.workload)} text="Workload"/>
+            <Gauge width="16vw" height="10vh" rating={parseFloat(this.state.workload)} text="Workload"/>
 
           </div>
 
