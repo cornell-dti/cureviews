@@ -127,12 +127,10 @@ export class CourseReviews extends Component {
             </div>
           </div>  
         </div>
-        <div className="panel-default" id="reviewpanel">
-          <div>
-            <ul className="coursereviews-review-ul">
-              {this.state.reviews}
-            </ul>
-          </div>
+        <div>
+          <ul className="coursereviews-review-ul">
+            {this.state.reviews}
+          </ul>
         </div>
       </div>
     );

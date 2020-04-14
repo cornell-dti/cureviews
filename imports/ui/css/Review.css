@@ -1,88 +1,71 @@
 /* Individual Review Styling */
 
-
-.panel-body-3 {
-  margin: auto;
-  padding: 8px 50px 5px 50px;
+.noLeftRightSpacing{
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  display:block;
 }
 
-#rectangle, .review {
+.review-container{
   background: #FFFFFF;
   border: 0.625px solid #D0E5F5;
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 32px;
+  margin-right: 25px;
 }
 
-.review-numbers{
-  margin-bottom: 8px;
-  display: inline-flex;
-  width: 100%;
+.review-report {
+  color: #9b9b9b;
+  margin-top: 14px;
+  float: right;
 }
 
-.review-number-label{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  white-space: nowrap;
-  margin: 0;
-  padding: 5px 5%;
+.review-report:hover {
+  color: #4990e2;
+}
+
+.review-body-container {
+  margin: auto;
+  padding: 8px 50px 5px 50px;
+}
+
+.review-number-labels-container{
+  padding:0px;
 }
 
 .review-number-text{
-  height: 100%;
-  text-align: center;
+  padding-right: 40%;
+  float: right;
+}
+
+.review-professor-container{
+  margin-bottom:8px;
+}
+
+.review-professor-label{
+  border-radius: 5px;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.01em;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-}
-
-
-
-.professor-text, .professor-title{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 18px;
-  padding-left:1%;
-  color: #000000;
+  margin: 5px 0 6px 0;
+  display: inline;
 }
 
 .review-professor-text{
-  border-radius: 5px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  text-align: center;
-  background-color: #E0F0FF;
-  padding-left: 2px;
-  padding-right: 2px;
-  margin: 5px 0 6px 0;
+  display: inline;
 }
 
 .review-text {
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
   line-height: 19px;
   color: #000000;
   text-align: left;
@@ -96,59 +79,30 @@
   color: #9B9B9B;
   padding-top: 10px;
   padding-left: 18px;
+  display: inline;
 
 }
 
+.review-upvote, .review-voted{
+  float: right;
+  color: #4990e2;
+}
+
 .upvote-text{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
+  font-weight: var(--regular-weight);
   line-height: 15px;
   display: inline;
   align-items: center;
   text-align: right;
-
+  margin-left: 5px;
   color: #807B7B;
 }
 
-.review-report, .review-upvote, .review-voted {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  text-align: center;
-  line-height: 1.42857;
-  background-color: transparent;
-  float: right;
-  border-color: transparent;
+.review-voted .upvote-text{
+  color: #0076FF;
 }
-
-.review-report {
-  color: #9b9b9b;
-  padding-top: 14px;
-}
-
-.review-upvote{
-  color: #4990e2;
-  margin-right: 0px;
-  padding-right: 8px;
-  border-radius: 30px;
-}
-
-.review-voted{
-  color: #fff;
-  background-color:#4990e2;
-  border-color: #4990e2;
-  margin-right: 0px;
-  padding-right: 0px;
-  border-radius: 30px;
-}
-
-.review-report:hover {
-  color: #4990e2;
-}
-
-
 
 /* Preview Review Styling */
 
@@ -187,14 +141,6 @@
   font-size: 20px;
 }
 
-
-
-.review-padding-left{
-  /* padding-left: 50px !important; */
-}
-
-
-
 .review-professor-title-preview {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
@@ -208,16 +154,19 @@
 }
 
 .review-number-label, .review-number-text{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
-  line-height: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
 
   color: #000000;
 }
 
-
+.review-number-label{
+  margin-bottom: 18px;
+}
 
 .review-number-label-preview{
   font-family: "Source Sans Pro", sans-serif;
@@ -237,29 +186,11 @@
   padding-bottom:12%;
 }
 
-.reviewNumbers{
-  padding:0px;
-  display: block;
-  margin-right:11px;
-}
-
-reviewNumbers p{
-  display:block;
-}
-
 .space-review-buttons {
   margin-left: 5px;
 }
 
-.noLeftRightSpacing{
-  padding-left: 0;
-  padding-right: 0;
-  margin-left: 0;
-  margin-right: 0;
-  display:block;
-}
-
-.prof p, .btn-lg, .upvote-text{
+.upvote-text{
   display:inline;
 }
 
@@ -267,10 +198,6 @@ reviewNumbers p{
   padding:2px;
   font-size:12px;
   padding-left:65%;
-}
-
-.prof{
-  margin-bottom:8px;
 }
 
 
@@ -292,8 +219,4 @@ reviewNumbers p{
 button{
   background-color:#FFFFFF;
   border:none;
-}
-
-.lastRow{
-  /* padding-left:36%; */
 }

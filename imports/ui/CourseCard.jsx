@@ -80,10 +80,10 @@ export class CourseCard extends Component {
 
     return (
       <div className="coursecard-container">
-        <h1 className="coursecard-class-title top-margin">
+        <h1 className="coursecard-class-title">
           {theClass.classTitle}
         </h1>
-        <p className="coursecard-class-info top-margin">
+        <p className="coursecard-class-info">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
         </p>
         <Form onChange={this.onFormChange} course={theClass} inUse={true}/>

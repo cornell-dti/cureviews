@@ -289,7 +289,7 @@ export default class Form extends Component {
   validateInputs(text) {
     //ensure there are no illegal characters
     // TODO un-comment the next line
-    const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
+    // const regex = new RegExp(/^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i);
     const errs = {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
@@ -376,7 +376,7 @@ export default class Form extends Component {
             <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
               <p className="form-header-text">Leave a Review</p>
              {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
-                  <div className="row" id="reviewTextRow">
+                  <div className="row form-textbox-row">
                     <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
                       onChange={(event) => this.handleTextChange(event)}
                        />
@@ -387,7 +387,7 @@ export default class Form extends Component {
                   
                   <div className="row">
                       <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
-                          <div className="form-label prof">Professor</div>
+                          <div className="form-label form-professor-label">Professor</div>
                       </div>
                       <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
                           <Select className='react-select-container' classNamePrefix="react-select" value={this.state.selectedProfessors}

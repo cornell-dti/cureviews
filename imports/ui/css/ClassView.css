@@ -1,52 +1,36 @@
 /* Classview Layout Styling */
 
-.right-panel-container {
-    padding: 20px 50px 0;
-    height: 100%;
-    background-color: rgba(74,74,74,.06);
-}
-
-.classViewsContainer{
-  overflow:hidden;
-}
-
-#error {
-    font-size: 50px;
-    color: black;
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 170px;
-
-}
-
-.class-loading{
-    padding-top: 300px;
-}
-
 .container-top-gap-fix{
   padding-top: 0 !important;
   padding: 0;
 }
 
-.noPadding {
+.no-padding{
   padding: 0 !important;
+}
+
+.navbar-margin{
+  margin-top: 45px;
 }
 
 .classview-gauge-container{
   border-radius: 10px;
   background-color: #ffffff;
-  margin-top: 65px;
   padding-top: 20px;
   margin-right: 90px;
 }
 
 .classview-reviews-container{
-  margin-top: 35px;
   margin-right: 80px;
+  margin-top: 30px;
+}
+
+.classview-loading{
+  padding-top: 300px;
 }
 
 /* Popup Styling */
-/* The following was not yet refactored and will be when pop-up component is re-implemented */
+/* The following was not yet refactored and will be when pop-up component is re-implemented -Julian (4/14/2020) */
 
 .rodal-dialog{
   border-radius: 30px;

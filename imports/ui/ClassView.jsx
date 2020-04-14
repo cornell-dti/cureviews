@@ -164,26 +164,26 @@ export class ClassView extends Component {
     if (this.state.selectedClass) {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
-        <div className="container-fluid container-top-gap-fix classViewContainer">
+        <div className="container-fluid container-top-gap-fix">
           <Navbar />
           <div className="clearfix" />
-          <div className="container-width noPadding">
-            <div className="col-md-5 col-sm-12 col-xs-12 sticky noPadding">
+          <div className="container-width no-padding">
+            <div className="col-md-5 col-sm-12 col-xs-12 sticky no-padding navbar-margin">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-7 col-sm-12 col-xs-12 noPadding">
+            <div className="col-md-7 col-sm-12 col-xs-12 no-padding navbar-margin">
               <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="11vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
+                  <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="11vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
+                  <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="11vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
+                  <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
-              <div className="row noPadding classview-reviews-container">
+              <div className="row no-padding classview-reviews-container">
                 <CourseReviews  courseId={this.state.selectedClass._id} />
               </div>
             </div>
@@ -219,7 +219,7 @@ export class ClassView extends Component {
       // While a class is being searched for, render a loading animation.
       const Loading = require('react-loading-animation');
       return (
-        <div className="class-loading">
+        <div className="classview-loading">
           <Loading />;
               </div>
       )
