@@ -24,6 +24,7 @@ export default class Review extends Component {
       expanded: false,
       height: this.props.isPreview ? 206 : 196
     }
+    this.review_body_container_class = props.isPreview ? "review-body-container-preview" : "review-body-container";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
     this.review_professor_label_class = props.isPreview ? "review-professor-label-preview" : "review-professor-label";
@@ -121,23 +122,23 @@ export default class Review extends Component {
             </div>
           </div>
         }
-        <div className="row review-body-container">
-          <div className="col-md-3 review-number-labels-container">
+        <div className={"row " +  this.review_body_container_class}>
+          <div className="col-lg-3 col-md-3 col-sm-3 ">
 
             <p className={this.review_number_label_class}>Overall 
-                              <span className="review-number-text">
+                              <span className={this.review_number_text_class}>
                                 {(review.rating != undefined) ? review.rating : review.quality}
                               </span>
             </p>
 
             <p className={this.review_number_label_class}>Difficulty 
-                                <span className="review-number-text">
+                                <span className={this.review_number_text_class}>
                                   {review.difficulty}
                                 </span>
             </p>
 
             <p className={this.review_number_label_class}>Workload 
-                                <span className="review-number-text">
+                                <span className={this.review_number_text_class}>
                                   {(review.workload) ? review.workload : "-"}
                                 </span>
             </p>
