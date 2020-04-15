@@ -51,10 +51,6 @@
   height:55vh;
 }
 
-.review{
-  margin-right:25px;
-}
-
 .coursereviews-review-ul::-webkit-scrollbar {
   width: 8px;
   padding-right:8px;

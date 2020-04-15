@@ -3,36 +3,47 @@
   /* padding-top: 6%; */
   margin-bottom: 40px;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.001em;
-  color: #356BD0;
+  color: #0076FF;
+  margin-bottom: 25px;
 }
 
 .homepage-text-padding{
-  padding-left: 10.5%;
+  padding-left: 120px;
+  padding-top: 10px;
 }
 
 .scale-logo-homepage{
-  height: 75px;
+  height: 100px;
   width: auto;
-  margin: 50px 0px 78px 71px;
+  margin: 120px 0px 0px 120px;
 }
 
 .background-gradient{
-  background-image:url("/slope2.svg"),linear-gradient(180deg, #68A5EC -80%, rgba(168, 211, 245, .85) 40%, #A8D3F5 80%);
+  
+  background-image: url("/slope.svg"), linear-gradient(180deg, 
+                                                      rgba(104, 165, 236, 0.65) 0%, 
+                                                      rgba(104, 165, 236, 0.1) 77.1%, 
+                                                      rgba(168, 211, 245, 0.7) 100%);
   background-repeat: no-repeat;
   background-size: 101%;
-  background-position: bottom; 
+  background-position-y: 103%;
+}
+
+.dti-logo{
+  position: absolute;
+  bottom: 10px;
+  right: 30px;
 }
 
  /* Needed so that background is flush against bottom */
 .full-height{
-  min-height: 100.1%;
-  height: 100.09%;
+  min-height: 101.1%;
+  height: 101.09%;
   background-color: #F4F9FE;
 }
 /* I believe this is only used in recentreview.jsx so will remove soon TODO */

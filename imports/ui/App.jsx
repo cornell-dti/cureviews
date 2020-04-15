@@ -19,7 +19,7 @@ export default class App extends Component {
     return (
       <div className="container-fluid full-height background-gradient">
         <div className="row">
-          <img src='/logo.png' className="img-responsive scale-logo-homepage" alt="CU Reviews Logo" />
+          <img src='/logo.svg' className="img-responsive scale-logo-homepage" alt="CU Reviews Logo" />
         </div>
         <div className="row homepage-text-padding">
           <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
@@ -28,6 +28,9 @@ export default class App extends Component {
             </div>
             <SearchBar />
           </div>
+        </div>
+        <div className="">
+          <img src='/dti_logo.png' className="dti-logo" alt="DTI Logo" />
         </div>
       </div>
     );

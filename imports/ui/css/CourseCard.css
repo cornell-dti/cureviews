@@ -1,5 +1,4 @@
 .coursecard-container {
-  padding-top: 22px;
   padding-left: 70px;
 }
 
@@ -12,7 +11,6 @@
   line-height: normal;
   letter-spacing: -0.13px;
   color: #000000;
-  margin-top: 45px;
 }
 
 .coursecard-class-info {

@@ -93,7 +93,7 @@ export class Results extends Component {
   render() {
     return (
       <div className="full-height bg-color">
-        <Navbar removePlaceholder={true} />
+        <Navbar />
         <ResultsDisplay courses={this.state.courseList}
         loading={this.state.loading} type={this.props.match.params.type}/>
       </div>

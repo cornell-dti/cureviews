@@ -24,11 +24,12 @@ export default class Review extends Component {
       expanded: false,
       height: this.props.isPreview ? 206 : 196
     }
+    this.review_body_container_class = props.isPreview ? "review-body-container-preview" : "review-body-container";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
-    this.professor_title_class = props.isPreview ? "review-professor-title-preview" : "review-professor-title";
+    this.review_professor_label_class = props.isPreview ? "review-professor-label-preview" : "review-professor-label";
+    this.review_professor_text_class = props.isPreview ? "review-professor-text-preview" : "review-professor-text";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
-    this.professor_text_class = props.isPreview ? "professor-text-preview" : "professor-text";
     this.reviewToDate = this.reviewToDate.bind(this);
     this.executeOnClick = this.executeOnClick.bind(this);
   }
@@ -105,11 +106,8 @@ export default class Review extends Component {
 
   render() {
     const review = this.props.info;
-    console.log("prop" + this.props.likes);
-    // console.log(review);
-    // console.log(review.rating);
     return (
-      <div className="review" style={this.expanded ? { margin: 32 - this.state.height / 80 } : {}} >
+      <div className="review-container" style={this.expanded ? { margin: 32 - this.state.height / 80 } : {}} >
         {
           !this.props.isPreview &&
           <div className="row noLeftRightSpacing">
@@ -124,67 +122,68 @@ export default class Review extends Component {
             </div>
           </div>
         }
-        <div className="panel-body-3">
-          <div className="col-md-2 reviewNumbers">
+        <div className={"row " +  this.review_body_container_class}>
+          <div className="col-lg-3 col-md-3 col-sm-3 ">
 
-            <p className={this.review_number_label_class}>Overall</p>
+            <p className={this.review_number_label_class}>Overall 
+                              <span className={this.review_number_text_class}>
+                                {(review.rating != undefined) ? review.rating : review.quality}
+                              </span>
+            </p>
 
-            <p className={this.review_number_label_class}>Difficulty</p>
+            <p className={this.review_number_label_class}>Difficulty 
+                                <span className={this.review_number_text_class}>
+                                  {review.difficulty}
+                                </span>
+            </p>
 
-            <p className={this.review_number_label_class}>Workload</p>
-
+            <p className={this.review_number_label_class}>Workload 
+                                <span className={this.review_number_text_class}>
+                                  {(review.workload) ? review.workload : "-"}
+                                </span>
+            </p>
           </div>
-          <div className="col-md-2" style={this.state.expanded ? { height: this.state.height - 60 } : { height: this.state.height - 80 }}>
-            <div>
-              <p className={this.review_number_text_class} >{(review.rating != undefined) ? review.rating : review.quality}</p>
-            </div>
-            <div>
-              <p className={this.review_number_text_class} >{review.difficulty}</p>
-            </div>
-            <div>
-              <p className={this.review_number_text_class} >{(review.workload) ? review.workload : "-"}</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="noLeftRightSpacing prof">
-              <p className={this.professor_title_class}>Professor: </p>
+          <div className="col-md-9">
+            <div className="row noLeftRightSpacing review-professor-container">
+              <p className={this.review_professor_label_class}>Professor: </p>
               {/*The following adds a grey professor box for each professor listed in the review*/}
-              {(review.professors && review.professors.length !== 0) ? review.professors.map((prof, index) => (<p className={this.professor_text_class} key={index}>
-                {prof}</p>)) : <div>
-                  <span className={this.professor_text_class}>N/A</span></div>}
+              {(review.professors && review.professors.length !== 0) ? 
+                  review.professors.map((prof, index) => 
+                      (<p className={this.review_professor_text_class} key={index}> 
+                          {index > 0 ? ", " : ""}{prof}</p>)) 
+                : <span className={this.professor_text_class}>N/A</span>
+              }
             </div>
 
-            <div className="row noLeftRightSpacing review-padding-left">
+            <div className="row noLeftRightSpacing">
               <div className={this.review_text_class} >
                 <ShowMoreText
-                  lines={2}
+                  lines={3}
                   more='Show more'
                   less='Show less'
                   anchorClass='showMoreText'
                   onClick={this.executeOnClick}
                   expanded={this.state.expanded}
-                  width={615}
                 >
                   {review.text}
                 </ShowMoreText>
               </div>
-              <div className="row lastRow">
+              <div className="row">
 
                 <p className="review-date"><i>{this.reviewToDate(review)}</i></p>
                 {!this.props.isPreview &&
-                  <button className= //if the review has been liked, the button will be filled in.
-                    {(this.state.liked == false ? "upvote btn-lg" : "voted btn-lg")}
+                  <button className =
+                    {(this.state.liked == true ? "review-voted" : "review-upvote")}
                     onClick={() => {
                       this.increment(review);
                     }}>
-                    <img src="/handClap.svg"></img>
+                    <img src={(this.state.liked == true ? "/handClap_liked.svg" : "/handClap.svg")}></img>
                     <p className="upvote-text">Helpful
                         ({this.state.numLikes})</p>
                   </button>
                 }
               </div>
             </div>
-
           </div>
 
         </div>
