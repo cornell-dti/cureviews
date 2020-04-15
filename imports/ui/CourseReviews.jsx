@@ -35,6 +35,14 @@ export class CourseReviews extends Component {
     });
   }
 
+  componentDidUpdate(prevProps){
+    if(prevProps!=this.props)
+    Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
+      this.setState({reviews:this.renderReviews(reviews)});
+      this.sort("helpful");
+    });
+  }
+
 
   // Handles selecting different sort bys
   handleSelect = (event) => {
@@ -150,6 +158,7 @@ export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', props.courseId, 1, 0, ""); //get only visible unreported reviews for this course
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
+  console.log(reviews);
   return {
     reviews, loading,
   };
