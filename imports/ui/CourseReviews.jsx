@@ -31,7 +31,7 @@ export class CourseReviews extends Component {
   componentDidMount(){
     Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
       this.setState({reviews:this.renderReviews(reviews)});
-      this.sort("helpful");
+      this.sort(this.state.comparator);
     });
   }
 
@@ -39,7 +39,7 @@ export class CourseReviews extends Component {
     if(prevProps!=this.props)
     Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
       this.setState({reviews:this.renderReviews(reviews)});
-      this.sort("helpful");
+      this.sort(this.state.comparator);
     });
   }
 
