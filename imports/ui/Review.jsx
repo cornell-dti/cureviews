@@ -145,8 +145,8 @@ export default class Review extends Component {
           </div>
           <div className="col-md-9">
             <div className="row noLeftRightSpacing review-professor-container">
-              <p>  <span className={this.review_professor_label_class}>Professor: </span>
-                {/*The following adds a grey professor box for each professor listed in the review*/}
+              <p>
+                <span className={this.review_professor_label_class}>Professor: </span>
                 {(review.professors && review.professors.length !== 0) ?
                     review.professors.map((prof, index) =>
                         (<span className={this.review_professor_text_class} key={index}> 
