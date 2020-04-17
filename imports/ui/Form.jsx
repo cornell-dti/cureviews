@@ -51,9 +51,9 @@ export default class Form extends Component {
     };
 
     //store all currently selected form values in the state.
-    
+
     this.openByDefault = true;
-    
+
     this.state = {
       dropdown: '', //empty as opposed to 'open'
       visible: false,
@@ -129,7 +129,7 @@ export default class Form extends Component {
       for(let j=i; j>this.state[metric]; j--){
         this.setState({[metric+" "+j]:!currState});
       }
-      
+
       for(let j=i+1; j<=5; j++){
         this.setState({[metric+" "+j]:false});
       }
@@ -161,11 +161,11 @@ export default class Form extends Component {
       let boxes=[];
       for(let i=1; i<=max; i++){
           let isHovered=this.state[metric+" "+i] ? "boxHover" : "";
-          boxes.push(<div className="metricBoxWrapper" 
+          boxes.push(<div className="metricBoxWrapper"
           onClick={() => this.clickMetricBox(metric, i)}  onMouseEnter={() => this.handleBoxHoverEnter(metric, i)} onMouseLeave={() => this.handleBoxHoverLeave(metric, i)}>
               <div id={metric+" "+i} className={this.state[metric]<i ? "metricBox inactiveBox "+isHovered: "metricBox activeBox"}></div>
               <p className={this.state[metric]<i ? "inactiveText": "activeText"}>{i}</p>
-              
+
           </div>)
       }
 
@@ -384,7 +384,7 @@ export default class Form extends Component {
                     <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                   </div>
 
-                  
+
                   <div className="row">
                       <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
                           <div className="form-label form-professor-label">Professor</div>
@@ -399,7 +399,7 @@ export default class Form extends Component {
                           />
                       </div>
                   </div>
-                  
+
                   <div className="row">
                     <div className="col-md-12 col-sm-12 col-xs-12">
                       <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
@@ -407,7 +407,7 @@ export default class Form extends Component {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="row">
                       <div className="col-md-3 col-sm-3 col-xs-3">
                         <h1 className="form-label">Overall</h1>
@@ -446,7 +446,7 @@ export default class Form extends Component {
                       <div className="metricDescR">Lots of work</div>
                     </div>
                   </div>
-                  
+
                   <div className="row form-button-top-bottom-spacing">
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <button disabled={!isEnabled} className="form-postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Submit</button>
@@ -459,7 +459,7 @@ export default class Form extends Component {
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
             <div id="modal-background">
               <div id="modal-top">
-                <img src='/logo2x.png' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+                <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
                 <p id="modal-title" className="center-block">Email Verification</p>
               </div>
               <div id="">
@@ -494,4 +494,3 @@ Form.propTypes = {
   inUse: PropTypes.bool, //used to deactivate form in background if pop-up is in focus
   onChange: PropTypes.func
 };
-
