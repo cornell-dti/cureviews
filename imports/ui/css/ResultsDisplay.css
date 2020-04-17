@@ -104,8 +104,9 @@
   margin-left: 0px;
 }
 
-.no-left-margin{
-  margin-left:0px;
+.noLeftRightMargin{
+  margin-left:0;
+  margin-right: 0;
 }
 
 .loading-results{

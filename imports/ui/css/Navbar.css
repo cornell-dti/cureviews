@@ -1,5 +1,6 @@
 .navbar {
   min-height: 127.43px;
+  width: 100%;
   padding-top: 40px;
   padding-left: 10px;
   padding-right: 10px;
@@ -9,8 +10,7 @@
   position: sticky;
   background: #FFFFFF;
   border: 0;
-  margin-bottom: 0;
-  margin-top: 0;
+  margin: 0;
 }
 
 .scale-logo-navbar{
