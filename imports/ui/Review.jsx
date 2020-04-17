@@ -125,19 +125,19 @@ export default class Review extends Component {
         <div className={"row " +  this.review_body_container_class}>
           <div className="col-lg-3 col-md-3 col-sm-3 ">
 
-            <p className={this.review_number_label_class}>Overall 
+            <p className={this.review_number_label_class}>Overall
                               <span className={this.review_number_text_class}>
                                 {(review.rating != undefined) ? review.rating : review.quality}
                               </span>
             </p>
 
-            <p className={this.review_number_label_class}>Difficulty 
+            <p className={this.review_number_label_class}>Difficulty
                                 <span className={this.review_number_text_class}>
                                   {review.difficulty}
                                 </span>
             </p>
 
-            <p className={this.review_number_label_class}>Workload 
+            <p className={this.review_number_label_class}>Workload
                                 <span className={this.review_number_text_class}>
                                   {(review.workload) ? review.workload : "-"}
                                 </span>
@@ -145,14 +145,15 @@ export default class Review extends Component {
           </div>
           <div className="col-md-9">
             <div className="row noLeftRightSpacing review-professor-container">
-              <p className={this.review_professor_label_class}>Professor: </p>
-              {/*The following adds a grey professor box for each professor listed in the review*/}
-              {(review.professors && review.professors.length !== 0) ? 
-                  review.professors.map((prof, index) => 
-                      (<p className={this.review_professor_text_class} key={index}> 
-                          {index > 0 ? ", " : ""}{prof}</p>)) 
-                : <span className={this.professor_text_class}>N/A</span>
-              }
+              <p>
+                <span className={this.review_professor_label_class}>Professor: </span>
+                {(review.professors && review.professors.length !== 0) ?
+                    review.professors.map((prof, index) =>
+                        (<span className={this.review_professor_text_class} key={index}> 
+                            {index > 0 ? ", " : ""}{prof}</span>))
+                  : <span className={this.professor_text_class}>N/A</span>
+                }
+              </p>
             </div>
 
             <div className="row noLeftRightSpacing">

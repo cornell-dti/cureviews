@@ -169,7 +169,7 @@ export default class PreviewCard extends Component {
         </div>
         <div className="row">
           <div className="col-md-12 col-sm-12 remove-left-padding">
-            {Object.keys(this.state.topReview).length !== 0 &&
+            {this.state.numReviews !== 0 &&
 
               <p className="preview-top-review-label">Top Review</p>
 
@@ -179,14 +179,14 @@ export default class PreviewCard extends Component {
         <div className="row">
           <div className="review-holder">
             {/*If class has review show top review and link*/}
-            {Object.keys(this.state.topReview).length !== 0 &&
+            {this.state.numReviews !== 0 &&
 
               <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
 
             }
 
             {
-              Object.keys(this.state.topReview).length !== 0
+              (this.state.numReviews !== 0 && this.state.numReviews > 1)
               &&
               <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                 See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
@@ -195,14 +195,14 @@ export default class PreviewCard extends Component {
 
             {/*If class has 0 reviews text and button*/}
             {
-              Object.keys(this.state.topReview).length === 0
+              this.state.numReviews === 0
               &&
               <p className="preview-empty-top-review">
                 No reviews yet
               </p>
             }
             {
-              Object.keys(this.state.topReview).length === 0
+              (this.state.numReviews === 0 || this.state.numReviews === 1)
               &&
               <a className="col-md-12 col-sm-12 preview-review-button"
                 href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
