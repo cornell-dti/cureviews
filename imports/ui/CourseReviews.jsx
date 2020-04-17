@@ -158,7 +158,6 @@ export default withTracker(props => {
   const subscription = Meteor.subscribe('reviews', props.courseId, 1, 0, ""); //get only visible unreported reviews for this course
   const loading = !subscription.ready();
   const reviews = Reviews.find({}).fetch();
-  console.log(reviews);
   return {
     reviews, loading,
   };
