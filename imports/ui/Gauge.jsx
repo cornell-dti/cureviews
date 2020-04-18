@@ -49,25 +49,23 @@ export default class Gauge extends Component{
 
   render(){
     return (
-      <div className="h-align">
-        <div style={{width: this.props.width, height: this.props.height}} className="gauge-center">
-          <div className="row">
-            <div className="col-md-5 col-md-offset-1 no-side-padding no-left-margin">
-              <h1 className="gauge-text rating">
-                  {this.state.rating}
-              </h1>
-              <h1 className="gauge-bottom-text">
-                {this.props.text}
-              </h1>
-            </div>
-            <div className="col-md-6 no-side-padding">
-              <div className="gauge-container">
-                <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
-              </div>
+
+        <div className="row noLeftRightMargin gauge-component-container">
+          <div className="col-md-6 col-md-offset-1 no-side-padding gauge-text">
+            <h1 className="gauge-text-top">
+                {this.state.rating}
+            </h1>
+            <h1 className="gauge-text-bottom">
+              {this.props.text}
+            </h1>
+          </div>
+          <div className="col-md-5 no-side-padding gauge-height-center">
+            <div className="gauge-container">
+              <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
             </div>
           </div>
         </div>
-      </div>
+
     )
   }
 }

@@ -171,7 +171,7 @@ export class ClassView extends Component {
             <div className="col-md-5 col-sm-12 col-xs-12 sticky no-padding navbar-margin">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-7 col-sm-12 col-xs-12 no-padding navbar-margin">
+            <div className="col-md-7 col-sm-12 col-xs-12 classview-right-panel-padding navbar-margin">
               <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-12">
                   <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
