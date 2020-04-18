@@ -68,7 +68,7 @@ export function getCrossListOR(course){
 // and madatory/not mandatory status.
 export function getGaugeValues(allReviews) {
   // how much should we factor in virtual reviews? Weighted, 0-1, where 1 is as much a regular reviews
-  const virtualWeightFactor = 0.5;
+  const virtualWeightFactor = 0;
 
   const newState = {};
   // create summation variables for reviews
