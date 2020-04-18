@@ -43,8 +43,7 @@
 
  /* Needed so that background is flush against bottom */
 .full-height{
-  min-height: 101.1%;
-  height: 101.09%;
+  min-height: 100vh;
   background-color: #F4F9FE;
 }
 /* I believe this is only used in recentreview.jsx so will remove soon TODO */
