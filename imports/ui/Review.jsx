@@ -27,8 +27,6 @@ export default class Review extends Component {
     this.review_body_container_class = props.isPreview ? "review-body-container-preview" : "review-body-container";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
-    this.review_professor_label_class = props.isPreview ? "review-professor-label-preview" : "review-professor-label";
-    this.review_professor_text_class = props.isPreview ? "review-professor-text-preview" : "review-professor-text";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.reviewToDate = this.reviewToDate.bind(this);
     this.executeOnClick = this.executeOnClick.bind(this);
@@ -146,10 +144,10 @@ export default class Review extends Component {
           <div className="col-md-9">
             <div className="row noLeftRightSpacing review-professor-container">
               <p>
-                <span className={this.review_professor_label_class}>Professor: </span>
+                <span className="review-professor-label">Professor: </span>
                 {(review.professors && review.professors.length !== 0) ?
                     review.professors.map((prof, index) =>
-                        (<span className={this.review_professor_text_class} key={index}> 
+                        (<span className="review-professor-text" key={index}>
                             {index > 0 ? ", " : ""}{prof}</span>))
                   : <span className={this.professor_text_class}>N/A</span>
                 }

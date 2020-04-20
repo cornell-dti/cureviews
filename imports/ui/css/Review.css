@@ -13,7 +13,7 @@
   border: 0.625px solid #D0E5F5;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-bottom: 32px;
+  margin-bottom: 48px;
   margin-right: 25px;
 }
 
@@ -55,17 +55,22 @@
 
 .review-professor-label{
   border-radius: 5px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
+  font-family: Source Sans Pro;
   font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
   margin: 5px 0 6px 0;
   display: inline;
 }
 
+
 .review-professor-text{
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
   display: inline;
 }
 
