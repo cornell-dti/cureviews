@@ -28,6 +28,7 @@ export default class Review extends Component {
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
+    this.review_body_right_col = props.isPreview ? "review-body-right-col-preview" : "review-body-right-col";
     this.reviewToDate = this.reviewToDate.bind(this);
     this.executeOnClick = this.executeOnClick.bind(this);
   }
@@ -141,7 +142,7 @@ export default class Review extends Component {
                                 </span>
             </p>
           </div>
-          <div className="col-md-10 review-body-right-col">
+          <div className={"col-md-10 " + this.review_body_right_col}>
             <div className="row noLeftRightSpacing review-professor-container">
               <p>
                 <span className="review-professor-label">Professor: </span>

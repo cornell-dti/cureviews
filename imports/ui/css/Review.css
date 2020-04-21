@@ -33,7 +33,7 @@
 }
 
 .review-body-right-col{
-  padding: 0px 0 0 7%;
+  padding: 0px 0 0 5%;
 }
 
 .review-number-labels-container{
@@ -131,12 +131,18 @@
   padding:0px;
 }
 
+
+.review-body-right-col-preview{
+  padding: 0px 0 0 12%;
+}
+
 .review-number-label-preview{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
+  line-height: 27px;
 }
 
 .review-number-text-preview{

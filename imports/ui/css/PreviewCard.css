@@ -29,6 +29,7 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
+  margin: 0;
 }
 
 .preview-class-info{
@@ -90,7 +91,7 @@
 /* Gauge Styling */
 
 .gaugeHolder{
-  margin: 25px 0px 30px 0px;
+  margin: 5px 0px 30px 0px;
 }
 
 .remove-left-padding {
