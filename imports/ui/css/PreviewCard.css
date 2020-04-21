@@ -16,6 +16,7 @@
   background-color: white;
   padding: 40px 70px 25px 79px;
 }
+
 .preview-class-link{
   color: #0076FF;
   font-size: 32px;
@@ -38,7 +39,11 @@
   font-stretch: normal;
   line-height: normal;
   color: #A1A1A1;
-  margin-bottom: 17px;
+  margin-bottom: 31px;
+}
+
+.top-review-text {
+  padding: 0 0 5px 0;
 }
 
 /* Preview Review Styling */
@@ -52,6 +57,8 @@
   line-height: normal;
   color: #807B7B;
 }
+
+
 
 .preview-empty-top-review{
   font-family: "Source Sans Pro", sans-serif;
@@ -73,9 +80,9 @@
   text-align: center;
   border-radius: 10px;
   height: 55px;
-  width: 95%;
+  width: 100%;
   background: #0076FF;
-  padding: 10px;  
+  padding: 10px;
   display: inline-grid;
   align-content: space-evenly;
 }

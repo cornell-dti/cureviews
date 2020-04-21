@@ -27,8 +27,6 @@ export default class Review extends Component {
     this.review_body_container_class = props.isPreview ? "review-body-container-preview" : "review-body-container";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
-    this.review_professor_label_class = props.isPreview ? "review-professor-label-preview" : "review-professor-label";
-    this.review_professor_text_class = props.isPreview ? "review-professor-text-preview" : "review-professor-text";
     this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
     this.reviewToDate = this.reviewToDate.bind(this);
     this.executeOnClick = this.executeOnClick.bind(this);
@@ -123,7 +121,7 @@ export default class Review extends Component {
           </div>
         }
         <div className={"row " +  this.review_body_container_class}>
-          <div className="col-lg-3 col-md-3 col-sm-3 ">
+          <div className="col-lg-2 col-md-2 col-sm-2 noLeftRightPadding">
 
             <p className={this.review_number_label_class}>Overall
                               <span className={this.review_number_text_class}>
@@ -143,15 +141,15 @@ export default class Review extends Component {
                                 </span>
             </p>
           </div>
-          <div className="col-md-9">
+          <div className="col-md-10 review-body-right-col">
             <div className="row noLeftRightSpacing review-professor-container">
               <p>
-                <span className={this.review_professor_label_class}>Professor: </span>
+                <span className="review-professor-label">Professor: </span>
                 {(review.professors && review.professors.length !== 0) ?
                     review.professors.map((prof, index) =>
-                        (<span className={this.review_professor_text_class} key={index}> 
+                        (<span className="review-professor-text" key={index}>
                             {index > 0 ? ", " : ""}{prof}</span>))
-                  : <span className={this.professor_text_class}>N/A</span>
+                  : <span className="review-professor-text">N/A</span>
                 }
               </p>
             </div>
@@ -171,7 +169,7 @@ export default class Review extends Component {
               </div>
               <div className="row">
 
-                <p className="review-date"><i>{this.reviewToDate(review)}</i></p>
+                <p className="review-date">{this.reviewToDate(review)}</p>
                 {!this.props.isPreview &&
                   <button className =
                     {(this.state.liked == true ? "review-voted" : "review-upvote")}
