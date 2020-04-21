@@ -49,6 +49,8 @@
 .coursereviews-review-ul{
   overflow-y:scroll !important;
   height:65vh;
+  padding-right: 30px;
+
 }
 
 .coursereviews-review-ul::-webkit-scrollbar {

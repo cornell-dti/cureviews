@@ -14,7 +14,7 @@
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 48px;
-  margin-right: 25px;
+  /* margin-right: 25px; */
 }
 
 .review-report {
@@ -29,7 +29,11 @@
 
 .review-body-container {
   margin: auto;
-  padding: 8px 50px 5px 50px;
+  padding: 8px 50px 21px 30px;
+}
+
+.review-body-right-col{
+  padding: 0px 0 0 7%;
 }
 
 .review-number-labels-container{
@@ -45,7 +49,7 @@
 }
 
 .review-number-text{
-  padding-right: 40%;
+  padding-right: 23%;
   float: right;
 }
 
@@ -54,11 +58,10 @@
 }
 
 .review-professor-label{
-  border-radius: 5px;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
   line-height: 18px;
   margin: 5px 0 6px 0;
   display: inline;
@@ -66,10 +69,10 @@
 
 
 .review-professor-text{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
   line-height: 18px;
   display: inline;
 }
@@ -121,7 +124,7 @@
 
 .review-body-container-preview {
   margin: auto;
-  padding: 40px 32px 28px 32px;
+  padding: 35px 30px 28px 31px;
 }
 
 .review-number-labels-container{
@@ -137,7 +140,7 @@
 }
 
 .review-number-text-preview{
-  padding-right: 15%;
+  padding-right: 0;
   float: right;
 }
 
@@ -154,10 +157,6 @@
   font-stretch: normal;
   line-height: normal;
   margin: 5px 0 6px 0;
-  display: inline;
-}
-
-.review-professor-text{
   display: inline;
 }
 

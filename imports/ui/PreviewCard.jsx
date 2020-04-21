@@ -167,7 +167,7 @@ export default class PreviewCard extends Component {
           </div>
 
         </div>
-        <div className="row top-review-text">
+        <div className="row top-review-text noLeftRightSpacing">
           <div className="col-md-12 col-sm-12 remove-left-padding">
             {this.state.numReviews !== 0 &&
 
@@ -176,7 +176,7 @@ export default class PreviewCard extends Component {
             }
           </div>
         </div>
-        <div className="row">
+        <div className="row noLeftRightSpacing">
           <div className="review-holder">
             {/*If class has review show top review and link*/}
             {this.state.numReviews !== 0 &&
