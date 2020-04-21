@@ -373,7 +373,6 @@ Meteor.methods({
 
   //Returns true if user matching "netId" is an admin
   tokenIsAdmin: function (token) {
-    return true;
     // console.log("This is token in tokenIsAdmin");
     // console.log(token);
     if (token != undefined) {
