@@ -20,6 +20,15 @@
   text-align: center;
 }
 
+.gauge-text-top-preview {
+  font-size: 50px;
+  height: 65%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: center;
+}
+
 .gauge-text-bottom {
   font-size: 15px;
   height: 35%;

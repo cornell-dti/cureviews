@@ -33,7 +33,7 @@
 }
 
 .review-body-right-col{
-  padding: 0px 0 0 7%;
+  padding: 0px 0 0 9%;
 }
 
 .review-number-labels-container{
@@ -137,6 +137,7 @@
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
+  line-height: 27px;
 }
 
 .review-number-text-preview{
