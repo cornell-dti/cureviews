@@ -174,13 +174,13 @@ export class ClassView extends Component {
             <div className="col-md-7 col-sm-12 col-xs-12 classview-right-panel-padding navbar-margin">
               <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge width="14vw" height="98px" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
               <div className="row no-padding classview-reviews-container">

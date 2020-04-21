@@ -17,6 +17,8 @@ export default class Gauge extends Component{
     this.updateRating=this.updateRating.bind(this);
     this.componentDidUpdate=this.componentDidUpdate.bind(this);
     this.gauge_text_top = props.isInPreviewCard ? "gauge-text-top-preview" : "gauge-text-top";
+    this.gauge_container = props.isInPreviewCard ? "gauge-container-preview" : "gauge-container";
+    this.gauge_text_padding = props.isInPreviewCard ? "gauge-text-padding-preview" : "gauge-text-padding";
 
   }
 
@@ -53,7 +55,7 @@ export default class Gauge extends Component{
     return (
 
         <div className="row noLeftRightMargin gauge-component-container">
-          <div className="col-md-6 no-side-padding gauge-text">
+          <div className={"col-md-6 no-side-padding gauge-text " + this.gauge_text_padding}>
             <h1 className={this.gauge_text_top}>
                 {this.state.rating}
             </h1>
@@ -62,7 +64,7 @@ export default class Gauge extends Component{
             </h1>
           </div>
           <div className="col-md-6 no-side-padding gauge-height-center">
-            <div className="gauge-container">
+            <div className={this.gauge_container}>
               <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
             </div>
           </div>
