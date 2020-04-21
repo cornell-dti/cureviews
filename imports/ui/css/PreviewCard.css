@@ -16,6 +16,7 @@
   background-color: white;
   padding: 40px 70px 25px 79px;
 }
+
 .preview-class-link{
   color: #0076FF;
   font-size: 32px;
@@ -41,6 +42,10 @@
   margin-bottom: 31px;
 }
 
+.top-review-text {
+  padding: 0 0 5px 0;
+}
+
 /* Preview Review Styling */
 
 .preview-top-review-label{
@@ -53,9 +58,7 @@
   color: #807B7B;
 }
 
-.top-review-text {
-  padding: 56px 0px 16px 0px;
-}
+
 
 .preview-empty-top-review{
   font-family: "Source Sans Pro", sans-serif;
