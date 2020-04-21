@@ -45,11 +45,11 @@ Classes.schema = new SimpleSchema({
     crossList: { type: [String], optional: true }, // list of classes that are crosslisted with this one, a string of Classes _id.
     classFull: { type: String }, // full class title to search by, formated as 'classSub classNum: classTitle'
     classSems: { type: [String] }, // list of semesters this class was offered, like ['FA17', 'FA16']
-    classProfessors: { type: [String] }, //list of professors that have taught the course over past semesters
+    classProfessors: { type: [String] }, // list of professors that have taught the course over past semesters
+    classProfessorIds: { type: [String] }, // list of the ids of all the professors that have taught the course over past semesters
     classRating: { type: Number }, // the average class rating from reviews
     classWorkload: { type: Number }, // the average workload rating from reviews
     classDifficulty: { type: Number }, // the average difficulty rating from reviews
-
 });
 
 /* # Users collection.
@@ -65,6 +65,18 @@ Students.schema = new SimpleSchema({
     affiliation: { type: String }, // user affliaition, like ENG or A&S
     token: { type: String }, // random token generated during login process
     privilege: { type: String } // user privilege level
+});
+
+/* # Professors collection.
+   # Holds data about each user. Data is collected via Cornell net-id login.
+*/
+
+export const Professors = new Mongo.Collection('professors');
+Professors.schema = new SimpleSchema({
+    _id: { type: String }, // mongo-generated random id for this document
+    fullName: { type: String }, // the full name of the professor
+    courses: { type: [String] }, // a list of the ids all the courses 
+    major: { type: String }, // professor affliation by probable major
 });
 
 /* # Subjects Collection
@@ -101,14 +113,6 @@ Reviews.schema = new SimpleSchema({
     // The full functional code for counting reviews can be found on the following branch:
     // review-counting-feature
     // memberReferral: { type: String, optional: true }, // DTI member referral for review contest
-});
-
-/* # Validation Collection.
-   # Stores passwords and other sensitive application keys.
-   # Must be manually populated with data when the app is initialized.
-*/
-export const Validation = new Mongo.Collection('validation');
-Validation.schema = new SimpleSchema({
-    _id: { type: String }, // mongo-generated random id for this document
-    adminPass: { type: String }, // admin password to validate against
+    virtual: { type: Boolean }, // whether or not this review is for a class was taught virtually at least part of the time
+                                // added due to COVID-19 situation. Possible future compatility if/when Cornell adds more virtual options
 });

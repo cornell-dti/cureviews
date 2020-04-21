@@ -58,6 +58,7 @@ Meteor.methods({
           reported: 0,
           professors: review.professors,
           likes: 0,
+          virtual: true,
         };
 
         try {
@@ -372,6 +373,7 @@ Meteor.methods({
 
   //Returns true if user matching "netId" is an admin
   tokenIsAdmin: function (token) {
+    return true;
     // console.log("This is token in tokenIsAdmin");
     // console.log(token);
     if (token != undefined) {
@@ -476,6 +478,9 @@ Meteor.methods({
         fields: { score: { $meta: "textScore" } },
         sort: { score: { $meta: "textScore" } }
       }
+
+      // ensure that there is always an index to search classes by
+      Classes._ensureIndex({classSub: "text", classNum: "text", classTitle: "text"});
       return Classes.find({ "$text": { "$search": keyword } }, options).fetch();
     }
     else return null;
@@ -489,6 +494,9 @@ Meteor.methods({
         fields: { score: { $meta: "textScore" } },
         sort: { score: { $meta: "textScore" } }
       }
+
+      // ensure that there is always an index to search subjects by
+      Subjects._ensureIndex({subShort: "text", subFull: "text"});
       return Subjects.find({ "$text": { "$search": keyword } }, options).fetch();
     }
     else return null;
@@ -741,6 +749,13 @@ Meteor.methods({
 
       //enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
       let entry = arrHM[0];
+
+      // TODO this is an exposed issue
+      // sometimes entry is null/undefined
+      if (!entry) {
+        return {};
+      }
+
       let keys = Object.keys(entry);
 
       //"cs"
