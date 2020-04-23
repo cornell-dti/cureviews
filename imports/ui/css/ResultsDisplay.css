@@ -2,7 +2,7 @@
 
 .filter-container{
   font-family: "Source Sans Pro", sans-serif;
-  padding-left: 95px;
+  padding-left: 6%;
   padding-top: 28px;
   line-height: 37px;
 }
@@ -42,8 +42,16 @@
   align-items: center;
   color: #000000;
   margin: 0px 0px 0px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+
+.filter-entry-container{
+  display: flex;
+  margin: 10px 0;
+}
 
 /* Class Results List Styling */
 
@@ -157,5 +165,5 @@ ul {
 .preview{
   overflow: hidden;
   padding-top: 28px;
-  padding-right: 130px;
+  padding-right: 8%;
 }

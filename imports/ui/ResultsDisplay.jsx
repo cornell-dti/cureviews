@@ -226,7 +226,7 @@ export default class ResultsDisplay extends Component {
   renderSemesterCheckboxes() {
     let sems = ["Fall", "Spring"];
     return sems.map((name, index) => (
-      <div key={index}>
+      <div className="filter-entry-container" key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
@@ -242,7 +242,7 @@ export default class ResultsDisplay extends Component {
   renderClassLevelCheckBoxes() {
     let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
     return classLevels.map((name, index) => (
-      <div key={index}>
+      <div className="filter-entry-container" key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"

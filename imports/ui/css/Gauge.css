@@ -43,13 +43,37 @@
 .gauge-text-bottom {
   font-size: 15px;
   text-align: center;
-  margin-top: auto;
-  margin-bottom: auto;
   line-height: 25px;
 }
 
+@media screen and (max-width: 1200px) {
+  
+  .gauge-component-container{
+    height: 50px;
+  }
+  
+  .gauge-text-top {
+    font-size: 40px;
+    text-align: center;
+    line-height: 30px;
+  }
+
+  .gauge-text-top-preview {
+    font-size: 3vw;
+    text-align: center;
+    line-height: 3vw;
+
+  }
+
+  .gauge-text-bottom {
+    font-size: 1.1vw;
+    text-align: center;
+    line-height: 1.5vw;
+  }
+}
+
 .gauge-height-center{
-  height: 95px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -55,7 +55,7 @@ export default class Gauge extends Component{
     return (
 
         <div className="row noLeftRightMargin gauge-component-container">
-          <div className={"col-md-6 col-sm-6 no-side-padding gauge-text-container " + this.gauge_text_padding}>
+          <div className={"col-md-6 col-sm-6 col-xs-6 no-side-padding gauge-text-container " + this.gauge_text_padding}>
             <p className="gauge-text">
                 <span className={this.gauge_text_top}>{this.state.rating}</span>
                 <span className="gauge-text-bottom ">{this.props.text}</span>
@@ -64,7 +64,7 @@ export default class Gauge extends Component{
               
             </h1>
           </div>
-          <div className="col-md-6 col-sm-6 no-side-padding gauge-height-center">
+          <div className="col-md-6 col-sm-6 col-xs-6 no-side-padding gauge-height-center">
             <div className={this.gauge_container}>
               <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
             </div>
