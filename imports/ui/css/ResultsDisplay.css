@@ -110,6 +110,7 @@
   overflow: hidden;
   padding-left: 0px;
   margin-left: 0px;
+  min-width: 250px;
 }
 
 .noLeftRightMargin{
@@ -166,4 +167,5 @@ ul {
   overflow: hidden;
   padding-top: 28px;
   padding-right: 8%;
+  padding-left: 1.5%;
 }

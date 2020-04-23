@@ -317,7 +317,7 @@ export default class ResultsDisplay extends Component {
                 </ul>
               </div>
             </div>
-            <div className="col-md-7 col-sm-7 col-xs-7 preview">
+            <div className="col preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>
