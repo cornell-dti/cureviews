@@ -53,9 +53,9 @@
   }
   
   .gauge-text-top {
-    font-size: 40px;
+    font-size: 3vw;
     text-align: center;
-    line-height: 30px;
+    line-height: 3vw;
   }
 
   .gauge-text-top-preview {

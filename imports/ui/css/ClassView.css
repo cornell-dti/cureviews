@@ -1,5 +1,9 @@
 /* Classview Layout Styling */
 
+.overflow-hidden{
+  overflow: hidden;
+}
+
 .container-top-gap-fix{
   padding-top: 0 !important;
   padding: 0;
@@ -13,8 +17,9 @@
   margin-top: 45px;
 }
 
-.classview-right-panel-padding{
+.classview-right-panel{
   padding: 0 5vw 0 0;
+  overflow: hidden;
 }
 
 .classview-gauge-container{
@@ -33,6 +38,10 @@
 
 .classview-loading{
   padding-top: 300px;
+}
+
+.classview-coursecard-min-width{
+  min-width: 530px;
 }
 
 /* Popup Styling */

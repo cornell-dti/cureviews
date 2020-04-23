@@ -168,10 +168,10 @@ export class ClassView extends Component {
           <Navbar />
           <div className="clearfix" />
           <div className="container-width no-padding">
-            <div className="col-md-5 col-sm-12 col-xs-12 sticky no-padding navbar-margin">
+            <div className="col-md-5 col-sm-6 col-xs-12 sticky no-padding classview-coursecard-min-width">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-7 col-sm-12 col-xs-12 classview-right-panel-padding navbar-margin">
+            <div className="col navbar-margin classview-right-panel">
               <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-12">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
