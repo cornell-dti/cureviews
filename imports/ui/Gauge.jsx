@@ -18,6 +18,8 @@ export default class Gauge extends Component{
     this.componentDidUpdate=this.componentDidUpdate.bind(this);
     this.gauge_text_top = props.isInPreviewCard ? "gauge-text-top-preview" : "gauge-text-top";
     this.gauge_container = props.isInPreviewCard ? "gauge-container-preview" : "gauge-container";
+    this.gauge_size_class = props.isInPreviewCard ? "col-sm-6 col-xs-6" : "d-sm-none d-xs-none";
+    this.gauge_text_size_class = props.isInPreviewCard ? "col-sm-6 col-xs-6" : "col-sm-12 col-xs-12";
     this.gauge_text_padding = props.isInPreviewCard ? "gauge-text-padding-preview" : "gauge-text-padding";
 
   }
@@ -55,16 +57,13 @@ export default class Gauge extends Component{
     return (
 
         <div className="row noLeftRightMargin gauge-component-container">
-          <div className={"col-md-6 col-sm-12 col-xs-12 no-side-padding gauge-text-container " + this.gauge_text_padding}>
+          <div className={"col-md-6  no-side-padding gauge-text-container " + this.gauge_text_padding + " " + this.gauge_text_size_class}>
             <p className="gauge-text">
                 <span className={this.gauge_text_top}>{this.state.rating}</span>
                 <span className="gauge-text-bottom ">{this.props.text}</span>
             </p>
-            <h1 className="gauge-text-bottom">
-              
-            </h1>
           </div>
-          <div className="col-md-6 d-sm-none d-xs-none no-side-padding gauge-height-center">
+          <div className={"col-md-6 no-side-padding gauge-height-center " + this.gauge_size_class}>
             <div className={this.gauge_container}>
               <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
             </div>

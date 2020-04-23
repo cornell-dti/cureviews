@@ -1,9 +1,5 @@
 /* Classview Layout Styling */
 
-.overflow-hidden{
-  overflow: hidden;
-}
-
 .container-top-gap-fix{
   padding-top: 0 !important;
   padding: 0;
