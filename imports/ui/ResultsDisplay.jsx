@@ -278,7 +278,7 @@ export default class ResultsDisplay extends Component {
         {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
-          <div>
+          <div className="results-column-container">
             <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">

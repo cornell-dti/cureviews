@@ -1,10 +1,15 @@
 /* Filter Sidebar Styling */
 
+.results-column-container{
+  display: flex;
+}
+
 .filter-container{
   font-family: "Source Sans Pro", sans-serif;
   padding-left: 6%;
   padding-top: 28px;
   line-height: 37px;
+  min-width: 200px;
 }
 
 .filter-title{
@@ -164,6 +169,7 @@ ul {
 /* Class Preview Styling */
 
 .preview{
+  min-width: 500px;
   overflow: hidden;
   padding-top: 28px;
   padding-right: 8%;
