@@ -270,7 +270,7 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length === 0 && this.props.loading === false
           &&
           <div className="col-md-12 col-sm-12 col-xs-12 results">
-            <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
+            <img src="/noResults.svg" className="img-responsive no-results" alt="No class found"></img>
             <div className="no-results-text">Sorry! No classes match your search.</div>
           </div>
         }
