@@ -18,7 +18,7 @@
 }
 
 .classview-right-panel{
-  padding: 0 5vw 0 0;
+  padding: 0 5vw 0 5vw;
   overflow: hidden;
   min-width: 320px;
 }
