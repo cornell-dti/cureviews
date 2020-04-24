@@ -24,13 +24,13 @@ export default class Navbar extends Component {
 
   render() {
     return (
-      <div className="row navbar">
-        <div className="col-md-2 col-sm-2 col-xs-2">
+      <div className="navbar">
+        <div className="logo-container">
           <a className="" href="/">
             <img src='/logo.svg' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
           </a>
         </div>
-        <div className={"col-md-9 col-sm-9 col-xs-9"}>
+        <div className="col navbar-searchbar-container">
           <SearchBar contrastingResultsBackground={true} isInNavbar={true} />
         </div>
       </div>

@@ -11,12 +11,23 @@
   background: #FFFFFF;
   border: 0;
   margin: 0;
+  display: flex;
+}
+
+.logo-container{
+  width: 10vw;
+  margin-right: 4.4vw;
+  margin-left: 5vw;
+}
+
+.navbar-searchbar-container{
+  width: 100%;
+  margin-right: 10vw;
 }
 
 .scale-logo-navbar{
   height: 60px;
   width: auto;
-  margin: 0 0 0 60px;
 }
 
 .text-report-bug{
