@@ -226,7 +226,7 @@ export default class ResultsDisplay extends Component {
   renderSemesterCheckboxes() {
     let sems = ["Fall", "Spring"];
     return sems.map((name, index) => (
-      <div key={index}>
+      <div className="filter-entry-container" key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
@@ -242,7 +242,7 @@ export default class ResultsDisplay extends Component {
   renderClassLevelCheckBoxes() {
     let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
     return classLevels.map((name, index) => (
-      <div key={index}>
+      <div className="filter-entry-container" key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
@@ -270,7 +270,7 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length === 0 && this.props.loading === false
           &&
           <div className="col-md-12 col-sm-12 col-xs-12 results">
-            <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
+            <img src="/noResults.svg" className="img-responsive no-results" alt="No class found"></img>
             <div className="no-results-text">Sorry! No classes match your search.</div>
           </div>
         }
@@ -278,7 +278,7 @@ export default class ResultsDisplay extends Component {
         {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
-          <div>
+          <div className="results-column-container">
             <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
@@ -317,7 +317,7 @@ export default class ResultsDisplay extends Component {
                 </ul>
               </div>
             </div>
-            <div className="col-md-7 col-sm-7 col-xs-7 preview">
+            <div className="col preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>

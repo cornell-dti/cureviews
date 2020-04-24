@@ -142,6 +142,10 @@
 
 }
 
+.react-select__clear-indicator{
+  display: none !important;
+}
+
 /* Form Popup Styling */
 /* The following was not yet refactored and will be when pop-up component is re-implemented -Julian (4/14/2020) */
 

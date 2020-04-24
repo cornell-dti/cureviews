@@ -167,19 +167,19 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix classViewContainer">
           <Navbar />
           <div className="clearfix" />
-          <div className="container-width no-padding">
-            <div className="col-md-5 col-sm-12 col-xs-12 sticky no-padding navbar-margin">
+          <div className="container-width no-padding classview-column-container">
+            <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-7 col-sm-12 col-xs-12 classview-right-panel-padding navbar-margin">
+            <div className="col navbar-margin classview-right-panel">
               <div className="row classview-gauge-container">
-                <div className="col-md-4 col-sm-4 col-xs-12">
+                <div className="col-md-4 col-sm-4 col-xs-4">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
                 </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
+                <div className="col-md-4 col-sm-4 col-xs-4">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
                 </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
+                <div className="col-md-4 col-sm-4 col-xs-4">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
@@ -209,9 +209,9 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
           <div className="class-error-container">
-            <img id="errorgauge" src="/error.png" width="400px" height="auto" />
-            <h2>{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
-            <h2>Please search for a different class.</h2>
+            <img className="errorgauge" src="/error.svg" width="400px" height="auto" />
+            <h2 className="error-text">{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
+            <h2 className="error-text">Please search for a different class.</h2>
           </div>
         </div>
       );

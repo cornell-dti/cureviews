@@ -1,5 +1,10 @@
 /* Individual Review Styling */
 
+.review-number-label-span{
+  display: inline-flex;
+  width: 56px;
+}
+
 .noLeftRightSpacing{
   padding-left: 0;
   padding-right: 0;
@@ -32,12 +37,26 @@
   padding: 8px 50px 21px 30px;
 }
 
+.review-labels-container{
+  min-width: 85px;
+}
+
 .review-body-right-col{
   padding: 0px 0 0 5%;
 }
 
 .review-number-labels-container{
   padding:0px;
+}
+
+@media screen and (max-width: 992px) {
+  
+  .review-number-text, .review-number-text-preview{
+    padding-right: 5vw;
+    padding-left: 0 !important;
+    float: right;
+  }
+  
 }
 
 .review-number-label{
@@ -48,9 +67,8 @@
   font-stretch: normal;
 }
 
-.review-number-text{
-  padding-right: 23%;
-  float: right;
+.review-number-text, .review-number-text-preview{
+  padding-left: 2vw;
 }
 
 .review-professor-container{
@@ -143,11 +161,6 @@
   font-style: normal;
   font-stretch: normal;
   line-height: 27px;
-}
-
-.review-number-text-preview{
-  padding-right: 0;
-  float: right;
 }
 
 .review-professor-container{
