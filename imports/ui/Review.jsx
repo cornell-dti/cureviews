@@ -122,7 +122,7 @@ export default class Review extends Component {
           </div>
         }
         <div className={"row " +  this.review_body_container_class}>
-          <div className="col-lg-2 col-md-2 col-sm-12 noLeftRightPadding">
+          <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
 
             <p className={this.review_number_label_class}>
               <span className="review-number-label-span">Overall</span>
@@ -145,7 +145,7 @@ export default class Review extends Component {
                 </span>
             </p>
           </div>
-          <div className={"col-md-offset-1 col-md-9 col-sm-12 noLeftRightPadding" + ""}>
+          <div className="col-xl-10 col-lg-9 col-md-8 col-sm-12 noLeftRightPadding">
             <div className="row noLeftRightSpacing review-professor-container">
               <p>
                 <span className="review-professor-label">Professor: </span>
