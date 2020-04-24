@@ -14,8 +14,9 @@
   width: 100%;
   border-radius: 10px;
   background-color: white;
-  padding: 40px 70px 25px 79px;
+  padding: 40px 10% 25px 11%;
 }
+
 .preview-class-link{
   color: #0076FF;
   font-size: 32px;
@@ -28,6 +29,7 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
+  margin: 0;
 }
 
 .preview-class-info{
@@ -39,6 +41,10 @@
   line-height: normal;
   color: #A1A1A1;
   margin-bottom: 31px;
+}
+
+.top-review-text {
+  padding: 0 0 5px 0;
 }
 
 /* Preview Review Styling */
@@ -53,9 +59,7 @@
   color: #807B7B;
 }
 
-.top-review-text {
-  padding: 56px 0px 16px 0px;
-}
+
 
 .preview-empty-top-review{
   font-family: "Source Sans Pro", sans-serif;
@@ -77,7 +81,7 @@
   text-align: center;
   border-radius: 10px;
   height: 55px;
-  width: 95%;
+  width: 100%;
   background: #0076FF;
   padding: 10px;
   display: inline-grid;
@@ -87,7 +91,7 @@
 /* Gauge Styling */
 
 .gaugeHolder{
-  margin: 25px 0px 30px 0px;
+  margin: 5px 0px 30px 0px;
 }
 
 .remove-left-padding {

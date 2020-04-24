@@ -1,10 +1,15 @@
 /* Filter Sidebar Styling */
 
+.results-column-container{
+  display: flex;
+}
+
 .filter-container{
   font-family: "Source Sans Pro", sans-serif;
-  padding-left: 95px;
+  padding-left: 6%;
   padding-top: 28px;
   line-height: 37px;
+  min-width: 200px;
 }
 
 .filter-title{
@@ -42,8 +47,16 @@
   align-items: center;
   color: #000000;
   margin: 0px 0px 0px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+
+.filter-entry-container{
+  display: flex;
+  margin: 10px 0;
+}
 
 /* Class Results List Styling */
 
@@ -98,10 +111,11 @@
 }
 
 .results{
-  height: calc(100vh - 189px);
+  height: 90vh;
   overflow: hidden;
   padding-left: 0px;
   margin-left: 0px;
+  min-width: 250px;
 }
 
 .noLeftRightMargin{
@@ -145,6 +159,7 @@
 .no-results-text{
   font-family: "Source Sans Pro", sans-serif;
   font-size: 25px;
+  font-weight: var(--regular-weight);
   text-align: center;
 }
 
@@ -155,7 +170,9 @@ ul {
 /* Class Preview Styling */
 
 .preview{
+  min-width: 500px;
   overflow: hidden;
   padding-top: 28px;
-  padding-right: 130px;
+  padding-right: 8%;
+  padding-left: 1.5%;
 }

@@ -16,6 +16,12 @@ export default class Gauge extends Component{
     this.state=initState;
     this.updateRating=this.updateRating.bind(this);
     this.componentDidUpdate=this.componentDidUpdate.bind(this);
+    this.gauge_text_top = props.isInPreviewCard ? "gauge-text-top-preview" : "gauge-text-top";
+    this.gauge_container = props.isInPreviewCard ? "gauge-container-preview" : "gauge-container";
+    this.gauge_size_class = props.isInPreviewCard ? "col-sm-6 col-xs-6" : "d-sm-none d-xs-none";
+    this.gauge_text_size_class = props.isInPreviewCard ? "col-sm-6 col-xs-6" : "col-sm-12 col-xs-12";
+    this.gauge_text_padding = props.isInPreviewCard ? "gauge-text-padding-preview" : "gauge-text-padding";
+
   }
 
     componentDidMount(){
@@ -32,10 +38,10 @@ export default class Gauge extends Component{
       if(!isNaN(this.props.rating)){
         let percentage = 20*this.props.rating;
         let color= "hsl(212, 100%,"+(86-(percentage*.36))+"%)";
-        this.setState({percentage: percentage, color: color, rating: this.props.rating});
+        this.setState({percentage: percentage, color: color, rating: this.props.rating.toFixed(1)});
       }
       else{
-        this.setState(initState);
+        this.setState({rating: "-"});
       }
     }
 
@@ -49,25 +55,21 @@ export default class Gauge extends Component{
 
   render(){
     return (
-      <div className="h-align">
-        <div style={{width: this.props.width, height: this.props.height}} className="gauge-center">
-          <div className="row">
-            <div className="col-md-5 col-md-offset-1 no-side-padding no-left-margin">
-              <h1 className="gauge-text rating">
-                  {this.state.rating}
-              </h1>
-              <h1 className="gauge-bottom-text">
-                {this.props.text}
-              </h1>
-            </div>
-            <div className="col-md-6 no-side-padding">
-              <div className="gauge-container">
-                <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
-              </div>
+
+        <div className="row noLeftRightMargin gauge-component-container">
+          <div className={"col-md-6  no-side-padding gauge-text-container " + this.gauge_text_padding + " " + this.gauge_text_size_class}>
+            <p className="gauge-text">
+                <span className={this.gauge_text_top}>{this.state.rating}</span>
+                <span className="gauge-text-bottom ">{this.props.text}</span>
+            </p>
+          </div>
+          <div className={"col-md-6 no-side-padding gauge-height-center " + this.gauge_size_class}>
+            <div className={this.gauge_container}>
+              <CircularProgressbar value={this.state.percentage} strokeWidth={10} styles={buildStyles({ pathColor: this.state.color, strokeLinecap: "butt" })}/>
             </div>
           </div>
         </div>
-      </div>
+
     )
   }
 }
@@ -76,5 +78,6 @@ Gauge.propTypes ={
   width: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  isInPreviewCard: PropTypes.bool
 };

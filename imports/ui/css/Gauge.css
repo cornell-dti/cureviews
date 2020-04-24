@@ -1,30 +1,91 @@
-.gauge-text {
-  text-align: center;
-  margin: 0;
-  width: 100%;
+.gauge-component-container{
+  height: 95px;
 }
 
-.h-align{
-  text-align: center;
-}
-.gauge-bottom-text {
-  text-align: center;
-  margin: 0;
-  width: 100%;
-  font-size: 15px;
+.gauge-text-container {
+  font-family: "Source Sans Pro", sans-serif; 
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  height: 100%;
+  display: inline-flex;
+  justify-content: center;
 }
 
-.rating {
+.gauge-text-padding{
+  padding-left: 12% !important;
+}
+
+.gauge-text-padding-preview{
+  padding-left: 3% !important;
+}
+
+.gauge-text{
+  display: inline-grid;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.gauge-text-top {
+  font-size: 40px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.gauge-text-top-preview {
   font-size: 50px;
+  text-align: center;
+  line-height: 45px;
+
 }
 
-.gauge-center {
-  /*margin-left: 25%;*/
-  display: inline-block;
+.gauge-text-bottom {
+  font-size: 15px;
+  text-align: center;
+  line-height: 25px;
+}
+
+@media screen and (max-width: 1200px) {
+  
+  .gauge-component-container{
+    height: 50px;
+  }
+  
+  .gauge-text-top {
+    font-size: 3vw;
+    text-align: center;
+    line-height: 3vw;
+  }
+
+  .gauge-text-top-preview {
+    font-size: 3vw;
+    text-align: center;
+    line-height: 3vw;
+
+  }
+
+  .gauge-text-bottom {
+    font-size: 1.1vw;
+    text-align: center;
+    line-height: 1.5vw;
+  }
+}
+
+.gauge-height-center{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.gauge-container-preview {
+  width: 95%;
 }
 
 .gauge-container {
-  width: 70%;
+  width: 84%;
 }
 
 .no-left-margin{

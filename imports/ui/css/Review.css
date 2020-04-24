@@ -1,5 +1,10 @@
 /* Individual Review Styling */
 
+.review-number-label-span{
+  display: inline-flex;
+  width: 56px;
+}
+
 .noLeftRightSpacing{
   padding-left: 0;
   padding-right: 0;
@@ -14,7 +19,7 @@
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 48px;
-  margin-right: 25px;
+  /* margin-right: 25px; */
 }
 
 .review-report {
@@ -29,11 +34,29 @@
 
 .review-body-container {
   margin: auto;
-  padding: 8px 50px 5px 50px;
+  padding: 8px 50px 21px 30px;
+}
+
+.review-labels-container{
+  min-width: 85px;
+}
+
+.review-body-right-col{
+  padding: 0px 0 0 5%;
 }
 
 .review-number-labels-container{
   padding:0px;
+}
+
+@media screen and (max-width: 992px) {
+  
+  .review-number-text, .review-number-text-preview{
+    padding-right: 5vw;
+    padding-left: 0 !important;
+    float: right;
+  }
+  
 }
 
 .review-number-label{
@@ -44,9 +67,8 @@
   font-stretch: normal;
 }
 
-.review-number-text{
-  padding-right: 40%;
-  float: right;
+.review-number-text, .review-number-text-preview{
+  padding-left: 2vw;
 }
 
 .review-professor-container{
@@ -54,11 +76,10 @@
 }
 
 .review-professor-label{
-  border-radius: 5px;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
   line-height: 18px;
   margin: 5px 0 6px 0;
   display: inline;
@@ -66,10 +87,10 @@
 
 
 .review-professor-text{
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
   line-height: 18px;
   display: inline;
 }
@@ -121,11 +142,16 @@
 
 .review-body-container-preview {
   margin: auto;
-  padding: 40px 32px 28px 32px;
+  padding: 35px 30px 28px 31px;
 }
 
 .review-number-labels-container{
   padding:0px;
+}
+
+
+.review-body-right-col-preview{
+  padding: 0px 0 0 12%;
 }
 
 .review-number-label-preview{
@@ -134,11 +160,7 @@
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
-}
-
-.review-number-text-preview{
-  padding-right: 15%;
-  float: right;
+  line-height: 27px;
 }
 
 .review-professor-container{
@@ -154,10 +176,6 @@
   font-stretch: normal;
   line-height: normal;
   margin: 5px 0 6px 0;
-  display: inline;
-}
-
-.review-professor-text{
   display: inline;
 }
 

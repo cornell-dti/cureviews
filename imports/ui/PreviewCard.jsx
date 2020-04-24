@@ -153,21 +153,24 @@ export default class PreviewCard extends Component {
         </div>
         <div className="row gaugeHolder">
 
-          <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-            <Gauge width="16vw" height="10vh" rating={parseFloat(this.state.rating)} text="Overall"/>
+          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)} 
+                    isInPreviewCard={true} text="Overall"/>
 
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-            <Gauge width="16vw" height="10vh" rating={parseFloat(this.state.diff)} text="Difficulty"/>
+          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)} 
+                    isInPreviewCard={true} text="Difficulty"/>
 
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-12 remove-left-padding">
-            <Gauge width="16vw" height="10vh" rating={parseFloat(this.state.workload)} text="Workload"/>
+          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)} 
+                    isInPreviewCard={true} text="Workload"/>
 
           </div>
 
         </div>
-        <div className="row top-review-text">
+        <div className="row top-review-text noLeftRightSpacing">
           <div className="col-md-12 col-sm-12 remove-left-padding">
             {this.state.numReviews !== 0 &&
 
@@ -176,7 +179,7 @@ export default class PreviewCard extends Component {
             }
           </div>
         </div>
-        <div className="row">
+        <div className="row noLeftRightSpacing">
           <div className="review-holder">
             {/*If class has review show top review and link*/}
             {this.state.numReviews !== 0 &&

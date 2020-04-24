@@ -2,6 +2,7 @@
 
 .form-menu {
   margin-top: 50px;
+  margin-bottom: 10px;
   width: 443.75px;
   background: #FFFFFF;
   border: none;
@@ -139,6 +140,10 @@
   border-color: #0076FF !important;
   box-shadow: none !important;
 
+}
+
+.react-select__clear-indicator{
+  display: none !important;
 }
 
 /* Form Popup Styling */
