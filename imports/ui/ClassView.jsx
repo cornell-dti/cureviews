@@ -209,9 +209,9 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
           <div className="class-error-container">
-            <img id="errorgauge" src="/error.png" width="400px" height="auto" />
-            <h2>{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
-            <h2>Please search for a different class.</h2>
+            <img className="errorgauge" src="/error.svg" width="400px" height="auto" />
+            <h2 className="error-text">{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
+            <h2 className="error-text">Please search for a different class.</h2>
           </div>
         </div>
       );

@@ -46,6 +46,21 @@
   display: flex;
 }
 
+.errorgauge{
+  margin: 9vh auto 7vh auto;
+  display: flex;
+}
+
+.error-text{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 36px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  text-align: center;
+}
+
 /* Popup Styling */
 /* The following was not yet refactored and will be when pop-up component is re-implemented -Julian (4/14/2020) */
 
