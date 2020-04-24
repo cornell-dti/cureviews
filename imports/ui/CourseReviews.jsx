@@ -21,8 +21,69 @@ import './css/CourseReviews.css';
 export class CourseReviews extends Component {
   constructor(props) {
     super(props);
-
+    this.state={comparator:"helpful", reviews:[]};
     this.reportReview.bind(this);
+    this.handleSelect=this.handleSelect.bind(this);
+    this.sort=this.sort.bind(this);
+    this.componentDidMount=this.componentDidMount.bind(this);
+  }
+
+  componentDidMount(){
+    Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
+      this.setState({reviews:this.renderReviews(reviews)});
+      this.sort(this.state.comparator);
+    });
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps!=this.props)
+    Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
+      this.setState({reviews:this.renderReviews(reviews)});
+      this.sort(this.state.comparator);
+    });
+  }
+
+
+  // Handles selecting different sort bys
+  handleSelect = (event) => {
+    let opt = event.target.value;
+    this.setState({ comparator: opt });
+    this.sort(opt);
+  }
+
+  sort(comp){
+    let reviews=this.state.reviews;
+    let data=[];
+    if(comp==="helpful") data= reviews.sort(function(a,b){
+      if( !b.props.info.likes) return -1;
+      if( !a.props.info.likes) return 1;
+    if( b.props.info && a.props.info){
+      if (a.props.info.likes > b.props.info.likes) {
+        return -1;
+      }
+      if (a.props.info.likes < b.props.info.likes) {
+        return 1;
+      }
+    }
+
+    else return 0;
+  })
+  else data= reviews.sort(function(a,b){
+    if( !b.props.info.date) return 1;
+    if( !a.props.info.date) return -1;
+    if (b.props.info && a.props.info){
+      console.log(a.props.info.date+" "+a.props.info.date);
+      if (a.props.info.date > b.props.info.date) {
+        return -1;
+      }
+      if (a.props.info.date < b.props.info.date) {
+        return 1;
+      }
+    }
+    else return 0;
+  });
+    
+  this.setState({reviews:data});
   }
 
   // Report this review. Find the review in the local database and change
@@ -39,34 +100,47 @@ export class CourseReviews extends Component {
   }
 
   // Loop through the list of reivews and render them (as a list)
-  renderReviews() {
+  renderReviews(reviews) {
+    let reviewCompList=[];
     if (this.props.courseId === "-1") {
-      return this.props.reviews.map((review) => (
-        <RecentReview key={review._id} info={review} reportHandler={this.reportReview} />
+       reviews.forEach((review) => (
+        reviewCompList.push(<RecentReview key={review._id} info={review} reportHandler={this.reportReview} />)
       ));
     } else {
-      return this.props.reviews.map((review) => (
-        <Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false}/>
+       reviews.forEach((review) => (
+        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false}/>)
       ));
+      return reviewCompList;
     }
   }
 
   render() {
-    let title = "Past Reviews";
+    let title = "Past Reviews ("+this.props.reviews.length+")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
     }
     return (
-      <section>
-        <legend className="past-reviews">{title}</legend>
-        <div className="panel panel-default" id="reviewpanel">
-          <div>
-            <ul id="reviewul">
-              {this.renderReviews()}
-            </ul>
+
+      <div>
+        <div className="coursereviews-header">
+          <div className="coursereviews-past-reviews-text">
+            {title}
           </div>
+          <div className="coursereviews-sort-container">
+            <div className="coursereviews-sort"> Sort By: 
+              <select onChange={this.handleSelect} className="coursereviews-sort-options">
+                <option  value="helpful">Most Helpful</option>
+                <option value="recent">Recent</option>
+              </select>
+            </div>
+          </div>  
         </div>
-      </section>
+        <div>
+          <ul className="coursereviews-review-ul">
+            {this.state.reviews}
+          </ul>
+        </div>
+      </div>
     );
   }
 }

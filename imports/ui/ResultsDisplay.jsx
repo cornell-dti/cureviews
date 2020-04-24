@@ -63,7 +63,7 @@ export default class ResultsDisplay extends Component {
     let opt = event.target.value;
     this.setState({ selected: opt }, () => this.sort());
   }
-  
+
   // Helper function to sort()
   sortBy(courseList, sortByField, fieldDefault, increasing){
     const data = courseList.sort(
@@ -81,7 +81,7 @@ export default class ResultsDisplay extends Component {
           else{
             return (second - first);
           }
-          
+
         }
       });
     this.setState({
@@ -90,7 +90,7 @@ export default class ResultsDisplay extends Component {
       active_card: 0
     });
   }
-  
+
   // Sorts list of class results by category selected in this.state.selected
   sort() {
     let availableClasses;
@@ -100,7 +100,7 @@ export default class ResultsDisplay extends Component {
     else{
       availableClasses = this.state.filteredItems;
     }
-    
+
     if (this.state.selected == "relevance"){
       this.sortBy(availableClasses, "score", 0, true);
     }
@@ -199,7 +199,7 @@ export default class ResultsDisplay extends Component {
 
   }
 
-  //Updates the displayed PreviewCard to the correct [course] 
+  //Updates the displayed PreviewCard to the correct [course]
   //if the course's [index] in the list of FilteredResult components is clicked
   previewHandler(course, index) {
     this.setState({
@@ -226,14 +226,14 @@ export default class ResultsDisplay extends Component {
   renderSemesterCheckboxes() {
     let sems = ["Fall", "Spring"];
     return sems.map((name, index) => (
-      <div key={index}>
+      <div className="filter-entry-container" key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
           checked={this.state.filters[name]}
           name={name}
         />
-        <label className="checkbox-label">{name} </label>
+        <label className="filter-checkbox-label">{name} </label>
       </div>
     ))
 
@@ -242,26 +242,26 @@ export default class ResultsDisplay extends Component {
   renderClassLevelCheckBoxes() {
     let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
     return classLevels.map((name, index) => (
-      <div key={index}>
+      <div className="filter-entry-container" key={index}>
         <input
           onChange={(e) => this.onChange(e)}
           type="checkbox"
           checked={this.state.filters[name]}
           name={name}
         />
-        <label className="checkbox-label">{name}</label>
+        <label className="filter-checkbox-label">{name}</label>
       </div>
     ))
   }
 
   render() {
     return (
-      <div className="row margin-top">
+      <div className="row loading-margin-top noLeftRightMargin">
         {/* Case where results are still being loaded */}
         {
           this.props.loading === true
           &&
-          <div className="results-loading">
+          <div className="loading-results">
             <Loading />;
           </div>
         }
@@ -269,37 +269,40 @@ export default class ResultsDisplay extends Component {
         {
           this.state.courseList.length === 0 && this.props.loading === false
           &&
-          <div className="col-md-12 col-sm-12 col-xs-12" id="results">
-            <img src="/noClassImage.png" className="img-responsive no-results" alt="No class found"></img>
-            <div className="no-results-cap">Sorry! No classes match your search.</div>
+          <div className="col-md-12 col-sm-12 col-xs-12 results">
+            <img src="/noResults.svg" className="img-responsive no-results" alt="No class found"></img>
+            <div className="no-results-text">Sorry! No classes match your search.</div>
           </div>
         }
         {/* Case where results are returned (non-empty) */}
         {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
-          <div>
-            <div className="col-md-2 col-sm-2 col-xs-2" id="filters" >
-              <p className="overall-filter">Filter</p>
-              <div className="filter-sub">
-                <p className="filter-title"> Semester</p>
+          <div className="results-column-container">
+            <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
+              <p className="filter-title">Filter</p>
+              <div className="filter-sub-category">
+                <p className="filter-sub-title">Semester</p>
                 {this.renderSemesterCheckboxes()}
               </div>
               <div className="filter-sub">
-                <p className="filter-title">Level</p>
+                <p className="filter-sub-title">Level</p>
                 {this.renderClassLevelCheckBoxes()}
               </div>
             </div>
-            <div className="col-md-5 col-sm-5 col-xs-5" id="results">
-              <div className="row">
-                <div className="col-md-5 col-sm-5 col-xs-5">
-                  <p className="num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
+            <div className="col-md-3 col-sm-3 col-xs-3 results">
+
+              <div className="row no-left-margin">
+                <div>
+                  <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
                 </div>
-                <div className="col-md-7 col-sm-7 col-xs-7 display-inline">
-                  <p className="sort-by">
-                    Sort By:
+              </div>
+              <div className="row no-left-margin">
+                <div className="results-sort-by-container">
+                  <p className="results-sort-by-text">
+                  Sort By:
                     </p>
-                  <select value={this.state.selected} className="browser-default" onChange={(e) => this.handleSelect(e)}>
+                  <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
                     <option value="relevance">Relevance</option>
                     <option value="rating">Overall Rating</option>
                     <option value="diff" >Difficulty</option>
@@ -307,13 +310,14 @@ export default class ResultsDisplay extends Component {
                   </select>
                 </div>
               </div>
-              <div id="listOfClassResults">
+
+              <div className="results-classes-list">
                 <ul>
                   {this.renderResults()}
                 </ul>
               </div>
             </div>
-            <div className="col-md-5 col-sm-5 col-xs-5" id="preview">
+            <div className="col preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>
@@ -328,4 +332,3 @@ ResultsDisplay.propTypes = {
   loading: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired
 };
-

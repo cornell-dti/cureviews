@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
   Results Component.
 
   Used to render the results page. Uses Navbar and ResultsDisplay components directly.
-  
+
   Props: uses params from URL
 */
 
@@ -92,12 +92,10 @@ export class Results extends Component {
 
   render() {
     return (
-      <div>
-        <div className="container-fluid container-top-gap-fix">
-          <Navbar />
-          <ResultsDisplay courses={this.state.courseList} 
-          loading={this.state.loading} type={this.props.match.params.type}/>
-        </div>
+      <div className="full-height bg-color">
+        <Navbar />
+        <ResultsDisplay courses={this.state.courseList}
+        loading={this.state.loading} type={this.props.match.params.type}/>
       </div>
     )
   }

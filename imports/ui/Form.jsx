@@ -28,14 +28,13 @@ import { Session } from 'meteor/session';
   or that an error occured.
 */
 
+
 export default class Form extends Component {
   constructor(props) {
     super(props);
 
     //Define refs
-    this.ratingSlider=React.createRef();
-    this.diffSlider=React.createRef();
-    this.workloadSlider=React.createRef();
+
     this.dropdownMenu=React.createRef();
     this.noProfMsg=React.createRef();
     this.profSelect=React.createRef();
@@ -52,17 +51,19 @@ export default class Form extends Component {
     };
 
     //store all currently selected form values in the state.
-    
+
     this.openByDefault = true;
-    
+
     this.state = {
       dropdown: '', //empty as opposed to 'open'
       visible: false,
-      rating: 3,
-      diff: 3,
-      workload: 3,
+      "rating": 3,
+      "ratinglastSelect": 3,
+      "diff": 3,
+      "difflastSelect": 3,
+      "workload": 3,
+      "workloadlastSelect": 3,
       text: "",
-      message: null,
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors ? this.props.course.classProfessors : [], //If class does not have
@@ -70,6 +71,12 @@ export default class Form extends Component {
       review: {},
       courseId:'',
     };
+
+    for(let i=1; i<=5; i++){
+      this.state["diff "+i]=false;
+      this.state["rating "+i]=false;
+      this.state["workload "+i]=false;
+    }
 
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
@@ -81,7 +88,10 @@ export default class Form extends Component {
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
     this.setCourseIdInSearchBar=this.setCourseIdInSearchBar.bind(this);
-    this.showDropDownButton = this.showDropDownButton.bind(this);
+    this.createMetricBoxes=this.createMetricBoxes.bind(this);
+    this.handleBoxHoverEnter=this.handleBoxHoverEnter.bind(this);
+    this.handleBoxHoverLeave=this.handleBoxHoverLeave.bind(this);
+    this.clickMetricBox=this.clickMetricBox.bind(this);
   }
 
   //Handler for setting the form state's course id if using popup.
@@ -101,23 +111,7 @@ export default class Form extends Component {
     this.setState({text: event.target.value});
   }
 
-  // Save the current user selected value for rating in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleRatingChange(event) {
-    this.setState({ rating: parseInt(event.target.value) });
-  }
 
-  // Save the current user selected value for difficulty in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleDiffChange(event) {
-    this.setState({ diff: parseInt(event.target.value) });
-  }
-
-  // Save the current user selected value for quality in the local state.
-  // Called whenever this form element changes to trigger re-render to run validation.
-  handleWorkChange(event) {
-    this.setState({ workload: parseInt(event.target.value) });
-  }
 
   // Save the current professor selected string for professors in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
@@ -127,33 +121,60 @@ export default class Form extends Component {
     this.pushReviewsDown(this.state.dropdown);
   }
 
-  // Convert the slider's value to a color starting with red and ending with green.
-  getSliderColorRedToGreen(value) {
-    const colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
-    return {
-      backgroundColor: colors[value]
+  //Called when mouse  enters a metric box to chane highlighting
+  handleBoxHoverEnter(metric, i){
+    let currState=this.state[metric+" "+i];
+    let lastSelection= this.state[metric+"lastSelect"];
+    if(i<lastSelection) this.setState({[metric]:i});
+      for(let j=i; j>this.state[metric]; j--){
+        this.setState({[metric+" "+j]:!currState});
+      }
+
+      for(let j=i+1; j<=5; j++){
+        this.setState({[metric+" "+j]:false});
+      }
+  }
+
+    //Called when mouse  enters a metric box to chane highlighting
+    handleBoxHoverLeave(metric, i){
+      let currState=this.state[metric+" "+i];
+      let lastSelection= this.state[metric+"lastSelect"];
+      this.setState({[metric]:lastSelection});
+        for(let j=i; j>this.state[metric]; j--){
+          this.setState({[metric+" "+j]:!currState});
+        }
+        for(let j=i+1; j<=5; j++){
+          this.setState({[metric+" "+j]:false});
+        }
+    }
+
+  //Updates the given metric when a box is clicked
+  clickMetricBox(metric, i){
+    this.setState({[metric]: i});
+    for(let j=5; j>this.state[metric]; j--){
+      this.setState({[metric+" "+j]:false, [metric+"lastSelect"]:i});
     }
   }
 
-  // Convert the slider's value to a color starting with green and ending with red.
-  getSliderColorGreenToRed(value) {
-    const colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
-    return {
-      backgroundColor: colors[value],
-    }
+  //Creates [max] number of metrix boxes
+  createMetricBoxes(max, metric){
+      let boxes=[];
+      for(let i=1; i<=max; i++){
+          let isHovered=this.state[metric+" "+i] ? "boxHover" : "";
+          boxes.push(<div className="metricBoxWrapper"
+          onClick={() => this.clickMetricBox(metric, i)}  onMouseEnter={() => this.handleBoxHoverEnter(metric, i)} onMouseLeave={() => this.handleBoxHoverLeave(metric, i)}>
+              <div id={metric+" "+i} className={this.state[metric]<i ? "metricBox inactiveBox "+isHovered: "metricBox activeBox"}></div>
+              <p className={this.state[metric]<i ? "inactiveText": "activeText"}>{i}</p>
+
+          </div>)
+      }
+
+      return boxes;
   }
+
 
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
-    this.ratingSlider.current.value = 3;
-    this.diffSlider.current.value = 3;
-    this.workloadSlider.current.value = 3;
-    this.dropdownHeight = this.dropdownMenu.current.clientHeight + 15;
-    if(this.openByDefault){
-      this.toggleDropdown(); //Open review dropdown when page loads
-    }
-    
-
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
@@ -164,11 +185,8 @@ export default class Form extends Component {
 
   // Called each time this component receieves new props.
   // resets the values of the sliders to 3 and sets the state to the default state.
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.course != this.props.course) {
-      this.ratingSlider.current.value = 3;
-      this.diffSlider.current.value = 3;
-      this.workloadSlider.current.value = 3;
+  componentDidUpdate(prevProps) {
+    if (prevProps.course != this.props.course) {
       this.setState(this.defaultState);
     }
   }
@@ -196,6 +214,7 @@ export default class Form extends Component {
     // 'pause' automatic form submisson
     event.preventDefault();
     // ensure all fields are filled out
+
     const text = this.state.text.trim();
     const rate = this.state.rating;
     const diff = this.state.diff;
@@ -234,9 +253,7 @@ export default class Form extends Component {
       if (error || result === 1) {
         console.log("course id: "+Session.get("courseId"));
         // Success, so reset form
-        this.ratingSlider.current.value = 3;
-        this.diffSlider.current.value = 3;
-        this.workloadSlider.current.value = 3;
+
         this.profSelect.current.value = "none";
         if(this.openByDefault){
           this.toggleDropdown(); //Open review dropdown when page loads
@@ -347,18 +364,6 @@ export default class Form extends Component {
       this.setState({ visible: false });
     }
 
-    showDropDownButton(){
-      if(!this.props.searchBar){
-        return(      
-          <button className="dropdown-button" onClick={this.toggleDropdown.bind(this)}  aria-haspopup="true" aria-expanded="true">
-
-              <p className="review-header">Leave a Review</p>
-
-          </button>
-        )
-      }
-
-    }
 
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
@@ -367,110 +372,94 @@ export default class Form extends Component {
     const isEnabled = err.allTrue;
     return (
         <div>
-          <div id="form-dropdown" className={'dropdown ' + this.state.dropdown}>
-          {this.showDropDownButton()}
-            <ul id="dropdown-menu" className={"dropdown-menu " + (this.props.searchBar ? "dropdown-menu-popup" : "")} ref={this.dropdownMenu}>
-              <form className="new-task" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
-                <div className="panel-body-2" id="form">
-                 {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
-                      <div className="row" id="reviewTextRow">
-                        <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
-                          onChange={(event) => this.handleTextChange(event)}
-                          placeholder="Enter your feedback here! Try to mention helpful details like which semester you took it, what the homework was like, etc." />
-                        <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
-                        <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                      </div>
+          <div className="form-menu">
+            <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
+              <p className="form-header-text">Leave a Review</p>
+             {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
+                  <div className="row form-textbox-row">
+                    <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+                      onChange={(event) => this.handleTextChange(event)}
+                       />
+                    <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+                    <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                  </div>
 
-                      <hr className="divider" />
-                      <div className="row">
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <h1 className="form-label">Overall Rating</h1>
-                          </div>
-                          <div className="col-md-1 col-sm-1 col-xs-1">
-                              <div className="rating-icon review-number-text" style={this.getSliderColorRedToGreen(this.state.rating)}>
-                                  {this.state.rating}
-                              </div>
-                          </div>
-                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                             <input ref={this.ratingSlider} onChange={(event) => this.handleRatingChange(event)} type="range" id="rating" name="rating" min="1" max="5" step="1" />
-                          </div>
+
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+                          <div className="form-label form-professor-label">Professor</div>
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <h1 className="form-label">Difficulty</h1>
-                          </div>
-                          <div className="col-md-1 col-sm-1 col-xs-1">
-                              <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.diff)}>
-                                  {this.state.diff}
-                              </div>
-                          </div>
-                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                             <input ref={this.diffSlider} onChange={(event) => this.handleDiffChange(event)} type="range" id="diff" name="diff" min="1" max="5" step="1" />
-                          </div>
+                      <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                          <Select className='react-select-container' classNamePrefix="react-select" value={this.state.selectedProfessors}
+                            onChange={(professors) => this.handleProfChange(professors)}
+                            isMulti
+                            options={this.getProfOptions()}
+                            ref={this.profSelect}
+                            placeholder="Select"
+                          />
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className='row'>
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <h1 className="form-label">Workload</h1>
-                          </div>
-                          <div className="col-md-1 col-sm-1 col-xs-1">
-                              <div className="rating-icon review-number-text" style={this.getSliderColorGreenToRed(this.state.workload)}>
-                                  {this.state.workload}
-                              </div>
-                          </div>
-                          <div className="col-md-8 col-sm-8 col-xs-8 sliderHolder">
-                              <input ref={this.workloadSlider} onChange={(event) => this.handleWorkChange(event)} type="range" id="work" name="work" min="1" max="5" step="1" />
-                          </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-12 col-sm-12 col-xs-12">
+                      <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
+                        Please select the professor(s) you took this class with!
                       </div>
-                      <div className="sm-spacing"></div>
-                      <div className="row">
-                          <div className="col-md-3 col-sm-3 col-xs-3">
-                              <div className="form-label">Professor</div>
-                          </div>
-                          <div className="col-md-8 col-sm-8 col-xs-8 selectAlignment" ref={this.selectHolder}>
-                              <Select value={this.state.selectedProfessors}
-                                onChange={(professors) => this.handleProfChange(professors)}
-                                isMulti
-                                options={this.getProfOptions()}
-                                ref={this.profSelect}
-                              />
-                              <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>Please select the professor(s) you took this class with!</div>
-                          </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12 text-right">
-                            <button disabled={!isEnabled} className="postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
-                        </div>
-                      </div>
-                    {/*Only show tab if not in popup*/}
-                     {!this.props.searchBar && 
-                       <ul className="dropdown-tab-close" onClick={this.toggleDropdown.bind(this)}>
-                         <i className="arrow up"></i>
-                       </ul>
-                     }
-                </div>
-                <div className="row">
-                    <div className="col-sm-12">
-                        <h2 className="secondary-text">{this.state.message}</h2>
                     </div>
-                </div>
+                  </div>
 
-              </form>
-            </ul>
-              {/*Only show tab if not in popup*/}
-             {!this.props.searchBar && 
-               <ul className="dropdown-tab" onClick={this.toggleDropdown.bind(this)}>
-                 <i className={'arrow '+ (this.state.dropdown == 'open' ? 'up' : 'down')}></i>
-               </ul>
-             }
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3">
+                        <h1 className="form-label">Overall</h1>
+                      </div>
+                      {this.createMetricBoxes(5, "rating")}
+                  </div>
+                  <div className="row form-bottom-row-spacing">
+                    <div className="col-md-offset-3 col-md-9">
+                      <div className="metricDescL">Not for me</div>
+                      <div className="metricDescR">Loved it</div>
+                    </div>
+                  </div>
 
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3">
+                          <h1 className="form-label">Difficulty</h1>
+                      </div>
+                      {this.createMetricBoxes(5, "diff")}
+                  </div>
+                  <div className="row form-bottom-row-spacing">
+                    <div className="col-md-offset-3 col-md-9">
+                      <div className="metricDescL">Piece of cake</div>
+                      <div className="metricDescR">Challenging</div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                      <div className="col-md-3 col-sm-3 col-xs-3">
+                          <h1 className="form-label">Workload</h1>
+                      </div>
+                      {this.createMetricBoxes(5, "workload")}
+                  </div>
+                  <div className="row">
+                    <div className="col-md-offset-3 col-md-9">
+                      <div className="metricDescL">Not much at all</div>
+                      <div className="metricDescR">Lots of work</div>
+                    </div>
+                  </div>
+
+                  <div className="row form-button-top-bottom-spacing">
+                    <div className="col-md-12 col-sm-12 col-xs-12">
+                        <button disabled={!isEnabled} className="form-postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Submit</button>
+                    </div>
+                  </div>
+          </form>
           </div>
+              {/*Only show tab if not in popup*/}
 
           <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
             <div id="modal-background">
               <div id="modal-top">
-                <img src='/logo2x.png' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+                <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
                 <p id="modal-title" className="center-block">Email Verification</p>
               </div>
               <div id="">
@@ -501,10 +490,7 @@ export default class Form extends Component {
 // Form must be provided the course object of the class this review will be for.
 Form.propTypes = {
   course: PropTypes.object.isRequired,
-  query:PropTypes.string,
-  queryFunc: PropTypes.func,
   searchBar: PropTypes.bool, // true if this form is for pop-up,
   inUse: PropTypes.bool, //used to deactivate form in background if pop-up is in focus
   onChange: PropTypes.func
 };
-

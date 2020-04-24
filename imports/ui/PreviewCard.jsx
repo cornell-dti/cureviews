@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
-import Gauge from 'react-summary-gauge-2';
+import Gauge from './Gauge.jsx';
 import Review from './Review.jsx';
+import { lastOfferedSems } from './js/CourseCard.js';
 
 /*
   Preview Card component.
-  
+
   Props: course - course object used to render a preview card for ResultsDisplay
                   to use.
 */
@@ -31,7 +32,6 @@ export default class PreviewCard extends Component {
     this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
     this.updateGauges = this.updateGauges.bind(this);
-
   }
 
   componentDidMount() {
@@ -82,7 +82,7 @@ export default class PreviewCard extends Component {
     });
   }
 
-  //Updates the colors of the metrics 
+  //Updates the colors of the metrics
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
@@ -136,79 +136,82 @@ export default class PreviewCard extends Component {
 
   render() {
     let theClass = this.props.course;
-    console.log("likes:" + this.state.topReviewLikes);
-
+    const offered = lastOfferedSems(theClass);
     return (
-      <div className="preview-holder">
-        <div className="preview-panel">
-          <div className="row">
-            <div className="col-md-12 col-sm-12">
+      <div className="preview-panel">
+        <div className="row">
+          <div className="col-md-12 col-sm-12">
               <p className="preview-class-title">
-                <a href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  {theClass.classTitle}
-                </a>
+              <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                {theClass.classTitle}
+              </a>
+            </p>
+            <p className="preview-class-info">
+              {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
+            </p>
+          </div>
+        </div>
+        <div className="row gaugeHolder">
+
+          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)} 
+                    isInPreviewCard={true} text="Overall"/>
+
+          </div>
+          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)} 
+                    isInPreviewCard={true} text="Difficulty"/>
+
+          </div>
+          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)} 
+                    isInPreviewCard={true} text="Workload"/>
+
+          </div>
+
+        </div>
+        <div className="row top-review-text noLeftRightSpacing">
+          <div className="col-md-12 col-sm-12 remove-left-padding">
+            {this.state.numReviews !== 0 &&
+
+              <p className="preview-top-review-label">Top Review</p>
+
+            }
+          </div>
+        </div>
+        <div className="row noLeftRightSpacing">
+          <div className="review-holder">
+            {/*If class has review show top review and link*/}
+            {this.state.numReviews !== 0 &&
+
+              <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
+
+            }
+
+            {
+              (this.state.numReviews !== 0 && this.state.numReviews > 1)
+              &&
+              <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
+              </a>
+            }
+
+            {/*If class has 0 reviews text and button*/}
+            {
+              this.state.numReviews === 0
+              &&
+              <p className="preview-empty-top-review">
+                No reviews yet
               </p>
-              <p className="preview-class-info">
-                {theClass.classSub.toUpperCase() + " " + theClass.classNum}
-              </p>
-            </div>
-          </div>
-          <div className="row gaugeHolder">
-
-            <div className="col-md-4 col-sm-4 col-xs-12 left-gauge">
-              <Gauge value={this.state.rating} width={80} height={25} color={this.state.ratingColor} max={5} label="Overall Rating" />
-            </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 center-gauge">
-              <Gauge value={this.state.diff} width={80} height={25} color={this.state.diffColor} max={5} label="Difficulty" />
-            </div>
-            <div className="col-md-4 col-sm-4 col-xs-12 right-gauge">
-              <Gauge value={this.state.workload} width={80} height={25} color={this.state.workloadColor} max={5} label="Workload" />
-            </div>
-
-          </div>
-          <div className="row">
-            <div className="col-md-12 col-sm-12">
-              {Object.keys(this.state.topReview).length !== 0 &&
-
-                <p className="preview-top-review-label">Top Review</p>
-
-              }
-            </div>
-          </div>
-          <div className="row">
-            <div className="review-holder">
-              {/*If class has review show top review and link*/}
-              {Object.keys(this.state.topReview).length !== 0 &&
-
-                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
-
-              }
-
-              {
-                Object.keys(this.state.topReview).length !== 0
-                &&
-                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
-                </a>
-              }
-
-              {/*If class has 0 reviews text and button*/}
-              {
-                Object.keys(this.state.topReview).length === 0
-                &&
-                <p className="preview-empty-top-review">
-                  No reviews yet
-                </p>
-              }
-              {
-                Object.keys(this.state.topReview).length === 0
-                &&
-                <a className="col-md-12 col-sm-12 preview-review-button"
-                  href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  Leave a review
-                </a>
-              }
-            </div>
+            }
+            {
+              (this.state.numReviews === 0 || this.state.numReviews === 1)
+              &&
+              <a className="col-md-12 col-sm-12 preview-review-button"
+                href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                Leave a review
+              </a>
+            }
           </div>
         </div>
       </div>

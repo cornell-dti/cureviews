@@ -5,7 +5,6 @@ import { Classes } from '../api/dbDefs.js';
 import Course from './Course.jsx';
 import Subject from './Subject.jsx';
 import "./css/SearchBar.css";
-import Select from 'react-select';
 import { Redirect } from 'react-router';
 
 /*
@@ -47,7 +46,6 @@ export default class SearchBar extends Component {
     this.setCourse = this.setCourse.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
     this.checkForCourseMatch = this.checkForCourseMatch.bind(this);
-
   }
 
   // Set the local state variable 'query' to the current value of the input (given by user)
@@ -57,12 +55,12 @@ export default class SearchBar extends Component {
     this.setState(newSearchState);
     // trim the query to remove trailing spaces
     let query = event.target.value.trim();
-    
+
     // This is used to make "cs2110" and "cs 2110" equivalent
     if(query && query.split(" ").length === 1){
       query = query.match(/[a-z]+|[^a-z]+/gi).join(" ");
     }
-    
+
     if(this.checkForCourseMatch(query)){
       // If query is exact match to a class,
       //  highlight this class by setting index to index of this class
@@ -254,7 +252,7 @@ export default class SearchBar extends Component {
 
       let exact_search = (
         <a key={"search"}
-          className={this.state.index == 0 && this.state.mouse != 1 ? 'active resultbutton top-resultbutton' : 'resultbutton top-resultbutton'}
+          className={this.state.index == 0 && this.state.mouse != 1 ? 'active-class resultbutton top-resultbutton' : 'resultbutton top-resultbutton'}
           href={`/results/keyword/${this.state.query.split(" ").join("+")}`}>
           <p className="result-text">{"Search: \"" + this.state.query + "\""}</p>
         </a>
@@ -291,7 +289,7 @@ export default class SearchBar extends Component {
         //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       )));
-      
+
       return results;
     }
     else {
@@ -301,17 +299,17 @@ export default class SearchBar extends Component {
 
   render() {
     if (this.props.isPopup) return (
-      <div className="search-bar text-left" id="searchbar-popup" >
-        <input className={"search-text-popup " + (this.state.selected ? "search-text-popup-selected" : "")} value={this.state.textValue} onChange={this.handleChange} id="search" onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off" />
-        <ul id="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
+      <div className="searchbar-popup text-left" >
+        <input className={"search-text-popup " + (this.state.selected ? "search-text-popup-selected" : "")} value={this.state.textValue} onChange={this.handleChange} onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off" />
+        <ul className="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
           {this.renderResults()}
         </ul>
       </div>
     );
     else return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
-        <div className="col-lg-12 col-md-12 col-sm-12 search-bar">
-          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder="Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”" autoComplete="off" />
+        <div className={"col-lg-12 col-md-12 col-sm-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
+          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}
@@ -326,9 +324,9 @@ export default class SearchBar extends Component {
 // to call when the query changes so the parent can update its copy of the query,
 // and a list of all courses that satisfy the query.
 SearchBar.propTypes = {
+  isInNavbar: PropTypes.bool, // true if input should not have a placeholder
   loading: PropTypes.bool, // optional
   isPopup: PropTypes.bool, // true if rendered in pop-up
   formPopupHandler: PropTypes.func, //handler to set state for form if in popup
-  contrastingResultsBackground: PropTypes.bool // Used to display contrasting background for search results
+  contrastingResultsBackground: PropTypes.bool, // Used to display contrasting background for search results
 };
-

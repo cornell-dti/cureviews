@@ -1,57 +1,55 @@
-.card-title{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 20px;
-  font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.1px;
-  color: #4a4a4a;
-  margin-bottom: 5px;
-}
-
-.card-subtitle{
-  font-size: 15px;
-  font-family: "Source Sans Pro", sans-serif; 
-  margin-top: 5px;
-}
-
-.class-info{
-  font-family: "Source Sans Pro", sans-serif;   
-  font-size: 18px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.2px;
-  color: #000000;
-}
-/* ? "solid 1px #4a90e2" : "solid 0.5px #d8d8d8" */
-.card{
+.result-card{
   border-radius: 10px;
-  border: solid 1.5px #d8d8d8;
-  padding: 15px 15px 0px 15px;
-  margin: 20px 0;
+  padding: 15px 24px 0px 24px;
+  margin: 32px 0;
+  background-color: white;
+  list-style-type: none;
 }
 
-.card-clicked{
+.result-card-clicked{
   border: solid 2px #4a90e2;
 }
 
-.sort-by-text{
-  display: inline-block;
-  font-family: "Source Sans Pro", sans-serif; 
-}
-
-.sort-by-number{
-  display: inline-block;
+.result-card-title{
   font-family: "Source Sans Pro", sans-serif;
-  padding: 0 0 0 5px;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #0076FF;
+  margin-bottom: 7px;
+
 }
 
-.sort-by-five{
-  display: inline-block;
-  color: #979797;
-  font-size: 10px;
-  font-family: "Source Sans Pro", sans-serif; 
+.result-card-subtitle{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #777777;
+  margin-top: 0px;
+  margin-bottom:15px
+}
+
+
+.result-card-sort-by-text{
+  margin-bottom: 20px;
+}
+
+.result-card-rating-text p{
+  display:inline-block;
+}
+
+.result-card-rating-text{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 16px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #000000;
+}
+
+.result-card-sort-by-value{
+  padding: 0 0 0 14px;
 }

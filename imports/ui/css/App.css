@@ -1,164 +1,66 @@
-#welcome_text, #second_welcome_text, .cornell-reviews {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-}
-
-.welcome_text{
+.homepage-text{
   /* height: 14px; */
   /* padding-top: 6%; */
   margin-bottom: 40px;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.001em;
-  color: #356BD0;
+  color: #0076FF;
+  margin-bottom: 25px;
 }
 
-.homepage-left-padding{
-  padding-left: 10.5%;
+
+.homepage-text-padding{
+  padding-left: 120px;
+  padding-top: 10px;
 }
 
-.no-side-padding{
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-}
-
-.outline{
-  display: block;
-  max-width: 150%;
-  width: 100%;
-  height: auto;
-  margin-bottom: -2%;
-}
-
-.z-index{
-  z-index: 1045;
-}
-
-.no-float{
-  float: none;
-}
-
-.scale-logo{
-  height: 75px;
+.scale-logo-homepage{
+  height: 100px;
   width: auto;
-  margin: 50px 0px 78px 71px;
-}
-
-nav {
-  background-color: #4990E2;
-  margin-top: 0;
-}
-
-#report-bug {
-  float: right;
-  color: #fff;
-  font-weight: normal;
-  padding-top: 0;
-}
-
-#report-bug:hover {
-  background-color: transparent;
-  opacity: .7;
-}
-
-#yes{
-  color: #4990E2;
-  font-weight: bold;
-  cursor: pointer;
-}
-#no{
-  color: #4990E2;
-  font-weight: bold;
+  margin: 120px 0px 0px 120px;
 }
 
 .background-gradient{
-  background-image:url("/slope2.svg"),linear-gradient(180deg, #68A5EC -80%, rgba(168, 211, 245, .85) 40%, #A8D3F5 80%);
+  
+  background-image: url("/slope.svg"), linear-gradient(180deg, 
+                                                      rgba(104, 165, 236, 0.65) 0%, 
+                                                      rgba(104, 165, 236, 0.1) 77.1%, 
+                                                      rgba(168, 211, 245, 0.7) 100%);
   background-repeat: no-repeat;
   background-size: 101%;
-  background-position: bottom; 
+  background-position-y: 103%;
 }
 
+.dti-logo{
+  position: absolute;
+  bottom: 10px;
+  right: 30px;
+}
+
+ /* Needed so that background is flush against bottom */
 .full-height{
-  min-height: 100.1%; /* Needed so that background is flush against bottom */
-  height: 100.09%;
+  min-height: 100vh;
+  background-color: #F4F9FE;
 }
-
-
-.background-image{
-  background: url('backgroundNew-edited.jpg') fixed no-repeat;
-  background-size: cover;
-  object-fit: contain;
-}
-
+/* I believe this is only used in recentreview.jsx so will remove soon TODO */
 .container{
   background-color: rgba(255, 255, 255, 0);
 }
 
-.container-top-gap-fix{
-  padding-top: 0 !important;
-  padding: 0;
+::-webkit-scrollbar {
+  width: .6%;
+  padding-right:100%;
 }
 
-.panel-container{
-  background-color: rgba(255, 255, 255, 0.0);
-  height: 100%;
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #ECECEC;
 }
 
-.moveDown {margin-top: 72px;}
-
-.panel-color-translucent{
-  background-color: rgba(255, 255, 255, 0.93);
-}
-
-.panel-color-gray{
-  background-color: rgba(74,74,74,.06);
-}
-
-.pushDown {
-  padding-top: 4%;
-}
-
-.title-link a {
-  color: white;
-  text-decoration: none;
-}
-
-.sticky{
-  position: relative;
-}
-.noPadding {
-  padding: 0 !important;
-}
-
-.nav-center {
-  margin-top: 15px;
-  background-color: transparent !important;
-}
-
-.nav-right {
-  margin-top: 15px;
-  float: right !important;
-  background-color: transparent !important;
-}
-
-.reportButton {
-  border: none !important;
-  padding: 0;
-}
-
-.reportButtonWidth {
-  width: 20% !important;
-}
-
-#logoImg {
-  margin-top: -5px;
-}
-
-@media (min-width: 992px) {
-  .sticky{
-    position: sticky;
-  }
+::-webkit-scrollbar-thumb {
+  background: #807B7B;
+  border-radius: 13.5731px;
 }

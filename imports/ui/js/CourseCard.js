@@ -4,28 +4,28 @@
 
 // Get a human-readable string representing a list of [up to] the last 2 semesters this class was offered.
 export function lastOfferedSems(theClass){
-  const semsArray = theClass.classSems;
-  const lastSemester2 = semsArray[semsArray.length - 2];
-  if (lastSemester2 != null) {
-    return semAbbriviationToWord(semsArray[semsArray.length - 1]) + ", " + semAbbriviationToWord(semsArray[semsArray.length - 2]);
-  }
-  else {
-    return semAbbriviationToWord(semsArray[semsArray.length - 1]);
-  }
+  const offered = new Set();
+
+  theClass.classSems.forEach(function(sem){
+    
+    offered.add(semAbbriviationToWord(sem.slice(0,-2)));
+  
+  });
+  // Array.from(offered).join(' ');
+  return Array.from(offered).join(", ");
 }
 
 // helper function to convert semester abbreviations to a full word
 export function semAbbriviationToWord(sem){
-  const abbreviation = String(sem);
-  switch (abbreviation.substring(0,2)){
+  switch (sem){
     case "SP":
-      return "Spring 20" + abbreviation.substring(2);
+      return "Spring";
     case "FA":
-      return "Fall 20" + abbreviation.substring(2);
+      return "Fall";
     case "SU":
-      return "Summer 20" + abbreviation.substring(2);
+      return "Summer";
     case "WI":
-      return "Winter 20" + abbreviation.substring(2);
+      return "Winter";
   }
 }
 

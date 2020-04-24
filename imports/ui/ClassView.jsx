@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
+import Gauge from './Gauge.jsx';
 import Navbar from './Navbar.jsx';
 import CourseReviews from './CourseReviews.jsx';
 import "./css/App.css";
@@ -60,7 +61,6 @@ export class ClassView extends Component {
     this.showPopup = this.showPopup.bind(this);
     this.decidePopup = this.decidePopup.bind(this);
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
-    this.onFormChange = this.onFormChange.bind(this);
   }
 
   // Once the component loads, make a call to the backend for class object.
@@ -108,12 +108,6 @@ export class ClassView extends Component {
     }
   }
 
-  // Updates the last time user typed in the form textbox
-  // Used so that the popup doesn't show while user is typing where
-  onFormChange(e) {
-      this.setState({lastTyped:new Date().getTime()});
-  }
-
   getPopUpCourseOptions() {
     if (this.props.allCourses != []) {
       const popUpCourseOptions = []
@@ -148,7 +142,7 @@ export class ClassView extends Component {
   decidePopup(){
     if(Session.get("popup_timer") != undefined
         && Session.get("popup_timer") != ""
-        && Session.get("seen_popup") != true 
+        && Session.get("seen_popup") != true
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
         && (!this.state.lastTyped
             || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
@@ -160,7 +154,7 @@ export class ClassView extends Component {
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) >  1000)/*(4 hours)*/{
           Session.setPersistent({"seen_popup": false});
           Session.setPersistent({"popup_timer": new Date().getTime()});
-        } 
+        }
       setTimeout(() => { this.decidePopup() }, 5000);
     }
   }
@@ -170,19 +164,27 @@ export class ClassView extends Component {
     if (this.state.selectedClass) {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
-        <div className="container-fluid container-top-gap-fix">
+        <div className="container-fluid container-top-gap-fix classViewContainer">
           <Navbar />
-          <div className='clearfix' />
-          <div className='container noPadding'>
-            <div className="col-md-6 col-sm-12 col-xs-12 sticky">
+          <div className="clearfix" />
+          <div className="container-width no-padding classview-column-container">
+            <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
               <CourseCard course={this.state.selectedClass} />
             </div>
-            <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel-color-gray">
-              <div>
-                <Form onChange={this.onFormChange} inUse={!this.state.popUpVisible} course={this.state.selectedClass} />
+            <div className="col navbar-margin classview-right-panel">
+              <div className="row classview-gauge-container">
+                <div className="col-md-4 col-sm-4 col-xs-4">
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-4">
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
+                </div>
+                <div className="col-md-4 col-sm-4 col-xs-4">
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
+                </div>
               </div>
-              <div>
-                <CourseReviews courseId={this.state.selectedClass._id} />
+              <div className="row no-padding classview-reviews-container">
+                <CourseReviews  courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
@@ -194,7 +196,7 @@ export class ClassView extends Component {
                 <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
                 Leave a Review<i className="popup-arrow"></i>
                 </button>
-                <Form searchBar={true} inUse={this.state.popUpVisible} query={this.state.query} queryFunc={this.updateQuery} course={this.state.selectedClass} />
+                <Form searchBar={true} inUse={this.state.popUpVisible} course={this.state.selectedClass} />
               </div>
             </div>
 
@@ -206,10 +208,10 @@ export class ClassView extends Component {
       return (
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
-          <div id="error">
-            <img id="errorgauge" src="/error.png" width="400px" height="auto" />
-            <h2>{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
-            <h2>Please search for a different class.</h2>
+          <div className="class-error-container">
+            <img className="errorgauge" src="/error.svg" width="400px" height="auto" />
+            <h2 className="error-text">{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
+            <h2 className="error-text">Please search for a different class.</h2>
           </div>
         </div>
       );
@@ -217,7 +219,7 @@ export class ClassView extends Component {
       // While a class is being searched for, render a loading animation.
       const Loading = require('react-loading-animation');
       return (
-        <div id="loading">
+        <div className="classview-loading">
           <Loading />;
               </div>
       )

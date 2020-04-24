@@ -20,25 +20,25 @@ import PropTypes from 'prop-types';
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {
     return (
-      <div className="row navbar">
-        <div className="col-md-2 col-sm-2 col-xs-2">
+      <div className="navbar">
+        <div className="logo-container">
           <a className="" href="/">
-            <img src='/logo.png' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
+            <img src='/logo.svg' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
           </a>
         </div>
-        <div className={"col-md-7 col-sm-7 col-xs-7"}>
-          <SearchBar contrastingResultsBackground={true}/>
-        </div>
-        <div id="reportBugText">
-          <a href="https://forms.gle/iDPXCywvm266yf457">Report a bug</a>
+        <div className="col navbar-searchbar-container">
+          <SearchBar contrastingResultsBackground={true} isInNavbar={true} />
         </div>
       </div>
     )
   }
 
 }
+
+Navbar.propTypes = {
+
+};

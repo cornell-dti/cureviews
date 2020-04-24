@@ -1,343 +1,8 @@
-/* Font declaration */
-/* #text, #review_text, #label, #button_text {
-font-family: 'Helvetica Neue', Arial, sans-serif;
-} */
-:root{
-  --preview-lines-to-trunkate: 2;
-}
+/* Individual Review Styling */
 
-.preview-review-overflow {
-  display: block; /* Fallback for non-webkit */
-  display: -webkit-box;
-  max-height: calc(1.25em * var(--preview-lines-to-trunkate));
-  -webkit-line-clamp: var(--preview-lines-to-trunkate);
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.panel-body-3 {
-  margin: auto;
-  padding: 8px 50px 5px 50px;
-}
-
-#rectangle, .review {
-  background-color: #ffffff;
-}
-
-#rectangle {
-  border: solid 1px #dddddd;
-  border-radius: 8px;
-  margin-top: 10px;
-}
-
-#circlebox {
-  border-radius: 25px;
-  height: 34px;
-  padding-top: 0;
-  width: 34px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-
-#circlebox-preview {
-  border-radius: 25px;
-  height: 25px;
-  padding-top: 0;
-  min-width: 25px !important;
-  max-width: 25px !important;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-
-#text {
-  color: #ffffff;
-  height: 100%;
-  font-size: 16px;
-  letter-spacing: 0.1px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  left: -50%;
-}
-
-.professor-text{
-  border-radius: 5px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  text-align: center;
-  background-color: #E0F0FF;
-  padding-left: 2px;
-  padding-right: 2px;
-  margin: 5px 0 6px 0;
-}
-
-.professor-text-preview{
-  border-radius: 5px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  text-align: center;
-  background-color: #E0F0FF;
-  padding-left: 2px;
-  padding-right: 2px;
-  margin: 5px 0 6px 0;
-}
-
-#label{
-  color: #4a4a4a;
-  font-size: 16px;
-  letter-spacing: 0.1px;
-  opacity: 0.5;
-  text-align: left;
-  margin: 0 7px;
-}
-
-.review-text {
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 18px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  text-align: left;
-  padding-bottom: 15px;
-}
-
-.review-text-preview {
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 14px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  text-align: left;
-}
-
-.review-date {
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 14px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #A6A6A6;
-  float: left;
-  padding-left: 50px;
-}
-
-.upvote-text{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 11px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  float: right;
-  color: #4990e2;
-  margin-right: 10px;
-}
-
-.report-review, .upvote, .voted {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  text-align: center;
-  line-height: 1.42857;
-  background-color: transparent;
-  float: right;
-  margin-right: 10px;
-  border-color: transparent;
-}
-
-.report-review {
-  color: #9b9b9b;
-  padding-top: 14px;
-}
-
-.upvote{
-  color: #4990e2;
-  margin-right: 0px;
-  padding-right: 8px;
-  border-radius: 30px;
-}
-
-.voted{
-  color: #fff;
-  background-color:#4990e2;
-  border-color: #4990e2;
-  margin-right: 0px;
-  padding-right: 0px;
-  border-radius: 30px;
-}
-
-.report-review:hover {
-  color: #4990e2;
-}
-
-.upvote:hover {
-  border-color: #4990e2;
-}
-
-.voted:hover {
-  border-color: black;
-}
-
-#reviewpanel, #reviewul {
-  background-color: #f2f2f2;
-}
-
-#reviewpanel {
-  border-color: transparent;
-}
-
-#labelName {
-  padding-left: 0px;
-  padding-right: 0px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #000000;
-  font-size: 14.5px;
-  letter-spacing: 0.1px;
-  text-align: left;
-  margin: 0 0px;
-  padding-top: 4px;
-}
-
-#label-wrap{
-  margin: 0 0;
-  padding: 4px 0 15px 0;
-  text-align: left;
-}
-
-.professor-title {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  text-align: left;
-  padding: 5px 0 10px 0;
-}
-
-.professor-title-preview {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  text-align: left;
-  padding: 5px 0 10px 0;
-}
-
-#agreeNumber {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 20px;
-}
-
-.review {
-  border-radius: 8px;
-  border: solid 1px #dddddd;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.review-padding-left{
-  /* padding-left: 50px !important; */
-}
-
-.review-number-text{
-  height: 100%;
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #ffffff;
+.review-number-label-span{
   display: inline-flex;
-  align-items: center;
-  position: relative;
-  margin: auto;
-}
-
-.review-number-text-preview{
-  height: 100%;
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-  margin: auto;
-}
-
-.review-number-label{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  white-space: nowrap;
-  margin: 0;
-  padding: 5px 5%;
-}
-
-.review-number-label-preview{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.01em;
-  color: #000000;
-  white-space: nowrap;
-  margin: 0;
-  padding: 3px 1.1vw;
-}
-
-.reviewNumbers{
-  margin-bottom: 8px;
-  display: inline-flex;
-  width: 100%;
-}
-
-.space-review-buttons {
-  margin-left: 5px;
+  width: 56px;
 }
 
 .noLeftRightSpacing{
@@ -345,4 +10,217 @@ font-family: 'Helvetica Neue', Arial, sans-serif;
   padding-right: 0;
   margin-left: 0;
   margin-right: 0;
+  display:block;
+}
+
+.review-container{
+  background: #FFFFFF;
+  border: 0.625px solid #D0E5F5;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 48px;
+  /* margin-right: 25px; */
+}
+
+.review-report {
+  color: #9b9b9b;
+  margin-top: 14px;
+  float: right;
+}
+
+.review-report:hover {
+  color: #4990e2;
+}
+
+.review-body-container {
+  margin: auto;
+  padding: 8px 50px 21px 30px;
+}
+
+.review-labels-container{
+  min-width: 85px;
+}
+
+.review-body-right-col{
+  padding: 0px 0 0 5%;
+}
+
+.review-number-labels-container{
+  padding:0px;
+}
+
+@media screen and (max-width: 992px) {
+  
+  .review-number-text, .review-number-text-preview{
+    padding-right: 5vw;
+    padding-left: 0 !important;
+    float: right;
+  }
+  
+}
+
+.review-number-label{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+}
+
+.review-number-text, .review-number-text-preview{
+  padding-left: 2vw;
+}
+
+.review-professor-container{
+  margin-bottom:8px;
+}
+
+.review-professor-label{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: 18px;
+  margin: 5px 0 6px 0;
+  display: inline;
+}
+
+
+.review-professor-text{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: 18px;
+  display: inline;
+}
+
+.review-text {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: 19px;
+  color: #000000;
+  text-align: left;
+  padding-bottom: 15px;
+}
+
+.review-date {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  color: #9B9B9B;
+  padding-top: 10px;
+  padding-left: 18px;
+  display: inline;
+
+}
+
+.review-upvote, .review-voted{
+  float: right;
+  color: #4990e2;
+}
+
+.upvote-text{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  line-height: 15px;
+  display: inline;
+  align-items: center;
+  text-align: right;
+  margin-left: 5px;
+  color: #807B7B;
+}
+
+.review-voted .upvote-text{
+  color: #0076FF;
+}
+
+/* Preview Review Styling */
+
+.review-body-container-preview {
+  margin: auto;
+  padding: 35px 30px 28px 31px;
+}
+
+.review-number-labels-container{
+  padding:0px;
+}
+
+
+.review-body-right-col-preview{
+  padding: 0px 0 0 12%;
+}
+
+.review-number-label-preview{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 27px;
+}
+
+.review-professor-container{
+  margin-bottom:8px;
+}
+
+.review-professor-label-preview{
+  border-radius: 5px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  margin: 5px 0 6px 0;
+  display: inline;
+}
+
+.review-text-preview {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: 19px;
+  color: #000000;
+  text-align: left;
+  padding-bottom: 15px;
+}
+
+.space-review-buttons {
+  margin-left: 5px;
+}
+
+.upvote-text{
+  display:inline;
+}
+
+.btn-lg{
+  padding:2px;
+  font-size:12px;
+  padding-left:65%;
+}
+
+
+.glyphicon{
+  display:inline;
+}
+
+.showMoreText{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+
+  color: #0076FF;
+}
+
+button{
+  background-color:#FFFFFF;
+  border:none;
 }

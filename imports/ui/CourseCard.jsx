@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Reviews } from '../api/dbDefs.js';
-import Gauge from 'react-summary-gauge-2';
+import Gauge from './Gauge.jsx';
+import Form from './Form.jsx';
 import './css/CourseCard.css';
 import { lastOfferedSems, lastSem, getGaugeValues } from './js/CourseCard.js';
 
@@ -34,6 +35,7 @@ export class CourseCard extends Component {
 
     // initialize state as default gauge values
     this.state = this.defaultGaugeState;
+    this.onFormChange = this.onFormChange.bind(this);
   }
 
   // Whenever the incoming props change (i.e, the database of reviews for a class
@@ -58,6 +60,12 @@ export class CourseCard extends Component {
     }
   }
 
+  // Updates the last time user typed in the form textbox
+  // Used so that the popup doesn't show while user is typing where
+  onFormChange(e) {
+      this.setState({lastTyped:new Date().getTime()});
+  }
+
   render() {
     const theClass = this.props.course;
 
@@ -71,34 +79,14 @@ export class CourseCard extends Component {
     const offered = lastOfferedSems(theClass);
 
     return (
-      <div id="coursedetails">
-        <h1 className="coursecard-class-title top-margin">
-          {theClass.classSub.toUpperCase() + " " + theClass.classNum + ": " + theClass.classTitle}
+      <div className="coursecard-container">
+        <h1 className="coursecard-class-title">
+          {theClass.classTitle}
         </h1>
-        <div href={url} target="_blank"> {/* Forces link onto next line */}
-          <a className="cornellClassLink" href={url}>Class Roster <img className="padding-bottom" src="https://img.icons8.com/windows/32/000000/external-link.png" width="3%" height="3%" ></img></a>
-        </div>
-        <p className="class-info spacing-large top-margin">
-          <strong>Offered: </strong>
-          {offered}
+        <p className="coursecard-class-info">
+          {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
         </p>
-        <div className="panel panel-default top-margin-medium panel-radius">
-          <div className="panel-body">
-            <section>
-              <div className="row" id="gaugeHolder">
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.rating} left={0} width={160} height={120} color={this.state.ratingColor} max={5} label="Overall Rating" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.diff} left={0} width={160} height={120} color={this.state.diffColor} max={5} label="Difficulty" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
-                  <Gauge value={this.state.workload} left={0} width={160} height={120} color={this.state.workloadColor} max={5} label="Workload" />
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
+        <Form onChange={this.onFormChange} course={theClass} inUse={true}/>
       </div>
     );
   }
