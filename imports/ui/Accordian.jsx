@@ -38,9 +38,9 @@ export default class Accordian extends Component{
                 {
                   this.props.data.map(function(data) {
                     return(
-                      <tr key={data._id1}>
-                        <th scope="row" key={data._id2}>{data._id}</th>
-                        <td key={data._id3}>{data.total}</td>
+                      <tr key={data._id}>
+                        <th scope="row">{data._id}</th>
+                        <td >{data.total}</td>
                       </tr>
                     )
                   })
@@ -57,7 +57,7 @@ export default class Accordian extends Component{
 }
 
 Accordian.propTypes ={
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   col1: PropTypes.string.isRequired,
   col2: PropTypes.string.isRequired
