@@ -13,9 +13,14 @@
   margin-top: 45px;
 }
 
+.classview-column-container{
+  display: flex;
+}
+
 .classview-right-panel{
   padding: 0 5vw 0 0;
   overflow: hidden;
+  min-width: 320px;
 }
 
 .classview-gauge-container{
@@ -38,6 +43,7 @@
 
 .classview-coursecard-min-width{
   min-width: 530px;
+  display: flex;
 }
 
 /* Popup Styling */

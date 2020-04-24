@@ -1,5 +1,10 @@
 /* Individual Review Styling */
 
+.review-number-label-span{
+  display: inline-flex;
+  width: 56px;
+}
+
 .noLeftRightSpacing{
   padding-left: 0;
   padding-right: 0;

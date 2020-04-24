@@ -124,22 +124,25 @@ export default class Review extends Component {
         <div className={"row " +  this.review_body_container_class}>
           <div className="col-lg-2 col-md-2 col-sm-12 noLeftRightPadding">
 
-            <p className={this.review_number_label_class}>Overall
-                              <span className={this.review_number_text_class}>
-                                {(review.rating != undefined) ? review.rating : review.quality}
-                              </span>
+            <p className={this.review_number_label_class}>
+              <span className="review-number-label-span">Overall</span>
+              <span className={this.review_number_text_class}>
+                {(review.rating != undefined) ? review.rating : review.quality}
+              </span>
             </p>
 
-            <p className={this.review_number_label_class}>Difficulty
-                                <span className={this.review_number_text_class}>
-                                  {review.difficulty}
-                                </span>
+            <p className={this.review_number_label_class}>
+                <span className="review-number-label-span">Difficulty</span>
+                <span className={this.review_number_text_class}>
+                  {review.difficulty}
+                </span>
             </p>
 
-            <p className={this.review_number_label_class}>Workload
-                                <span className={this.review_number_text_class}>
-                                  {(review.workload) ? review.workload : "-"}
-                                </span>
+            <p className={this.review_number_label_class}>
+                <span className="review-number-label-span">Workload</span>
+                <span className={this.review_number_text_class}>
+                  {(review.workload) ? review.workload : "-"}
+                </span>
             </p>
           </div>
           <div className={"col-md-offset-1 col-md-9 col-sm-12 noLeftRightPadding" + ""}>

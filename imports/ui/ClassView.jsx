@@ -167,19 +167,19 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix classViewContainer">
           <Navbar />
           <div className="clearfix" />
-          <div className="container-width no-padding">
-            <div className="col-md-5 col-sm-6 col-xs-12 sticky no-padding classview-coursecard-min-width">
+          <div className="container-width no-padding classview-column-container">
+            <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
               <CourseCard course={this.state.selectedClass} />
             </div>
             <div className="col navbar-margin classview-right-panel">
               <div className="row classview-gauge-container">
-                <div className="col-md-4 col-sm-4 col-xs-12">
+                <div className="col-md-4 col-sm-4 col-xs-4">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
                 </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
+                <div className="col-md-4 col-sm-4 col-xs-4">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
                 </div>
-                <div className="col-md-4 col-sm-4 col-xs-12">
+                <div className="col-md-4 col-sm-4 col-xs-4">
                   <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
