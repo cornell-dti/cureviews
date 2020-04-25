@@ -50,13 +50,13 @@
 }
 
 @media screen and (max-width: 992px) {
-  
+
   .review-number-text, .review-number-text-preview{
     padding-right: 5vw;
     padding-left: 0 !important;
     float: right;
   }
-  
+
 }
 
 .review-number-label{
@@ -68,6 +68,7 @@
 }
 
 .review-number-text, .review-number-text-preview{
+  font-weight: bold;
   padding-left: 2vw;
 }
 
