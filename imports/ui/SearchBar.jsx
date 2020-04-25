@@ -297,6 +297,13 @@ export default class SearchBar extends Component {
     }
   }
 
+  // extract the query from what the user asked for
+  extractQuery() {
+    const last_index = window.location.href.lastIndexOf('/') + 1
+    const query = window.location.href.substring(last_index).split("+").join(" ");
+    return query;
+  }
+
   render() {
     if (this.props.isPopup) return (
       <div className="searchbar-popup text-left" >
@@ -309,7 +316,7 @@ export default class SearchBar extends Component {
     else return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
         <div className={"col-lg-12 col-md-12 col-sm-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
-          <input className="search-text" onKeyUp={this.handleKeyPress} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
+          <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue = {this.props.isInNavbar ? this.extractQuery() : ""} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}
