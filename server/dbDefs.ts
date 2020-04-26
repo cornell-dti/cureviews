@@ -37,7 +37,6 @@ try {
    # Holds data about each class in the course roster.
 */
 export interface Class extends mongoose.Document {
-    _id: string;
     classSub: string;
     classNum: string;
     classTitle?: string;
@@ -52,7 +51,6 @@ export interface Class extends mongoose.Document {
 }
 
 const ClassSchema = new Schema<Class>({
-    _id: { type: String },  // mongo-generated random id for this document
     classSub: { type: String }, // subject, like "PHIL" or "CS"
     classNum: { type: String }, // course number, like 1110
     classTitle: { type: String }, // class title, like 'Introduction to Algorithms'
@@ -73,7 +71,6 @@ export const Classes = mongoose.model<Class>("classes", ClassSchema);
 */
 
 export interface Student extends mongoose.Document {
-    _id: string;
     firstName: string;
     lastName: string;
     netId: string;
@@ -98,13 +95,11 @@ export const Students = mongoose.model<Student>("students", StudentSchema);
 */
 
 export interface Subject extends mongoose.Document {
-    _id: string;
     subShort: string;
     subFull: string;
 }
 
 const SubjectSchema = new Schema({
-    _id: { type: String }, // mongo-generated random id for this document
     subShort: { type: String }, // subject, like "PHIL" or "CS"
     subFull: { type: String } // subject full name, like 'Computer Science'
 });
@@ -117,7 +112,6 @@ export const Subjects = mongoose.model<Subject>("subjects", SubjectSchema);
 */
 
 export interface Review extends mongoose.Document {
-    _id: string;
     user: string;
     text: string;
     difficulty?: number;
@@ -154,12 +148,10 @@ export const Reviews = mongoose.model<Review>("reviews", ReviewSchema);
    # Must be manually populated with data when the app is initialized.
 */
 const ValidationSchema = new Schema({
-    _id: { type: String }, // mongo-generated random id for this document
     adminPass: { type: String }, // admin password to validate against
 });
 
 interface IValidation extends mongoose.Document {
-    _id: string;
     adminPass?: string;
 }
 
