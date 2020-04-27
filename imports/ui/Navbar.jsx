@@ -31,7 +31,7 @@ export default class Navbar extends Component {
           </a>
         </div>
         <div className="col navbar-searchbar-container">
-          <SearchBar contrastingResultsBackground={true} isInNavbar={true} />
+          <SearchBar userInput={this.props.userInput} contrastingResultsBackground={true} isInNavbar={true} />
         </div>
       </div>
     )
@@ -40,5 +40,5 @@ export default class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-
+  userInput: PropTypes.string // optional previously entered search term
 };
