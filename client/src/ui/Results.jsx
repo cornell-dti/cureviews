@@ -96,6 +96,7 @@ export class Results extends Component {
       <div className="full-height bg-color">
         <Navbar />
         <ResultsDisplay courses={this.state.courseList}
+        userInput={this.props.match.params.input.split("+").join(" ")}
         loading={this.state.loading} type={this.props.match.params.type}/>
       </div>
     )

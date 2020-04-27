@@ -294,8 +294,8 @@ export default class ResultsDisplay extends Component {
 
               <div className="row no-left-margin">
                 <div>
-                  <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses</p>
-                </div>
+                <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
+                  for &quot;{this.props.userInput}&quot;</p></div>
               </div>
               <div className="row no-left-margin">
                 <div className="results-sort-by-container">
@@ -330,5 +330,6 @@ export default class ResultsDisplay extends Component {
 ResultsDisplay.propTypes = {
   courses: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  userInput: PropTypes.string.isRequired
 };
