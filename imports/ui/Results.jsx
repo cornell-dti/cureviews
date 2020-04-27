@@ -91,11 +91,12 @@ export class Results extends Component {
   }
 
   render() {
+    const userInput = this.props.match.params.input.split("+").join(" ");
     return (
       <div className="full-height bg-color">
-        <Navbar userInput={this.props.match.params.input.split("+").join(" ")} />
+        <Navbar userInput={userInput} />
         <ResultsDisplay courses={this.state.courseList}
-        userInput={this.props.match.params.input.split("+").join(" ")}
+        userInput={userInput}
         loading={this.state.loading} type={this.props.match.params.type}/>
       </div>
     )
