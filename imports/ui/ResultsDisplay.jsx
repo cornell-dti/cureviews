@@ -5,6 +5,7 @@ import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
 import { lastOfferedSems } from './js/CourseCard.js';
 import Loading from 'react-loading-animation';
+import AsyncSelect from "react-select/async";
 
 
 /*
@@ -35,6 +36,7 @@ export default class ResultsDisplay extends Component {
       filterMap: new Map([
                   ["levels", new Map([["1000", true], ["2000", true], ["3000", true], ["4000", true], ["5000+", true]])],
                   ["semesters", new Map([["Fall", true], ["Spring", true]])],
+                  ["subjects", []],
                 ]), // key value pair name:checked
       filteredItems: this.props.courses
     };
@@ -130,6 +132,13 @@ export default class ResultsDisplay extends Component {
       levels.some(level => 
         level === "5000+" ? course.classNum.slice(0,1) >= "5" : course.classNum.slice(0,1) === level.slice(0,1)) 
     );
+    console.log(filteredItems);
+    let subjects_objects = this.state.filterMap.get("subjects");
+    if(subjects_objects !== []){
+      filteredItems = filteredItems.filter(course =>
+        subjects_objects.some(subject_object => course.classSub.toUpperCase() === subject_object.value));
+    }
+    console.log(filteredItems);
     
     this.setState({filteredItems: filteredItems}, () => this.sort());
     
@@ -190,8 +199,17 @@ export default class ResultsDisplay extends Component {
   }
 
   
-  handleMajorFilterChange(selectedMajor){
-    console.log(selectedMajor);
+  handleMajorFilterChange(selectedMajors){
+    
+    if(selectedMajors === null){
+      selectedMajors = []
+    }
+    
+    let newFilterMap = this.state.filterMap;
+    
+    newFilterMap.set("subjects", selectedMajors)
+    
+    this.setState({filterMap: newFilterMap}, () => this.filterClasses());
   }
 
   getSubjectOptions(inputValue, callback){
@@ -203,8 +221,8 @@ export default class ResultsDisplay extends Component {
         const subjectOptions = []
         for(const subject in subjectList){
           subjectOptions.push({
-            "value" : subjectList[subject].subShort,
-            "label" : subjectList[subject].subFull
+            "value" : subjectList[subject].subShort.toUpperCase(),
+            "label" : subjectList[subject].subShort.toUpperCase()
           })
         }
         
@@ -249,9 +267,23 @@ export default class ResultsDisplay extends Component {
                 <p className="filter-sub-title">Semester</p>
                 {this.renderCheckboxes("semesters")}
               </div>
-              <div className="filter-sub">
+              <div className="filter-sub-category">
                 <p className="filter-sub-title">Level</p>
                 {this.renderCheckboxes("levels")}
+              </div>
+              <div className="filter-sub-category">
+                <p className="filter-sub-title">Major</p>
+                <AsyncSelect
+                  isMulti
+                  placeholder={"Search Major"}
+                  classNamePrefix={"react-major-select"}
+                  isClearable={true}
+                  defaultOptions={false}
+                  loadOptions={this.getSubjectOptions}
+                  onChange={this.handleMajorFilterChange}
+                  value={this.state.filterMap.get("subjects")}
+                  noOptionsMessage={() => "No Subjects Match"}
+                 />
               </div>
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 results">
