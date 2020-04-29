@@ -6,6 +6,7 @@
     "server"
   ],
   "scripts": {
+    "heroku-postbuild": "yarn workspaces run build",
     "lint": "eslint . --ext .js --ext .jsx"
   },
   "devDependencies": {
