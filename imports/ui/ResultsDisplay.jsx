@@ -33,11 +33,7 @@ export default class ResultsDisplay extends Component {
         "3000": true, "4000": true,
         "5000+": true
       },
-      filterMap: new Map([
-                  ["levels", new Map([["1000", true], ["2000", true], ["3000", true], ["4000", true], ["5000+", true]])],
-                  ["semesters", new Map([["Fall", true], ["Spring", true]])],
-                  ["subjects", []],
-                ]), // key value pair name:checked
+      filterMap: this.getInitialFilterMap(), // key value pair name:checked
       filteredItems: this.props.courses
     };
     this.previewHandler = this.previewHandler.bind(this);
@@ -46,6 +42,7 @@ export default class ResultsDisplay extends Component {
     this.handleMajorFilterChange = this.handleMajorFilterChange.bind(this);
     this.renderCheckboxes = this.renderCheckboxes.bind(this);
     this.filterClasses = this.filterClasses.bind(this);
+    this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
 
   }
@@ -58,6 +55,17 @@ export default class ResultsDisplay extends Component {
         card_course: this.props.courses[0],
       }, () => this.filterClasses());
     }
+    if(prevProps.userInput !== this.props.userInput){
+      this.setState({filterMap: this.getInitialFilterMap()}, () => this.filterClasses())
+    }
+  }
+
+  getInitialFilterMap(){
+    return new Map([
+                ["levels", new Map([["1000", true], ["2000", true], ["3000", true], ["4000", true], ["5000+", true]])],
+                ["semesters", new Map([["Fall", true], ["Spring", true]])],
+                ["subjects", []],
+              ]);
   }
 
   // Handles selecting different sort bys
@@ -132,13 +140,12 @@ export default class ResultsDisplay extends Component {
       levels.some(level => 
         level === "5000+" ? course.classNum.slice(0,1) >= "5" : course.classNum.slice(0,1) === level.slice(0,1)) 
     );
-    console.log(filteredItems);
+    
     let subjects_objects = this.state.filterMap.get("subjects");
-    if(subjects_objects !== []){
+    if(subjects_objects && subjects_objects.length > 0){
       filteredItems = filteredItems.filter(course =>
         subjects_objects.some(subject_object => course.classSub.toUpperCase() === subject_object.value));
     }
-    console.log(filteredItems);
     
     this.setState({filteredItems: filteredItems}, () => this.sort());
     
@@ -271,10 +278,12 @@ export default class ResultsDisplay extends Component {
                 <p className="filter-sub-title">Level</p>
                 {this.renderCheckboxes("levels")}
               </div>
-              <div className="filter-sub-category">
+              <div className={"filter-sub-category " + (this.props.type === "major" ? "filter-major-disabled" : "")}>
                 <p className="filter-sub-title">Major</p>
                 <AsyncSelect
+                  className=""
                   isMulti
+                  isDisabled={this.props.type === "major"}
                   placeholder={"Search Major"}
                   classNamePrefix={"react-major-select"}
                   isClearable={true}
