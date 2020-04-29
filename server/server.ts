@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 import { Meteor } from "./shim";
 
 import cors from "cors";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 app.use(cors());
 

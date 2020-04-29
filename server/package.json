@@ -15,6 +15,7 @@
     "axios": "^0.19.2",
     "common": "0.0.1",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "google-auth-library": "^6.0.0",
     "mongodb": "^3.5.5",
