@@ -16,7 +16,7 @@ function setup() {
   Promise.all([import("./methods"), import("./publications")]).then(() => {
     Meteor.bind();
     app.get('*', (_, response) => response.sendFile(path.join(__dirname, '../../client/build/index.html')));
-    app.listen(process.env.port || 8080, () => console.log("Listening..."));
+    app.listen(process.env.PORT || 8080, () => console.log("Listening..."));
   });
 }
 
