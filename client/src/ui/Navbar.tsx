@@ -16,7 +16,7 @@ import SearchBar from './SearchBar.jsx';
   Include the route for View components.
 */
 
-export default class Navbar extends Component {
+export default class Navbar extends Component<{ userInput: string }> {
 
   render() {
     return (
@@ -27,7 +27,7 @@ export default class Navbar extends Component {
           </a>
         </div>
         <div className="col navbar-searchbar-container">
-          <SearchBar contrastingResultsBackground={true} isInNavbar={true} />
+          <SearchBar userInput={this.props.userInput} contrastingResultsBackground={true} isInNavbar={true} />
         </div>
       </div>
     )
