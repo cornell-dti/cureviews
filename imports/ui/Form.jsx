@@ -116,7 +116,11 @@ export default class Form extends Component {
   // Save the current professor selected string for professors in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleProfChange(selectedProfessors){
-    // console.log(selectedProfessors.map(professor => {return professor.label}))
+    
+    if(selectedProfessors === null){
+      selectedProfessors = []
+    }
+    
     this.setState({ selectedProfessors: selectedProfessors });
     this.pushReviewsDown(this.state.dropdown);
   }
@@ -390,7 +394,10 @@ export default class Form extends Component {
                           <div className="form-label form-professor-label">Professor</div>
                       </div>
                       <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
-                          <Select className='react-select-container' classNamePrefix="react-select" value={this.state.selectedProfessors}
+                          <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            value={this.state.selectedProfessors}
                             onChange={(professors) => this.handleProfChange(professors)}
                             isMulti
                             options={this.getProfOptions()}

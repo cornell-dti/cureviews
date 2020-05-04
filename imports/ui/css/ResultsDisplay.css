@@ -58,6 +58,55 @@
   margin: 10px 0;
 }
 
+.filter-major-disabled{
+  cursor: not-allowed;
+}
+
+.react-major-select__value-container{
+  line-height: 20px;
+}
+
+.react-major-select__control{
+  background-color: rgba(255, 255, 255, 0) !important;
+  border-radius: 0 !important;
+  border-style: solid !important;
+  border-width: 0 0 1px 0 !important;
+}
+
+.react-major-select__indicators{
+  display: none !important;
+}
+
+.react-major-select__placeholder{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: #807B7B !important;
+}
+
+.react-major-select__indicator-separator{
+  display: none;
+}
+
+.react-major-select__dropdown-indicator{
+  color: #9FCBFF !important;
+  
+}
+
+.react-major-select__control--is-focused .react-major-select__dropdown-indicator{
+  color: #0076FF !important;
+}
+
+.react-major-select__control--is-focused{
+  border-color: #0076FF !important;
+  box-shadow: none !important;
+
+}
+
+.react-major-select__clear-indicator{
+  display: none !important;
+}
+
 /* Class Results List Styling */
 
 .results-sort-by-container{
