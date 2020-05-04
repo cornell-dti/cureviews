@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Meteor from '../meteor-shim';
+import { Meteor } from '../meteor-shim';
 import "./css/ResultsDisplay.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
