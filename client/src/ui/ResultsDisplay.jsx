@@ -5,6 +5,7 @@ import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
 import { lastOfferedSems } from 'common/CourseCard';
 import Loading from 'react-loading-animation';
+import AsyncSelect from "react-select/async";
 
 
 /*
@@ -31,31 +32,40 @@ export default class ResultsDisplay extends Component {
         "1000": true, "2000": true,
         "3000": true, "4000": true,
         "5000+": true
-      }, // key value pair name:checked
+      },
+      filterMap: this.getInitialFilterMap(), // key value pair name:checked
       filteredItems: this.props.courses
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
+    this.getSubjectOptions = this.getSubjectOptions.bind(this);
+    this.handleMajorFilterChange = this.handleMajorFilterChange.bind(this);
+    this.renderCheckboxes = this.renderCheckboxes.bind(this);
+    this.filterClasses = this.filterClasses.bind(this);
+    this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
 
   }
 
-
-  componentDidUpdate(prevProps) {
-    if (prevProps != this.props) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps != this.props || prevState.courseList.length != this.state.courseList.length) {
       this.setState({
         courseList: this.props.courses,
         relevantCourseList: this.props.courses,
         card_course: this.props.courses[0],
-        active_card: 0,
-        selected: this.props.type === "major" ? "rating" : "relevance",
-        filters: {
-          "Fall": true, "Spring": true, "1000": true, "2000": true,
-          "3000": true, "4000": true, "5000+": true
-        }, // key value pair => name:checked
-        filteredItems: this.props.courses
-      }, () => this.sort())
+      }, () => this.filterClasses());
     }
+    if(prevProps.userInput !== this.props.userInput){
+      this.setState({filterMap: this.getInitialFilterMap()}, () => this.filterClasses())
+    }
+  }
+
+  getInitialFilterMap(){
+    return new Map([
+                ["levels", new Map([["1000", true], ["2000", true], ["3000", true], ["4000", true], ["5000+", true]])],
+                ["semesters", new Map([["Fall", true], ["Spring", true]])],
+                ["subjects", []],
+              ]);
   }
 
   // Handles selecting different sort bys
@@ -66,7 +76,7 @@ export default class ResultsDisplay extends Component {
 
   // Helper function to sort()
   sortBy(courseList, sortByField, fieldDefault, increasing){
-    const data = courseList.sort(
+    courseList = courseList.sort(
       (a, b) => {
         let first = (Number(b[sortByField]) || fieldDefault);
         let second = (Number(a[sortByField]) || fieldDefault);
@@ -85,8 +95,8 @@ export default class ResultsDisplay extends Component {
         }
       });
     this.setState({
-      courseList: data,
-      card_course: data[0],
+      filteredItems: courseList,
+      card_course: courseList[0],
       active_card: 0
     });
   }
@@ -115,87 +125,43 @@ export default class ResultsDisplay extends Component {
     }
   }
 
-  //Returns true if the [course]'s class level falls under the filter [filterName]
-  classLevelCheck(course, filterName) {
-    let classLevel = course.classNum;
-    let classLevelString = course.classNum.toString().substring(0, 1);
-    let filterClassLevel = filterName.substring(0, 1);
-    if (filterClassLevel == "5") {
-      if (Math.floor(classLevel / 1000) >= 5) {
-        return true;
-      }
+  filterClasses(){ 
+    
+    let semesters = Array.from(this.state.filterMap.get("semesters").keys()).filter(semester =>
+                                            this.state.filterMap.get("semesters").get(semester))
+                                            
+    let filteredItems = this.state.courseList.filter(course =>    
+      semesters.some(semester => 
+        course.classSems.some(element => element.includes(semester.slice(0,2).toUpperCase())))
+    );
+    
+    let levels = Array.from(this.state.filterMap.get("levels").keys()).filter(level => this.state.filterMap.get("levels").get(level))
+    filteredItems = filteredItems.filter(course =>    
+      levels.some(level => 
+        level === "5000+" ? course.classNum.slice(0,1) >= "5" : course.classNum.slice(0,1) === level.slice(0,1)) 
+    );
+    
+    let subjects_objects = this.state.filterMap.get("subjects");
+    if(subjects_objects && subjects_objects.length > 0){
+      filteredItems = filteredItems.filter(course =>
+        subjects_objects.some(subject_object => course.classSub.toUpperCase() === subject_object.value));
     }
-    else if (classLevelString == filterClassLevel) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
-  }
-
-  //Returns true if the [course] falls under the [activeFilters]
-  filterCondition(course, activeFilters) {
-    let sems = ["Fall", "Spring"];
-    let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
-
-    //checks if the filters checked are across both the semester and classLevel categories
-    const found = activeFilters.some(filterName => sems.includes(filterName)) &&
-      activeFilters.some(filterName => classLevels.includes(filterName))
-    if (found) {
-      let foundSem = activeFilters.some(activeFilterName =>
-        lastOfferedSems(course).includes(activeFilterName));
-      let foundClassLevel = activeFilters.some(activeFilterName =>
-        this.classLevelCheck(course, activeFilterName));
-      return foundSem && foundClassLevel; //returns true if the course satsifies any of the filters for BOTH categories
-    }
-    else {
-      return activeFilters.some(
-        activeFilterName => lastOfferedSems(course).includes(activeFilterName) ||
-          this.classLevelCheck(course, activeFilterName) //returns true if the course satsifies any of the filters for one of the categories
-      )
-    }
+    
+    this.setState({filteredItems: filteredItems}, () => this.sort());
+    
   }
 
   //Updates the list of filtered items when filters are checked/unchecked
-  onChange = e => {
+  checkboxOnChange = e => {
+    const group = e.target.getAttribute("group");
     const name = e.target.name;
     const checked = e.target.checked;
-    const filters = {
-      ...this.state.filters,
-      [name]: checked
-    };
-
-    const activeFilterNames = Object.keys(filters).filter(
-      filterName => filters[filterName]
-    );
-    let list = this.state.courseList;
-    if (this.state.selected === "relevance") {
-      list = this.state.relevantCourseList;
-    }
-    const filteredItems = list.filter(course =>
-      this.filterCondition(course, activeFilterNames)
-    );
-    if (filteredItems.length == 0 && checked) {
-      this.setState({
-        filters: filters,
-        filteredItems: filteredItems,
-      })
-    }
-    else if (checked) {
-      this.setState({
-        filters: filters,
-        filteredItems: filteredItems,
-        card_course: filteredItems[0],
-      }, () => this.sort());
-    }
-    else {
-      this.setState({
-        filters: filters,
-        filteredItems: filteredItems,
-        card_course: this.state.courseList[0],
-      }, () => this.sort());
-    }
+    
+    let newFilterMap = this.state.filterMap;
+    
+    newFilterMap.get(group).set(name, checked);
+    
+    this.setState({filterMap: newFilterMap}, () => this.filterClasses());
 
   }
 
@@ -223,35 +189,58 @@ export default class ResultsDisplay extends Component {
 
   }
 
-  renderSemesterCheckboxes() {
-    let sems = ["Fall", "Spring"];
-    return sems.map((name, index) => (
+  renderCheckboxes(group) {
+    let group_list = Array.from(this.state.filterMap.get(group).keys());
+    return group_list.map((name, index) => (
       <div className="filter-entry-container" key={index}>
         <input
-          onChange={(e) => this.onChange(e)}
+          onChange={(e) => this.checkboxOnChange(e)}
           type="checkbox"
-          checked={this.state.filters[name]}
-          name={name}
-        />
-        <label className="filter-checkbox-label">{name} </label>
-      </div>
-    ))
-
-  }
-
-  renderClassLevelCheckBoxes() {
-    let classLevels = ["1000", "2000", "3000", "4000", "5000+"];
-    return classLevels.map((name, index) => (
-      <div className="filter-entry-container" key={index}>
-        <input
-          onChange={(e) => this.onChange(e)}
-          type="checkbox"
-          checked={this.state.filters[name]}
+          checked={this.state.filterMap.get(group).get(name)}
+          group={group}
           name={name}
         />
         <label className="filter-checkbox-label">{name}</label>
       </div>
     ))
+  }
+
+  
+  handleMajorFilterChange(selectedMajors){
+    
+    if(selectedMajors === null){
+      selectedMajors = []
+    }
+    
+    let newFilterMap = this.state.filterMap;
+    
+    newFilterMap.set("subjects", selectedMajors)
+    
+    this.setState({filterMap: newFilterMap}, () => this.filterClasses());
+  }
+
+  getSubjectOptions(inputValue, callback){
+    
+    Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
+      if (!err && subjectList && subjectList.length !== 0) {
+        // Save the list of Subject objects that matches the request
+        
+        const subjectOptions = []
+        for(const subject in subjectList){
+          subjectOptions.push({
+            "value" : subjectList[subject].subShort.toUpperCase(),
+            "label" : subjectList[subject].subShort.toUpperCase()
+          })
+        }
+        
+        callback(subjectOptions)
+      }
+      else {
+        callback([])
+      }
+    });
+    
+    // callback(this.filterColors(inputValue));
   }
 
   render() {
@@ -283,11 +272,27 @@ export default class ResultsDisplay extends Component {
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
-                {this.renderSemesterCheckboxes()}
+                {this.renderCheckboxes("semesters")}
               </div>
-              <div className="filter-sub">
+              <div className="filter-sub-category">
                 <p className="filter-sub-title">Level</p>
-                {this.renderClassLevelCheckBoxes()}
+                {this.renderCheckboxes("levels")}
+              </div>
+              <div className={"filter-sub-category " + (this.props.type === "major" ? "filter-major-disabled" : "")}>
+                <p className="filter-sub-title">Major</p>
+                <AsyncSelect
+                  className=""
+                  isMulti
+                  isDisabled={this.props.type === "major"}
+                  placeholder={"Search Major"}
+                  classNamePrefix={"react-major-select"}
+                  isClearable={true}
+                  defaultOptions={false}
+                  loadOptions={this.getSubjectOptions}
+                  onChange={this.handleMajorFilterChange}
+                  value={this.state.filterMap.get("subjects")}
+                  noOptionsMessage={() => "No Subjects Match"}
+                 />
               </div>
             </div>
             <div className="col-md-3 col-sm-3 col-xs-3 results">
