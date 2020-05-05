@@ -28,6 +28,7 @@ const searchWithinSubject = (sub, remainder) => {
     { reactive: false }).fetch();
 }
 
+// uses levenshtein algorithm to return the minimum edit distance between two strings
 let editDistance = (a, b) =>{
   if(a.length == 0) return b.length; 
   if(b.length == 0) return a.length; 
@@ -61,11 +62,14 @@ let editDistance = (a, b) =>{
   return matrix[b.length][a.length];
 };
 
-let courseSort = (a,b)=> {
-  let aCourseStr=a.classSub+" "+a.classNum;
-  let bCourseStr=b.classSub+" "+b.classNum;
-  let queryLen =this.state.query.length;
-  return editDistance(this.state.query.toLowerCase(), aCourseStr.slice(0, queryLen)) - editDistance(this.state.query.toLowerCase(), bCourseStr.slice(0, queryLen))
+// a wrapper for a comparator function to be used to sort courses by comparing their edit distance with the query
+let courseSort = function (query){
+  return (a,b)=> {
+    let aCourseStr=a.classSub+" "+a.classNum;
+    let bCourseStr=b.classSub+" "+b.classNum;
+    let queryLen =query.length;
+    return editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen)) - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen))
+  }
 }
 
 Meteor.methods({
@@ -436,7 +440,7 @@ Meteor.methods({
         return Classes.find(
           { classNum: { '$regex': `.*${searchString}.*`, '$options': '-i' } },
           { sort: { classFull: 1 }, limit: 200 },
-          { reactive: false }).fetch().sort(courseSort);
+          { reactive: false }).fetch().sort(courseSort(searchString));
       }
 
       // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
@@ -516,7 +520,7 @@ Meteor.methods({
         fields: { score: { $meta: "textScore" } },
         sort: { score: { $meta: "textScore" } }
       }
-      return Classes.find({ "$text": { "$search": keyword } }, options).fetch().sort(courseSort);
+      return Classes.find({ "$text": { "$search": keyword } }, options).fetch().sort(courseSort(keyword));
     }
     else return null;
   },
