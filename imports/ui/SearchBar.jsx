@@ -21,38 +21,7 @@ import { Redirect } from 'react-router';
 
 let newSearchState = { selected: false, mouse: 0, enter: 0, index: 0};
 
-let editDistance = (a, b) =>{
-  if(a.length == 0) return b.length; 
-  if(b.length == 0) return a.length; 
 
-  let matrix = [];
-
-  // increment along the first column of each row
-  for(let i = 0; i <= b.length; i++){
-      matrix[i] = [i];
-  }
-
-  // increment each column in the first row
-  let j;
-  for(j = 0; j <= a.length; j++){
-      matrix[0][j] = j;
-  }
-
-  // Fill in the rest of the matrix
-  for(let i = 1; i <= b.length; i++){
-      for(j = 1; j <= a.length; j++){
-      if(b.charAt(i-1) == a.charAt(j-1)){
-          matrix[i][j] = matrix[i-1][j-1];
-      } else {
-          matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
-                                  Math.min(matrix[i][j-1] + 1, // insertion
-                                          matrix[i-1][j] + 1)); // deletion
-      }
-      }
-  }
-
-return matrix[b.length][a.length];
-};
 
 const initState = {
   showDropdown: true,
@@ -109,12 +78,7 @@ export default class SearchBar extends Component {
         if (!err && courseList && courseList.length !== 0) {
           // Save the list of Class objects that matches the request
           this.setState({
-            allCourses: courseList.sort((a,b)=> {
-              let aCourseStr=a.classSub+" "+a.classNum;
-              let bCourseStr=b.classSub+" "+b.classNum;
-              let queryLen =this.state.query.length;
-              return editDistance(this.state.query.toLowerCase(), aCourseStr.slice(0, queryLen)) - editDistance(this.state.query.toLowerCase(), bCourseStr.slice(0, queryLen))
-            })
+            allCourses: courseList
           });
         }
         else {
@@ -122,11 +86,7 @@ export default class SearchBar extends Component {
             if (!err && queryCourseList && queryCourseList.length !== 0) {
               // Save the list of Class objects that matches the request
               this.setState({
-                allCourses: queryCourseList.sort((a,b)=> {
-                  let aCourseStr=a.classSub+" "+a.classNum;
-                  let bCourseStr=b.classSub+" "+b.classNum;
-                  return editDistance(this.state.query.toLowerCase(), aCourseStr) - editDistance(this.state.query.toLowerCase(), bCourseStr)
-                })
+                allCourses: queryCourseList
               });
             }
             else {
