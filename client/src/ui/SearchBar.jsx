@@ -21,6 +21,8 @@ import { Redirect } from 'react-router';
 
 let newSearchState = { selected: false, mouse: 0, enter: 0, index: 0};
 
+
+
 const initState = {
   showDropdown: true,
   index: 0, //the initial state is the first element

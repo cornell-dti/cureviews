@@ -28,6 +28,50 @@ const searchWithinSubject = (sub: string, remainder: string) => {
   ).exec();
 };
 
+// uses levenshtein algorithm to return the minimum edit distance between two strings
+let editDistance = (a, b) =>{
+  if(a.length == 0) return b.length; 
+  if(b.length == 0) return a.length; 
+
+  let matrix = [];
+
+  // increment along the first column of each row
+  for(let i = 0; i <= b.length; i++){
+      matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  let j;
+  for(j = 0; j <= a.length; j++){
+      matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for(let i = 1; i <= b.length; i++){
+      for(j = 1; j <= a.length; j++){
+      if(b.charAt(i-1) == a.charAt(j-1)){
+          matrix[i][j] = matrix[i-1][j-1];
+      } else {
+          matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                  Math.min(matrix[i][j-1] + 1, // insertion
+                                          matrix[i-1][j] + 1)); // deletion
+      }
+      }
+  }
+
+  return matrix[b.length][a.length];
+};
+
+// a wrapper for a comparator function to be used to sort courses by comparing their edit distance with the query
+let courseSort = function (query){
+  return (a,b)=> {
+    let aCourseStr=a.classSub+" "+a.classNum;
+    let bCourseStr=b.classSub+" "+b.classNum;
+    let queryLen =query.length;
+    return editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen)) - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen))
+  }
+}
+
 Meteor.methods({
   // insert a new review into the reviews collection. Also updates
   // course metrics upon successfully inserting review.
@@ -402,7 +446,7 @@ Meteor.methods({
           { classNum: { '$regex': `.*${searchString}.*`, '$options': '-i' } },
           {},
           { sort: { classFull: 1 }, limit: 200, reactive: false }
-        ).exec();
+        ).exec().then(classes => classes.sort(courseSort(searchString)));
       }
 
       // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
@@ -473,7 +517,7 @@ Meteor.methods({
   async getCoursesByKeyword(keyword) {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(keyword)) {
-      return await Classes.find({ $text: { $search: keyword } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      return (await Classes.find({ $text: { $search: keyword } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec()).sort(courseSort(keyword));
     }
     else return null;
   },
