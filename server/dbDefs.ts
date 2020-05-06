@@ -52,7 +52,6 @@ export interface Class extends mongoose.Document {
 }
 
 const ClassSchema = new Schema<Class>({
-    _id: { type: String },  // mongo-generated random id for this document
     classSub: { type: String }, // subject, like "PHIL" or "CS"
     classNum: { type: String }, // course number, like 1110
     classTitle: { type: String }, // class title, like 'Introduction to Algorithms'
@@ -104,7 +103,6 @@ export interface Subject extends mongoose.Document {
 }
 
 const SubjectSchema = new Schema({
-    _id: { type: String }, // mongo-generated random id for this document
     subShort: { type: String }, // subject, like "PHIL" or "CS"
     subFull: { type: String } // subject full name, like 'Computer Science'
 });
