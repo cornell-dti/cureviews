@@ -81,7 +81,7 @@ export default class UpdateReview extends Component {
               <div className="col-sm-12">
                 <b>Course:</b> {this.state.shortName}: {this.state.longName}
                 <br></br>
-                <b>Posted </b> {moment(review.date.toISOString()).fromNow()}
+                <b>Posted </b> {moment(review.date).fromNow()}
               </div>
             </div>
               <div className="panel panel-default">

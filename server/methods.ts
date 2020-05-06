@@ -1,10 +1,11 @@
 import { findAllSemesters, updateProfessors, resetProfessorArray, addAllCourses, addCrossList } from "./dbInit";
 import { Meteor } from "./shim";
-import { Classes, Students, Subjects, Reviews, Validation, Class, Student } from "./dbDefs";
+import { Classes, Students, Subjects, Reviews, Validation, Class, Student, Review } from "./dbDefs";
 import { getGaugeValues, getCrossListOR } from 'common/CourseCard';
-
 import { OAuth2Client } from "google-auth-library";
 import { TokenPayload } from "google-auth-library/build/src/auth/loginticket";
+import shortid from "shortid"
+
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 /* # Meteor Methods
    # Client-side code in meteor is not allowed direct access to the local database
@@ -92,7 +93,8 @@ Meteor.methods({
     await Meteor.call("insertUser", ticket);
     if (ticket.hd === "cornell.edu") {
       if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
-        const fullReview = {
+        const fullReview = new Reviews({
+          _id: shortid.generate(),
           text: review.text,
           difficulty: review.diff,
           rating: review.rating,
@@ -103,11 +105,11 @@ Meteor.methods({
           reported: 0,
           professors: review.professors,
           likes: 0,
-        };
+        });
 
         try {
           //check(fullReview, Reviews);
-          await new Reviews(fullReview).save();
+          await fullReview.save();
           console.log("Success: Submitted review");
           //Update the course metrics
           return 1; //success
@@ -131,7 +133,8 @@ Meteor.methods({
   async insertUser(googleObject) {
     //Check user object has all required fields
     if (googleObject.email.replace("@cornell.edu", "") != null) {
-      const newUser = {
+      const newUser = new Students({
+        _id: shortid.generate(),
         // Check to see if Google returns first and last name
         // If not, insert empty string to database
         firstName: googleObject.given_name ? googleObject.given_name : "",
@@ -140,13 +143,13 @@ Meteor.methods({
         affiliation: null,
         token: null,
         privilege: "regular"
-      };
+      });
 
       const user = await Meteor.call("getUserByNetId", googleObject.email.replace("@cornell.edu", ""));
       if (user == null) {
         try {
           //check(newUser, Users);
-          await new Students(newUser).save();
+          await newUser.save();
           return 1; //success
         } catch (error) {
           console.log("Error: In inserting Student");
@@ -208,7 +211,7 @@ Meteor.methods({
     const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
-      Reviews.update(review._id, { $set: { visible: 1 } });
+      await Reviews.updateOne({_id: review._id}, { $set: { visible: 1 } });
       await Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     } else {

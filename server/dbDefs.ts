@@ -52,6 +52,7 @@ export interface Class extends mongoose.Document {
 }
 
 const ClassSchema = new Schema<Class>({
+    _id: { type: String }, // overwritten _id field to play nice with our old db
     classSub: { type: String }, // subject, like "PHIL" or "CS"
     classNum: { type: String }, // course number, like 1110
     classTitle: { type: String }, // class title, like 'Introduction to Algorithms'
@@ -82,6 +83,7 @@ export interface Student extends mongoose.Document {
 }
 
 const StudentSchema = new Schema({
+    _id: { type: String }, // overwritten _id field to play nice with our old db
     firstName: { type: String }, // user first name
     lastName: { type: String }, // user last name
     netId: { type: String }, // user netId
@@ -103,6 +105,7 @@ export interface Subject extends mongoose.Document {
 }
 
 const SubjectSchema = new Schema({
+    _id: { type: String }, // overwritten _id field to play nice with our old db
     subShort: { type: String }, // subject, like "PHIL" or "CS"
     subFull: { type: String } // subject full name, like 'Computer Science'
 });
@@ -130,6 +133,7 @@ export interface Review extends mongoose.Document {
 }
 
 const ReviewSchema = new Schema<Review>({
+    _id: { type: String }, // overwritten _id field to play nice with our old db
     user: { type: String, required: false }, // user who wrote this review, a Users _id
     text: { type: String, required: false }, // text from the review
     difficulty: { type: Number }, // difficulty measure from the review
