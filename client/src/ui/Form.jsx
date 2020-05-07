@@ -184,7 +184,7 @@ export default class Form extends Component {
   // Called each time this component receieves new props.
   // resets the values of the sliders to 3 and sets the state to the default state.
   componentDidUpdate(prevProps) {
-    if (prevProps.course != this.props.course) {
+    if (prevProps.course !== this.props.course) {
       this.setState(this.defaultState);
     }
   }
@@ -329,7 +329,7 @@ export default class Form extends Component {
     // Toggle the form dropdown
     // Takes care of "pushing down" the reviews by the dynamic height of the form
     toggleDropdown(){
-       const nextState = this.state.dropdown == 'open' ? '' : 'open';
+       const nextState = this.state.dropdown === 'open' ? '' : 'open';
        this.setState({ dropdown: nextState });
        this.pushReviewsDown(nextState);
     }
@@ -340,7 +340,7 @@ export default class Form extends Component {
       let marginHeight;
       let offsetHeight;
       // Form is opened
-      if (formState == 'open'){
+      if (formState === 'open'){
         marginHeight = this.dropdownHeight;
         offsetHeight = this.selectHolder.current.offsetHeight - 46;
       }

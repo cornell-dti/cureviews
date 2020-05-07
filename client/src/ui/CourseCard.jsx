@@ -1,10 +1,9 @@
 import React, { Component, useState, useEffect } from 'react';
 import { Meteor } from "../meteor-shim";
 import PropTypes from 'prop-types';
-import Gauge from './Gauge.jsx';
 import Form from './Form.jsx';
 import './css/CourseCard.css';
-import { lastOfferedSems, lastSem, getGaugeValues } from 'common/CourseCard';
+import { lastOfferedSems, getGaugeValues } from 'common/CourseCard';
 
 /*
   Course Card Component.
@@ -67,12 +66,6 @@ export class CourseCard extends Component {
 
   render() {
     const theClass = this.props.course;
-
-    // Creates Url that points to each class page on Cornell Class Roster
-    const url = "https://classes.cornell.edu/browse/roster/"
-      + lastSem(theClass.classSems) + "/class/"
-      + theClass.classSub.toUpperCase() + "/"
-      + theClass.classNum;
 
     // Calls function in CourseCard.js that returns a clean version of the last semster class was offered
     const offered = lastOfferedSems(theClass);

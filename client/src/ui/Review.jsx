@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import { Meteor } from "../meteor-shim";
 import PropTypes from 'prop-types';
 import './css/Review.css';
@@ -67,7 +66,7 @@ export default class Review extends Component {
   // Otherwise, the number of likes increases by 1.
   increment(review) {
     console.log("here");
-    if (this.state.liked == false) {
+    if (this.state.liked === false) {
       return Meteor.call('incrementLike', review._id, (error, result) => {
         if (!error && result === 1) {
           this.setState({
@@ -130,7 +129,7 @@ export default class Review extends Component {
             <p className={this.review_number_label_class}>
               <span className="review-number-label-span">Overall</span>
               <span className={this.review_number_text_class}>
-                {(review.rating != undefined) ? review.rating : review.quality}
+                {(review.rating != null) ? review.rating : review.quality}
               </span>
             </p>
 
@@ -179,11 +178,14 @@ export default class Review extends Component {
                 <p className="review-date">{this.reviewToDate(review)}</p>
                 {!this.props.isPreview &&
                   <button className =
-                    {(this.state.liked == true ? "review-voted" : "review-upvote")}
+                    {(this.state.liked === true ? "review-voted" : "review-upvote")}
                     onClick={() => {
                       this.increment(review);
                     }}>
-                    <img src={(this.state.liked == true ? "/handClap_liked.svg" : "/handClap.svg")}></img>
+                    <img 
+                      src={this.state.liked ? "/handClap_liked.svg" : "/handClap.svg"}
+                      alt={this.state.liked ? "Liked" : "Not Liked Yet"}
+                    />
                     <p className="upvote-text">Helpful
                         ({this.state.numLikes})</p>
                   </button>

@@ -35,7 +35,7 @@ export class CourseReviews extends Component {
   }
 
   componentDidUpdate(prevProps){
-    if(prevProps!=this.props)
+    if (prevProps !== this.props)
     Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
       this.setState({reviews:this.renderReviews(reviews)});
       this.sort(this.state.comparator);

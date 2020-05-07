@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
-import Accordian from './Accordian.jsx';
+import Accordian from './Accordian';
 import Gauge from './Gauge.jsx';
 
 import { LineChart } from 'react-chartkick';

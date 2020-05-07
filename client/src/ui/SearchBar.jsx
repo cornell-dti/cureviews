@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Session } from '../meteor-session';
 import { Meteor } from '../meteor-shim';
-import Course from './Course.jsx';
-import Subject from './Subject.jsx';
+import Course from './Course';
+import Subject from './Subject';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 
@@ -141,15 +141,14 @@ export default class SearchBar extends Component {
 
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
-    if (e.key == "ArrowDown") {
+    if (e.key === "ArrowDown") {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       this.setState(prevState => ({
         index: prevState.index + 1
-
       }))
 
     }
-    else if (e.key == "ArrowUp") {
+    else if (e.key === "ArrowUp") {
       //if the up arrow key was detected, decrease the index value by 1 to highlight the prev element
       //never index below 0 (the first element)
       this.setState(prevState => ({
@@ -159,7 +158,7 @@ export default class SearchBar extends Component {
 
     }
 
-    else if (e.key == "Enter") {
+    else if (e.key === "Enter") {
       //if the enter key was detected, change the state of enter to 1 (true)
       this.setState({
         enter: 1
@@ -202,7 +201,7 @@ export default class SearchBar extends Component {
     let querySplit = query.toLowerCase().split(" ");
     let queryNum = "";
     let querySub = "";
-    if (querySplit.length == 2) {
+    if (querySplit.length === 2) {
       querySub = querySplit[0];
       queryNum = querySplit[1];
     }
@@ -283,7 +282,7 @@ export default class SearchBar extends Component {
       results.push(this.state.allCourses.slice(0, 5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.state.query} useRedirect={true} handler={this.setCourse}
-          active={this.state.index == (i + subjectList.length + 1 /* plus because of exact search and subjects */)}
+          active={this.state.index === (i + subjectList.length + 1 /* plus because of exact search and subjects */)}
           enter={this.state.enter}
           mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to

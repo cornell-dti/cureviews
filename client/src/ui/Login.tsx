@@ -16,8 +16,8 @@ import { Session } from "../meteor-session";
 
 */
 
-export default class Login extends Component {
-  constructor(props) {
+export default class Login extends Component<{}, { message: string; executeLogin: boolean }> {
+  constructor(props: {}) {
     super(props);
 
     // input elements are controlled components. Store the value of the
@@ -26,14 +26,12 @@ export default class Login extends Component {
       message: "",
       executeLogin: false
     };
-
-    this.defaultState = this.state;
   }
-  
+
   componentWillMount() {
     // The following is used to show admin panel if a user's token is found to be an admin
     if(Session.get("token") != ""){
-      Meteor.call('tokenIsAdmin', Session.get("token"), (error, result) => {
+      Meteor.call('tokenIsAdmin', Session.get("token"), (_: unknown, result: unknown) => {
         if(result){
           Session.set("adminlogin", true);
           this.setState({executeLogin: false}); //This isn't necessary as it should alrady be allFalse

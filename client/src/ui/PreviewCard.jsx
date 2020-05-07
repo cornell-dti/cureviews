@@ -40,7 +40,7 @@ export default class PreviewCard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps != this.props) {
+    if (prevProps !== this.props) {
       this.updateGauges();
     }
   }

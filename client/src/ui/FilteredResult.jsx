@@ -34,7 +34,7 @@ export default class FilteredResult extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps != this.props) {
+    if (prevProps !== this.props) {
       this.setState({
         course: this.props.course,
         current_index: this.props.index,
@@ -60,7 +60,7 @@ export default class FilteredResult extends Component {
       if (val !== "?" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
       }
-      else if (val === "?" || 4.0 <= val && val <= 5.0) {
+      else if (val === "?" || (4.0 <= val && val <= 5.0)) {
         return "#E64458";
       }
       else {

@@ -196,10 +196,11 @@ export class Admin extends Component {
   renderUnapprovedReviews() {
     const remFunc = this.removeReview;
     const appFunc = this.approveReview;
-    return this.props.reviewsToApprove.map(function (review) {
+    return this.props.reviewsToApprove.map((review) => {
       if (review.reported !== 1) {
         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} />;
       }
+      return null;
     });
   }
 
@@ -209,11 +210,12 @@ export class Admin extends Component {
     const remFunc = this.removeReview;
     const appFunc = this.approveReview;
     const unRepFunc = this.unReportReview;
-    return this.props.reviewsToApprove.map(function (review) {
+    return this.props.reviewsToApprove.map((review) => {
       //create a new class "button" that will set the selected class to this class when it is clicked.
       if (review.reported === 1) {
         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={unRepFunc} />
       }
+      return null;
     });
   }
 
