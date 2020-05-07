@@ -2,11 +2,10 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true,
-    "meteor": true
+    "node": true
   },
-  "plugins": ["react", "meteor"],
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:meteor/recommended"],
+  "plugins": ["react"],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -26,9 +25,7 @@
     "no-var": "error",
     "react/prop-types": "error",
     "react/no-string-refs": "warn",
-    "react/no-deprecated": "warn",
-    "meteor/no-session": "off",
-    "meteor/audit-argument-checks": "off"
+    "react/no-deprecated": "warn"
   },
   "settings": {
     "react": {

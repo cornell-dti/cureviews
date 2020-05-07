@@ -1,0 +1,10 @@
+{
+  "name": "common",
+  "version": "0.0.1",
+  "description": "Code shared between frontend and backend.",
+  "author": "",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "build": "exit 0"
+  }
+}
