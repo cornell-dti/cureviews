@@ -15,15 +15,25 @@ import { Redirect } from 'react-router';
   Clicking this component will change the route of the app to render the course's ClassView.
 */
 
-export default class Course extends Component {
+type Props = {
+  info: any;
+  query?: string;
+  active: boolean;
+  enter: number;
+  mouse: number;
+  handler: Function,
+  key?: string;
+  useRedirect: boolean;
+};
 
-  constructor(props){
+export default class Course extends Component<Props> {
+  constructor(props: Props){
     super(props);
 
     this.setCourseOnSearchBar.bind(this);
   }
 
-  setCourseOnSearchBar(classInfo){
+  setCourseOnSearchBar(classInfo: any){
     this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle, classInfo.classProfessors);
   }
 
@@ -31,14 +41,14 @@ export default class Course extends Component {
   render() {
     // generate full human-readable name of class
     const classInfo = this.props.info;
-    let text = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
+    let text: any = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
-    if(this.props.active && this.props.enter == 1 && this.props.useRedirect){
+    if(this.props.active && this.props.enter === 1 && this.props.useRedirect){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
       }
     // check if a query was provided, if so underline parts of the class name
     if (this.props.query) {
-      if (text.toLowerCase().indexOf(this.props.query) != -1) {
+      if (text.toLowerCase().indexOf(this.props.query) !== -1) {
         const startIndex = text.toLowerCase().indexOf(this.props.query);
         const endIndex = startIndex + this.props.query.length;
         text = <span className="ellipsis">{text.substring(0,startIndex)}<span className='matching-text'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</span>
@@ -76,7 +86,7 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <a className={this.props.active && this.props.mouse != 1 ? 'active-class resultbutton' : 'resultbutton'} 
+      <a className={this.props.active && this.props.mouse !== 1 ? 'active-class resultbutton' : 'resultbutton'} 
           id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum } 
           href={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}>
           <p className="result-label-course">
@@ -91,22 +101,9 @@ export default class Course extends Component {
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <li onClick={()=>this.setCourseOnSearchBar(classInfo, this)} className={this.props.active && this.props.mouse != 1 ? 'active-class classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
+      <li onClick={()=>this.setCourseOnSearchBar(classInfo)} className={this.props.active && this.props.mouse === 1 ? 'active-class classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
         <p className="text-style-3">{text}</p>
       </li>
     );
   }
 }
-
-// Requres course informaiton (database object) to generate course title, and uses the query to
-// determine styling of output
-Course.propTypes = {
-  info: PropTypes.object.isRequired,
-  query: PropTypes.string, //optional
-  active: PropTypes.bool,
-  enter: PropTypes.number,
-  mouse: PropTypes.number,
-  handler: PropTypes.func.isRequired,
-  key: PropTypes.string,
-  useRedirect: PropTypes.bool
-};

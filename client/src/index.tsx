@@ -5,13 +5,13 @@ import React from 'react';
 import { Meteor } from "./meteor-shim";
 import { render } from 'react-dom';
 
-import Login              from './ui/Login.jsx';
+import Login              from './ui/Login';
 import ClassView          from './ui/ClassView.jsx';
 import App                from './ui/App';
-import AuthRedirect       from './ui/AuthRedirect.jsx';
+import AuthRedirect       from './ui/AuthRedirect';
 
 import { BrowserRouter, Route } from "react-router-dom";
-import { Results } from './ui/Results.jsx';
+import { Results } from './ui/Results';
 
 /*
 Generates appliation component sent to the client side entry point (main.html)

@@ -4,7 +4,6 @@ import { Meteor } from '../meteor-shim';
 import "./css/ResultsDisplay.css"; // css files
 import FilteredResult from './FilteredResult.jsx';
 import PreviewCard from './PreviewCard.jsx';
-import { lastOfferedSems } from 'common/CourseCard';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
 
@@ -49,7 +48,7 @@ export default class ResultsDisplay extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps != this.props || prevState.courseList.length != this.state.courseList.length) {
+    if (prevProps !== this.props || prevState.courseList.length !== this.state.courseList.length) {
       this.setState({
         courseList: this.props.courses,
         relevantCourseList: this.props.courses,
@@ -105,23 +104,23 @@ export default class ResultsDisplay extends Component {
   // Sorts list of class results by category selected in this.state.selected
   sort() {
     let availableClasses;
-    if (this.state.filteredItems.length == 0){
+    if (this.state.filteredItems.length === 0){
       availableClasses = this.state.courseList;
     }
     else{
       availableClasses = this.state.filteredItems;
     }
 
-    if (this.state.selected == "relevance"){
+    if (this.state.selected === "relevance"){
       this.sortBy(availableClasses, "score", 0, true);
     }
-    else if (this.state.selected == "rating"){
+    else if (this.state.selected === "rating"){
       this.sortBy(availableClasses, "classRating", 0, true);
     }
-    else if (this.state.selected == "diff"){
+    else if (this.state.selected === "diff"){
       this.sortBy(availableClasses, "classDifficulty", Number.MAX_SAFE_INTEGER, false);
     }
-    else if (this.state.selected == "work"){
+    else if (this.state.selected === "work"){
       this.sortBy(availableClasses, "classWorkload", Number.MAX_SAFE_INTEGER, false);
     }
   }
@@ -300,7 +299,7 @@ export default class ResultsDisplay extends Component {
 
               <div className="row no-left-margin">
                 <div>
-                <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length == 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
+                <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length === 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
                   for &quot;{this.props.userInput}&quot;</p></div>
               </div>
               <div className="row no-left-margin">

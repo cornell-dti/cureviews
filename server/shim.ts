@@ -4,7 +4,9 @@ export type MeteorMethod = (...args: any[]) => any;
 
 export class MeteorShim {
   private readonly _methods: Map<string, MeteorMethod> = new Map();
+
   private readonly _subscriptions: Map<string, MeteorMethod> = new Map();
+
   private _app: express.Application | null = null;
 
   async call<T = unknown>(key: string, ...args: any[]): Promise<T> {
@@ -13,13 +15,14 @@ export class MeteorShim {
     return await method(...args);
   }
 
-  registerApp(express: express.Application) { this._app = express; }
+  registerApp(app: express.Application) { this._app = app; }
 
   publish(name: string, search: (...args: any[]) => any, routeInfo?: { url: string; httpMethod: string }) {
     this._subscriptions.set(name, search);
 
     if (routeInfo) {
       if (this._app) {
+        // eslint-disable-next-line no-console
         console.log(`Registering API service on ${routeInfo.url}`);
 
         if (routeInfo.httpMethod === "get") {
@@ -39,19 +42,17 @@ export class MeteorShim {
               i++;
             }
 
-            console.log(`Calling API with ${inputs}`);
-
             search(...inputs).then((data: any) => res.status(200).send(data));
           });
         }
       } else {
-        console.log(`Failed to register subscription ${name} as express is not initialized.`);
+        throw new Error(`Failed to register subscription ${name} as express is not initialized.`);
       }
     }
   }
 
   methods(methods: { [key: string]: MeteorMethod }) {
-    Object.keys(methods).forEach(key => void this._methods.set(key, methods[key]));
+    Object.keys(methods).forEach((key) => this._methods.set(key, methods[key]));
   }
 
   bind() {

@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
+type Props = {
+  data: any[];
+  title: string;
+  col1: string;
+  col2: string;
+};
 
 /*
   An accordian for the Statistics component.
 */
-export default class Accordian extends Component{
+export default class Accordian extends Component<Props> {
 
   getRandNum(){
     return Math.floor((Math.random() * 1000000) + 0);
@@ -36,7 +42,7 @@ export default class Accordian extends Component{
               </thead>
               <tbody>
                 {
-                  this.props.data.map(function(data) {
+                  this.props.data.map((data) => {
                     return(
                       <tr key={data._id1}>
                         <th scope="row" key={data._id2}>{data._id}</th>
@@ -55,10 +61,3 @@ export default class Accordian extends Component{
     )
   }
 }
-
-Accordian.propTypes ={
-  data: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-  col1: PropTypes.string.isRequired,
-  col2: PropTypes.string.isRequired
-};

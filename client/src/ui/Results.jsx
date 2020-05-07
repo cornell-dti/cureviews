@@ -28,7 +28,7 @@ export class Results extends Component {
   updateResults() {
     if (this.props.match.params.type === "major") {
       Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
-        if (!err && courseList.length != 0) {
+        if (!err && courseList.length !== 0) {
           // Save the Class object that matches the request
           this.setState({
             courseList: courseList,
@@ -49,7 +49,7 @@ export class Results extends Component {
         userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(" ");
       }
       Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
-        if (!err && courseList.length != 0) {
+        if (!err && courseList.length !== 0) {
           // Save the Class object that matches the request
           this.setState({
             courseList: courseList,
@@ -58,7 +58,7 @@ export class Results extends Component {
         }
         else {
           Meteor.call("getClassesByQuery", userQuery, (err, queryCourseList) => {
-            if (!err && queryCourseList.length != 0) {
+            if (!err && queryCourseList.length !== 0) {
               // Save the Class object that matches the request
               this.setState({
                 courseList: queryCourseList,
@@ -78,7 +78,7 @@ export class Results extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps != this.props) {
+    if (prevProps !== this.props) {
       this.setState({
         courseList: [],
         loading: true

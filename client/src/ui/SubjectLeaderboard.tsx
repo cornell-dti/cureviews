@@ -10,17 +10,13 @@ import { Meteor } from '../meteor-shim';
   The course is rendered as repeating ol elements.
 */
 
-export default class SubjectLeaderboard extends Component {
-  constructor(props) {
-    super(props);
+export default class SubjectLeaderboard extends Component<{}, { topSubjects: any[] }> {
+  state = { topSubjects: [] };
 
-    this.state = {
-      topSubjects: [] //defult to empty list
-    };
-
+  componentDidMount() {
     // get the top subjects by number of reviews, using a Meteor function
     // defined in imports/api/classes
-    Meteor.call('topSubjects', (error, result) => {
+    Meteor.call('topSubjects', (error: any, result: any) => {
       if (!error) {
         this.setState({topSubjects: result});
       } else {
@@ -64,6 +60,3 @@ export default class SubjectLeaderboard extends Component {
     );
   }
 }
-
-// takes in no props
-SubjectLeaderboard.propTypes = {};

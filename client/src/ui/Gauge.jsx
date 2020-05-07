@@ -29,7 +29,7 @@ export default class Gauge extends Component{
     }
 
     componentDidUpdate(prevProps) {
-      if (prevProps != this.props) {
+      if (prevProps !== this.props) {
         this.updateRating();
       }
     }

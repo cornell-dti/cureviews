@@ -14,19 +14,21 @@ Saves Google ID Token from URL parameters when Google redirects user back to thi
 
 */
 
-export default class AuthRedirect extends Component {
-  constructor(props) {
+type Props = { location: { hash: string } };
+
+export default class AuthRedirect extends Component<Props> {
+  constructor(props: Props) {
     super(props);
 
     const google_hash = this.props.location.hash;
     if(google_hash !== ""){
-      const google_token = google_hash.match(/(?=id_token=)([^&]+)/)[0].split("=")[1];
+      const google_token = google_hash.match(/(?=id_token=)([^&]+)/)![0].split("=")[1];
       this.saveToken(google_token);
     }
   }
 
   //Using meteor session to save the token to Session
-  saveToken(token) {
+  saveToken(token: string) {
     Session.setPersistent({"token": token});
     if (Session.get("token") !== token){
       console.log("Error saving token to session")
@@ -48,8 +50,3 @@ export default class AuthRedirect extends Component {
 
   }
 }
-
-// No props needed for this component
-AuthRedirect.propTypes = {
-  location: PropTypes.object.isRequired
-};
