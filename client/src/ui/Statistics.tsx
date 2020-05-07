@@ -8,12 +8,21 @@ import Gauge from './Gauge.jsx';
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
 
+type Props=any
+type State ={
+  howManyEachClass: any[];
+  howManyReviewsEachClass:any[];
+  totalReviews: number;
+  chartData: any[];
+  step: number;
+  range: number;
+};
 /*
   A Statistics component that gives data concerning the
   database and allows devs to moniter status and progress of the project
 */
-export default class Statistics extends Component{
-  constructor(props) {
+export default class Statistics extends Component<Props,State>{
+  constructor(props:Props) {
     super(props);
 
     this.state={
@@ -23,7 +32,7 @@ export default class Statistics extends Component{
       chartData: [],
       step: 14,
       range: 12
-    }
+    };
     this.howManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
@@ -32,19 +41,19 @@ export default class Statistics extends Component{
   }
 
   getChartData(){
-    let data=[];
+    let data:any[]=[];
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range,(err, res)=>{
+      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range,(err:any, res:any)=>{
         //key-> EX: cs
         for(let key in res){
-          let finalDateObj={};//{date1:totalNum, date2:totalNum}
-          let obj ={}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
+          let finalDateObj:any={};//{date1:totalNum, date2:totalNum}
+          let obj:any ={}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
           obj.name=key;
 
           //[{date1:totalNum}, {date2: totalNum}, ...]
           let arrDates = res[key];
 
-          arrDates.forEach((arrEntry)=>{
+          arrDates.forEach((arrEntry:any)=>{
             let dateObject = Object.keys(arrEntry); //[date1]
             dateObject.map(date=>{
               finalDateObj[date]=arrEntry[date]
@@ -59,10 +68,10 @@ export default class Statistics extends Component{
   }
 
   howManyReviewsEachClass(){
-    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error, result) =>{
+    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error:any, result:any) =>{
       if(!error){
         //sort descending
-        result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
+        result.sort((rev1:any, rev2:any)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyReviewsEachClass: result});
       } else{
           console.log(error);
@@ -71,9 +80,9 @@ export default class Statistics extends Component{
   }
 
   howManyEachClass(){
-    Meteor.call('howManyEachClass', Session.get("token"), (error, result) =>{
+    Meteor.call('howManyEachClass', Session.get("token"), (error:any, result:any) =>{
       if(!error){
-        result.sort((rev1, rev2)=>(rev1.total > rev2.total)?-1:1);
+        result.sort((rev1:any, rev2:any)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyEachClass: result});
       }else{
         console.log(error);
@@ -82,7 +91,7 @@ export default class Statistics extends Component{
   }
 
   totalReviews(){
-    Meteor.call('totalReviews', Session.get("token"),(error, result)=>{
+    Meteor.call('totalReviews', Session.get("token"),(error:any, result:any)=>{
       if(!error)
         this.setState({totalReviews: result});
       else
@@ -90,7 +99,7 @@ export default class Statistics extends Component{
     });
   }
 
-  handleClick = (e) =>{
+  handleClick = (e:any) =>{
     this.getChartData();
   }
 

@@ -4,7 +4,7 @@ import UpdateReview from './UpdateReview.jsx';
 import "./css/Admin.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
-import Statistics from './Statistics.jsx';
+import Statistics from './Statistics.tsx';
 /*
   Admin Interface Component.
 
