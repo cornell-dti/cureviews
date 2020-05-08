@@ -392,7 +392,7 @@ Meteor.methods({
   async getUserByNetId(netId: string) {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
-      const user = await Students.findOne({ netId: netId }).exec();
+      const user = await Students.findOne({ netId }).exec();
       return user;
     }
     return null;

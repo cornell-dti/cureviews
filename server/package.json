@@ -31,6 +31,7 @@
     "express": "^4.17.1",
     "google-auth-library": "^6.0.0",
     "mongodb": "^3.5.5",
+    "mongodb-memory-server": "^6.5.2",
     "mongoose": "^5.9.6",
     "shortid": "^2.2.15"
   },
@@ -39,7 +40,6 @@
     "@types/jest": "^25.2.1",
     "@types/mongodb": "^3.5.4",
     "@types/mongoose": "^5.7.7",
-    "mongodb-memory-server": "^6.5.2",
     "ts-jest": "^25.5.0"
   }
 }

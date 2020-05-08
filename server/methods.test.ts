@@ -3,10 +3,10 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 import { Classes, Validation, Student, Students } from './dbDefs';
 import { Meteor } from './shim';
-import './methods.ts'
+import './methods.ts';
 
 // May require additional time for downloading 100 mb (!) worth of MongoDB binaries
-// *We might not want to run this with CI**
+// **We might not want to run this with CI**
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
 let mongoServer;
@@ -26,7 +26,7 @@ afterAll(async () => {
 describe('tests', () => {
   // simple test to see if jest works as expected with typescript
   it('jest-async-works', async () => {
-    const v : boolean = true;
+    const v: boolean = parseInt("1", 10) === 1;
     expect(v).toBe(true);
   });
 
