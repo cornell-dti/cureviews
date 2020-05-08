@@ -7,12 +7,6 @@ import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
-/* # Meteor Methods
-   # Client-side code in meteor is not allowed direct access to the local database
-   # (this makes it easier to keep the backend secure from outside users).
-   # Instead, the Client interacts with the database through the functions definied below,
-   # which can be initiated by the Client but run on the Server.
-*/
 
 // Helper to check if a string is a subject code
 const isSubShorthand = async (sub: string) => {
@@ -70,105 +64,122 @@ const courseSort = (query) => (a, b) => {
     - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen));
 };
 
+/* Meteor Methods
+* Client-side code in meteor is not allowed direct access to the local database
+* (this makes it easier to keep the backend secure from outside users).
+* Instead, the Client interacts with the database through the functions definied below,
+* which can be initiated by the Client but run on the Server
+*
+* We will replace these with express explicitly in the future
+*/
 Meteor.methods({
-  // insert a new review into the reviews collection. Also updates
-  // course metrics upon successfully inserting review.
-  // Upon success returns 1, else returns 0.
-  // insert a new review into the reviews collection. Also updates
-  // course metrics upon successfully inserting review.
-  // Upon success returns 1, else returns 0.
+  /*
+   * Insert a new review into the database
+   *
+   * Returns 0 if there was an error
+   * Returns 1 on a success
+   */
   async insert(token, review, classId) {
-    // check: only insert if all form fields are filled in
     if (token == undefined) {
       console.log("Error: Token was undefined in insert");
-      return 0; // Token was undefined
+      return 0;
     }
-    const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
-    // console.log("ticket");
-    // console.log(ticket);
-    if (!ticket) return 0;
-    await Meteor.call("insertUser", ticket);
-    if (ticket.hd === "cornell.edu") {
-      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
-        const fullReview = new Reviews({
-          _id: shortid.generate(),
-          text: review.text,
-          difficulty: review.diff,
-          rating: review.rating,
-          workload: review.workload,
-          class: classId,
-          date: new Date(),
-          visible: 0,
-          reported: 0,
-          professors: review.professors,
-          likes: 0,
-        });
 
+    const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
+
+    if (!ticket) return 0;
+
+    if (ticket.hd === "cornell.edu") {
+      // insert the user into the collection if not already present
+      await Meteor.call("insertUser", ticket);
+
+      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
         try {
-          // check(fullReview, Reviews);
+          // Attempt to insert the review
+          const fullReview = new Reviews({
+            _id: shortid.generate(),
+            text: review.text,
+            difficulty: review.diff,
+            rating: review.rating,
+            workload: review.workload,
+            class: classId,
+            date: new Date(),
+            visible: 0,
+            reported: 0,
+            professors: review.professors,
+            likes: 0,
+          });
+
           await fullReview.save();
-          // Update the course metrics
-          return 1; // success
+          return 1; 
         } catch (error) {
           console.log(error);
-          return 0; // fail
+          return 0; 
         }
       } else {
         console.log("Error: Some review values are null");
-        return 0; // fail
+        return 0;
       }
     } else {
       console.log("Error: non-Cornell email attempted to insert review");
-      return 0; // fail
+      return 0;
     }
   },
 
-  // Inserts a new user into the Users collection.
-  // Upon success returns 1, else returns 0
+  /*
+   * Inserts a new user into the database, if the user was not already present
+   * 
+   * Returns 1 if the user was added to the database, or was already present
+   * Returns 0 if there was an error
+   */
   async insertUser(googleObject) {
     // Check user object has all required fields
     if (googleObject.email.replace("@cornell.edu", "") != null) {
-      const newUser = new Students({
-        _id: shortid.generate(),
-        // Check to see if Google returns first and last name
-        // If not, insert empty string to database
-        firstName: googleObject.given_name ? googleObject.given_name : "",
-        lastName: googleObject.family_name ? googleObject.family_name : "",
-        netId: googleObject.email.replace("@cornell.edu", ""),
-        affiliation: null,
-        token: null,
-        privilege: "regular",
-      });
-
-      const user = await Meteor.call("getUserByNetId", googleObject.email.replace("@cornell.edu", ""));
+      const user = await Meteor.call<Student | null>("getUserByNetId", googleObject.email.replace("@cornell.edu", ""));
       if (user == null) {
         try {
-          // check(newUser, Users);
+          const newUser = new Students({
+            _id: shortid.generate(),
+            // Check to see if Google returns first and last name
+            // If not, insert empty string to database
+            firstName: googleObject.given_name ? googleObject.given_name : "",
+            lastName: googleObject.family_name ? googleObject.family_name : "",
+            netId: googleObject.email.replace("@cornell.edu", ""),
+            affiliation: null,
+            token: null,
+            privilege: "regular",
+          });
+
           await newUser.save();
-          return 1; // success
+          console.log("Inserted a new student: " + newUser.netId);
+          return 1;
         } catch (error) {
           console.log("Error: In inserting Student");
           console.log(error);
-          return 0; // fail
+          return 0;
         }
+      } else {
+        console.log("Student: " + user.netId + " is already present in database");
+        return 1;
       }
-      return 1; // No need to add user again
     }
 
-    // error handling
-    console.log('Some user values are null in insertUser');
-    return 0; // fail
+    console.log("Error: Some user values are null in insertUser");
+    return 0; 
   },
 
-  // Increment the number of likes a review has gotten by 1.
-  async incrementLike(id) {
+  /* 
+   * Increment the number of likes a review has gotten by 1.
+   *
+   * Returns 1 on success
+   * Returns 0 on error
+   */  async incrementLike(id) {
     try {
-      const results = await Reviews.find({ _id: id }).exec();
-      const review = results[0];
+      const review = await Reviews.findOne({ _id: id }).exec();
       if (review.likes == undefined) {
-        Reviews.update(id, { $set: { likes: 1 } });
+        await Reviews.updateOne({_id: id}, { $set: { likes: 1 } }).exec();
       } else {
-        Reviews.update(id, { $set: { likes: review.likes + 1 } });
+        await Reviews.updateOne({_id: id}, { $set: { likes: review.likes + 1 } }).exec();
       }
       return 1;
     } catch (error) {
@@ -176,15 +187,19 @@ Meteor.methods({
     }
   },
 
-  // Decrement the number of likes a review has gotten by 1.
-  async decrementLike(id) {
+  /* 
+   * Decrement the number of likes a review has gotten by 1.
+   *
+   * Returns 1 on success
+   * Returns 0 on error
+   */
+   async decrementLike(id) {
     try {
-      const results = await Reviews.find({ _id: id }).exec();
-      const review = results[0];
+      const review = await Reviews.findOne({ _id: id }).exec();
       if (review.likes == undefined) {
-        Reviews.update(id, { $set: { likes: 1 } });
+        await Reviews.updateOne({_id: id}, { $set: { likes: 0 } }).exec();
       } else {
-        Reviews.update(id, { $set: { likes: review.likes - 1 } });
+        await Reviews.updateOne({_id: id}, { $set: { likes: review.likes - 1 } }).exec();
       }
       return 1;
     } catch (error) {
@@ -394,10 +409,12 @@ Meteor.methods({
     // console.log(netId);
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
-      const user = (await Students.find({ netId }).exec())[0];
-      // console.log("This is user object");
-      // console.log(user);
-      return user;
+      try {
+        return await Students.findOne({ netId: netId }).exec();
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
     }
     return null;
   },
@@ -412,7 +429,7 @@ Meteor.methods({
       if (ticket && ticket.email) {
         const user = await Meteor.call<Student | null>('getUserByNetId', ticket.email.replace('@cornell.edu', ''));
         if (user) {
-          return user.privilege === 'admin';
+          return user.privilege !== 'admin';
         }
       }
     }
