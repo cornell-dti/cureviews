@@ -9,7 +9,17 @@
     "build": "tsc",
     "prestart": "yarn build",
     "start": "node dist/server.js",
-    "heroku-start": "node dist/server.js"
+    "heroku-start": "node dist/server.js",
+    "test": "jest"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    }
   },
   "dependencies": {
     "@types/cors": "^2.8.6",
@@ -26,7 +36,10 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.3",
+    "@types/jest": "^25.2.1",
     "@types/mongodb": "^3.5.4",
-    "@types/mongoose": "^5.7.7"
+    "@types/mongoose": "^5.7.7",
+    "mongodb-memory-server": "^6.5.2",
+    "ts-jest": "^25.5.0"
   }
 }

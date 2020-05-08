@@ -390,13 +390,9 @@ Meteor.methods({
 
   // Get a user with this netId from the Users collection in the local database
   async getUserByNetId(netId: string) {
-    // console.log("This is user in getUserByNetId");
-    // console.log(netId);
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
-      const user = (await Students.find({ netId }).exec())[0];
-      // console.log("This is user object");
-      // console.log(user);
+      const user = await Students.findOne({ netId: netId }).exec();
       return user;
     }
     return null;
