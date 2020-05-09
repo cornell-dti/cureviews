@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-import { Class, Classes, Validation, Student, Students } from './dbDefs';
+import { Class, Classes, Validation, Student, Students, Subjects } from './dbDefs';
 import { Meteor } from './shim';
-import { editDistance } from './methods';
+import { isSubShorthand, editDistance } from './methods';
 
 // May require additional time for downloading 100 mb (!) worth of MongoDB binaries
 // **We might not want to run this with CI**
@@ -20,6 +20,7 @@ beforeAll(async () => {
   // insert some data to play with
   // be careful (!) inserting more here may mess with tests
   // so choose unique and new values for all fields
+  // I generally choose Mork to exist, and Gork not to
 
   const newUser = new Students({
     _id: "Irrelevant",
@@ -30,7 +31,16 @@ beforeAll(async () => {
     token: null,
     privilege: "regular",
   });
+
   await newUser.save();
+
+  const newSubject1 = new Subjects({
+    _id: "newSubject1",
+    subShort: "MORK",
+    subFull: "Study of Angry Fungi",
+  });
+
+  await newSubject1.save();
 
   const newCourse1 = new Classes({
     _id: "newCourse1",
@@ -39,7 +49,7 @@ beforeAll(async () => {
     classTitle: "Introduction to Testing",
     classFull: "MORK 1110: Introduction to Testing",
     classSems: ["FA19"],
-    classProfessors: [ "Some Phd" ],
+    classProfessors: ["Some Phd"],
     classRating: 1,
     classWorkload: 2,
     classDifficulty: 3,
@@ -54,8 +64,8 @@ beforeAll(async () => {
     classTitle: "Intermediate Testing",
     classFull: "MORK 2110: Intermediate Testing",
     classSems: ["SP20"],
-    classPrereq: [ newCourse1._id ],
-    classProfessors: [ "Some Phd" ],
+    classPrereq: [newCourse1._id],
+    classProfessors: ["Some Phd"],
     classRating: 3,
     classWorkload: 4,
     classDifficulty: 5,
@@ -121,7 +131,7 @@ describe('tests', () => {
   it('get-course-by-id', async () => {
     const mork1110 = await Meteor.call<Class | null>("getCourseById", "newCourse1");
     const mork2110 = await Meteor.call<Class | null>("getCourseById", "newCourse2");
-  
+
     expect(mork1110.classNum).toBe("1110");
     expect(mork2110.classNum).toBe("2110");
     expect(mork1110.classSub).toBe(mork2110.classSub);
@@ -131,21 +141,30 @@ describe('tests', () => {
     expect(no_course).toBeNull();
   });
 
+  // test isSubShorthand
+  it('is-sub-shorthand', async () => {
+    const morkIsShorthand = await isSubShorthand("MORK");
+    expect(morkIsShorthand).toBe(true);
+
+    const gorkIsShorthand = await isSubShorthand("GORK");
+    expect(gorkIsShorthand).toBe(false);
+  });
+
   // test the new edit distance for searching
   it('edit-distance-test', async () => {
     // tests on fixed strings
     expect(editDistance("", "")).toBe(0); // identity
-    expect(editDistance("abc", "abc")).toBe(0)
+    expect(editDistance("abc", "abc")).toBe(0);
 
     expect(editDistance("z", "")).toBe(1); // deletion
     expect(editDistance("a word", " word")).toBe(1);
 
-    expect(editDistance("", "a")).toBe(1) // insertion
+    expect(editDistance("", "a")).toBe(1); // insertion
     expect(editDistance("zorb", "zorb2")).toBe(1);
-    
+
     expect(editDistance("a", "b")).toBe(1); // substitution
     expect(editDistance("minus", "minis")).toBe(1);
-    
+
     expect(editDistance("kitten", "sitting")).toBe(3);
     expect(editDistance("GAMBLER", "gambler")).toBe(7); // upper case treated differently
     expect(editDistance("the end of an era", "the beginning of an era")).toBe(7);
@@ -170,7 +189,7 @@ describe('tests', () => {
       const d2 = editDistance(str2, str1);
 
       if (d1 !== d2) {
-        console.log("Errored on: " + str1 + " " + str2);
+        console.log(`Errored on: ${str1} ${str2}`);
       }
 
       expect(d1).toBe(d2);
@@ -180,10 +199,10 @@ describe('tests', () => {
     for (let i = 0; i < amount; i++) {
       const str1 = Math.random().toString(36);
       const str2 = Math.random().toString(36);
-      const d = editDistance(str1, str2)
+      const d = editDistance(str1, str2);
 
       if (d > Math.max(str1.length, str2.length)) {
-        console.log("Errored on: " + str1 + " " + str2);
+        console.log(`Errored on: ${str1} ${str2}`);
       }
 
       expect(d).toBeLessThanOrEqual(Math.max(str1.length, str2.length));
@@ -200,7 +219,7 @@ describe('tests', () => {
       const d3 = editDistance(str3, str1);
 
       if (d1 + d2 < d3 || d2 + d3 < d1 || d3 + d1 < d2) {
-        console.log("Errored on: " + str1 + " " + str2 + " " + str3);
+        console.log(`Errored on: ${str1} ${str2} ${str3}`);
       }
 
       expect(d1 + d2).toBeGreaterThanOrEqual(d3);
@@ -212,10 +231,10 @@ describe('tests', () => {
     for (let i = 0; i < amount; i++) {
       const str1 = Math.random().toString(36);
       const str2 = Math.random().toString(36);
-      const d = editDistance(str1, str2)
+      const d = editDistance(str1, str2);
 
       if (d < Math.abs(str1.length - str2.length)) {
-        console.log("Errored on: " + str1 + " " + str2);
+        console.log(`Errored on: ${str1} ${str2}`);
       }
 
       expect(d).toBeGreaterThanOrEqual(Math.abs(str1.length - str2.length));

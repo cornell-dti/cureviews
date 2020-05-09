@@ -15,7 +15,8 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
 */
 
 // Helper to check if a string is a subject code
-const isSubShorthand = async (sub: string) => {
+// exposed for testing
+export const isSubShorthand = async (sub: string) => {
   const subCheck = await Subjects.find({ subShort: sub }).exec();
   return subCheck.length > 0;
 };
@@ -28,6 +29,7 @@ const searchWithinSubject = (sub: string, remainder: string) => Classes.find(
 ).exec();
 
 // uses levenshtein algorithm to return the minimum edit distance between two strings
+// exposed for testing
 export const editDistance = (a, b) => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
