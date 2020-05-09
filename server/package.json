@@ -13,6 +13,7 @@
     "test": "jest"
   },
   "jest": {
+    "testEnvironment": "node",
     "moduleFileExtensions": [
       "js",
       "ts"
@@ -40,6 +41,7 @@
     "@types/jest": "^25.2.1",
     "@types/mongodb": "^3.5.4",
     "@types/mongoose": "^5.7.7",
+    "jest": "25",
     "ts-jest": "^25.5.0"
   }
 }

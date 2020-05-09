@@ -28,7 +28,7 @@ const searchWithinSubject = (sub: string, remainder: string) => Classes.find(
 ).exec();
 
 // uses levenshtein algorithm to return the minimum edit distance between two strings
-const editDistance = (a, b) => {
+export const editDistance = (a, b) => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
 
@@ -473,8 +473,7 @@ Meteor.methods({
     // check: make sure course id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(courseId)) {
-      const c = (await Classes.find({ _id: courseId }).exec())[0];
-      return c;
+      return await Classes.findOne({ _id: courseId }).exec();
     }
     return null;
   },
@@ -485,7 +484,7 @@ Meteor.methods({
     const numberRegex = new RegExp(/^(?=.*[0-9])/i);
     const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
     if (numberRegex.test(number) && subjectRegex.test(subject)) {
-      return (await Classes.find({ classSub: subject, classNum: number }).exec())[0];
+      return await Classes.findOne({ classSub: subject, classNum: number }).exec();
     }
 
     return null;
