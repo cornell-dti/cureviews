@@ -163,7 +163,7 @@ Meteor.methods({
     }
 
     console.log("Error: Some user values are null in insertUser");
-    return 0; 
+    return 0;
   },
   /*
    * Increment the number of likes a review has gotten by 1.
@@ -174,7 +174,7 @@ Meteor.methods({
     try {
       const review = await Reviews.findOne({ _id: id }).exec();
       if (review.likes == undefined) {
-        await Reviews.updateOne({_id: id}, { $set: { likes: 1 } }).exec();
+        await Reviews.updateOne({ _id: id }, { $set: { likes: 1 } }).exec();
       } else {
         await Reviews.updateOne({ _id: id }, { $set: { likes: review.likes + 1 } }).exec();
       }
