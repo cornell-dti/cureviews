@@ -111,10 +111,10 @@ Meteor.methods({
           });
 
           await fullReview.save();
-          return 1; 
+          return 1;
         } catch (error) {
           console.log(error);
-          return 0; 
+          return 0;
         }
       } else {
         console.log("Error: Some review values are null");
@@ -128,7 +128,7 @@ Meteor.methods({
 
   /*
    * Inserts a new user into the database, if the user was not already present
-   * 
+   *
    * Returns 1 if the user was added to the database, or was already present
    * Returns 0 if there was an error
    */
@@ -151,7 +151,6 @@ Meteor.methods({
           });
 
           await newUser.save();
-          console.log("Inserted a new student: " + newUser.netId);
           return 1;
         } catch (error) {
           console.log("Error: In inserting Student");
@@ -159,7 +158,6 @@ Meteor.methods({
           return 0;
         }
       } else {
-        console.log("Student: " + user.netId + " is already present in database");
         return 1;
       }
     }
@@ -167,19 +165,18 @@ Meteor.methods({
     console.log("Error: Some user values are null in insertUser");
     return 0; 
   },
-
-  /* 
+  /*
    * Increment the number of likes a review has gotten by 1.
    *
    * Returns 1 on success
    * Returns 0 on error
-   */  async incrementLike(id) {
+   */async incrementLike(id) {
     try {
       const review = await Reviews.findOne({ _id: id }).exec();
       if (review.likes == undefined) {
         await Reviews.updateOne({_id: id}, { $set: { likes: 1 } }).exec();
       } else {
-        await Reviews.updateOne({_id: id}, { $set: { likes: review.likes + 1 } }).exec();
+        await Reviews.updateOne({ _id: id }, { $set: { likes: review.likes + 1 } }).exec();
       }
       return 1;
     } catch (error) {
