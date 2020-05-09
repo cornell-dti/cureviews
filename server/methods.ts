@@ -184,19 +184,19 @@ Meteor.methods({
     }
   },
 
-  /* 
+  /*
    * Decrement the number of likes a review has gotten by 1.
    *
    * Returns 1 on success
    * Returns 0 on error
    */
-   async decrementLike(id) {
+  async decrementLike(id) {
     try {
       const review = await Reviews.findOne({ _id: id }).exec();
       if (review.likes == undefined) {
-        await Reviews.updateOne({_id: id}, { $set: { likes: 0 } }).exec();
+        await Reviews.updateOne({ _id: id }, { $set: { likes: 0 } }).exec();
       } else {
-        await Reviews.updateOne({_id: id}, { $set: { likes: review.likes - 1 } }).exec();
+        await Reviews.updateOne({ _id: id }, { $set: { likes: review.likes - 1 } }).exec();
       }
       return 1;
     } catch (error) {
@@ -401,13 +401,13 @@ Meteor.methods({
   },
 
   // Get a user with this netId from the Users collection in the local database
-  async getUserByNetId(netId: string) {
+  async getUserByNetId(netID: string) {
     // console.log("This is user in getUserByNetId");
     // console.log(netId);
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(netId)) {
+    if (regex.test(netID)) {
       try {
-        return await Students.findOne({ netId: netId }).exec();
+        return await Students.findOne({ netId: netID }).exec();
       } catch (error) {
         console.log(error);
         return null;
