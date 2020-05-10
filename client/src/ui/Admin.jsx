@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import UpdateReview from './UpdateReview.jsx';
+import UpdateReview from './UpdateReview.tsx';
 import "./css/Admin.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
@@ -198,7 +198,7 @@ export class Admin extends Component {
     const appFunc = this.approveReview;
     return this.props.reviewsToApprove.map((review) => {
       if (review.reported !== 1) {
-        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} />;
+        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={appFunc} />;
       }
       return null;
     });
