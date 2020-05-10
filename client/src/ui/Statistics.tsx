@@ -17,6 +17,8 @@ type State ={
   step: number;
   range: number;
 };
+
+
 /*
   A Statistics component that gives data concerning the
   database and allows devs to moniter status and progress of the project
