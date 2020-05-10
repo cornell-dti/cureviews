@@ -108,7 +108,7 @@ export class ClassView extends Component {
   }
 
   getPopUpCourseOptions() {
-    if (this.props.allCourses != []) {
+    if (this.props.allCourses !== []) {
       const popUpCourseOptions = []
       for(const course in this.props.allCourses){
         const courseObj = this.props.allCourses[course]
@@ -123,7 +123,7 @@ export class ClassView extends Component {
   }
 
   togglePopupForm(){
-    const nextState = this.state.popupPos == "hidden" ? "open" : "hidden";
+    const nextState = this.state.popupPos === "hidden" ? "open" : "hidden";
     this.setState({ popupPos: nextState });
   }
 
@@ -139,9 +139,9 @@ export class ClassView extends Component {
   // If user hasn't seen popup in over 4 hours, set up 30 second timer.
   // Checks every 5 seconds for this condition
   decidePopup(){
-    if(Session.get("popup_timer") != undefined
-        && Session.get("popup_timer") != ""
-        && Session.get("seen_popup") != true
+    if(Session.get("popup_timer") !== undefined
+        && Session.get("popup_timer") !== ""
+        && Session.get("seen_popup") !== true
         && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
         && (!this.state.lastTyped
             || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){

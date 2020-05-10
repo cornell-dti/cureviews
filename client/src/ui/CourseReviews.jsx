@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Meteor } from "../meteor-shim";
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
@@ -144,12 +143,7 @@ export class CourseReviews extends Component {
   }
 }
 
-// Component requires a course object pivided by a parent component, and uses
-// withTracker to get a list of reviews.
-CourseReviews.propTypes = {
-  courseId: PropTypes.string.isRequired,
-  reviews: PropTypes.array.isRequired,
-};
+
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
