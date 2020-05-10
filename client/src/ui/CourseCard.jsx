@@ -5,6 +5,20 @@ import Form from './Form.jsx';
 import './css/CourseCard.css';
 import { lastOfferedSems, getGaugeValues } from 'common/CourseCard';
 
+/*type Props ={
+  course: any;
+  reviews: any[];
+};
+
+type State ={
+  rating: string;
+  ratingColor: string;
+  diff:string;
+  diffColor: string;
+  workload: string;
+  workloadColor: string;
+};
+*/
 /*
   Course Card Component.
 
@@ -20,9 +34,8 @@ import { lastOfferedSems, getGaugeValues } from 'common/CourseCard';
 export class CourseCard extends Component {
   constructor(props) {
     super(props);
-
     // default gauge values
-    this.defaultGaugeState = {
+     this.defaultGaugeState = {
       rating: "-",
       ratingColor: "#E64458",
       diff: "-",
@@ -83,14 +96,6 @@ export class CourseCard extends Component {
     );
   }
 }
-
-// Component requires course information and all reviews for the course.
-// Parent class provides the course's database object, while withTracker
-// grabs this course's reviews.
-CourseCard.propTypes = {
-  course: PropTypes.object.isRequired,
-  reviews: PropTypes.array.isRequired
-};
 
 // wrap in a container class that allows the component to dynamically grab reviews.
 // The component will automatically re-render if the reviews change.
