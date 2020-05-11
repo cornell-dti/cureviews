@@ -243,7 +243,7 @@ Meteor.methods({
         const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
         const state = getGaugeValues(reviews);
 
-        Classes.update({ _id: courseId },
+        Classes.updateOne({ _id: courseId },
           {
             $set: {
               // If no data is available, getGaugeValues returns "-" for metric
@@ -533,7 +533,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id)) {
-      Reviews.update({ _id: review._id }, { $set: { visible: 0, reported: 1 } });
+      Reviews.updateOne({ _id: review._id }, { $set: { visible: 0, reported: 1 } });
       return 1;
     }
     return 0;
@@ -546,7 +546,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
-      Reviews.update({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
+      Reviews.updateOne({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
       return 1;
     }
     return 0;
