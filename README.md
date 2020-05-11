@@ -19,13 +19,38 @@ A web app for Cornell students to read and write reviews for Cornell classes, al
 
 ## Getting Started
 
-Create .env into `server/` folder with content like:
+Create an .env file in the `server/` folder with content:
 
 ```bash
 MONGODB_URL=[SECRET_URL_ASK_TEAM_MEMBER_FOR_IT]
 ```
 
-Make sure you have [Yarn](https://classic.yarnpkg.com/) installed.
+**You will probably use the address of the staging server.** If, for some reason you want to have a local db (E.g. you're making some changes to the db structure, and don't want to accidently trash the staging db), the following works:
+
+<details><summary>Running a local mongodb server</summary>
+<p>
+
+You need the mongodb database tools and server installed. They are available [here](https://docs.mongodb.com/database-tools/) and [here](https://www.mongodb.com/download-center/community). If, for some reason, you want to use the tools on a linux box, you will probably have to build them from source [here](https://github.com/mongodb/mongo-tools).
+
+```bash
+mkdir mongo # create a directory for mongo to dump its files in
+mongod --dbpath mongo/ --port 3001 # launch the mongo server on localhost:3001
+```
+
+Set your `MONGODB_URL` to `mongodb://localhost:3001`
+
+You will probably want to restore some collections from a bson, in which case you should, in a new terminal:
+
+```bash
+mongorestore -h 127.0.0.1 --port 3001 -d test /path/to/your/bson.bson --drop
+```
+
+You will probably need to run this for the `classes`, `subjects` and `reviews` collections (Perhaps also `students`). Ask a team member for the bsons if you need them. If this errors, it might be because the `-d test` specifies the wrong database name (`test`), in which case you should figure out your db name, and replace `-d test` with `-d dbname`. Note that it **won't** error on the command, the only evidence of an error is that none of collections will be show up on the site (i.e. no classes visible).
+
+</p>
+</details>
+
+Now that you have the database configured, make sure you have [Yarn](https://classic.yarnpkg.com/) installed.
 
 ```bash
 yarn
@@ -35,18 +60,7 @@ yarn workspace client start # start client
 
 You can access the app at [http://localhost:3000].
 
-Next, add a password to your local database. Launch a second terminal window and
-navigate to the application folder (leave the application running in the first
-terminal window). Run:
-
-    meteor mongo
-    db.validation.insert({"adminPass": "my_super_secret_password"})
-
-Note: If you copy and paste, ensure that the quotes ("") copy over correctly!
-
-Navigate to http://localhost:3000/admin and enter your password when prompted.
-Select the “Initialize Database” button and wait for the database to populate.
-Once this process completes, the application is ready to use!
+If you need features which use admin access, you need to create an entry in the `students` collection which has you flagged as an admin user. We should have done this when you joined the team.
 
 _Last updated **05/07/2020**_.
 
