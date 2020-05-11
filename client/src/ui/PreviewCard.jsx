@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/PreviewCard.css';
-import Gauge from './Gauge.jsx';
+import Gauge from './Gauge.tsx';
 import { Meteor } from "../meteor-shim";
 import Review from './Review.jsx';
 import { lastOfferedSems } from 'common/CourseCard';
@@ -155,17 +155,17 @@ export default class PreviewCard extends Component {
         <div className="row gaugeHolder">
 
           <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)} 
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)}
                     isInPreviewCard={true} text="Overall"/>
 
           </div>
           <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)} 
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)}
                     isInPreviewCard={true} text="Difficulty"/>
 
           </div>
           <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)} 
+            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)}
                     isInPreviewCard={true} text="Workload"/>
 
           </div>

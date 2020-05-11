@@ -3,7 +3,7 @@ import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import CourseCard from './CourseCard.jsx';
 import Form from './Form.jsx';
-import Gauge from './Gauge.jsx';
+import Gauge from './Gauge';
 import Navbar from './Navbar';
 import CourseReviews from './CourseReviews.jsx';
 import "./css/App.css";

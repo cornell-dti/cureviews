@@ -4,13 +4,33 @@ import 'react-circular-progressbar/dist/styles.css';
 import PropTypes from 'prop-types';
 import './css/Gauge.css';
 
-let initState={  
+type Props ={
+  width: string;
+  height: string;
+  rating: number;
+  text: string,
+  isInPreviewCard?: boolean;
+}
+
+type State = {
+    color: string;
+    percentage: number;
+    rating: number|string;
+}
+
+let initState={
   color:"#00000",
   percentage: 0.0,
-  rating: 0.0};
+  rating: 0.0
+};
 
-export default class Gauge extends Component{
-  constructor(props) {
+export default class Gauge extends Component<Props,State>{
+  gauge_text_top:string;
+  gauge_container:string;
+  gauge_size_class:string;
+  gauge_text_size_class:string;
+  gauge_text_padding:string;
+  constructor(props:Props) {
     super(props);
 
     this.state=initState;
@@ -25,10 +45,10 @@ export default class Gauge extends Component{
   }
 
     componentDidMount(){
-      this.updateRating(); 
+      this.updateRating();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps:Props) {
       if (prevProps !== this.props) {
         this.updateRating();
       }
@@ -73,11 +93,3 @@ export default class Gauge extends Component{
     )
   }
 }
-
-Gauge.propTypes ={
-  width: PropTypes.string.isRequired,
-  height: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-  isInPreviewCard: PropTypes.bool
-};
