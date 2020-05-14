@@ -15,7 +15,8 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
 */
 
 // Helper to check if a string is a subject code
-const isSubShorthand = async (sub: string) => {
+// exposed for testing
+export const isSubShorthand = async (sub: string) => {
   const subCheck = await Subjects.find({ subShort: sub }).exec();
   return subCheck.length > 0;
 };
@@ -28,7 +29,8 @@ const searchWithinSubject = (sub: string, remainder: string) => Classes.find(
 ).exec();
 
 // uses levenshtein algorithm to return the minimum edit distance between two strings
-const editDistance = (a, b) => {
+// exposed for testing
+export const editDistance = (a, b) => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
 
@@ -390,13 +392,9 @@ Meteor.methods({
 
   // Get a user with this netId from the Users collection in the local database
   async getUserByNetId(netId: string) {
-    // console.log("This is user in getUserByNetId");
-    // console.log(netId);
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(netId)) {
-      const user = (await Students.find({ netId }).exec())[0];
-      // console.log("This is user object");
-      // console.log(user);
+      const user = await Students.findOne({ netId }).exec();
       return user;
     }
     return null;
@@ -477,8 +475,7 @@ Meteor.methods({
     // check: make sure course id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(courseId)) {
-      const c = (await Classes.find({ _id: courseId }).exec())[0];
-      return c;
+      return await Classes.findOne({ _id: courseId }).exec();
     }
     return null;
   },
@@ -489,7 +486,7 @@ Meteor.methods({
     const numberRegex = new RegExp(/^(?=.*[0-9])/i);
     const subjectRegex = new RegExp(/^(?=.*[A-Z])/i);
     if (numberRegex.test(number) && subjectRegex.test(subject)) {
-      return (await Classes.find({ classSub: subject, classNum: number }).exec())[0];
+      return await Classes.findOne({ classSub: subject, classNum: number }).exec();
     }
 
     return null;
