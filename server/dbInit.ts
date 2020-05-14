@@ -344,7 +344,7 @@ export async function addCrossList() {
           if (check.length > 0) {
             const crossList = courses[course].enrollGroups[0].simpleCombinations;
             if (crossList.length > 0) {
-              const crossListIDs = await Promise.all(crossList.map(async (crossListedCourse: any) => {
+              const crossListIDs: string[] = await Promise.all(crossList.map(async (crossListedCourse: any) => {
                 console.log(crossListedCourse);
                 const dbCourse = await Classes.find({ classSub: crossListedCourse.subject.toLowerCase(), classNum: crossListedCourse.catalogNbr }).exec();
                 // Added the following check because MUSIC 2340
