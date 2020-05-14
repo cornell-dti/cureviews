@@ -426,7 +426,7 @@ Meteor.methods({
       if (ticket && ticket.email) {
         const user = await Meteor.call<Student | null>('getUserByNetId', ticket.email.replace('@cornell.edu', ''));
         if (user) {
-          return user.privilege !== 'admin';
+          return user.privilege === 'admin';
         }
       }
     }
