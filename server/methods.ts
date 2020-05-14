@@ -227,7 +227,7 @@ Meteor.methods({
     const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
-      Reviews.remove({ _id: review._id });
+      await Reviews.remove({ _id: review._id });
       await Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     }
@@ -245,7 +245,7 @@ Meteor.methods({
         const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
         const state = getGaugeValues(reviews);
 
-        Classes.updateOne({ _id: courseId },
+        await Classes.updateOne({ _id: courseId },
           {
             $set: {
               // If no data is available, getGaugeValues returns "-" for metric
@@ -532,7 +532,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id)) {
-      Reviews.updateOne({ _id: review._id }, { $set: { visible: 0, reported: 1 } });
+      await Reviews.updateOne({ _id: review._id }, { $set: { visible: 0, reported: 1 } });
       return 1;
     }
     return 0;
@@ -545,7 +545,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
-      Reviews.updateOne({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
+      await Reviews.updateOne({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
       return 1;
     }
     return 0;
@@ -555,7 +555,7 @@ Meteor.methods({
   async getReviewsByProfessor(professor: string) {
     const regex = new RegExp(/^(?=.*[A-Z])/i);
     if (regex.test(professor)) {
-      return Reviews.find({ professors: { $elemMatch: { $eq: professor } } }).exec();
+      return await Reviews.find({ professors: { $elemMatch: { $eq: professor } } }).exec();
     }
     return null;
   },
@@ -568,7 +568,7 @@ Meteor.methods({
       const course = await Meteor.call("getCourseById", courseId);
       if (course) {
         const crossListOR = getCrossListOR(course);
-        const reviews = Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
+        const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
         return reviews;
       }
 
