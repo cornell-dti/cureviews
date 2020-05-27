@@ -224,7 +224,7 @@ export default class SearchBar extends Component {
   renderResults() {
     //Used to start the timer "popup_timer" to display a popup after 30 seconds post-search
     //See ClassView.jsx: decidePopup function
-    if (Session.get("seen_popup") == undefined || Session.get("seen_popup") == "") {
+    if (Session.get("seen_popup") === undefined || Session.get("seen_popup") == "") {
       Session.setPersistent({ "popup_timer": new Date().getTime() });
     }
 
@@ -232,7 +232,7 @@ export default class SearchBar extends Component {
       return this.state.allCourses.slice(0, 3).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.state.query} useRedirect={false} handler={this.setCourse}
-          active={this.state.index == i} enter={this.state.enter}
+          active={this.state.index === i} enter={this.state.enter}
           mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
         //the index matching with the course
@@ -246,14 +246,14 @@ export default class SearchBar extends Component {
 
       // Used for "enter" key on 'Search: "query" ' button for exact search
       // Sends user to /results/keyword/query+query
-      if (this.state.index == 0 && this.state.enter == 1) {
+      if (this.state.index === 0 && this.state.enter === 1) {
         this.setState(initState);
         return <Redirect push to={`/results/keyword/${this.state.query.split(" ").join("+")}`}></Redirect>
       }
 
       let exact_search = (
         <a key={"search"}
-          className={this.state.index == 0 && this.state.mouse != 1 ? 'active-class resultbutton top-resultbutton' : 'resultbutton top-resultbutton'}
+          className={this.state.index === 0 && this.state.mouse !== 1 ? 'active-class resultbutton top-resultbutton' : 'resultbutton top-resultbutton'}
           href={`/results/keyword/${this.state.query.split(" ").join("+")}`}>
           <p className="result-text">{"Search: \"" + this.state.query + "\""}</p>
         </a>
@@ -264,7 +264,7 @@ export default class SearchBar extends Component {
       let subjectList = this.state.allSubjects.slice(0, 3).map((subject, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Subject key={subject._id} info={subject} query={this.state.query}
-          active={this.state.index == (i + 1 /* plus 1 because of exact search */)}
+          active={this.state.index === (i + 1 /* plus 1 because of exact search */)}
           enter={this.state.enter} mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
         //the index matching with the course
@@ -273,7 +273,7 @@ export default class SearchBar extends Component {
       ));
 
       // Resets searchbar if user hit "enter" on a major in dropdown
-      if (this.state.enter == 1) {
+      if (this.state.enter === 1) {
         this.setState(initState);
       }
 

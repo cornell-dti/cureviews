@@ -14,8 +14,8 @@ type Props = {
   info: Subject;
   query?: string; //optional
   active: boolean;
-  enter: number;
-  mouse: number;
+  enter: 1 | 0;
+  mouse: 1 | 0;
   key: string;
 };
 
