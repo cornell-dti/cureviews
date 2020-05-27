@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
-import CourseCard from './CourseCard.jsx';
+import CourseCard from './CourseCard';
 import Form from './Form.jsx';
 import Gauge from './Gauge';
 import Navbar from './Navbar';
