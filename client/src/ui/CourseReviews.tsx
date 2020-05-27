@@ -2,7 +2,11 @@ import React, { Component, useEffect, useState } from 'react';
 import { Meteor } from "../meteor-shim";
 import Review from './Review.jsx';
 import RecentReview from './RecentReview.jsx';
+import { Review as ReviewType } from 'common';
 import './css/CourseReviews.css';
+
+type Props = { courseId: string; reviews: readonly ReviewType[]; loading: boolean };
+type State = { comparator: 'helpful'; reviews: any };
 
 /*
   Course Reviews Component.
@@ -16,26 +20,22 @@ import './css/CourseReviews.css';
     - list of 5 most recent reviews added to the database
 */
 
-export class CourseReviews extends Component {
-  constructor(props) {
+export class CourseReviews extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state={comparator:"helpful", reviews:[]};
-    this.reportReview.bind(this);
-    this.handleSelect=this.handleSelect.bind(this);
-    this.sort=this.sort.bind(this);
-    this.componentDidMount=this.componentDidMount.bind(this);
   }
 
   componentDidMount(){
-    Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
+    Meteor.call("getReviewsByCourseId", this.props.courseId, (_: any, reviews: any)=>{
       this.setState({reviews:this.renderReviews(reviews)});
       this.sort(this.state.comparator);
     });
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps: Props){
     if (prevProps !== this.props)
-    Meteor.call("getReviewsByCourseId", this.props.courseId, (err, reviews)=>{
+    Meteor.call("getReviewsByCourseId", this.props.courseId, (_: any, reviews: any)=>{
       this.setState({reviews:this.renderReviews(reviews)});
       this.sort(this.state.comparator);
     });
@@ -43,16 +43,16 @@ export class CourseReviews extends Component {
 
 
   // Handles selecting different sort bys
-  handleSelect = (event) => {
+  handleSelect = (event: any) => {
     let opt = event.target.value;
     this.setState({ comparator: opt });
     this.sort(opt);
   }
 
-  sort(comp){
+  sort = (comp: 'helpful') => {
     let reviews=this.state.reviews;
     let data=[];
-    if(comp==="helpful") data= reviews.sort((a,b) => {
+    if(comp==="helpful") data= reviews.sort((a: any, b: any) => {
       if( !b.props.info.likes) return -1;
       if( !a.props.info.likes) return 1;
     if( b.props.info && a.props.info){
@@ -66,7 +66,7 @@ export class CourseReviews extends Component {
 
     return 0;
   })
-  else data= reviews.sort((a,b) => {
+  else data= reviews.sort((a: any, b: any) => {
     if( !b.props.info.date) return 1;
     if( !a.props.info.date) return -1;
     if (b.props.info && a.props.info){
@@ -82,24 +82,23 @@ export class CourseReviews extends Component {
   });
 
   this.setState({reviews:data});
-  }
+  };
 
   // Report this review. Find the review in the local database and change
   // its 'reported' flag to true.
-  reportReview(review) {
-    console.log(review);
-    Meteor.call('reportReview', review, (error, result) => {
+  reportReview = (review: ReviewType) => {
+    Meteor.call('reportReview', review, (error: any, result: 1 | 0) => {
       if (!error && result === 1) {
         console.log("reported review #" + review._id);
       } else {
         console.log(error)
       }
     });
-  }
+  };
 
   // Loop through the list of reivews and render them (as a list)
-  renderReviews(reviews) {
-    let reviewCompList=[];
+  renderReviews(reviews: readonly ReviewType[]) {
+    const reviewCompList: any[] = [];
     if (this.props.courseId === "-1") {
        reviews.forEach((review) => (
         reviewCompList.push(<RecentReview key={review._id} info={review} reportHandler={this.reportReview} />)
@@ -113,6 +112,8 @@ export class CourseReviews extends Component {
   }
 
   render() {
+    console.log(this.props);
+    
     let title = "Past Reviews ("+this.props.reviews.length+")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
@@ -147,12 +148,12 @@ export class CourseReviews extends Component {
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
-export default ({ courseId }) => {
+export default ({ courseId }: { readonly courseId: string }) => {
   const [loading, setLoading] = useState(true);
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState<readonly ReviewType[]>([]);
 
   useEffect(() => {
-    Meteor.subscribe("reviews", courseId, 1, 0, "", (err, reviews) => {
+    Meteor.subscribe("reviews", courseId, 1, 0, "", (_: any, reviews: readonly ReviewType[]) => {
       setReviews(reviews);
       setLoading(false);
     });
