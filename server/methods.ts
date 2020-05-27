@@ -2,7 +2,7 @@ import { getGaugeValues, getCrossListOR } from 'common/CourseCard';
 import { OAuth2Client } from 'google-auth-library';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import shortid from 'shortid';
-import { Classes, Students, Subjects, Reviews, Validation, Student } from './dbDefs';
+import { Classes, Students, Subjects, Reviews, Validation, StudentDocument } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
 
@@ -139,7 +139,7 @@ Meteor.methods({
   async insertUser(googleObject) {
     // Check user object has all required fields
     if (googleObject.email.replace("@cornell.edu", "") != null) {
-      const user = await Meteor.call<Student | null>("getUserByNetId", googleObject.email.replace("@cornell.edu", ""));
+      const user = await Meteor.call<StudentDocument | null>("getUserByNetId", googleObject.email.replace("@cornell.edu", ""));
       if (user == null) {
         try {
           const newUser = new Students({
@@ -427,7 +427,7 @@ Meteor.methods({
       const ticket = await Meteor.call<TokenPayload | null>('getVerificationTicket', token);
       // console.log(ticket);
       if (ticket && ticket.email) {
-        const user = await Meteor.call<Student | null>('getUserByNetId', ticket.email.replace('@cornell.edu', ''));
+        const user = await Meteor.call<StudentDocument | null>('getUserByNetId', ticket.email.replace('@cornell.edu', ''));
         if (user) {
           return user.privilege === 'admin';
         }
