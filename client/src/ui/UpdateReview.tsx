@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { Meteor } from "../meteor-shim";
 import "./css/Review.css";
 

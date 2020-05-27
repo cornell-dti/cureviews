@@ -52,7 +52,7 @@ export class CourseReviews extends Component {
   sort(comp){
     let reviews=this.state.reviews;
     let data=[];
-    if(comp==="helpful") data= reviews.sort(function(a,b){
+    if(comp==="helpful") data= reviews.sort((a,b) => {
       if( !b.props.info.likes) return -1;
       if( !a.props.info.likes) return 1;
     if( b.props.info && a.props.info){
@@ -64,9 +64,9 @@ export class CourseReviews extends Component {
       }
     }
 
-    else return 0;
+    return 0;
   })
-  else data= reviews.sort(function(a,b){
+  else data= reviews.sort((a,b) => {
     if( !b.props.info.date) return 1;
     if( !a.props.info.date) return -1;
     if (b.props.info && a.props.info){
@@ -78,7 +78,7 @@ export class CourseReviews extends Component {
         return 1;
       }
     }
-    else return 0;
+    return 0;
   });
 
   this.setState({reviews:data});

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import PropTypes from 'prop-types';
 import './css/Gauge.css';
 
-type Props ={
+type Props = {
   width: string;
   height: string;
   rating: number;

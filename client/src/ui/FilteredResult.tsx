@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { lastOfferedSems } from 'common/CourseCard';
 import './css/FilteredResult.css';
 
-type Props ={
+type Props = {
   course: any;
   previewHandler: (arg1:any,arg2:any) => any;
   selected: boolean;

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Accordian from './Accordian';
-import Gauge from './Gauge';
 
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
@@ -57,7 +56,7 @@ export default class Statistics extends Component<Props,State>{
 
           arrDates.forEach((arrEntry:any)=>{
             let dateObject = Object.keys(arrEntry); //[date1]
-            dateObject.map(date=>{
+            dateObject.forEach(date=>{
               finalDateObj[date]=arrEntry[date]
             });
           });

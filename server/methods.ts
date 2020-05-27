@@ -75,7 +75,7 @@ const courseSort = (query) => (a, b) => {
 * We will replace these with express explicitly in the future
 */
 Meteor.methods({
-  /*
+  /**
    * Insert a new review into the database
    *
    * Returns 0 if there was an error
@@ -95,7 +95,9 @@ Meteor.methods({
       // insert the user into the collection if not already present
       await Meteor.call("insertUser", ticket);
 
-      if (review.text !== null && review.diff !== null && review.rating !== null && review.workload !== null && review.professors !== null && classId !== undefined && classId !== null) {
+      if (review.text !== null && review.diff !== null && review.rating !== null
+          && review.workload !== null && review.professors !== null && classId !== undefined
+          && classId !== null) {
         try {
           // Attempt to insert the review
           const fullReview = new Reviews({
@@ -128,7 +130,7 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
    * Inserts a new user into the database, if the user was not already present
    *
    * Returns 1 if the user was added to the database, or was already present
@@ -167,12 +169,13 @@ Meteor.methods({
     console.log("Error: Some user values are null in insertUser");
     return 0;
   },
-  /*
+  /**
    * Increment the number of likes a review has gotten by 1.
    *
    * Returns 1 on success
    * Returns 0 on error
-   */async incrementLike(id) {
+   */
+  async incrementLike(id) {
     try {
       const review = await Reviews.findOne({ _id: id }).exec();
       if (review.likes == undefined) {
@@ -186,7 +189,7 @@ Meteor.methods({
     }
   },
 
-  /*
+  /**
    * Decrement the number of likes a review has gotten by 1.
    *
    * Returns 1 on success
@@ -512,7 +515,8 @@ Meteor.methods({
   async getCoursesByKeyword(keyword: string) {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(keyword)) {
-      return (await Classes.find({ $text: { $search: keyword } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec()).sort(courseSort(keyword));
+      return (await Classes.find({ $text: { $search: keyword } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec())
+        .sort(courseSort(keyword));
     }
     return null;
   },
@@ -685,7 +689,7 @@ Meteor.methods({
   // Returns an array in the form {cs: [{date1:totalNum}, {date2: totalNum}, ...],
   // math: [{date1:total}, {date2: total}, ...], ... } for the top 15 majors where
   // totalNum is the totalNum of reviews for classes in that major at date date1, date2 etc...
-  async getReviewsOverTimeTop15(token, step, range) {
+  async getReviewsOverTimeTop15(token: string, step, range) {
     const userIsAdmin = await Meteor.call<boolean>('tokenIsAdmin', token);
     if (userIsAdmin) {
       const top15 = await Meteor.call<[string, number][]>('topSubjects');
@@ -802,7 +806,7 @@ Meteor.methods({
     // check: make sure review id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(pass)) {
-      if ((await Validation.find({}).exec())[0].adminPass == pass) {
+      if ((await Validation.find({}).exec())[0].adminPass === pass) {
         return 1;
       }
       return 0;
