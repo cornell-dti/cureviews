@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Meteor } from '../meteor-shim';
+import { Subject } from 'common';
+
+type State = { readonly topSubjects: readonly any[] };
 
 /*
   Subject Leaderboard Component.
@@ -10,13 +13,13 @@ import { Meteor } from '../meteor-shim';
   The course is rendered as repeating ol elements.
 */
 
-export default class SubjectLeaderboard extends Component<{}, { topSubjects: any[] }> {
-  state = { topSubjects: [] };
+export default class SubjectLeaderboard extends Component<{}, State> {
+  state: State = { topSubjects: [] };
 
   componentDidMount() {
     // get the top subjects by number of reviews, using a Meteor function
     // defined in imports/api/classes
-    Meteor.call('topSubjects', (error: any, result: any) => {
+    Meteor.call('topSubjects', (error: any, result: readonly any[]) => {
       if (!error) {
         this.setState({topSubjects: result});
       } else {

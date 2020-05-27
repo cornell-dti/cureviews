@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
+import { Class } from 'common';
 import { lastOfferedSems } from 'common/CourseCard';
 import './css/FilteredResult.css';
 
 type Props = {
-  course: any;
+  course: Class;
   previewHandler: (arg1:any,arg2:any) => any;
   selected: boolean;
   index: number;
-  sortBy: string;
+  sortBy: 'rating' | 'relevance' | 'diff' | 'work';
 }
 
 type State = {
-  course: any;
+  course: Class;
   current_index: number;
   sortBy: string;
 }
+
 /*
   Filtered Result Component.
 

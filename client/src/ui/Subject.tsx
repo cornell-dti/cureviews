@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import "./css/Course.css";
 import { Redirect } from 'react-router';
+import { Subject } from 'common';
 
 /*
   Subject Component.
@@ -10,7 +11,7 @@ import { Redirect } from 'react-router';
 */
 
 type Props = {
-  info: any;
+  info: Subject;
   query?: string; //optional
   active: boolean;
   enter: number;

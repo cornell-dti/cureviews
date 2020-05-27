@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import "./css/Course.css";
 import { Redirect } from 'react-router';
+import { Class } from 'common';
 
 /*
   Course Component.
@@ -15,7 +16,7 @@ import { Redirect } from 'react-router';
 */
 
 type Props = {
-  info: any;
+  info: Class;
   query?: string;
   active: boolean;
   enter: number;
@@ -35,7 +36,6 @@ export default class Course extends Component<Props> {
   setCourseOnSearchBar(classInfo: any){
     this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle, classInfo.classProfessors);
   }
-
 
   render() {
     // generate full human-readable name of class

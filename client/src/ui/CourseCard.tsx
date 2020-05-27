@@ -2,11 +2,12 @@ import React, { Component, useState, useEffect } from 'react';
 import { Meteor } from "../meteor-shim";
 import Form from './Form.jsx';
 import './css/CourseCard.css';
+import { Class, Review } from 'common';
 import { lastOfferedSems, getGaugeValues } from 'common/CourseCard';
 
 type Props = {
-  course: any;
-  reviews: any[];
+  course: Class;
+  reviews: readonly Review[];
 };
 
 type State ={
@@ -99,10 +100,10 @@ export class CourseCard extends Component<Props, State> {
 // wrap in a container class that allows the component to dynamically grab reviews.
 // The component will automatically re-render if the reviews change.
 export default ({ course }: { readonly course: any }) => {
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<readonly Review[]>([]);
 
   useEffect(() => {
-    Meteor.subscribe('reviews', course._id, 1, 0, (_: any, reviews: any[]) => {
+    Meteor.subscribe('reviews', course._id, 1, 0, (_: any, reviews: readonly Review[]) => {
       setReviews(reviews);
     });
   }, [course]);
