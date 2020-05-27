@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Meteor } from "../meteor-shim";
 import Review from './Review.jsx';
-import RecentReview from './RecentReview.jsx';
+import RecentReview from './RecentReview';
 import { Review as ReviewType } from 'common';
 import './css/CourseReviews.css';
 
@@ -112,8 +112,6 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.props);
-    
     let title = "Past Reviews ("+this.props.reviews.length+")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
