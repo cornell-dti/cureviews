@@ -1,0 +1,157 @@
+/* Classview Layout Styling */
+
+.container-top-gap-fix{
+  padding-top: 0 !important;
+  padding: 0;
+}
+
+.no-padding{
+  padding: 0 !important;
+}
+
+.navbar-margin{
+  margin-top: 45px;
+}
+
+.classview-column-container{
+  display: flex;
+}
+
+.classview-right-panel{
+  padding: 0 5vw 0 5vw;
+  overflow: hidden;
+  min-width: 320px;
+}
+
+.classview-gauge-container{
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 20px 10px;
+  margin-right: 8%;
+  margin-left: 0;
+}
+
+.classview-reviews-container{
+  margin-right: 0;
+  margin-top: 30px;
+  margin-left: 0;
+}
+
+.classview-loading{
+  padding-top: 300px;
+}
+
+.classview-coursecard-min-width{
+  min-width: 530px;
+  display: flex;
+}
+
+.errorgauge{
+  margin: 9vh auto 7vh auto;
+  display: flex;
+}
+
+.error-text{
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 36px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  text-align: center;
+}
+
+/* Popup Styling */
+/* The following was not yet refactored and will be when pop-up component is re-implemented -Julian (4/14/2020) */
+
+.rodal-dialog{
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.popup-open{
+  bottom: 102%;
+}
+
+.popup-hidden{
+  bottom: 0%;
+}
+
+.popup-form{
+  width: 80%;
+  position: absolute;
+  left: 50%;                            /* These next 3 lines center the */
+  -webkit-transform: translateX(-50%); /* search bar in the pop-up */
+  transform: translateX(-50%);
+}
+
+.popup-button-center{
+  border: none;
+  width: 100%;
+  padding: 12px;
+  background-color: #ffffffe6;
+  border-radius: 8px 8px 0px 0px;
+  color: #5697e3;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  position: relative;
+  margin-bottom: -5px;
+  z-index: 1000;
+  outline:0;
+}
+
+.popup-arrow {
+  border: solid #5697e3;
+  margin: 9px 0px 0px 10px;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+}
+
+.scale-popup-img{
+  max-width: 65%;
+  height: auto;
+  margin-bottom: 10vh;
+}
+
+.popup-text1{
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif; 
+  font-size: 25px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #FFFFFF;
+  margin-bottom: 6vh;
+}
+
+.popup-background-hidden{
+  background-image: url("/pop-up1.png");
+  background-size: contain;
+}
+
+.popup-background{
+  background-color: #4A90E2;
+  background-size: contain;
+}
+
+.popup-main{
+  height: -webkit-fill-available;
+  border-radius: inherit;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.animate-form{
+  transition-property: bottom;  /*NOTE: this only animates movement*/
+  transition-duration: 0.7s;
+  transition-timing-function: cubic-bezier(0.46, 0.03, 0.52, 0.96);
+  transition-delay: 0s;
+}

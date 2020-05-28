@@ -3,6 +3,12 @@ node_modules
 .DS_Store
 simple-todos
 dist
+build
 mongo_backups/*
 !mongo_backups/.gitkeep
 .git
+.vscode
+.env
+db
+.meteor
+mongo/

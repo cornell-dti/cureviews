@@ -9,10 +9,13 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v1
       - name: Install
-        run: npm install
+        run: yarn
       - name: Run Linter
-        run: npm run lint
-      - name: Setup Meteor
-        run: curl https://install.meteor.com/ | sh
+        run: yarn lint
+      - name: Build Server
+        run: yarn workspace server build
       - name: Build Website Bundle
-        run: npm run build
+        # temporarily disable CI flag to let warning not to fail the build
+        run: CI=false yarn workspace client build
+      - name: Test
+        run: yarn workspace server test

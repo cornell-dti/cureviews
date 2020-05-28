@@ -1,2 +1,3 @@
-imports/ui/js/Gauge.js
-imports/ui/gaugeFile.js
+dist/
+build/
+node_modules

@@ -2,10 +2,10 @@
  * This file exists to build the professors database.
  * NOTE: This requires having already loaded in a classes collection
  *
- * To run:
- * 1. cd into the folder of this file
- * 2. run `meteor mongo`
- * 3. type `load("buildprofs.js")`
+ * To Use:
+ * 1. Have a local mongodb open: mongod --dbpath ./mongo --port 3001
+ * 2. Open the mongodb shell for this local instance `mongo --port 3001`
+ * 3. run `load(".scripts/buildprofs.js")`
  */
 
 printjson("Beginning to build Professors Collection");

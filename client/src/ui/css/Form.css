@@ -1,0 +1,447 @@
+/* Form Main Component Styling */
+
+.form-menu {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  width: 443.75px;
+  background: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.form{
+  padding-right: 10%;
+  padding-left: 10%;
+  padding-top: 20px;
+  padding-bottom: 30px;
+  border-radius: 100px;
+}
+
+.form-header-text{
+  font-family:  "Source Sans Pro", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  color: #0076FF;
+  margin-bottom:25px;
+  text-align:left;
+}
+
+.form-textbox-row{
+  padding-left: 13px;
+  padding-right: 13px;  
+}
+
+.form-input-text{
+  text-align: left;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #4A4A4A;
+  background-color: transparent;
+  border: 0.673729px solid #65ACFF;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.form-field-error{
+  color: #FF314A;
+}
+
+.form-label{
+  font-family: "Source Sans Pro", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  
+  color: #000000;
+}
+
+.form-professor-label{
+  padding-top:10px;
+}
+
+.form-postbutton{
+    width: 100%;
+    height: 32px;
+    font-family:  "Source Sans Pro", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 19px;
+    align-items: center;
+    text-align: center;
+    background: #0076FF;
+    color: #FFFFFF;
+    border-radius: 6.73729px;
+    border-width: 0px;
+
+}
+
+.form-bottom-row-spacing{
+  margin-bottom: 27px;
+}
+
+.form-button-top-bottom-spacing {
+  padding-top: 35px;
+}
+
+/* Form Select Styling */
+
+.form-select-alignment {
+  padding-top: 8px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 70% !important;
+}
+
+.react-select-container{
+  width: 100%;
+}
+
+/* Leaving these useful properties of "react-select"
+    for future modifications:
+    __value-container
+    
+    */
+
+
+.react-select__control{
+  width: 100% !important;
+  max-height: 90px !important;
+  min-height: 28px !important;
+  border-color: #9FCBFF !important;
+  border-radius: 7px !important;
+}
+
+.react-select__indicator-separator{
+  display: none;
+}
+
+.react-select__dropdown-indicator{
+  color: #9FCBFF !important;
+  
+}
+
+.react-select__control--is-focused .react-select__dropdown-indicator{
+  color: #0076FF !important;
+}
+
+.react-select__control--is-focused{
+  border-color: #0076FF !important;
+  box-shadow: none !important;
+
+}
+
+.react-select__clear-indicator{
+  display: none !important;
+}
+
+/* Form Popup Styling */
+/* The following was not yet refactored and will be when pop-up component is re-implemented -Julian (4/14/2020) */
+
+
+.rodal{
+  z-index: 1000;
+}
+
+.dropdown-menu-popup{
+  background-color: #ffffffe6 !important;
+  opacity: 1 !important;
+}
+
+.dropdown-tab{
+  text-align: center;
+  border-radius: 0px 0px 5px 5px;
+  border: solid 1px #4a90e2;
+  border-top-style: none;
+  height: 32px;
+  margin: -3px 4px;
+  cursor: pointer;
+}
+
+.dropdown-tab-close{
+  text-align: center;
+  height: 32px;
+  margin: -10px 0;
+  cursor: pointer;
+}
+
+.dropdown.open .dropdown-tab{
+  display: none;
+  opacity: 0;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    margin-top: 13px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-color: #4a90e2;
+    border-radius: 15px;
+    height: 6.4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #000000;
+    border: 2px solid #000000;
+    border-radius: 100%;
+    box-shadow: 0px 1px 2px 0px #000000;
+    cursor: pointer;
+    position: relative;
+    bottom: 5px; /* Used to fix spacing */
+    height: 17px;
+    opacity: 1;
+    width: 17px;
+}
+
+input[type="submit"]{
+    background-color: #4990E2;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    text-align: center;
+    width: 100px;
+}
+input[type="submit"]:active{
+    background-color: #2d6fbc;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    text-align: center;
+    width: 100px;
+}
+
+textarea {
+    height: 96px;
+    width: 100%;
+    resize: none;
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 5px;
+    border: 1px solid #999999;
+}
+
+.rating-icon{
+  background: black;
+  border-radius: 10%;
+  height: 33px;
+  width: 35px;
+  justify-content: center;
+}
+
+#sm1, #sm2 {
+    align-items: center;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+}
+
+#sm1 {
+    background-color: #A0D53F;
+}
+
+#sm2 {
+    background-color: #f44336;
+}
+
+.secondary-text {
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+.sliderHolder {
+    padding-left: 10%;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+.error, .error:focus {
+  border: 1px solid red !important;
+  outline: 1px solid red;
+}
+
+.hidden { display:none; }
+
+.noLeftRightMargin{
+  margin-right: 0;
+  margin-left: 0;
+}
+
+#modal-top{
+  height: 35%;
+  padding-top: 15px;
+  z-index: 1008;
+  box-shadow: 0 2px 3.5px 0 rgba(231, 231, 231, 0.83);
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: #ffffff;
+}
+
+#modal-background{
+  height: 100%;
+  background-color: rgba(247, 247, 247, 0.98);
+}
+
+#modal-title{
+  margin-top: 5%;
+  text-align: center;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  color: #4a90e2;
+}
+
+#modal-text{
+  /* width: 399px; */
+  /* height: 109px; */
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding-top: 10%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-size: 17px;
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: center;
+  color: #666666;
+}
+
+#modal-footer{
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding-top: 10%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-size: 15px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.3;
+  letter-spacing: 0.3px;
+  text-align: center;
+  color: #a8a8a8;
+
+}
+
+.scale-logo-modal{
+  width: auto;
+  max-height: 50%;
+}
+
+.rodal-dialog{
+  padding: 0;
+}
+
+.metricBox{
+  width: 48.75px;
+  height: 7.5px;
+  border-radius: 3.36864px;
+  vertical-align: top;
+  padding:0;
+  margin:auto;
+}
+
+.metricBoxWrapper{
+  display:inline-block;
+  text-align: center;
+  padding:0px;
+  margin-left:5px;
+  margin-top:8px;
+}
+
+.metricBoxWrapper p {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+    font-size: 12.5px;
+  text-align: center;
+  height:10px;
+}
+
+.metricDescR,.metricDescL {
+  font-family: "Source Sans Pro", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #979797;
+}
+
+.metricDescR{
+  float: right;
+}
+
+.metricDescL{
+  float: left;
+}
+
+.textSpacing{
+  padding-left:95px;
+  padding-right:17px;
+}
+
+.inactiveBox{
+  background: #979797 !important;
+}
+
+
+.activeBox{
+  background: #0076FF !important;
+}
+
+.inactiveText{
+  color: #979797;
+}
+
+
+.activeText{
+  color: #0076FF;
+}
+
+.activeText, .inactiveText{
+  margin:0;
+  padding:0;
+  padding-bottom: 3.0px;
+}
+.metricBoxWrapper:hover{
+  cursor: pointer;
+}
+
+.inactiveBox:hover, .boxHover{
+  background: #86BEFF !important;
+}
+
+.inactiveBox:hover .inactiveText{
+  color: #86BEFF;
+}
+
+.metricBoxWrapper:hover .inactiveText{
+  color: #86BEFF;
+}
