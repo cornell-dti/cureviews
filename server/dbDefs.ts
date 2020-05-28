@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { Class, Student, Subject, Review } from "common";
+import { Class, Student, Subject, Review, Professor } from "common";
 
 /*
 
@@ -98,6 +98,22 @@ const ReviewSchema = new Schema<ReviewDocument>({
   // review-counting-feature
 });
 export const Reviews = mongoose.model<ReviewDocument>("reviews", ReviewSchema);
+
+/* # Professors collection.
+   # Holds data about each professor.
+*/
+
+export interface ProfessorDocument extends mongoose.Document, Professor {
+  readonly _id: string;
+}
+
+const ProfessorSchema = new Schema<ProfessorDocument>({
+    _id: { type: String }, // mongo-generated random id for this document
+    fullName: { type: String }, // the full name of the professor
+    courses: { type: [String] }, // a list of the ids all the courses 
+    major: { type: String }, // professor affliation by probable major
+});
+export const Professors = mongoose.model<ProfessorDocument>("professors", ProfessorSchema);
 
 /* # Validation Collection.
    # Stores passwords and other sensitive application keys.

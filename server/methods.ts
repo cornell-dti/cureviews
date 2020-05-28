@@ -112,6 +112,7 @@ Meteor.methods({
             reported: 0,
             professors: review.professors,
             likes: 0,
+            virtual: true,
           });
 
           await fullReview.save();
