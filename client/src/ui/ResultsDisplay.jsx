@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from '../meteor-shim';
 import "./css/ResultsDisplay.css"; // css files
-import FilteredResult from './FilteredResult.jsx';
+import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
@@ -125,30 +125,30 @@ export default class ResultsDisplay extends Component {
     }
   }
 
-  filterClasses(){ 
-    
+  filterClasses(){
+
     let semesters = Array.from(this.state.filterMap.get("semesters").keys()).filter(semester =>
                                             this.state.filterMap.get("semesters").get(semester))
-                                            
-    let filteredItems = this.state.courseList.filter(course =>    
-      semesters.some(semester => 
+
+    let filteredItems = this.state.courseList.filter(course =>
+      semesters.some(semester =>
         course.classSems.some(element => element.includes(semester.slice(0,2).toUpperCase())))
     );
-    
+
     let levels = Array.from(this.state.filterMap.get("levels").keys()).filter(level => this.state.filterMap.get("levels").get(level))
-    filteredItems = filteredItems.filter(course =>    
-      levels.some(level => 
-        level === "5000+" ? course.classNum.slice(0,1) >= "5" : course.classNum.slice(0,1) === level.slice(0,1)) 
+    filteredItems = filteredItems.filter(course =>
+      levels.some(level =>
+        level === "5000+" ? course.classNum.slice(0,1) >= "5" : course.classNum.slice(0,1) === level.slice(0,1))
     );
-    
+
     let subjects_objects = this.state.filterMap.get("subjects");
     if(subjects_objects && subjects_objects.length > 0){
       filteredItems = filteredItems.filter(course =>
         subjects_objects.some(subject_object => course.classSub.toUpperCase() === subject_object.value));
     }
-    
+
     this.setState({filteredItems: filteredItems}, () => this.sort());
-    
+
   }
 
   //Updates the list of filtered items when filters are checked/unchecked
@@ -156,11 +156,11 @@ export default class ResultsDisplay extends Component {
     const group = e.target.getAttribute("group");
     const name = e.target.name;
     const checked = e.target.checked;
-    
+
     let newFilterMap = this.state.filterMap;
-    
+
     newFilterMap.get(group).set(name, checked);
-    
+
     this.setState({filterMap: newFilterMap}, () => this.filterClasses());
 
   }
@@ -205,26 +205,26 @@ export default class ResultsDisplay extends Component {
     ))
   }
 
-  
+
   handleMajorFilterChange(selectedMajors){
-    
+
     if(selectedMajors === null){
       selectedMajors = []
     }
-    
+
     let newFilterMap = this.state.filterMap;
-    
+
     newFilterMap.set("subjects", selectedMajors)
-    
+
     this.setState({filterMap: newFilterMap}, () => this.filterClasses());
   }
 
   getSubjectOptions(inputValue, callback){
-    
+
     Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
       if (!err && subjectList && subjectList.length !== 0) {
         // Save the list of Subject objects that matches the request
-        
+
         const subjectOptions = []
         for(const subject in subjectList){
           subjectOptions.push({
@@ -232,14 +232,14 @@ export default class ResultsDisplay extends Component {
             "label" : subjectList[subject].subShort.toUpperCase()
           })
         }
-        
+
         callback(subjectOptions)
       }
       else {
         callback([])
       }
     });
-    
+
     // callback(this.filterColors(inputValue));
   }
 

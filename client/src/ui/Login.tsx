@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Admin from './Admin.jsx';
-import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
+import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
@@ -64,7 +64,7 @@ export default class Login extends Component<{}, { message: string; executeLogin
               <div className="panel-body">
               <CUreviewsGoogleLogin 
                     executeLogin={this.state.executeLogin}
-                    waitTime="1500"
+                    waitTime={1500}
                     redirectFrom="admin" />
               </div>
             </div>

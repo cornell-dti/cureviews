@@ -1,9 +1,21 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { Meteor } from "../meteor-shim";
 import "./css/Review.css";
 
+type Props ={
+    info: any;
+    approveHandler: (arg1:any) => any;
+    removeHandler: (arg1:any) => any;
+
+    //was origially optional
+    unReportHandler: (arg1:any) => any;
+};
+
+type State = {
+  shortName: string;
+  longName: string;
+};
 /*
   Update Review Component.
 
@@ -27,8 +39,8 @@ import "./css/Review.css";
     - button to delete the review
 */
 
-export default class UpdateReview extends Component {
-  constructor(props) {
+export default class UpdateReview extends Component<Props,State> {
+  constructor(props:Props) {
     super(props);
 
     // state of app will contain details about the class this reivew is for
@@ -39,7 +51,7 @@ export default class UpdateReview extends Component {
 
     // Get details about the course this review belongs to, using the courseId
     // assigned to this review.
-    Meteor.call('getCourseById', props.info.class, (error, result) => {
+    Meteor.call('getCourseById', props.info.class, (error:any, result:any) => {
       if (!error) {
         this.setState({
           shortName: result.classSub.toUpperCase() + " " + result.classNum,
@@ -53,7 +65,7 @@ export default class UpdateReview extends Component {
 
   // Decide which buttons to show, and what action the buttons take,
   // based on the type of update (report or approval)
-  renderButtons(review) {
+  renderButtons(review:any) {
       const reported = review.reported;
       if (reported === 1) {
           return (
@@ -111,14 +123,5 @@ export default class UpdateReview extends Component {
           </li>
       );
   }
-}
 
-// takes in the database object representing this review, and the functions to
-// call to update reviews. Currently, the approval/removal processes for reported
-// and pending-approval review are the same
-UpdateReview.propTypes = {
-  info: PropTypes.object.isRequired,
-  approveHandler: PropTypes.func.isRequired,
-  removeHandler: PropTypes.func.isRequired,
-  unReportHandler: PropTypes.func //NOTE: this is not required if review is not reported
-};
+}

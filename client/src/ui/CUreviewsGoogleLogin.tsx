@@ -1,7 +1,8 @@
+// @ts-nocheck
+// The existing code is problematic...
+
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-// import {withTracker} from 'meteor/react-meteor-data';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import { Session } from '../meteor-session';
 
 /*
@@ -14,17 +15,19 @@ import { Session } from '../meteor-session';
 
 */
 
-export default class CUreviewsGoogleLogin extends Component {
-  constructor(props) {
+type Props = {
+  readonly executeLogin: boolean;
+  readonly waitTime: number;
+  readonly redirectFrom: string;
+};
+
+export default class CUreviewsGoogleLogin extends Component<Props, { lastVerification: number }> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       lastVerification: (new Date().getTime()) - 5000
     }
-
-    this.responseGoogle.bind(this);
-    this.saveRedirectToSession.bind(this);
-    this.getRedirectURI.bind(this);
 
     //Save redirect page
     //Will be either "admin" or "course"
@@ -32,23 +35,23 @@ export default class CUreviewsGoogleLogin extends Component {
   }
 
   //Using meteor session to save the redirct page to Session
-  saveRedirectToSession(from) {
+  saveRedirectToSession = (from: string) => {
     Session.setPersistent({"redirectFrom": from});
     if (Session.get("redirectFrom") !== from){
       console.log("Error saving redirectFrom to session");
       return 0;
     }
     return 1;
-  }
+  };
 
   //This callback function is only called when Google Log-In uses a pop-up.  We now use a redirect
   // instead.  Therefore this callback is never used/called but I'll leave here for furture reference.
   // Previously called by adding: onSuccess={this.responseGoogle.bind(this)}
   // as a prop passed into <GoogleLogin> component below.
-  responseGoogle = (response) => {
+  responseGoogle = (response: GoogleLoginResponse) => {
     const token = response.tokenId;
-    console.log(token);
     if (token){
+      // @ts-ignore
       if (this.saveToken(token) === 1){
         console.log(Session.get("token"));
         // console.log("Succesfully saved token to session");
@@ -56,19 +59,15 @@ export default class CUreviewsGoogleLogin extends Component {
         console.log("Error saving token");
       }
       this.setState({lastVerification : new Date().getTime()});
-      this.props.onSuccessFunction(response);
-    }
-    else{
-      this.props.onFailureFunction(response);
     }
   }
 
-  getRedirectURI(){
+  getRedirectURI = () => {
     if(window.location.host.includes("localhost")){
       return "http://" + window.location.host + "/auth/"
     }
       return "https://" + window.location.host + "/auth/"
-  }
+  };
 
   render() {
     return (
@@ -92,16 +91,3 @@ export default class CUreviewsGoogleLogin extends Component {
     );
   }
 }
-
-// Define the names, types and optional status of the props that will be passed
-// to this component from the parent component that creates it.
-// Be sure to include any collections obtained from withTracker!
-
-// describe props
-CUreviewsGoogleLogin.propTypes = {
-  executeLogin:PropTypes.bool,
-  waitTime:PropTypes.string,
-  redirectFrom:PropTypes.string,
-  onSuccessFunction:PropTypes.func, //Not required and actually not used anymore now that method is redirect
-  onFailureFunction:PropTypes.func // and not popup like it used to be.  Will refactor and remove later.
-};

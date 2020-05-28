@@ -2,11 +2,11 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 
-import CUreviewsGoogleLogin from './CUreviewsGoogleLogin.jsx';
+import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
-import SearchBar from './SearchBar.jsx';
+import SearchBar from './SearchBar';
 import './css/Form.css';
 import { Session } from '../meteor-session';
 import { Meteor } from "../meteor-shim";
@@ -176,7 +176,7 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if(Session.get("review") != undefined && Session.get("review") != "" && this.props.inUse){
+    if(Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse){
       this.submitReview();
     }
   }
@@ -378,7 +378,7 @@ export default class Form extends Component {
                       onChange={(event) => this.handleTextChange(event)}
                        />
                     <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
-                    <div className={err.text && this.state.text != "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+                    <div className={err.text && this.state.text !== "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
                   </div>
 
 
@@ -476,7 +476,7 @@ export default class Form extends Component {
                 </p>
                 <CUreviewsGoogleLogin
                       executeLogin={this.state.visible}
-                      waitTime="3000"
+                      waitTime={3000}
                       redirectFrom="course" />
               </div>
             </div>

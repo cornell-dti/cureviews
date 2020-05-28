@@ -9,3 +9,5 @@ mongo_backups/*
 .git
 .vscode
 .env
+db
+.meteor

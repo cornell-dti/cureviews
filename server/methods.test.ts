@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-import { Class, Classes, Validation, Student, Students, Subjects } from './dbDefs';
+import { ClassDocument, Classes, Validation, StudentDocument, Students, Subjects } from './dbDefs';
 import { Meteor } from './shim';
 import { isSubShorthand, editDistance } from './methods';
 
@@ -9,7 +9,7 @@ import { isSubShorthand, editDistance } from './methods';
 // **We might not want to run this with CI**
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
-let mongoServer;
+let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -96,7 +96,7 @@ describe('tests', () => {
   // test the fact that the meteor shim exists at last one of the methods from methods.ts imported
   // also test "getUserByNetId" while we are at it
   it('meteor-shim-exists', async () => {
-    const user = await Meteor.call<Student | null>("getUserByNetId", "js0");
+    const user = await Meteor.call<StudentDocument | null>("getUserByNetId", "js0");
     expect(user._id).toBe("Irrelevant");
     expect(user.firstName).toBe("John");
     expect(user.lastName).toBe("Smith");
@@ -105,16 +105,16 @@ describe('tests', () => {
     expect(user.affiliation).toBeNull();
     expect(user.token).toBeNull();
 
-    const no_user = await Meteor.call<Student | null>("getUserByNetId", "bop");
-    expect(no_user).toBeNull();
+    const noUser = await Meteor.call<StudentDocument | null>("getUserByNetId", "bop");
+    expect(noUser).toBeNull();
   });
 
   // test getCoursesByMajor
   it('get-courses-by-major', async () => {
-    const classes = await Meteor.call<Class[]>("getCoursesByMajor", "MORK");
+    const classes = await Meteor.call<ClassDocument[]>("getCoursesByMajor", "MORK");
     expect(classes.length).toBe(2);
 
-    const index = classes[0].classNum == "1110" ? 0 : 1;
+    const index = classes[0].classNum === "1110" ? 0 : 1;
     const mork1110 = classes[index];
     const mork2110 = classes[(index + 1) % 2];
 
@@ -123,22 +123,22 @@ describe('tests', () => {
     expect(mork1110.classSub).toBe(mork2110.classSub);
     expect(mork2110.classPrereq[0]).toBe(mork1110._id);
 
-    const no_classes = await Meteor.call<Class[]>("getCoursesByMajor", "GORK");
-    expect(no_classes.length).toBe(0);
+    const noClasses = await Meteor.call<ClassDocument[]>("getCoursesByMajor", "GORK");
+    expect(noClasses.length).toBe(0);
   });
 
   // test getCourseById
   it('get-course-by-id', async () => {
-    const mork1110 = await Meteor.call<Class | null>("getCourseById", "newCourse1");
-    const mork2110 = await Meteor.call<Class | null>("getCourseById", "newCourse2");
+    const mork1110 = await Meteor.call<ClassDocument | null>("getCourseById", "newCourse1");
+    const mork2110 = await Meteor.call<ClassDocument | null>("getCourseById", "newCourse2");
 
     expect(mork1110.classNum).toBe("1110");
     expect(mork2110.classNum).toBe("2110");
     expect(mork1110.classSub).toBe(mork2110.classSub);
     expect(mork2110.classPrereq[0]).toBe(mork1110._id);
 
-    const no_course = await Meteor.call<Class | null>("getCourseById", "gork's course");
-    expect(no_course).toBeNull();
+    const noCourse = await Meteor.call<ClassDocument | null>("getCourseById", "gork's course");
+    expect(noCourse).toBeNull();
   });
 
   // test isSubShorthand

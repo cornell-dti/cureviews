@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { Class, Student, Subject, Review } from "common";
 
 /*
 
@@ -13,22 +14,11 @@ import mongoose, { Schema } from "mongoose";
 /* # Classes collection.
    # Holds data about each class in the course roster.
 */
-export interface Class extends mongoose.Document {
-    _id: string;
-    classSub: string;
-    classNum: string;
-    classTitle?: string;
-    classPrereq: string[];
-    crossList: string[];
-    classFull?: string;
-    classSems?: string[];
-    classProfessors?: string[];
-    classRating?: number;
-    classWorkload?: number;
-    classDifficulty?: number; // the average difficulty rating from reviews
+export interface ClassDocument extends mongoose.Document, Class {
+  _id: string;
 }
 
-const ClassSchema = new Schema<Class>({
+const ClassSchema = new Schema<ClassDocument>({
   _id: { type: String }, // overwritten _id field to play nice with our old db
   classSub: { type: String }, // subject, like "PHIL" or "CS"
   classNum: { type: String }, // course number, like 1110
@@ -44,22 +34,16 @@ const ClassSchema = new Schema<Class>({
 
 });
 
-export const Classes = mongoose.model<Class>("classes", ClassSchema);
+export const Classes = mongoose.model<ClassDocument>("classes", ClassSchema);
 /* # Users collection.
    # Holds data about each user. Data is collected via Cornell net-id login.
 */
 
-export interface Student extends mongoose.Document {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    netId: string;
-    affiliation: string;
-    token: string;
-    privilege: string; // user privilege level
+export interface StudentDocument extends mongoose.Document, Student {
+  readonly _id: string;
 }
 
-const StudentSchema = new Schema({
+const StudentSchema = new Schema<StudentDocument>({
   _id: { type: String }, // overwritten _id field to play nice with our old db
   firstName: { type: String }, // user first name
   lastName: { type: String }, // user last name
@@ -68,25 +52,23 @@ const StudentSchema = new Schema({
   token: { type: String }, // random token generated during login process
   privilege: { type: String }, // user privilege level
 });
-export const Students = mongoose.model<Student>("students", StudentSchema);
+export const Students = mongoose.model<StudentDocument>("students", StudentSchema);
 
 /* # Subjects Collection
    # List of all course subject groups and their full text names
    # ex: CS -> Computer Science
 */
 
-export interface Subject extends mongoose.Document {
-    _id: string;
-    subShort: string;
-    subFull: string;
+export interface SubjectDocument extends mongoose.Document, Subject {
+  readonly _id: string;
 }
 
-const SubjectSchema = new Schema({
+const SubjectSchema = new Schema<SubjectDocument>({
   _id: { type: String }, // overwritten _id field to play nice with our old db
   subShort: { type: String }, // subject, like "PHIL" or "CS"
   subFull: { type: String }, // subject full name, like 'Computer Science'
 });
-export const Subjects = mongoose.model<Subject>("subjects", SubjectSchema);
+export const Subjects = mongoose.model<SubjectDocument>("subjects", SubjectSchema);
 
 /* # Reviews Collection.
    # Stores each review inputted by a user. Linked with the course that was
@@ -94,22 +76,11 @@ export const Subjects = mongoose.model<Subject>("subjects", SubjectSchema);
    # the class from the Classes collection
 */
 
-export interface Review extends mongoose.Document {
-    _id: string;
-    user: string;
-    text: string;
-    difficulty?: number;
-    rating?: number;
-    workload?: number;
-    class?: string;
-    date?: Date;
-    visible?: number;
-    reported?: number;
-    professors?: string[];
-    likes?: number;
+export interface ReviewDocument extends mongoose.Document, Review {
+  readonly _id: string;
 }
 
-const ReviewSchema = new Schema<Review>({
+const ReviewSchema = new Schema<ReviewDocument>({
   _id: { type: String }, // overwritten _id field to play nice with our old db
   user: { type: String, required: false }, // user who wrote this review, a Users _id
   text: { type: String, required: false }, // text from the review
@@ -126,7 +97,7 @@ const ReviewSchema = new Schema<Review>({
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature
 });
-export const Reviews = mongoose.model<Review>("reviews", ReviewSchema);
+export const Reviews = mongoose.model<ReviewDocument>("reviews", ReviewSchema);
 
 /* # Validation Collection.
    # Stores passwords and other sensitive application keys.

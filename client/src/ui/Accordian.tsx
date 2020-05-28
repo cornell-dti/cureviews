@@ -42,11 +42,11 @@ export default class Accordian extends Component<Props> {
               </thead>
               <tbody>
                 {
-                  this.props.data.map((data) => {
+                  this.props.data.map(function(data) {
                     return(
-                      <tr key={data._id1}>
-                        <th scope="row" key={data._id2}>{data._id}</th>
-                        <td key={data._id3}>{data.total}</td>
+                      <tr key={data._id}>
+                        <th scope="row">{data._id}</th>
+                        <td >{data.total}</td>
                       </tr>
                     )
                   })
@@ -57,7 +57,6 @@ export default class Accordian extends Component<Props> {
           </div>
         </div>
       </div>
-
     )
   }
 }

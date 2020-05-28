@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Class } from 'common';
 import { lastOfferedSems } from 'common/CourseCard';
 import './css/FilteredResult.css';
+
+type Props = {
+  course: Class;
+  previewHandler: (arg1:any,arg2:any) => any;
+  selected: boolean;
+  index: number;
+  sortBy: 'rating' | 'relevance' | 'diff' | 'work';
+}
+
+type State = {
+  course: Class;
+  current_index: number;
+  sortBy: string;
+}
 
 /*
   Filtered Result Component.
@@ -9,16 +23,16 @@ import './css/FilteredResult.css';
   Takes each result and creates a view of the result with its s
 
   Props:  course- the class to be displayed
-          previewHandler: if this class is clicked, this function will update 
-                          the selected class to display a PreviewCard 
+          previewHandler: if this class is clicked, this function will update
+                          the selected class to display a PreviewCard
                           in the ResultsDisplay component to be itself
           selected: bool, if true, the border of this class is outlined blue to indicate being clicked
           index: number, the position of this class in the list of results
           sortBy: string, the metric to display on this component
 */
 
-export default class FilteredResult extends Component {
-  constructor(props) {
+export default class FilteredResult extends Component<Props,State> {
+  constructor(props:Props) {
     super(props);
     // set gauge values
     this.state = {
@@ -33,7 +47,7 @@ export default class FilteredResult extends Component {
 
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps:Props) {
     if (prevProps !== this.props) {
       this.setState({
         course: this.props.course,
@@ -44,7 +58,7 @@ export default class FilteredResult extends Component {
   }
 
   //Returns the color corresponding to the [val] for the [metric]
-  getColor(metric, val) {
+  getColor(metric:string, val:any) { 
     if (metric === "Overall Rating" || metric === "Relevance") {
       if (val !== "?" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
@@ -125,13 +139,3 @@ export default class FilteredResult extends Component {
     );
   }
 }
-
-
-// takes in the database object representing this review
-FilteredResult.propTypes = {
-  course: PropTypes.object.isRequired,
-  previewHandler: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired,
-  index: PropTypes.number.isRequired,
-  sortBy: PropTypes.string.isRequired
-};

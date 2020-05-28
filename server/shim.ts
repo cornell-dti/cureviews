@@ -1,3 +1,5 @@
+// The shim is too dynamic.
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express from "express";
 
 export type MeteorMethod = (...args: any[]) => any;
@@ -76,7 +78,7 @@ export class MeteorShim {
           const args = req.body.arguments;
           if (!args) return res.status(400).send({ message: "No arguments passed!" });
           if (!Array.isArray(args)) return res.status(400).send({ message: "Arguments are not an array!" });
-          method(...args).then((result: any) => res.status(200).send({ return: result }));
+          return method(...args).then((result: any) => res.status(200).send({ return: result }));
         });
       }
       app.use("/methods", methods);
@@ -96,7 +98,7 @@ export class MeteorShim {
           const args = req.body.arguments;
           if (!args) return res.status(400).send({ message: "No arguments passed!" });
           if (!Array.isArray(args)) return res.status(400).send({ message: "Arguments are not an array!" });
-          sub(...args).then((result: any) => res.status(200).send({ return: result }));
+          return sub(...args).then((result: any) => res.status(200).send({ return: result }));
         });
       }
       this._app.use("/subscriptions", subscriptions);

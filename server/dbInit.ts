@@ -295,15 +295,15 @@ export async function findCurrSemester() {
    # addAllCourses function.
    # Return: String Array
 */
-export async function findAllSemesters() {
+export async function findAllSemesters(): Promise<string[]> {
   let response = await axios.get('https://classes.cornell.edu/api/2.0/config/rosters.json', { timeout: 30000 });
   if (response.status !== 200) {
     console.log('error');
-  } else {
-    response = response.data;
-    const allSemesters = response.data.rosters;
-    return allSemesters.map((semesterObject) => semesterObject.slug);
+    return [];
   }
+  response = response.data;
+  const allSemesters = response.data.rosters;
+  return allSemesters.map((semesterObject) => semesterObject.slug);
 }
 
 /* # Look through all courses in the local database, and identify those

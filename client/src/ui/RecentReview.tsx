@@ -1,9 +1,11 @@
 import React, { Component} from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { Meteor } from "../meteor-shim";
+import { Review, Class } from 'common';
 import './css/Review.css';
 
+type Props = { info: Review, reportHandler: (review: Review) => void };
+type State = { shortName: string; longName: string; link: string };
 
 /*
   Recent Review Component.
@@ -16,8 +18,8 @@ import './css/Review.css';
    - report button
 */
 
-export default class RecentReview extends Component {
-  constructor(props) {
+export default class RecentReview extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     // state of app will contain details about the class this reivew is for,
@@ -30,11 +32,11 @@ export default class RecentReview extends Component {
 
     // Get details about the course this review belongs to, using the courseId
     // assigned to this review.
-    Meteor.call('getCourseById', props.info.class, (error, result) => {
+    Meteor.call('getCourseById', props.info.class, (error: any, result: Class) => {
       if (!error) {
         this.setState({
           shortName: result.classSub.toUpperCase() + " " + result.classNum,
-          longName: result.classTitle,
+          longName: result.classTitle || '',
           link: '/course/'+ result.classSub.toUpperCase() + "/" + result.classNum,
         });
       } else {
@@ -44,7 +46,7 @@ export default class RecentReview extends Component {
   }
 
   // Function to get the color of the quality color box based on the quality value.
-  getQualColor(value) {
+  getQualColor(value: number) {
     const colors = ["#E64458", "#E64458", "#f9cc30", "#f9cc30", "#53B277", "#53B277"];
     return {
       backgroundColor: colors[value],
@@ -52,7 +54,7 @@ export default class RecentReview extends Component {
   }
 
   // Function to get the color of the difficulty color box based on the diffiiculty value.
-  getDiffColor(value) {
+  getDiffColor(value: number) {
     const colors = ["#53B277", "#53B277", "#f9cc30", "#f9cc30", "#E64458", "#E64458"];
     return {
       backgroundColor: colors[value],
@@ -61,7 +63,7 @@ export default class RecentReview extends Component {
 
 
   render() {
-    const review = this.props.info;
+    const review: any = this.props.info;
 
     return (
         <li>
@@ -105,9 +107,3 @@ export default class RecentReview extends Component {
     );
   }
 }
-
-// takes in the database object representing this review
-RecentReview.propTypes = {
-  info: PropTypes.object.isRequired,
-  reportHandler: PropTypes.func
-};
