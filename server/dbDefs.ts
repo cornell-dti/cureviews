@@ -108,10 +108,10 @@ export interface ProfessorDocument extends mongoose.Document, Professor {
 }
 
 const ProfessorSchema = new Schema<ProfessorDocument>({
-    _id: { type: String }, // mongo-generated random id for this document
-    fullName: { type: String }, // the full name of the professor
-    courses: { type: [String] }, // a list of the ids all the courses 
-    major: { type: String }, // professor affliation by probable major
+  _id: { type: String }, // mongo-generated random id for this document
+  fullName: { type: String }, // the full name of the professor
+  courses: { type: [String] }, // a list of the ids all the courses
+  major: { type: String }, // professor affliation by probable major
 });
 export const Professors = mongoose.model<ProfessorDocument>("professors", ProfessorSchema);
 
