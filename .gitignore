@@ -11,3 +11,4 @@ mongo_backups/*
 .env
 db
 .meteor
+mongo/

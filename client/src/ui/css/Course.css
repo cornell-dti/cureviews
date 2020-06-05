@@ -32,6 +32,20 @@
   color: #F3A953;
 }
 
+.result-label-professor{
+  border: 1px solid #92CF48;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 5px 9px;
+  margin: 0 14px 0 0;
+  height: 25px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 10px;
+  font-weight: var(--regular-weight) !important;
+  line-height: normal;
+  color: #92CF48;
+}
+
 .result-text{
   display: inline-block;
   text-overflow: ellipsis;

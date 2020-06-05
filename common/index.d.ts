@@ -45,3 +45,10 @@ export interface Review {
   professors?: string[];
   likes?: number;
 }
+
+export interface Professor {
+  readonly _id: string;
+  readonly fullName: string;
+  readonly courses: string[];
+  readonly major: string;
+}
