@@ -4,6 +4,7 @@ import { Session } from '../meteor-session';
 import { Meteor } from '../meteor-shim';
 import Course from './Course';
 import Subject from './Subject';
+import Professor from './Professor';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 
@@ -35,7 +36,8 @@ const initState = {
   selected: false, //whether or not user has clicked yet,
   query: "", //user's query,
   allCourses: [],
-  allSubjects: []
+  allSubjects: [],
+  allProfessors: []
 };
 
 export default class SearchBar extends Component {
@@ -108,6 +110,20 @@ export default class SearchBar extends Component {
         else {
           this.setState({
             allSubjects: []
+          });
+        }
+      });
+
+      Meteor.call("getProfessorsByName", this.state.query, (err, subjectList) => {
+        if (!err && subjectList && subjectList.length !== 0) {
+          // Save the list of Subject objects that matches the request
+          this.setState({
+            allProfessors: subjectList
+          });
+        }
+        else {
+          this.setState({
+            allProfessors: []
           });
         }
       });
@@ -278,11 +294,25 @@ export default class SearchBar extends Component {
       }
 
       results.push(subjectList)
+      
+      // Generate list of matching professors and add to results list
+      let professorList = this.state.allProfessors.slice(0, 3).map((professor, i) => (
+        //create a new class "button" that will set the selected class to this class when it is clicked.
+        <Professor key={professor._id} professor={professor} query={this.state.query}
+          active={this.state.index === (i + subjectList.length + 1 /* plus 1 because of exact search */)}
+          enter={this.state.enter} mouse={this.state.mouse} />
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "enter" will pass through the value of the enter state
+        //the prop "mouse" will pass through the value of the mouse state
+      ));
 
+      results.push(professorList)
+      
       results.push(this.state.allCourses.slice(0, 5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.state.query} useRedirect={true} handler={this.setCourse}
-          active={this.state.index === (i + subjectList.length + 1 /* plus because of exact search and subjects */)}
+          active={this.state.index === (i + subjectList.length + professorList.length + 1 /* plus because of exact search, professors, subjects */)}
           enter={this.state.enter}
           mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to

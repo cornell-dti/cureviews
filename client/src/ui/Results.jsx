@@ -43,6 +43,23 @@ export class Results extends Component {
         }
       });
     }
+    else if (this.props.match.params.type === "professor") {
+      Meteor.call("getCoursesByProfessor", this.props.match.params.input.split("+").join(" "), (err, courseList) => {
+        if (!err && courseList.length !== 0) {
+          // Save the Class object that matches the request
+          this.setState({
+            courseList: courseList,
+            loading: false
+          });
+        }
+        else {
+          this.setState({
+            courseList: [],
+            loading: false
+          });
+        }
+      });
+    }
     else if (this.props.match.params.type === "keyword") {
       let userQuery = this.props.match.params.input.split("+").join(" ");
       if(userQuery && userQuery.split(" ").length === 1){

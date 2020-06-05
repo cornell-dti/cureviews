@@ -48,7 +48,7 @@ export interface Review {
 
 export interface Professor {
   readonly _id: string;
-  fullName:  string;
-  courses: string[];
-  major: string;
+  readonly fullName:  string;
+  readonly courses: string[];
+  readonly major: string;
 }

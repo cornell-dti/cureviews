@@ -2,7 +2,7 @@ import { getGaugeValues, getCrossListOR } from 'common/CourseCard';
 import { OAuth2Client } from 'google-auth-library';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import shortid from 'shortid';
-import { Classes, Students, Subjects, Reviews, Validation, StudentDocument } from './dbDefs';
+import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
 
@@ -311,6 +311,19 @@ Meteor.methods({
     return courses;
   },
 
+  // Returns courses with the given parameters.
+  // Takes in a professor full name
+  // e.g. David Gries, Michael George
+  // Returns an empty array if no classes match.
+  async getCoursesByProfessor(professor) {
+    let courses = [];
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(professor)) {
+      courses = await Classes.find({ classProfessors: professor }).exec();
+    }
+    return courses;
+  },
+
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
   // and update the semesters offered for classes that do.
@@ -527,6 +540,15 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(keyword)) {
       return await Subjects.find({ $text: { $search: keyword } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+    }
+    return null;
+  },
+
+  // Searches the database on Professors's text index and returns matching professors
+  async getProfessorsByName(name: string) {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(name)) {
+      return await Professors.find({ $text: { $search: name } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
     }
     return null;
   },
