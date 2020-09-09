@@ -435,11 +435,8 @@ Meteor.methods({
 
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
-    //console.log("This is token in tokenIsAdmin",token);
-    // console.log(token);
     if (token != null) {
       const ticket = await Meteor.call<TokenPayload | null>('getVerificationTicket', token);
-      // console.log(ticket);
       if (ticket && ticket.email) {
         const user = await Meteor.call<StudentDocument | null>('getUserByNetId', ticket.email.replace('@cornell.edu', ''));
         if (user) {
