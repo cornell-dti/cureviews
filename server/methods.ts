@@ -435,7 +435,7 @@ Meteor.methods({
 
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
-    // console.log("This is token in tokenIsAdmin");
+    //console.log("This is token in tokenIsAdmin",token);
     // console.log(token);
     if (token != null) {
       const ticket = await Meteor.call<TokenPayload | null>('getVerificationTicket', token);
@@ -692,11 +692,11 @@ Meteor.methods({
       const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => {});
 
       results.map(async (data) => {
-        const subNum = (await Classes.find({ _id: data._id }, { classSub: 1, _id: 0, classNum: 1 }).exec())[0];
+        const subNum = (await Classes.find({ _id: data._id }, { classSub: 1, /*_id: 0,*/ classNum: 1 }).exec())[0];
         const id = `${subNum.classSub} ${subNum.classNum}`;
         return { _id: id, total: data.total };
       });
-      await Promise.all(results);
+      return results;
     }
   },
 
@@ -716,26 +716,26 @@ Meteor.methods({
     const userIsAdmin = await Meteor.call<boolean>('tokenIsAdmin', token);
     if (userIsAdmin) {
       const top15 = await Meteor.call<[string, number][]>('topSubjects');
+      console.log("top15t",top15);
       // contains cs, math, gov etc...
       const retArr = [];
-
+      console.log("prior to await");
       await Promise.all(top15.map(async (classs) => {
         const [subject] = await Subjects.find({
           subFull: classs[0],
         }, {
-          _id: 0,
           subShort: 1,
-          subFull: 0,
         }).exec(); // EX: computer science--> cs
-
+        console.log("subject", subject);
         const subshort = subject.subShort;
+        console.log("subshort", subshort);
         retArr.push(subshort);
       }));
 
+      console.log("retArr", retArr);
       const arrHM = [] as any[]; // [ {"cs": {date1: totalNum}, math: {date1, totalNum} },
       // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
 
-      // last 1 yr step of 14
       for (let i = 0; i < range * 30; i += step) {
         // "data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
         // run on reviews. gets all classes and num of reviewa for each class, in x day
@@ -763,9 +763,8 @@ Meteor.methods({
             _id: data._id,
           }, {
             classSub: 1,
-            _id: 0,
-            classNum: 0,
           }).exec();
+
           const sub = results[0]; // finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
           // date of this review minus the hrs mins sec
           const timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split('T')[0];
@@ -808,6 +807,7 @@ Meteor.methods({
           hm2[key] = t;
         });
       }
+
       return hm2;
     }
   },

@@ -12,3 +12,4 @@ mongo_backups/*
 db
 .meteor
 mongo/
+*error.log
