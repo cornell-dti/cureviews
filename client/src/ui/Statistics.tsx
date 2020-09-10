@@ -34,14 +34,15 @@ export default class Statistics extends Component<Props,State>{
       step: 14,
       range: 12
     };
-    this.howManyEachClass();
-    this.howManyReviewsEachClass();
-    this.totalReviews();
+
     this.handleClick=this.handleClick.bind(this);
 
   }
 
   componentDidMount(){
+    this.howManyEachClass();
+    this.howManyReviewsEachClass();
+    this.totalReviews();
     this.getChartData();
   }
 
