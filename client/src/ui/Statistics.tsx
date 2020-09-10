@@ -37,9 +37,12 @@ export default class Statistics extends Component<Props,State>{
     this.howManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
-    this.getChartData();
     this.handleClick=this.handleClick.bind(this);
 
+  }
+
+  componentDidMount(){
+    this.getChartData();
   }
 
   getChartData(){
