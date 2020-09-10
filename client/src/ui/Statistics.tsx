@@ -34,17 +34,22 @@ export default class Statistics extends Component<Props,State>{
       step: 14,
       range: 12
     };
+
+    this.handleClick=this.handleClick.bind(this);
+
+  }
+
+  componentDidMount(){
     this.howManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
     this.getChartData();
-    this.handleClick=this.handleClick.bind(this);
   }
 
   getChartData(){
-    let data:any[]=[];
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range,(err:any, res:any)=>{
+      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range, (err:any, res:any)=>{
+        let data:any[]=[];
         //key-> EX: cs
         for(let key in res){
           let finalDateObj:any={};//{date1:totalNum, date2:totalNum}
@@ -64,6 +69,7 @@ export default class Statistics extends Component<Props,State>{
           obj.data=finalDateObj;
           data.push(obj);
         }
+
         this.setState({chartData: data});
       });
   }
@@ -93,14 +99,16 @@ export default class Statistics extends Component<Props,State>{
 
   totalReviews(){
     Meteor.call('totalReviews', Session.get("token"),(error:any, result:any)=>{
-      if(!error)
+      if(!error){
         this.setState({totalReviews: result});
+      }
       else
         console.log(error);
     });
   }
 
   handleClick = (e:any) =>{
+    e.preventDefault();
     this.getChartData();
   }
 
@@ -127,8 +135,6 @@ export default class Statistics extends Component<Props,State>{
           <button type="button" className="btn btn-primary" onClick={this.handleClick}>Load Chart</button>
           </div>
         </div>
-
-
     </div>
     )
   }
