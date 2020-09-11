@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
-
+import { includesProfanity } from "common/Profanity";
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
 // Helper to check if a string is a subject code
@@ -95,9 +95,14 @@ Meteor.methods({
       // insert the user into the collection if not already present
       await Meteor.call("insertUser", ticket);
 
+      if (review.text !== null && includesProfanity(review.text)) {
+        console.log("profanity detected in review.");
+        return 0;
+      }
+
       if (review.text !== null && review.diff !== null && review.rating !== null
-          && review.workload !== null && review.professors !== null && classId !== undefined
-          && classId !== null) {
+        && review.workload !== null && review.professors !== null && classId !== undefined
+        && classId !== null) {
         try {
           // Attempt to insert the review
           const fullReview = new Reviews({
@@ -628,7 +633,7 @@ Meteor.methods({
     // number of reviews (value) associated with that subject
     const reviewedSubjects = new DefaultDict();
     // run the query and return the class name and number of reviews written to it
-    const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline, () => {});
+    const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline, () => { });
 
     await Promise.all(results.map(async (course) => {
       const classObject = (await Classes.find({ _id: course._id }).exec())[0];
@@ -667,7 +672,7 @@ Meteor.methods({
           },
         },
       ];
-      return await Classes.aggregate(pipeline, () => {});
+      return await Classes.aggregate(pipeline, () => { });
     }
   },
 
@@ -686,7 +691,7 @@ Meteor.methods({
         },
       ];
 
-      const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => {});
+      const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
 
       results.map(async (data) => {
         const subNum = (await Classes.find({ _id: data._id }, { classSub: 1, classNum: 1 }).exec())[0];
@@ -750,7 +755,7 @@ Meteor.methods({
         ];
         const hashMap: any = {}; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
 
-        const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => {});
+        const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
         await Promise.all(results.map(async (data) => { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
           const results = await Classes.find({
             _id: data._id,
