@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
-
+import { includesProfanity } from "common/Profanity";
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
 // Helper to check if a string is a subject code
@@ -96,6 +96,11 @@ Meteor.methods({
         // insert the user into the collection if not already present
         await Meteor.call("insertUser", ticket);
 
+        if (review.text !== null && includesProfanity(review.text)) {
+          console.log("profanity detected in review.");
+          return 0;
+        }
+
         if (review.text !== null && review.diff !== null && review.rating !== null
           && review.workload !== null && review.professors !== null && classId !== undefined
           && classId !== null) {
@@ -124,7 +129,6 @@ Meteor.methods({
           }
         } else {
           console.log("Error: Some review values are null");
-          return 0;
         }
       } else {
         console.log("Error: non-Cornell email attempted to insert review");

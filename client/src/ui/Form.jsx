@@ -1,5 +1,5 @@
 /* globals $ */
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
@@ -10,6 +10,7 @@ import SearchBar from './SearchBar';
 import './css/Form.css';
 import { Session } from '../meteor-session';
 import { Meteor } from "../meteor-shim";
+import { includesProfanity } from "common/Profanity";
 
 /*
   Form Component.
@@ -36,13 +37,13 @@ export default class Form extends Component {
 
     //Define refs
 
-    this.dropdownMenu=React.createRef();
-    this.noProfMsg=React.createRef();
-    this.profSelect=React.createRef();
-    this.emptyMsg=React.createRef();
-    this.textArea=React.createRef();
-    this.formElement=React.createRef();
-    this.selectHolder=React.createRef();
+    this.dropdownMenu = React.createRef();
+    this.noProfMsg = React.createRef();
+    this.profSelect = React.createRef();
+    this.emptyMsg = React.createRef();
+    this.textArea = React.createRef();
+    this.formElement = React.createRef();
+    this.selectHolder = React.createRef();
 
     //store all currently selected form values in the state.
 
@@ -61,15 +62,15 @@ export default class Form extends Component {
       postClicks: 0,
       selectedProfessors: [],
       professors: this.props.course.classProfessors ? this.props.course.classProfessors : [], //If class does not have
-                                                                                              //in DB init to empty list
+      //in DB init to empty list
       review: {},
-      courseId:'',
+      courseId: '',
     };
 
-    for(let i=1; i<=5; i++){
-      this.state["diff "+i]=false;
-      this.state["rating "+i]=false;
-      this.state["workload "+i]=false;
+    for (let i = 1; i <= 5; i++) {
+      this.state["diff " + i] = false;
+      this.state["rating " + i] = false;
+      this.state["workload " + i] = false;
     }
 
     // store inital values as the default state to revert to after submission
@@ -81,93 +82,95 @@ export default class Form extends Component {
     this.saveReviewToSession = this.saveReviewToSession.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
-    this.setCourseIdInSearchBar=this.setCourseIdInSearchBar.bind(this);
-    this.createMetricBoxes=this.createMetricBoxes.bind(this);
-    this.handleBoxHoverEnter=this.handleBoxHoverEnter.bind(this);
-    this.handleBoxHoverLeave=this.handleBoxHoverLeave.bind(this);
-    this.clickMetricBox=this.clickMetricBox.bind(this);
+    this.setCourseIdInSearchBar = this.setCourseIdInSearchBar.bind(this);
+    this.createMetricBoxes = this.createMetricBoxes.bind(this);
+    this.handleBoxHoverEnter = this.handleBoxHoverEnter.bind(this);
+    this.handleBoxHoverLeave = this.handleBoxHoverLeave.bind(this);
+    this.clickMetricBox = this.clickMetricBox.bind(this);
   }
 
   //Handler for setting the form state's course id if using popup.
   //Passed in as a prop to search bar
-  setCourseIdInSearchBar(courseId, professors){
-    Session.setPersistent({"courseId":courseId});
-    this.setState({courseId:courseId, professors:professors, selectedProfessors:[]})
+  setCourseIdInSearchBar(courseId, professors) {
+    Session.setPersistent({ "courseId": courseId });
+    this.setState({ courseId: courseId, professors: professors, selectedProfessors: [] })
   }
 
   // Save the current user input text from the text box in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   // Updates time user last typed for regular review form, if applicable.
   handleTextChange = (event) => {
-    if(this.props.onChange){ //If onChange prop exists, call it
+    console.log("in handle text change");
+
+    if (this.props.onChange) { //If onChange prop exists, call it
       this.props.onChange();
     }
-    this.setState({text: event.target.value});
+    this.setState({ text: event.target.value });
   }
 
 
 
   // Save the current professor selected string for professors in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleProfChange(selectedProfessors){
-    
-    if(selectedProfessors === null){
+  handleProfChange(selectedProfessors) {
+
+    if (selectedProfessors === null) {
       selectedProfessors = []
     }
-    
+
     this.setState({ selectedProfessors: selectedProfessors });
     this.pushReviewsDown(this.state.dropdown);
   }
 
   //Called when mouse  enters a metric box to chane highlighting
-  handleBoxHoverEnter(metric, i){
-    let currState=this.state[metric+" "+i];
-    let lastSelection= this.state[metric+"lastSelect"];
-    if(i<lastSelection) this.setState({[metric]:i});
-      for(let j=i; j>this.state[metric]; j--){
-        this.setState({[metric+" "+j]:!currState});
-      }
-
-      for(let j=i+1; j<=5; j++){
-        this.setState({[metric+" "+j]:false});
-      }
-  }
-
-    //Called when mouse  enters a metric box to chane highlighting
-    handleBoxHoverLeave(metric, i){
-      let currState=this.state[metric+" "+i];
-      let lastSelection= this.state[metric+"lastSelect"];
-      this.setState({[metric]:lastSelection});
-        for(let j=i; j>this.state[metric]; j--){
-          this.setState({[metric+" "+j]:!currState});
-        }
-        for(let j=i+1; j<=5; j++){
-          this.setState({[metric+" "+j]:false});
-        }
+  handleBoxHoverEnter(metric, i) {
+    let currState = this.state[metric + " " + i];
+    let lastSelection = this.state[metric + "lastSelect"];
+    if (i < lastSelection) this.setState({ [metric]: i });
+    for (let j = i; j > this.state[metric]; j--) {
+      this.setState({ [metric + " " + j]: !currState });
     }
 
+    for (let j = i + 1; j <= 5; j++) {
+      this.setState({ [metric + " " + j]: false });
+    }
+  }
+
+  //Called when mouse  enters a metric box to chane highlighting
+  handleBoxHoverLeave(metric, i) {
+    let currState = this.state[metric + " " + i];
+    let lastSelection = this.state[metric + "lastSelect"];
+    this.setState({ [metric]: lastSelection });
+    for (let j = i; j > this.state[metric]; j--) {
+      this.setState({ [metric + " " + j]: !currState });
+    }
+    for (let j = i + 1; j <= 5; j++) {
+      this.setState({ [metric + " " + j]: false });
+    }
+  }
+
   //Updates the given metric when a box is clicked
-  clickMetricBox(metric, i){
-    this.setState({[metric]: i});
-    for(let j=5; j>this.state[metric]; j--){
-      this.setState({[metric+" "+j]:false, [metric+"lastSelect"]:i});
+  clickMetricBox(metric, i) {
+    this.setState({ [metric]: i });
+    for (let j = 5; j > this.state[metric]; j--) {
+      this.setState({ [metric + " " + j]: false, [metric + "lastSelect"]: i });
     }
   }
 
   //Creates [max] number of metrix boxes
-  createMetricBoxes(max, metric){
-      let boxes=[];
-      for(let i=1; i<=max; i++){
-          let isHovered=this.state[metric+" "+i] ? "boxHover" : "";
-          boxes.push(<div className="metricBoxWrapper"
-          onClick={() => this.clickMetricBox(metric, i)}  onMouseEnter={() => this.handleBoxHoverEnter(metric, i)} onMouseLeave={() => this.handleBoxHoverLeave(metric, i)}>
-              <div id={metric+" "+i} className={this.state[metric]<i ? "metricBox inactiveBox "+isHovered: "metricBox activeBox"}></div>
-              <p className={this.state[metric]<i ? "inactiveText": "activeText"}>{i}</p>
+  createMetricBoxes(max, metric) {
+    let boxes = [];
+    for (let i = 1; i <= max; i++) {
+      let isHovered = this.state[metric + " " + i] ? "boxHover" : "";
+      boxes.push(<div className="metricBoxWrapper"
+        onClick={() => this.clickMetricBox(metric, i)} onMouseEnter={() => this.handleBoxHoverEnter(metric, i)} onMouseLeave={() => this.handleBoxHoverLeave(metric, i)}>
+        <div id={metric + " " + i} className={this.state[metric] < i ? "metricBox inactiveBox " + isHovered : "metricBox activeBox"}></div>
+        <p className={this.state[metric] < i ? "inactiveText" : "activeText"}>{i}</p>
 
-          </div>)
-      }
+      </div>)
+    }
 
-      return boxes;
+    return boxes;
   }
 
 
@@ -176,7 +179,7 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if(Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse){
+    if (Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse) {
       this.submitReview();
     }
   }
@@ -191,13 +194,13 @@ export default class Form extends Component {
 
   //Saves review input to session before redirecting to Google Authentication
   saveReviewToSession(review) {
-    Session.setPersistent({"review": review});
-    Session.setPersistent({"review_major": this.props.course.classSub.toUpperCase()});
-    Session.setPersistent({"review_num": this.props.course.classNum});
-    Session.setPersistent({"courseId": this.state.courseId});
+    Session.setPersistent({ "review": review });
+    Session.setPersistent({ "review_major": this.props.course.classSub.toUpperCase() });
+    Session.setPersistent({ "review_num": this.props.course.classNum });
+    Session.setPersistent({ "courseId": this.state.courseId });
     if (Session.get("review").id !== review._id // Removed _.isEqual
-        && Session.get("review_major") === this.props.course.classSub.toUpperCase()
-        && Session.get("review_num") === this.props.course.classNum) {
+      && Session.get("review_major") === this.props.course.classSub.toUpperCase()
+      && Session.get("review_num") === this.props.course.classNum) {
       console.log("Error saving review data to session");
       return 0;
     }
@@ -218,25 +221,25 @@ export default class Form extends Component {
     const diff = this.state.diff;
     const work = this.state.workload;
     const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0
-                    this.state.selectedProfessors.map(professor => {return professor.label}) //set to this
-                    : //else
-                    [] //set to this
+      this.state.selectedProfessors.map(professor => { return professor.label }) //set to this
+      : //else
+      [] //set to this
     if (text.length > 0
       && text !== null) {
-        // create new review object
-        const newReview = {
-          text: text,
-          rating: rate,
-          diff: diff,
-          workload: work,
-          professors: prof,
-        };
-        this.setState({"review" : newReview})
+      // create new review object
+      const newReview = {
+        text: text,
+        rating: rate,
+        diff: diff,
+        workload: work,
+        professors: prof,
+      };
+      this.setState({ "review": newReview })
 
-        // Call save review object to session so that it is not lost when authenicating (redirecting)
-        this.saveReviewToSession(newReview);
+      // Call save review object to session so that it is not lost when authenicating (redirecting)
+      this.saveReviewToSession(newReview);
 
-        this.show();
+      this.show();
     }
   }
 
@@ -244,39 +247,39 @@ export default class Form extends Component {
     console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"),
-                Session.get("review") != "" ? Session.get("review") : this.state.review,
-                !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
-                (error, result) => {
-      // if (!error && result === 1) {
-      if (error || result === 1) {
-        console.log("course id: "+Session.get("courseId"));
-        // Success, so reset form
+      Session.get("review") != "" ? Session.get("review") : this.state.review,
+      !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
+      (error, result) => {
+        // if (!error && result === 1) {
+        if (error || result === 1) {
+          console.log("course id: " + Session.get("courseId"));
+          // Success, so reset form
 
-        this.profSelect.current.value = "none";
-        if(this.openByDefault){
-          this.toggleDropdown(); //Open review dropdown when page loads
+          this.profSelect.current.value = "none";
+          if (this.openByDefault) {
+            this.toggleDropdown(); //Open review dropdown when page loads
+          }
+
+          // Reset review info to default after review submission
+          this.setState(this.defaultState);
+          Session.setPersistent({ "review": "" });
+          Session.setPersistent({ "review_major": "" });
+          Session.setPersistent({ "review_num": "" });
+          Session.setPersistent({ "courseId": "" });
+          this.hide();
+          alert('Thanks for reviewing! New reviews are updated every 24 hours.');
+        } else {
+          console.log(error);
+          alert("An unknown error occured, please try again.", "danger");
+          Session.setPersistent({ "review": "" });
+          Session.setPersistent({ "review_major": "" });
+          Session.setPersistent({ "review_num": "" });
+          this.hide();
         }
-
-        // Reset review info to default after review submission
-        this.setState(this.defaultState);
-        Session.setPersistent({"review": ""});
-        Session.setPersistent({"review_major": ""});
-        Session.setPersistent({"review_num": ""});
-        Session.setPersistent({"courseId":""});
-        this.hide();
-        alert('Thanks for reviewing! New reviews are updated every 24 hours.');
-      } else {
-        console.log(error);
-        alert("An unknown error occured, please try again.", "danger");
-        Session.setPersistent({"review": ""});
-        Session.setPersistent({"review_major": ""});
-        Session.setPersistent({"review_num": ""});
-        this.hide();
-      }
-    });
+      });
   }
 
-  submitError(){
+  submitError() {
     this.hide();
     alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
   }
@@ -291,9 +294,11 @@ export default class Form extends Component {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
       professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length == 0),
+      profanity: includesProfanity(text),
       allFalse: false
     };
-    errs.allTrue = !(errs.text || errs.textEmpty || errs.professorsEmpty);
+    errs.allTrue = !(errs.text || errs.textEmpty || errs.professorsEmpty || errs.profanity);
+
     // console.log(errs);
     return errs;
   }
@@ -301,24 +306,24 @@ export default class Form extends Component {
   getProfOptions() {
     if (this.props.course.classProfessors != [] && !this.props.searchBar) {
       const profOptions = []
-      for(const prof in this.props.course.classProfessors){
+      for (const prof in this.props.course.classProfessors) {
         const professorName = this.props.course.classProfessors[prof]
 
         profOptions.push({
-          "value" : professorName,
-          "label" : professorName
+          "value": professorName,
+          "label": professorName
         })
       }
       return profOptions
     }
-    else if(this.state.professors!=[]){
+    else if (this.state.professors != []) {
       const profOptions = []
-      for(const prof in this.state.professors){
+      for (const prof in this.state.professors) {
         const professorName = this.state.professors[prof]
 
         profOptions.push({
-          "value" : professorName,
-          "label" : professorName
+          "value": professorName,
+          "label": professorName
         })
       }
       return profOptions
@@ -326,40 +331,40 @@ export default class Form extends Component {
   }
 
 
-    // Toggle the form dropdown
-    // Takes care of "pushing down" the reviews by the dynamic height of the form
-    toggleDropdown(){
-       const nextState = this.state.dropdown === 'open' ? '' : 'open';
-       this.setState({ dropdown: nextState });
-       this.pushReviewsDown(nextState);
-    }
+  // Toggle the form dropdown
+  // Takes care of "pushing down" the reviews by the dynamic height of the form
+  toggleDropdown() {
+    const nextState = this.state.dropdown === 'open' ? '' : 'open';
+    this.setState({ dropdown: nextState });
+    this.pushReviewsDown(nextState);
+  }
 
-    //Pushes down the reviews from the form depending on how long the form becomes
-    //Uses the margin-bottom attribute to do this
-    pushReviewsDown(formState){
-      let marginHeight;
-      let offsetHeight;
-      // Form is opened
-      if (formState === 'open'){
-        marginHeight = this.dropdownHeight;
-        offsetHeight = this.selectHolder.current.offsetHeight - 46;
-      }
-      // Form is closed
-      else{
-        marginHeight = 0;
-        offsetHeight = 0;
-      }
-      if(offsetHeight >= 0){
-        $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
-      }
+  //Pushes down the reviews from the form depending on how long the form becomes
+  //Uses the margin-bottom attribute to do this
+  pushReviewsDown(formState) {
+    let marginHeight;
+    let offsetHeight;
+    // Form is opened
+    if (formState === 'open') {
+      marginHeight = this.dropdownHeight;
+      offsetHeight = this.selectHolder.current.offsetHeight - 46;
     }
-    show() {
-        this.setState({ visible: true });
+    // Form is closed
+    else {
+      marginHeight = 0;
+      offsetHeight = 0;
     }
+    if (offsetHeight >= 0) {
+      $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
+    }
+  }
+  show() {
+    this.setState({ visible: true });
+  }
 
-     hide() {
-      this.setState({ visible: false });
-    }
+  hide() {
+    this.setState({ visible: false });
+  }
 
 
   render() {
@@ -368,121 +373,122 @@ export default class Form extends Component {
     const err = this.validateInputs(this.state.text, this.state.professors);
     const isEnabled = err.allTrue;
     return (
-        <div>
-          <div className="form-menu">
-            <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
-              <p className="form-header-text">Leave a Review</p>
-             {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
-                  <div className="row form-textbox-row">
-                    <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
-                      onChange={(event) => this.handleTextChange(event)}
-                       />
-                    <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
-                    <div className={err.text && this.state.text !== "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-                  </div>
+      <div>
+        <div className="form-menu">
+          <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
+            <p className="form-header-text">Leave a Review</p>
+            {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
+            <div className="row form-textbox-row">
+              <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+                onChange={(event) => this.handleTextChange(event)}
+              />
+              <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+              <div className={err.text && this.state.text !== "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+              <div className={!err.text && !err.textEmpty && err.profanity ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains profanity, please edit your response.</div>
+            </div>
 
 
-                  <div className="row">
-                      <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
-                          <div className="form-label form-professor-label">Professor</div>
-                      </div>
-                      <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
-                          <Select 
-                            className="react-select-container"
-                            classNamePrefix="react-select"
-                            value={this.state.selectedProfessors}
-                            onChange={(professors) => this.handleProfChange(professors)}
-                            isMulti
-                            options={this.getProfOptions()}
-                            ref={this.profSelect}
-                            placeholder="Select"
-                          />
-                      </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-12 col-sm-12 col-xs-12">
-                      <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
-                        Please select the professor(s) you took this class with!
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                      <div className="col-md-3 col-sm-3 col-xs-3">
-                        <h1 className="form-label">Overall</h1>
-                      </div>
-                      {this.createMetricBoxes(5, "rating")}
-                  </div>
-                  <div className="row form-bottom-row-spacing">
-                    <div className="col-md-offset-3 col-md-9">
-                      <div className="metricDescL">Not for me</div>
-                      <div className="metricDescR">Loved it</div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                      <div className="col-md-3 col-sm-3 col-xs-3">
-                          <h1 className="form-label">Difficulty</h1>
-                      </div>
-                      {this.createMetricBoxes(5, "diff")}
-                  </div>
-                  <div className="row form-bottom-row-spacing">
-                    <div className="col-md-offset-3 col-md-9">
-                      <div className="metricDescL">Piece of cake</div>
-                      <div className="metricDescR">Challenging</div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                      <div className="col-md-3 col-sm-3 col-xs-3">
-                          <h1 className="form-label">Workload</h1>
-                      </div>
-                      {this.createMetricBoxes(5, "workload")}
-                  </div>
-                  <div className="row">
-                    <div className="col-md-offset-3 col-md-9">
-                      <div className="metricDescL">Not much at all</div>
-                      <div className="metricDescR">Lots of work</div>
-                    </div>
-                  </div>
-
-                  <div className="row form-button-top-bottom-spacing">
-                    <div className="col-md-12 col-sm-12 col-xs-12">
-                        <button disabled={!isEnabled} className="form-postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Submit</button>
-                    </div>
-                  </div>
-          </form>
-          </div>
-              {/*Only show tab if not in popup*/}
-
-          <Rodal animation="zoom" height={520} width={window.innerWidth/3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
-            <div id="modal-background">
-              <div id="modal-top">
-                <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
-                <p id="modal-title" className="center-block">Email Verification</p>
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">Professor</div>
               </div>
-              <div id="">
-                <p id="modal-text" className="center-block">
-                  You’re almost there! - log in with cornell.edu to
-                  verify you are a student.
-                </p>
-                <p id="modal-text" className="center-block">
-                  (Don’t worry, your identity will always be kept secret!)
-                </p>
-                <p id="modal-footer" className="center-block">
-                  You will be redirected to our login page.
-                  Not seeing it? Click here.
-                </p>
-                <CUreviewsGoogleLogin
-                      executeLogin={this.state.visible}
-                      waitTime={3000}
-                      redirectFrom="course" />
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectedProfessors}
+                  onChange={(professors) => this.handleProfChange(professors)}
+                  isMulti
+                  options={this.getProfOptions()}
+                  ref={this.profSelect}
+                  placeholder="Select"
+                />
               </div>
             </div>
 
-          </Rodal>
+            <div className="row">
+              <div className="col-md-12 col-sm-12 col-xs-12">
+                <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
+                  Please select the professor(s) you took this class with!
+                      </div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Overall</h1>
+              </div>
+              {this.createMetricBoxes(5, "rating")}
+            </div>
+            <div className="row form-bottom-row-spacing">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Not for me</div>
+                <div className="metricDescR">Loved it</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Difficulty</h1>
+              </div>
+              {this.createMetricBoxes(5, "diff")}
+            </div>
+            <div className="row form-bottom-row-spacing">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Piece of cake</div>
+                <div className="metricDescR">Challenging</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Workload</h1>
+              </div>
+              {this.createMetricBoxes(5, "workload")}
+            </div>
+            <div className="row">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Not much at all</div>
+                <div className="metricDescR">Lots of work</div>
+              </div>
+            </div>
+
+            <div className="row form-button-top-bottom-spacing">
+              <div className="col-md-12 col-sm-12 col-xs-12">
+                <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
+        {/*Only show tab if not in popup*/}
+
+        <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
+          <div id="modal-background">
+            <div id="modal-top">
+              <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+              <p id="modal-title" className="center-block">Email Verification</p>
+            </div>
+            <div id="">
+              <p id="modal-text" className="center-block">
+                You’re almost there! - log in with cornell.edu to
+                verify you are a student.
+                </p>
+              <p id="modal-text" className="center-block">
+                (Don’t worry, your identity will always be kept secret!)
+                </p>
+              <p id="modal-footer" className="center-block">
+                You will be redirected to our login page.
+                Not seeing it? Click here.
+                </p>
+              <CUreviewsGoogleLogin
+                executeLogin={this.state.visible}
+                waitTime={3000}
+                redirectFrom="course" />
+            </div>
+          </div>
+
+        </Rodal>
+      </div>
     );
   }
 }
