@@ -5,6 +5,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import { Meteor } from "./shim";
+import { initializeBot } from "./bot"
+
+export const web = initializeBot();
 
 dotenv.config();
 const app = express();

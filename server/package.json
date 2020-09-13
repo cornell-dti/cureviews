@@ -23,6 +23,8 @@
     }
   },
   "dependencies": {
+    "@slack/events-api": "^2.3.4",
+    "@slack/web-api": "^5.11.0",
     "@types/cors": "^2.8.6",
     "@types/shortid": "^0.0.29",
     "axios": "^0.19.2",
