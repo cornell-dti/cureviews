@@ -570,6 +570,7 @@ Meteor.methods({
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(review._id) && userIsAdmin) {
       await Reviews.updateOne({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
+      await Meteor.call("updateCourseMetrics", review.class, token);
       return 1;
     }
     return 0;
