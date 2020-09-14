@@ -84,12 +84,12 @@ Meteor.methods({
   async insert(token, review, classId) {
     if (token == undefined) {
       console.log("Error: Token was undefined in insert");
-      return 0;
+      return { resCode: 0, errMsg: "Error: Token was undefined in insert" };
     }
 
     const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
 
-    if (!ticket) return 0;
+    if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
 
     if (ticket.hd === "cornell.edu") {
       // insert the user into the collection if not already present
@@ -97,7 +97,7 @@ Meteor.methods({
 
       if (review.text !== null && includesProfanity(review.text)) {
         console.log("profanity detected in review.");
-        return 0;
+        return { resCode: 0, errMsg: "Your review contains profanity, please edit your response." };
       }
 
       if (review.text !== null && review.diff !== null && review.rating !== null
@@ -121,18 +121,18 @@ Meteor.methods({
           });
 
           await fullReview.save();
-          return 1;
+          return { resCode: 1, errMsg: "" };
         } catch (error) {
           console.log(error);
-          return 0;
+          return { resCode: 0, errMsg: "Unexpected error when adding review" };
         }
       } else {
         console.log("Error: Some review values are null");
-        return 0;
+        return { resCode: 0, errMsg: "Error: Some review values are null" };
       }
     } else {
       console.log("Error: non-Cornell email attempted to insert review");
-      return 0;
+      return { resCode: 0, errMsg: "Error: non-Cornell email attempted to insert review" };
     }
   },
 

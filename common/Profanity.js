@@ -54,7 +54,7 @@ const profanity = [
 ];
 
 //Note that we remove space from s so users cant just space out profanity like *   *  *  *
-export const includesProfanity = (s) => {
+const includesProfanity = (s) => {
   s.toLocaleLowerCase().trim();
   s = s.replace(/\s+/g, '');
   console.log("string s", s);
@@ -66,4 +66,8 @@ export const includesProfanity = (s) => {
   }
 
   return false;
+}
+
+module.exports = {
+  includesProfanity
 }
