@@ -87,18 +87,18 @@ Meteor.methods({
         console.log("Error: Token was undefined in insert");
         return 0;
       }
-  
+
       const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
-  
+
       if (!ticket) return 0;
-  
+
       if (ticket.hd === "cornell.edu") {
         // insert the user into the collection if not already present
         await Meteor.call("insertUser", ticket);
-  
+
         if (review.text !== null && review.diff !== null && review.rating !== null
-            && review.workload !== null && review.professors !== null && classId !== undefined
-            && classId !== null) {
+          && review.workload !== null && review.professors !== null && classId !== undefined
+          && classId !== null) {
           try {
             // Attempt to insert the review
             const fullReview = new Reviews({
@@ -115,7 +115,7 @@ Meteor.methods({
               likes: 0,
               virtual: true,
             });
-  
+
             await fullReview.save();
             return 1;
           } catch (error) {
@@ -371,7 +371,6 @@ Meteor.methods({
       console.log(error);
       return null;
     }
-
   },
 
   // Returns courses with the given parameters.
@@ -393,7 +392,6 @@ Meteor.methods({
       console.log(error);
       return null;
     }
-
   },
 
   // Update the local database when Cornell Course API adds data for the
@@ -558,7 +556,7 @@ Meteor.methods({
             { sort: { classFull: 1 }, limit: 200, reactive: false },
           ).exec().then((classes) => classes.sort(courseSort(searchString)));
         }
-  
+
         // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
         if (await isSubShorthand(searchString)) {
           return Classes.find({ classSub: searchString }, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
@@ -574,7 +572,7 @@ Meteor.methods({
             return await searchWithinSubject(strBeforeSpace, strAfterSpace);
           }
         }
-  
+
         // check if text is subject followed by course number (no space)
         // if so search only classes with this subject.
         // Speeds up searches like "CS1110"
@@ -586,7 +584,7 @@ Meteor.methods({
             return await searchWithinSubject(strBeforeDigit, strAfterDigit);
           }
         }
-  
+
         // last resort, search everything
         // console.log("nothing matches");
         return Classes.find(
@@ -813,7 +811,7 @@ Meteor.methods({
       // number of reviews (value) associated with that subject
       const reviewedSubjects = new DefaultDict();
       // run the query and return the class name and number of reviews written to it
-      const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline, () => {});
+      const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline, () => { });
 
       await Promise.all(results.map(async (course) => {
         const classObject = (await Classes.find({ _id: course._id }).exec())[0];
@@ -860,7 +858,7 @@ Meteor.methods({
             },
           },
         ];
-        return await Classes.aggregate(pipeline, () => {});
+        return await Classes.aggregate(pipeline, () => { });
       }
       return null;
     } catch (error) {
@@ -887,7 +885,7 @@ Meteor.methods({
             },
           },
         ];
-        const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => {});
+        const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
         results.map(async (data) => {
           const subNum = (await Classes.find({ _id: data._id }, { classSub: 1, classNum: 1 }).exec())[0];
           const id = `${subNum.classSub} ${subNum.classNum}`;
@@ -963,14 +961,14 @@ Meteor.methods({
           },
           ];
           const hashMap: any = {}; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
-          const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => {});
+          const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
           await Promise.all(results.map(async (data) => { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
             const results = await Classes.find({
               _id: data._id,
             }, {
               classSub: 1,
             }).exec();
-  
+
             const sub = results[0]; // finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
             // date of this review minus the hrs mins sec
             const timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split('T')[0];
@@ -999,21 +997,21 @@ Meteor.methods({
           }));
           arrHM.push(hashMap);
         }
-  
+
         const hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
-  
+
         // enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
         if (arrHM.length > 0) {
           const entry = arrHM[0];
           const keys = Object.keys(entry);
-  
+
           // "cs"
           keys.forEach((key) => {
             const t = arrHM.map((a) => a[key]); // for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
             hm2[key] = t;
           });
         }
-  
+
         return hm2;
       }
     } catch (error) {
