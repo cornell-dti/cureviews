@@ -66,7 +66,6 @@ export class Admin extends Component {
   // sees on admin page
   updateReviews(review){
       let idx = 0;
-
       while (this.state.reviewsToApprove[idx]._id !== review._id) {
         idx++;
       }

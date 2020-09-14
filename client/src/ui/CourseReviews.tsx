@@ -89,6 +89,13 @@ export class CourseReviews extends Component<Props, State> {
   reportReview = (review: ReviewType) => {
     Meteor.call('reportReview', review, (error: any, result: 1 | 0) => {
       if (!error && result === 1) {
+        let idx = 0;
+        console.log(review._id);
+        while (idx < this.state.reviews.length && this.state.reviews[idx].key !== review._id) {
+          idx++;
+        }
+        console.log(idx);
+        this.setState({reviews: this.state.reviews.slice(0, idx).concat(this.state.reviews.slice(idx+1)) });
         console.log("reported review #" + review._id);
       } else {
         console.log(error)
@@ -112,7 +119,7 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   render() {
-    let title = "Past Reviews ("+this.props.reviews.length+")";
+    let title = "Past Reviews ("+this.state.reviews.length+")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
     }
