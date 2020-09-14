@@ -21,6 +21,7 @@ export class Admin extends Component {
     super(props);
 
     this.state = {
+      reviewsToApprove: this.props.reviewsToApprove,
       disableInit: false,
       disableNewSem: false,
       doubleClick: false,
@@ -39,9 +40,10 @@ export class Admin extends Component {
       adminPanelHTML: "Invalid Credentials"
     }
 
-    this.approveReview.bind(this);
-    this.removeReview.bind(this);
-    this.unReportReview.bind(this);
+    this.approveReview = this.approveReview.bind(this);
+    this.removeReview = this.removeReview.bind(this);
+    this.unReportReview = this.unReportReview.bind(this);
+    this.updateReviews = this.updateReviews.bind(this);
   }
   //
   // componentWillMount(){
@@ -60,11 +62,24 @@ export class Admin extends Component {
   //   }
   // }
 
+  // Call when a review has been approved, removed, or unremoved to update reviews user
+  // sees on admin page
+  updateReviews(review){
+      let idx = 0;
+
+      while (this.state.reviewsToApprove[idx]._id !== review._id) {
+        idx++;
+      }
+      this.setState({reviewsToApprove: this.state.reviewsToApprove.slice(0, idx).concat(this.state.reviewsToApprove.slice(idx+1)) });
+
+  }
+
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
     Meteor.call('makeVisible', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
+        this.updateReviews(review);
         console.log("Review approved")
       } else {
         console.log(error)
@@ -77,6 +92,7 @@ export class Admin extends Component {
   removeReview(review) {
     Meteor.call('removeReview', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
+        this.updateReviews(review);
         console.log("Review removed")
       } else {
         console.log(error)
@@ -89,6 +105,7 @@ export class Admin extends Component {
   unReportReview(review) {
     Meteor.call('undoReportReview', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
+        this.updateReviews(review);
         console.log("Review unreported")
       } else {
         console.log(error)
@@ -196,7 +213,7 @@ export class Admin extends Component {
   renderUnapprovedReviews() {
     const remFunc = this.removeReview;
     const appFunc = this.approveReview;
-    return this.props.reviewsToApprove.map((review) => {
+    return this.state.reviewsToApprove.map((review) => {
       if (review.reported !== 1) {
         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={appFunc} />;
       }
@@ -210,7 +227,7 @@ export class Admin extends Component {
     const remFunc = this.removeReview;
     const appFunc = this.approveReview;
     const unRepFunc = this.unReportReview;
-    return this.props.reviewsToApprove.map((review) => {
+    return this.state.reviewsToApprove.map((review) => {
       //create a new class "button" that will set the selected class to this class when it is clicked.
       if (review.reported === 1) {
         return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={unRepFunc} />
