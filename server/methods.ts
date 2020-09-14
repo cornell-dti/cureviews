@@ -2,10 +2,11 @@ import { getGaugeValues, getCrossListOR } from 'common/CourseCard';
 import { OAuth2Client } from 'google-auth-library';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import shortid from 'shortid';
+import { includesProfanity } from "common/Profanity";
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
-import { includesProfanity } from "common/Profanity";
+
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
 // Helper to check if a string is a subject code
@@ -82,64 +83,58 @@ Meteor.methods({
    * Returns 1 on a success
    */
   async insert(token, review, classId) {
-    try {
-      if (token === undefined) {
-        console.log("Error: Token was undefined in insert");
-        return 0;
+    if (token === undefined) {
+      console.log("Error: Token was undefined in insert");
+      return { resCode: 0, errMsg: "Error: Token was undefined in insert" };
+    }
+
+    const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
+
+    if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
+
+    if (ticket.hd === "cornell.edu") {
+      // insert the user into the collection if not already present
+      await Meteor.call("insertUser", ticket);
+
+      if (review.text !== null && includesProfanity(review.text)) {
+        console.log("profanity detected in review.");
+        return { resCode: 0, errMsg: "Your review contains profanity, please edit your response." };
       }
 
-      const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
+      if (review.text !== null && review.diff !== null && review.rating !== null
+        && review.workload !== null && review.professors !== null && classId !== undefined
+        && classId !== null) {
+        try {
+          // Attempt to insert the review
+          const fullReview = new Reviews({
+            _id: shortid.generate(),
+            text: review.text,
+            difficulty: review.diff,
+            rating: review.rating,
+            workload: review.workload,
+            class: classId,
+            date: new Date(),
+            visible: 0,
+            reported: 0,
+            professors: review.professors,
+            likes: 0,
+            virtual: true,
+          });
 
-      if (!ticket) return 0;
 
-      if (ticket.hd === "cornell.edu") {
-        // insert the user into the collection if not already present
-        await Meteor.call("insertUser", ticket);
-
-        if (review.text !== null && includesProfanity(review.text)) {
-          console.log("profanity detected in review.");
-          return 0;
-        }
-
-        if (review.text !== null && review.diff !== null && review.rating !== null
-          && review.workload !== null && review.professors !== null && classId !== undefined
-          && classId !== null) {
-          try {
-            // Attempt to insert the review
-            const fullReview = new Reviews({
-              _id: shortid.generate(),
-              text: review.text,
-              difficulty: review.diff,
-              rating: review.rating,
-              workload: review.workload,
-              class: classId,
-              date: new Date(),
-              visible: 0,
-              reported: 0,
-              professors: review.professors,
-              likes: 0,
-              virtual: true,
-            });
-
-            await fullReview.save();
-            return 1;
-          } catch (error) {
-            console.log(error);
-            return 0;
-          }
-        } else {
-          console.log("Error: Some review values are null");
+          await fullReview.save();
+          return { resCode: 1, errMsg: "" };
+        } catch (error) {
+          console.log(error);
+          return { resCode: 0, errMsg: "Unexpected error when adding review" };
         }
       } else {
-        console.log("Error: non-Cornell email attempted to insert review");
-        return 0;
+        console.log("Error: Some review values are null");
+        return { resCode: 0, errMsg: "Error: Some review values are null" };
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'insert' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return 0;
+    } else {
+      console.log("Error: non-Cornell email attempted to insert review");
+      return { resCode: 0, errMsg: "Error: non-Cornell email attempted to insert review" };
     }
   },
 

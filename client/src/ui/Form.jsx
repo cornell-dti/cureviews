@@ -251,7 +251,7 @@ export default class Form extends Component {
       !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
       (error, result) => {
         // if (!error && result === 1) {
-        if (error || result === 1) {
+        if (error || result.resCode === 1) {
           console.log("course id: " + Session.get("courseId"));
           // Success, so reset form
 
@@ -270,7 +270,8 @@ export default class Form extends Component {
           alert('Thanks for reviewing! New reviews are updated every 24 hours.');
         } else {
           console.log(error);
-          alert("An unknown error occured, please try again.", "danger");
+          const errMsg = result.errMsg;
+          alert(errMsg, "danger");
           Session.setPersistent({ "review": "" });
           Session.setPersistent({ "review_major": "" });
           Session.setPersistent({ "review_num": "" });
