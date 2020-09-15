@@ -26,7 +26,7 @@ export interface ScrapingClass {
  * Returns the class roster on success, or null if there was an error.
  */
 export async function fetchSubjects(endpoint: string, semester: string): Promise<ScrapingSubject[]> {
-  const result = await axios.get(`${endpoint}config/subjects.json?roster=${semester}`, { timeout: 10 });
+  const result = await axios.get(`${endpoint}config/subjects.json?roster=${semester}`, { timeout: 10000 });
   if (result.status !== 200 || result.data.status !== "success") {
     console.log(`Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`);
     return null;
@@ -40,7 +40,7 @@ export async function fetchSubjects(endpoint: string, semester: string): Promise
  * Returns a list of classes on success, or null if there was an error.
  */
 export async function fetchClassesForSubject(endpoint: string, semester: string, subject: ScrapingSubject): Promise<ScrapingClass[]> {
-  const result = await axios.get(`${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`, { timeout: 10 });
+  const result = await axios.get(`${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`, { timeout: 10000 });
   if (result.status !== 200 || result.data.status !== "success") {
     console.log(`Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`);
     return null;
