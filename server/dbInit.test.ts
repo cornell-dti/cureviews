@@ -11,6 +11,7 @@ import { fetchSubjects, fetchClassesForSubject, fetchAddCourses } from "./dbInit
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
 let testServer: MongoMemoryServer;
+let serverCloseHandle;
 
 // Configure a mongo server and fake enpoints for the tests to use
 beforeAll(async () => {
@@ -42,7 +43,7 @@ beforeAll(async () => {
 
   // We need to pretend to have access to a cornell classes endpoint
   const app = express();
-  app.listen(27760, async () => {});
+  serverCloseHandle = app.listen(27760, async () => {});
 
   app.get("/hello", (req, res) => {
     res.send("Hello world");
@@ -95,6 +96,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.disconnect();
   await testServer.stop();
+  serverCloseHandle.close();
 });
 
 const testingEndpoint = "http://localhost:27760/";
