@@ -1,5 +1,155 @@
 import axios from 'axios';
+import shortid from 'shortid';
 import { Classes, Subjects } from './dbDefs';
+
+export const defaultEndpoint = "https://classes.cornell.edu/api/2.0/";
+
+// Represents a subject which is scraped
+// Note: there's a load of additional information when we scrape it.
+// It's not relevant, so we just ignore it for now.
+export interface ScrapingSubject {
+  descrformal: string; // Subject description, e.g. "Asian American Studies"
+  value: string; // Subject code, e.g. "AAS"
+}
+
+// Represents a class which is scraped
+// Note: there's a load of additional information when we scrape it.
+// It's not relevant, so we just ignore it for now.
+export interface ScrapingClass {
+  subject: string; // Short: e.g. "CS"
+  catalogNbr: string; // e.g. 1110
+  titleLong: string; // long variant of a title e.g. "Introduction to Computing Using Python"
+}
+
+/*
+ * Fetch the class roster for a semester.
+ * Returns the class roster on success, or null if there was an error.
+ */
+export async function fetchSubjects(endpoint: string, semester: string): Promise<ScrapingSubject[]> {
+  const result = await axios.get(`${endpoint}config/subjects.json?roster=${semester}`, { timeout: 10 });
+  if (result.status !== 200 || result.data.status !== "success") {
+    console.log(`Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`);
+    return null;
+  }
+
+  return result.data.data.subjects;
+}
+
+/*
+ * Fetch all the classes for that semester/subject combination
+ * Returns a list of classes on success, or null if there was an error.
+ */
+export async function fetchClassesForSubject(endpoint: string, semester: string, subject: ScrapingSubject): Promise<ScrapingClass[]> {
+  const result = await axios.get(`${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`, { timeout: 10 });
+  if (result.status !== 200 || result.data.status !== "success") {
+    console.log(`Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`);
+    return null;
+  }
+
+  return result.data.data.classes;
+}
+
+/*
+ * Fetch the relevant classes, and add them to the collections
+ * Returns true on success, and false on failure.
+ */
+export async function fetchAddCourses(endpoint: string, semester: string): Promise<boolean> {
+  const subjects = await fetchSubjects(endpoint, semester);
+
+  const v1 = await Promise.all(subjects.map(async (subject) => {
+    const subjectIfExists = await Subjects.findOne({ subShort: subject.value.toUpperCase() }).exec();
+
+    if (!subjectIfExists) {
+      console.log(`Adding new subject: ${subject.value}`);
+      const res = await new Subjects({
+        _id: shortid.generate(),
+        subShort: subject.value.toUpperCase(),
+        subFull: subject.descrformal,
+      }).save().catch((err) => null);
+
+      // db operation was not successful
+      if (!res) {
+        throw new Error();
+      }
+    }
+
+    return true;
+  })).catch((err) => null);
+
+  if (!v1) {
+    console.log("Something went wrong while updating subjects!");
+    return false;
+  }
+
+  // Update the Classes in the db
+  const v2 = await Promise.all(subjects.map(async (subject) => {
+    const classes = await fetchClassesForSubject(endpoint, semester, subject);
+
+    // skip if something went wrong fetching classes
+    // it could be that there are not classes here (in tests, corresponds to FEDN)
+    if (!classes) {
+      return true;
+    }
+
+    // Update or add all the classes to the collection
+    const v = await Promise.all(classes.map(async (cl) => {
+      const classIfExists = await Classes.findOne({ classSub: cl.subject.toUpperCase(), classNum: cl.catalogNbr }).exec();
+
+      // The class does not exist yet, so we add it
+      if (!classIfExists) {
+        console.log(`Adding new class ${cl.subject} ${cl.catalogNbr}`);
+        const res = await new Classes({
+          _id: shortid.generate(),
+          classSub: cl.subject.toUpperCase(),
+          classNum: cl.catalogNbr,
+          classTitle: cl.titleLong,
+          classFull: `${cl.subject.toUpperCase()} ${cl.catalogNbr} ${cl.titleLong}`,
+          classSems: [semester],
+          // TODO: provide initial values here?
+          classProfessors: null,
+          classRating: null,
+          classWorkload: null,
+          classDifficulty: null,
+        }).save().catch((err) => { console.log(err); return null; });
+
+        if (!res) {
+          console.log(`Unable to insert class ${cl.subject} ${cl.catalogNbr}!`);
+          throw new Error();
+        }
+      } else { // The class does exist, so we update semester information
+        console.log(`Updating class information for ${classIfExists.classSub} ${classIfExists.classNum}`);
+
+        // Compute the new set of semesters for this class
+        const classSems = classIfExists.classSems.indexOf(semester) == -1 ? classIfExists.classSems.concat([semester]) : classIfExists.classSems;
+
+        // update db with new semester information
+        const res = await Classes.findOneAndUpdate({ _id: classIfExists._id }, { $set: { classSems } }).exec()
+          .catch((err) => null);
+
+        if (!res) {
+          console.log(`Unable to update class information for ${cl.subject} ${cl.catalogNbr}!`);
+          throw new Error();
+        }
+      }
+
+      return true;
+    })).catch((err) => null);
+
+    // something went wrong updating classes
+    if (!v) {
+      throw new Error();
+    }
+
+    return true;
+  })).catch((err) => null);
+
+  if (!v2) {
+    console.log("Something went wrong while updating classes");
+    return false;
+  }
+
+  return true;
+}
 
 /*
   Course API scraper. Uses HTTP requests to get course data from the Cornell
