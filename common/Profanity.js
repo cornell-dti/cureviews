@@ -50,23 +50,24 @@ const profanity = [
   "titfuck", "tits", "titt", "tittie5", "tittiefucker", "titties", "tittyfuck", "tittywank",
   "titwank", "tosser", "turd", "tw4t", "twat", "twathead", "twatty", "twunt", "twunter", "v14gra",
   "v1gra", "vagina", "viagra", "vulva", "w00se", "wang", "wank", "wanker", "wanky", "whoar",
-  "whore", "willies", "willy", "xrated", "xxx"
+  "whore", "willies", "willy", "xrated", "xxx",
 ];
 
 // Note that we remove space from s so users cant just space out profanity like *   *  *  *
 const includesProfanity = (s) => {
   s.toLocaleLowerCase().trim();
-  s = s.replace(/\s+/g, '');
+  const sP = s.replace(/\s+/g, '');
 
   for (let i = 0; i < profanity.length; i++) {
     const badWord = profanity[i];
-    if (s.indexOf(badWord) != -1)
+    if (sP.indexOf(badWord) !== -1) {
       return true;
+    }
   }
 
   return false;
-}
+};
 
 module.exports = {
-  includesProfanity
+  includesProfanity,
 };
