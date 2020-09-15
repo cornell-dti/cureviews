@@ -42,7 +42,7 @@ beforeAll(async () => {
 
   // We need to pretend to have access to a cornell classes endpoint
   const app = express();
-  app.listen(1776, async () => {});
+  app.listen(27760, async () => {});
 
   app.get("/hello", (req, res) => {
     res.send("Hello world");
@@ -97,7 +97,7 @@ afterAll(async () => {
   await testServer.stop();
 });
 
-const testingEndpoint = "http://localhost:1776/";
+const testingEndpoint = "http://localhost:27760/";
 
 describe('tests', () => {
   it("dbInit-db-works", async () => {
