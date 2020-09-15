@@ -1,4 +1,4 @@
-//the big bad words
+// the big bad words
 const profanity = [
   "4r5e", "5h1t", "5hit", "a55", "anal", "anus", "ar5e", "arrse", "arse", "ass", "ass-fucker", "asses",
   "assfucker", "assfukka", "asshole", "assholes", "asswhole", "a_s_s", "b!tch", "b00bs", "b17ch",
@@ -53,11 +53,10 @@ const profanity = [
   "whore", "willies", "willy", "xrated", "xxx"
 ];
 
-//Note that we remove space from s so users cant just space out profanity like *   *  *  *
+// Note that we remove space from s so users cant just space out profanity like *   *  *  *
 const includesProfanity = (s) => {
   s.toLocaleLowerCase().trim();
   s = s.replace(/\s+/g, '');
-  console.log("string s", s);
 
   for (let i = 0; i < profanity.length; i++) {
     const badWord = profanity[i];
@@ -70,4 +69,4 @@ const includesProfanity = (s) => {
 
 module.exports = {
   includesProfanity
-}
+};
