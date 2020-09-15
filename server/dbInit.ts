@@ -65,7 +65,10 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
         _id: shortid.generate(),
         subShort: subject.value.toUpperCase(),
         subFull: subject.descrformal,
-      }).save().catch((err) => null);
+      }).save().catch((err) => {
+        console.log(err);
+        return null;
+      });
 
       // db operation was not successful
       if (!res) {
@@ -110,7 +113,10 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
           classRating: null,
           classWorkload: null,
           classDifficulty: null,
-        }).save().catch((err) => { console.log(err); return null; });
+        }).save().catch((err) => {
+          console.log(err);
+          return null;
+        });
 
         if (!res) {
           console.log(`Unable to insert class ${cl.subject} ${cl.catalogNbr}!`);
@@ -124,7 +130,10 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
 
         // update db with new semester information
         const res = await Classes.findOneAndUpdate({ _id: classIfExists._id }, { $set: { classSems } }).exec()
-          .catch((err) => null);
+          .catch((err) => {
+            console.log(err);
+            return null;
+          });
 
         if (!res) {
           console.log(`Unable to update class information for ${cl.subject} ${cl.catalogNbr}!`);

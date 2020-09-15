@@ -13,7 +13,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 let testServer: MongoMemoryServer;
 let serverCloseHandle;
 
-// Configure a mongo server and fake enpoints for the tests to use
+const testingPort = 27760;
+const testingEndpoint = `http://localhost:${testingPort}/`;
+
+// Configure a mongo server and fake endpoints for the tests to use
 beforeAll(async () => {
   // get mongoose all set up
   testServer = new MongoMemoryServer();
@@ -39,11 +42,9 @@ beforeAll(async () => {
     classDifficulty: 5,
   }).save().catch((err) => { console.log(err); });
 
-  console.log(await Subjects.findOne({ subShort: "GORK" }));
-
   // We need to pretend to have access to a cornell classes endpoint
   const app = express();
-  serverCloseHandle = app.listen(27760, async () => {});
+  serverCloseHandle = app.listen(testingPort, async () => {});
 
   app.get("/hello", (req, res) => {
     res.send("Hello world");
@@ -99,8 +100,6 @@ afterAll(async () => {
   serverCloseHandle.close();
 });
 
-const testingEndpoint = "http://localhost:27760/";
-
 describe('tests', () => {
   it("dbInit-db-works", async () => {
     expect((await Subjects.findOne({ subShort: "GORK" })).subShort).toBe("GORK");
@@ -108,7 +107,7 @@ describe('tests', () => {
   });
 
   // Does the internal testing endpoint exist?
-  it("dbInit-test-enpoint-exists", async () => {
+  it("dbInit-test-endpoint-exists", async () => {
     const response = await axios.get(`${testingEndpoint}hello`);
     expect(response.data).toBe("Hello world");
     expect(response.data).not.toBe("Something the enpoint is not to return!");
