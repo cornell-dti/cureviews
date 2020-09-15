@@ -110,7 +110,7 @@ describe('tests', () => {
   it("dbInit-test-endpoint-exists", async () => {
     const response = await axios.get(`${testingEndpoint}hello`);
     expect(response.data).toBe("Hello world");
-    expect(response.data).not.toBe("Something the enpoint is not to return!");
+    expect(response.data).not.toBe("Something the endpoint is not to return!");
   });
 
   // Does fetching the subjects collection work as expected?
