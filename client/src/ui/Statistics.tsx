@@ -76,7 +76,7 @@ export default class Statistics extends Component<Props,State>{
 
   howManyReviewsEachClass(){
     Meteor.call('howManyReviewsEachClass', Session.get("token"), (error:any, result:any) =>{
-      if(!error){
+      if(error === null){
         //sort descending
         result.sort((rev1:any, rev2:any)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyReviewsEachClass: result});
@@ -88,7 +88,7 @@ export default class Statistics extends Component<Props,State>{
 
   howManyEachClass(){
     Meteor.call('howManyEachClass', Session.get("token"), (error:any, result:any) =>{
-      if(!error){
+      if(error === null){
         result.sort((rev1:any, rev2:any)=>(rev1.total > rev2.total)?-1:1);
         this.setState({howManyEachClass: result});
       }else{
