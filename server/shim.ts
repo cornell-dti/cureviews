@@ -12,9 +12,17 @@ export class MeteorShim {
   private _app: express.Application | null = null;
 
   async call<T = unknown>(key: string, ...args: any[]): Promise<T> {
-    const method = this._methods.get(key);
-    if (!method) throw new Error("Unknown method called...");
-    return await method(...args);
+    try {
+      const method = this._methods.get(key);
+      if (!method) throw new Error("Unknown method called...");
+      return await method(...args);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'call' method in shim.ts");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return null;
+    }
   }
 
   registerApp(app: express.Application) { this._app = app; }
