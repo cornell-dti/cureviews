@@ -1,5 +1,19 @@
 /* Form Main Component Styling */
 
+.covidCheckboxContainer{
+  margin-top: 15px;
+}
+
+.covidCheckboxInput{
+  margin-left: 10px !important;
+}
+
+.covidCheckboxLabel{
+  position: relative;
+  vertical-align: middle;
+  bottom: 1px;
+}
+
 .form-menu {
   margin-top: 50px;
   margin-bottom: 10px;
@@ -92,7 +106,7 @@
 }
 
 .form-button-top-bottom-spacing {
-  padding-top: 35px;
+  padding-top: 15px;
 }
 
 /* Form Select Styling */

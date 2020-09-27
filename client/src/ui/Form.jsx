@@ -64,7 +64,8 @@ export default class Form extends Component {
                                                                                               //in DB init to empty list
       review: {},
       courseId:'',
-      isCovid:false
+      isCovid: false,
+      showCovid: true
     };
 
     for(let i=1; i<=5; i++){
@@ -456,14 +457,15 @@ export default class Form extends Component {
                     </div>
                   </div>
 
-                  <label>
-                    This review was affected by COVID-19
-                    <input
-                      name="isCovid"
-                      type="checkbox"
-                      checked={this.state.isCovid}
-                      onChange={this.handleCovidBox} />
-                </label>
+                  { this.state.showCovid && <label className="covidCheckboxContainer">
+                      <span className="covidCheckboxLabel">Your experience was affected by COVID-19</span>
+                      <input
+                        className="covidCheckboxInput"
+                        name="isCovid"
+                        type="checkbox"
+                        checked={this.state.isCovid}
+                        onChange={this.handleCovidBox} />
+                    </label>}
 
                   <div className="row form-button-top-bottom-spacing">
                     <div className="col-md-12 col-sm-12 col-xs-12">
