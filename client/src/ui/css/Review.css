@@ -1,5 +1,12 @@
 /* Individual Review Styling */
 
+.covidTag{
+  background-color: #ffec5e;
+  border-radius: 5px;
+  width: 47.5%;
+  margin-left: 0.2%
+}
+
 .review-number-label-span{
   display: inline-flex;
   width: 56px;

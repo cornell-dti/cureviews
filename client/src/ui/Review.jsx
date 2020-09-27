@@ -173,6 +173,10 @@ export default class Review extends Component {
                   {review.text}
                 </ShowMoreText>
               </div>
+              {review.isCovid && 
+              <div className="row covidTag">
+                  <span role="img" aria-label="alert"> ⚠️</span>This review was affected by COVID-19
+              </div>} 
               <div className="row">
 
                 <p className="review-date">{this.reviewToDate(review)}</p>
