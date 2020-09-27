@@ -3,8 +3,12 @@
 .covidTag{
   background-color: #ffec5e;
   border-radius: 5px;
-  width: 47.5%;
-  margin-left: 0.2%
+  width: 50%;
+  margin-left: 0.2%;
+  border-color: #ffd666;
+  border-width: 3px;
+  border-style: solid;
+  padding: 4px;
 }
 
 .review-number-label-span{
