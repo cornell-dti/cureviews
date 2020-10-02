@@ -718,15 +718,6 @@ Meteor.methods({
   // Un-flag a review, making it visible to everyone and "unreported"
   // To be called by an admin via the admin interface.
   async undoReportReview(review, token) {
-<<<<<<< HEAD
-    const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
-    // check: make sure review id is valid and non-malicious
-    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(review._id) && userIsAdmin) {
-      await Reviews.updateOne({ _id: review._id }, { $set: { visible: 1, reported: 0 } });
-      await Meteor.call("updateCourseMetrics", review.class, token);
-      return 1;
-=======
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       // check: make sure review id is valid and non-malicious
@@ -742,7 +733,6 @@ Meteor.methods({
       // eslint-disable-next-line no-console
       console.log(error);
       return 0;
->>>>>>> master
     }
   },
 
