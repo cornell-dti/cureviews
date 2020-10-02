@@ -10,7 +10,7 @@ import SearchBar from './SearchBar';
 import './css/Form.css';
 import { Session } from '../meteor-session';
 import { Meteor } from "../meteor-shim";
-import { includesProfanity } from "common/Profanity";
+import { includesProfanity } from "common/profanity";
 
 /*
   Form Component.
