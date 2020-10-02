@@ -93,6 +93,7 @@ const ReviewSchema = new Schema<ReviewDocument>({
   reported: { type: Number }, // reported flag - 1 if review was reported, 0 otherwise
   professors: { type: [String] }, // list of professors that have thought the course over past semesters
   likes: { type: Number, min: 0 }, // number of likes a review has
+  isCovid: { type: Boolean },
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature

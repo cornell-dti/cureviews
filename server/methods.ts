@@ -113,20 +113,22 @@ Meteor.methods({
               reported: 0,
               professors: review.professors,
               likes: 0,
-              virtual: true,
+              isCovid: review.isCovid,
             });
 
             await fullReview.save();
             return 1;
           } catch (error) {
+            // eslint-disable-next-line no-console
             console.log(error);
             return 0;
           }
         } else {
+          // eslint-disable-next-line no-console
           console.log("Error: Some review values are null");
-          return 0;
         }
       } else {
+        // eslint-disable-next-line no-console
         console.log("Error: non-Cornell email attempted to insert review");
         return 0;
       }
