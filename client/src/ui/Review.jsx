@@ -175,7 +175,7 @@ export default class Review extends Component {
               </div>
               {review.isCovid && 
               <div className="row covidTag">
-                  <span role="img" aria-label="alert"> ⚠️</span>This review was affected by COVID-19
+                  <span role="img" aria-label="alert"> ⚠️</span>This student's experience was affected by COVID-19
               </div>} 
               <div className="row">
 
