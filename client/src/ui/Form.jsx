@@ -422,32 +422,57 @@ export default class Form extends Component {
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
                       </div>
-                {this.createMetricBoxes(5, "workload")}
               </div>
-              <div className="row">
-                <div className="col-md-offset-3 col-md-9">
-                  <div className="metricDescL">Not much at all</div>
-                  <div className="metricDescR">Lots of work</div>
-                </div>
-              </div>
-
-              {this.state.showCovid && <label className="covidCheckboxContainer">
-                <span className="covidCheckboxLabel">Your experience was affected by COVID-19</span>
-                <input
-                  className="covidCheckboxInput"
-                  name="isCovid"
-                  type="checkbox"
-                  checked={this.state.isCovid}
-                  onChange={this.handleCovidBox} />
-              </label>}
-
-              <div className="row form-button-top-bottom-spacing">
-                <div className="col-md-12 col-sm-12 col-xs-12">
-                  <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
-                </div>
-              </div>
-
             </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Overall</h1>
+              </div>
+              {this.createMetricBoxes(5, "rating")}
+            </div>
+            <div className="row form-bottom-row-spacing">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Not for me</div>
+                <div className="metricDescR">Loved it</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Difficulty</h1>
+              </div>
+              {this.createMetricBoxes(5, "diff")}
+            </div>
+            <div className="row form-bottom-row-spacing">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Piece of cake</div>
+                <div className="metricDescR">Challenging</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Workload</h1>
+              </div>
+              {this.createMetricBoxes(5, "workload")}
+            </div>
+            <div className="row">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Not much at all</div>
+                <div className="metricDescR">Lots of work</div>
+              </div>
+            </div>
+
+            {this.state.showCovid && <label className="covidCheckboxContainer">
+              <span className="covidCheckboxLabel">Your experience was affected by COVID-19</span>
+              <input
+                className="covidCheckboxInput"
+                name="isCovid"
+                type="checkbox"
+                checked={this.state.isCovid}
+                onChange={this.handleCovidBox} />
+            </label>}
             {/*Only show tab if not in popup*/}
 
             <div className="row form-button-top-bottom-spacing">
