@@ -97,6 +97,7 @@ Meteor.methods({
       await Meteor.call("insertUser", ticket);
 
       if (review.text !== null && includesProfanity(review.text)) {
+        // eslint-disable-next-line no-console
         console.log("profanity detected in review.");
         return { resCode: 0, errMsg: "Your review contains profanity, please edit your response." };
       }
@@ -125,14 +126,17 @@ Meteor.methods({
           await fullReview.save();
           return { resCode: 1, errMsg: "" };
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
           return { resCode: 0, errMsg: "Unexpected error when adding review" };
         }
       } else {
+        // eslint-disable-next-line no-console
         console.log("Error: Some review values are null");
         return { resCode: 0, errMsg: "Error: Some review values are null" };
       }
     } else {
+      // eslint-disable-next-line no-console
       console.log("Error: non-Cornell email attempted to insert review");
       return { resCode: 0, errMsg: "Error: non-Cornell email attempted to insert review" };
     }
