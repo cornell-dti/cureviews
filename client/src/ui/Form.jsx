@@ -64,6 +64,8 @@ export default class Form extends Component {
                                                                                               //in DB init to empty list
       review: {},
       courseId:'',
+      isCovid: false,
+      showCovid: true
     };
 
     for(let i=1; i<=5; i++){
@@ -86,6 +88,7 @@ export default class Form extends Component {
     this.handleBoxHoverEnter=this.handleBoxHoverEnter.bind(this);
     this.handleBoxHoverLeave=this.handleBoxHoverLeave.bind(this);
     this.clickMetricBox=this.clickMetricBox.bind(this);
+    this.handleCovidBox = this.handleCovidBox.bind(this);
   }
 
   //Handler for setting the form state's course id if using popup.
@@ -221,6 +224,7 @@ export default class Form extends Component {
                     this.state.selectedProfessors.map(professor => {return professor.label}) //set to this
                     : //else
                     [] //set to this
+    const isCovid = this.state.isCovid;
     if (text.length > 0
       && text !== null) {
         // create new review object
@@ -230,6 +234,7 @@ export default class Form extends Component {
           diff: diff,
           workload: work,
           professors: prof,
+          isCovid: isCovid
         };
         this.setState({"review" : newReview})
 
@@ -361,6 +366,11 @@ export default class Form extends Component {
       this.setState({ visible: false });
     }
 
+    handleCovidBox(event){
+      console.log(event.target.checked);
+        this.setState({isCovid: event.target.checked});
+    }
+
 
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
@@ -446,6 +456,16 @@ export default class Form extends Component {
                       <div className="metricDescR">Lots of work</div>
                     </div>
                   </div>
+
+                  { this.state.showCovid && <label className="covidCheckboxContainer">
+                      <span className="covidCheckboxLabel">Your experience was affected by COVID-19</span>
+                      <input
+                        className="covidCheckboxInput"
+                        name="isCovid"
+                        type="checkbox"
+                        checked={this.state.isCovid}
+                        onChange={this.handleCovidBox} />
+                    </label>}
 
                   <div className="row form-button-top-bottom-spacing">
                     <div className="col-md-12 col-sm-12 col-xs-12">
