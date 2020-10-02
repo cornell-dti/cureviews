@@ -27,7 +27,7 @@ function setup() {
 const uri = process.env.MONGODB_URL ? process.env.MONGODB_URL : "this will error";
 let localMongoServer;
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => setup()).catch(async err => {
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => setup()).catch(async (err) => {
   console.log("No DB connection defined!");
 
   // If the environment variable is set, create a simple local db to work with
@@ -40,10 +40,10 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     const mongoUri = await localMongoServer.getUri();
     await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    await fetchAddCourses("https://classes.cornell.edu/api/2.0/", "FA19").catch(err => console.log(err));
+    await fetchAddCourses("https://classes.cornell.edu/api/2.0/", "FA19").catch((err) => console.log(err));
 
-    await mongoose.connection.collections["classes"].createIndex({ "classFull": "text" });
-    await mongoose.connection.collections["subjects"].createIndex({ "subShort": "text" });
+    await mongoose.connection.collections.classes.createIndex({ classFull: "text" });
+    await mongoose.connection.collections.subjects.createIndex({ subShort: "text" });
     setup();
   } else {
     process.exit(1);
