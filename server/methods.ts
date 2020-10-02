@@ -119,7 +119,7 @@ Meteor.methods({
             reported: 0,
             professors: review.professors,
             likes: 0,
-            virtual: true,
+            isCovid: review.isCovid,
           });
 
 
@@ -288,9 +288,9 @@ Meteor.methods({
             {
               $set: {
                 // If no data is available, getGaugeValues returns "-" for metric
-                classDifficulty: (state.diff !== "-" ? Number(state.diff) : null),
-                classRating: (state.rating !== "-" ? Number(state.rating) : null),
-                classWorkload: (state.workload !== "-" ? Number(state.workload) : null),
+                classDifficulty: (state.diff !== "-" && !isNaN(state.diff) ? Number(state.diff) : null),
+                classRating: (state.rating !== "-" && !isNaN(state.rating) ? Number(state.rating) : null),
+                classWorkload: (state.workload !== "-" && !isNaN(state.workload) ? Number(state.workload) : null),
               },
             });
           return 1;

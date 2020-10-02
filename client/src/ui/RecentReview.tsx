@@ -99,7 +99,7 @@ export default class RecentReview extends Component<Props, State> {
                         <div className="review-text" id="review_text">{review.text}</div>
                     </div>
                     <div className="col-sm-12">
-                            <button id="button_text" onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed.')}}>Report</button>
+                            <button id="button_text" onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed. Course metrics will not change until the post has been reviewed')}}>Report</button>
                     </div>
                 </div>
             </div>
