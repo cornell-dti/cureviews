@@ -31,7 +31,7 @@ type State = {
    - button to approve the review
    - button to delete the review
 
-  Reported Reivews will contain:
+  Reported Reviews will contain:
    -  Name of the course the review belongs to
     - how long ago the review was added
     - all review content
