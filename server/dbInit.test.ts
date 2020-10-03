@@ -25,16 +25,16 @@ beforeAll(async () => {
 
   await new Subjects({
     _id: "some id",
-    subShort: "GORK",
+    subShort: "gork",
     subFull: "Study of Angry Fungi",
   }).save();
 
   await new Classes({
     _id: "some other id",
-    classSub: "GORK",
+    classSub: "gork",
     classNum: "1110",
     classTitle: "Introduction to Angry Fungi",
-    classFull: "GORK 1110 Introduction to Angry Fungi",
+    classFull: "gork 1110 Introduction to Angry Fungi",
     classSems: ["FA19"],
     classProfessors: ["Prof. Thraka"],
     classRating: 5,
@@ -65,8 +65,8 @@ beforeAll(async () => {
       status: "success",
       data: {
         subjects: [
-          { descr: "Study of Fungi", descrformal: "The Study of Fungi", value: "GORK" },
-          { descr: "Study of Space", descrformal: "The Study of Where No One has Gone Before", value: "FEDN" },
+          { descr: "Study of Fungi", descrformal: "The Study of Fungi", value: "gork" },
+          { descr: "Study of Space", descrformal: "The Study of Where No One has Gone Before", value: "fedn" },
         ],
       },
     });
@@ -74,9 +74,9 @@ beforeAll(async () => {
 
   // Fake classes endpoint
   app.get("/search/classes.json", (req, res) => {
-    // simulate only having data for the GORK subject.
+    // simulate only having data for the gork subject.
     // see above
-    if (!req.originalUrl.includes("GORK")) {
+    if (!req.originalUrl.includes("gork")) {
       res.send({
         status: "failure",
       });
@@ -86,8 +86,14 @@ beforeAll(async () => {
       status: "success",
       data: {
         classes: [
-          { subject: "GORK", catalogNbr: "1110", titleLong: "Introduction to Angry Fungi", randoJunk: "Making sure this scauses no issues" },
-          { junk: "nada", subject: "GORK", catalogNbr: "2110", titleLong: "Advanced Study of Angry Fungi" },
+          { 
+            subject: "gork", catalogNbr: "1110", titleLong: "Introduction to Angry Fungi", randoJunk: "Making sure this scauses no issues",
+            enrollGroups: [] // TODO add tests for professors
+          },
+          { 
+            junk: "nada", subject: "gork", catalogNbr: "2110", titleLong: "Advanced Study of Angry Fungi",
+            enrollGroups: []
+          },
         ],
       },
     });
@@ -102,8 +108,8 @@ afterAll(async () => {
 
 describe('tests', () => {
   it("dbInit-db-works", async () => {
-    expect((await Subjects.findOne({ subShort: "GORK" })).subShort).toBe("GORK");
-    expect((await Classes.findOne({ classSub: "GORK", classNum: "1110" })).classSub).toBe("GORK");
+    expect((await Subjects.findOne({ subShort: "gork" })).subShort).toBe("gork");
+    expect((await Classes.findOne({ classSub: "gork", classNum: "1110" })).classSub).toBe("gork");
   });
 
   // Does the internal testing endpoint exist?
@@ -118,8 +124,8 @@ describe('tests', () => {
     const response = await fetchSubjects(testingEndpoint, "FA20");
     expect(response.length).toBe(2);
     expect(response[0].descrformal).toBe("The Study of Fungi");
-    expect(response[0].value).toBe("GORK");
-    expect(response[1].value).toBe("FEDN");
+    expect(response[0].value).toBe("gork");
+    expect(response[1].value).toBe("fedn");
 
     // No data for FA19!
     const nil = await fetchSubjects(testingEndpoint, "FA19");
@@ -128,15 +134,15 @@ describe('tests', () => {
 
   // Does fetching the classes collection work as expected?
   it("fetching-classes-by-subject-works", async () => {
-    const response = await fetchClassesForSubject(testingEndpoint, "FA20", { descrformal: "The Study of AngryFungi", value: "GORK" });
+    const response = await fetchClassesForSubject(testingEndpoint, "FA20", { descrformal: "The Study of AngryFungi", value: "gork" });
     expect(response.length).toBe(2);
-    expect(response[0].subject).toBe("GORK");
+    expect(response[0].subject).toBe("gork");
     expect(response[0].catalogNbr).toBe("1110");
     expect(response[0].titleLong).toBe("Introduction to Angry Fungi");
     expect(response[1].titleLong).toBe("Advanced Study of Angry Fungi");
 
-    // No FEDN classes, only GORK classes!
-    const nil = await fetchClassesForSubject(testingEndpoint, "FA20", { descrformal: "The Study of Where No One has Gone Before", value: "FEDN" });
+    // No fedn classes, only gork classes!
+    const nil = await fetchClassesForSubject(testingEndpoint, "FA20", { descrformal: "The Study of Where No One has Gone Before", value: "fedn" });
     expect(nil).toBeNull();
   });
 
@@ -144,14 +150,14 @@ describe('tests', () => {
     const worked = await fetchAddCourses(testingEndpoint, "FA20");
     expect(worked).toBe(true);
 
-    // did it add the FEDN subject?
-    expect((await Subjects.findOne({ subShort: "FEDN" }).exec()).subFull).toBe("The Study of Where No One has Gone Before");
+    // did it add the fedn subject?
+    expect((await Subjects.findOne({ subShort: "fedn" }).exec()).subFull).toBe("The Study of Where No One has Gone Before");
 
-    // did it update the semesters on GORK 1110?
+    // did it update the semesters on gork 1110?
     // notice the .lean(), which changes some of the internals of what mongo returns
-    expect((await Classes.findOne({ classSub: "GORK", classNum: "1110" }).lean().exec()).classSems).toStrictEqual(["FA19", "FA20"]);
+    expect((await Classes.findOne({ classSub: "gork", classNum: "1110" }).lean().exec()).classSems).toStrictEqual(["FA19", "FA20"]);
 
-    // did it add the GORK 2110 Class?
-    expect((await Classes.findOne({ classSub: "GORK", classNum: "2110" }).exec()).classTitle).toBe("Advanced Study of Angry Fungi");
+    // did it add the gork 2110 Class?
+    expect((await Classes.findOne({ classSub: "gork", classNum: "2110" }).exec()).classTitle).toBe("Advanced Study of Angry Fungi");
   });
 });
