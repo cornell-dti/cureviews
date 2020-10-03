@@ -20,18 +20,18 @@ export interface ScrapingInstructor {
 
 // This only exists for compatibility with the API
 export interface ScrapingMeeting {
-  instructors: ScrapingInstructor[]
+  instructors: ScrapingInstructor[];
 }
 
 // This only exists for compatibility with the API
 export interface ScrapingClassSection {
-  ssrComponent: string // i.e. LEC, SEM, DIS
-  meetings: ScrapingMeeting[]
+  ssrComponent: string; // i.e. LEC, SEM, DIS
+  meetings: ScrapingMeeting[];
 }
 
 // This only exists for compatibility with the API
 export interface ScrapingEnrollGroup {
-  classSections: ScrapingClassSection[] // what sections the class has
+  classSections: ScrapingClassSection[]; // what sections the class has
 }
 
 // Represents a class which is scraped
@@ -81,20 +81,20 @@ export function isInstructorEqual(a: ScrapingInstructor, b: ScrapingInstructor) 
  * There are guaranteed to be no duplicates!
  */
 export function extractProfessors(clas: ScrapingClass): ScrapingInstructor[] {
-  const raw = clas.enrollGroups.map(e => e.classSections.map(s => s.meetings.map(m => m.instructors)));
+  const raw = clas.enrollGroups.map((e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)));
   // flatmap does not work :(
-  const f1: ScrapingInstructor[][][] = []
-  raw.forEach(r => f1.push(...r));
-  const f2: ScrapingInstructor[][] = []
-  f1.forEach(r => f2.push(...r));
-  const f3: ScrapingInstructor[] = []
-  f2.forEach(r => f3.push(...r));
+  const f1: ScrapingInstructor[][][] = [];
+  raw.forEach((r) => f1.push(...r));
+  const f2: ScrapingInstructor[][] = [];
+  f1.forEach((r) => f2.push(...r));
+  const f3: ScrapingInstructor[] = [];
+  f2.forEach((r) => f3.push(...r));
 
-  let nonDuplicates: ScrapingInstructor[] = [];
+  const nonDuplicates: ScrapingInstructor[] = [];
 
-  f3.forEach(inst => {
+  f3.forEach((inst) => {
     // check if there is another instructor in nonDuplicates already!
-    if (nonDuplicates.filter(i => isInstructorEqual(i, inst)).length === 0) {
+    if (nonDuplicates.filter((i) => isInstructorEqual(i, inst)).length === 0) {
       // push the instructor if not present
       nonDuplicates.push(inst);
     }
@@ -157,21 +157,19 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
       // if not, add to the collection
       // build a list of professor names to potentially add the the class
       const profs: string[] = await Promise.all(professors.map(async (p) => {
-        const professorIfExists = await Professors.findOne({ fullName: `${p.firstName} ${p.lastName}`});
+        const professorIfExists = await Professors.findOne({ fullName: `${p.firstName} ${p.lastName}` });
         if (!professorIfExists) {
-
           const added = await new Professors({
             _id: shortid.generate(),
             fullName: `${p.firstName} ${p.lastName}`,
             courses: [],
-            major: "None" // TODO?
+            major: "None", // TODO?
           });
 
           return added.fullName;
-        } else {
-          return professorIfExists.fullName;
         }
-      })).catch(err => {
+        return professorIfExists.fullName;
+      })).catch((err) => {
         console.log(err);
         return [];
       });
@@ -206,11 +204,11 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
         const classSems = classIfExists.classSems.indexOf(semester) == -1 ? classIfExists.classSems.concat([semester]) : classIfExists.classSems;
 
         // Compute the new set of professors for this class
-        let classProfessors = classIfExists.classProfessors ? classIfExists.classProfessors : [];
+        const classProfessors = classIfExists.classProfessors ? classIfExists.classProfessors : [];
 
         // Add any new professors to the class
-        profs.forEach(inst => {
-          if (classProfessors.filter(i => i == inst).length === 0) {
+        profs.forEach((inst) => {
+          if (classProfessors.filter((i) => i == inst).length === 0) {
             classProfessors.push(inst);
           }
         });

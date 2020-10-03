@@ -45,7 +45,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     await mongoose.connection.collections.classes.createIndex({ classFull: "text" });
     await mongoose.connection.collections.subjects.createIndex({ subShort: "text" });
     await mongoose.connection.collections.professors.createIndex({ fullName: "text" });
-    
+
     setup();
   } else {
     process.exit(1);

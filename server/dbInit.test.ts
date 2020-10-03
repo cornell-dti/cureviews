@@ -86,13 +86,19 @@ beforeAll(async () => {
       status: "success",
       data: {
         classes: [
-          { 
-            subject: "gork", catalogNbr: "1110", titleLong: "Introduction to Angry Fungi", randoJunk: "Making sure this scauses no issues",
-            enrollGroups: [] // TODO add tests for professors
+          {
+            subject: "gork",
+            catalogNbr: "1110",
+            titleLong: "Introduction to Angry Fungi",
+            randoJunk: "Making sure this scauses no issues",
+            enrollGroups: [], // TODO add tests for professors
           },
-          { 
-            junk: "nada", subject: "gork", catalogNbr: "2110", titleLong: "Advanced Study of Angry Fungi",
-            enrollGroups: []
+          {
+            junk: "nada",
+            subject: "gork",
+            catalogNbr: "2110",
+            titleLong: "Advanced Study of Angry Fungi",
+            enrollGroups: [],
           },
         ],
       },
