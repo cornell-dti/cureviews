@@ -73,7 +73,7 @@ export async function fetchClassesForSubject(endpoint: string, semester: string,
 }
 
 export function isInstructorEqual(a: ScrapingInstructor, b: ScrapingInstructor) {
-  return a.firstName == b.firstName && a.lastName == b.lastName;
+  return (a.firstName === b.firstName) && (a.lastName === b.lastName);
 }
 
 /*
@@ -153,21 +153,16 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
       const classIfExists = await Classes.findOne({ classSub: cl.subject.toLowerCase(), classNum: cl.catalogNbr }).exec();
       const professors = extractProfessors(cl);
 
-      // figure out if the professor already exist in the collection
-      // if not, add to the collection
+      // figure out if the professor already exist in the collection, if not, add to the collection
       // build a list of professor names to potentially add the the class
       const profs: string[] = await Promise.all(professors.map(async (p) => {
-        const professorIfExists = await Professors.findOne({ fullName: `${p.firstName} ${p.lastName}` });
-        if (!professorIfExists) {
-          const added = await new Professors({
-            _id: shortid.generate(),
-            fullName: `${p.firstName} ${p.lastName}`,
-            courses: [],
-            major: "None", // TODO?
+        // This has to be an atomic upset. Otherwise, this causes some race condition badness
+        const professorIfExists = await Professors.findOneAndUpdate({ fullName: `${p.firstName} ${p.lastName}` },
+          { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } }, {
+            upsert: true,
+            new: true,
           });
 
-          return added.fullName;
-        }
         return professorIfExists.fullName;
       })).catch((err) => {
         console.log(err);
@@ -191,6 +186,11 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
         }).save().catch((err) => {
           console.log(err);
           return null;
+        });
+
+        // update professors with new class information
+        profs.forEach(async (inst) => {
+          await Professors.findOneAndUpdate({ fullName: inst }, { $addToSet: { courses: res._id } }).catch((err) => console.log(err));
         });
 
         if (!res) {
@@ -219,6 +219,12 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
             console.log(err);
             return null;
           });
+
+        // update professors with new class information
+        // Note the set update. We don't want to add duplicates here
+        classProfessors.forEach(async (inst) => {
+          await Professors.findOneAndUpdate({ fullName: inst }, { $addToSet: { courses: classIfExists._id } }).catch((err) => console.log(err));
+        });
 
         if (!res) {
           console.log(`Unable to update class information for ${cl.subject} ${cl.catalogNbr}!`);

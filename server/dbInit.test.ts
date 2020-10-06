@@ -3,7 +3,7 @@ import express from "express";
 import axios from "axios";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { Subjects, Classes } from "./dbDefs";
+import { Subjects, Classes, Professors } from "./dbDefs";
 import { fetchSubjects, fetchClassesForSubject, fetchAddCourses } from "./dbInit";
 
 // May require additional time for downloading 100 mb (!) worth of MongoDB binaries
@@ -22,6 +22,7 @@ beforeAll(async () => {
   testServer = new MongoMemoryServer();
   const mongoUri = await testServer.getUri();
   await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.set('useFindAndModify', false);
 
   await new Subjects({
     _id: "some id",
@@ -91,14 +92,14 @@ beforeAll(async () => {
             catalogNbr: "1110",
             titleLong: "Introduction to Angry Fungi",
             randoJunk: "Making sure this scauses no issues",
-            enrollGroups: [], // TODO add tests for professors
+            enrollGroups: [{ classSections: [{ ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }] }] }] }], // TODO add tests for professors
           },
           {
             junk: "nada",
             subject: "gork",
             catalogNbr: "2110",
             titleLong: "Advanced Study of Angry Fungi",
-            enrollGroups: [],
+            enrollGroups: [{ classSections: [{ ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }, { firstName: "Prof.", lastName: "Urgok" }] }] }] }],
           },
         ],
       },
@@ -161,9 +162,20 @@ describe('tests', () => {
 
     // did it update the semesters on gork 1110?
     // notice the .lean(), which changes some of the internals of what mongo returns
-    expect((await Classes.findOne({ classSub: "gork", classNum: "1110" }).lean().exec()).classSems).toStrictEqual(["FA19", "FA20"]);
+    const class1 = await Classes.findOne({ classSub: "gork", classNum: "1110" }).lean().exec();
+    expect(class1.classSems).toStrictEqual(["FA19", "FA20"]);
 
     // did it add the gork 2110 Class?
-    expect((await Classes.findOne({ classSub: "gork", classNum: "2110" }).exec()).classTitle).toBe("Advanced Study of Angry Fungi");
+    const class2 = await Classes.findOne({ classSub: "gork", classNum: "2110" }).exec();
+    expect(class2.classTitle).toBe("Advanced Study of Angry Fungi");
+
+    // Did it update the classes for the first professor
+    const prof1 = await Professors.findOne({ fullName: "Prof. Thraka" }).lean().exec();
+    expect(prof1.courses).toContain(class1._id);
+    expect(prof1.courses).toContain(class2._id);
+
+    // Did it add the second professor with the right class id?
+    const prof2 = await Professors.findOne({ fullName: "Prof. Urgok" }).lean().exec();
+    expect(prof2.courses).toStrictEqual([class2._id]);
   });
 });
