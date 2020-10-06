@@ -35,14 +35,13 @@ Option 1:
 Previously, you would start a server like so:
 
 ```bash
-# directly
 MONGODB_URL='mongodb://foo' yarn workspace server start 
 ```
 
 There is also something called "fallback mode", which you can trigger by starting the server with the ALLOW_LOCAL env variable set to 1, and **without** setting MONGODB_URL. Fallback mode automatically configures a blank mongodb for use in the application, and then scrapes some data from Cornell's endpoint for you to test. There will not be any reviews by default.
 
 ```bash
-ALLOW_LOCAL=1 yarn workspace server start # or using .env file
+ALLOW_LOCAL=1 yarn workspace server start
 ```
 
 Option 2:
