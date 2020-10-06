@@ -27,8 +27,27 @@ MONGODB_URL=[SECRET_URL_ASK_TEAM_MEMBER_FOR_IT]
 
 **You will probably use the address of the staging server.** If, for some reason you want to have a local db (E.g. you're making some changes to the db structure, and don't want to accidently trash the staging db), the following works:
 
-<details><summary>Running a local mongodb server</summary>
+<details><summary>Running using local mongodb server</summary>
 <p>
+
+Option 1:
+
+Previously, you would start a server like so:
+
+```bash
+# directly
+MONGODB_URL='mongodb://foo' yarn workspace server start 
+```
+
+There is also something called "fallback mode", which you can trigger by starting the server with the ALLOW_LOCAL env variable set to 1, and **without** setting MONGODB_URL. Fallback mode automatically configures a blank mongodb for use in the application, and then scrapes some data from Cornell's endpoint for you to test. There will not be any reviews by default.
+
+```bash
+ALLOW_LOCAL=1 yarn workspace server start # or using .env file
+```
+
+Option 2:
+
+<details><summary>If you really, really do want to use a local Mongo instance using mongod (not recommended), this might work: </summary>
 
 You need the mongodb database tools and server installed. They are available [here](https://docs.mongodb.com/database-tools/) and [here](https://www.mongodb.com/download-center/community). If, for some reason, you want to use the tools on a linux box, you will probably have to build them from source [here](https://github.com/mongodb/mongo-tools).
 
@@ -46,6 +65,7 @@ mongorestore -h 127.0.0.1 --port 3001 -d test /path/to/your/bson.bson --drop
 ```
 
 You will probably need to run this for the `classes`, `subjects` and `reviews` collections (Perhaps also `students`). Ask a team member for the bsons if you need them. If this errors, it might be because the `-d test` specifies the wrong database name (`test`), in which case you should figure out your db name, and replace `-d test` with `-d dbname`. Note that it **won't** error on the command, the only evidence of an error is that none of collections will be show up on the site (i.e. no classes visible).
+</details>
 
 </p>
 </details>
