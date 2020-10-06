@@ -191,7 +191,7 @@ export default class Review extends Component {
                       alt={this.state.liked ? "Liked" : "Not Liked Yet"}
                     />
                     <p className="upvote-text">Helpful
-                        ({this.state.numLikes})</p>
+                        ({this.state.numLikes ? this.state.numLikes : 0})</p>
                   </button>
                 }
               </div>
