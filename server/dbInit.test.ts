@@ -92,7 +92,7 @@ beforeAll(async () => {
             catalogNbr: "1110",
             titleLong: "Introduction to Angry Fungi",
             randoJunk: "Making sure this scauses no issues",
-            enrollGroups: [{ classSections: [{ ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }] }] }] }], // TODO add tests for professors
+            enrollGroups: [{ classSections: [{ ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }] }] }] }],
           },
           {
             junk: "nada",
