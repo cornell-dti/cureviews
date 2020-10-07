@@ -2,6 +2,7 @@ import { getGaugeValues, getCrossListOR } from 'common/CourseCard';
 import { OAuth2Client } from 'google-auth-library';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import shortid from 'shortid';
+import { includesProfanity } from "common/profanity";
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
@@ -84,17 +85,24 @@ Meteor.methods({
   async insert(token, review, classId) {
     try {
       if (token === undefined) {
+        // eslint-disable-next-line no-console
         console.log("Error: Token was undefined in insert");
-        return 0;
+        return { resCode: 0, errMsg: "Error: Token was undefined in insert" };
       }
 
       const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
 
-      if (!ticket) return 0;
+      if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
 
       if (ticket.hd === "cornell.edu") {
         // insert the user into the collection if not already present
         await Meteor.call("insertUser", ticket);
+
+        if (review.text !== null && includesProfanity(review.text)) {
+          // eslint-disable-next-line no-console
+          console.log("profanity detected in review.");
+          return { resCode: 0, errMsg: "Your review contains profanity, please edit your response." };
+        }
 
         if (review.text !== null && review.diff !== null && review.rating !== null
           && review.workload !== null && review.professors !== null && classId !== undefined
@@ -116,28 +124,30 @@ Meteor.methods({
               isCovid: review.isCovid,
             });
 
+
             await fullReview.save();
-            return 1;
+            return { resCode: 1, errMsg: "" };
           } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error);
-            return 0;
+            return { resCode: 0, errMsg: "Unexpected error when adding review" };
           }
         } else {
           // eslint-disable-next-line no-console
           console.log("Error: Some review values are null");
+          return { resCode: 0, errMsg: "Error: Some review values are null" };
         }
       } else {
         // eslint-disable-next-line no-console
         console.log("Error: non-Cornell email attempted to insert review");
-        return 0;
+        return { resCode: 0, errMsg: "Error: non-Cornell email attempted to insert review" };
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'insert' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return 0;
+      return { resCode: 0, errMsg: "Error: at 'insert' method" };
     }
   },
 
@@ -963,7 +973,9 @@ Meteor.methods({
           },
           ];
           const hashMap: any = {}; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
+          // eslint-disable-next-line no-await-in-loop
           const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
+          // eslint-disable-next-line no-await-in-loop
           await Promise.all(results.map(async (data) => { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
             const results = await Classes.find({
               _id: data._id,

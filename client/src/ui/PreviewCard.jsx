@@ -142,7 +142,7 @@ export default class PreviewCard extends Component {
       <div className="preview-panel">
         <div className="row">
           <div className="col-md-12 col-sm-12">
-              <p className="preview-class-title">
+            <p className="preview-class-title">
               <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                 {theClass.classTitle}
               </a>
@@ -156,17 +156,17 @@ export default class PreviewCard extends Component {
 
           <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
             <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)}
-                    isInPreviewCard={true} text="Overall"/>
+              isInPreviewCard={true} text="Overall" />
 
           </div>
           <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
             <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)}
-                    isInPreviewCard={true} text="Difficulty"/>
+              isInPreviewCard={true} text="Difficulty" />
 
           </div>
           <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
             <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)}
-                    isInPreviewCard={true} text="Workload"/>
+              isInPreviewCard={true} text="Workload" />
 
           </div>
 
