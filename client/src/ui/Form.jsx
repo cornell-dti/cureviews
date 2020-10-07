@@ -249,7 +249,7 @@ export default class Form extends Component {
       !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
       (error, result) => {
         // if (!error && result === 1) {
-        if (error || result === 1) {
+        if (error || result.resCode === 1) {
           console.log("course id: " + Session.get("courseId"));
           // Success, so reset form
 
