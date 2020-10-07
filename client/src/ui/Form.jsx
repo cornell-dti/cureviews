@@ -1,4 +1,3 @@
-/* globals $ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -37,7 +36,6 @@ export default class Form extends Component {
 
     //Define refs
 
-    this.dropdownMenu = React.createRef();
     this.noProfMsg = React.createRef();
     this.profSelect = React.createRef();
     this.emptyMsg = React.createRef();
@@ -47,10 +45,7 @@ export default class Form extends Component {
 
     //store all currently selected form values in the state.
 
-    this.openByDefault = true;
-
     this.state = {
-      dropdown: '', //empty as opposed to 'open'
       visible: false,
       "rating": 3,
       "ratinglastSelect": 3,
@@ -78,7 +73,6 @@ export default class Form extends Component {
     // store inital values as the default state to revert to after submission
     this.defaultState = this.state
     this.handleProfChange.bind(this)
-    this.toggleDropdown.bind(this)
     this.submitReview = this.submitReview.bind(this)
     this.submitError = this.submitError.bind(this)
     this.saveReviewToSession = this.saveReviewToSession.bind(this)
@@ -122,7 +116,6 @@ export default class Form extends Component {
     }
 
     this.setState({ selectedProfessors: selectedProfessors });
-    this.pushReviewsDown(this.state.dropdown);
   }
 
   //Called when mouse  enters a metric box to chane highlighting
@@ -256,14 +249,11 @@ export default class Form extends Component {
       !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
       (error, result) => {
         // if (!error && result === 1) {
-        if (error || result.resCode === 1) {
+        if (error || result === 1) {
           console.log("course id: " + Session.get("courseId"));
           // Success, so reset form
 
           this.profSelect.current.value = "none";
-          if (this.openByDefault) {
-            this.toggleDropdown(); //Open review dropdown when page loads
-          }
 
           // Reset review info to default after review submission
           this.setState(this.defaultState);
@@ -275,8 +265,7 @@ export default class Form extends Component {
           alert('Thanks for reviewing! New reviews are updated every 24 hours.');
         } else {
           console.log(error);
-          const errMsg = result.errMsg;
-          alert(errMsg, "danger");
+          alert("An unknown error occured, please try again.", "danger");
           Session.setPersistent({ "review": "" });
           Session.setPersistent({ "review_major": "" });
           Session.setPersistent({ "review_num": "" });
@@ -336,34 +325,6 @@ export default class Form extends Component {
     }
   }
 
-
-  // Toggle the form dropdown
-  // Takes care of "pushing down" the reviews by the dynamic height of the form
-  toggleDropdown() {
-    const nextState = this.state.dropdown === 'open' ? '' : 'open';
-    this.setState({ dropdown: nextState });
-    this.pushReviewsDown(nextState);
-  }
-
-  //Pushes down the reviews from the form depending on how long the form becomes
-  //Uses the margin-bottom attribute to do this
-  pushReviewsDown(formState) {
-    let marginHeight;
-    let offsetHeight;
-    // Form is opened
-    if (formState === 'open') {
-      marginHeight = this.dropdownHeight;
-      offsetHeight = this.selectHolder.current.offsetHeight - 46;
-    }
-    // Form is closed
-    else {
-      marginHeight = 0;
-      offsetHeight = 0;
-    }
-    if (offsetHeight >= 0) {
-      $("#form-dropdown").css("margin-bottom", (marginHeight + offsetHeight) + "px");
-    }
-  }
   show() {
     this.setState({ visible: true });
   }
