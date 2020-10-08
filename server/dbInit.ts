@@ -1,5 +1,258 @@
 import axios from 'axios';
-import { Classes, Subjects } from './dbDefs';
+import shortid from 'shortid';
+import { Classes, Subjects, Professors } from './dbDefs';
+
+export const defaultEndpoint = "https://classes.cornell.edu/api/2.0/";
+
+// Represents a subject which is scraped
+// Note: there's a load of additional information when we scrape it.
+// It's not relevant, so we just ignore it for now.
+export interface ScrapingSubject {
+  descrformal: string; // Subject description, e.g. "Asian American Studies"
+  value: string; // Subject code, e.g. "AAS"
+}
+
+// This only exists for compatibility with the API
+export interface ScrapingInstructor {
+  firstName: string;
+  lastName: string;
+}
+
+// This only exists for compatibility with the API
+export interface ScrapingMeeting {
+  instructors: ScrapingInstructor[];
+}
+
+// This only exists for compatibility with the API
+export interface ScrapingClassSection {
+  ssrComponent: string; // i.e. LEC, SEM, DIS
+  meetings: ScrapingMeeting[];
+}
+
+// This only exists for compatibility with the API
+export interface ScrapingEnrollGroup {
+  classSections: ScrapingClassSection[]; // what sections the class has
+}
+
+// Represents a class which is scraped
+// Note: there's a load of additional information when we scrape it.
+// It's not relevant, so we just ignore it for now.
+export interface ScrapingClass {
+  subject: string; // Short: e.g. "CS"
+  catalogNbr: string; // e.g. 1110
+  titleLong: string; // long variant of a title e.g. "Introduction to Computing Using Python"
+  enrollGroups: ScrapingEnrollGroup[]; // specified by the API
+}
+
+/*
+ * Fetch the class roster for a semester.
+ * Returns the class roster on success, or null if there was an error.
+ */
+export async function fetchSubjects(endpoint: string, semester: string): Promise<ScrapingSubject[]> {
+  const result = await axios.get(`${endpoint}config/subjects.json?roster=${semester}`, { timeout: 10000 });
+  if (result.status !== 200 || result.data.status !== "success") {
+    console.log(`Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`);
+    return null;
+  }
+
+  return result.data.data.subjects;
+}
+
+/*
+ * Fetch all the classes for that semester/subject combination
+ * Returns a list of classes on success, or null if there was an error.
+ */
+export async function fetchClassesForSubject(endpoint: string, semester: string, subject: ScrapingSubject): Promise<ScrapingClass[]> {
+  const result = await axios.get(`${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`, { timeout: 10000 });
+  if (result.status !== 200 || result.data.status !== "success") {
+    console.log(`Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`);
+    return null;
+  }
+
+  return result.data.data.classes;
+}
+
+export function isInstructorEqual(a: ScrapingInstructor, b: ScrapingInstructor) {
+  return (a.firstName === b.firstName) && (a.lastName === b.lastName);
+}
+
+/*
+ * Extract an array of professors from the terribly deeply nested gunk that the api returns
+ * There are guaranteed to be no duplicates!
+ */
+export function extractProfessors(clas: ScrapingClass): ScrapingInstructor[] {
+  const raw = clas.enrollGroups.map((e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)));
+  // flatmap does not work :(
+  const f1: ScrapingInstructor[][][] = [];
+  raw.forEach((r) => f1.push(...r));
+  const f2: ScrapingInstructor[][] = [];
+  f1.forEach((r) => f2.push(...r));
+  const f3: ScrapingInstructor[] = [];
+  f2.forEach((r) => f3.push(...r));
+
+  const nonDuplicates: ScrapingInstructor[] = [];
+
+  f3.forEach((inst) => {
+    // check if there is another instructor in nonDuplicates already!
+    if (nonDuplicates.filter((i) => isInstructorEqual(i, inst)).length === 0) {
+      // push the instructor if not present
+      nonDuplicates.push(inst);
+    }
+  });
+
+  return nonDuplicates;
+}
+
+/*
+ * Fetch the relevant classes, and add them to the collections
+ * Returns true on success, and false on failure.
+ */
+export async function fetchAddCourses(endpoint: string, semester: string): Promise<boolean> {
+  const subjects = await fetchSubjects(endpoint, semester);
+
+  const v1 = await Promise.all(subjects.map(async (subject) => {
+    const subjectIfExists = await Subjects.findOne({ subShort: subject.value.toLowerCase() }).exec();
+
+    if (!subjectIfExists) {
+      console.log(`Adding new subject: ${subject.value}`);
+      const res = await new Subjects({
+        _id: shortid.generate(),
+        subShort: subject.value.toLowerCase(),
+        subFull: subject.descrformal,
+      }).save().catch((err) => {
+        console.log(err);
+        return null;
+      });
+
+      // db operation was not successful
+      if (!res) {
+        throw new Error();
+      }
+    }
+
+    return true;
+  })).catch((err) => null);
+
+  if (!v1) {
+    console.log("Something went wrong while updating subjects!");
+    return false;
+  }
+
+  // Update the Classes in the db
+  const v2 = await Promise.all(subjects.map(async (subject) => {
+    const classes = await fetchClassesForSubject(endpoint, semester, subject);
+
+    // skip if something went wrong fetching classes
+    // it could be that there are not classes here (in tests, corresponds to FEDN)
+    if (!classes) {
+      return true;
+    }
+
+    // Update or add all the classes to the collection
+    const v = await Promise.all(classes.map(async (cl) => {
+      const classIfExists = await Classes.findOne({ classSub: cl.subject.toLowerCase(), classNum: cl.catalogNbr }).exec();
+      const professors = extractProfessors(cl);
+
+      // figure out if the professor already exist in the collection, if not, add to the collection
+      // build a list of professor names to potentially add the the class
+      const profs: string[] = await Promise.all(professors.map(async (p) => {
+        // This has to be an atomic upset. Otherwise, this causes some race condition badness
+        const professorIfExists = await Professors.findOneAndUpdate({ fullName: `${p.firstName} ${p.lastName}` },
+          { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } }, {
+            upsert: true,
+            new: true,
+          });
+
+        return professorIfExists.fullName;
+      })).catch((err) => {
+        console.log(err);
+        return [];
+      });
+
+      // The class does not exist yet, so we add it
+      if (!classIfExists) {
+        console.log(`Adding new class ${cl.subject} ${cl.catalogNbr}`);
+        const res = await new Classes({
+          _id: shortid.generate(),
+          classSub: cl.subject.toLowerCase(),
+          classNum: cl.catalogNbr,
+          classTitle: cl.titleLong,
+          classFull: `${cl.subject.toLowerCase()} ${cl.catalogNbr} ${cl.titleLong}`,
+          classSems: [semester],
+          classProfessors: profs,
+          classRating: null,
+          classWorkload: null,
+          classDifficulty: null,
+        }).save().catch((err) => {
+          console.log(err);
+          return null;
+        });
+
+        // update professors with new class information
+        profs.forEach(async (inst) => {
+          await Professors.findOneAndUpdate({ fullName: inst }, { $addToSet: { courses: res._id } }).catch((err) => console.log(err));
+        });
+
+        if (!res) {
+          console.log(`Unable to insert class ${cl.subject} ${cl.catalogNbr}!`);
+          throw new Error();
+        }
+      } else { // The class does exist, so we update semester information
+        console.log(`Updating class information for ${classIfExists.classSub} ${classIfExists.classNum}`);
+
+        // Compute the new set of semesters for this class
+        const classSems = classIfExists.classSems.indexOf(semester) == -1 ? classIfExists.classSems.concat([semester]) : classIfExists.classSems;
+
+        // Compute the new set of professors for this class
+        const classProfessors = classIfExists.classProfessors ? classIfExists.classProfessors : [];
+
+        // Add any new professors to the class
+        profs.forEach((inst) => {
+          if (classProfessors.filter((i) => i == inst).length === 0) {
+            classProfessors.push(inst);
+          }
+        });
+
+        // update db with new semester information
+        const res = await Classes.findOneAndUpdate({ _id: classIfExists._id }, { $set: { classSems, classProfessors } }).exec()
+          .catch((err) => {
+            console.log(err);
+            return null;
+          });
+
+        // update professors with new class information
+        // Note the set update. We don't want to add duplicates here
+        classProfessors.forEach(async (inst) => {
+          await Professors.findOneAndUpdate({ fullName: inst }, { $addToSet: { courses: classIfExists._id } }).catch((err) => console.log(err));
+        });
+
+        if (!res) {
+          console.log(`Unable to update class information for ${cl.subject} ${cl.catalogNbr}!`);
+          throw new Error();
+        }
+      }
+
+      return true;
+    })).catch((err) => {
+      console.log(err);
+      return null;
+    });
+
+    // something went wrong updating classes
+    if (!v) {
+      throw new Error();
+    }
+
+    return true;
+  })).catch((err) => null);
+
+  if (!v2) {
+    console.log("Something went wrong while updating classes");
+    return false;
+  }
+
+  return true;
+}
 
 /*
   Course API scraper. Uses HTTP requests to get course data from the Cornell
