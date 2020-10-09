@@ -69,10 +69,18 @@ export default class Review extends Component {
     if (this.state.liked === false) {
       return Meteor.call('incrementLike', review._id, (error, result) => {
         if (!error && result === 1) {
-          this.setState({
-            liked: true,
-            numLikes: this.state.numLikes + 1 //updates the likes on the PreviewCard review in realtime
-          })
+            if (!this.state.numLikes) {
+              this.setState({
+                liked: true,
+                numLikes: 1 
+              })
+          }
+          else {
+            this.setState({
+              liked: true,
+              numLikes: this.state.numLikes + 1 //updates the likes on the PreviewCard review in realtime
+            })
+          }
           console.log(this.state.liked);
           console.log("Likes: " + review.likes);
         } else {
@@ -191,7 +199,7 @@ export default class Review extends Component {
                       alt={this.state.liked ? "Liked" : "Not Liked Yet"}
                     />
                     <p className="upvote-text">Helpful
-                        ({this.state.numLikes})</p>
+                        ({this.state.numLikes ? this.state.numLikes : 0})</p>
                   </button>
                 }
               </div>
