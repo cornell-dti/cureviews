@@ -75,36 +75,44 @@ function getGaugeValues(allReviews) {
   let sumWorkVirtual = 0;
 
   // create size counting variables
-  let countRatingAndDiffNormal = 0;
+  let countRatingNormal = 0;
+  let countDiffNormal = 0;
   let countWorkNormal = 0;
 
-  let countRatingAndDiffVirtual = 0;
+  let countRatingVirtual = 0;
+  let countDiffVirtual = 0;
   let countWorkVirtual = 0;
 
   allReviews.forEach((review) => {
     if (review) {
       if (review.virtual) {
-        countRatingAndDiffVirtual++;
         sumDiffVirtual += Number(review.difficulty);
-        if (review.rating !== undefined) {
+        countDiffVirtual++;
+
+        if (review.rating) {
+          countRatingVirtual++;
           sumRatingVirtual += Number(review.rating);
-        } else {
+        } else if (review.quality) {
+          countRatingVirtual++;
           sumRatingVirtual += Number(review.quality);
         }
-        if (review.workload != undefined) {
+        if (review.workload) {
           countWorkVirtual++;
           sumWorkVirtual += Number(review.workload);
         }
       } else {
-        countRatingAndDiffNormal++;
         sumDiffNormal += Number(review.difficulty);
-        if (review.rating !== undefined) {
+        countDiffNormal++;
+
+        if (review.rating) {
+          countRatingNormal++;
           sumRatingNormal += Number(review.rating);
-        } else {
+        } else if (review.quality) {
+          countRatingNormal++;
           sumRatingNormal += Number(review.quality);
         }
 
-        if (review.workload != undefined) {
+        if (review.workload) {
           countWorkNormal++;
           sumWorkNormal += Number(review.workload);
         }
@@ -118,8 +126,8 @@ function getGaugeValues(allReviews) {
 
   // we know that if these are 0, then there must not be reviews of that type
   // why? because the minimum rating that anyone can give is 1!
-  const ratingRatioNormal = safe_divide(sumRatingNormal, countRatingAndDiffNormal);
-  const ratingRatioVirtual = safe_divide(sumRatingVirtual, countRatingAndDiffVirtual);
+  const ratingRatioNormal = safe_divide(sumRatingNormal, countRatingNormal);
+  const ratingRatioVirtual = safe_divide(sumRatingVirtual, countRatingVirtual);
 
   if (ratingRatioNormal == 0 && ratingRatioVirtual == 0) {
     newState.rating = "-";
@@ -132,8 +140,8 @@ function getGaugeValues(allReviews) {
   }
 
   // these behave the same as their counterparts for ratings
-  const diffRatioNormal = safe_divide(sumDiffNormal, countRatingAndDiffNormal);
-  const diffRatioVirtual = safe_divide(sumDiffVirtual, countRatingAndDiffVirtual);
+  const diffRatioNormal = safe_divide(sumDiffNormal, countDiffNormal);
+  const diffRatioVirtual = safe_divide(sumDiffVirtual, countDiffVirtual);
 
   if (diffRatioNormal == 0 && diffRatioVirtual == 0) {
     newState.diff = "-";

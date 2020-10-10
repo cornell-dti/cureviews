@@ -6,7 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Meteor } from "./shim";
 import { fetchAddCourses } from "./dbInit";
-import { Classes } from "./dbDefs";
+import { Classes, Students } from "./dbDefs";
 
 dotenv.config();
 const app = express();
@@ -27,7 +27,7 @@ function setup() {
 const uri = process.env.MONGODB_URL ? process.env.MONGODB_URL : "this will error";
 let localMongoServer;
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => setup()).catch(async (err) => {
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(async () => setup()).catch(async (err) => {
   console.log("No DB connection defined!");
 
   // If the environment variable is set, create a simple local db to work with
