@@ -4,9 +4,9 @@
     peforms the action by matching the expected button text from actionText.
 */
 function adminReview(url, reviewText, actionText) {
-  cy.visit(url +'/admin');
+  cy.visit(url + '/admin');
   cy.wait(10000);
-  cy.contains(reviewText).first().contains(actionText +" Review").click();
+  cy.contains(reviewText).first().contains(actionText + " Review").click();
 }
 
 /*
