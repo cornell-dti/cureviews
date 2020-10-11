@@ -13,3 +13,4 @@ db
 .meteor
 mongo/
 *error.log
+debug.log
