@@ -4,12 +4,12 @@
     peforms the action by matching the expected button text from actionText.
 */
 function adminReview(url, reviewText, actionText) {
-  cy.visit(url+'/admin');
+  cy.visit(url +'/admin');
   cy.wait(10000);
-  cy.contains(reviewText).first().contains(actionText+" Review").click();
+  cy.contains(reviewText).first().contains(actionText +" Review").click();
 }
 
-/* 
+/*
     Submits a review for the given courseSub, courseNum and fills it out with
     the information given from reviewText, professor, and isCovidAffected.
 */
@@ -37,7 +37,7 @@ function submitAndApproveReview(url, courseSub, courseNum, reviewText, professor
 */
 function checkCourseMetricsNotNaN(url, courseSub, courseNum) {
   cy.visit(url + '/course/' + courseSub + "/" + courseNum);
-  cy.get(".gauge-text-top").each(($gaugeVal) => { cy.wrap($gaugeVal).should('not.contain', "-")});
+  cy.get(".gauge-text-top").each(($gaugeVal) => { cy.wrap($gaugeVal).should('not.contain', "-"); });
 }
 
 function checkReviewPosted(url, courseSub, courseNum, reviewText) {
