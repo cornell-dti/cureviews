@@ -10,6 +10,6 @@ describe('Submit review', () => {
 
         utils.submitAndApproveReview(url, courseSub, courseNum, reviewText, prof, false);
         utils.checkReviewPosted(url, courseSub, courseNum, reviewText);
-        utils.checkCourseMetricsNotNaN(url, "CS", "2802");
+        utils.checkCourseMetricsNotNaN(url, courseSub, courseNum);
     })
   })
