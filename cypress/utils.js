@@ -45,4 +45,4 @@ function checkReviewPosted(url, courseSub, courseNum, reviewText) {
     cy.contains(reviewText).first().should("exist");
 }
 
-module.exports = {adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted};
+module.exports = {utils : { adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted }};
