@@ -61,7 +61,6 @@ function getCrossListOR(course) {
 // submitted for this class. Return values for the average difficulty, quality,
 // and madatory/not mandatory status.
 function getMetricValues(allReviews) {
-
   const newState = {};
   // create summation variables for reviews
   let sumRating = 0;
@@ -92,19 +91,19 @@ function getMetricValues(allReviews) {
   });
 
 
-  if(countRating > 0) {
+  if (countRating > 0) {
     newState.rating = sumRating / countRating;
   } else {
     newState.rating = "-";
   }
 
-  if(countWork > 0) {
+  if (countWork > 0) {
     newState.workload = sumWork / countWork;
   } else {
     newState.workload = "-";
   }
 
-  if(countDiff > 0) {
+  if (countDiff > 0) {
     newState.diff = sumDiff / countDiff;
   } else {
     newState.diff = "-";
