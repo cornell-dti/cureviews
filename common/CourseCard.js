@@ -60,111 +60,54 @@ function getCrossListOR(course) {
 // collect aggregate information from allReviews, the list of all reviews
 // submitted for this class. Return values for the average difficulty, quality,
 // and madatory/not mandatory status.
-function getGaugeValues(allReviews) {
-  // how much should we factor in virtual reviews? Weighted, 0-1, where 1 is as much a regular reviews
-  const virtualWeightFactor = 0;
+function getMetricValues(allReviews) {
 
   const newState = {};
   // create summation variables for reviews
-  let sumRatingNormal = 0;
-  let sumDiffNormal = 0;
-  let sumWorkNormal = 0;
-
-  let sumRatingVirtual = 0;
-  let sumDiffVirtual = 0;
-  let sumWorkVirtual = 0;
+  let sumRating = 0;
+  let sumDiff = 0;
+  let sumWork = 0;
 
   // create size counting variables
-  let countRatingNormal = 0;
-  let countDiffNormal = 0;
-  let countWorkNormal = 0;
-
-  let countRatingVirtual = 0;
-  let countDiffVirtual = 0;
-  let countWorkVirtual = 0;
+  let countRating = 0;
+  let countDiff = 0;
+  let countWork = 0;
 
   allReviews.forEach((review) => {
-    if (review) {
-      if (review.virtual) {
-        sumDiffVirtual += Number(review.difficulty);
-        countDiffVirtual++;
+    sumDiff += Number(review.difficulty);
+    countDiff++;
 
-        if (review.rating) {
-          countRatingVirtual++;
-          sumRatingVirtual += Number(review.rating);
-        } else if (review.quality) {
-          countRatingVirtual++;
-          sumRatingVirtual += Number(review.quality);
-        }
-        if (review.workload) {
-          countWorkVirtual++;
-          sumWorkVirtual += Number(review.workload);
-        }
-      } else {
-        sumDiffNormal += Number(review.difficulty);
-        countDiffNormal++;
+    if (review.rating) {
+      countRating++;
+      sumRating += Number(review.rating);
+    } else if (review.quality) {
+      countRating++;
+      sumRating += Number(review.quality);
+    }
 
-        if (review.rating) {
-          countRatingNormal++;
-          sumRatingNormal += Number(review.rating);
-        } else if (review.quality) {
-          countRatingNormal++;
-          sumRatingNormal += Number(review.quality);
-        }
-
-        if (review.workload) {
-          countWorkNormal++;
-          sumWorkNormal += Number(review.workload);
-        }
-      }
+    if (review.workload) {
+      countWork++;
+      sumWork += Number(review.workload);
     }
   });
 
-  // a division function for which divide by 0 is defined to return 0
-  // allows us to optimize the following code
-  const safe_divide = (a, b) => (b == 0 ? 0 : a / b);
 
-  // we know that if these are 0, then there must not be reviews of that type
-  // why? because the minimum rating that anyone can give is 1!
-  const ratingRatioNormal = safe_divide(sumRatingNormal, countRatingNormal);
-  const ratingRatioVirtual = safe_divide(sumRatingVirtual, countRatingVirtual);
-
-  if (ratingRatioNormal == 0 && ratingRatioVirtual == 0) {
-    newState.rating = "-";
-  } else if (ratingRatioNormal == 0) {
-    newState.rating = ratingRatioVirtual.toFixed(1);
-  } else if (ratingRatioVirtual == 0) {
-    newState.rating = ratingRatioNormal.toFixed(1);
+  if(countRating > 0) {
+    newState.rating = sumRating / countRating;
   } else {
-    newState.rating = ((ratingRatioNormal + virtualWeightFactor * ratingRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);
+    newState.rating = "-";
   }
 
-  // these behave the same as their counterparts for ratings
-  const diffRatioNormal = safe_divide(sumDiffNormal, countDiffNormal);
-  const diffRatioVirtual = safe_divide(sumDiffVirtual, countDiffVirtual);
+  if(countWork > 0) {
+    newState.workload = sumWork / countWork;
+  } else {
+    newState.workload = "-";
+  }
 
-  if (diffRatioNormal == 0 && diffRatioVirtual == 0) {
+  if(countDiff > 0) {
+    newState.diff = sumDiff / countDiff;
+  } else {
     newState.diff = "-";
-  } else if (diffRatioNormal == 0) {
-    newState.diff = diffRatioVirtual.toFixed(1);
-  } else if (diffRatioVirtual == 0) {
-    newState.diff = diffRatioNormal.toFixed(1);
-  } else {
-    newState.diff = ((diffRatioNormal + virtualWeightFactor * diffRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);
-  }
-
-  // these behave the same as their counterparts for ratings
-  const workloadRatioNormal = safe_divide(sumWorkNormal, countWorkNormal);
-  const workloadRatioVirtual = safe_divide(sumWorkVirtual, countWorkVirtual);
-
-  if (workloadRatioNormal == 0 && workloadRatioVirtual == 0) {
-    newState.rating = "-";
-  } else if (workloadRatioNormal == 0) {
-    newState.workload = workloadRatioVirtual.toFixed(1);
-  } else if (workloadRatioVirtual == 0) {
-    newState.workload = workloadRatioNormal.toFixed(1);
-  } else {
-    newState.workload = ((workloadRatioNormal + virtualWeightFactor * workloadRatioVirtual) / (1 + virtualWeightFactor)).toFixed(1);
   }
 
   // Set gauge color for rating
@@ -198,5 +141,5 @@ function getGaugeValues(allReviews) {
 }
 
 module.exports = {
-  lastOfferedSems, semAbbriviationToWord, lastSem, getCrossListOR, getGaugeValues,
+  lastOfferedSems, semAbbriviationToWord, lastSem, getCrossListOR, getMetricValues,
 };

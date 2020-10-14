@@ -3,7 +3,7 @@ import { Meteor } from "../meteor-shim";
 import Form from './Form.jsx';
 import './css/CourseCard.css';
 import { Class, Review } from 'common';
-import { lastOfferedSems, getGaugeValues } from 'common/CourseCard';
+import { lastOfferedSems } from 'common/CourseCard';
 
 type Props = {
   course: Class;
@@ -54,19 +54,19 @@ export class CourseCard extends Component<Props, State> {
   // Whenever the incoming props change (i.e, the database of reviews for a class
   // is updated) trigger a re-render by updating the gauge values in the local state.
   componentWillReceiveProps(nextProps: Props) {
-    this.updateState(nextProps.course, nextProps.reviews);
+    this.updateState(nextProps.course);
   }
 
   // Recalculate gauge values and other metrics to update the local state
-  updateState(selectedClass: any, allReviews: any) {
+  updateState(selectedClass: any) {
     if (selectedClass !== null && selectedClass !== undefined) {
       // gather data on the reviews and set mandatory flags.
-      if (allReviews.length !== 0) {
-        // set the new state to the collected values. Calls getGaugeValues function in CourseCard.js
-        this.setState(getGaugeValues(allReviews));
-      } else {
-        this.setState(this.defaultGaugeState); //default gauge values
-      }
+        // set the new state to metrics stored in DB for this class
+        this.setState({
+          rating: selectedClass.classRating,
+          workload: selectedClass.classWorkload,
+          diff: selectedClass.classDifficulty
+        });
     }
     else {
       this.setState(this.defaultGaugeState); //default gauge values
