@@ -1,5 +1,6 @@
 import path from "path";
 import express from "express";
+import sslRedirect from 'heroku-ssl-redirect';
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import cors from "cors";
@@ -10,6 +11,10 @@ import { Classes, Students } from "./dbDefs";
 
 dotenv.config();
 const app = express();
+app.use(sslRedirect([
+  'development',
+  'production',
+]));
 app.use(cors());
 app.use(express.static(path.join(__dirname, "../../client/build")));
 
