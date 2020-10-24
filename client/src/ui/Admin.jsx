@@ -5,6 +5,8 @@ import "./css/Admin.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Statistics from './Statistics.tsx';
+import Select from 'react-select';
+
 /*
   Admin Interface Component.
 
@@ -36,12 +38,27 @@ export class Admin extends Component {
       resettingProfs: 0, // 0: starting state, no attempt to clear database,
       // 1: database professor clearing function was called, scraper is running
       // 2: database professor clearing function has completed
-      adminPanelHTML: "Invalid Credentials"
+      adminPanelHTML: "Invalid Credentials",
+      semestersAvailable: [],
+      selectedSemester: ""
     }
 
     this.approveReview.bind(this);
     this.removeReview.bind(this);
     this.unReportReview.bind(this);
+    this.addNewSem.bind(this);
+  }
+
+  componentDidMount() {
+    Meteor.call('getAllSemesters', (error, result) => {
+      if (!error) {
+        this.setState({
+          semestersAvailable: result.map(sem => ({ "value": sem, "label": sem })).reverse()
+        });
+      } else {
+        console.log(error);
+      }
+    });
   }
   //
   // componentWillMount(){
@@ -59,6 +76,10 @@ export class Admin extends Component {
   //     })
   //   }
   // }
+
+  handleSemesterChange(semester) {
+    this.setState({ selectedSemester: semester || null });
+  }
 
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
@@ -98,15 +119,16 @@ export class Admin extends Component {
 
   // Call when user selects "Add New Semester" button. Runs code to check the
   // course API for new classes and updates classes existing in the database.
-  // sShould run once a semester, when new classes are added to the roster.
-  addNewSem(initiate) {
-    console.log("updating to new semester");
+  // Should run once a semester, when new classes are added to the roster.
+  addNewSem() {
+    console.log("Updating to new semester");
     this.setState({ disableNewSem: true, loadingSemester: 1 });
-    Meteor.call('addNewSemester', initiate, Session.get("token"), (error, result) => {
+    Meteor.call('addNewSemester', this.state.selectedSemester.value, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
-        console.log("Added new semester courses");
+        console.log("Successfully added new semester courses");
         this.setState({ disableNewSem: false, loadingSemester: 2 });
       } else {
+        this.setState({ disableNewSem: false, loadingSemester: 3 });
         console.log("Error at Meteor Call: addNewSemester");
         console.log(error);
       }
@@ -227,12 +249,22 @@ export class Admin extends Component {
           <div className="container-width whiteBg">
             <div className="width-90">
               <h2>Admin Interface</h2>
-                <Statistics />
+              <Statistics />
               <br />
 
               <div className="text-right">
+                <div className="semester-dropdown btn-group separate-buttons">
+                  <Select
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    value={this.state.selectedSemester}
+                    onChange={(semester) => this.handleSemesterChange(semester)}
+                    options={this.state.semestersAvailable}
+                    placeholder="Select"
+                  />
+                </div>
                 <div className="btn-group separate-buttons" role="group">
-                  <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={() => this.addNewSem(true)}>Add New Semester</button>
+                  <button disabled={this.state.disableNewSem} type="button" className="btn btn-warning" onClick={() => this.addNewSem()}>Add New Semester</button>
                 </div>
                 <div className="btn-group separate-buttons" role="group">
                   <button type="button" className="btn btn-warning" onClick={() => this.updateProfessors(true)}>Update Professors</button>
@@ -251,6 +283,10 @@ export class Admin extends Component {
 
               <div hidden={!(this.state.loadingSemester === 2)} className="width-90">
                 <p>New Semester Data import is complete!</p>
+              </div>
+
+              <div hidden={!(this.state.loadingSemester === 3)} className="error-text width-90">
+                <p>Error while loading semester: {this.state.selectedSemester.value}</p>
               </div>
 
               <div hidden={!(this.state.resettingProfs === 1)} className="width-90">

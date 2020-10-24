@@ -16,3 +16,15 @@
   width: 50% !important;
   margin: 0 auto;
 }
+
+.semester-dropdown{
+  width: 20%;
+}
+
+.react-select__option{
+  text-align: left;
+}
+
+.error-text{
+  color: red;
+}

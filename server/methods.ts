@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import { includesProfanity } from "common/profanity";
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
-import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
+import { findAllSemesters, updateProfessors, resetProfessorArray, addAllCourses, addCrossList } from './dbInit';
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
@@ -406,39 +406,63 @@ Meteor.methods({
     }
   },
 
+  /**
+   * Returns a list of semester available on the Cornell Class Roster API
+   * Returns null upon error
+   */
+  async getAllSemesters() {
+    try {
+      const semesters = await findAllSemesters();
+      return semesters;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getAllSemesters' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return null;
+    }
+  },
+
   // Update the local database when Cornell Course API adds data for the
   // upcoming semester. Will add new classes if they don't already exist,
   // and update the semesters offered for classes that do.
   // Then, call a second function to link crosslisted courses, so reviews
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page once a semester.
-  // TODO uncomment
-  // async addNewSemester(initiate, token) {
-  // const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
-  //   // ensure code is running on the server, not client
-  //   if (initiate && Meteor.isServer && userIsAdmin) {
-  //     console.log("updating new semester");
-  //     const val = await addAllCourses(await findCurrSemester());
-  //     if (val) {
-  //       return await addCrossList();
-  //     } else {
-  //       console.log("fail");
-  //       return 0;
-  //     }
-  //   }
-  // },
+
+  async addNewSemester(sem, token) {
+    const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
+    if (userIsAdmin) {
+      // eslint-disable-next-line no-console
+      console.log("Updating new semester");
+      const val = await addAllCourses([sem]);
+      if (val) {
+        return await this.addCrossListCaller(token);
+      }
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'addNewSemester' method");
+      return 0;
+    }
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'addNewSemester' method - token was not admin");
+    return 0;
+  },
 
   // Update the local database by linking crosslisted courses, so reviews
   // from all "names" of a class are visible under each course.
   // Should be called by an admin via the admin page ONLY ONCE
   // during database initialization, after calling addAll below.
-  // async addCrossList(initiate) {
-  //     // ensure the code is running on the server, not the client
-  //     if (initiate && Meteor.isServer) {
-  //         console.log("adding cross-listed classes");
-  //         return addCrossList();
-  //     }
-  // },
+  async addCrossListCaller(token) {
+    const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
+    if (userIsAdmin) {
+      // eslint-disable-next-line no-console
+      console.log("Adding cross-listed classes");
+      return addCrossList();
+    }
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'addCrossList' method - token was not admin");
+    return 0;
+  },
 
   // Update the local database with all courses from the Cornell Class Roster.
   // Then, call a second function to link crosslisted courses, so reviews
