@@ -60,7 +60,7 @@ export default class Gauge extends Component<Props,State>{
         this.setState({percentage: percentage, color: color, rating: this.props.rating.toFixed(1)});
       }
       else{
-        this.setState({rating: "-"});
+        this.setState({rating: "-", percentage:0.0});
       }
     }
 

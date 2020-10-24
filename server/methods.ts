@@ -1,4 +1,4 @@
-import { getGaugeValues, getCrossListOR } from 'common/CourseCard';
+import { getMetricValues, getCrossListOR } from 'common/CourseCard';
 import { OAuth2Client } from 'google-auth-library';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import shortid from 'shortid';
@@ -291,12 +291,12 @@ Meteor.methods({
         if (course) {
           const crossListOR = getCrossListOR(course);
           const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
-          const state = getGaugeValues(reviews);
+          const state = getMetricValues(reviews);
 
           await Classes.updateOne({ _id: courseId },
             {
               $set: {
-                // If no data is available, getGaugeValues returns "-" for metric
+                // If no data is available, getMetricValues returns "-" for metric
                 classDifficulty: (state.diff !== "-" && !isNaN(state.diff) ? Number(state.diff) : null),
                 classRating: (state.rating !== "-" && !isNaN(state.rating) ? Number(state.rating) : null),
                 classWorkload: (state.workload !== "-" && !isNaN(state.workload) ? Number(state.workload) : null),
