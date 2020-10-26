@@ -555,6 +555,7 @@ Meteor.methods({
   },
 
   async getClassesByQuery(searchString: string) {
+    console.log(`getClassesByQuery triggered: ${searchString}`);
     try {
       if (searchString !== undefined && searchString !== '') {
         // check if first digit is a number. Catches searchs like "1100"
@@ -655,6 +656,7 @@ Meteor.methods({
 
   // Searches the database on Classes's text index and returns matching courses
   async getCoursesByKeyword(keyword: string) {
+    console.log(`getCoursesByKeyword triggered: ${keyword}`);
     try {
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if (regex.test(keyword)) {
