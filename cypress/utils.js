@@ -1,3 +1,5 @@
+/* eslint-disable space-before-blocks */
+/* eslint-disable space-infix-ops */
 /* eslint-disable prefer-template */
 /*
     Looks for a review containing reviewText in the admin page and
@@ -45,4 +47,27 @@ function checkReviewPosted(url, courseSub, courseNum, reviewText) {
   cy.contains(reviewText).first().should("exist");
 }
 
-module.exports = { utils: { adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted } };
+function getLikeNum (likeText){
+  likeText = likeText.split(" ")[1];
+  likeText = likeText.replace("(", "").replace(")", "");
+  return Number(likeText);
+}
+
+function likeAndCheckReview(url, courseSub, courseNum) {
+  cy.visit(url + '/course/' + courseSub + "/" + courseNum);
+  cy.get(".upvote-text").first().then( ($el)=>{
+    let likeNum = getLikeNum($el.text());
+
+    cy.get(".upvote-text").first().click();
+    cy.reload();
+    cy.get(".upvote-text").first().then( ($p)=>{
+      expect( getLikeNum($p.text()) ).to.equal(likeNum+1);
+    });
+  });
+
+}
+
+
+module.exports = { utils: { 
+  adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted, likeAndCheckReview
+} };
