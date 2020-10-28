@@ -25,7 +25,6 @@ function register<T>(app: express.Application, name: string, endpoint: Endpoint<
   app.post(`/v2/${name}`, guard, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log(errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -33,7 +32,6 @@ function register<T>(app: express.Application, name: string, endpoint: Endpoint<
     // The fact that the guard has not errored is enough for this to be safe
     // Make sure that your guard is sufficient!
     const arg = req.body;
-    console.log(arg);
     return res.status(200).send({ result: await callback(arg) });
   });
 }

@@ -8,7 +8,7 @@ import { Classes, Students, Subjects } from './dbDefs';
 
 let mongoServer: MongoMemoryServer;
 
-const testingPort = 17760;
+const testingPort = 37760;
 
 beforeAll(async () => {
   // get mongoose all set up
