@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import { Meteor } from "./shim";
 import { fetchAddCourses } from "./dbInit";
 import { Classes, Students } from "./dbDefs";
-import { configure } from "./endpoints"
+import { configure } from "./endpoints";
 
 dotenv.config();
 const app = express();
