@@ -7,6 +7,7 @@ import { configure } from "./endpoints";
 import { Classes, Students, Subjects } from './dbDefs';
 
 let mongoServer: MongoMemoryServer;
+let serverCloseHandle;
 
 const testingPort = 37760;
 
@@ -73,13 +74,14 @@ beforeAll(async () => {
 
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
-  app.listen(testingPort, async () => {});
+  serverCloseHandle = app.listen(testingPort, async () => {});
   configure(app);
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
+  serverCloseHandle.close();
 });
 
 describe('tests', () => {
