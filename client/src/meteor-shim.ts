@@ -16,7 +16,7 @@ export class MeteorShim {
     this._subscribe(name, args.slice(0, -1), args[args.length - 1]);
   }
 
-  setup() { this._axios = axios.create({ baseURL: '', timeout: 30000 }); }
+  setup() { this._axios = axios.create({ baseURL: '', timeout: 120_000 }); }
 
   call(name: string, ...args: any[]) {
     const cb = args[args.length - 1];
