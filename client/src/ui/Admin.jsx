@@ -78,6 +78,7 @@ export class Admin extends Component {
   // }
 
   handleSemesterChange(semester) {
+    console.log(semester.value);
     this.setState({ selectedSemester: semester || null });
   }
 
@@ -282,7 +283,7 @@ export class Admin extends Component {
               </div>
 
               <div hidden={!(this.state.loadingSemester === 2)} className="width-90">
-                <p>New Semester Data import is complete!</p>
+                <p>Data import for {this.state.selectedSemester.value} is complete!</p>
               </div>
 
               <div hidden={!(this.state.loadingSemester === 3)} className="error-text width-90">

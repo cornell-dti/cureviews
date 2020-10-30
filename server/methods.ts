@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import { includesProfanity } from "common/profanity";
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
-import { findAllSemesters, updateProfessors, resetProfessorArray, addAllCourses, addCrossList } from './dbInit';
+import { defaultEndpoint, findAllSemesters, updateProfessors, resetProfessorArray, fetchAddCourses, addCrossList } from './dbInit';
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
@@ -434,13 +434,15 @@ Meteor.methods({
     const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
     if (userIsAdmin) {
       // eslint-disable-next-line no-console
-      console.log("Updating new semester");
-      const val = await addAllCourses([sem]);
+      console.log(`Updating for ${sem}`);
+      const val = await fetchAddCourses(defaultEndpoint, sem);
       if (val) {
-        return await this.addCrossListCaller(token);
+        // eslint-disable-next-line no-console
+        console.log(`Done updating for ${sem}, skipping crosslisting for now`);
+        return 1;
       }
       // eslint-disable-next-line no-console
-      console.log("Error: at 'addNewSemester' method");
+      console.log("Error: at 'addNewSemester' method - fetchAddCourses not successful");
       return 0;
     }
     // eslint-disable-next-line no-console
