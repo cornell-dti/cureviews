@@ -55,7 +55,7 @@ function getLikeNum (likeText){
 
 function likeAndCheckReview(url, courseSub, courseNum) {
   cy.visit(url + '/course/' + courseSub + "/" + courseNum);
-  cy.get(".upvote-text").first().then( ($el)=>{
+  cy.get(".upvote-text").first().then(($el) => {
     const likeNum = getLikeNum($el.text());
 
     cy.get(".upvote-text").first().click();
