@@ -56,7 +56,7 @@ function getLikeNum (likeText){
 function likeAndCheckReview(url, courseSub, courseNum) {
   cy.visit(url + '/course/' + courseSub + "/" + courseNum);
   cy.get(".upvote-text").first().then( ($el)=>{
-    let likeNum = getLikeNum($el.text());
+    const likeNum = getLikeNum($el.text());
 
     cy.get(".upvote-text").first().click();
     cy.reload();
@@ -74,9 +74,12 @@ function searchAndPressEnter(url, searchText) {
   cy.get(".search-text").first().type("{enter}");
 }
 
-
-module.exports = { utils: { 
-  adminReview, submitReview, submitAndApproveReview, 
-  checkCourseMetricsNotNaN, checkReviewPosted, likeAndCheckReview,
+module.exports = { utils: {
+  adminReview,
+  submitReview,
+  submitAndApproveReview,
+  checkCourseMetricsNotNaN,
+  checkReviewPosted,
+  likeAndCheckReview,
   searchAndPressEnter,
 } };
