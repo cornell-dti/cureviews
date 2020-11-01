@@ -76,6 +76,7 @@ function searchAndPressEnter(url, searchText) {
 
 
 module.exports = { utils: { 
-  adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted, likeAndCheckReview,
+  adminReview, submitReview, submitAndApproveReview, 
+  checkCourseMetricsNotNaN, checkReviewPosted, likeAndCheckReview,
   searchAndPressEnter,
 } };
