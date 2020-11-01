@@ -47,9 +47,9 @@ function checkReviewPosted(url, courseSub, courseNum, reviewText) {
   cy.contains(reviewText).first().should("exist");
 }
 
-function getLikeNum (likeText){
-  likeText = likeText.split(" ")[1];
-  likeText = likeText.replace("(", "").replace(")", "");
+function getLikeNum(likeText){
+  let likeNumText = likeText.split(" ")[1];
+  likeNumText = likeNumText.replace("(", "").replace(")", "");
   return Number(likeText);
 }
 
@@ -60,11 +60,10 @@ function likeAndCheckReview(url, courseSub, courseNum) {
 
     cy.get(".upvote-text").first().click();
     cy.reload();
-    cy.get(".upvote-text").first().then( ($p)=>{
-      expect( getLikeNum($p.text()) ).to.equal(likeNum+1);
+    cy.get(".upvote-text").first().then(($p) => {
+      expect(getLikeNum($p.text())).to.equal(likeNum+1);
     });
   });
-
 }
 
 function searchAndPressEnter(url, searchText) {
