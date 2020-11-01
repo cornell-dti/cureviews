@@ -67,7 +67,15 @@ function likeAndCheckReview(url, courseSub, courseNum) {
 
 }
 
+function searchAndPressEnter(url, searchText) {
+  cy.visit(url);
+  cy.get(".search-text").first().type(searchText);
+  cy.wait(3000);
+  cy.get(".search-text").first().type("{enter}");
+}
+
 
 module.exports = { utils: { 
-  adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted, likeAndCheckReview
+  adminReview, submitReview, submitAndApproveReview, checkCourseMetricsNotNaN, checkReviewPosted, likeAndCheckReview,
+  searchAndPressEnter,
 } };
