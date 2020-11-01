@@ -8,8 +8,8 @@ describe('Search for a class exactly', () => {
     const courseSub = "CS";
     const courseNum = "4410";
 
-    utils.searchAndPressEnter(url, courseSub + " " + courseNum);
-    cy.url().should('eq', url + "/course/" + courseSub + "/" + courseNum);
+    utils.searchAndPressEnter(url, `${courseSub } ${ courseNum}`);
+    cy.url().should('eq', `${url }/course/${ courseSub }/${ courseNum}`);
   });
 });
 
