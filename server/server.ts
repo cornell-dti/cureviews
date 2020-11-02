@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import { Meteor } from "./shim";
 import { fetchAddCourses } from "./dbInit";
 import { Classes, Students } from "./dbDefs";
+import { configure } from "./endpoints";
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,7 @@ function setup() {
     Meteor.bind();
     app.get('*', (_, response) => response.sendFile(path.join(__dirname, '../../client/build/index.html')));
     // eslint-disable-next-line no-console
+    configure(app);
     app.listen(port, () => console.log(`Listening on port ${port}...`));
   });
 }
