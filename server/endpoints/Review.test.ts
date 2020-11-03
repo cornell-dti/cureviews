@@ -31,6 +31,8 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('getClassesByQuery-works', async () => {
-
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "dsjkdhjqe" });
+    console.log("review test: ", res.data);
+    expect(1).toBe(1);
   });
 });

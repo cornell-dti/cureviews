@@ -8,9 +8,12 @@ interface CourseId {
   courseId: string;
 }
 // eslint-disable-next-line import/prefer-default-export
-export const getReviewsByCourseId = (): Endpoint<CourseId> => ({
+export const getReviewsByCourseId: Endpoint<CourseId> = {
   guard: [body("courseId").notEmpty().isAscii()],
   callback: async (courseId: CourseId) => {
+    console.log("called getReviewsByCourseId");
+    return null;
+
     try {
       const regex = new RegExp(/^(?=.*[A-Z])/i);
       if (regex.test(courseId.courseId)) {
@@ -31,4 +34,4 @@ export const getReviewsByCourseId = (): Endpoint<CourseId> => ({
       return null;
     }
   },
-});
+};
