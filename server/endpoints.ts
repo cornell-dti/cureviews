@@ -1,7 +1,7 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
 import { getClassesByQuery } from "./endpoints/SearchBar";
-import { getReviewsByCourseId } from "./endpoints/Review";
+import { getReviewsByCourseId, getCourseById } from "./endpoints/Review";
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
@@ -19,6 +19,7 @@ export function configure(app: express.Application) {
 
   register(app, "getClassesByQuery", getClassesByQuery);
   register(app, "getReviewsByCourseId", getReviewsByCourseId);
+  register(app, "getCourseById", getCourseById);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
