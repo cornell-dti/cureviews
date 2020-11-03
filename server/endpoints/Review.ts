@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import { getCrossListOR } from "common/CourseCard";
 import { Endpoint } from "../endpoints";
 import { Meteor } from "../shim";
 import { Reviews } from "../dbDefs";
