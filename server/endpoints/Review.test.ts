@@ -3,14 +3,13 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";
 
 import axios from 'axios';
-import { Review } from 'common';
 import { configure } from "../endpoints";
-import { Classes, Students, Subjects, Reviews } from "../dbDefs";
+import { Classes, Reviews } from "../dbDefs";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 37760;
+const testingPort = 8000;
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -75,11 +74,11 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
-  serverCloseHandle.close();
+  await serverCloseHandle.close();
 });
 
 describe('tests', () => {
-  it('getClassesByQuery-works', async () => {
+  it('getReviewsByCourseId - posting review', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
     expect(res.data.result.length).toBe(2);
   });
