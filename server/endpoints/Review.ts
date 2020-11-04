@@ -1,7 +1,6 @@
 import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import { Endpoint } from "../endpoints";
-import { Meteor } from "../shim";
 import { Reviews, Classes } from "../dbDefs";
 
 interface CourseId {

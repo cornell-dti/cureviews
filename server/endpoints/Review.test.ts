@@ -82,6 +82,5 @@ describe('tests', () => {
   it('getClassesByQuery-works', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
     expect(res.data.result.length).toBe(2);
-    expect(1).toBe(1);
   });
 });
