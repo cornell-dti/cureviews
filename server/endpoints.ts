@@ -1,6 +1,7 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
 import { getClassesByQuery } from "./endpoints/SearchBar";
+import { tokenIsAdmin } from "./endpoints/Auth";
 
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
@@ -18,6 +19,7 @@ export function configure(app: express.Application) {
   app.use(express.json());
 
   register(app, "getClassesByQuery", getClassesByQuery);
+  register(app, "tokenIsAdmin", tokenIsAdmin);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
