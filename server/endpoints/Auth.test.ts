@@ -23,7 +23,7 @@ beforeAll(async () => {
     lastName: "Vanderbilt",
     netId: "cv4620",
     affiliation: null,
-    token: "fakeTokencv620",
+    token: "fakeTokencv4620",
     privilege: "regular",
   });
 
@@ -54,7 +54,7 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('tokenIsAdmin-works', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { "token": "fakeTokencv620" }).catch((e) => "failed!")).toBe(false);
+    expect(await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { "token": "fakeTokencv4620" }).catch((e) => "failed!")).toBe(false);
     expect(await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { "token": "fakeTokendti1" }).catch((e) => "failed!")).toBe(true);
   });
 });
