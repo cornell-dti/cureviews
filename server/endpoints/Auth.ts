@@ -1,17 +1,14 @@
 import { body } from "express-validator";
-
+import { OAuth2Client } from 'google-auth-library';
 import { Endpoint } from "../endpoints";
 import { Students } from "../dbDefs";
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
-import { OAuth2Client } from 'google-auth-library';
+
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
 // The type for a search query
 interface AdminRequest {
     token: string;
 }
-
-
 
 /**
    * Returns true if [netid] matches the netid in the email of the JSON
@@ -82,8 +79,7 @@ export const getUserByNetId = async (netId: string) => {
     console.log(error);
     return null;
   }
-}
-
+};
 
 /*
  * Check if a token is for an admin
@@ -110,7 +106,5 @@ export const tokenIsAdmin: Endpoint<AdminRequest> = {
       console.log(error);
       return false;
     }
-  } 
+  },
 };
-
- 
