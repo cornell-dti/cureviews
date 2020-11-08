@@ -54,7 +54,9 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('tokenIsAdmin-works', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokencv4620" }).catch((e) => "failed!")).toBe(false);
-    expect(await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokendti1" }).catch((e) => "failed!")).toBe(true);
+    const failRes = await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokencv4620" })
+    expect(failRes.data.result).toEqual(false);
+    const successRes = await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokendti1" })
+    expect(successRes.data.result).toEqual(true);
   });
 });
