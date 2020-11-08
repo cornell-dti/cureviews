@@ -1,15 +1,36 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";
-
 import axios from 'axios';
+import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
+
 import { configure } from "../endpoints";
 import { Students } from "../dbDefs";
+import * as Auth from "./Auth";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
 const testingPort = 37760;
+
+
+const invalidTokenPayload: TokenPayload = {
+  email: 'cv4620@cornell.edu',
+  iss: undefined,
+  sub: undefined,
+  iat: undefined,
+  aud: undefined,
+  exp: undefined,
+};
+
+const validTokenPayload: TokenPayload = {
+  email: 'dti1@cornell.edu',
+  iss: undefined,
+  sub: undefined,
+  iat: undefined,
+  aud: undefined,
+  exp: undefined,
+};
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -33,7 +54,7 @@ beforeAll(async () => {
     lastName: "Ivy",
     netId: "dti1",
     affiliation: null,
-    token: "fakeTokendti1",
+    token: "fakeTokenDti1",
     privilege: "admin",
   });
 
@@ -54,9 +75,18 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('tokenIsAdmin-works', async () => {
+    const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token? : string) => {
+      if (token === 'fakeTokenDti1') {
+        return validTokenPayload;
+      }
+      return invalidTokenPayload;
+    });
+
     const failRes = await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokencv4620" });
     expect(failRes.data.result).toEqual(false);
-    const successRes = await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokendti1" });
+    const successRes = await axios.post(`http://localhost:${testingPort}/v2/tokenIsAdmin`, { token: "fakeTokenDti1" });
     expect(successRes.data.result).toEqual(true);
+
+    mockVerificationTicket.mockRestore();
   });
 });
