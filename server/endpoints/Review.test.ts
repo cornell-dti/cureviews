@@ -9,7 +9,7 @@ import { Classes, Reviews } from "../dbDefs";
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 37760;
+const testingPort = 8000;
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -62,9 +62,9 @@ beforeAll(async () => {
     reported: 0,
   });
 
-  await review2.save();
-  await review1.save();
-  await c2110.save();
+  review2.save();
+  review1.save();
+  c2110.save();
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
   serverCloseHandle = app.listen(testingPort, async () => { });
@@ -74,11 +74,11 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
-  serverCloseHandle.close();
+  await serverCloseHandle.close();
 });
 
 describe('tests', () => {
-  it('getClassesByQuery-works', async () => {
+  it('getReviewsByCourseId - posting review', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
     expect(res.data.result.length).toBe(2);
   });
