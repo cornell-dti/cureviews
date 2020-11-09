@@ -3,9 +3,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";
 
 import axios from 'axios';
-import { Review } from 'common';
 import { configure } from "../endpoints";
-import { Classes, Students, Subjects, Reviews } from "../dbDefs";
+import { Classes, Reviews } from "../dbDefs";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
