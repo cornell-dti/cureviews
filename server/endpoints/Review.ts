@@ -27,7 +27,9 @@ export const getCourseById: Endpoint<CourseId> = {
   },
 };
 
-// eslint-disable-next-line import/prefer-default-export
+/**
+ * Get list of review objects for given class from class _id
+ */
 export const getReviewsByCourseId: Endpoint<CourseId> = {
   guard: [body("courseId").notEmpty().isAscii()],
   callback: async (courseId: CourseId) => {

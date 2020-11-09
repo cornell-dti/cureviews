@@ -62,9 +62,9 @@ beforeAll(async () => {
     reported: 0,
   });
 
-  review2.save();
-  review1.save();
-  c2110.save();
+  await review2.save();
+  await review1.save();
+  await c2110.save();
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
   serverCloseHandle = app.listen(testingPort, async () => { });
