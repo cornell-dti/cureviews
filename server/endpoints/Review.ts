@@ -7,6 +7,10 @@ interface CourseId {
   courseId: string;
 }
 
+/**
+ * Get a course with this course_id from the Classes collection in the local
+ * database.
+ */
 export const getCourseById: Endpoint<CourseId> = {
   guard: [body("courseId").notEmpty().isAscii()],
   callback: async (courseId: CourseId) => {
