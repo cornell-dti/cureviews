@@ -148,4 +148,9 @@ describe('tests', () => {
     expect(res.data.result._id).toBe("oH37S3mJ4eAsktypy");
     expect(res.data.result.classTitle).toBe("Object-Oriented Programming and Data Structures");
   });
+
+  it("getReviewsByCourseId - getting review for a class that does not exist", async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "ert" });
+    expect(res.data.result).toEqual({ error: 'Invalid course id' });
+  });
 });
