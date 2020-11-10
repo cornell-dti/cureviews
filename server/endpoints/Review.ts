@@ -8,8 +8,7 @@ interface CourseId {
 }
 
 /**
- * Get a course with this course_id from the Classes collection in the local
- * database.
+ * Get a course with this course_id from the Classes collection
  */
 export const getCourseById: Endpoint<CourseId> = {
   guard: [body("courseId").notEmpty().isAscii()],
@@ -20,13 +19,13 @@ export const getCourseById: Endpoint<CourseId> = {
       if (regex.test(courseId.courseId)) {
         return await Classes.findOne({ _id: courseId.courseId }).exec();
       }
-      return null;
+      return { error: "Malformed Query" };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getCourseById' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return null;
+      return { error: "Internal Server Error" };
     }
   },
 };
@@ -46,15 +45,15 @@ export const getReviewsByCourseId: Endpoint<CourseId> = {
           const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
           return reviews;
         }
-        return null;
+        return { error: "Invalid course id" };
       }
-      return null;
+      return { error: "Malformed Query" };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getReviewsByCourseId' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return null;
+      return { error: "Internal Server Error" };
     }
   },
 };
