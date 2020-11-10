@@ -88,7 +88,7 @@ afterAll(async () => {
 describe('tests', () => {
   it('getReviewsByCourseId - getting review', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
-    expect(res.data.result.length).toBe(2);
+    expect(res.data.result.length).toBe(testReviews.length);
 
     const classOfReviews = testReviews.map((r) => r.class);
     expect(res.data.result.map((r) => r.class).sort()).toEqual(classOfReviews.sort());
