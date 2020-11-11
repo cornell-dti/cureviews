@@ -8,5 +8,5 @@
         "downlevelIteration": true,
         "outDir": "dist"
     },
-    "files": ["dbInit.ts", "dbDefs.ts", "publications.ts", "methods.ts", "shim.ts", "server.ts", "endpoints.ts", "endpoints/SearchBar.ts"]
+    "files": ["dbInit.ts", "dbDefs.ts", "publications.ts", "methods.ts", "shim.ts", "server.ts", "endpoints.ts", "endpoints/Search.ts"]
 }
