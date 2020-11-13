@@ -1,6 +1,5 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { getClassesByQuery } from "./endpoints/SearchBar";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 
