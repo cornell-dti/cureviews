@@ -29,8 +29,6 @@ export const getVerificationTicket = async (token?: string) => {
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com", // Specify the CLIENT_ID of the app that accesses the backend
-      // Or, if multiple clients access the backend:
-      // [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
     return ticket.getPayload();
   } catch (error) {
@@ -40,28 +38,6 @@ export const getVerificationTicket = async (token?: string) => {
     console.log(error);
     return null;
   }
-};
-  /**
-   * Used in the .catch when verify is used, handles whatever should be done
-   * @param errorObj (required) the error that is returned from the .catch
-   * @param res the response object
-   * @return {boolean} true if their token is too old, false if some other error
-   * @requires that you have the verify function, like as follows:
-   * verify(token, function(){//do whatever}).catch(function(error){
-   *        handleVerifyError(error, res);
-   * }
-   */
-export const handleVerifyError = (errorObj, res) => {
-  if (errorObj && errorObj.toString()) {
-    if (errorObj.toString().indexOf('used too late') !== -1) {
-      res.status(409).send('Token used too late');
-      return true;
-    }
-
-    res.status(409).send('Invalid token');
-    return true;
-  }
-  return false;
 };
 
 // Get a user with this netId from the Users collection in the local database
