@@ -18,7 +18,6 @@ interface AdminRequest {
    * @param netid: netid to verify
    * @requires that you have a handleVerifyError, like as follows:
    * verify(token, function(){//do whatever}).catch(function(error){
-   * handleVerifyError(error, res);
    */
 export const getVerificationTicket = async (token?: string) => {
   try {
@@ -28,7 +27,7 @@ export const getVerificationTicket = async (token?: string) => {
     }
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com", // Specify the CLIENT_ID of the app that accesses the backend
+      audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",
     });
     return ticket.getPayload();
   } catch (error) {
