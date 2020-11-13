@@ -4,7 +4,7 @@ import express from "express";
 
 import axios from 'axios';
 import { configure } from "../endpoints";
-import { Classes, Students, Subjects } from "../dbDefs";
+import { Classes, Students, Subjects, Professors } from "../dbDefs";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
@@ -48,7 +48,7 @@ beforeAll(async () => {
     classTitle: "Introduction to Testing",
     classFull: "MORK 1110: Introduction to Testing",
     classSems: ["FA19"],
-    classProfessors: ["Some Phd"],
+    classProfessors: ["Gazghul Thraka"],
     classRating: 1,
     classWorkload: 2,
     classDifficulty: 3,
@@ -64,13 +64,47 @@ beforeAll(async () => {
     classFull: "MORK 2110: Intermediate Testing",
     classSems: ["SP20"],
     classPrereq: [newCourse1._id],
-    classProfessors: ["Some Phd"],
+    classProfessors: ["Gazghul Thraka"],
     classRating: 3,
     classWorkload: 4,
     classDifficulty: 5,
   });
 
   await newCourse2.save();
+
+  const madSubject = new Subjects({
+    _id: "angry subject",
+    subShort: "MAD",
+    subFull: "The Study of Anger Issues",
+  });
+
+  await madSubject.save();
+
+  const fednSubject = new Subjects({
+    _id: "federation subject",
+    subShort: "FEDN",
+    subFull: "The Study of Where No Man has Gone Before!",
+  });
+
+  await fednSubject.save();
+
+  const prof1 = new Professors({
+    _id: "prof 1",
+    fullName: "Gazghul Thraka",
+    courses: ["newCourse1", "newCourse2"],
+    major: "MORK",
+  });
+
+  prof1.save();
+
+  const prof2 = new Professors({
+    _id: "prof 2",
+    fullName: "Jean-Luc Picard",
+    courses: [],
+    major: "FEDN",
+  });
+
+  prof2.save();
 
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
@@ -87,8 +121,30 @@ afterAll(async () => {
 describe('tests', () => {
   it('getClassesByQuery-works', async () => {
     expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+
     const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK 1" });
     // we expect it to be MORK 1110 first, and then MORK 2110
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+  });
+
+  it('getSubjectsByQuery-works', async () => {
+    expect(await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "MORK" });
+    expect(res.data.result.map((e) => e.subShort)).toContain("MORK");
+    expect(res.data.result.map((e) => e.subShort)).not.toContain("MAD");
+    expect(res.data.result.map((e) => e.subShort)).not.toContain("FEDN");
+  });
+
+  it('getProfessorsByQuery-works', async () => {
+    expect(await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+
+    const res1 = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "Gazghul Thraka" });
+    expect(res1.data.result.map((e) => e.fullName)).toContain("Gazghul Thraka");
+    expect(res1.data.result.map((e) => e.fullName)).not.toContain("Jean-Luc Picard");
+
+    const res2 = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "Jean-Luc Picard" });
+    expect(res2.data.result.map((e) => e.fullName)).not.toContain("Gazghul Thraka");
+    expect(res2.data.result.map((e) => e.fullName)).toContain("Jean-Luc Picard");
   });
 });
