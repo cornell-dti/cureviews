@@ -56,30 +56,35 @@ export const getUserByNetId = async (netId: string) => {
   }
 };
 
+/**/
+export const verifyToken = async (token: string) => {
+  try {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(token)) {
+      const ticket = await getVerificationTicket(token);
+      if (ticket && ticket.email) {
+        const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
+        if (user) {
+          return user.privilege === 'admin';
+        }
+      }
+    }
+    return false;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'verufyToken' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return false;
+  }
+};
+
 /*
  * Check if a token is for an admin
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (adminRequest: AdminRequest) => {
-    try {
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(adminRequest.token)) {
-        const ticket = await getVerificationTicket(adminRequest.token);
-        if (ticket && ticket.email) {
-          const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
-          if (user) {
-            return user.privilege === 'admin';
-          }
-        }
-      }
-      return false;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'tokenIsAdmin' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return false;
-    }
+    return verifyToken(adminRequest.token);
   },
 };
