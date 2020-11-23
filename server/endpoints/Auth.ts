@@ -84,7 +84,5 @@ export const verifyToken = async (token: string) => {
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (adminRequest: AdminRequest) => {
-    return verifyToken(adminRequest.token);
-  },
+  callback: async (adminRequest: AdminRequest) => verifyToken(adminRequest.token)
 };
