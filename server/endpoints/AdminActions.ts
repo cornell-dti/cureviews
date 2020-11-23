@@ -2,12 +2,18 @@ import { body } from "express-validator";
 
 import { Endpoint } from "../endpoints";
 import { Reviews, ReviewDocument, Classes } from "../dbDefs";
-import {verifyToken } from "./Auth";
+import { verifyToken } from "./Auth";
+import { updateProfessors, findAllSemesters } from "../dbInit"
 import { getCrossListOR, getMetricValues } from "../../common/CourseCard";
 
 // The type for a request with an admin action for a review
 interface AdminReviewRequest {
     review: ReviewDocument;
+    token: string;
+}
+
+// The type for a request with an admin action for updating professors info
+interface AdminProfessorsRequest {
     token: string;
 }
 
@@ -115,6 +121,67 @@ export const removeReview: Endpoint<AdminReviewRequest> = {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'removeReview' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return 0;
+    }
+  },
+};
+
+/*
+ * Update the database so we have the professors information
+ */
+export const setProfessors: Endpoint<AdminProfessorsRequest> = {
+  guard: [body("token").notEmpty().isAscii()],
+  callback: async (adminProfessorsRequest: AdminProfessorsRequest) => {
+    try {
+      const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
+      if (userIsAdmin) {
+        const semesters = findAllSemesters();
+        console.log("These are the semesters");
+        console.log(semesters);
+        const val = updateProfessors(semesters);
+        if (val) {
+          return val;
+        }
+        console.log("fail at setProfessors");
+        return 0;
+      }
+      return 0;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'setProfessors' ");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return 0;
+    }
+  },
+};
+
+/*
+ * Initializes the classProfessors field in the Classes collection to an empty array so that
+  we have a uniform empty array to fill with updateProfessors
+ */
+export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
+  guard: [body("token").notEmpty().isAscii()],
+  callback: async (adminProfessorsRequest: AdminProfessorsRequest) => {
+    try {
+      const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
+      if (userIsAdmin) {
+        const semesters = findAllSemesters();
+        console.log("These are the semesters");
+        console.log(semesters);
+        const val = resetProfessorArray(semesters);
+        if (val) {
+          return val;
+        }
+        console.log("fail at resetProfessors in method.js");
+        return 0;
+      }
+      return 0;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'resetProfessors' method");
       // eslint-disable-next-line no-console
       console.log(error);
       return 0;
