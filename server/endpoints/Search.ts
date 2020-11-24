@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 import { Endpoint } from "../endpoints";
-import { Classes } from "../dbDefs";
+import { Classes, Subjects, Professors } from "../dbDefs";
 
 // The type for a search query
 interface Search {
@@ -72,7 +72,51 @@ export const getClassesByQuery: Endpoint<Search> = {
       return { error: "Malformed Query" };
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log("Error: at 'getClassesByQuery' method");
+      console.log("Error: at 'getClassesByQuery' endpoint");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { error: "Internal Server Error" };
+    }
+  },
+};
+
+/*
+ * Searches the database on Subjects using the text index and returns matching subjects
+ */
+export const getSubjectsByQuery: Endpoint<Search> = {
+  guard: [body("query").notEmpty().isAscii()],
+  callback: async (search: Search) => {
+    try {
+      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if (regex.test(search.query)) {
+        return await Subjects.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      }
+      return { error: "Malformed Query" };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getSubjectsByQuery' endpoint");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { error: "Internal Server Error" };
+    }
+  },
+};
+
+/*
+ * Searches the database on Professors using the text index and returns matching professors
+ */
+export const getProfessorsByQuery: Endpoint<Search> = {
+  guard: [body("query").notEmpty().isAscii()],
+  callback: async (seach: Search) => {
+    try {
+      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if (regex.test(seach.query)) {
+        return await Professors.find({ $text: { $search: seach.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      }
+      return { error: "Malformed Query" };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getProfessorsByQuery' endpoint");
       // eslint-disable-next-line no-console
       console.log(error);
       return { error: "Internal Server Error" };
