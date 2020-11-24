@@ -1,13 +1,14 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
+import { getReviewsByCourseId, getCourseById } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
-    guard: ValidationChain[];
-    callback: (args: T) => any;
+  guard: ValidationChain[];
+  callback: (args: T) => any;
 }
 
 /*
@@ -19,6 +20,8 @@ export function configure(app: express.Application) {
   app.use(express.json());
 
   register(app, "getClassesByQuery", getClassesByQuery);
+  register(app, "getReviewsByCourseId", getReviewsByCourseId);
+  register(app, "getCourseById", getCourseById);
   register(app, "tokenIsAdmin", tokenIsAdmin);
   register(app, "getSubjectsByQuery", getSubjectsByQuery);
   register(app, "getProfessorsByQuery", getProfessorsByQuery);
