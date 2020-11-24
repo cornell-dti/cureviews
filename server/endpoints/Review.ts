@@ -1,9 +1,10 @@
 import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import { Endpoint } from "../endpoints";
-import { Reviews, Classes } from "../dbDefs";
+import { Reviews } from "../dbDefs";
+import { getCourseById as getCourseByIdCallback } from "./utils";
 
-interface CourseId {
+export interface CourseId {
   courseId: string;
 }
 
@@ -12,22 +13,7 @@ interface CourseId {
  */
 export const getCourseById: Endpoint<CourseId> = {
   guard: [body("courseId").notEmpty().isAscii()],
-  callback: async (courseId: CourseId) => {
-    try {
-      // check: make sure course id is valid and non-malicious
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(courseId.courseId)) {
-        return await Classes.findOne({ _id: courseId.courseId }).exec();
-      }
-      return { error: "Malformed Query" };
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'getCourseById' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return { error: "Internal Server Error" };
-    }
-  },
+  callback: getCourseByIdCallback,
 };
 
 /**
@@ -39,7 +25,7 @@ export const getReviewsByCourseId: Endpoint<CourseId> = {
     try {
       const regex = new RegExp(/^(?=.*[A-Z])/i);
       if (regex.test(courseId.courseId)) {
-        const course = await getCourseById.callback(courseId);
+        const course = await getCourseByIdCallback(courseId);
         if (course) {
           const crossListOR = getCrossListOR(course);
           const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
