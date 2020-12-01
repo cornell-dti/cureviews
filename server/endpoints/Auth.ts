@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import { OAuth2Client } from 'google-auth-library';
 import { Endpoint } from "../endpoints";
 import { Students } from "../dbDefs";
+import { verifyToken } from "./utils"; 
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
@@ -53,29 +54,6 @@ export const getUserByNetId = async (netId: string) => {
     // eslint-disable-next-line no-console
     console.log(error);
     return null;
-  }
-};
-
-/**/
-export const verifyToken = async (token: string) => {
-  try {
-    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(token)) {
-      const ticket = await getVerificationTicket(token);
-      if (ticket && ticket.email) {
-        const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
-        if (user) {
-          return user.privilege === 'admin';
-        }
-      }
-    }
-    return false;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log("Error: at 'verufyToken' method");
-    // eslint-disable-next-line no-console
-    console.log(error);
-    return false;
   }
 };
 

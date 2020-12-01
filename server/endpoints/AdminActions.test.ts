@@ -7,11 +7,11 @@ import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { configure } from "../endpoints";
 import { Classes, Reviews } from "../dbDefs";
 import { getCourseById } from "./utils";
-import * as Auth from "./Auth";
+import * as Utils from "./Utils";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
-const mockVerification = jest.spyOn(Auth, 'verifyToken').mockImplementation(async (token? : string) => true);
+const mockVerification = jest.spyOn(Utils, 'verifyToken').mockImplementation(async (token? : string) => true);
 
 const testingPort = 37728;
 
