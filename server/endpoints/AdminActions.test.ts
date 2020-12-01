@@ -6,8 +6,7 @@ import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 
 import { configure } from "../endpoints";
 import { Classes, Reviews } from "../dbDefs";
-import { getCourseById } from "./utils";
-import * as Utils from "./Utils";
+import * as Utils from "./utils";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
