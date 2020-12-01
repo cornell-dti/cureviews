@@ -3,7 +3,7 @@ import { body } from "express-validator";
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
 import { Endpoint } from "../endpoints";
 import { Reviews, ReviewDocument, Classes } from "../dbDefs";
-import { updateProfessors, findAllSemesters, resetProfessorArray } from "../dbInit"
+import { updateProfessors, findAllSemesters, resetProfessorArray } from "../dbInit";
 import { getCourseById, verifyToken } from "./utils";
 
 // The type for a request with an admin action for a review
