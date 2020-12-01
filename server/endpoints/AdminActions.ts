@@ -3,8 +3,9 @@ import { body } from "express-validator";
 import { Endpoint } from "../endpoints";
 import { Reviews, ReviewDocument, Classes } from "../dbDefs";
 import { verifyToken } from "./Auth";
-import { updateProfessors, findAllSemesters } from "../dbInit"
+import { updateProfessors, findAllSemesters, resetProfessorArray } from "../dbInit"
 import { getCrossListOR, getMetricValues } from "../../common/CourseCard";
+import { getCourseById } from "./utils";
 
 // The type for a request with an admin action for a review
 interface AdminReviewRequest {
@@ -23,12 +24,11 @@ export const updateCourseMetrics = async (courseId, token) => {
   try {
     const userIsAdmin = await verifyToken(token);
     if (userIsAdmin) {
-      const course = await Meteor.call("getCourseById", courseId);
+      const course = await getCourseById({ courseId });
       if (course) {
         const crossListOR = getCrossListOR(course);
         const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
         const state = getMetricValues(reviews);
-
         await Classes.updateOne({ _id: courseId },
           {
             $set: {

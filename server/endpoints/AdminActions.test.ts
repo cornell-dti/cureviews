@@ -6,25 +6,26 @@ import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 
 import { configure } from "../endpoints";
 import { Classes, Reviews } from "../dbDefs";
+import { getCourseById } from "./utils";
 import * as Auth from "./Auth";
-import { undoReportReview } from './AdminActions';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
+const mockVerification = jest.spyOn(Auth, 'verifyToken').mockImplementation(async (token? : string) => true);
 
-const testingPort = 37760;
+const testingPort = 37728;
 
-const sampleReviewId = "sample-review";
-const reviewToUndoReportId = "review-to-undo-report";
+const sampleReviewId = "sampleReview";
+const reviewToUndoReportId = "reviewToUndoReport";
 
 const newCourse1 = new Classes({
-  _id: "newCourse1",
-  classSub: "MORK",
-  classNum: "1110",
-  classTitle: "Introduction to Testing",
-  classFull: "MORK 1110: Introduction to Testing",
+  _id: "fakeCourseId",
+  classSub: "COOL",
+  classNum: "1337",
+  classTitle: "Beach Engineering",
+  classFull: "COOL 1337: Beach Engineering",
   classSems: ["FA19"],
-  classProfessors: ["Gazghul Thraka"],
+  classProfessors: ["Paul George"],
   classRating: 0,
   classWorkload: 0,
   classDifficulty: 0,
@@ -33,6 +34,7 @@ const newCourse1 = new Classes({
 const sampleReview = new Reviews({
   _id: sampleReviewId,
   visible: 0,
+  reported: 0,
   class: newCourse1._id,
   difficulty: 1,
   rating: 1,
@@ -42,41 +44,18 @@ const sampleReview = new Reviews({
 const reviewToUndoReport = new Reviews({
   _id: reviewToUndoReportId,
   reported: 1,
-  visible: 1,
+  visible: 0,
   class: newCourse1._id,
   difficulty: 5,
   rating: 5,
   workload: 5,
 });
 
-const adminUser = new Students({
-    _id: "Irrelevant2",
-    firstName: "Dan Thomas",
-    lastName: "Ivy",
-    netId: "dti1",
-    affiliation: null,
-    token: "fakeTokenDti1",
-    privilege: "admin",
-  });
-
-  const validTokenPayload: TokenPayload = {
-    email: 'dti1@cornell.edu',
-    iss: undefined,
-    sub: undefined,
-    iat: undefined,
-    aud: undefined,
-    exp: undefined,
-  };
-
 beforeAll(async () => {
   // get mongoose all set up
   mongoServer = new MongoMemoryServer();
   const mongoUri = await mongoServer.getUri();
   await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  await newCourse1.save();
-  await adminUser.save();
-
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
   serverCloseHandle = app.listen(testingPort, async () => {});
@@ -87,45 +66,39 @@ afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
   serverCloseHandle.close();
+  mockVerification.mockRestore();
 });
 
 describe('tests', () => {
   it('makeReviewVisible-works', async () => {
-    const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token? : string) => validTokenPayload);
     await sampleReview.save();
+    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/makeReviewVisible`, { review: sampleReview, token: "non-empty" });
     expect(res.data.result).toEqual(1);
-    const course = await Classes.findById("newCourse1");
+    const course = await Classes.findOne({ _id: newCourse1._id }).exec();
     expect(course.classDifficulty).toEqual(sampleReview.difficulty);
     expect(course.classWorkload).toEqual(sampleReview.workload);
     expect(course.classRating).toEqual(sampleReview.rating);
-
-    mockVerificationTicket.mockRestore();
   });
 
   it('undoReportReview-works', async () => {
-    const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token? : string) => validTokenPayload);
     await reviewToUndoReport.save();
-    const res = await axios.post(`http://localhost:${testingPort}/v2/undoReportReview`, { review: reviewToUndoReport, token: "non-empty" });
+    await newCourse1.save();
+    const res = await axios.post(`http://localhost:${testingPort}/v2/undoReportReview`, { review: reviewToUndoReport, token: "non empty" });
     expect(res.data.result).toEqual(1);
-    const course = await Classes.findById("newCourse1");
-    expect(course.classDifficulty).toEqual(reviewToUndoReport.difficulty);
-    expect(course.classWorkload).toEqual(reviewToUndoReport.workload);
-    expect(course.classRating).toEqual(reviewToUndoReport.rating);
-
-    mockVerificationTicket.mockRestore();
+    const reviewFromDb = await Reviews.findById(reviewToUndoReport._id).exec();
+    expect(reviewFromDb.visible).toEqual(1);
+    await reviewToUndoReport.remove();
   });
 
   it('removeReview-works', async () => {
-    const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token? : string) => validTokenPayload);
     await sampleReview.save();
+    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/removeReview`, { review: sampleReview, token: "non-empty" });
     expect(res.data.result).toEqual(1);
-    const course = await Classes.findById("newCourse1");
-    expect(course.classDifficulty).toEqual("-");
-    expect(course.classWorkload).toEqual("-");
-    expect(course.classRating).toEqual("-");
-
-    mockVerificationTicket.mockRestore();
+    const course = await Classes.findById(newCourse1._id);
+    expect(course.classDifficulty).toEqual(null);
+    expect(course.classWorkload).toEqual(null);
+    expect(course.classRating).toEqual(null);
   });
 });

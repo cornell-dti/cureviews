@@ -3,7 +3,7 @@ import { validationResult, ValidationChain } from "express-validator";
 import { getReviewsByCourseId, getCourseById } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
-import { makeReviewVisible } from "./endpoints/AdminActions";
+import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
 
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
@@ -27,6 +27,8 @@ export function configure(app: express.Application) {
   register(app, "getSubjectsByQuery", getSubjectsByQuery);
   register(app, "getProfessorsByQuery", getProfessorsByQuery);
   register(app, "makeReviewVisible", makeReviewVisible);
+  register(app, "undoReportReview", undoReportReview);
+  register(app, "removeReview", removeReview);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
