@@ -36,48 +36,76 @@ export class Admin extends Component {
       resettingProfs: 0, // 0: starting state, no attempt to clear database,
       // 1: database professor clearing function was called, scraper is running
       // 2: database professor clearing function has completed
-      adminPanelHTML: "Invalid Credentials"
+      adminPanelHTML: "Invalid Credentials",
+      unapprovedReviews: [],
+      reportedReviews: []
     }
 
-    this.approveReview.bind(this);
-    this.removeReview.bind(this);
-    this.unReportReview.bind(this);
+    this.approveReview = this.approveReview.bind(this);
+    this.removeReview = this.removeReview.bind(this);
+    this.unReportReview = this.unReportReview.bind(this);
   }
-  //
-  // componentWillMount(){
-  //   if(Session.get("token") != undefined){
-  //     Meteor.call('tokenIsAdmin', Session.get("token"), (error, result) => {
-  //       if (!error && result === true) {
-  //         setTimeout(function () {
-  //                 console.log("here0");
-  //         }, 3000);
-  //             adminPanelHTML  = (
-  //
-  //             )
-  //             this.setState({adminPanelHTML: adminPanelHTML})
-  //       }
-  //     })
-  //   }
-  // }
+  
+  componentWillMount(){
+    const remFunc = this.removeReview;
+    const appFunc = this.approveReview;
+    const unRepFunc = this.unReportReview;
+    const unapprovedReviews = this.props.reviewsToApprove.map((review) => {
+      if (review.reported !== 1) {
+        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={appFunc} />;
+      }
+      return null;
+    });
+    
+    const reportedReviews = this.props.reviewsToApprove.map((review) => {
+      //create a new class "button" that will set the selected class to this class when it is clicked.
+      if (review.reported === 1) {
+        return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={unRepFunc} />
+      }
+      return null;
+    });
+
+    this.setState({unapprovedReviews: unapprovedReviews, reportedReviews: reportedReviews });
+  }
+
+  // Helper function to remove a review from a list of reviews and
+  // return the updated list
+  removeReviewFromList(reviewToRemove, reviews) {
+    reviews = reviews.filter( (review) => {
+      return review && review.props.info._id !== reviewToRemove._id;
+  });
+    return reviews;
+  }
 
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
     Meteor.call('makeVisible', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
-        console.log("Review approved")
+        console.log("Review approved");
+        const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
+        this.setState({unapprovedReviews: updatedUnapprovedReviews});
       } else {
-        console.log(error)
+        console.log(error);
       }
     });
   }
 
   // Call when user asks to remove a review. Accesses the Reviews database
   // and deletes the review with this id.
-  removeReview(review) {
+  removeReview(review, isUnapproved) {
     Meteor.call('removeReview', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
-        console.log("Review removed")
+        console.log("Review removed");
+        if (isUnapproved) {
+          const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
+          this.setState({unapprovedReviews: updatedUnapprovedReviews});
+        } else {
+          console.log(this.state.reportedReviews);
+          const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
+          this.setState({reportedReviews: updatedReportedReviews});
+        }
+        
       } else {
         console.log(error)
       }
@@ -89,7 +117,9 @@ export class Admin extends Component {
   unReportReview(review) {
     Meteor.call('undoReportReview', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
-        console.log("Review unreported")
+        console.log("Review unreported");
+        const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
+        this.setState({reportedReviews: updatedReportedReviews});
       } else {
         console.log(error)
       }
@@ -287,7 +317,7 @@ export class Admin extends Component {
                 </div>
                 <div className="panel-body">
                   <ul>
-                    {this.renderUnapprovedReviews()}
+                    {this.state.unapprovedReviews}
                   </ul>
                 </div>
               </div>
@@ -300,7 +330,7 @@ export class Admin extends Component {
                 </div>
                 <div className="panel-body">
                   <ul>
-                    {this.renderReportedReviews()}
+                    {this.state.reportedReviews}
                   </ul>
                 </div>
               </div>
