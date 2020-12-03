@@ -7,7 +7,6 @@ import { TokenPayload } from 'google-auth-library';
 import { configure } from "../endpoints";
 import { Classes, Reviews, Students } from "../dbDefs";
 import * as Auth from "./Auth";
-import { Review } from 'common';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;

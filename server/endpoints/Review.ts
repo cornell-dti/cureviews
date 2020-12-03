@@ -3,10 +3,9 @@ import { getCrossListOR } from "common/CourseCard";
 import { Review } from "common";
 import { includesProfanity } from "common/profanity";
 import { Endpoint } from "../endpoints";
-import { Reviews, Students, ReviewDocument } from "../dbDefs";
-import { getCourseById as getCourseByIdCallback, insertUser as insertUserCallback } from "./utils";
+import { Reviews } from "../dbDefs";
+import { getCourseById as getCourseByIdCallback, insertUser as insertUserCallback, JSONNonempty } from "./utils";
 import { getVerificationTicket } from "./Auth";
-import { Meteor } from "../shim";
 
 import shortid = require("shortid");
 
@@ -16,7 +15,7 @@ export interface CourseId {
 
 interface InsertRequest {
   token: string;
-  review: ReviewDocument;
+  review: Review;
   classId: string;
 }
 
@@ -64,14 +63,6 @@ export const getReviewsByCourseId: Endpoint<CourseId> = {
 export const insertUser: Endpoint<InsertUserRequest> = {
   guard: [body("googleObject").notEmpty()],
   callback: insertUserCallback,
-};
-
-export const JSONNonempty = (jsonFieldName: string, fields: string[]) => {
-  const ret: ValidationChain[] = [];
-  fields.forEach((fieldName) => {
-    ret.push(body(`${jsonFieldName}.${fieldName}`).notEmpty());
-  });
-  return ret;
 };
 
 // getUserByNetId
@@ -141,10 +132,3 @@ export const insertReview: Endpoint<InsertRequest> = {
     }
   },
 };
-
-
-// insert - done
-// incrementLike 
-// decrementLike
-
-// reportReview

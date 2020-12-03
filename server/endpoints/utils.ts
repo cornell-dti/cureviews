@@ -3,6 +3,7 @@ import { Classes, Students } from "../dbDefs";
 import { getUserByNetId } from "./Auth";
 
 import shortid = require("shortid");
+import { ValidationChain, body } from "express-validator";
 
 // eslint-disable-next-line import/prefer-default-export
 export const getCourseById = async (courseId: CourseId) => {
@@ -55,4 +56,12 @@ export const insertUser = async (request: InsertUserRequest) => {
     console.log(error);
     return 0;
   }
+};
+
+export const JSONNonempty = (jsonFieldName: string, fields: string[]) => {
+  const ret: ValidationChain[] = [];
+  fields.forEach((fieldName) => {
+    ret.push(body(`${jsonFieldName}.${fieldName}`).notEmpty());
+  });
+  return ret;
 };
