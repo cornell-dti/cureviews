@@ -1,7 +1,7 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { getReviewsByCourseId, getCourseById } from "./endpoints/Review";
-import { tokenIsAdmin } from "./endpoints/Auth";
+import { getReviewsByCourseId, getCourseById, insertReview, insertUser } from "./endpoints/Review";
+import { tokenIsAdmin, getUserByNetId } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 
 // A type which captures an endpoint, and the guard for that endpoint
@@ -25,6 +25,8 @@ export function configure(app: express.Application) {
   register(app, "tokenIsAdmin", tokenIsAdmin);
   register(app, "getSubjectsByQuery", getSubjectsByQuery);
   register(app, "getProfessorsByQuery", getProfessorsByQuery);
+  register(app, "insertReview", insertReview);
+  register(app, "insertUser", insertUser);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {

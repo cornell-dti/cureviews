@@ -3,8 +3,11 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";
 
 import axios from 'axios';
+import { TokenPayload } from 'google-auth-library';
 import { configure } from "../endpoints";
-import { Classes, Reviews } from "../dbDefs";
+import { Classes, Reviews, Students } from "../dbDefs";
+import * as Auth from "./Auth";
+import { Review } from 'common';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
@@ -59,6 +62,23 @@ const testReviews = [
   },
 ];
 
+const validTokenPayload: TokenPayload = {
+  email: 'dti1@cornell.edu',
+  iss: undefined,
+  sub: undefined,
+  iat: undefined,
+  aud: undefined,
+  exp: undefined,
+  hd: "cornell.edu",
+};
+
+const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token?: string) => {
+  if (token === 'fakeTokenDti1') {
+    return validTokenPayload;
+  }
+  return null;
+});
+
 beforeAll(async () => {
   // get mongoose all set up
   mongoServer = new MongoMemoryServer();
@@ -80,6 +100,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await mockVerificationTicket.mockRestore();
   await mongoose.disconnect();
   await mongoServer.stop();
   await serverCloseHandle.close();
@@ -103,5 +124,43 @@ describe('tests', () => {
   it("getReviewsByCourseId - getting review for a class that does not exist", async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "ert" });
     expect(res.data.result).toEqual({ error: 'Invalid course id' });
+  });
+
+  it("insert Review", async () => {
+    const cs2110Id = "oH37S3mJ4eAsktypy";
+    const reviewToInsert = {
+      workload: 3,
+      professors: ["prof1"],
+      isCovid: false,
+      text: "sample inserted review for cs 2110",
+      difficulty: 1,
+      rating: 4,
+    };
+
+    const res = await axios.post(`http://localhost:${testingPort}/v2/insertReview`, { classId: cs2110Id, review: reviewToInsert, token: "fakeTokenDti1" });
+    expect(res.data.result.resCode).toBe(1);
+    expect((await Reviews.find({}).exec()).filter((r) => r.text === "sample inserted review for cs 2110").length).toBe(1);
+  });
+
+  it("insert User", async () => {
+    const user1 = {
+      _id: "Irrelevant",
+      firstName: "Cornellius",
+      lastName: "Vanderbilt",
+      netId: "cv4620",
+      affiliation: null,
+      token: "fakeTokencv4620",
+      privilege: "regular",
+    };
+
+    const gObj1 = {
+      email: "cv4620@cornell.edu",
+      given_name: user1.firstName,
+      family_name: user1.lastName,
+    };
+
+    const res = await axios.post(`http://localhost:${testingPort}/v2/insertUser`, { googleObject: gObj1 });
+    expect(res.data.result).toBe(1);
+    expect((await Students.find({}).exec()).filter((s) => s.netId === "cv4620").length).toBe(1);
   });
 });
