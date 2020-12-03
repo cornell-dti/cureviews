@@ -23,6 +23,12 @@ export const getCourseById = async (courseId: CourseIdQuery) => {
   }
 };
 
+/**
+ * Inserts a new user into the database, if the user was not already present
+ *
+ * Returns 1 if the user was added to the database, or was already present
+ * Returns 0 if there was an error
+ */
 export const insertUser = async (request: InsertUserRequest) => {
   const { googleObject } = request;
   try {
@@ -58,6 +64,10 @@ export const insertUser = async (request: InsertUserRequest) => {
   }
 };
 
+/**
+ * Creates a ValidationChain[] where the json object denoted by [jsonFieldName]
+ * has non-empty fields listed in [fields].
+ */
 export const JSONNonempty = (jsonFieldName: string, fields: string[]) => {
   const ret: ValidationChain[] = [];
   fields.forEach((fieldName) => {

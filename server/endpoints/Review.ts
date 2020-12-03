@@ -14,7 +14,7 @@ export interface CourseIdQuery {
   courseId: string;
 }
 
-interface InsertRequest {
+interface InsertReviewRequest {
   token: string;
   review: Review;
   classId: string;
@@ -23,7 +23,6 @@ interface InsertRequest {
 export interface InsertUserRequest {
   googleObject: any;
 }
-
 
 // The type of a query with a course number and subject
 interface ClassByInfoQuery {
@@ -83,15 +82,27 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
   },
 };
 
+/**
+ * Inserts a new user into the database, if the user was not already present
+ *
+ * Returns 1 if the user was added to the database, or was already present
+ * Returns 0 if there was an error
+ */
 export const insertUser: Endpoint<InsertUserRequest> = {
   guard: [body("googleObject").notEmpty()],
   callback: insertUserCallback,
 };
 
-export const insertReview: Endpoint<InsertRequest> = {
+/**
+ * Insert a new review into the database
+ *
+ * Returns 0 if there was an error
+ * Returns 1 on a success
+ */
+export const insertReview: Endpoint<InsertReviewRequest> = {
   guard: [body("token").notEmpty().isAscii(), body("classId").notEmpty().isAscii()]
     .concat(JSONNonempty("review", ["text", "difficulty", "rating", "workload", "professors", "isCovid"])),
-  callback: async (request: InsertRequest) => {
+  callback: async (request: InsertReviewRequest) => {
     try {
       const { token } = request;
       const { classId } = request;
