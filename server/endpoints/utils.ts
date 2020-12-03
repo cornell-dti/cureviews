@@ -1,12 +1,12 @@
-import { CourseId, InsertUserRequest } from "./Review";
+import { ValidationChain, body } from "express-validator";
+import { InsertUserRequest, CourseIdQuery } from "./Review";
 import { Classes, Students } from "../dbDefs";
 import { getUserByNetId } from "./Auth";
 
 import shortid = require("shortid");
-import { ValidationChain, body } from "express-validator";
 
 // eslint-disable-next-line import/prefer-default-export
-export const getCourseById = async (courseId: CourseId) => {
+export const getCourseById = async (courseId: CourseIdQuery) => {
   try {
     // check: make sure course id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);

@@ -87,11 +87,7 @@ export const getSubjectsByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii()],
   callback: async (search: Search) => {
     try {
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(search.query)) {
-        return await Subjects.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
-      }
-      return { error: "Malformed Query" };
+      return await Subjects.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getSubjectsByQuery' endpoint");
@@ -107,13 +103,9 @@ export const getSubjectsByQuery: Endpoint<Search> = {
  */
 export const getProfessorsByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii()],
-  callback: async (seach: Search) => {
+  callback: async (search: Search) => {
     try {
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(seach.query)) {
-        return await Professors.find({ $text: { $search: seach.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
-      }
-      return { error: "Malformed Query" };
+      return await Professors.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getProfessorsByQuery' endpoint");
