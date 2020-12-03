@@ -1,8 +1,8 @@
-import { CourseId } from "./Review";
+import { CourseIdQuery } from "./Review";
 import { Classes } from "../dbDefs";
 
 // eslint-disable-next-line import/prefer-default-export
-export const getCourseById = async (courseId: CourseId) => {
+export const getCourseById = async (courseId: CourseIdQuery) => {
   try {
     // check: make sure course id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);

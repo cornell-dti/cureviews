@@ -1,6 +1,6 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { getReviewsByCourseId, getCourseById } from "./endpoints/Review";
+import { getReviewsByCourseId, getCourseById, getCourseByInfo } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 
@@ -25,6 +25,7 @@ export function configure(app: express.Application) {
   register(app, "tokenIsAdmin", tokenIsAdmin);
   register(app, "getSubjectsByQuery", getSubjectsByQuery);
   register(app, "getProfessorsByQuery", getProfessorsByQuery);
+  register(app, "getCourseByInfo", getCourseByInfo);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {

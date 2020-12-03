@@ -95,7 +95,7 @@ beforeAll(async () => {
     major: "MORK",
   });
 
-  prof1.save();
+  await prof1.save();
 
   const prof2 = new Professors({
     _id: "prof 2",
@@ -104,7 +104,7 @@ beforeAll(async () => {
     major: "FEDN",
   });
 
-  prof2.save();
+  await prof2.save();
 
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
