@@ -4,6 +4,8 @@ import express from "express";
 
 import axios from 'axios';
 import { TokenPayload } from 'google-auth-library';
+
+import { Review } from 'common';
 import { configure } from "../endpoints";
 import { Classes, Reviews, Students } from "../dbDefs";
 import * as Auth from "./Auth";
@@ -13,6 +15,7 @@ let serverCloseHandle;
 
 const testingPort = 8000;
 
+// inital classes that are present at start of all tests.
 const testClasses = [
   {
     _id: "oH37S3mJ4eAsktypy",
@@ -34,6 +37,7 @@ const testClasses = [
   },
 ];
 
+// inital reviews that are present at start of all tests.
 const testReviews = [
   {
     _id: "4Y8k7DnX3PLNdwRPr",
@@ -101,6 +105,24 @@ afterAll(async () => {
   await serverCloseHandle.close();
 });
 
+/**
+ * Removes reviews in [reviews] from db directly (not using any endpoints).
+ */
+const removeReviews = async (reviews: Review[]) => {
+  await Promise.all(
+    reviews.map(async (review: Review) => {
+      (await Reviews.find({
+        workload: review.workload,
+        professors: review.professors,
+        isCovid: review.isCovid,
+        text: review.text,
+        difficulty: review.difficulty,
+        rating: review.rating,
+      }).remove().exec());
+    }),
+  );
+};
+
 describe('tests', () => {
   it('getReviewsByCourseId - getting review', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
@@ -143,18 +165,24 @@ describe('tests', () => {
 
   it("insert Review", async () => {
     const cs2110Id = "oH37S3mJ4eAsktypy";
-    const reviewToInsert = {
+
+    const reviewToInsert: Review = {
+      _id: "blah",
+      user: "dhsn",
       workload: 3,
       professors: ["prof1"],
       isCovid: false,
-      text: "sample inserted review for cs 2110",
+      text: "sample inserted review for cs 2110. dfghjd76",
       difficulty: 1,
       rating: 4,
     };
 
     const res = await axios.post(`http://localhost:${testingPort}/v2/insertReview`, { classId: cs2110Id, review: reviewToInsert, token: "fakeTokenDti1" });
     expect(res.data.result.resCode).toBe(1);
-    expect((await Reviews.find({}).exec()).filter((r) => r.text === "sample inserted review for cs 2110").length).toBe(1);
+    expect((await Reviews.find({ text: reviewToInsert.text }).exec()).length).toBe(1);
+
+    // state of db is same as original state at end of beforeAll function
+    await removeReviews([reviewToInsert]);
   });
 
   it("insert User", async () => {
