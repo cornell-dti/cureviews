@@ -80,13 +80,11 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
  * "Undo" the reporting of a flagged review and make it visible again
  */
 export const undoReportReview: Endpoint<AdminReviewRequest> = {
-  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii()],
+  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAlphanumeric()],
   callback: async (adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
-      // check: make sure review id is valid and non-malicious
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(adminReviewRequest.review._id) && userIsAdmin) {
+      if (userIsAdmin) {
         await Reviews.updateOne({ _id: adminReviewRequest.review._id }, { $set: { visible: 1, reported: 0 } });
         return 1;
       }
@@ -105,13 +103,11 @@ export const undoReportReview: Endpoint<AdminReviewRequest> = {
  * Remove a review, used for both submitted and flagged reviews
  */
 export const removeReview: Endpoint<AdminReviewRequest> = {
-  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii()],
+  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAlphanumeric()],
   callback: async (adminReviewRequest: AdminReviewRequest) => {
     try {
-      // check: make sure review id is valid and non-malicious
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(adminReviewRequest.review._id) && userIsAdmin) {
+      if (userIsAdmin) {
         await Reviews.remove({ _id: adminReviewRequest.review._id });
         await updateCourseMetrics(adminReviewRequest.review.class, adminReviewRequest.token);
         return 1;
