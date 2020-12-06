@@ -1,4 +1,4 @@
-import { body, ValidationChain } from "express-validator";
+import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import { Review } from "common";
 import { includesProfanity } from "common/profanity";
