@@ -124,7 +124,7 @@ const removeReviews = async (reviews: Review[]) => {
 };
 
 describe('tests', () => {
-  it('getReviewsByCourseId - getting review', async () => {
+  it('getReviewsByCourseId - getting review of class that exists (cs 2110)', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
     expect(res.data.result.length).toBe(testReviews.length);
 
@@ -132,10 +132,20 @@ describe('tests', () => {
     expect(res.data.result.map((r) => r.class).sort()).toEqual(classOfReviews.sort());
   });
 
+  it("getReviewsByCourseId - getting review for a class that does not exist", async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "ert" });
+    expect(res.data.result).toEqual({ error: 'Malformed Query' });
+  });
+
   it("getCourseById - getting cs2110", async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getCourseById`, { courseId: "oH37S3mJ4eAsktypy" });
     expect(res.data.result._id).toBe("oH37S3mJ4eAsktypy");
     expect(res.data.result.classTitle).toBe("Object-Oriented Programming and Data Structures");
+  });
+
+  it('getCourseById - class does not exist', async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getCourseById`, { courseId: "blah" });
+    expect(res.data.result).toBe(null);
   });
 
   it('getCourseByInfo - getting cs2110', async () => {
@@ -156,11 +166,6 @@ describe('tests', () => {
     // Both also does not work:
     const res3 = await axios.post(`http://localhost:${testingPort}/v2/getCourseByInfo`, { subject: "向岛维纳默宁", number: "ab2187c" }).catch((e) => e);
     expect(res3.message).toBe("Request failed with status code 400");
-  });
-
-  it("getReviewsByCourseId - getting review for a class that does not exist", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "ert" });
-    expect(res.data.result).toEqual({ error: 'Malformed Query' });
   });
 
   it("insert Review", async () => {
