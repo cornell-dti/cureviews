@@ -86,21 +86,12 @@ export default class SearchBar extends Component {
           });
         }
         else {
-          Meteor.call("getClassesByQuery", this.state.query, (err, queryCourseList) => {
-            if (!err && queryCourseList && queryCourseList.length !== 0) {
-              // Save the list of Class objects that matches the request
-              this.setState({
-                allCourses: queryCourseList
-              });
-            }
-            else {
               this.setState({
                 allCourses: []
               });
             }
-          })
         }
-      })
+      )
       .catch(e => console.log("Getting coureses failed!"));
 
       axios.post(`/v2/getSubjectsByQuery`, { query: this.state.query }).then(response => {
@@ -117,20 +108,6 @@ export default class SearchBar extends Component {
           });
         }
       }).catch(e => console.log("Getting subjects failed!"));
-
-      // Meteor.call("getProfessorsByName", this.state.query, (err, subjectList) => {
-      //   if (!err && subjectList && subjectList.length !== 0) {
-      //     // Save the list of Subject objects that matches the request
-      //     this.setState({
-      //       allProfessors: subjectList
-      //     });
-      //   }
-      //   else {
-      //     this.setState({
-      //       allProfessors: []
-      //     });
-      //   }
-      // });
 
       axios.post(`/v2/getProfessorsByQuery`, { query: this.state.query }).then(response => {
         const professorList = response.data.result;
