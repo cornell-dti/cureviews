@@ -7,7 +7,7 @@ import { TokenPayload } from 'google-auth-library';
 
 import { Review } from 'common';
 import { configure } from "../endpoints";
-import { Classes, Reviews, Students } from "../dbDefs";
+import { Classes, Reviews, Students, Subjects } from "../dbDefs";
 import * as Auth from "./Auth";
 
 let mongoServer: MongoMemoryServer;
@@ -104,6 +104,31 @@ export const testReviews = [
     visible: 1,
     reported: 0,
   },
+  {
+    _id: "4Y8k7rthjX3PLNdwjhgfuytRPq",
+    text: "review 1 for math 3110",
+    difficulty: 5,
+    quality: 5,
+    class: "fhgweiufhwu23",
+    grade: 6,
+    date: new Date().toISOString(),
+    atten: 0,
+    visible: 1,
+    reported: 0,
+  },
+];
+
+const testSubjects = [
+  {
+    _id: "cs57687980g",
+    subShort: "cs",
+    subFull: "Computer Science",
+  },
+  {
+    _id: "math234jhgheyr389",
+    subShort: "math",
+    subFull: "Mathematics",
+  },
 ];
 
 const validTokenPayload: TokenPayload = {
@@ -149,6 +174,10 @@ beforeAll(async () => {
     testUsers.map(async (u) => await (new Students(u).save())),
   );
 
+  await Promise.all(
+    testSubjects.map(async (s) => await (new Subjects(s).save())),
+  );
+
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
   serverCloseHandle = app.listen(testingPort, async () => { });
@@ -170,7 +199,7 @@ describe('tests', () => {
 
   it("howManyReviewsEachClass", async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/howManyReviewsEachClass`, { token: "token" });
-    const match = [{ _id: 'oH37S3mJ4eAsktypy', total: 2 }, { _id: "oH37S3mJ4eAsdsdpy", total: 1 }];
+    const match = [{ _id: 'oH37S3mJ4eAsktypy', total: 2 }, { _id: "oH37S3mJ4eAsdsdpy", total: 1 }, { _id: "fhgweiufhwu23", total: 1 }];
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
     });
@@ -179,6 +208,14 @@ describe('tests', () => {
   it("howManyEachClass", async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/howManyEachClass`, { token: "token" });
     const match = [{ _id: 'cs', total: 2 }, { _id: "math", total: 1 }];
+    match.forEach((obj) => {
+      expect(res.data.result).toContainEqual(obj);
+    });
+  });
+
+  it("topSubjects", async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/topSubjects`);
+    const match = [['Computer Science', 3], ['Mathematics', 1]];
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
     });
