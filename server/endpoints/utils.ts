@@ -1,7 +1,7 @@
 import { ValidationChain, body } from "express-validator";
 import { InsertUserRequest, CourseIdQuery } from "./Review";
 import { Classes, Students } from "../dbDefs";
-import { getUserByNetId } from "./Auth";
+import { getUserByNetId, getVerificationTicket } from "./Auth";
 
 import shortid = require("shortid");
 
@@ -74,4 +74,26 @@ export const JSONNonempty = (jsonFieldName: string, fields: string[]) => {
     ret.push(body(`${jsonFieldName}.${fieldName}`).notEmpty());
   });
   return ret;
+};
+
+export const verifyToken = async (token: string) => {
+  try {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (regex.test(token)) {
+      const ticket = await getVerificationTicket(token);
+      if (ticket && ticket.email) {
+        const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
+        if (user) {
+          return user.privilege === 'admin';
+        }
+      }
+    }
+    return false;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'verufyToken' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return false;
+  }
 };
