@@ -80,9 +80,6 @@ export default class Statistics extends Component<Props, State>{
         //sort descending
         result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
         this.setState({ howManyReviewsEachClass: result });
-
-
-
       } else {
         console.log(error);
       }
