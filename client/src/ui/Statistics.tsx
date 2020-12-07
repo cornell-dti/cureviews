@@ -120,7 +120,7 @@ export default class Statistics extends Component<Props, State>{
     this.getChartData();
   }
 
-  downloadTxtFile = () => {
+  downloadCSVFile = () => {
     const element = document.createElement("a");
     const file = new Blob([this.getReviewsPerClassCSV()], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
@@ -135,7 +135,7 @@ export default class Statistics extends Component<Props, State>{
         <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses" />
         <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews" />
         <div>
-          <button className="btn btn-primary" onClick={this.downloadTxtFile}>Download CSV For ReviewsPerClass</button>
+          <button className="btn btn-primary" onClick={this.downloadCSVFile}>Download CSV For ReviewsPerClass</button>
         </div>
         <p>Total reviews: {this.state.totalReviews}</p>
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
