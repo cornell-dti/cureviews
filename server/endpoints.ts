@@ -1,6 +1,7 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
 import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo } from "./endpoints/Review";
+import { totalReviews } from "./endpoints/AdminChart";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
@@ -32,6 +33,7 @@ export function configure(app: express.Application) {
   register(app, "undoReportReview", undoReportReview);
   register(app, "removeReview", removeReview);
   register(app, "getCourseByInfo", getCourseByInfo);
+  register(app, "totalReviews", totalReviews);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {

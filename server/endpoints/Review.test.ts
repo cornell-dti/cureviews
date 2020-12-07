@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";
@@ -16,7 +17,7 @@ let serverCloseHandle;
 const testingPort = 8000;
 
 // inital classes that are present at start of all tests.
-const testClasses = [
+export const testClasses = [
   {
     _id: "oH37S3mJ4eAsktypy",
     classSub: "cs",
@@ -38,7 +39,7 @@ const testClasses = [
 ];
 
 // inital reviews that are present at start of all tests.
-const testReviews = [
+export const testReviews = [
   {
     _id: "4Y8k7DnX3PLNdwRPr",
     text: "review text for cs 2110",
