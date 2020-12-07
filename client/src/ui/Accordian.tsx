@@ -20,7 +20,6 @@ export default class Accordian extends Component<Props> {
     let accId = "accordion" + this.getRandNum();
     let headingOneId = "headingOne" + this.getRandNum();
     let collapseOneId = "collapseOne" + this.getRandNum();
-    console.log("accordian ,", this.props.data);
 
     return (
       <div className="panel-group" id={accId} role="tablist" aria-multiselectable="true">
