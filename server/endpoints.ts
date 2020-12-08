@@ -10,7 +10,7 @@ import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/A
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
   guard: ValidationChain[];
-  callback: (args: T) => any;
+  callback: (args?: T) => any;
 }
 
 /*
@@ -51,6 +51,7 @@ function register<T>(app: express.Application, name: string, endpoint: Endpoint<
     // The fact that the guard has not errored is enough for this to be safe
     // Make sure that your guard is sufficient!
     const arg = req.body;
+
     return res.status(200).send({ result: await callback(arg) });
   });
 }

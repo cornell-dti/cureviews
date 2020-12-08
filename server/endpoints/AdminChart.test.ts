@@ -199,7 +199,7 @@ describe('tests', () => {
 
   it("howManyReviewsEachClass", async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/howManyReviewsEachClass`, { token: "token" });
-    const match = [{ _id: 'oH37S3mJ4eAsktypy', total: 2 }, { _id: "oH37S3mJ4eAsdsdpy", total: 1 }, { _id: "fhgweiufhwu23", total: 1 }];
+    const match = [{ _id: 'cs 2110', total: 2 }, { _id: "cs 2112", total: 1 }, { _id: "math 3110", total: 1 }];
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
     });
@@ -214,7 +214,7 @@ describe('tests', () => {
   });
 
   it("topSubjects", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/topSubjects`);
+    const res = await axios.post(`http://localhost:${testingPort}/v2/topSubjects`, { token: "token" });
     const match = [['Computer Science', 3], ['Mathematics', 1]];
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
