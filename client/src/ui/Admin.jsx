@@ -46,7 +46,7 @@ export class Admin extends Component {
     this.unReportReview = this.unReportReview.bind(this);
   }
   
-  componentWillMount(){
+  componentDidMount(){
     const remFunc = this.removeReview;
     const appFunc = this.approveReview;
     const unRepFunc = this.unReportReview;
