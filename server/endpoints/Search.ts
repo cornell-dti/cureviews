@@ -136,14 +136,14 @@ export const regexClassesSearch = async (searchString) => {
  * Query for classes using a query
  */
 export const getClassesByQuery: Endpoint<Search> = {
-  guard: [body("query").notEmpty().isAscii(), body("query").notEmpty().isAlphanumeric()],
+  guard: [body("query").notEmpty().isAscii()],
   callback: async (search: Search) => {
     try {
       const classes = await Classes.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
       if (classes && classes.length > 0) {
         return classes.sort(courseSort(search.query));
       }
-      return regexClassesSearch(search.query);
+      return await regexClassesSearch(search.query);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getClassesByQuery' endpoint");
