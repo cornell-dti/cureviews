@@ -900,12 +900,14 @@ Meteor.methods({
           },
         ];
         const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
-        results.map(async (data) => {
+
+        const ret = await Promise.all(results.map(async (data) => {
           const subNum = (await Classes.find({ _id: data._id }, { classSub: 1, classNum: 1 }).exec())[0];
           const id = `${subNum.classSub} ${subNum.classNum}`;
           return { _id: id, total: data.total };
-        });
-        return results;
+        }));
+
+        return ret;
       }
       return null;
     } catch (error) {
