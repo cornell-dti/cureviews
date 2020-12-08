@@ -73,78 +73,77 @@ const searchWithinSubject = (sub: string, remainder: string) => Classes.find(
 
 export const regexClassesSearch = async (searchString) => {
   try {
-      if (searchString !== undefined && searchString !== '') {
-        // check if first digit is a number. Catches searchs like "1100"
-        // if so, search only through the course numbers and return classes ordered by full name
-        const indexFirstDigit = searchString.search(/\d/);
-        if (indexFirstDigit === 0) {
-          // console.log("only numbers")
-          return Classes.find(
-            { classNum: { $regex: `.*${searchString}.*`, $options: '-i' } },
-            {},
-            { sort: { classFull: 1 }, limit: 200, reactive: false },
-          ).exec().then((classes) => classes.sort(courseSort(searchString)));
-        }
-
-        // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
-        if (await isSubShorthand(searchString)) {
-          return Classes.find({ classSub: searchString }, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
-        }
-        // check if text before space is subject, if so search only classes with this subject.
-        // Speeds up searches like "CS 1110"
-        const indexFirstSpace = searchString.search(' ');
-        if (indexFirstSpace !== -1) {
-          const strBeforeSpace = searchString.substring(0, indexFirstSpace);
-          const strAfterSpace = searchString.substring(indexFirstSpace + 1);
-          if (await isSubShorthand(strBeforeSpace)) {
-            // console.log("matches subject with space: " + strBeforeSpace)
-            return await searchWithinSubject(strBeforeSpace, strAfterSpace);
-          }
-        }
-
-        // check if text is subject followed by course number (no space)
-        // if so search only classes with this subject.
-        // Speeds up searches like "CS1110"
-        if (indexFirstDigit !== -1) {
-          const strBeforeDigit = searchString.substring(0, indexFirstDigit);
-          const strAfterDigit = searchString.substring(indexFirstDigit);
-          if (await isSubShorthand(strBeforeDigit)) {
-            // console.log("matches subject with digit: " + String(strBeforeDigit))
-            return await searchWithinSubject(strBeforeDigit, strAfterDigit);
-          }
-        }
-
-        // last resort, search everything
-        // console.log("nothing matches");
+    if (searchString !== undefined && searchString !== '') {
+      // check if first digit is a number. Catches searchs like "1100"
+      // if so, search only through the course numbers and return classes ordered by full name
+      const indexFirstDigit = searchString.search(/\d/);
+      if (indexFirstDigit === 0) {
+        // console.log("only numbers")
         return Classes.find(
-          { classFull: { $regex: `.*${searchString}.*`, $options: '-i' } },
-          {}, { sort: { classFull: 1 }, limit: 200, reactive: false },
-        ).exec();
+          { classNum: { $regex: `.*${searchString}.*`, $options: '-i' } },
+          {},
+          { sort: { classFull: 1 }, limit: 200, reactive: false },
+        ).exec().then((classes) => classes.sort(courseSort(searchString)));
       }
-      // console.log("no search");
-      return Classes.find({}, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'getClassesByQuery' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return null;
+
+      // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
+      if (await isSubShorthand(searchString)) {
+        return Classes.find({ classSub: searchString }, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
+      }
+      // check if text before space is subject, if so search only classes with this subject.
+      // Speeds up searches like "CS 1110"
+      const indexFirstSpace = searchString.search(' ');
+      if (indexFirstSpace !== -1) {
+        const strBeforeSpace = searchString.substring(0, indexFirstSpace);
+        const strAfterSpace = searchString.substring(indexFirstSpace + 1);
+        if (await isSubShorthand(strBeforeSpace)) {
+          // console.log("matches subject with space: " + strBeforeSpace)
+          return await searchWithinSubject(strBeforeSpace, strAfterSpace);
+        }
+      }
+
+      // check if text is subject followed by course number (no space)
+      // if so search only classes with this subject.
+      // Speeds up searches like "CS1110"
+      if (indexFirstDigit !== -1) {
+        const strBeforeDigit = searchString.substring(0, indexFirstDigit);
+        const strAfterDigit = searchString.substring(indexFirstDigit);
+        if (await isSubShorthand(strBeforeDigit)) {
+          // console.log("matches subject with digit: " + String(strBeforeDigit))
+          return await searchWithinSubject(strBeforeDigit, strAfterDigit);
+        }
+      }
+
+      // last resort, search everything
+      // console.log("nothing matches");
+      return Classes.find(
+        { classFull: { $regex: `.*${searchString}.*`, $options: '-i' } },
+        {}, { sort: { classFull: 1 }, limit: 200, reactive: false },
+      ).exec();
     }
+    // console.log("no search");
+    return Classes.find({}, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getClassesByQuery' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return null;
+  }
 };
 
 /*
  * Query for classes using a query
  */
 export const getClassesByQuery: Endpoint<Search> = {
-  guard: [body("query").notEmpty().isAscii()],
+  guard: [body("query").notEmpty().isAscii(), body("query").notEmpty().isAlphanumeric()],
   callback: async (search: Search) => {
     try {
       const classes = await Classes.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
       if (classes && classes.length > 0) {
         return classes.sort(courseSort(search.query));
-      } else {
-        return regexClassesSearch(search.query);
       }
+      return regexClassesSearch(search.query);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getClassesByQuery' endpoint");

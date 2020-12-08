@@ -92,7 +92,7 @@ export default class SearchBar extends Component {
             }
         }
       )
-      .catch(e => console.log("Getting coureses failed!"));
+      .catch(e => console.log("Getting courses failed!"));
 
       axios.post(`/v2/getSubjectsByQuery`, { query: this.state.query }).then(response => {
         const subjectList = response.data.result;
