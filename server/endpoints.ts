@@ -1,6 +1,6 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { getReviewsByCourseId, getCourseById, getCourseByInfo } from "./endpoints/Review";
+import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
@@ -26,6 +26,8 @@ export function configure(app: express.Application) {
   register(app, "tokenIsAdmin", tokenIsAdmin);
   register(app, "getSubjectsByQuery", getSubjectsByQuery);
   register(app, "getProfessorsByQuery", getProfessorsByQuery);
+  register(app, "insertReview", insertReview);
+  register(app, "insertUser", insertUser);
   register(app, "makeReviewVisible", makeReviewVisible);
   register(app, "undoReportReview", undoReportReview);
   register(app, "removeReview", removeReview);

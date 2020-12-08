@@ -11,7 +11,7 @@ import * as Auth from "./Auth";
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 37760;
+const testingPort = 37761;
 
 
 const invalidTokenPayload: TokenPayload = {
@@ -63,7 +63,7 @@ beforeAll(async () => {
 
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
-  serverCloseHandle = app.listen(testingPort, async () => {});
+  serverCloseHandle = app.listen(testingPort, async () => { });
   configure(app);
 });
 
@@ -75,7 +75,7 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('tokenIsAdmin-works', async () => {
-    const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token? : string) => {
+    const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket').mockImplementation(async (token?: string) => {
       if (token === 'fakeTokenDti1') {
         return validTokenPayload;
       }
