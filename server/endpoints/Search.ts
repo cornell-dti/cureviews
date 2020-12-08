@@ -136,7 +136,7 @@ export const regexClassesSearch = async (searchString) => {
  * Query for classes using a query
  */
 export const getClassesByQuery: Endpoint<Search> = {
-  guard: [body("query").notEmpty().isAscii()],
+  guard: [body("query").notEmpty().isAscii(), body("query").whitelist("^[A-Za-z0-9 ]+$")],
   callback: async (search: Search) => {
     try {
       const classes = await Classes.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
