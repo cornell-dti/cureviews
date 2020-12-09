@@ -7,6 +7,7 @@ import Subject from './Subject';
 import Professor from './Professor';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
+import axios from "axios";
 
 /*
   SearchBar Component.
@@ -76,32 +77,26 @@ export default class SearchBar extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps) {
-      Meteor.call("getCoursesByKeyword", this.state.query, (err, courseList) => {
-        if (!err && courseList && courseList.length !== 0) {
-          // Save the list of Class objects that matches the request
+      axios.post(`/v2/getClassesByQuery`, { query: this.state.query }).then(response => {
+        const queryCourseList = response.data.result; 
+        if (queryCourseList.length !== 0) {
+          // Save the Class object that matches the request
           this.setState({
-            allCourses: courseList
+            allCourses: queryCourseList
           });
         }
         else {
-          Meteor.call("getClassesByQuery", this.state.query, (err, queryCourseList) => {
-            if (!err && queryCourseList && queryCourseList.length !== 0) {
-              // Save the list of Class objects that matches the request
-              this.setState({
-                allCourses: queryCourseList
-              });
-            }
-            else {
               this.setState({
                 allCourses: []
               });
             }
-          })
         }
-      });
+      )
+      .catch(e => console.log("Getting courses failed!"));
 
-      Meteor.call("getSubjectsByKeyword", this.state.query, (err, subjectList) => {
-        if (!err && subjectList && subjectList.length !== 0) {
+      axios.post(`/v2/getSubjectsByQuery`, { query: this.state.query }).then(response => {
+        const subjectList = response.data.result;
+        if (subjectList && subjectList.length !== 0) {
           // Save the list of Subject objects that matches the request
           this.setState({
             allSubjects: subjectList
@@ -112,13 +107,14 @@ export default class SearchBar extends Component {
             allSubjects: []
           });
         }
-      });
+      }).catch(e => console.log("Getting subjects failed!"));
 
-      Meteor.call("getProfessorsByName", this.state.query, (err, subjectList) => {
-        if (!err && subjectList && subjectList.length !== 0) {
+      axios.post(`/v2/getProfessorsByQuery`, { query: this.state.query }).then(response => {
+        const professorList = response.data.result;
+        if (professorList && professorList.length !== 0) {
           // Save the list of Subject objects that matches the request
           this.setState({
-            allProfessors: subjectList
+            allProfessors: professorList
           });
         }
         else {
@@ -126,7 +122,8 @@ export default class SearchBar extends Component {
             allProfessors: []
           });
         }
-      });
+      }).catch(e => console.log("Getting subjects failed!"));
+
     }
   }
 

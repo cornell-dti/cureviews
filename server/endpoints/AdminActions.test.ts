@@ -12,7 +12,7 @@ let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 const mockVerification = jest.spyOn(Utils, 'verifyToken').mockImplementation(async (token? : string) => true);
 
-const testingPort = 37728;
+const testingPort = 47728;
 
 const sampleReviewId = "sampleReview";
 const reviewToUndoReportId = "reviewToUndoReport";
