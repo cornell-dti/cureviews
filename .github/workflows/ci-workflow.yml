@@ -22,8 +22,9 @@ jobs:
       - name: End to End Tests
         uses: cypress-io/github-action@v1
         with:
-          start: yarn workspace client start
+          start: yarn workspace server start && yarn workspace client start
           wait-on: http://localhost:3000
         env: 
           ADMIN_DISABLED: "1"
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          MONGO_URL: '${{ secrets.DEV_DB_URI }}'
