@@ -32,7 +32,7 @@ function setup() {
 }
 
 const uri = process.env.MONGODB_URL ? process.env.MONGODB_URL : "this will error";
-console.log("URL ENV: ")
+console.log("URL ENV: ");
 console.log(process.env.MONGODB_URL);
 console.log("---");
 let localMongoServer;
