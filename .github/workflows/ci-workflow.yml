@@ -28,4 +28,4 @@ jobs:
         env: 
           ADMIN_DISABLED: "1"
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-          MONGODB_URL: '${{ secrets.DEV_DB_URI }}'
+          MONGODB_URL: ${{ secrets.DEV_DB_URI }}
