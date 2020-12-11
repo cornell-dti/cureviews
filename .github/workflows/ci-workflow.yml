@@ -28,7 +28,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
-          build: yarn workspace server build && yarn workspace client build
+          build: yarn workspaces run build
           start: yarn workspace server start && yarn workspace client start
           wait-on: http://localhost:3000
         env: 
