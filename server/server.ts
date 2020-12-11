@@ -32,6 +32,7 @@ function setup() {
 }
 
 const uri = process.env.MONGODB_URL ? process.env.MONGODB_URL : "this will error";
+console.log(process.env.MONGODB_URL);
 let localMongoServer;
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(async () => setup()).catch(async (err) => {
