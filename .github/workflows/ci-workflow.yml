@@ -19,17 +19,7 @@ jobs:
         run: CI=false yarn workspace client build
       - name: Unit Tests
         run: yarn workspace server test
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Build Server
-        run: yarn workspace server build
-      - name: Build Website Bundle
-        # temporarily disable CI flag to let warning not to fail the build
-        run: CI=false yarn workspace client build
-      - name: Cypress run
+      - name: End to End Tests
         uses: cypress-io/github-action@v1
         with:
           start: yarn workspace server start && and yarn workspace client start
