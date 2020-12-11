@@ -26,3 +26,4 @@ jobs:
           wait-on: http://localhost:3000
         env: 
           ADMIN_DISABLED: "1"
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
