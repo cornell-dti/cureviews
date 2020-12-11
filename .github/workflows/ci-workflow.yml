@@ -24,11 +24,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-
+      - name: Build Server
+        run: yarn workspace server build
+      - name: Build Website Bundle
+        # temporarily disable CI flag to let warning not to fail the build
+        run: CI=false yarn workspace client build
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
-          build: CI=false CI=false yarn workspace client build && yarn workspace server build 
           start: yarn workspace server start && and yarn workspace client start
           wait-on: http://localhost:3000
         env: 
