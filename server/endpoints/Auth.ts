@@ -6,6 +6,8 @@ import { verifyToken } from "./utils";
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
+const ADMIN_DISABLED_VALUE = "1";
+
 // The type for a search query
 interface AdminRequest {
     token: string;
@@ -62,5 +64,5 @@ export const getUserByNetId = async (netId: string) => {
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (adminRequest: AdminRequest) => verifyToken(adminRequest.token),
+  callback: async (adminRequest: AdminRequest) => process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE || verifyToken(adminRequest.token),
 };
