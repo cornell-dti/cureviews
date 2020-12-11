@@ -22,7 +22,7 @@ jobs:
       - name: End to End Tests
         uses: cypress-io/github-action@v1
         with:
-          start: yarn workspace client start && yarn workspace server start
+          start: yarn full-start
           wait-on: http://localhost:3000
           wait-on-timeout: 120
         env: 
