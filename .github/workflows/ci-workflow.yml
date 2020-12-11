@@ -19,10 +19,17 @@ jobs:
         run: CI=false yarn workspace client build
       - name: Unit Tests
         run: yarn workspace server test
-      - name: End to End Tests
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
-          start: yarn workpsace server start && yarn workspace client start
+          build: CI=false yarn workspaces build
+          start: yarn workspace server start && and yarn workspace client start
           wait-on: http://localhost:3000
         env: 
           ADMIN_DISABLED: "1"
