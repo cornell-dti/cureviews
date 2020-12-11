@@ -1,6 +1,6 @@
 import { utils } from '../utils.js';
 
-const url = "https://cornellreviews-dev.herokuapp.com";
+const url = "http://localhost:3000";
 
 describe('Submit review', () => {
   it('submitting a review and approving on admin updates course metrics', () => {
