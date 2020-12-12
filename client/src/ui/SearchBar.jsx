@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Session } from '../meteor-session';
 import { Meteor } from '../meteor-shim';
 import Course from './Course';
-import Subject from './Subject';
-import Professor from './Professor';
+import SubjectResult from './SubjectResult';
+import ProfessorResult from './ProfessorResult';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 import axios from "axios";
@@ -276,7 +276,7 @@ export default class SearchBar extends Component {
 
       let subjectList = this.state.allSubjects.slice(0, 3).map((subject, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Subject key={subject._id} info={subject} query={this.state.query}
+        <SubjectResult key={subject._id} info={subject} query={this.state.query}
           active={this.state.index === (i + 1 /* plus 1 because of exact search */)}
           enter={this.state.enter} mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
@@ -295,7 +295,7 @@ export default class SearchBar extends Component {
       // Generate list of matching professors and add to results list
       let professorList = this.state.allProfessors.slice(0, 3).map((professor, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Professor key={professor._id} professor={professor} query={this.state.query}
+        <ProfessorResult key={professor._id} professor={professor} query={this.state.query}
           active={this.state.index === (i + subjectList.length + 1 /* plus 1 because of exact search */)}
           enter={this.state.enter} mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
