@@ -128,7 +128,7 @@ export default class FilteredResult extends Component<Props,State> {
               <strong>{this.updateSortByTitle()}</strong>
             </p>
             <p className="result-card-sort-by-value">
-              {this.updateSortBy()}
+              {isNaN(Number(this.updateSortBy())) ? this.updateSortBy() : Number(this.updateSortBy()).toFixed(1)}
             </p>
             <p>
               /5
