@@ -420,8 +420,7 @@ export default class Form extends Component {
                 checked={this.state.isCovid}
                 onChange={this.handleCovidBox} />
             </label>}
-            {/*Only show tab if not in popup*/}
-
+            
             <div className="row form-button-top-bottom-spacing">
               <div className="col-md-12 col-sm-12 col-xs-12">
                 <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
@@ -429,7 +428,6 @@ export default class Form extends Component {
             </div>
           </form>
         </div>
-        {/*Only show tab if not in popup*/}
 
         <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
