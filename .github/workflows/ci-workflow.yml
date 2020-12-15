@@ -24,7 +24,7 @@ jobs:
         with:
           start: yarn workspace server start && yarn workspace client start
           wait-on: http://localhost:3000
-          wait-on-timeout: 180
+          wait-on-timeout: 185
         env: 
           ADMIN_DISABLED: "1"
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
