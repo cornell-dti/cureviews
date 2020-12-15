@@ -27,24 +27,21 @@ export default class Login extends Component<{}, { message: string; executeLogin
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // The following is used to show admin panel if a user's token is found to be an admin
-    if(Session.get("token") !== ""){
-      Meteor.call('tokenIsAdmin', Session.get("token"), (_: unknown, result: unknown) => {
-        if(result){
-          Session.set("adminlogin", true);
-          this.setState({executeLogin: false}); //This isn't necessary as it should alrady be allFalse
-                                                // but it is used to refresh the render()
-        }
-        else{
+    Meteor.call('tokenIsAdmin', Session.get("token"), (_: unknown, result: unknown) => {
+      if(result){
+        Session.set("adminlogin", true);
+        this.setState({executeLogin: false}); //This isn't necessary as it should alrady be allFalse
+                                              // but it is used to refresh the render()
+      }
+      else{
+        if (Session.get("token") === "") {
           Session.set("adminlogin", false);
-          this.setState({executeLogin: true});
         }
-      });
-    }
-    else{
-      this.setState({executeLogin: true});
-    }
+        this.setState({executeLogin: true});
+      }
+    });
   }
 
   render() {
