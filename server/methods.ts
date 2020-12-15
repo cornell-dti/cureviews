@@ -98,7 +98,7 @@ Meteor.methods({
         if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
       }
 
-      if (adminDisabled || ticket.hd === "cornell.edu" ) {
+      if (adminDisabled || ticket.hd === "cornell.edu") {
         // insert the user into the collection if not already present
         if (!adminDisabled) {
           await Meteor.call("insertUser", ticket);
@@ -545,7 +545,7 @@ Meteor.methods({
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
     try {
-      if (process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE ) {
+      if (process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE) {
         return true;
       }
       if (token != null) {
