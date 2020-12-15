@@ -175,9 +175,14 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if (Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse) {
-      this.submitReview();
-    }
+    Meteor.call("loginDisabled", (error, result) => {
+      this.setState({loginDisabled: result});
+      console.log(result);
+      if (Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse) {
+        this.submitReview();
+      }
+    });
+    
   }
 
   // Called each time this component receieves new props.
@@ -236,12 +241,16 @@ export default class Form extends Component {
 
       // Call save review object to session so that it is not lost when authenicating (redirecting)
       this.saveReviewToSession(newReview);
-
-      this.show();
+      if (!this.state.loginDisabled){
+        this.show();
+      } else {
+        this.submitReview();
+      }
     }
   }
 
   submitReview() {
+    console.log("SUBMIT REVIEW");
     console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"),
@@ -269,7 +278,10 @@ export default class Form extends Component {
           Session.setPersistent({ "review": "" });
           Session.setPersistent({ "review_major": "" });
           Session.setPersistent({ "review_num": "" });
-          this.hide();
+          if (!this.state.loginDisabled) {
+            this.hide();
+          }
+          
         }
       });
   }
@@ -445,7 +457,7 @@ export default class Form extends Component {
         </div>
         {/*Only show tab if not in popup*/}
 
-        <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
+        <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.loginDisabled && this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
             <div id="modal-top">
               <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
@@ -464,7 +476,7 @@ export default class Form extends Component {
                 Not seeing it? Click here.
                 </p>
               <CUreviewsGoogleLogin
-                executeLogin={this.state.visible}
+                executeLogin={this.state.visible && this.state.loginDisabled}
                 waitTime={3000}
                 redirectFrom="course" />
             </div>

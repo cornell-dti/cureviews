@@ -8,6 +8,7 @@ import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
+const ADMIN_DISABLED_VALUE = "1";
 
 // Helper to check if a string is a subject code
 // exposed for testing
@@ -84,19 +85,24 @@ Meteor.methods({
    */
   async insert(token, review, classId) {
     try {
-      if (token === undefined) {
+      const adminDisabled = process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE;
+      if (!adminDisabled && token === undefined) {
         // eslint-disable-next-line no-console
         console.log("Error: Token was undefined in insert");
         return { resCode: 0, errMsg: "Error: Token was undefined in insert" };
       }
 
-      const ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
+      let ticket;
+      if (!adminDisabled) {
+        ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
+        if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
+      }
 
-      if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
-
-      if (ticket.hd === "cornell.edu") {
+      if (adminDisabled || ticket.hd === "cornell.edu" ) {
         // insert the user into the collection if not already present
-        await Meteor.call("insertUser", ticket);
+        if (!adminDisabled) {
+          await Meteor.call("insertUser", ticket);
+        }
 
         if (review.text !== null && includesProfanity(review.text)) {
           // eslint-disable-next-line no-console
@@ -532,9 +538,16 @@ Meteor.methods({
     }
   },
 
+  async loginDisabled() {
+    return process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE;
+  },
+
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
     try {
+      if (process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE ) {
+        return true;
+      }
       if (token != null) {
         const ticket = await Meteor.call<TokenPayload | null>('getVerificationTicket', token);
         if (ticket && ticket.email) {

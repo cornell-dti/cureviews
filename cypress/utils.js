@@ -5,7 +5,7 @@
 */
 function adminReview(url, reviewText, actionText) {
   cy.visit(url + '/admin');
-  cy.wait(10000);
+  cy.wait(20000);
   cy.contains(reviewText).first().contains(actionText + " Review").click();
 }
 
@@ -15,7 +15,7 @@ function adminReview(url, reviewText, actionText) {
 */
 function submitReview(url, courseSub, courseNum, reviewText, professor, isCovidAffected) {
   cy.visit(url + '/course/' + courseSub + "/" + courseNum);
-  cy.wait(500);
+  cy.wait(20000);
   cy.get(".form-input-text").first().type(reviewText);
   cy.get(".react-select-container").first().click();
   cy.get(".react-select__option").contains(professor).click();
@@ -23,6 +23,7 @@ function submitReview(url, courseSub, courseNum, reviewText, professor, isCovidA
     cy.get(".covidCheckboxInput").click();
   }
   cy.contains("Submit").click();
+  cy.wait(23000);
 }
 
 function submitAndApproveReview(url, courseSub, courseNum, reviewText, professor, isCovidAffected) {
