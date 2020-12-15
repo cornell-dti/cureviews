@@ -1,4 +1,5 @@
 import { Meteor } from "./shim";
+import { ADMIN_DISABLED_VALUE } from "./methods";
 
 import { Students, Classes, Reviews, Subjects } from "./dbDefs";
 
@@ -118,7 +119,7 @@ const searchWithinSubject = async (sub: string, remainder: string) => await Clas
 Meteor.publish('reviews', async (courseId: string, visiblity: 0 | 1, reportStatus: number, token: string) => {
   let ret = null;
   let userIsAdmin;
-  if (token === undefined || token === null || token === '') {
+  if (process.env.ADMIN_DISABLED !== ADMIN_DISABLED_VALUE && (token === undefined || token === null || token === '')) {
     userIsAdmin = false;
   } else {
     userIsAdmin = Meteor.call('tokenIsAdmin', token);

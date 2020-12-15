@@ -9,6 +9,7 @@ function adminReview(url, reviewText, actionText) {
   cy.visit(url + '/admin');
   cy.wait(20000);
   cy.contains(reviewText).first().contains(actionText + " Review").click();
+  cy.wait(10000);
 }
 
 /*
@@ -32,7 +33,7 @@ function submitAndApproveReview(url, courseSub, courseNum, reviewText, professor
   submitReview(url, courseSub, courseNum, reviewText, professor, isCovidAffected);
   cy.wait(4000);
   adminReview(url, reviewText, "Confirm");
-  cy.wait(4000);
+  cy.wait(10000);
 }
 
 /*
@@ -40,11 +41,13 @@ function submitAndApproveReview(url, courseSub, courseNum, reviewText, professor
 */
 function checkCourseMetricsNotNaN(url, courseSub, courseNum) {
   cy.visit(url + '/course/' + courseSub + "/" + courseNum);
+  cy.wait(15000);
   cy.get(".gauge-text-top").each(($gaugeVal) => { cy.wrap($gaugeVal).should('not.contain', "-"); });
 }
 
 function checkReviewPosted(url, courseSub, courseNum, reviewText) {
   cy.visit(url + '/course/' + courseSub + "/" + courseNum);
+  cy.wait(15000);
   cy.contains(reviewText).first().should("exist");
 }
 

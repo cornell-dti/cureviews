@@ -8,7 +8,7 @@ import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
-const ADMIN_DISABLED_VALUE = "1";
+export const ADMIN_DISABLED_VALUE = "1";
 
 // Helper to check if a string is a subject code
 // exposed for testing
