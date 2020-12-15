@@ -14,3 +14,12 @@ describe('Submit review', () => {
     utils.checkCourseMetricsNotNaN(url, courseSub, courseNum);
   });
 });
+
+describe('Like review', () => {
+  it('liking a review, refreshing, and checking the like number incremented', async () => {
+    const courseSub = "CS";
+    const courseNum = "2110";
+
+    utils.likeAndCheckReview(url, courseSub, courseNum);
+  });
+});
