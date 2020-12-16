@@ -86,22 +86,21 @@ Meteor.methods({
    */
   async insert(token, review, classId) {
     try {
-      const adminDisabled = loginDisabled;
-      if (!adminDisabled && token === undefined) {
+      if (!loginDisabled && token === undefined) {
         // eslint-disable-next-line no-console
         console.log("Error: Token was undefined in insert");
         return { resCode: 0, errMsg: "Error: Token was undefined in insert" };
       }
 
       let ticket;
-      if (!adminDisabled) {
+      if (!loginDisabled) {
         ticket = await Meteor.call<TokenPayload | null>("getVerificationTicket", token);
         if (!ticket) return { resCode: 0, errMsg: "Missing verification ticket" };
       }
 
-      if (adminDisabled || ticket.hd === "cornell.edu") {
+      if (loginDisabled || ticket.hd === "cornell.edu") {
         // insert the user into the collection if not already present
-        if (!adminDisabled) {
+        if (!loginDisabled) {
           await Meteor.call("insertUser", ticket);
         }
 
