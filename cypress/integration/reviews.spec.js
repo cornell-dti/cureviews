@@ -5,9 +5,9 @@ const url = "http://localhost:3000";
 describe('Submit review', () => {
   it('submitting a review and approving on admin updates course metrics', () => {
     const courseSub = "CS";
-    const courseNum = "4410";
-    const prof = "Michael George";
-    const reviewText = "Test end to end";
+    const courseNum = "4110";
+    const prof = "John Foster";
+    const reviewText = new Date().toLocaleTimeString();
 
     utils.submitAndApproveReview(url, courseSub, courseNum, reviewText, prof, false);
     utils.checkReviewPosted(url, courseSub, courseNum, reviewText);
