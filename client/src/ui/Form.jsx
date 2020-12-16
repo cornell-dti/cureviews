@@ -165,7 +165,7 @@ export default class Form extends Component {
     Meteor.call("loginDisabled", (error, result) => {
       this.setState({loginDisabled: result});
       console.log(result);
-      if (Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse) {
+      if (Session.get("review") !== undefined && Session.get("review") !== "" && this.props.inUse) {
         this.submitReview();
       }
     });
@@ -439,7 +439,7 @@ export default class Form extends Component {
           </form>
         </div>
 
-        <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.loginDisabled && this.state.visible} onClose={this.hide.bind(this)}>
+        <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={!this.state.loginDisabled && this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
             <div id="modal-top">
               <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
@@ -458,7 +458,7 @@ export default class Form extends Component {
                 Not seeing it? Click here.
                 </p>
               <CUreviewsGoogleLogin
-                executeLogin={this.state.visible && this.state.loginDisabled}
+                executeLogin={this.state.visible && !this.state.loginDisabled}
                 waitTime={3000}
                 redirectFrom="course" />
             </div>

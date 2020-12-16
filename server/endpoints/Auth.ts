@@ -60,6 +60,7 @@ export const getUserByNetId = async (netId: string) => {
 };
 
 /*
+ * TODO: Create login/admin is disabled function in utils for end to end tests
  * Check if a token is for an admin
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {

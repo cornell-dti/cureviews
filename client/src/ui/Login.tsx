@@ -36,7 +36,7 @@ export default class Login extends Component<{}, { message: string; executeLogin
                                               // but it is used to refresh the render()
       }
       else{
-        if (Session.get("token") === "") {
+        if (Session.get("token") !== "") {
           Session.set("adminlogin", false);
         }
         this.setState({executeLogin: true});

@@ -94,6 +94,7 @@ export const insertUser: Endpoint<InsertUserRequest> = {
 };
 
 /**
+ * TODO: Add admin/login disabled changes from method.ts
  * Insert a new review into the database
  *
  * Returns 0 if there was an error
