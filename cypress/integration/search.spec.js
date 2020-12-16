@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import { utils } from '../utils.js';
 
-const url = "https://cornellreviews-dev.herokuapp.com";
+const url = "http://localhost:3000";
 
 describe('Search for a class exactly', () => {
   it('type a class exactly and check it brings you to the class', () => {

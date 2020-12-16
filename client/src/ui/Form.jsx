@@ -236,7 +236,6 @@ export default class Form extends Component {
   }
 
   submitReview() {
-    console.log("SUBMIT REVIEW");
     console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"),

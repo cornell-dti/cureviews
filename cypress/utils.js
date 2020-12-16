@@ -70,10 +70,15 @@ function likeAndCheckReview(url, courseSub, courseNum) {
   });
 }
 
+// Writes first half of query, then second to replicate human typing
 function searchAndPressEnter(url, searchText) {
   cy.visit(url);
-  cy.get(".search-text").first().type(searchText);
-  cy.wait(8000);
+  const firstHalf = searchText.substring(0, searchText.length/2);
+  const secondHalf = searchText.substring(searchText.length/2);
+  cy.get(".search-text").first().type(firstHalf);
+  cy.wait(4000);
+  cy.get(".search-text").first().type(secondHalf);
+  cy.wait(4000);
   cy.get(".search-text").first().type("{enter}");
 }
 
