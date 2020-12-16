@@ -73,10 +73,6 @@ export class CourseCard extends Component<Props, State> {
     }
   }
 
-  // Updates the last time user typed in the form textbox
-  // Used so that the popup doesn't show while user is typing where
-  onFormChange = () => this.setState({lastTyped:new Date().getTime()});
-
   render() {
     const theClass = this.props.course;
 
@@ -91,7 +87,7 @@ export class CourseCard extends Component<Props, State> {
         <p className="coursecard-class-info">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
         </p>
-        <Form onChange={this.onFormChange} course={theClass} inUse={true}/>
+        <Form course={theClass} inUse={true}/>
       </div>
     );
   }

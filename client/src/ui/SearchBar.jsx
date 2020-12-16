@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Session } from '../meteor-session';
 import { Meteor } from '../meteor-shim';
 import Course from './Course';
-import Subject from './Subject';
-import Professor from './Professor';
+import SubjectResult from './SubjectResult';
+import ProfessorResult from './ProfessorResult';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 import axios from "axios";
@@ -30,10 +30,6 @@ const initState = {
   index: 0, //the initial state is the first element
   enter: 0, //to keep track of the initial state of enter as false
   mouse: 0, //keep track of the initial state of mouse hovering in the list cells as false
-  courseSubject: "", //course subject that's been selected for pop-up review
-  courseTitle: "", //course title that's been selected for pop-up review
-  courseNumber: null,//course number that's been selected for pop-up review
-  courseId: null, //id of course that's been selected for pop-up review
   selected: false, //whether or not user has clicked yet,
   query: "", //user's query,
   allCourses: [],
@@ -47,8 +43,6 @@ export default class SearchBar extends Component {
     super(props);
 
     this.state = initState;
-    this.handleChange = this.handleChange.bind(this);
-    this.setCourse = this.setCourse.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
     this.checkForCourseMatch = this.checkForCourseMatch.bind(this);
   }
@@ -127,31 +121,6 @@ export default class SearchBar extends Component {
     }
   }
 
-  //This function is only used for the pop-up
-  //search bar. It keeps track of the value inside it
-  handleChange(event) {
-    this.setState({ textValue: event.target.value });
-    if (!this.state.showDropdown) {
-      this.setState(newSearchState);
-    }
-  }
-
-  //Handler function passed into Course component to get information on user-clicked course
-  //in pop-up review.
-  setCourse(id, subject, number, title, professors) {
-    this.setState({
-      courseId: id,
-      courseSubject: subject,
-      courseNumber: number,
-      courseTitle: title,
-      textValue: subject.toUpperCase() + number + ": " + title,
-      selected: true
-    });
-    this.props.formPopupHandler(id, professors);
-  }
-
-
-
   handleKeyPress = (e) => {
     //detect some arrow key movement (up, down, or enter)
     if (e.key === "ArrowDown") {
@@ -177,7 +146,6 @@ export default class SearchBar extends Component {
         enter: 1
       })
     }
-
 
     else {
       this.updateQuery(e);
@@ -235,26 +203,7 @@ export default class SearchBar extends Component {
   // where it matches the query.
   // Clicking a major will take the user to the results page for that major's Classes
   renderResults() {
-    //Used to start the timer "popup_timer" to display a popup after 30 seconds post-search
-    //See ClassView.jsx: decidePopup function
-    if (Session.get("seen_popup") === undefined || Session.get("seen_popup") == "") {
-      Session.setPersistent({ "popup_timer": new Date().getTime() });
-    }
-
-    if (this.state.query !== "" && !this.state.selected && this.props.isPopup) {
-      return this.state.allCourses.slice(0, 3).map((course, i) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.state.query} useRedirect={false} handler={this.setCourse}
-          active={this.state.index === i} enter={this.state.enter}
-          mouse={this.state.mouse} />
-        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
-        //the index matching with the course
-        //the prop "enter" will pass through the value of the enter state
-        //the prop "mouse" will pass through the value of the mouse state
-      ));
-
-    }
-    else if (this.state.query !== "" && !this.state.selected) {
+    if (this.state.query !== "" && !this.state.selected) {
       let results = [];
 
       // Used for "enter" key on 'Search: "query" ' button for exact search
@@ -276,7 +225,7 @@ export default class SearchBar extends Component {
 
       let subjectList = this.state.allSubjects.slice(0, 3).map((subject, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Subject key={subject._id} info={subject} query={this.state.query}
+        <SubjectResult key={subject._id} info={subject} query={this.state.query}
           active={this.state.index === (i + 1 /* plus 1 because of exact search */)}
           enter={this.state.enter} mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
@@ -295,7 +244,7 @@ export default class SearchBar extends Component {
       // Generate list of matching professors and add to results list
       let professorList = this.state.allProfessors.slice(0, 3).map((professor, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Professor key={professor._id} professor={professor} query={this.state.query}
+        <ProfessorResult key={professor._id} professor={professor} query={this.state.query}
           active={this.state.index === (i + subjectList.length + 1 /* plus 1 because of exact search */)}
           enter={this.state.enter} mouse={this.state.mouse} />
         //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
@@ -308,7 +257,7 @@ export default class SearchBar extends Component {
       
       results.push(this.state.allCourses.slice(0, 5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course key={course._id} info={course} query={this.state.query} useRedirect={true} handler={this.setCourse}
+        <Course key={course._id} info={course} query={this.state.query} handler={this.setCourse}
           active={this.state.index === (i + subjectList.length + professorList.length + 1 /* plus because of exact search, professors, subjects */)}
           enter={this.state.enter}
           mouse={this.state.mouse} />
@@ -326,15 +275,7 @@ export default class SearchBar extends Component {
   }
 
   render() {
-    if (this.props.isPopup) return (
-      <div className="searchbar-popup text-left" >
-        <input className={"search-text-popup " + (this.state.selected ? "search-text-popup-selected" : "")} value={this.state.textValue} onChange={this.handleChange} onKeyUp={this.handleKeyPress} placeholder="Search for a class" autoComplete="off" />
-        <ul className="output-popup" style={this.state.showDropdown ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
-          {this.renderResults()}
-        </ul>
-      </div>
-    );
-    else return (
+    return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
         <div className={"col-lg-12 col-md-12 col-sm-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
           <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue = {this.props.isInNavbar ? (this.props.userInput ? this.props.userInput : "") : ""} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
@@ -354,8 +295,6 @@ export default class SearchBar extends Component {
 SearchBar.propTypes = {
   isInNavbar: PropTypes.bool, // true if input should not have a placeholder
   loading: PropTypes.bool, // optional
-  isPopup: PropTypes.bool, // true if rendered in pop-up
-  formPopupHandler: PropTypes.func, //handler to set state for form if in popup
   contrastingResultsBackground: PropTypes.bool, // Used to display contrasting background for search results
   userInput: PropTypes.string // optional previously entered search term
 };

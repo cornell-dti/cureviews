@@ -1,17 +1,17 @@
 import React, { Component} from 'react';
 import "./css/Course.css";
 import { Redirect } from 'react-router';
-import { Subject } from 'common';
+import { Professor } from 'common';
 
 /*
-  Subject Component.
+  Professor Component.
 
-  Simple styling component that represents a single subject (an a element).
-  Used to list subject in the results of a search in SearchBar.
+  Simple styling component that represents a single professor (an a element).
+  Used to list professor in the results of a search in SearchBar.
 */
 
 type Props = {
-  info: Subject;
+  professor: Professor;
   query?: string; //optional
   active: boolean;
   enter: 1 | 0;
@@ -19,14 +19,15 @@ type Props = {
   key: string;
 };
 
-export default class Course extends Component<Props> {
+export default class ProfessorResult extends Component<Props> {
   render() {
     // generate full human-readable name of class
-    const subjectInfo = this.props.info;
-    let text = subjectInfo.subFull;
+    const professorObject = this.props.professor;
+    let text = professorObject.fullName;
+    let professorURL = professorObject.fullName.split(" ").join("+")
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
     if(this.props.active && this.props.enter === 1){
-       return <Redirect push to={`/results/major/${subjectInfo.subShort.toUpperCase()}`}></Redirect>
+       return <Redirect push to={`/results/professor/${professorURL}`}></Redirect>
       }
 
     //return classname as a list element
@@ -35,9 +36,9 @@ export default class Course extends Component<Props> {
     //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
     //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
       <a className={this.props.active && this.props.mouse !== 1 ? 'active-class resultbutton' : 'resultbutton'}
-          href={`/results/major/${subjectInfo.subShort.toUpperCase()}`}>
-        <p className="result-label-subject">
-          Major
+          href={`/results/professor/${professorURL}`}>
+        <p className="result-label-professor">
+          Professor
         </p>
         <p className="result-text">{text}</p>
       </a>

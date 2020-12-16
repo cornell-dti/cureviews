@@ -23,26 +23,16 @@ type Props = {
   mouse: number;
   handler: Function,
   key?: string;
-  useRedirect: boolean;
 };
 
 export default class Course extends Component<Props> {
-  constructor(props: Props){
-    super(props);
-
-    this.setCourseOnSearchBar.bind(this);
-  }
-
-  setCourseOnSearchBar(classInfo: any){
-    this.props.handler(classInfo._id, classInfo.classSub, classInfo.classNum, classInfo.classTitle, classInfo.classProfessors);
-  }
 
   render() {
     // generate full human-readable name of class
     const classInfo = this.props.info;
     let text: any = classInfo.classSub.toUpperCase() + " " + classInfo.classNum + ": " + classInfo.classTitle;
     //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
-    if(this.props.active && this.props.enter === 1 && this.props.useRedirect){
+    if(this.props.active && this.props.enter === 1){
        return <Redirect push to={`/course/${classInfo.classSub.toUpperCase()}/${classInfo.classNum}`}></Redirect>
       }
     // check if a query was provided, if so underline parts of the class name
@@ -64,13 +54,7 @@ export default class Course extends Component<Props> {
         const endIndex = startIndex + queryWithoutSubject.length;
 
         // underline the subject and any other matching text
-        if(!this.props.useRedirect)
-        text =
-        <span className="ellipsis">
-          <span className='matching-text'>{classInfo.classSub.toUpperCase() + " "}</span>
-          {textWithoutSubject.substring(0,startIndex)}<span className='matching-text'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
-        </span>
-        else text=
+        text=
           <span className="ellipsis">
           <span>{classInfo.classSub.toUpperCase() + " "}</span>
           {textWithoutSubject.substring(0,startIndex)}<span className='matching-text'>{textWithoutSubject.substring(startIndex,endIndex)}</span>{textWithoutSubject.substring(endIndex)}
@@ -80,7 +64,6 @@ export default class Course extends Component<Props> {
     }
 
     //return classname as a list element
-    if(this.props.useRedirect)
       return (
       //highlight the element if the indexes matched up (the active prop is true)
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
@@ -95,14 +78,6 @@ export default class Course extends Component<Props> {
               {text}
           </p>
       </a>
-    );
-    else return(
-      //highlight the element if the indexes matched up (the active prop is true)
-      //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
-      //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
-      <li onClick={()=>this.setCourseOnSearchBar(classInfo)} className={this.props.active && this.props.mouse === 1 ? 'active-class classbutton-popup' : 'classbutton-popup'} id={classInfo.classSub.toUpperCase() + "_" + classInfo.classNum }>
-        <p className="text-style-3">{text}</p>
-      </li>
     );
   }
 }

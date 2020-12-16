@@ -40,7 +40,7 @@ export default class Statistics extends Component<Props, State>{
   }
 
   componentDidMount() {
-    this.howManyEachClass();
+    this.getHowManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
     this.getChartData();
@@ -94,7 +94,7 @@ export default class Statistics extends Component<Props, State>{
     return strRet;
   }
 
-  howManyEachClass() {
+  getHowManyEachClass() {
     Meteor.call('howManyEachClass', Session.get("token"), (error: any, result: any) => {
       if (error === null) {
         result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
