@@ -73,7 +73,7 @@ function likeAndCheckReview(url, courseSub, courseNum) {
 function searchAndPressEnter(url, searchText) {
   cy.visit(url);
   cy.get(".search-text").first().type(searchText);
-  cy.wait(3000);
+  cy.wait(8000);
   cy.get(".search-text").first().type("{enter}");
 }
 
