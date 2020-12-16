@@ -538,6 +538,10 @@ Meteor.methods({
     }
   },
 
+  async isLoginDisabled() {
+    return loginDisabled;
+  },
+
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
     try {

@@ -224,7 +224,7 @@ export default class Form extends Component {
       // Call save review object to session so that it is not lost when authenicating (redirecting)
       this.saveReviewToSession(newReview);
       //Double check that login is disabled or not
-      Meteor.call("loginDisabled", (error, result) => {
+      Meteor.call("isLoginDisabled", (error, result) => {
         this.setState({loginDisabled: result});
         if (!this.state.loginDisabled){
           this.show();
