@@ -60,7 +60,8 @@ export default class Form extends Component {
       review: {},
       courseId: '',
       isCovid: false,
-      showCovid: true
+      showCovid: true,
+      loginDisabled: false
     };
 
     for (let i = 1; i <= 5; i++) {
@@ -156,19 +157,14 @@ export default class Form extends Component {
     return boxes;
   }
 
-
   // Called each time this component is re-rendered, and resets the values of the sliders to 3.
   componentDidMount() {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    Meteor.call("loginDisabled", (error, result) => {
-      this.setState({loginDisabled: result});
-      console.log(result);
-      if (Session.get("review") !== undefined && Session.get("review") !== "" && this.props.inUse) {
-        this.submitReview();
-      }
-    });
+    if (Session.get("review") !== undefined && Session.get("review") !== "" && this.props.inUse) {
+      this.submitReview();
+    }
   }
 
   // Called each time this component receieves new props.
@@ -227,11 +223,16 @@ export default class Form extends Component {
 
       // Call save review object to session so that it is not lost when authenicating (redirecting)
       this.saveReviewToSession(newReview);
-      if (!this.state.loginDisabled){
-        this.show();
-      } else {
-        this.submitReview();
-      }
+      //Double check that login is disabled or not
+      Meteor.call("loginDisabled", (error, result) => {
+        this.setState({loginDisabled: result});
+        if (!this.state.loginDisabled){
+          this.show();
+        } else {
+          this.submitReview();
+        }
+      });
+      
     }
   }
 
@@ -266,7 +267,6 @@ export default class Form extends Component {
           if (!this.state.loginDisabled) {
             this.hide();
           }
-          
         }
       });
   }
