@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { OAuth2Client } from 'google-auth-library';
-import { Endpoint } from "../endpoints";
+import { Context, Endpoint } from "../endpoints";
 import { Students } from "../dbDefs";
 import { verifyToken } from "./utils";
 
@@ -62,5 +62,5 @@ export const getUserByNetId = async (netId: string) => {
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (adminRequest: AdminRequest) => verifyToken(adminRequest.token),
+  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyToken(adminRequest.token),
 };

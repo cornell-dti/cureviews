@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
-import { Endpoint } from "../endpoints";
+import { Context, Endpoint } from "../endpoints";
 import { Reviews, ReviewDocument, Classes } from "../dbDefs";
 import { updateProfessors, findAllSemesters, resetProfessorArray } from "../dbInit";
 import { getCourseById, verifyToken } from "./utils";
@@ -56,7 +56,7 @@ export const updateCourseMetrics = async (courseId, token) => {
  */
 export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
   guard: [body("review").notEmpty(), body("token").notEmpty().isAscii()],
-  callback: async (adminReviewRequest: AdminReviewRequest) => {
+  callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       // check: make sure review id is valid and non-malicious
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
@@ -81,7 +81,7 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
  */
 export const undoReportReview: Endpoint<AdminReviewRequest> = {
   guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAlphanumeric()],
-  callback: async (adminReviewRequest: AdminReviewRequest) => {
+  callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
       if (userIsAdmin) {
@@ -104,7 +104,7 @@ export const undoReportReview: Endpoint<AdminReviewRequest> = {
  */
 export const removeReview: Endpoint<AdminReviewRequest> = {
   guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAlphanumeric()],
-  callback: async (adminReviewRequest: AdminReviewRequest) => {
+  callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
       if (userIsAdmin) {
@@ -128,7 +128,7 @@ export const removeReview: Endpoint<AdminReviewRequest> = {
  */
 export const setProfessors: Endpoint<AdminProfessorsRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (adminProfessorsRequest: AdminProfessorsRequest) => {
+  callback: async (ctx: Context, adminProfessorsRequest: AdminProfessorsRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
@@ -159,7 +159,7 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
  */
 export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (adminProfessorsRequest: AdminProfessorsRequest) => {
+  callback: async (ctx: Context, adminProfessorsRequest: AdminProfessorsRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {

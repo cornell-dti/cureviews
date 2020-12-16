@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-import { Endpoint } from "../endpoints";
+import { Context, Endpoint } from "../endpoints";
 import { Classes, Subjects, Professors } from "../dbDefs";
 
 // The type for a search query
@@ -137,7 +137,7 @@ export const regexClassesSearch = async (searchString) => {
  */
 export const getClassesByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii().whitelist("^[A-Za-z0-9 ]+$")],
-  callback: async (search: Search) => {
+  callback: async (ctx: Context, search: Search) => {
     try {
       const classes = await Classes.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
       if (classes && classes.length > 0) {
@@ -159,7 +159,7 @@ export const getClassesByQuery: Endpoint<Search> = {
  */
 export const getSubjectsByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii()],
-  callback: async (search: Search) => {
+  callback: async (ctx: Context, search: Search) => {
     try {
       return await Subjects.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
     } catch (error) {
@@ -177,7 +177,7 @@ export const getSubjectsByQuery: Endpoint<Search> = {
  */
 export const getProfessorsByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii()],
-  callback: async (search: Search) => {
+  callback: async (ctx: Context, search: Search) => {
     try {
       return await Professors.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
     } catch (error) {

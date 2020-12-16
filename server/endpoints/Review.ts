@@ -2,7 +2,7 @@ import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import { Review } from "common";
 import { includesProfanity } from "common/profanity";
-import { Endpoint } from "../endpoints";
+import { Context, Endpoint } from "../endpoints";
 import { Classes, Reviews } from "../dbDefs";
 import { getCourseById as getCourseByIdCallback, insertUser as insertUserCallback, JSONNonempty } from "./utils";
 import { getVerificationTicket } from "./Auth";
@@ -30,12 +30,16 @@ interface ClassByInfoQuery {
   number: string;
 }
 
+export interface LikeRequest {
+  id: string;
+}
+
 /**
  * Get a course with this course_id from the Classes collection
  */
 export const getCourseById: Endpoint<CourseIdQuery> = {
   guard: [body("courseId").notEmpty().isAscii()],
-  callback: getCourseByIdCallback,
+  callback: async (ctx: Context, arg: CourseIdQuery) => await getCourseByIdCallback(arg),
 };
 
 /*
@@ -44,7 +48,7 @@ export const getCourseById: Endpoint<CourseIdQuery> = {
  */
 export const getCourseByInfo: Endpoint<ClassByInfoQuery> = {
   guard: [body("number").notEmpty().isNumeric(), body("subject").notEmpty().isAscii()],
-  callback: async (query: ClassByInfoQuery) => {
+  callback: async (ctx: Context, query: ClassByInfoQuery) => {
     try {
       return await Classes.findOne({ classSub: query.subject, classNum: query.number }).exec();
     } catch (error) {
@@ -62,7 +66,7 @@ export const getCourseByInfo: Endpoint<ClassByInfoQuery> = {
  */
 export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
   guard: [body("courseId").notEmpty().isAscii()],
-  callback: async (courseId: CourseIdQuery) => {
+  callback: async (ctx: Context, courseId: CourseIdQuery) => {
     try {
       const course = await getCourseByIdCallback(courseId);
       if (course) {
@@ -90,7 +94,7 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
  */
 export const insertUser: Endpoint<InsertUserRequest> = {
   guard: [body("googleObject").notEmpty()],
-  callback: insertUserCallback,
+  callback: async (ctx: Context, arg: InsertUserRequest) => await insertUserCallback(arg),
 };
 
 /**
@@ -102,7 +106,7 @@ export const insertUser: Endpoint<InsertUserRequest> = {
 export const insertReview: Endpoint<InsertReviewRequest> = {
   guard: [body("token").notEmpty().isAscii(), body("classId").notEmpty().isAscii()]
     .concat(JSONNonempty("review", ["text", "difficulty", "rating", "workload", "professors", "isCovid"])),
-  callback: async (request: InsertReviewRequest) => {
+  callback: async (ctx: Context, request: InsertReviewRequest) => {
     try {
       const { token } = request;
       const { classId } = request;
@@ -159,6 +163,76 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
       // eslint-disable-next-line no-console
       console.log(error);
       return { resCode: 0, error: "Error: at 'insert' method" };
+    }
+  },
+};
+
+/**
+ * Increment the number of likes a review has gotten by 1.
+ *
+ * Returns resCode 1 on success
+ * Returns resCode 0 on error
+ *
+ * TODO: migrate to a proper account-based solution
+ */
+export const incrementLike: Endpoint<LikeRequest> = {
+  guard: [body("id").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: LikeRequest) => {
+    try {
+      const review = await Reviews.findOne({ _id: request.id }).exec();
+
+      if (review.lastLikedIP === ctx.ip) {
+        console.log(`${ctx.ip} has tried to like a review twice!`);
+        return { resCode: 0, error: "Cannot like a review twice!" };
+      }
+      if (review.likes === undefined) {
+        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1, lastLikedIP: ctx.ip } }).exec();
+      } else {
+        await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1, lastLikedIP: ctx.ip } }).exec();
+      }
+
+      return { resCode: 1 };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'incrementLike' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { resCode: 0 };
+    }
+  },
+};
+
+/**
+ * Decrement the number of likes a review has gotten by 1.
+ *
+ * Returns resCode 1 on success
+ * Returns resCole 0 on error
+ */
+
+export const decrementLike: Endpoint<LikeRequest> = {
+  guard: [body("id").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: LikeRequest) => {
+    try {
+      const review = await Reviews.findOne({ _id: request.id }).exec();
+
+      if (review.lastDislikedIP === ctx.ip) {
+        console.log(`${ctx.ip} has tried to dislike a review twice!`);
+        return { resCode: 0, error: "Cannot dislike a review twice!" };
+      }
+
+      if (review.likes === undefined) {
+        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0, lastDislikedIP: ctx.ip } }).exec();
+      } else {
+        // bound the rating at 0
+        await Reviews.updateOne({ _id: request.id }, { $set: { likes: Math.max(0, review.likes - 1), lastDislikedIP: ctx.ip } }).exec();
+      }
+      return { resCode: 1 };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'decrementLike' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { resCode: 0 };
     }
   },
 };

@@ -191,51 +191,17 @@ Meteor.methods({
     }
   },
   /**
-   * Increment the number of likes a review has gotten by 1.
-   *
-   * Returns 1 on success
-   * Returns 0 on error
+   * Deprecated for security reasons
    */
   async incrementLike(id) {
-    try {
-      const review = await Reviews.findOne({ _id: id }).exec();
-      if (review.likes === undefined) {
-        await Reviews.updateOne({ _id: id }, { $set: { likes: 1 } }).exec();
-      } else {
-        await Reviews.updateOne({ _id: id }, { $set: { likes: review.likes + 1 } }).exec();
-      }
-      return 1;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'incrementLike' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return 0;
-    }
+    return 0;
   },
 
   /**
-   * Decrement the number of likes a review has gotten by 1.
-   *
-   * Returns 1 on success
-   * Returns 0 on error
+   * Deprecated for security reasons
    */
   async decrementLike(id) {
-    try {
-      const review = await Reviews.findOne({ _id: id }).exec();
-      if (review.likes === undefined) {
-        await Reviews.updateOne({ _id: id }, { $set: { likes: 0 } }).exec();
-      } else {
-        await Reviews.updateOne({ _id: id }, { $set: { likes: review.likes - 1 } }).exec();
-      }
-      return 1;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'decrementLike' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return 0;
-    }
+    return 0;
   },
 
   // Make this review visible to everyone (ex: un-report or approve a review)

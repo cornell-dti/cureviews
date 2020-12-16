@@ -3,6 +3,7 @@ import { Meteor } from "../meteor-shim";
 import PropTypes from 'prop-types';
 import './css/Review.css';
 import ShowMoreText from 'react-show-more-text';
+import axios from 'axios';
 
 
 /*
@@ -67,37 +68,35 @@ export default class Review extends Component {
   increment(review) {
     console.log("here");
     if (this.state.liked === false) {
-      return Meteor.call('incrementLike', review._id, (error, result) => {
-        if (!error && result === 1) {
-            if (!this.state.numLikes) {
-              this.setState({
-                liked: true,
-                numLikes: 1 
-              })
-          }
-          else {
+      axios.post("/v2/incrementLike", { id: review._id }).then(response => {
+        const res = response.data.result; 
+        if (res.resCode === 1) {
+          if (!this.state.numLikes) {
             this.setState({
               liked: true,
-              numLikes: this.state.numLikes + 1 //updates the likes on the PreviewCard review in realtime
-            })
+              numLikes: 1 
+            });
+          } else {
+            this.setState({
+              liked: true,
+              numLikes: this.state.numLikes + 1
+            });
           }
-          console.log(this.state.liked);
-          console.log("Likes: " + review.likes);
         } else {
-          console.log(error)
+          console.log("Error while incrementing likes: " + res.error);
         }
       });
     }
     else {
-      return Meteor.call('decrementLike', review._id, (error, result) => {
-        if (!error && result === 1) {
+      axios.post("/v2/decrementLike", { id: review._id }).then(response => {
+        const res = response.data.result; 
+        if (res.resCode === 1) {
           this.setState({
             liked: false,
             numLikes: this.state.numLikes - 1
-          })
-          console.log("Likes: " + review.likes);
+          });
         } else {
-          console.log(error)
+          console.log("Error while decrementing likes: " + res.error);
         }
       });
     }
