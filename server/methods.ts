@@ -9,9 +9,7 @@ import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbIni
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 export const ADMIN_DISABLED_VALUE = "1";
-export const loginDisabled = () => {
-  return process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE;
-}
+export const loginDisabled = process.env.ADMIN_DISABLED === ADMIN_DISABLED_VALUE;
 
 // Helper to check if a string is a subject code
 // exposed for testing
@@ -88,7 +86,7 @@ Meteor.methods({
    */
   async insert(token, review, classId) {
     try {
-      const adminDisabled = loginDisabled();
+      const adminDisabled = loginDisabled;
       if (!adminDisabled && token === undefined) {
         // eslint-disable-next-line no-console
         console.log("Error: Token was undefined in insert");
@@ -544,7 +542,7 @@ Meteor.methods({
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
     try {
-      if (loginDisabled()) {
+      if (loginDisabled) {
         return true;
       }
       if (token != null) {

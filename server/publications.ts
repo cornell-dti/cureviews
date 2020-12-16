@@ -119,7 +119,7 @@ const searchWithinSubject = async (sub: string, remainder: string) => await Clas
 Meteor.publish('reviews', async (courseId: string, visiblity: 0 | 1, reportStatus: number, token: string) => {
   let ret = null;
   let userIsAdmin;
-  if (!loginDisabled() && (token === undefined || token === null || token === '')) {
+  if (!loginDisabled && (token === undefined || token === null || token === '')) {
     userIsAdmin = false;
   } else {
     userIsAdmin = Meteor.call('tokenIsAdmin', token);
