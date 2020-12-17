@@ -192,6 +192,15 @@ afterAll(async () => {
 });
 
 describe('tests', () => {
+  it("topSubjects", async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/topSubjects`, { token: "token" });
+    const match = [['Computer Science', 3], ['Mathematics', 1]];
+
+    match.forEach((obj) => {
+      expect(res.data.result).toContainEqual(obj);
+    });
+  });
+
   it('totalReviews', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/totalReviews`, { token: "token" });
     expect(res.data.result).toBe(testReviews.length);
@@ -213,11 +222,10 @@ describe('tests', () => {
     });
   });
 
-  it("topSubjects", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/topSubjects`, { token: "token" });
-    const match = [['Computer Science', 3], ['Mathematics', 1]];
-    match.forEach((obj) => {
-      expect(res.data.result).toContainEqual(obj);
-    });
+  it("getReviewsOverTimeTop15", async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsOverTimeTop15`, { token: "token", step: 12, range: 12 });
+
+    expect(res.data.result.math.length).toBeGreaterThan(0);
+    expect(res.data.result.cs.length).toBeGreaterThan(0);
   });
 });

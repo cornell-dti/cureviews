@@ -1,13 +1,9 @@
 /* eslint-disable spaced-comment */
 import { body } from "express-validator";
-import { verifyToken, topSubjects as topSubjectsCB } from "./utils";
+import { verifyToken } from "./utils";
 import { Endpoint } from "../endpoints";
 import { Reviews, Classes, Subjects } from "../dbDefs";
 
-// howManyEachClass -done
-// howManyReviewsEachClass - done
-// totalReviews - done
-// getReviewsOverTimeTop15
 export interface Token {
   token: string;
 }
@@ -17,7 +13,19 @@ interface GetReviewsOverTimeTop15Request {
   step: number;
   range: number;
 }
-/*
+
+/**
+ * Returns an key value object where key is a dept and value is an array of
+ * key-value objects where key is a data and value is number of reviews for
+ * that courses in that dept at the data given by the key:
+ *
+ * EX:
+ * {
+ *   math: [ {'2020-12-09' : 10}, {'2020-12-10' : 9}],
+ *   cs: [ {}, ... ,{} ],
+ * ...
+ * }
+ */
 export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (request: GetReviewsOverTimeTop15Request) => {
@@ -25,7 +33,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
     try {
       const userIsAdmin = await verifyToken(token);
       if (userIsAdmin) {
-        const top15 = await Meteor.call<[string, number][]>('topSubjects');
+        const top15 = await topSubjectsCB();
         // contains cs, math, gov etc...
         const retArr = [];
         await Promise.all(top15.map(async (classs) => {
@@ -122,13 +130,71 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
       return null;
     }
   },
-};*/
+};
 
-export const topSubjects: Endpoint<Token> = {
+/**
+ * Helper function for [topSubjects]
+ */
+const topSubjectsCB = async () => {
+  try {
+    // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
+    // to run complex queries
+    const pipeline = [
+      // consider only visible reviews
+      { $match: { visible: 1 } },
+      // group by class and get count of reviews
+      { $group: { _id: '$class', reviewCount: { $sum: 1 } } },
+      // sort by decending count
+      // {$sort: {"reviewCount": -1}},
+      // {$limit: 10}
+    ];
+    // reviewedSubjects is a dictionary-like object of subjects (key) and
+    // number of reviews (value) associated with that subject
+    const reviewedSubjects = new DefaultDict();
+    // run the query and return the class name and number of reviews written to it
+    const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline, () => { });
+
+    await Promise.all(results.map(async (course) => {
+      const classObject = (await Classes.find({ _id: course._id }).exec())[0];
+      // classSubject is the string of the full subject of classObject
+      const subjectArr = await Subjects.find({ subShort: classObject.classSub }).exec();
+      if (subjectArr.length > 0) {
+        const classSubject = subjectArr[0].subFull;
+        // Adds the number of reviews to the ongoing count of reviews per subject
+        const curVal = reviewedSubjects.get(classSubject) || 0;
+        reviewedSubjects[classSubject] = curVal + course.reviewCount;
+      }
+    }));
+
+    // Creates a map of subjects (key) and total number of reviews (value)
+    const subjectsMap = new Map(Object.entries(reviewedSubjects).filter((x): x is [string, number] => typeof x[1] === "number"));
+    let subjectsAndReviewCountArray = Array.from(subjectsMap);
+    // Sorts array by number of reviews each topic has
+    subjectsAndReviewCountArray = subjectsAndReviewCountArray.sort((a, b) => (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0));
+
+    // Returns the top 15 most reviewed classes
+    return subjectsAndReviewCountArray.slice(0, 15);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'topSubjects' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return null;
+  }
+};
+
+/**
+ * Returns the top 15 subjects (in terms of number of reviews)
+ */
+export const topSubjects: Endpoint<unknown> = {
   guard: [body("token").notEmpty()],
   callback: topSubjectsCB,
 };
 
+/**
+ * Returns an array of key-val objects where keys are dept and vals are number
+ * of courses in that dept.
+ */
 export const howManyEachClass: Endpoint<Token> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (request: Token) => {
@@ -159,6 +225,9 @@ export const howManyEachClass: Endpoint<Token> = {
   },
 };
 
+/**
+ * Gets total number of reviews in db
+ */
 export const totalReviews: Endpoint<Token> = {
   // eslint-disable-next-line no-undef
   guard: [body("token").notEmpty().isAscii()],
@@ -180,6 +249,10 @@ export const totalReviews: Endpoint<Token> = {
   },
 };
 
+/**
+ * Gets a array of key-value objects where each key a is class and value is
+ * the number of reviews of that class.
+ */
 export const howManyReviewsEachClass: Endpoint<Token> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (request: Token) => {

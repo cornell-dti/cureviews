@@ -99,7 +99,7 @@ export const verifyToken = async (token: string) => {
   }
 };
 
-export const topSubjects = async (request: Token) => {
+export const topSubjects = async () => {
   try {
     // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
     // to run complex queries
