@@ -10,7 +10,7 @@ import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/A
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
   guard: ValidationChain[];
-  callback: (args?: T) => any;
+  callback: (args: T) => any;
 }
 
 /*
