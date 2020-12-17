@@ -17,7 +17,7 @@ let serverCloseHandle;
 const testingPort = 8000;
 
 // inital classes that are present at start of all tests.
-export const testClasses = [
+const testClasses = [
   {
     _id: "oH37S3mJ4eAsktypy",
     classSub: "cs",
@@ -39,7 +39,7 @@ export const testClasses = [
 ];
 
 // inital reviews that are present at start of all tests.
-export const testReviews = [
+const testReviews = [
   {
     _id: "4Y8k7DnX3PLNdwRPr",
     text: "review text for cs 2110",
