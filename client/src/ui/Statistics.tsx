@@ -7,10 +7,10 @@ import Accordian from './Accordian';
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
 
-type Props=any
-type State ={
+type Props = any
+type State = {
   howManyEachClass: any[];
-  howManyReviewsEachClass:any[];
+  howManyReviewsEachClass: any[];
   totalReviews: number;
   chartData: any[];
   step: number;
@@ -22,11 +22,11 @@ type State ={
   A Statistics component that gives data concerning the
   database and allows devs to moniter status and progress of the project
 */
-export default class Statistics extends Component<Props,State>{
-  constructor(props:Props) {
+export default class Statistics extends Component<Props, State>{
+  constructor(props: Props) {
     super(props);
 
-    this.state={
+    this.state = {
       howManyEachClass: [],
       howManyReviewsEachClass: [],
       totalReviews: -1,
@@ -35,88 +35,108 @@ export default class Statistics extends Component<Props,State>{
       range: 12
     };
 
-    this.handleClick=this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
   }
 
-  componentDidMount(){
-    this.howManyEachClass();
+  componentDidMount() {
+    this.getHowManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
     this.getChartData();
   }
 
-  getChartData(){
+  getChartData() {
     //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-      Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range, (err:any, res:any)=>{
-        let data:any[]=[];
-        //key-> EX: cs
-        for(let key in res){
-          let finalDateObj:any={};//{date1:totalNum, date2:totalNum}
-          let obj:any ={}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
-          obj.name=key;
+    Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range, (err: any, res: any) => {
+      let data: any[] = [];
+      //key-> EX: cs
+      for (let key in res) {
+        let finalDateObj: any = {};//{date1:totalNum, date2:totalNum}
+        let obj: any = {}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
+        obj.name = key;
 
-          //[{date1:totalNum}, {date2: totalNum}, ...]
-          let arrDates = res[key];
+        //[{date1:totalNum}, {date2: totalNum}, ...]
+        let arrDates = res[key];
 
-          arrDates.forEach((arrEntry:any)=>{
-            let dateObject = Object.keys(arrEntry); //[date1]
-            dateObject.forEach(date=>{
-              finalDateObj[date]=arrEntry[date]
-            });
+        arrDates.forEach((arrEntry: any) => {
+          let dateObject = Object.keys(arrEntry); //[date1]
+          dateObject.forEach(date => {
+            finalDateObj[date] = arrEntry[date]
           });
+        });
 
-          obj.data=finalDateObj;
-          data.push(obj);
-        }
-
-        this.setState({chartData: data});
-      });
-  }
-
-  howManyReviewsEachClass(){
-    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error:any, result:any) =>{
-      if(error === null){
-        //sort descending
-        result.sort((rev1:any, rev2:any)=>(rev1.total > rev2.total)?-1:1);
-        this.setState({howManyReviewsEachClass: result});
-      } else{
-          console.log(error);
+        obj.data = finalDateObj;
+        data.push(obj);
       }
+
+      this.setState({ chartData: data });
     });
   }
 
-  howManyEachClass(){
-    Meteor.call('howManyEachClass', Session.get("token"), (error:any, result:any) =>{
-      if(error === null){
-        result.sort((rev1:any, rev2:any)=>(rev1.total > rev2.total)?-1:1);
-        this.setState({howManyEachClass: result});
-      }else{
+  howManyReviewsEachClass() {
+    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error: any, result: any) => {
+      if (error === null) {
+        //sort descending
+        result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
+        this.setState({ howManyReviewsEachClass: result });
+      } else {
         console.log(error);
       }
     });
   }
 
-  totalReviews(){
-    Meteor.call('totalReviews', Session.get("token"),(error:any, result:any)=>{
-      if(!error){
-        this.setState({totalReviews: result});
+  getReviewsPerClassCSV() {
+    let strRet = "class,total\n";
+    this.state.howManyReviewsEachClass.map((obj) => {
+      strRet += obj._id + "," + obj.total + "\n";
+    });
+    return strRet;
+  }
+
+  getHowManyEachClass() {
+    Meteor.call('howManyEachClass', Session.get("token"), (error: any, result: any) => {
+      if (error === null) {
+        result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
+        this.setState({ howManyEachClass: result });
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+  totalReviews() {
+    Meteor.call('totalReviews', Session.get("token"), (error: any, result: any) => {
+      if (!error) {
+        this.setState({ totalReviews: result });
       }
       else
         console.log(error);
     });
   }
 
-  handleClick = (e:any) =>{
+  handleClick = (e: any) => {
     e.preventDefault();
     this.getChartData();
   }
 
-  render(){
-    return(
+  downloadCSVFile = () => {
+    const element = document.createElement("a");
+    const file = new Blob([this.getReviewsPerClassCSV()], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = "ReviewsPerClass.csv";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  }
+
+  render() {
+    return (
       <div>
-        <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses"/>
-        <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews"/>
+        <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses" />
+        <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews" />
+        <div>
+          <button className="btn btn-primary" onClick={this.downloadCSVFile}>Download CSV For ReviewsPerClass</button>
+        </div>
         <p>Total reviews: {this.state.totalReviews}</p>
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
 
@@ -124,18 +144,18 @@ export default class Statistics extends Component<Props,State>{
           <div className="col-xs-7"> </div>
           <div className="col-xs-2">
             <label htmlFor="range">Range in months</label>
-            <input className="form-control " type="number" id="range" name="range" min="1" value={this.state.range} onChange={e => this.setState({range: parseInt(e.target.value,10)}) }/>
+            <input className="form-control " type="number" id="range" name="range" min="1" value={this.state.range} onChange={e => this.setState({ range: parseInt(e.target.value, 10) })} />
           </div>
 
           <div className="col-xs-2">
-          <label htmlFor="step">Step in days</label>
-          <input className="form-control" type="number" id="step" name="step" min="1" value={this.state.step} onChange={e => this.setState({step: parseInt(e.target.value,10)})}/>
+            <label htmlFor="step">Step in days</label>
+            <input className="form-control" type="number" id="step" name="step" min="1" value={this.state.step} onChange={e => this.setState({ step: parseInt(e.target.value, 10) })} />
           </div>
           <div className="col-xs-1">
-          <button type="button" className="btn btn-primary" onClick={this.handleClick}>Load Chart</button>
+            <button type="button" className="btn btn-primary" onClick={this.handleClick}>Load Chart</button>
           </div>
         </div>
-    </div>
+      </div>
     )
   }
 

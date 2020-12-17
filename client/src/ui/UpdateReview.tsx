@@ -6,7 +6,7 @@ import "./css/Review.css";
 type Props ={
     info: any;
     approveHandler: (arg1:any) => any;
-    removeHandler: (arg1:any) => any;
+    removeHandler: (arg1:any, arg2:any) => any;
 
     //was origially optional
     unReportHandler: (arg1:any) => any;
@@ -71,7 +71,7 @@ export default class UpdateReview extends Component<Props,State> {
           return (
             <div className='text-right'>
               <button type="button" className="btn btn-success " onClick={() => this.props.unReportHandler(review)}> Restore Review</button>
-              <button type="button" className="btn btn-danger space-review-buttons" onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+              <button type="button" className="btn btn-danger space-review-buttons" onClick={() => this.props.removeHandler(review, false)}> Remove Review</button>
             </div>
           )
       }
@@ -79,7 +79,7 @@ export default class UpdateReview extends Component<Props,State> {
           return (
             <div className='text-right'>
               <button type="button" className="btn btn-success" onClick={() => this.props.approveHandler(review)}> Confirm Review</button>
-              <button type="button" className="btn btn-danger space-review-buttons" onClick={() => this.props.removeHandler(review)}> Remove Review</button>
+              <button type="button" className="btn btn-danger space-review-buttons" onClick={() => this.props.removeHandler(review, true)}> Remove Review</button>
             </div>
           )
       }

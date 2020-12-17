@@ -4,6 +4,7 @@ import "./css/Results.css"; // css files
 import Navbar from './Navbar';
 import ResultsDisplay from './ResultsDisplay.jsx';
 import PropTypes from "prop-types";
+import axios from 'axios';
 
 /*
   Results Component.
@@ -65,32 +66,24 @@ export class Results extends Component {
       if(userQuery && userQuery.split(" ").length === 1){
         userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(" ");
       }
-      Meteor.call("getCoursesByKeyword", userQuery, (err, courseList) => {
-        if (!err && courseList.length !== 0) {
+      axios.post(`/v2/getClassesByQuery`, { query: userQuery }).then(response => {
+        const queryCourseList = response.data.result; 
+        if (queryCourseList.length !== 0) {
           // Save the Class object that matches the request
           this.setState({
-            courseList: courseList,
+            courseList: queryCourseList,
             loading: false
           });
         }
         else {
-          Meteor.call("getClassesByQuery", userQuery, (err, queryCourseList) => {
-            if (!err && queryCourseList.length !== 0) {
-              // Save the Class object that matches the request
-              this.setState({
-                courseList: queryCourseList,
-                loading: false
-              });
-            }
-            else {
               this.setState({
                 courseList: [],
                 loading: false
               });
             }
-          })
         }
-      });
+      )
+      .catch(e => console.log("Getting courses failed!"));
     }
   }
 

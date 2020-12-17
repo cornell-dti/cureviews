@@ -45,20 +45,12 @@ export class ClassView extends Component {
       number: number,
       subject: subject,
       selectedClass: null,
-      classDoesntExist: false,
-      popUpVisible: false,
-      popupPos: "hidden",
-      popUpIsEnabled: false //Note: popup is currently disabled, should be refactored
-                            // and tested before enabling
+      classDoesntExist: false
     };
 
     //Used to prevent endless reloading in componentDidUpdate
     this.firstLoad = true;
 
-    this.togglePopupForm.bind(this);
-    this.hidePopup = this.hidePopup.bind(this);
-    this.showPopup = this.showPopup.bind(this);
-    this.decidePopup = this.decidePopup.bind(this);
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
   }
 
@@ -95,66 +87,10 @@ export class ClassView extends Component {
         number: number,
         subject: subject,
         selectedClass: null,
-        classDoesntExist: false,
-        popUpVisible: false,
-        popupPos: "hidden",
+        classDoesntExist: false
       });
       this.firstLoad = false;
       this.updateCurrentClass(number, subject);
-      if(this.state.popUpIsEnabled){
-        this.decidePopup();
-      }
-    }
-  }
-
-  getPopUpCourseOptions() {
-    if (this.props.allCourses !== []) {
-      const popUpCourseOptions = []
-      for(const course in this.props.allCourses){
-        const courseObj = this.props.allCourses[course]
-
-        popUpCourseOptions.push({
-          "value" : courseObj.classNum,
-          "label" : courseObj.classTitle
-        })
-      }
-      return popUpCourseOptions
-    }
-  }
-
-  togglePopupForm(){
-    const nextState = this.state.popupPos === "hidden" ? "open" : "hidden";
-    this.setState({ popupPos: nextState });
-  }
-
-  showPopup() {
-      this.setState({ popUpVisible: true });
-  }
-
-  hidePopup() {
-    this.setState({ popUpVisible: false });
-  }
-
-  // Decides to show popup. Wait 30 seconds before user can see popup.
-  // If user hasn't seen popup in over 4 hours, set up 30 second timer.
-  // Checks every 5 seconds for this condition
-  decidePopup(){
-    if(Session.get("popup_timer") !== undefined
-        && Session.get("popup_timer") !== ""
-        && Session.get("seen_popup") !== true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
-        && (!this.state.lastTyped
-            || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
-      this.showPopup();
-      Session.setPersistent({"seen_popup": true});
-    }
-    else{
-      if(Session.get("seen_popup") === true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) >  1000)/*(4 hours)*/{
-          Session.setPersistent({"seen_popup": false});
-          Session.setPersistent({"popup_timer": new Date().getTime()});
-        }
-      setTimeout(() => { this.decidePopup() }, 5000);
     }
   }
 
@@ -187,19 +123,6 @@ export class ClassView extends Component {
               </div>
             </div>
           </div>
-          <Rodal animation="zoom" height={565} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible} onClose={this.hidePopup.bind(this)}>
-            <div className="popup-main animate-form popup-background">
-              <div className={"popup-form animate-form popup-" + this.state.popupPos}>
-                <p className="popup-text1" >Want to contribute your opinion?</p>
-                <img src='/popup_background1.png' className="center-block scale-popup-img" alt="Students Chatting" />
-                <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
-                Leave a Review<i className="popup-arrow"></i>
-                </button>
-                <Form searchBar={true} inUse={this.state.popUpVisible} course={this.state.selectedClass} />
-              </div>
-            </div>
-
-          </Rodal>
         </div>
       );
     } else if (this.state.classDoesntExist) {
