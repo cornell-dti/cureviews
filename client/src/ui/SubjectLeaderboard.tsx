@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Meteor } from '../meteor-shim';
+import { Subject } from 'common';
 
 type State = { readonly topSubjects: readonly any[] };
 

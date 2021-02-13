@@ -14,8 +14,6 @@ function semAbbriviationToWord(sem) {
       return 'Summer';
     case 'WI':
       return 'Winter';
-    default:
-      return "";
   }
 }
 
@@ -45,26 +43,18 @@ function getCrossListOR(course) {
     crossList = course.crossList;
     courseId = course._id;
   } else {
-    return [{
-      class: courseId,
-    }];
+    return [{ class: courseId }];
   }
 
   // if there are crossListed Courses, merge the reviews
   if (crossList !== undefined && crossList.length > 0) {
     // format each courseid into an object to input to the find's '$or' search
-    const crossListOR = crossList.map((cID) => ({
-      class: cID,
-    }));
-    crossListOR.push({
-      class: courseId,
-    }); // make sure to add the original course to the list
+    const crossListOR = crossList.map((courseId) => ({ class: courseId }));
+    crossListOR.push({ class: courseId }); // make sure to add the original course to the list
     return crossListOR;
   }
 
-  return [{
-    class: courseId,
-  }];
+  return [{ class: courseId }];
 }
 
 // collect aggregate information from allReviews, the list of all reviews
@@ -150,9 +140,5 @@ function getMetricValues(allReviews) {
 }
 
 module.exports = {
-  lastOfferedSems,
-  semAbbriviationToWord,
-  lastSem,
-  getCrossListOR,
-  getMetricValues,
+  lastOfferedSems, semAbbriviationToWord, lastSem, getCrossListOR, getMetricValues,
 };
