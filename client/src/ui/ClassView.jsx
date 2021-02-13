@@ -1,6 +1,8 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Meteor } from "../meteor-shim";
+import { Session } from "../meteor-session";
 import CourseCard from './CourseCard';
+import Form from './Form';
 import Gauge from './Gauge';
 import Navbar from './Navbar';
 import CourseReviews from './CourseReviews';
@@ -8,6 +10,7 @@ import "./css/App.css";
 import { courseVisited } from './js/Feedback';
 import "./css/ClassView.css";
 import PropTypes from "prop-types";
+import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import './css/Form.css';
 
@@ -53,7 +56,7 @@ export class ClassView extends Component {
 
   // Once the component loads, make a call to the backend for class object.
   // Update the local state accordingly.  Called from componentDidUpdate()
-  updateCurrentClass(classNumber, classSubject) {
+  updateCurrentClass(classNumber, classSubject){
     Meteor.call("getCourseByInfo", classNumber, classSubject, (err, selectedClass) => {
       if (!err && selectedClass) {
         // Save the Class object that matches the request
@@ -71,15 +74,15 @@ export class ClassView extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps){
     //if this component receives new props from the Redirect, it resets its state so that it can render/mount
     //a new ClassView component with the new props
     const number = this.props.routeInfo.match.params.number;
     const subject = this.props.routeInfo.match.params.subject.toLowerCase();
 
-    if ((prevProps.routeInfo.match.params.number !== number
-      || prevProps.routeInfo.match.params.subject.toLowerCase() !== subject)
-      || this.firstLoad) {
+    if((prevProps.routeInfo.match.params.number !== number
+        || prevProps.routeInfo.match.params.subject.toLowerCase() !== subject)
+        || this.firstLoad){
       this.setState({
         number: number,
         subject: subject,
@@ -106,17 +109,17 @@ export class ClassView extends Component {
             <div className="col navbar-margin classview-right-panel">
               <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall" />
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty" />
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload" />
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
                 </div>
               </div>
               <div className="row no-padding classview-reviews-container">
-                <CourseReviews courseId={this.state.selectedClass._id} />
+                <CourseReviews  courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
