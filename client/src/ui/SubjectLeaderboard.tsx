@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Meteor } from '../meteor-shim';
-import { Subject } from 'common';
 
 type State = { readonly topSubjects: readonly any[] };
 
@@ -21,7 +20,7 @@ export default class SubjectLeaderboard extends Component<{}, State> {
     // defined in imports/api/classes
     Meteor.call('topSubjects', (error: any, result: readonly any[]) => {
       if (!error) {
-        this.setState({topSubjects: result});
+        this.setState({ topSubjects: result });
       } else {
         console.log(error)
       }
@@ -33,12 +32,12 @@ export default class SubjectLeaderboard extends Component<{}, State> {
     if (this.state.topSubjects !== []) {
       return this.state.topSubjects.map((course, index) => (
         <ol className="no-hover classbutton" key={index}>
-            <h3 className="text-style-2" >
+          <h3 className="text-style-2" >
             {/* Displays subject and number it ranks (per total reivews) */}
-            {(index+1).toString()}. {course[0]}
+            {(index + 1).toString()}. {course[0]}
             {/* Displays the number of total reviews next to subject */}
             <span className="float-right">{course[1]}</span>
-            </h3>
+          </h3>
         </ol>
       ));
     } else {
@@ -53,11 +52,11 @@ export default class SubjectLeaderboard extends Component<{}, State> {
         {/* Note that the id:"reviewpanel" and "reviewul" still refer to this component as a 
         component.  I did not change the name to keep the styling consistent*/}
         <div className="panel panel-default" id="reviewpanel">
-            <div>
-                <ul id="reviewul">
-                    {this.renderCourses()}
-                </ul>
-            </div>
+          <div>
+            <ul id="reviewul">
+              {this.renderCourses()}
+            </ul>
+          </div>
         </div>
       </section>
     );
