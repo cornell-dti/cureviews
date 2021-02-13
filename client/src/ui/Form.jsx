@@ -162,7 +162,7 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if (Session.get("review") !== undefined && Session.get("review") != "") {
+    if (Session.get("review") !== undefined && Session.get("review") !== "") {
       this.submitReview();
     }
   }
@@ -232,7 +232,7 @@ export default class Form extends Component {
     console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"),
-      Session.get("review") != "" ? Session.get("review") : this.state.review,
+      Session.get("review") !== "" ? Session.get("review") : this.state.review,
       !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
       (error, result) => {
         // if (!error && result === 1) {
@@ -275,7 +275,7 @@ export default class Form extends Component {
     const errs = {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
-      professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length == 0),
+      professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length === 0),
       profanity: includesProfanity(text),
       allFalse: false
     };
@@ -286,7 +286,7 @@ export default class Form extends Component {
   }
 
   getProfOptions() {
-    if (this.props.course.classProfessors != []) {
+    if (this.props.course.classProfessors !== []) {
       const profOptions = []
       for (const prof in this.props.course.classProfessors) {
         const professorName = this.props.course.classProfessors[prof]
@@ -298,7 +298,7 @@ export default class Form extends Component {
       }
       return profOptions
     }
-    else if (this.state.professors != []) {
+    else if (this.state.professors !== []) {
       const profOptions = []
       for (const prof in this.state.professors) {
         const professorName = this.state.professors[prof]
@@ -420,7 +420,7 @@ export default class Form extends Component {
                 checked={this.state.isCovid}
                 onChange={this.handleCovidBox} />
             </label>}
-            
+
             <div className="row form-button-top-bottom-spacing">
               <div className="col-md-12 col-sm-12 col-xs-12">
                 <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
