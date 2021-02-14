@@ -25,7 +25,7 @@
   "dependencies": {
     "@types/cors": "^2.8.6",
     "@types/shortid": "^0.0.29",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "common": "0.0.1",
     "cors": "^2.8.5",
     "cypress": "^5.3.0",
