@@ -1,7 +1,7 @@
 /* eslint-disable spaced-comment */
 import { body } from "express-validator";
 import { verifyToken } from "./utils";
-import { Endpoint } from "../endpoints";
+import { Context, Endpoint } from "../endpoints";
 import { Reviews, Classes, Subjects } from "../dbDefs";
 
 export interface Token {
@@ -28,12 +28,12 @@ interface GetReviewsOverTimeTop15Request {
  */
 export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (request: GetReviewsOverTimeTop15Request) => {
+  callback: async (ctx: Context, request: GetReviewsOverTimeTop15Request) => {
     const { token, step, range } = request;
     try {
       const userIsAdmin = await verifyToken(token);
       if (userIsAdmin) {
-        const top15 = await topSubjectsCB();
+        const top15 = await topSubjectsCB(ctx);
         // contains cs, math, gov etc...
         const retArr = [];
         await Promise.all(top15.map(async (classs) => {
@@ -135,7 +135,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
 /**
  * Helper function for [topSubjects]
  */
-const topSubjectsCB = async () => {
+const topSubjectsCB = async (_ctx: Context) => {
   try {
     // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
     // to run complex queries
@@ -197,7 +197,7 @@ export const topSubjects: Endpoint<unknown> = {
  */
 export const howManyEachClass: Endpoint<Token> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (request: Token) => {
+  callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
       const userIsAdmin = await verifyToken(token);
@@ -231,7 +231,7 @@ export const howManyEachClass: Endpoint<Token> = {
 export const totalReviews: Endpoint<Token> = {
   // eslint-disable-next-line no-undef
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (request: Token) => {
+  callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
       const userIsAdmin = await verifyToken(token);
@@ -255,7 +255,7 @@ export const totalReviews: Endpoint<Token> = {
  */
 export const howManyReviewsEachClass: Endpoint<Token> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (request: Token) => {
+  callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
       const userIsAdmin = await verifyToken(token);
