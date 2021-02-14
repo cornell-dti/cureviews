@@ -1,5 +1,6 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
+import { totalReviews, howManyReviewsEachClass, howManyEachClass, topSubjects, getReviewsOverTimeTop15 } from "./endpoints/AdminChart";
 import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo, incrementLike, decrementLike } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
@@ -38,6 +39,11 @@ export function configure(app: express.Application) {
   register(app, "undoReportReview", undoReportReview);
   register(app, "removeReview", removeReview);
   register(app, "getCourseByInfo", getCourseByInfo);
+  register(app, "totalReviews", totalReviews);
+  register(app, "howManyReviewsEachClass", howManyReviewsEachClass);
+  register(app, "howManyEachClass", howManyEachClass);
+  register(app, "topSubjects", topSubjects);
+  register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
   register(app, "incrementLike", incrementLike);
   register(app, "decrementLike", decrementLike);
 }

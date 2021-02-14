@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";
 import axios from 'axios';
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 
 import { configure } from "../endpoints";
 import { Classes, Reviews } from "../dbDefs";
@@ -10,7 +9,7 @@ import * as Utils from "./utils";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
-const mockVerification = jest.spyOn(Utils, 'verifyToken').mockImplementation(async (token? : string) => true);
+const mockVerification = jest.spyOn(Utils, 'verifyToken').mockImplementation(async (token?: string) => true);
 
 const testingPort = 47728;
 
@@ -57,7 +56,7 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
-  serverCloseHandle = app.listen(testingPort, async () => {});
+  serverCloseHandle = app.listen(testingPort, async () => { });
   configure(app);
 });
 

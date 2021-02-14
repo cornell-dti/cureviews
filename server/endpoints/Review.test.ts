@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import express from "express";

@@ -1,8 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Meteor } from "../meteor-shim";
-import { Session } from "../meteor-session";
 import CourseCard from './CourseCard';
-import Form from './Form';
 import Gauge from './Gauge';
 import Navbar from './Navbar';
 import CourseReviews from './CourseReviews';
@@ -10,7 +8,6 @@ import "./css/App.css";
 import { courseVisited } from './js/Feedback';
 import "./css/ClassView.css";
 import PropTypes from "prop-types";
-import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import './css/Form.css';
 
@@ -45,26 +42,18 @@ export class ClassView extends Component {
       number: number,
       subject: subject,
       selectedClass: null,
-      classDoesntExist: false,
-      popUpVisible: false,
-      popupPos: "hidden",
-      popUpIsEnabled: false //Note: popup is currently disabled, should be refactored
-                            // and tested before enabling
+      classDoesntExist: false
     };
 
     //Used to prevent endless reloading in componentDidUpdate
     this.firstLoad = true;
 
-    this.togglePopupForm.bind(this);
-    this.hidePopup = this.hidePopup.bind(this);
-    this.showPopup = this.showPopup.bind(this);
-    this.decidePopup = this.decidePopup.bind(this);
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
   }
 
   // Once the component loads, make a call to the backend for class object.
   // Update the local state accordingly.  Called from componentDidUpdate()
-  updateCurrentClass(classNumber, classSubject){
+  updateCurrentClass(classNumber, classSubject) {
     Meteor.call("getCourseByInfo", classNumber, classSubject, (err, selectedClass) => {
       if (!err && selectedClass) {
         // Save the Class object that matches the request
@@ -82,79 +71,23 @@ export class ClassView extends Component {
     });
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     //if this component receives new props from the Redirect, it resets its state so that it can render/mount
     //a new ClassView component with the new props
     const number = this.props.routeInfo.match.params.number;
     const subject = this.props.routeInfo.match.params.subject.toLowerCase();
 
-    if((prevProps.routeInfo.match.params.number !== number
-        || prevProps.routeInfo.match.params.subject.toLowerCase() !== subject)
-        || this.firstLoad){
+    if ((prevProps.routeInfo.match.params.number !== number
+      || prevProps.routeInfo.match.params.subject.toLowerCase() !== subject)
+      || this.firstLoad) {
       this.setState({
         number: number,
         subject: subject,
         selectedClass: null,
-        classDoesntExist: false,
-        popUpVisible: false,
-        popupPos: "hidden",
+        classDoesntExist: false
       });
       this.firstLoad = false;
       this.updateCurrentClass(number, subject);
-      if(this.state.popUpIsEnabled){
-        this.decidePopup();
-      }
-    }
-  }
-
-  getPopUpCourseOptions() {
-    if (this.props.allCourses !== []) {
-      const popUpCourseOptions = []
-      for(const course in this.props.allCourses){
-        const courseObj = this.props.allCourses[course]
-
-        popUpCourseOptions.push({
-          "value" : courseObj.classNum,
-          "label" : courseObj.classTitle
-        })
-      }
-      return popUpCourseOptions
-    }
-  }
-
-  togglePopupForm(){
-    const nextState = this.state.popupPos === "hidden" ? "open" : "hidden";
-    this.setState({ popupPos: nextState });
-  }
-
-  showPopup() {
-      this.setState({ popUpVisible: true });
-  }
-
-  hidePopup() {
-    this.setState({ popUpVisible: false });
-  }
-
-  // Decides to show popup. Wait 30 seconds before user can see popup.
-  // If user hasn't seen popup in over 4 hours, set up 30 second timer.
-  // Checks every 5 seconds for this condition
-  decidePopup(){
-    if(Session.get("popup_timer") !== undefined
-        && Session.get("popup_timer") !== ""
-        && Session.get("seen_popup") !== true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) > 30 * 1000 /*(30 seconds)*/
-        && (!this.state.lastTyped
-            || Math.abs(this.state.lastTyped- new Date().getTime()) > 10 * 1000 /*(10 seconds)*/)){
-      this.showPopup();
-      Session.setPersistent({"seen_popup": true});
-    }
-    else{
-      if(Session.get("seen_popup") === true
-        && Math.abs(Session.get("popup_timer") - new Date().getTime()) >  1000)/*(4 hours)*/{
-          Session.setPersistent({"seen_popup": false});
-          Session.setPersistent({"popup_timer": new Date().getTime()});
-        }
-      setTimeout(() => { this.decidePopup() }, 5000);
     }
   }
 
@@ -173,33 +106,20 @@ export class ClassView extends Component {
             <div className="col navbar-margin classview-right-panel">
               <div className="row classview-gauge-container">
                 <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall"/>
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall" />
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty"/>
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty" />
                 </div>
                 <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload"/>
+                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload" />
                 </div>
               </div>
               <div className="row no-padding classview-reviews-container">
-                <CourseReviews  courseId={this.state.selectedClass._id} />
+                <CourseReviews courseId={this.state.selectedClass._id} />
               </div>
             </div>
           </div>
-          <Rodal animation="zoom" height={565} width={window.innerWidth/2} measure="px" className="modalForm" visible={this.state.popUpVisible} onClose={this.hidePopup.bind(this)}>
-            <div className="popup-main animate-form popup-background">
-              <div className={"popup-form animate-form popup-" + this.state.popupPos}>
-                <p className="popup-text1" >Want to contribute your opinion?</p>
-                <img src='/popup_background1.png' className="center-block scale-popup-img" alt="Students Chatting" />
-                <button className="popup-button-center" onClick={this.togglePopupForm.bind(this)}>
-                Leave a Review<i className="popup-arrow"></i>
-                </button>
-                <Form searchBar={true} inUse={this.state.popUpVisible} course={this.state.selectedClass} />
-              </div>
-            </div>
-
-          </Rodal>
         </div>
       );
     } else if (this.state.classDoesntExist) {

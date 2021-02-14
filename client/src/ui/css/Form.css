@@ -160,19 +160,6 @@
   display: none !important;
 }
 
-/* Form Popup Styling */
-/* The following was not yet refactored and will be when pop-up component is re-implemented -Julian (4/14/2020) */
-
-
-.rodal{
-  z-index: 1000;
-}
-
-.dropdown-menu-popup{
-  background-color: #ffffffe6 !important;
-  opacity: 1 !important;
-}
-
 .dropdown-tab{
   text-align: center;
   border-radius: 0px 0px 5px 5px;

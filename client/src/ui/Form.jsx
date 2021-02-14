@@ -5,7 +5,6 @@ import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import Select from 'react-select';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
-import SearchBar from './SearchBar';
 import './css/Form.css';
 import { Session } from '../meteor-session';
 import { Meteor } from "../meteor-shim";
@@ -78,7 +77,6 @@ export default class Form extends Component {
     this.saveReviewToSession = this.saveReviewToSession.bind(this)
     this.hide = this.hide.bind(this)
     this.show = this.show.bind(this)
-    this.setCourseIdInSearchBar = this.setCourseIdInSearchBar.bind(this);
     this.createMetricBoxes = this.createMetricBoxes.bind(this);
     this.handleBoxHoverEnter = this.handleBoxHoverEnter.bind(this);
     this.handleBoxHoverLeave = this.handleBoxHoverLeave.bind(this);
@@ -86,22 +84,11 @@ export default class Form extends Component {
     this.handleCovidBox = this.handleCovidBox.bind(this);
   }
 
-  //Handler for setting the form state's course id if using popup.
-  //Passed in as a prop to search bar
-  setCourseIdInSearchBar(courseId, professors) {
-    Session.setPersistent({ "courseId": courseId });
-    this.setState({ courseId: courseId, professors: professors, selectedProfessors: [] })
-  }
-
   // Save the current user input text from the text box in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   // Updates time user last typed for regular review form, if applicable.
   handleTextChange = (event) => {
     console.log("in handle text change");
-
-    if (this.props.onChange) { //If onChange prop exists, call it
-      this.props.onChange();
-    }
     this.setState({ text: event.target.value });
   }
 
@@ -175,7 +162,7 @@ export default class Form extends Component {
     //If there is currently a review stored in the session, this means that we have
     // come back from the authentication page
     // In this case, submit the review
-    if (Session.get("review") !== undefined && Session.get("review") != "" && this.props.inUse) {
+    if (Session.get("review") !== undefined && Session.get("review") !== "") {
       this.submitReview();
     }
   }
@@ -245,7 +232,7 @@ export default class Form extends Component {
     console.log(Session.get("review"));
     // Call the API insert function
     Meteor.call('insert', Session.get("token"),
-      Session.get("review") != "" ? Session.get("review") : this.state.review,
+      Session.get("review") !== "" ? Session.get("review") : this.state.review,
       !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
       (error, result) => {
         // if (!error && result === 1) {
@@ -288,7 +275,7 @@ export default class Form extends Component {
     const errs = {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
-      professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length == 0),
+      professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length === 0),
       profanity: includesProfanity(text),
       allFalse: false
     };
@@ -299,7 +286,7 @@ export default class Form extends Component {
   }
 
   getProfOptions() {
-    if (this.props.course.classProfessors != [] && !this.props.searchBar) {
+    if (this.props.course.classProfessors !== []) {
       const profOptions = []
       for (const prof in this.props.course.classProfessors) {
         const professorName = this.props.course.classProfessors[prof]
@@ -311,7 +298,7 @@ export default class Form extends Component {
       }
       return profOptions
     }
-    else if (this.state.professors != []) {
+    else if (this.state.professors !== []) {
       const profOptions = []
       for (const prof in this.state.professors) {
         const professorName = this.state.professors[prof]
@@ -349,7 +336,6 @@ export default class Form extends Component {
         <div className="form-menu">
           <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
             <p className="form-header-text">Leave a Review</p>
-            {this.props.searchBar && <SearchBar formPopupHandler={this.setCourseIdInSearchBar} isPopup={true} />}
             <div className="row form-textbox-row">
               <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
                 onChange={(event) => this.handleTextChange(event)}
@@ -434,7 +420,6 @@ export default class Form extends Component {
                 checked={this.state.isCovid}
                 onChange={this.handleCovidBox} />
             </label>}
-            {/*Only show tab if not in popup*/}
 
             <div className="row form-button-top-bottom-spacing">
               <div className="col-md-12 col-sm-12 col-xs-12">
@@ -443,7 +428,6 @@ export default class Form extends Component {
             </div>
           </form>
         </div>
-        {/*Only show tab if not in popup*/}
 
         <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
@@ -479,7 +463,5 @@ export default class Form extends Component {
 // Form must be provided the course object of the class this review will be for.
 Form.propTypes = {
   course: PropTypes.object.isRequired,
-  searchBar: PropTypes.bool, // true if this form is for pop-up,
-  inUse: PropTypes.bool, //used to deactivate form in background if pop-up is in focus
   onChange: PropTypes.func
 };
