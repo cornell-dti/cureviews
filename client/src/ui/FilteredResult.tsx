@@ -42,8 +42,8 @@ export default class FilteredResult extends Component<Props,State> {
     };
 
     this.getColor = this.getColor.bind(this);
-    this.updateSortBy = this.updateSortBy.bind(this);
-    this.updateSortByTitle = this.updateSortByTitle.bind(this);
+    this.getSortNumber = this.getSortNumber.bind(this);
+    this.updateSortNumberTitle = this.updateSortNumberTitle.bind(this);
 
   }
 
@@ -85,20 +85,25 @@ export default class FilteredResult extends Component<Props,State> {
 
   //Returns the corresponding number of the class's metric based on the [sortBy] metric
   //Returns ? if it is null
-  updateSortBy() {
+  getSortNumber(roundTo?: number) {
+    let sortNumber;
     if (this.state.sortBy === "rating" || this.state.sortBy === "relevance") {
-      return Number(this.state.course.classRating) ? this.state.course.classRating : "?";
+      sortNumber = Number(this.state.course.classRating) ? this.state.course.classRating : "?";
     }
     else if (this.state.sortBy === "diff") {
-      return Number(this.state.course.classDifficulty) ? this.state.course.classDifficulty : "?";
+      sortNumber = Number(this.state.course.classDifficulty) ? this.state.course.classDifficulty : "?";
     }
     else if (this.state.sortBy === "work") {
-      return Number(this.state.course.classWorkload) ? this.state.course.classWorkload : "?";
+      sortNumber = Number(this.state.course.classWorkload) ? this.state.course.classWorkload : "?";
     }
+    if (roundTo && Number(sortNumber)) {
+      return Number(sortNumber).toFixed(roundTo);
+    }
+    return sortNumber;
   }
 
   //Returns the corresponding name of the class's metric based on the [sortBy] metric
-  updateSortByTitle() {
+  updateSortNumberTitle() {
     if (this.state.sortBy === "rating" || this.state.sortBy === "relevance") {
       return "Overall Rating";
     }
@@ -125,10 +130,10 @@ export default class FilteredResult extends Component<Props,State> {
           </h2>
           <div className="result-card-rating-text">
             <p className="result-card-sort-by-text">
-              <strong>{this.updateSortByTitle()}</strong>
+              <strong>{this.updateSortNumberTitle()}</strong>
             </p>
             <p className="result-card-sort-by-value">
-              {this.updateSortBy()}
+              {this.getSortNumber(1)}
             </p>
             <p>
               /5
