@@ -96,6 +96,9 @@ _Screenshots coming soon_
 
 ## Contributors
 
+### 2020-2021
+- **Julie Jeong** - Developer
+
 ### 2019-2020
 
 - **Julian Londono** - Technical Project Manager
