@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Session } from '../meteor-session';
-import { Meteor } from '../meteor-shim';
 import Course from './Course';
 import SubjectResult from './SubjectResult';
 import ProfessorResult from './ProfessorResult';
@@ -21,7 +19,7 @@ import axios from "axios";
   meteor database and displays them.
 */
 
-let newSearchState = { selected: false, mouse: 0, enter: 0, index: 0};
+let newSearchState = { selected: false, mouse: 0, enter: 0, index: 0 };
 
 
 
@@ -56,15 +54,15 @@ export default class SearchBar extends Component {
     let query = event.target.value.trim();
 
     // This is used to make "cs2110" and "cs 2110" equivalent
-    if(query && query.split(" ").length === 1){
+    if (query && query.split(" ").length === 1) {
       query = query.match(/[a-z]+|[^a-z]+/gi).join(" ");
     }
 
-    if(this.checkForCourseMatch(query)){
+    if (this.checkForCourseMatch(query)) {
       // If query is exact match to a class,
       //  highlight this class by setting index to index of this class
       //  in search results dropdown
-      this.setState({index: this.state.allSubjects.length + 1});
+      this.setState({ index: this.state.allSubjects.length + 1 });
     }
     this.setState({ query: query });
   }
@@ -72,7 +70,7 @@ export default class SearchBar extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps) {
       axios.post(`/v2/getClassesByQuery`, { query: this.state.query }).then(response => {
-        const queryCourseList = response.data.result; 
+        const queryCourseList = response.data.result;
         if (queryCourseList.length !== 0) {
           // Save the Class object that matches the request
           this.setState({
@@ -80,13 +78,13 @@ export default class SearchBar extends Component {
           });
         }
         else {
-              this.setState({
-                allCourses: []
-              });
-            }
+          this.setState({
+            allCourses: []
+          });
         }
+      }
       )
-      .catch(e => console.log("Getting courses failed!"));
+        .catch(e => console.log("Getting courses failed!"));
 
       axios.post(`/v2/getSubjectsByQuery`, { query: this.state.query }).then(response => {
         const subjectList = response.data.result;
@@ -189,7 +187,7 @@ export default class SearchBar extends Component {
     this.state.allCourses.forEach(course => {
       let classNum = course.classNum.toLowerCase();
       let classSub = course.classSub.toLowerCase();
-      if (classNum === queryNum && classSub === querySub){
+      if (classNum === queryNum && classSub === querySub) {
         isMatch = true;
       }
     });
@@ -240,7 +238,7 @@ export default class SearchBar extends Component {
       }
 
       results.push(subjectList)
-      
+
       // Generate list of matching professors and add to results list
       let professorList = this.state.allProfessors.slice(0, 3).map((professor, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
@@ -254,7 +252,7 @@ export default class SearchBar extends Component {
       ));
 
       results.push(professorList)
-      
+
       results.push(this.state.allCourses.slice(0, 5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course key={course._id} info={course} query={this.state.query} handler={this.setCourse}
@@ -278,7 +276,7 @@ export default class SearchBar extends Component {
     return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
         <div className={"col-lg-12 col-md-12 col-sm-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
-          <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue = {this.props.isInNavbar ? (this.props.userInput ? this.props.userInput : "") : ""} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
+          <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue={this.props.isInNavbar ? (this.props.userInput ? this.props.userInput : "") : ""} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}
