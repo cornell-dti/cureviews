@@ -78,7 +78,7 @@ export default class Gauge extends Component<Props,State>{
         <div className="row noLeftRightMargin gauge-component-container">
           <div className={"col-md-6  no-side-padding gauge-text-container " + this.gauge_text_padding + " " + this.gauge_text_size_class}>
             <p className="gauge-text">
-                <span className={this.gauge_text_top}>{this.state.rating}</span>
+                <span className={this.gauge_text_top}>{ this.state.rating }</span>
                 <span className="gauge-text-bottom ">{this.props.text}</span>
             </p>
           </div>
