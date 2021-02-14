@@ -8,13 +8,13 @@ import { getCourseById, verifyToken } from "./utils";
 
 // The type for a request with an admin action for a review
 interface AdminReviewRequest {
-    review: ReviewDocument;
-    token: string;
+  review: ReviewDocument;
+  token: string;
 }
 
 // The type for a request with an admin action for updating professors info
 interface AdminProfessorsRequest {
-    token: string;
+  token: string;
 }
 
 // This updates the metrics for an individual class given its Mongo-generated id.
@@ -31,7 +31,7 @@ export const updateCourseMetrics = async (courseId, token) => {
         await Classes.updateOne({ _id: courseId },
           {
             $set: {
-            // If no data is available, getMetricValues returns "-" for metric
+              // If no data is available, getMetricValues returns "-" for metric
               classDifficulty: (state.diff !== "-" && !isNaN(Number(state.diff)) ? Number(state.diff) : null),
               classRating: (state.rating !== "-" && !isNaN(Number(state.rating)) ? Number(state.rating) : null),
               classWorkload: (state.workload !== "-" && !isNaN(Number(state.workload)) ? Number(state.workload) : null),
@@ -133,13 +133,10 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
         const semesters = findAllSemesters();
-        console.log("These are the semesters");
-        console.log(semesters);
         const val = updateProfessors(semesters);
         if (val) {
           return val;
         }
-        console.log("fail at setProfessors");
         return 0;
       }
       return 0;
@@ -164,13 +161,10 @@ export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
         const semesters = findAllSemesters();
-        console.log("These are the semesters");
-        console.log(semesters);
         const val = resetProfessorArray(semesters);
         if (val) {
           return val;
         }
-        console.log("fail at resetProfessors in method.js");
         return 0;
       }
       return 0;
