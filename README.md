@@ -96,6 +96,14 @@ _Screenshots coming soon_
 
 ## Contributors
 
+### 2021-2020
+
+- **Angela Chen** - Product Manager
+- **Julian Londono** - Technical Project Manager
+- **Luis Hoderlein** - Technical Project Manager
+- **Dray Farley** - Developer
+- **Akash Aryal** - Developer
+
 ### 2019-2020
 
 - **Julian Londono** - Technical Project Manager
