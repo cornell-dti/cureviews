@@ -190,19 +190,6 @@ Meteor.methods({
       return 0;
     }
   },
-  /**
-   * Deprecated for security reasons
-   */
-  async incrementLike(id) {
-    return 0;
-  },
-
-  /**
-   * Deprecated for security reasons
-   */
-  async decrementLike(id) {
-    return 0;
-  },
 
   // Make this review visible to everyone (ex: un-report or approve a review)
   // Upon succcess, return 1, else 0.
