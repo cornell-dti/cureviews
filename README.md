@@ -103,6 +103,7 @@ _Screenshots coming soon_
 - **Luis Hoderlein** - Technical Project Manager
 - **Dray Farley** - Developer
 - **Akash Aryal** - Developer
+- **Julie Jeong** - Developer
 
 ### 2019-2020
 
