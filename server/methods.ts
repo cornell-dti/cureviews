@@ -83,6 +83,9 @@ Meteor.methods({
    * Returns 1 on a success
    */
   async insert(token, review, classId) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old insertReview");
+
     try {
       if (token === undefined) {
         // eslint-disable-next-line no-console
@@ -158,6 +161,9 @@ Meteor.methods({
    * Returns 0 if there was an error
    */
   async insertUser(googleObject) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old insertUser");
+
     try {
       // Check user object has all required fields
       if (googleObject.email.replace("@cornell.edu", "") !== null) {
@@ -194,6 +200,9 @@ Meteor.methods({
   // Make this review visible to everyone (ex: un-report or approve a review)
   // Upon succcess, return 1, else 0.
   async makeVisible(review, token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old makeVisible");
+
     try {
       // check: make sure review id is valid and non-malicious
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
@@ -215,6 +224,9 @@ Meteor.methods({
   // Delete this review from the local database.
   // Upon succcess, return 1, else 0.
   async removeReview(review, token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old removeReview");
+
     try {
       // check: make sure review id is valid and non-malicious
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
@@ -237,6 +249,9 @@ Meteor.methods({
   // This updates the metrics for an individual class given its Mongo-generated id.
   // Returns 1 if successful, 0 otherwise.
   async updateCourseMetrics(courseId, token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old updateCourseMetrics");
+
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       if (userIsAdmin) {
@@ -271,6 +286,9 @@ Meteor.methods({
   // Used to update the review metrics for all courses
   // in the database.
   async updateMetricsForAllCourses(token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old updateMetricsForAllCourses");
+
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       if (userIsAdmin) {
@@ -299,6 +317,9 @@ Meteor.methods({
   // NOTE/TODO: I don't think this actually works as intended
   // let's refactor in future - Julian
   async getCoursesByFilters(parameters) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getCoursesByFilter");
+
     try {
       let courses = [];
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -322,6 +343,9 @@ Meteor.methods({
   // e.g. CS, INFO, PHIL
   // Returns an empty array if no classes match.
   async getCoursesByMajor(major) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getCourseByMajor");
+
     try {
       let courses = [];
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -343,6 +367,9 @@ Meteor.methods({
   // e.g. David Gries, Michael George
   // Returns an empty array if no classes match.
   async getCoursesByProfessor(professor) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getCourseByProfessor");
+
     try {
       let courses = [];
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -418,6 +445,9 @@ Meteor.methods({
   /* Update the database so we have the professors information.
   This calls updateProfessors in dbInit */
   async setProfessors(initiate, token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old setProfessors");
+
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       if (initiate && userIsAdmin) {
@@ -445,6 +475,9 @@ Meteor.methods({
   we have a uniform empty array to fill with updateProfessors
   This calls the resetProfessorArray in dbInit */
   async resetProfessors(initiate, token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old resetProfessors");
+
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       if (initiate && userIsAdmin) {
@@ -470,6 +503,9 @@ Meteor.methods({
 
   // Get a user with this netId from the Users collection in the local database
   async getUserByNetId(netId: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getUserByNetID");
+
     try {
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if (regex.test(netId)) {
@@ -487,6 +523,9 @@ Meteor.methods({
 
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old tokenIsAdmin");
+
     try {
       if (token != null) {
         const ticket = await Meteor.call<TokenPayload | null>('getVerificationTicket', token);
@@ -509,6 +548,9 @@ Meteor.methods({
 
   // Get a course with this course_id from the Classes collection in the local database.
   async getCourseById(courseId) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getCourseById");
+
     try {
       // check: make sure course id is valid and non-malicious
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -527,6 +569,9 @@ Meteor.methods({
 
   // Get a course with this course number and subject from the Classes collection in the local database.
   async getCourseByInfo(number: string, subject: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getCourseByInfo");
+
     try {
       // check: make sure number and subject are valid, non-malicious strings
       const numberRegex = new RegExp(/^(?=.*[0-9])/i);
@@ -548,6 +593,9 @@ Meteor.methods({
   // Flag a review - mark it as reported and make it invisible to non-admin users.
   // To be called by a non-admin user from a specific review.
   async reportReview(review) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old reportReview");
+
     try {
       // check: make sure review id is valid and non-malicious
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -568,6 +616,9 @@ Meteor.methods({
   // Un-flag a review, making it visible to everyone and "unreported"
   // To be called by an admin via the admin interface.
   async undoReportReview(review, token) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old undoReportReview");
+
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       // check: make sure review id is valid and non-malicious
@@ -588,6 +639,9 @@ Meteor.methods({
 
   // get all reviews by professor
   async getReviewsByProfessor(professor: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getReviewsByProfessor");
+
     try {
       const regex = new RegExp(/^(?=.*[A-Z])/i);
       if (regex.test(professor)) {
@@ -606,6 +660,9 @@ Meteor.methods({
   // Get list of review objects for given class from class _id
   // Accounts for cross-listed reviews
   async getReviewsByCourseId(courseId: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getReviewsByCourseId");
+
     try {
       const regex = new RegExp(/^(?=.*[A-Z])/i);
       if (regex.test(courseId)) {
@@ -629,6 +686,9 @@ Meteor.methods({
 
   // get all classes by professor
   async getClassesByProfessor(professor: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getClassesByProfessor");
+
     try {
       const regex = new RegExp(/^(?=.*[A-Z])/i);
       if (regex.test(professor)) {
@@ -647,6 +707,9 @@ Meteor.methods({
   // Get a list the most popular courses from the Classes collection (objects)
   // popular classes -> most reviewed.
   async topSubjects() {
+    // eslint-disable-next-line no-console
+    console.log("Call to old topSubjects");
+
     try {
       // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
       // to run complex queries
@@ -697,6 +760,9 @@ Meteor.methods({
   // returns an array of objects in the form {_id: cs, total: 276}
   // represnting how many classes each dept (cs, info, coml etc...) offers
   async howManyEachClass(token: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old howManyEachClass");
+
     try {
       const userIsAdmin = await Meteor.call("tokenIsAdmin", token);
       if (userIsAdmin) {
@@ -724,6 +790,9 @@ Meteor.methods({
 
   // returns an array of objs in the form {_id: cs 2112, total: 227}
   async howManyReviewsEachClass(token: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old howManyReviewsEachClass");
+
     try {
       const userIsAdmin = await Meteor.call('tokenIsAdmin', token);
       if (userIsAdmin) {
@@ -759,6 +828,9 @@ Meteor.methods({
 
   // returns a count of the total reviews in the db
   async totalReviews(token: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old totalReviews");
+
     try {
       const userIsAdmin = await Meteor.call('tokenIsAdmin', token);
       if (userIsAdmin) {
@@ -778,6 +850,9 @@ Meteor.methods({
   // math: [{date1:total}, {date2: total}, ...], ... } for the top 15 majors where
   // totalNum is the totalNum of reviews for classes in that major at date date1, date2 etc...
   async getReviewsOverTimeTop15(token: string, step, range) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getReviewsOverTimeTop15");
+
     try {
       const userIsAdmin = await Meteor.call<boolean>('tokenIsAdmin', token);
       if (userIsAdmin) {
@@ -893,6 +968,8 @@ Meteor.methods({
   // Validate admin password.
   // Upon success, return 1, else return 0.
   async vailidateAdmin(pass) {
+    console.log("Call to old vailidateAdmin");
+
     // check: make sure review id is valid and non-malicious
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(pass)) {
@@ -915,6 +992,9 @@ Meteor.methods({
    * handleVerifyError(error, res);
    */
   async getVerificationTicket(token?: string) {
+    // eslint-disable-next-line no-console
+    console.log("Call to old getVerificationTicket");
+
     try {
       if (token === null) {
         console.log("Token was undefined in getVerificationTicket");
