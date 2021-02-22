@@ -51,6 +51,7 @@ const testReviews = [
     atten: 0,
     visible: 1,
     reported: 0,
+    likes: 2,
   },
   {
     _id: "4Y8k7DnX3PLNdwRPq",
@@ -189,6 +190,16 @@ describe('tests', () => {
 
     // state of db is same as original state at end of beforeAll function
     await removeReviews([reviewToInsert]);
+  });
+
+  it("like/dislike", async () => {
+    const res1 = await axios.post(`http://localhost:${testingPort}/v2/incrementLike`, { id: "4Y8k7DnX3PLNdwRPr" });
+    expect(res1.data.result.resCode).toBe(1);
+    expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(3);
+
+    const res2 = await axios.post(`http://localhost:${testingPort}/v2/incrementLike`, { id: "4Y8k7DnX3PLNdwRPr" });
+    expect(res2.data.result.resCode).toBe(0);
+    expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(3);
   });
 
   it("insert User", async () => {

@@ -1,16 +1,20 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo } from "./endpoints/Review";
 import { totalReviews, howManyReviewsEachClass, howManyEachClass, topSubjects, getReviewsOverTimeTop15 } from "./endpoints/AdminChart";
+import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo, incrementLike, decrementLike } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
+
+export interface Context {
+  ip: string;
+}
 
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
   guard: ValidationChain[];
-  callback: (args: T) => any;
+  callback: (ctx: Context, args: T) => any;
 }
 
 /*
@@ -20,6 +24,8 @@ export function configure(app: express.Application) {
   const methods = express.Router();
   methods.use(express.json());
   app.use(express.json());
+  // needed to get client IP apparently
+  app.set('trust proxy', true);
 
   register(app, "getClassesByQuery", getClassesByQuery);
   register(app, "getReviewsByCourseId", getReviewsByCourseId);
@@ -38,6 +44,8 @@ export function configure(app: express.Application) {
   register(app, "howManyEachClass", howManyEachClass);
   register(app, "topSubjects", topSubjects);
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
+  register(app, "incrementLike", incrementLike);
+  register(app, "decrementLike", decrementLike);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
@@ -52,7 +60,7 @@ function register<T>(app: express.Application, name: string, endpoint: Endpoint<
     // The fact that the guard has not errored is enough for this to be safe
     // Make sure that your guard is sufficient!
     const arg = req.body;
-
-    return res.status(200).send({ result: await callback(arg) });
+    const ctx = { ip: req.ip };
+    return res.status(200).send({ result: await callback(ctx, arg) });
   });
 }

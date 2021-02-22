@@ -94,6 +94,8 @@ const ReviewSchema = new Schema<ReviewDocument>({
   professors: { type: [String] }, // list of professors that have thought the course over past semesters
   likes: { type: Number, min: 0 }, // number of likes a review has
   isCovid: { type: Boolean },
+  lastLikedIP: { type: String, required: false }, // TODO temp fix, see Review.ts incrementLike
+  lastDislikedIP: { type: String, required: false },
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature
