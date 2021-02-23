@@ -79,7 +79,6 @@ export default class Statistics extends Component<Props, State>{
       let data = res.data.result;
       data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
       this.setState({ howManyReviewsEachClass: data });
-      console.log(data);
     }).catch((err) => {
       console.log("error retrieving reviews for each class ", err);
     })
@@ -94,13 +93,12 @@ export default class Statistics extends Component<Props, State>{
   }
 
   getHowManyEachClass() {
-    Meteor.call('howManyEachClass', Session.get("token"), (error: any, result: any) => {
-      if (error === null) {
-        result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
-        this.setState({ howManyEachClass: result });
-      } else {
-        console.log(error);
-      }
+    axios.post(`/v2/howManyEachClass`, { token: Session.get("token") }).then((res) => {
+      let data = res.data.result;
+      data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
+      this.setState({ howManyEachClass: data });
+    }).catch((err) => {
+      console.log("error retrieving how many each class ", err);
     });
   }
 
