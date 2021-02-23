@@ -43,7 +43,7 @@ export default class Statistics extends Component<Props, State>{
     this.getHowManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
-    this.getChartData();
+    //this.getChartData();
   }
 
   getChartData() {
@@ -75,15 +75,14 @@ export default class Statistics extends Component<Props, State>{
   }
 
   howManyReviewsEachClass() {
-    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error: any, result: any) => {
-      if (error === null) {
-        //sort descending
-        result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
-        this.setState({ howManyReviewsEachClass: result });
-      } else {
-        console.log(error);
-      }
-    });
+    axios.post(`/v2/howManyReviewsEachClass`, { token: Session.get("token") }).then((res) => {
+      let data = res.data.result;
+      data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
+      this.setState({ howManyReviewsEachClass: data });
+      console.log(data);
+    }).catch((err) => {
+      console.log("error retrieving reviews for each class ", err);
+    })
   }
 
   getReviewsPerClassCSV() {
