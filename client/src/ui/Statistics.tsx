@@ -6,7 +6,7 @@ import Accordian from './Accordian';
 
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
-
+import axios from 'axios';
 type Props = any
 type State = {
   howManyEachClass: any[];
@@ -106,13 +106,13 @@ export default class Statistics extends Component<Props, State>{
   }
 
   totalReviews() {
-    Meteor.call('totalReviews', Session.get("token"), (error: any, result: any) => {
-      if (!error) {
-        this.setState({ totalReviews: result });
-      }
-      else
-        console.log(error);
-    });
+    axios.post(`/v2/totalReviews`, { token: Session.get("token") }).then((res) => {
+      const total = res.data.result;
+      this.setState({ totalReviews: total });
+    }).catch((err) => {
+      console.log("error retrieving totalReviews ", err);
+    })
+
   }
 
   handleClick = (e: any) => {
