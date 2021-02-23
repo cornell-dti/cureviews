@@ -187,7 +187,7 @@ const topSubjectsCB = async (_ctx: Context) => {
  * Returns the top 15 subjects (in terms of number of reviews)
  */
 export const topSubjects: Endpoint<unknown> = {
-  guard: [body("token").notEmpty()],
+  guard: [],
   callback: topSubjectsCB,
 };
 
