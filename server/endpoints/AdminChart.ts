@@ -136,7 +136,6 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
  * Helper function for [topSubjects]
  */
 const topSubjectsCB = async (_ctx: Context, request: Token) => {
-
   const userIsAdmin = await verifyToken(request.token);
   if (!userIsAdmin) {
     return null;
