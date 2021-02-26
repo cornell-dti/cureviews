@@ -6,6 +6,7 @@ import Accordian from './Accordian';
 
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
+import axios from 'axios';
 
 type Props = any
 type State = {
@@ -47,31 +48,58 @@ export default class Statistics extends Component<Props, State>{
   }
 
   getChartData() {
-    //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
-    Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range, (err: any, res: any) => {
-      let data: any[] = [];
-      //key-> EX: cs
-      for (let key in res) {
-        let finalDateObj: any = {};//{date1:totalNum, date2:totalNum}
-        let obj: any = {}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
-        obj.name = key;
+    axios.post(`/v2/getReviewsOverTimeTop15`, { token: Session.get("token"), step: this.state.step, range: this.state.range })
+      .then((resp) => {
+        const res = resp.data.result;
+        let data: any[] = [];
+        //key-> EX: cs
+        for (let key in res) {
+          let finalDateObj: any = {};//{date1:totalNum, date2:totalNum}
+          let obj: any = {}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
+          obj.name = key;
 
-        //[{date1:totalNum}, {date2: totalNum}, ...]
-        let arrDates = res[key];
+          //[{date1:totalNum}, {date2: totalNum}, ...]
+          let arrDates = res[key];
 
-        arrDates.forEach((arrEntry: any) => {
-          let dateObject = Object.keys(arrEntry); //[date1]
-          dateObject.forEach(date => {
-            finalDateObj[date] = arrEntry[date]
+          arrDates.forEach((arrEntry: any) => {
+            let dateObject = Object.keys(arrEntry); //[date1]
+            dateObject.forEach(date => {
+              finalDateObj[date] = arrEntry[date]
+            });
           });
-        });
 
-        obj.data = finalDateObj;
-        data.push(obj);
-      }
+          obj.data = finalDateObj;
+          data.push(obj);
+        }
 
-      this.setState({ chartData: data });
-    });
+        this.setState({ chartData: data });
+      });
+
+    //{cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...] }
+    /* Meteor.call('getReviewsOverTimeTop15', Session.get("token"), this.state.step, this.state.range, (err: any, res: any) => {
+       let data: any[] = [];
+       //key-> EX: cs
+       for (let key in res) {
+         let finalDateObj: any = {};//{date1:totalNum, date2:totalNum}
+         let obj: any = {}; // {name: cs, data: {date1:totalNum, date2:totalNum}}
+         obj.name = key;
+ 
+         //[{date1:totalNum}, {date2: totalNum}, ...]
+         let arrDates = res[key];
+ 
+         arrDates.forEach((arrEntry: any) => {
+           let dateObject = Object.keys(arrEntry); //[date1]
+           dateObject.forEach(date => {
+             finalDateObj[date] = arrEntry[date]
+           });
+         });
+ 
+         obj.data = finalDateObj;
+         data.push(obj);
+       }
+ 
+       this.setState({ chartData: data });
+     });*/
   }
 
   howManyReviewsEachClass() {
