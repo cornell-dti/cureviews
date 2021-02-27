@@ -164,7 +164,7 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
         const semesters = findAllSemesters();
         const val = updateProfessors(semesters);
         if (val) {
-          return { resCode: 1, val: val };
+          return { resCode: 1, value: val };
         }
         return { resCode: 0 };
       }
@@ -192,7 +192,7 @@ export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
         const semesters = findAllSemesters();
         const val = resetProfessorArray(semesters);
         if (val) {
-          return { resCode: 1, val: val };
+          return { resCode: 1, value: val };
         }
         return { resCode: 0 };
       }
