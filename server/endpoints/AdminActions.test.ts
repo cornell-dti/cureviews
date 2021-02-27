@@ -49,11 +49,76 @@ const reviewToUndoReport = new Reviews({
   workload: 5,
 });
 
+const newCourse2 = new Classes({
+  _id: "fakeCourseId2",
+  classSub: "COOL",
+  classNum: "1347",
+  classTitle: "Beach Engineering for Engineers",
+  classFull: "COOL 1347: Beach Engineering for Engineers",
+  classSems: ["FA19"],
+  classProfessors: ["Paul George's Evil Twin"],
+  classRating: 0,
+  classWorkload: 0,
+  classDifficulty: 0,
+});
+
+const sampleReview2 = new Reviews({
+  _id: "angband",
+  visible: 1,
+  reported: 0,
+  class: newCourse2._id,
+  difficulty: 2,
+  rating: 1,
+  workload: 3,
+});
+
+const newCourse3 = new Classes({
+  _id: "fakeCourseId3",
+  classSub: "COOL",
+  classNum: "2347",
+  classTitle: "Beach Engineering for Engineers II",
+  classFull: "COOL 2347: Beach Engineering for Engineers II",
+  classSems: ["FA19"],
+  classProfessors: ["Paul George's Evil Twin"],
+  classRating: 0,
+  classWorkload: 0,
+  classDifficulty: 0,
+});
+
+const sampleReview3 = new Reviews({
+  _id: "utomno",
+  visible: 1,
+  reported: 0,
+  class: newCourse3._id,
+  difficulty: 2,
+  rating: 1,
+  workload: 3,
+});
+
+const sampleReview4 = new Reviews({
+  _id: "barad-dur",
+  visible: 1,
+  reported: 0,
+  class: newCourse3._id,
+  difficulty: 4,
+  rating: 3,
+  workload: 5,
+});
+
 beforeAll(async () => {
   // get mongoose all set up
   mongoServer = new MongoMemoryServer();
   const mongoUri = await mongoServer.getUri();
   await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  await sampleReview.save();
+  await newCourse1.save();
+  await reviewToUndoReport.save();
+  await newCourse2.save();
+  await sampleReview2.save();
+  await newCourse3.save();
+  await sampleReview3.save();
+  await sampleReview4.save();
+
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
   serverCloseHandle = app.listen(testingPort, async () => { });
@@ -69,8 +134,6 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('makeReviewVisible-works', async () => {
-    await sampleReview.save();
-    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/makeReviewVisible`, { review: sampleReview, token: "non-empty" });
     expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findOne({ _id: newCourse1._id }).exec();
@@ -79,9 +142,20 @@ describe('tests', () => {
     expect(course.classRating).toEqual(sampleReview.rating);
   });
 
+  it('updateAllCourseMetrics-works', async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/updateAllCourseMetrics`, { token: "non-empty" });
+    expect(res.data.result.resCode).toEqual(1);
+    const course1 = await Classes.findOne({ _id: newCourse2._id }).exec();
+    expect(course1.classDifficulty).toEqual(2);
+    expect(course1.classWorkload).toEqual(3);
+    expect(course1.classRating).toEqual(1);
+    const course2 = await Classes.findOne({ _id: newCourse3._id }).exec();
+    expect(course2.classDifficulty).toEqual(3);
+    expect(course2.classWorkload).toEqual(4);
+    expect(course2.classRating).toEqual(2);
+  });
+
   it('undoReportReview-works', async () => {
-    await reviewToUndoReport.save();
-    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/undoReportReview`, { review: reviewToUndoReport, token: "non empty" });
     expect(res.data.result.resCode).toEqual(1);
     const reviewFromDb = await Reviews.findById(reviewToUndoReport._id).exec();
@@ -90,8 +164,6 @@ describe('tests', () => {
   });
 
   it('removeReview-works', async () => {
-    await sampleReview.save();
-    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/removeReview`, { review: sampleReview, token: "non-empty" });
     expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findById(newCourse1._id);
