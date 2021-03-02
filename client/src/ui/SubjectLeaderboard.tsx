@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Meteor } from '../meteor-shim';
 import axios from 'axios';
 import { Session } from '../meteor-session';
 
