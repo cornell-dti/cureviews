@@ -35,7 +35,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
     try {
       const userIsAdmin = await verifyToken(token);
       if (userIsAdmin) {
-        const top15 = await topSubjectsCB(ctx);
+        const top15 = await topSubjectsCB(ctx, { token });
         // contains cs, math, gov etc...
         const retArr = [];
         await Promise.all(top15.map(async (classs) => {
@@ -138,7 +138,12 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
 /**
  * Helper function for [topSubjects]
  */
-const topSubjectsCB = async (_ctx: Context) => {
+const topSubjectsCB = async (_ctx: Context, request: Token) => {
+  const userIsAdmin = await verifyToken(request.token);
+  if (!userIsAdmin) {
+    return null;
+  }
+
   try {
     // using the add-on library meteorhacks:aggregate, define pipeline aggregate functions
     // to run complex queries
@@ -189,7 +194,7 @@ const topSubjectsCB = async (_ctx: Context) => {
 /**
  * Returns the top 15 subjects (in terms of number of reviews)
  */
-export const topSubjects: Endpoint<unknown> = {
+export const topSubjects: Endpoint<Token> = {
   guard: [body("token").notEmpty()],
   callback: topSubjectsCB,
 };
