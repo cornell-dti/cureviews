@@ -29,8 +29,6 @@ interface GetReviewsOverTimeTop15Request {
 export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: GetReviewsOverTimeTop15Request) => {
-    console.log("we in bois");
-
     const { token, step, range } = request;
     try {
       const userIsAdmin = await verifyToken(token);
@@ -121,8 +119,6 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
             hm2[key] = t;
           });
         }
-        console.log(hm2);
-
         return hm2;
       }
     } catch (error) {
