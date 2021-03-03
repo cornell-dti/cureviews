@@ -42,7 +42,6 @@ export default class Statistics extends Component<Props, State>{
     this.getHowManyEachClass();
     this.howManyReviewsEachClass();
     this.totalReviews();
-    this.getChartData();
   }
 
   getChartData() {
