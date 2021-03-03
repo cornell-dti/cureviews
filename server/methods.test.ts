@@ -93,22 +93,6 @@ describe('tests', () => {
     expect(await Validation.findOne({}).exec()).toBeNull();
   });
 
-  // test the fact that the meteor shim exists at last one of the methods from methods.ts imported
-  // also test "getUserByNetId" while we are at it
-  it('meteor-shim-exists', async () => {
-    const user = await Meteor.call<StudentDocument | null>("getUserByNetId", "js0");
-    expect(user._id).toBe("Irrelevant");
-    expect(user.firstName).toBe("John");
-    expect(user.lastName).toBe("Smith");
-    expect(user.netId).toBe("js0");
-    expect(user.privilege).toBe("regular");
-    expect(user.affiliation).toBeNull();
-    expect(user.token).toBeNull();
-
-    const noUser = await Meteor.call<StudentDocument | null>("getUserByNetId", "bop");
-    expect(noUser).toBeNull();
-  });
-
   // test getCoursesByMajor
   it('get-courses-by-major', async () => {
     const classes = await Meteor.call<ClassDocument[]>("getCoursesByMajor", "MORK");
