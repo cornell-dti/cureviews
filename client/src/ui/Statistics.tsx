@@ -6,7 +6,7 @@ import Accordian from './Accordian';
 
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
-
+import axios from 'axios';
 type Props = any
 type State = {
   howManyEachClass: any[];
@@ -75,15 +75,13 @@ export default class Statistics extends Component<Props, State>{
   }
 
   howManyReviewsEachClass() {
-    Meteor.call('howManyReviewsEachClass', Session.get("token"), (error: any, result: any) => {
-      if (error === null) {
-        //sort descending
-        result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
-        this.setState({ howManyReviewsEachClass: result });
-      } else {
-        console.log(error);
-      }
-    });
+    axios.post(`/v2/howManyReviewsEachClass`, { token: Session.get("token") }).then((res) => {
+      let data = res.data.result;
+      data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
+      this.setState({ howManyReviewsEachClass: data });
+    }).catch((err) => {
+      console.log("error retrieving reviews for each class ", err);
+    })
   }
 
   getReviewsPerClassCSV() {
@@ -95,24 +93,23 @@ export default class Statistics extends Component<Props, State>{
   }
 
   getHowManyEachClass() {
-    Meteor.call('howManyEachClass', Session.get("token"), (error: any, result: any) => {
-      if (error === null) {
-        result.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
-        this.setState({ howManyEachClass: result });
-      } else {
-        console.log(error);
-      }
+    axios.post(`/v2/howManyEachClass`, { token: Session.get("token") }).then((res) => {
+      let data = res.data.result;
+      data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
+      this.setState({ howManyEachClass: data });
+    }).catch((err) => {
+      console.log("error retrieving how many each class ", err);
     });
   }
 
   totalReviews() {
-    Meteor.call('totalReviews', Session.get("token"), (error: any, result: any) => {
-      if (!error) {
-        this.setState({ totalReviews: result });
-      }
-      else
-        console.log(error);
-    });
+    axios.post(`/v2/totalReviews`, { token: Session.get("token") }).then((res) => {
+      const total = res.data.result;
+      this.setState({ totalReviews: total });
+    }).catch((err) => {
+      console.log("error retrieving totalReviews ", err);
+    })
+
   }
 
   handleClick = (e: any) => {
