@@ -5,6 +5,8 @@ import "./css/Admin.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Statistics from './Statistics.tsx';
+import axios from 'axios';
+
 /*
   Admin Interface Component.
 
@@ -80,7 +82,17 @@ export class Admin extends Component {
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
-    Meteor.call('makeVisible', review, Session.get("token"), (error, result) => {
+
+    axios.post("/v2/makeReviewVisible", { review: review , token: Session.get("token") })
+    .then((response) =>{
+      const result = response.data.result;
+      if (result === 1) {
+        console.log("Review approved");
+        const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
+        this.setState({unapprovedReviews: updatedUnapprovedReviews});
+      };
+    });
+    /*Meteor.call('makeVisible', review, Session.get("token"), (error, result) => {
       if (!error && result === 1) {
         console.log("Review approved");
         const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
@@ -88,7 +100,7 @@ export class Admin extends Component {
       } else {
         console.log(error);
       }
-    });
+    });*/
   }
 
   // Call when user asks to remove a review. Accesses the Reviews database
