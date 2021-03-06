@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import './css/PreviewCard.css';
 import Gauge from './Gauge.tsx';
-import { Meteor } from "../meteor-shim";
 import Review from './Review.jsx';
 import { lastOfferedSems } from 'common/CourseCard';
 
@@ -57,9 +57,9 @@ export default class PreviewCard extends Component {
 
   //Updates the top review to be the one with the most likes
   updateTopReview() {
-    Meteor.call("getReviewsByCourseId", this.props.course._id, (err, reviews) => {
-      if (!err && reviews) {
-        // Sort reviews according to most likes
+    axios.post(`/v2/getReviewsByCourseId`, { courseId: this.props.course._id }).then(response => {
+      const reviews = response.data.result
+      if (reviews) {
         if (reviews.length > 0) {
           reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
           this.setState({
@@ -73,12 +73,12 @@ export default class PreviewCard extends Component {
             topReview: {},
             numReviews: 0
           });
-          console.log("no prof reviews");
+          // eslint-disable-next-line no-console
+          console.log(`No professor reviews for course by id = ${this.props.course._id}}`);
         }
-
-      }
-      else {
-        console.log("Error in retriving reviews.");
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(`Unable to find reviews by course by id = ${this.props.course._id}`);
       }
     });
   }
