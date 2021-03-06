@@ -9,6 +9,7 @@ import './css/Form.css';
 import { Session } from '../meteor-session';
 import { Meteor } from "../meteor-shim";
 import { includesProfanity } from "common/profanity";
+import axios from 'axios';
 
 /*
   Form Component.
@@ -214,7 +215,7 @@ export default class Form extends Component {
       const newReview = {
         text: text,
         rating: rate,
-        diff: diff,
+        difficulty: diff,
         workload: work,
         professors: prof,
         isCovid: isCovid
@@ -229,36 +230,34 @@ export default class Form extends Component {
   }
 
   submitReview() {
-    console.log(Session.get("review"));
     // Call the API insert function
-    Meteor.call('insert', Session.get("token"),
-      Session.get("review") !== "" ? Session.get("review") : this.state.review,
-      !Session.get("courseId") ? this.props.course._id : Session.get("courseId"),
-      (error, result) => {
-        // if (!error && result === 1) {
-        if (error || result.resCode === 1) {
-          console.log("course id: " + Session.get("courseId"));
-          // Success, so reset form
 
-          this.profSelect.current.value = "none";
+    axios.post("/v2/insertReview", {token: Session.get("token"), 
+    review: Session.get("review") !== "" ? Session.get("review") : this.state.review, 
+    classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId") }).then(response => {
+      const res = response.data.result;
+      if (res.error || res.resCode === 1) {
+        // Success, so reset form
 
-          // Reset review info to default after review submission
-          this.setState(this.defaultState);
-          Session.setPersistent({ "review": "" });
-          Session.setPersistent({ "review_major": "" });
-          Session.setPersistent({ "review_num": "" });
-          Session.setPersistent({ "courseId": "" });
-          this.hide();
-          alert('Thanks for reviewing! New reviews are updated every 24 hours.');
-        } else {
-          console.log(error);
-          alert("An unknown error occured, please try again.", "danger");
-          Session.setPersistent({ "review": "" });
-          Session.setPersistent({ "review_major": "" });
-          Session.setPersistent({ "review_num": "" });
-          this.hide();
-        }
-      });
+        this.profSelect.current.value = "none";
+        // Reset review info to default after review submission
+        this.setState(this.defaultState);
+        Session.setPersistent({ "review": "" });
+        Session.setPersistent({ "review_major": "" });
+        Session.setPersistent({ "review_num": "" });
+        Session.setPersistent({ "courseId": "" });
+        this.hide();
+        alert('Thanks for reviewing! New reviews are updated every 24 hours.');
+      }
+      else {
+        console.log(res.error);
+        alert("An unknown error occured, please try again.", "danger");
+        Session.setPersistent({ "review": "" });
+        Session.setPersistent({ "review_major": "" });
+        Session.setPersistent({ "review_num": "" });
+        this.hide();
+      }
+    });
   }
 
   submitError() {
