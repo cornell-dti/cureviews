@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Review, Class } from 'common';
+import { Review } from 'common';
 import './css/Review.css';
 
 type Props = { info: Review, reportHandler: (review: Review) => void };

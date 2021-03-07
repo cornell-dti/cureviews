@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Meteor } from "../meteor-shim";
 import PropTypes from 'prop-types';
 import './css/Review.css';
 import ShowMoreText from 'react-show-more-text';
