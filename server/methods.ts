@@ -6,6 +6,7 @@ import { includesProfanity } from "common/profanity";
 import { Classes, Students, Subjects, Reviews, Validation, StudentDocument, Professors } from './dbDefs';
 import { Meteor } from './shim';
 import { findAllSemesters, updateProfessors, resetProfessorArray } from './dbInit';
+import { getUserByNetId } from './endpoints/Auth';
 
 const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
 
@@ -167,7 +168,7 @@ Meteor.methods({
     try {
       // Check user object has all required fields
       if (googleObject.email.replace("@cornell.edu", "") !== null) {
-        const user = await Meteor.call<StudentDocument | null>("getUserByNetId", googleObject.email.replace("@cornell.edu", ""));
+        const user = await getUserByNetId(googleObject.email.replace("@cornell.edu", ""));
         if (user === null) {
           const newUser = new Students({
             _id: shortid.generate(),
@@ -501,26 +502,6 @@ Meteor.methods({
     }
   },
 
-  // Get a user with this netId from the Users collection in the local database
-  async getUserByNetId(netId: string) {
-    // eslint-disable-next-line no-console
-    console.log("Call to old getUserByNetID");
-
-    try {
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (regex.test(netId)) {
-        return await Students.findOne({ netId }).exec();
-      }
-      return null;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'getUserByNetId' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return null;
-    }
-  },
-
   // Returns true if user matching "netId" is an admin
   async tokenIsAdmin(token: string) {
     // eslint-disable-next-line no-console
@@ -530,7 +511,7 @@ Meteor.methods({
       if (token != null) {
         const ticket = await Meteor.call<TokenPayload | null>('getVerificationTicket', token);
         if (ticket && ticket.email) {
-          const user = await Meteor.call<StudentDocument | null>('getUserByNetId', ticket.email.replace('@cornell.edu', ''));
+          const user = await getUserByNetId(ticket.email.replace("@cornell.edu", ""));
           if (user) {
             return user.privilege === 'admin';
           }
