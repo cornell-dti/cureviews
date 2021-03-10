@@ -64,14 +64,14 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
       if (regex.test(adminReviewRequest.review._id) && userIsAdmin) {
         await Reviews.updateOne({ _id: adminReviewRequest.review._id }, { $set: { visible: 1 } });
         await updateCourseMetrics(adminReviewRequest.review.class, adminReviewRequest.token);
-        return 1;
+        return { resCode: 1 };
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'makeVisible' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return 0;
+      return { resCode: 0 };
     }
   },
 };
