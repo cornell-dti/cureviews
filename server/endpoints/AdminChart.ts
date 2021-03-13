@@ -119,7 +119,6 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
             hm2[key] = t;
           });
         }
-
         return hm2;
       }
     } catch (error) {
