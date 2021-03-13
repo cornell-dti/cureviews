@@ -7,7 +7,6 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import './css/Form.css';
 import { Session } from '../meteor-session';
-import { Meteor } from "../meteor-shim";
 import { includesProfanity } from "common/profanity";
 import axios from 'axios';
 
