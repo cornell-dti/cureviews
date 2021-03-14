@@ -4,7 +4,7 @@ import { totalReviews, howManyReviewsEachClass, howManyEachClass, topSubjects, g
 import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo, incrementLike, decrementLike } from "./endpoints/Review";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
-import { updateAllCourseMetrics, makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
+import { makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
 
 export interface Context {
   ip: string;
@@ -46,7 +46,6 @@ export function configure(app: express.Application) {
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
   register(app, "incrementLike", incrementLike);
   register(app, "decrementLike", decrementLike);
-  register(app, "updateAllCourseMetrics", updateAllCourseMetrics);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
