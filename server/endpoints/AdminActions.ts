@@ -17,11 +17,6 @@ interface AdminProfessorsRequest {
   token: string;
 }
 
-// The type for a request to update all course data
-interface AdminUpdateAllRequest {
-  token: string;
-}
-
 // This updates the metrics for an individual class given its Mongo-generated id.
 // Returns 1 if successful, 0 otherwise.
 export const updateCourseMetrics = async (courseId, token) => {
@@ -42,42 +37,18 @@ export const updateCourseMetrics = async (courseId, token) => {
               classWorkload: (state.workload !== "-" && !isNaN(Number(state.workload)) ? Number(state.workload) : null),
             },
           });
-        return { resCode: 1 };
+        return 1;
       }
-      return { resCode: 0 };
+      return 0;
     }
-    return { resCode: 0 };
+    return 0;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log("Error: at 'updateCourseMetrics' method");
     // eslint-disable-next-line no-console
     console.log(error);
-    return { resCode: 0 };
+    return 0;
   }
-};
-
-export const updateAllCourseMetrics: Endpoint<AdminUpdateAllRequest> = {
-  guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, adminUpdateRequest) => {
-    try {
-      const userIsAdmin = await verifyToken(adminUpdateRequest.token);
-      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-      if (userIsAdmin) {
-        const courses = await Classes.find().exec();
-        await Promise.all(courses.map(async (course) => {
-          await updateCourseMetrics(course._id, adminUpdateRequest.token);
-        }));
-        return { resCode: 1 };
-      }
-      return { resCode: 1 };
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'makeVisible' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return { resCode: 0 };
-    }
-  },
 };
 
 /*
@@ -93,14 +64,14 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
       if (regex.test(adminReviewRequest.review._id) && userIsAdmin) {
         await Reviews.updateOne({ _id: adminReviewRequest.review._id }, { $set: { visible: 1 } });
         await updateCourseMetrics(adminReviewRequest.review.class, adminReviewRequest.token);
-        return { resCode: 1 };
+        return 1;
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'makeVisible' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return 0;
     }
   },
 };
@@ -115,15 +86,15 @@ export const undoReportReview: Endpoint<AdminReviewRequest> = {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
       if (userIsAdmin) {
         await Reviews.updateOne({ _id: adminReviewRequest.review._id }, { $set: { visible: 1, reported: 0 } });
-        return { resCode: 1 };
+        return 1;
       }
-      return { resCode: 0 };
+      return 0;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'undoReportReview' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return 0;
     }
   },
 };
@@ -139,15 +110,15 @@ export const removeReview: Endpoint<AdminReviewRequest> = {
       if (userIsAdmin) {
         await Reviews.remove({ _id: adminReviewRequest.review._id });
         await updateCourseMetrics(adminReviewRequest.review.class, adminReviewRequest.token);
-        return { resCode: 1 };
+        return 1;
       }
-      return { resCode: 0 };
+      return 0;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'removeReview' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 1 };
+      return 0;
     }
   },
 };
@@ -164,17 +135,17 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
         const semesters = findAllSemesters();
         const val = updateProfessors(semesters);
         if (val) {
-          return { resCode: 1, value: val };
+          return val;
         }
-        return { resCode: 0 };
+        return 0;
       }
-      return { resCode: 0 };
+      return 0;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'setProfessors' ");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return 0;
     }
   },
 };
@@ -192,17 +163,17 @@ export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
         const semesters = findAllSemesters();
         const val = resetProfessorArray(semesters);
         if (val) {
-          return { resCode: 1, value: val };
+          return val;
         }
-        return { resCode: 0 };
+        return 0;
       }
-      return { resCode: 0 };
+      return 0;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'resetProfessors' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return 0;
     }
   },
 };
