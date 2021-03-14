@@ -5,6 +5,8 @@ import "./css/Admin.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Statistics from './Statistics.tsx';
+import axios from 'axios';
+
 /*
   Admin Interface Component.
 
@@ -45,8 +47,8 @@ export class Admin extends Component {
     this.removeReview = this.removeReview.bind(this);
     this.unReportReview = this.unReportReview.bind(this);
   }
-  
-  componentDidMount(){
+
+  componentDidMount() {
     const remFunc = this.removeReview;
     const appFunc = this.approveReview;
     const unRepFunc = this.unReportReview;
@@ -56,7 +58,7 @@ export class Admin extends Component {
       }
       return null;
     });
-    
+
     const reportedReviews = this.props.reviewsToApprove.map((review) => {
       //create a new class "button" that will set the selected class to this class when it is clicked.
       if (review.reported === 1) {
@@ -65,30 +67,29 @@ export class Admin extends Component {
       return null;
     });
 
-    this.setState({unapprovedReviews: unapprovedReviews, reportedReviews: reportedReviews });
+    this.setState({ unapprovedReviews: unapprovedReviews, reportedReviews: reportedReviews });
   }
 
   // Helper function to remove a review from a list of reviews and
   // return the updated list
   removeReviewFromList(reviewToRemove, reviews) {
-    reviews = reviews.filter( (review) => {
+    reviews = reviews.filter((review) => {
       return review && review.props.info._id !== reviewToRemove._id;
-  });
+    });
     return reviews;
   }
 
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
-    Meteor.call('makeVisible', review, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Review approved");
-        const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
-        this.setState({unapprovedReviews: updatedUnapprovedReviews});
-      } else {
-        console.log(error);
-      }
-    });
+    axios.post("/v2/makeReviewVisible", { review: review, token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result;
+        if (result.resCode === 1) {
+          const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
+          this.setState({ unapprovedReviews: updatedUnapprovedReviews });
+        };
+      });
   }
 
   // Call when user asks to remove a review. Accesses the Reviews database
@@ -99,13 +100,13 @@ export class Admin extends Component {
         console.log("Review removed");
         if (isUnapproved) {
           const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
-          this.setState({unapprovedReviews: updatedUnapprovedReviews});
+          this.setState({ unapprovedReviews: updatedUnapprovedReviews });
         } else {
           console.log(this.state.reportedReviews);
           const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
-          this.setState({reportedReviews: updatedReportedReviews});
+          this.setState({ reportedReviews: updatedReportedReviews });
         }
-        
+
       } else {
         console.log(error)
       }
@@ -119,7 +120,7 @@ export class Admin extends Component {
       if (!error && result === 1) {
         console.log("Review unreported");
         const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
-        this.setState({reportedReviews: updatedReportedReviews});
+        this.setState({ reportedReviews: updatedReportedReviews });
       } else {
         console.log(error)
       }
@@ -257,7 +258,7 @@ export class Admin extends Component {
           <div className="container-width whiteBg">
             <div className="width-90">
               <h2>Admin Interface</h2>
-                <Statistics />
+              <Statistics />
               <br />
 
               <div className="text-right">

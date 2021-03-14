@@ -4,7 +4,7 @@ import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
 import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
-
+import axios from 'axios';
 /*
   Admin Interface Login Component.
 
@@ -29,21 +29,23 @@ export default class Login extends Component<{}, { message: string; executeLogin
 
   componentWillMount() {
     // The following is used to show admin panel if a user's token is found to be an admin
-    if(Session.get("token") !== ""){
-      Meteor.call('tokenIsAdmin', Session.get("token"), (_: unknown, result: unknown) => {
-        if(result){
-          Session.set("adminlogin", true);
-          this.setState({executeLogin: false}); //This isn't necessary as it should alrady be allFalse
-                                                // but it is used to refresh the render()
-        }
-        else{
-          Session.set("adminlogin", false);
-          this.setState({executeLogin: true});
-        }
-      });
+    if (Session.get("token") !== "") {
+      axios.post(`/v2/tokenIsAdmin`, { token: Session.get("token") })
+        .then((res) => {
+          const result = res.data.result;
+          if (result) {
+            Session.set("adminlogin", true);
+            this.setState({ executeLogin: false }); //This isn't necessary as it should alrady be allFalse
+            // but it is used to refresh the render()
+          }
+          else {
+            Session.set("adminlogin", false);
+            this.setState({ executeLogin: true });
+          }
+        });
     }
-    else{
-      this.setState({executeLogin: true});
+    else {
+      this.setState({ executeLogin: true });
     }
   }
 
@@ -62,10 +64,10 @@ export default class Login extends Component<{}, { message: string; executeLogin
                 <h3 className="panel-title">Please wait to be authenticated</h3>
               </div>
               <div className="panel-body">
-              <CUreviewsGoogleLogin 
-                    executeLogin={this.state.executeLogin}
-                    waitTime={1500}
-                    redirectFrom="admin" />
+                <CUreviewsGoogleLogin
+                  executeLogin={this.state.executeLogin}
+                  waitTime={1500}
+                  redirectFrom="admin" />
               </div>
             </div>
           </div>
