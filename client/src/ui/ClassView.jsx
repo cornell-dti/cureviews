@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Meteor } from "../meteor-shim";
+import axios from 'axios';
 import CourseCard from './CourseCard';
 import Gauge from './Gauge';
 import Navbar from './Navbar';
@@ -54,16 +55,14 @@ export class ClassView extends Component {
   // Once the component loads, make a call to the backend for class object.
   // Update the local state accordingly.  Called from componentDidUpdate()
   updateCurrentClass(classNumber, classSubject) {
-    Meteor.call("getCourseByInfo", classNumber, classSubject, (err, selectedClass) => {
-      if (!err && selectedClass) {
-        // Save the Class object that matches the request
+    axios.post(`/v2/getCourseByInfo`, { number: classNumber, subject: classSubject }).then(response => {
+      const course = response.data.result
+      if (course) {
         this.setState({
-          selectedClass: selectedClass
+          selectedClass: course
         });
       }
       else {
-        // No class matches the request.
-        console.log("No match");
         this.setState({
           classDoesntExist: true
         });
@@ -140,7 +139,7 @@ export class ClassView extends Component {
       return (
         <div className="classview-loading">
           <Loading />;
-              </div>
+        </div>
       )
     }
   }
