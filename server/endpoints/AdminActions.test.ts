@@ -72,7 +72,7 @@ describe('tests', () => {
     await sampleReview.save();
     await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/makeReviewVisible`, { review: sampleReview, token: "non-empty" });
-    expect(res.data.result).toEqual(1);
+    expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findOne({ _id: newCourse1._id }).exec();
     expect(course.classDifficulty).toEqual(sampleReview.difficulty);
     expect(course.classWorkload).toEqual(sampleReview.workload);
