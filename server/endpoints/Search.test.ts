@@ -148,12 +148,12 @@ describe('tests', () => {
     expect(res2.data.result.map((e) => e.fullName)).toContain("Jean-Luc Picard");
   });
 
-  //Query has no matching results
+  // Query has no matching results
   it('getClassesByQuery-no matching classes', async () => {
     expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
 
     const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "random" });
-    //we expect no results to be returned
+    // we expect no results to be returned
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual([]);
     expect(res.data.result.map((e) => e.classFull)).not.toContain(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
   });
@@ -162,7 +162,7 @@ describe('tests', () => {
     expect(await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
 
     const res = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "RAND" });
-    //we expect no results to be returned
+    // we expect no results to be returned
     expect(res.data.result.map((e) => e.subShort)).toStrictEqual([]);
     expect(res.data.result.map((e) => e.subShort)).not.toContain("MORK");
     expect(res.data.result.map((e) => e.subShort)).not.toContain("MAD");
@@ -173,7 +173,7 @@ describe('tests', () => {
     expect(await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
 
     const res = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "Random Professor" });
-    //we expect no results to be returned
+    // we expect no results to be returned
     expect(res.data.result.map((e) => e.fullName)).toStrictEqual([]);
     expect(res.data.result.map((e) => e.fullName)).not.toContain("Gazghul Thraka");
     expect(res.data.result.map((e) => e.fullName)).not.toContain("Jean-Luc Picard");
@@ -199,5 +199,4 @@ describe('tests', () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "" }).catch((e) => e);
     expect(res.message).toBe("Request failed with status code 400");
   });
-
 });
