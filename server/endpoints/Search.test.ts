@@ -122,13 +122,23 @@ describe('tests', () => {
   it('getClassesByQuery-works', async () => {
     expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK 1" });
+    const res1 = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK 1" });
     // we expect it to be MORK 1110 first, and then MORK 2110
-    expect(res.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+    expect(res1.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+  });
 
-    const res2 = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK1" });
-    // we expect it to be MORK 1110 first, and then MORK 2110
-    expect(res2.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+  it('getClassesByQuery-works "MORK1" ', async () => {
+    expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK1" });
+    expect(res.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+  });
+
+  it('getClassesByQuery-works "MORK 1110" ', async () => {
+    expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK1110" });
+    expect(res.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing"]);
   });
 
   it('getSubjectsByQuery-works', async () => {
