@@ -1,7 +1,7 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import moment from 'moment';
-import { Meteor } from "../meteor-shim";
-import { Review, Class } from 'common';
+import { Review } from 'common';
 import './css/Review.css';
 
 type Props = { info: Review, reportHandler: (review: Review) => void };
@@ -30,17 +30,17 @@ export default class RecentReview extends Component<Props, State> {
       link: "",
     };
 
-    // Get details about the course this review belongs to, using the courseId
-    // assigned to this review.
-    Meteor.call('getCourseById', props.info.class, (error: any, result: Class) => {
-      if (!error) {
+    axios.post(`/v2/getCourseById`, { courseId: props.info.class }).then(response => {
+      const course = response.data.result
+      if (course) {
         this.setState({
-          shortName: result.classSub.toUpperCase() + " " + result.classNum,
-          longName: result.classTitle || '',
-          link: '/course/'+ result.classSub.toUpperCase() + "/" + result.classNum,
+          shortName: course.classSub.toUpperCase() + " " + course.classNum,
+          longName: course.classTitle || '',
+          link: '/course/' + course.classSub.toUpperCase() + "/" + course.classNum,
         });
       } else {
-        console.log(error)
+        // eslint-disable-next-line no-console
+        console.log(`Unable to find course by id = ${props.info.class}`);
       }
     });
   }
@@ -66,44 +66,44 @@ export default class RecentReview extends Component<Props, State> {
     const review: any = this.props.info;
 
     return (
-        <li>
-            <div className="row">
-              <div className="col-sm-12">
-                <a className="classNameLink" href={this.state.link}>
-                  <b><u>{this.state.shortName}</u></b>: {this.state.longName}
-                </a>
-                <p id="date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
+      <li>
+        <div className="row">
+          <div className="col-sm-12">
+            <a className="classNameLink" href={this.state.link}>
+              <b><u>{this.state.shortName}</u></b>: {this.state.longName}
+            </a>
+            <p id="date"><i>{moment(review.date.toISOString()).fromNow()}</i></p>
+          </div>
+        </div>
+        <div className="review">
+          <div className="panel-body-3">
+            <div className="row reviewNumbers">
+              <div className="col-md-2 col-xs-2 col-xs-2">
+                <div className="container" id="box" style={this.getQualColor(review.quality)}>
+                  <div id="text">{review.quality}</div>
+                </div>
+              </div>
+              <div className="col-md-4 col-sm-4 col-xs-4">
+                <p id="label">Overall Quality</p>
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-2" >
+                <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
+                  <div id="text">{review.difficulty}</div>
+                </div>
+              </div>
+              <div className="col-md-2 col-sm-2 col-xs-2">
+                <p id="label">Difficulty</p>
               </div>
             </div>
-            <div className="review">
-                <div className="panel-body-3">
-                    <div className="row reviewNumbers">
-                        <div className="col-md-2 col-xs-2 col-xs-2">
-                            <div className="container" id="box" style={this.getQualColor(review.quality)}>
-                                <div id="text">{review.quality}</div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 col-sm-4 col-xs-4">
-                            <p id="label">Overall Quality</p>
-                        </div>
-                        <div className="col-md-2 col-sm-2 col-xs-2" >
-                            <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
-                                <div id="text">{review.difficulty}</div>
-                            </div>
-                        </div>
-                        <div className="col-md-2 col-sm-2 col-xs-2">
-                            <p id="label">Difficulty</p>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="review-text" id="review_text">{review.text}</div>
-                    </div>
-                    <div className="col-sm-12">
-                            <button id="button_text" onClick={() => {this.props.reportHandler(review); alert('This post has been reported and will be reviewed. Course metrics will not change until the post has been reviewed')}}>Report</button>
-                    </div>
-                </div>
+            <div className="row">
+              <div className="review-text" id="review_text">{review.text}</div>
             </div>
-        </li>
+            <div className="col-sm-12">
+              <button id="button_text" onClick={() => { this.props.reportHandler(review); alert('This post has been reported and will be reviewed. Course metrics will not change until the post has been reviewed') }}>Report</button>
+            </div>
+          </div>
+        </div>
+      </li>
     );
   }
 }
