@@ -10,7 +10,7 @@
   margin-bottom: 25px;
 }
 
-@media (min-width: 840px) {
+@media (min-width: 1000px) {
   .homepage-text {
     font-size: 24px;
   }
@@ -24,16 +24,17 @@
   }
 }
   
-@media (max-width: 840px) {
+@media (max-width: 1000px) {
   .homepage-text {
     font-size: 18px;
   }
 
-  .homepage-text-padding{
+  .homepage-text-padding {
     padding-left: 30px;
+    padding-right: 30px;
   }
 
-  .scale-logo-homepage{
+  .scale-logo-homepage {
     margin: 120px 0px 0px 30px;
   }
 }
