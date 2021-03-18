@@ -1,9 +1,7 @@
-.homepage-text{
+.homepage-text {
   /* height: 14px; */
   /* padding-top: 6%; */
-  margin-bottom: 40px;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 24px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
@@ -12,16 +10,42 @@
   margin-bottom: 25px;
 }
 
+@media (min-width: 1000px) {
+  .homepage-text {
+    font-size: 24px;
+  }
 
-.homepage-text-padding{
-  padding-left: 120px;
-  padding-top: 10px;
+  .homepage-text-padding {
+    padding-left: 120px;
+  }
+
+  .scale-logo-homepage {
+    margin: 120px 0px 0px 120px;
+  }
+}
+  
+@media (max-width: 1000px) {
+  .homepage-text {
+    font-size: 18px;
+  }
+
+  .homepage-text-padding {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .scale-logo-homepage {
+    margin: 120px 0px 0px 30px;
+  }
 }
 
-.scale-logo-homepage{
+.scale-logo-homepage {
   height: 100px;
   width: auto;
-  margin: 120px 0px 0px 120px;
+}
+
+.homepage-text-padding {
+  padding-top: 10px;
 }
 
 .background-gradient{
