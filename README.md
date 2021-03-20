@@ -104,6 +104,7 @@ _Screenshots coming soon_
 - **Dray Farley** - Developer
 - **Akash Aryal** - Developer
 - **Julie Jeong** - Developer
+- **Tanay Menezes** - Developer
 
 ### 2019-2020
 
