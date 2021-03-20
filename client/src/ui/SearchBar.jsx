@@ -114,7 +114,7 @@ export default class SearchBar extends Component {
             allProfessors: []
           });
         }
-      }).catch(e => console.log("Getting subjects failed!"));
+      }).catch(e => console.log("Getting professors failed!"));
 
     }
   }
