@@ -109,7 +109,7 @@ export const removeReview: Endpoint<AdminReviewRequest> = {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
       if (userIsAdmin) {
         await Reviews.remove({ _id: adminReviewRequest.review._id });
-        let res = await updateCourseMetrics(adminReviewRequest.review.class);
+        const res = await updateCourseMetrics(adminReviewRequest.review.class);
         return { resCode: res.resCode };
       }
       return { resCode: 0 };
