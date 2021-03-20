@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Meteor } from "../meteor-shim";
 import "./css/Results.css"; // css files
 import Navbar from './Navbar';
 import ResultsDisplay from './ResultsDisplay.jsx';
@@ -28,46 +27,47 @@ export class Results extends Component {
 
   updateResults() {
     if (this.props.match.params.type === "major") {
-      Meteor.call("getCoursesByMajor", this.props.match.params.input.toLowerCase(), (err, courseList) => {
-        if (!err && courseList.length !== 0) {
-          // Save the Class object that matches the request
-          this.setState({
-            courseList: courseList,
-            loading: false
-          });
-        }
-        else {
-          this.setState({
-            courseList: [],
-            loading: false
-          });
-        }
-      });
-    }
-    else if (this.props.match.params.type === "professor") {
-      Meteor.call("getCoursesByProfessor", this.props.match.params.input.split("+").join(" "), (err, courseList) => {
-        if (!err && courseList.length !== 0) {
-          // Save the Class object that matches the request
-          this.setState({
-            courseList: courseList,
-            loading: false
-          });
-        }
-        else {
-          this.setState({
-            courseList: [],
-            loading: false
-          });
-        }
-      });
+      axios.post("/v2/getCoursesByMajor", { query: this.props.match.params.input.toLowerCase() })
+        .then((response) => {
+          const courseList = response.data.result;
+          if (!courseList.error && courseList.length > 0) {
+            // Save the Class object that matches the request
+            this.setState({
+              courseList: courseList,
+              loading: false
+            });
+          } else {
+            this.setState({
+              courseList: [],
+              loading: false
+            });
+          }
+        });
+    } else if (this.props.match.params.type === "professor") {
+      axios.post("/v2/getCoursesByProfessor", { query: this.props.match.params.input.toLowerCase() })
+        .then((response) => {
+          const courseList = response.data.result;
+          if (!courseList.error && courseList.length > 0) {
+            // Save the Class object that matches the request
+            this.setState({
+              courseList: courseList,
+              loading: false
+            });
+          } else {
+            this.setState({
+              courseList: [],
+              loading: false
+            });
+          }
+        });
     }
     else if (this.props.match.params.type === "keyword") {
       let userQuery = this.props.match.params.input.split("+").join(" ");
-      if(userQuery && userQuery.split(" ").length === 1){
+      if (userQuery && userQuery.split(" ").length === 1) {
         userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(" ");
       }
       axios.post(`/v2/getClassesByQuery`, { query: userQuery }).then(response => {
-        const queryCourseList = response.data.result; 
+        const queryCourseList = response.data.result;
         if (queryCourseList.length !== 0) {
           // Save the Class object that matches the request
           this.setState({
@@ -76,14 +76,14 @@ export class Results extends Component {
           });
         }
         else {
-              this.setState({
-                courseList: [],
-                loading: false
-              });
-            }
+          this.setState({
+            courseList: [],
+            loading: false
+          });
         }
+      }
       )
-      .catch(e => console.log("Getting courses failed!"));
+        .catch(e => console.log("Getting courses failed!"));
     }
   }
 
@@ -107,8 +107,8 @@ export class Results extends Component {
       <div className="full-height bg-color">
         <Navbar userInput={userInput} />
         <ResultsDisplay courses={this.state.courseList}
-        userInput={userInput}
-        loading={this.state.loading} type={this.props.match.params.type}/>
+          userInput={userInput}
+          loading={this.state.loading} type={this.props.match.params.type} />
       </div>
     )
   }

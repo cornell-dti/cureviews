@@ -83,7 +83,7 @@ describe('tests', () => {
     await reviewToUndoReport.save();
     await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/undoReportReview`, { review: reviewToUndoReport, token: "non empty" });
-    expect(res.data.result).toEqual(1);
+    expect(res.data.result.resCode).toEqual(1);
     const reviewFromDb = await Reviews.findById(reviewToUndoReport._id).exec();
     expect(reviewFromDb.visible).toEqual(1);
     await reviewToUndoReport.remove();
@@ -93,7 +93,7 @@ describe('tests', () => {
     await sampleReview.save();
     await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/removeReview`, { review: sampleReview, token: "non-empty" });
-    expect(res.data.result).toEqual(1);
+    expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findById(newCourse1._id);
     expect(course.classDifficulty).toEqual(null);
     expect(course.classWorkload).toEqual(null);
