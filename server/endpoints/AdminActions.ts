@@ -186,7 +186,7 @@ export const reportReview: Endpoint<ReviewRequest> = {
   callback: async (ctx: Context, request: ReviewRequest) => {
     try {
       await Reviews.updateOne({ _id: request.id }, { $set: { visible: 0, reported: 1 } });
-      let course = (await Reviews.findOne({ _id: request.id })).class;
+      const course = (await Reviews.findOne({ _id: request.id })).class;
       const res = await updateCourseMetrics(course);
       return { resCode: res.resCode };
     } catch (error) {
