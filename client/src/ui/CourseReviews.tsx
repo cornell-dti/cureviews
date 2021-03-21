@@ -102,7 +102,7 @@ export class CourseReviews extends Component<Props, State> {
   // Report this review. Find the review in the local database and change
   // its 'reported' flag to true.
   reportReview = (review: ReviewType) => {
-    axios.post("/v2/reportReview", { review: review })
+    axios.post("/v2/reportReview", { id: review._id })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -113,7 +113,7 @@ export class CourseReviews extends Component<Props, State> {
           this.setState({ reviews: this.state.reviews.slice(0, idx).concat(this.state.reviews.slice(idx + 1)) });
           console.log("Reported review #" + review._id);
         } else {
-          console.log("Error reporting review!")
+          console.log("Error reporting review!");
         }
       });
   };

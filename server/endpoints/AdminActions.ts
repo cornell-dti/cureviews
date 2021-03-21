@@ -39,6 +39,9 @@ export const updateCourseMetrics = async (courseId) => {
         });
       return { resCode: 1 };
     }
+
+    // eslint-disable-next-line no-console
+    console.log(`updateCourseMetrics unable to find id ${courseId}`);
     return { resCode: 0 };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -79,7 +82,7 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
  * "Undo" the reporting of a flagged review and make it visible again
  */
 export const undoReportReview: Endpoint<AdminReviewRequest> = {
-  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAlphanumeric()],
+  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAscii()],
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
@@ -103,7 +106,7 @@ export const undoReportReview: Endpoint<AdminReviewRequest> = {
  * Remove a review, used for both submitted and flagged reviews
  */
 export const removeReview: Endpoint<AdminReviewRequest> = {
-  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAlphanumeric()],
+  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAscii()],
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
@@ -183,7 +186,8 @@ export const reportReview: Endpoint<ReviewRequest> = {
   callback: async (ctx: Context, request: ReviewRequest) => {
     try {
       await Reviews.updateOne({ _id: request.id }, { $set: { visible: 0, reported: 1 } });
-      const res = await updateCourseMetrics(request.id);
+      let course = (await Reviews.findOne({ _id: request.id })).class;
+      const res = await updateCourseMetrics(course);
       return { resCode: res.resCode };
     } catch (error) {
       // eslint-disable-next-line no-console
