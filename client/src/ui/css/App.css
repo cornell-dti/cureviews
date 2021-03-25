@@ -24,12 +24,88 @@
   margin: 120px 0px 0px 120px;
 }
 
-.background-gradient{
+.background-gradient_summer{
   
   background-image: url("/slope.svg"), linear-gradient(180deg, 
                                                       rgba(104, 165, 236, 0.65) 0%, 
                                                       rgba(104, 165, 236, 0.1) 77.1%, 
                                                       rgba(168, 211, 245, 0.7) 100%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_afternoon{
+  
+  background-image: url("/slope.svg"), linear-gradient(180deg, 
+                                                      rgba(104, 165, 236, 0.65) 0%, 
+                                                      rgba(104, 165, 236, 0.1) 77.1%, 
+                                                      rgba(168, 211, 245, 0.7) 100%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_sunset{
+  
+  background-image: url("/sunset_slope.svg"), linear-gradient(201.93deg, 
+                                                          rgba(91, 154, 226, 0.7) 19.17%, 
+                                                          rgba(255, 228, 196, 0.7) 57.66%, 
+                                                          rgba(253, 144, 65, 0.7) 84.88%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_night{
+  
+  background-image: url("/night_slope.svg"), linear-gradient(302.67deg, 
+                                                    #0C2C69 49.07%, 
+                                                    #144199 97.23%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_afternoonfall{
+  
+  background-image: url("/fall_slope.svg"), linear-gradient(180deg, 
+                                                      rgba(104, 165, 236, 0.65) 0%, 
+                                                      rgba(104, 165, 236, 0.1) 77.1%, 
+                                                      rgba(168, 211, 245, 0.7) 100%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_sunsetfall{
+  
+  background-image: url("/fall_slope.svg"), linear-gradient(201.93deg, 
+                                                          rgba(91, 154, 226, 0.7) 19.17%, 
+                                                          rgba(255, 228, 196, 0.7) 57.66%, 
+                                                          rgba(253, 144, 65, 0.7) 84.88%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_afternoonwinter{
+  
+  background-image: url("/winter_slope.svg"), linear-gradient(180deg, 
+                                                      rgba(104, 165, 236, 0.65) 0%, 
+                                                      rgba(104, 165, 236, 0.1) 77.1%, 
+                                                      rgba(168, 211, 245, 0.7) 100%);
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+}
+
+.background-gradient_sunsetwinter{
+  
+  background-image: url("/winter_slope.svg"), linear-gradient(201.93deg, 
+                                                          rgba(91, 154, 226, 0.7) 19.17%, 
+                                                          rgba(255, 228, 196, 0.7) 57.66%, 
+                                                          rgba(253, 144, 65, 0.7) 84.88%);
   background-repeat: no-repeat;
   background-size: 101%;
   background-position-y: 103%;
