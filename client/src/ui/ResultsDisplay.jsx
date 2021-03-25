@@ -55,17 +55,17 @@ export default class ResultsDisplay extends Component {
         card_course: this.props.courses[0],
       }, () => this.filterClasses());
     }
-    if(prevProps.userInput !== this.props.userInput){
-      this.setState({filterMap: this.getInitialFilterMap()}, () => this.filterClasses())
+    if (prevProps.userInput !== this.props.userInput) {
+      this.setState({ filterMap: this.getInitialFilterMap() }, () => this.filterClasses())
     }
   }
 
-  getInitialFilterMap(){
+  getInitialFilterMap() {
     return new Map([
-                ["levels", new Map([["1000", true], ["2000", true], ["3000", true], ["4000", true], ["5000+", true]])],
-                ["semesters", new Map([["Fall", true], ["Spring", true]])],
-                ["subjects", []],
-              ]);
+      ["levels", new Map([["1000", true], ["2000", true], ["3000", true], ["4000", true], ["5000+", true]])],
+      ["semesters", new Map([["Fall", true], ["Spring", true]])],
+      ["subjects", []],
+    ]);
   }
 
   // Handles selecting different sort bys
@@ -75,7 +75,7 @@ export default class ResultsDisplay extends Component {
   }
 
   // Helper function to sort()
-  sortBy(courseList, sortByField, fieldDefault, increasing){
+  sortBy(courseList, sortByField, fieldDefault, increasing) {
     courseList = courseList.sort(
       (a, b) => {
         let first = (Number(b[sortByField]) || fieldDefault);
@@ -85,10 +85,10 @@ export default class ResultsDisplay extends Component {
           return (a.classNum - b.classNum);
         }
         else {
-          if(increasing){
+          if (increasing) {
             return (first - second);
           }
-          else{
+          else {
             return (second - first);
           }
 
@@ -104,50 +104,50 @@ export default class ResultsDisplay extends Component {
   // Sorts list of class results by category selected in this.state.selected
   sort() {
     let availableClasses;
-    if (this.state.filteredItems.length === 0){
+    if (this.state.filteredItems.length === 0) {
       availableClasses = this.state.courseList;
     }
-    else{
+    else {
       availableClasses = this.state.filteredItems;
     }
 
-    if (this.state.selected === "relevance"){
+    if (this.state.selected === "relevance") {
       this.sortBy(availableClasses, "score", 0, true);
     }
-    else if (this.state.selected === "rating"){
+    else if (this.state.selected === "rating") {
       this.sortBy(availableClasses, "classRating", 0, true);
     }
-    else if (this.state.selected === "diff"){
+    else if (this.state.selected === "diff") {
       this.sortBy(availableClasses, "classDifficulty", Number.MAX_SAFE_INTEGER, false);
     }
-    else if (this.state.selected === "work"){
+    else if (this.state.selected === "work") {
       this.sortBy(availableClasses, "classWorkload", Number.MAX_SAFE_INTEGER, false);
     }
   }
 
-  filterClasses(){
+  filterClasses() {
 
     let semesters = Array.from(this.state.filterMap.get("semesters").keys()).filter(semester =>
-                                            this.state.filterMap.get("semesters").get(semester))
+      this.state.filterMap.get("semesters").get(semester))
 
     let filteredItems = this.state.courseList.filter(course =>
       semesters.some(semester =>
-        course.classSems.some(element => element.includes(semester.slice(0,2).toUpperCase())))
+        course.classSems.some(element => element.includes(semester.slice(0, 2).toUpperCase())))
     );
 
     let levels = Array.from(this.state.filterMap.get("levels").keys()).filter(level => this.state.filterMap.get("levels").get(level))
     filteredItems = filteredItems.filter(course =>
       levels.some(level =>
-        level === "5000+" ? course.classNum.slice(0,1) >= "5" : course.classNum.slice(0,1) === level.slice(0,1))
+        level === "5000+" ? course.classNum.slice(0, 1) >= "5" : course.classNum.slice(0, 1) === level.slice(0, 1))
     );
 
     let subjects_objects = this.state.filterMap.get("subjects");
-    if(subjects_objects && subjects_objects.length > 0){
+    if (subjects_objects && subjects_objects.length > 0) {
       filteredItems = filteredItems.filter(course =>
         subjects_objects.some(subject_object => course.classSub.toUpperCase() === subject_object.value));
     }
 
-    this.setState({filteredItems: filteredItems}, () => this.sort());
+    this.setState({ filteredItems: filteredItems }, () => this.sort());
 
   }
 
@@ -161,7 +161,7 @@ export default class ResultsDisplay extends Component {
 
     newFilterMap.get(group).set(name, checked);
 
-    this.setState({filterMap: newFilterMap}, () => this.filterClasses());
+    this.setState({ filterMap: newFilterMap }, () => this.filterClasses());
 
   }
 
@@ -206,9 +206,9 @@ export default class ResultsDisplay extends Component {
   }
 
 
-  handleMajorFilterChange(selectedMajors){
+  handleMajorFilterChange(selectedMajors) {
 
-    if(selectedMajors === null){
+    if (selectedMajors === null) {
       selectedMajors = []
     }
 
@@ -216,20 +216,20 @@ export default class ResultsDisplay extends Component {
 
     newFilterMap.set("subjects", selectedMajors)
 
-    this.setState({filterMap: newFilterMap}, () => this.filterClasses());
+    this.setState({ filterMap: newFilterMap }, () => this.filterClasses());
   }
 
-  getSubjectOptions(inputValue, callback){
+  getSubjectOptions(inputValue, callback) {
 
     Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
       if (!err && subjectList && subjectList.length !== 0) {
         // Save the list of Subject objects that matches the request
 
         const subjectOptions = []
-        for(const subject in subjectList){
+        for (const subject in subjectList) {
           subjectOptions.push({
-            "value" : subjectList[subject].subShort.toUpperCase(),
-            "label" : subjectList[subject].subShort.toUpperCase()
+            "value": subjectList[subject].subShort.toUpperCase(),
+            "label": subjectList[subject].subShort.toUpperCase()
           })
         }
 
@@ -268,7 +268,7 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
           <div className="results-column-container">
-            <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
+            <div className="hidden-xs hidden-sm  col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -292,20 +292,20 @@ export default class ResultsDisplay extends Component {
                   onChange={this.handleMajorFilterChange}
                   value={this.state.filterMap.get("subjects")}
                   noOptionsMessage={() => "No Subjects Match"}
-                 />
+                />
               </div>
             </div>
-            <div className="col-md-3 col-sm-3 col-xs-3 results">
+            <div className="col-md-3 col-sm-12 col-xs-12 results">
 
               <div className="row no-left-margin">
                 <div>
-                <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length === 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
+                  <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length === 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
                   for &quot;{this.props.userInput}&quot;</p></div>
               </div>
-              <div className="row no-left-margin">
+              <div className="row no-left-margin mdown-8">
                 <div className="results-sort-by-container">
-                  <p className="results-sort-by-text">
-                  Sort By:
+                  <p className="hidden-xs hidden-sm results-sort-by-text">
+                    Sort By:
                     </p>
                   <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
                     <option value="relevance">Relevance</option>
@@ -322,7 +322,7 @@ export default class ResultsDisplay extends Component {
                 </ul>
               </div>
             </div>
-            <div className="col preview">
+            <div className="hidden-xs hidden-sm col preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>

@@ -129,15 +129,17 @@ export default class FilteredResult extends Component<Props,State> {
             {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
           </h2>
           <div className="result-card-rating-text">
-            <p className="result-card-sort-by-text">
-              <strong>{this.updateSortNumberTitle()}</strong>
-            </p>
-            <p className="result-card-sort-by-value">
-              {this.getSortNumber(1)}
-            </p>
-            <p>
-              /5
-            </p>
+            <div className="result-card-sort-by-text">
+              <p>
+                <strong>{this.updateSortNumberTitle()}</strong>
+              </p>
+              <p className="result-card-sort-by-value">
+                {this.getSortNumber(1)}
+              </p>
+              <p>
+                /5
+              </p>
+            </div>
           </div>
         </div>
       </li>

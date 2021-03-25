@@ -1,16 +1,36 @@
-.result-card{
+/* desktop*/
+@media (min-width: 1000px) {
+  .result-card {
+    margin: 32px 0;
+  }
+}
+
+@media (max-width: 1000px) {
+  .result-card {
+    margin: 16px 0;
+  }
+
+  .mdown-8 {
+    margin-bottom: 8px;
+  }
+
+  .result-card-sort-by-value {
+    margin: 0 0 0px;
+  }
+}
+
+.result-card {
   border-radius: 10px;
   padding: 15px 24px 0px 24px;
-  margin: 32px 0;
   background-color: white;
   list-style-type: none;
 }
 
-.result-card-clicked{
+.result-card-clicked {
   border: solid 2px #4a90e2;
 }
 
-.result-card-title{
+.result-card-title {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--semi-bold-weight);
@@ -21,7 +41,7 @@
 
 }
 
-.result-card-subtitle{
+.result-card-subtitle {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--regular-weight);
@@ -29,19 +49,19 @@
   line-height: normal;
   color: #777777;
   margin-top: 0px;
-  margin-bottom:15px
+  margin-bottom: 15px
 }
 
 
-.result-card-sort-by-text{
+.result-card-sort-by-text {
   margin-bottom: 20px;
 }
 
-.result-card-rating-text p{
-  display:inline-block;
+.result-card-rating-text p {
+  display: inline-block;
 }
 
-.result-card-rating-text{
+.result-card-rating-text {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 16px;
   font-weight: var(--semi-bold-weight);
@@ -50,6 +70,6 @@
   color: #000000;
 }
 
-.result-card-sort-by-value{
+.result-card-sort-by-value {
   padding: 0 0 0 14px;
 }
