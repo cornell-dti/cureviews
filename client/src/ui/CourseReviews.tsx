@@ -173,8 +173,14 @@ export default ({ courseId }: { readonly courseId: string }) => {
   const [reviews, setReviews] = useState<readonly ReviewType[]>([]);
 
   useEffect(() => {
-    Meteor.subscribe("reviews", courseId, 1, 0, "", (_: any, reviews: readonly ReviewType[]) => {
-      setReviews(reviews);
+    axios.post(`/v2/getReviewsByCourseId`, { courseId: courseId }).then(response => {
+      const reviews = response.data.result
+      if (reviews) {
+        setReviews(reviews);
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(`Unable to find reviews by course by id = ${courseId}`);
+      }
       setLoading(false);
     });
   }, [courseId]);

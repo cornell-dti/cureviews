@@ -343,11 +343,19 @@ export default () => {
   const [reviewsToApprove, setReviewsToApprove] = useState([]);
 
   useEffect(() => {
-    Meteor.subscribe('reviews', '', 0, null, Session.get('token'), (err, reviewsToApprove) => {
-      setReviewsToApprove(reviewsToApprove);
-      setLoading(false);
-    });
+    axios.post("/v2/fetchReviewableClasses", { token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result;
+        if (result.resCode !== 0) {
+          setReviewsToApprove(result);
+          setLoading(false);
+        } else {
+          console.log("Error at fetchReviewableClasses");
+        }
+      });
   }, []);
+
+
 
   if (!loading) {
     return <Admin reviewsToApprove={reviewsToApprove}></Admin>;

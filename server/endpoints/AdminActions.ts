@@ -198,3 +198,18 @@ export const reportReview: Endpoint<ReviewRequest> = {
     }
   },
 };
+
+export const fetchReviewableClasses: Endpoint<AdminProfessorsRequest> = {
+  guard: [body("token").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: AdminProfessorsRequest) => {
+    try {
+      return Reviews.find({ visible: 0 }, {}, { sort: { date: -1 }, limit: 700 });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'fetchReviewableClasses' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { resCode: 0 };
+    }
+  },
+};

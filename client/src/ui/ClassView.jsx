@@ -159,10 +159,7 @@ export default props => {
   const [allCourses, setAllCourses] = useState([]);
 
   useEffect(() => {
-    Meteor.subscribe("classes", "", (err, courses) => {
-      setAllCourses(courses);
-      setLoading(false);
-    });
+    setLoading(false);
   }, []);
 
   return <ClassView routeInfo={props} allCourses={allCourses} loading={loading}></ClassView>;
