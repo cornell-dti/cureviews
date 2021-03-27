@@ -2,7 +2,6 @@ import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import UpdateReview from './UpdateReview.tsx';
 import "./css/Admin.css";
-import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Statistics from './Statistics.tsx';
 import axios from 'axios';

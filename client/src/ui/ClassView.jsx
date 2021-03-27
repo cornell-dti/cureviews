@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Meteor } from "../meteor-shim";
 import axios from 'axios';
 import CourseCard from './CourseCard';
 import Gauge from './Gauge';
