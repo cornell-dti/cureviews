@@ -1,9 +1,27 @@
+@media screen and (max-width: 1000px) {
+  .navbar {
+    height: 102px;
+    padding-bottom: 21px;
+    padding-left: 21px;
+    padding-right: 29px;
+  }
+
+  .logo-container{
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .navbar {
+    min-height: 127.43px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
 .navbar {
-  min-height: 127.43px;
   width: 100%;
   padding-top: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
   box-shadow: 0px 2.49858px 2.49858px rgba(0, 0, 0, 0.08);
   z-index: 110;
   top: 0px;
