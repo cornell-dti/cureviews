@@ -1,9 +1,40 @@
 /* Searchbar Normal (Non-Popup) */
 
+@media screen and (max-width: 1000px) {
+  .searchbar {
+    height: 42px;
+  }
+
+  .searchbar-in-navbar {
+    height: 42px;
+    margin-left: 21px;
+    margin-right: 29px;
+  }
+
+  .search-text{
+    padding-left: 45px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+
+  .searchbar {
+    height: 40px;
+  }
+
+  .searchbar-in-navbar {
+    height: 52px;
+  }
+
+  .search-text{
+    padding-left: 40px;
+  }
+}
+
+
 .searchbar {
   background-color: transparent;
   display: inline-block;
-  height: 40px;
   padding: 0;
   position: relative;
   outline: 0;
@@ -14,7 +45,6 @@
 }
 
 .searchbar-in-navbar {
-  height: 52px;
   border: 1.24929px solid #ECECEC;
   box-shadow: none;
 }
