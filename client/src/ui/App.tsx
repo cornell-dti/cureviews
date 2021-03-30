@@ -2,28 +2,7 @@ import React, { Component } from 'react';
 import SearchBar from './SearchBar.jsx';
 import "./css/App.css";
 
-var date = new Date();
-var month = date.getMonth();
-var hours = date.getHours();
-var monthclass = "";
-var dayclass = "afternoon";
 
-if (month < 2 || month > 10) {
-  monthclass = "winter"
-}
-
-else if (month > 6) {
-  monthclass = "fall"
-}
-
-if (hours < 5 || hours > 19) {
-  dayclass = "night"
-  monthclass = "";
-}
-
-else if (hours > 17) {
-  dayclass = "sunset"
-}
 
 /*
   App Component. Uppermost View component in the component tree,
@@ -34,8 +13,30 @@ else if (hours > 17) {
 */
 export default class App extends Component {
   render() {
+    const date = new Date();
+    const month = date.getMonth();
+    const hours = date.getHours();
+    let monthclass = "";
+    let dayclass = "afternoon";
+
+    if (month < 2 || month > 10) {
+      monthclass = "winter"
+    }
+
+    else if (month > 6) {
+      monthclass = "fall"
+    }
+
+    if (hours < 5 || hours > 19) {
+      dayclass = "night"
+      monthclass = "";
+    }
+
+    else if (hours > 17) {
+      dayclass = "sunset"
+    }
     return (
-      <div className={"container-fluid full-height background-gradient_" + dayclass + monthclass}>
+      <div className={"container-fluid full-height background-common background-gradient_" + dayclass + monthclass}>
         <div className="row">
           <img src='/logo.svg' className="img-responsive scale-logo-homepage" alt="CU Reviews Logo" />
         </div>
