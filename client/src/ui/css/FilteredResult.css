@@ -3,6 +3,10 @@
   .result-card {
     margin: 32px 0;
   }
+
+  .result-card-clicked {
+    border: solid 2px #4a90e2;
+  }
 }
 
 @media (max-width: 1000px) {
@@ -17,6 +21,25 @@
   .result-card-sort-by-value {
     margin: 0 0 0px;
   }
+
+  .overall-rating-border {
+    display: inline-flex;
+    border: 1px solid #B7D8FF;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-left: 9px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: #F4F9FE;
+  }
+
+  .out-of-five {
+    padding-right: 16px;
+  }
+
+  .result-card-clicked {
+    border: 2.49858px solid #0076FF;
+  }
 }
 
 .result-card {
@@ -26,9 +49,7 @@
   list-style-type: none;
 }
 
-.result-card-clicked {
-  border: solid 2px #4a90e2;
-}
+
 
 .result-card-title {
   font-family: "Source Sans Pro", sans-serif;
@@ -52,13 +73,12 @@
   margin-bottom: 15px
 }
 
-
-.result-card-sort-by-text {
-  margin-bottom: 20px;
-}
-
 .result-card-rating-text p {
   display: inline-block;
+}
+
+.margin-btm-0 {
+  margin-bottom: 0px;
 }
 
 .result-card-rating-text {
@@ -68,6 +88,7 @@
   font-style: normal;
   line-height: normal;
   color: #000000;
+  padding-bottom: 20px;
 }
 
 .result-card-sort-by-value {
