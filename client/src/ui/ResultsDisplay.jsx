@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from '../meteor-shim';
 import "./css/ResultsDisplay.css"; // css files
 import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
@@ -220,25 +219,25 @@ export default class ResultsDisplay extends Component {
   }
 
   getSubjectOptions(inputValue, callback) {
+    console.log("Deprecated functionality");
+    // Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
+    //   if (!err && subjectList && subjectList.length !== 0) {
+    //     // Save the list of Subject objects that matches the request
 
-    Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
-      if (!err && subjectList && subjectList.length !== 0) {
-        // Save the list of Subject objects that matches the request
+    //     const subjectOptions = []
+    //     for(const subject in subjectList){
+    //       subjectOptions.push({
+    //         "value" : subjectList[subject].subShort.toUpperCase(),
+    //         "label" : subjectList[subject].subShort.toUpperCase()
+    //       })
+    //     }
 
-        const subjectOptions = []
-        for (const subject in subjectList) {
-          subjectOptions.push({
-            "value": subjectList[subject].subShort.toUpperCase(),
-            "label": subjectList[subject].subShort.toUpperCase()
-          })
-        }
-
-        callback(subjectOptions)
-      }
-      else {
-        callback([])
-      }
-    });
+    //     callback(subjectOptions)
+    //   }
+    //   else {
+    //     callback([])
+    //   }
+    // });
 
     // callback(this.filterColors(inputValue));
   }
