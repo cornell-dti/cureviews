@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Session } from '../meteor-session';
+import { Session } from '../session-store';
 
 type State = { readonly topSubjects: readonly any[] };
 

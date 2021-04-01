@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Admin from './Admin.jsx';
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
-import { Session } from "../meteor-session";
+import { Session } from "../session-store";
 import axios from 'axios';
 /*
   Admin Interface Login Component.
