@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Meteor } from "../meteor-shim";
 import axios from 'axios';
 import CourseCard from './CourseCard';
 import Gauge from './Gauge';
@@ -159,10 +158,7 @@ export default props => {
   const [allCourses, setAllCourses] = useState([]);
 
   useEffect(() => {
-    Meteor.subscribe("classes", "", (err, courses) => {
-      setAllCourses(courses);
-      setLoading(false);
-    });
+    setLoading(false);
   }, []);
 
   return <ClassView routeInfo={props} allCourses={allCourses} loading={loading}></ClassView>;

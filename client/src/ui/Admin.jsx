@@ -2,7 +2,6 @@ import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import UpdateReview from './UpdateReview.tsx';
 import "./css/Admin.css";
-import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Statistics from './Statistics.tsx';
 import axios from 'axios';
@@ -343,11 +342,19 @@ export default () => {
   const [reviewsToApprove, setReviewsToApprove] = useState([]);
 
   useEffect(() => {
-    Meteor.subscribe('reviews', '', 0, null, Session.get('token'), (err, reviewsToApprove) => {
-      setReviewsToApprove(reviewsToApprove);
-      setLoading(false);
-    });
+    axios.post("/v2/fetchReviewableClasses", { token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result;
+        if (result.resCode !== 0) {
+          setReviewsToApprove(result);
+          setLoading(false);
+        } else {
+          console.log("Error at fetchReviewableClasses");
+        }
+      });
   }, []);
+
+
 
   if (!loading) {
     return <Admin reviewsToApprove={reviewsToApprove}></Admin>;
