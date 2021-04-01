@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Meteor } from "../meteor-shim";
 import axios from 'axios';
 import Review from './Review.jsx';
 
