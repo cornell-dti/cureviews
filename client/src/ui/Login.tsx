@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Admin from './Admin.jsx';
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
-import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import axios from 'axios';
 /*

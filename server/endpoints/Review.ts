@@ -30,7 +30,7 @@ interface ClassByInfoQuery {
   number: string;
 }
 
-export interface LikeRequest {
+export interface ReviewRequest {
   id: string;
 }
 
@@ -175,9 +175,9 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
  *
  * TODO: migrate to a proper account-based solution
  */
-export const incrementLike: Endpoint<LikeRequest> = {
+export const incrementLike: Endpoint<ReviewRequest> = {
   guard: [body("id").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: LikeRequest) => {
+  callback: async (ctx: Context, request: ReviewRequest) => {
     try {
       const review = await Reviews.findOne({ _id: request.id }).exec();
 
@@ -209,9 +209,9 @@ export const incrementLike: Endpoint<LikeRequest> = {
  * Returns resCole 0 on error
  */
 
-export const decrementLike: Endpoint<LikeRequest> = {
+export const decrementLike: Endpoint<ReviewRequest> = {
   guard: [body("id").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: LikeRequest) => {
+  callback: async (ctx: Context, request: ReviewRequest) => {
     try {
       const review = await Reviews.findOne({ _id: request.id }).exec();
 
