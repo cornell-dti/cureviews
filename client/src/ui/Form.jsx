@@ -208,8 +208,8 @@ export default class Form extends Component {
       : //else
       [] //set to this
     const isCovid = this.state.isCovid;
-    if (text.length > 0
-      && text !== null) {
+
+    if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
         text: text,
@@ -231,9 +231,11 @@ export default class Form extends Component {
   submitReview() {
     // Call the API insert function
 
-    axios.post("/v2/insertReview", {token: Session.get("token"), 
-    review: Session.get("review") !== "" ? Session.get("review") : this.state.review, 
-    classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId") }).then(response => {
+    axios.post("/v2/insertReview", {
+      token: Session.get("token"),
+      review: Session.get("review") !== "" ? Session.get("review") : this.state.review,
+      classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId")
+    }).then(response => {
       const res = response.data.result;
       if (res.error || res.resCode === 1) {
         // Success, so reset form
