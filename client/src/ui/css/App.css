@@ -30,14 +30,6 @@
   background-position-y: 103%;
 }
 
-.background-gradient_summer{
-  
-  background-image: url("/slope.svg"), linear-gradient(180deg, 
-                                                      rgba(104, 165, 236, 0.65) 0%, 
-                                                      rgba(104, 165, 236, 0.1) 77.1%, 
-                                                      rgba(168, 211, 245, 0.7) 100%);
-}
-
 .background-gradient_afternoon{
   
   background-image: url("/slope.svg"), linear-gradient(180deg, 
