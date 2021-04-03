@@ -10,6 +10,10 @@ import { Session } from '../meteor-session';
 import { includesProfanity } from "common/profanity";
 import axios from 'axios';
 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import './css/customToast.css'
+
 /*
   Form Component.
 
@@ -228,6 +232,16 @@ export default class Form extends Component {
     }
   }
 
+  createNotification(text, success) {
+    toast.configure()
+    if (success) {
+      toast.success(text, { position: toast.POSITION.TOP_RIGHT })
+    }
+    else {
+      toast.error(text, { position: toast.POSITION.TOP_RIGHT })
+    }
+  }
+
   submitReview() {
     // Call the API insert function
 
@@ -248,11 +262,11 @@ export default class Form extends Component {
         Session.setPersistent({ "review_num": "" });
         Session.setPersistent({ "courseId": "" });
         this.hide();
-        alert('Thanks for reviewing! New reviews are updated every 24 hours.');
+        this.createNotification('Thanks for reviewing! New reviews are updated every 24 hours.', true)
       }
       else {
         console.log(res.error);
-        alert("An unknown error occured, please try again.", "danger");
+        this.createNotification("An unknown error occured, please try again.", false)
         Session.setPersistent({ "review": "" });
         Session.setPersistent({ "review_major": "" });
         Session.setPersistent({ "review_num": "" });
@@ -263,7 +277,7 @@ export default class Form extends Component {
 
   submitError() {
     this.hide();
-    alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
+    this.createNotification("You may only submit a review with a @cornell.edu email address, please try again.", false)
   }
 
   // Validation function. Checks if the median are filled out,
