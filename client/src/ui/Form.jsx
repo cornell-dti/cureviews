@@ -262,13 +262,10 @@ export default class Form extends Component {
         Session.setPersistent({ "review_num": "" });
         Session.setPersistent({ "courseId": "" });
         this.hide();
-        //alert('Thanks for reviewing! New reviews are updated every 24 hours.');
-        //toast('Thanks for reviewing! New reviews are updated every 24 hours.')
         this.createNotification('Thanks for reviewing! New reviews are updated every 24 hours.', true)
       }
       else {
         console.log(res.error);
-        //alert("An unknown error occured, please try again.", "danger");
         this.createNotification("An unknown error occured, please try again.", false)
         Session.setPersistent({ "review": "" });
         Session.setPersistent({ "review_major": "" });
@@ -280,7 +277,6 @@ export default class Form extends Component {
 
   submitError() {
     this.hide();
-    //alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
     this.createNotification("You may only submit a review with a @cornell.edu email address, please try again.", false)
   }
 
