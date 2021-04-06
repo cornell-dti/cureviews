@@ -13,9 +13,17 @@ import "./css/App.css";
 */
 export default class App extends Component {
   render() {
+    const sunset_start_times = [17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5];
+    const sunset_end_times = [18.5, 19, 20.5, 21, 22, 22, 22, 21.5, 20.5, 20, 19, 18];
     const date = new Date();
     const month = date.getMonth();
     const hours = date.getHours();
+    const minutes = date.getMinutes();
+    let time_of_day = hours;
+    if (date.getMinutes() > 30) {
+      time_of_day += 0.51;
+    }
+
     let monthclass = "";
     let dayclass = "afternoon";
 
@@ -23,18 +31,26 @@ export default class App extends Component {
       monthclass = "winter"
     }
 
-    else if (month > 6) {
+    else if (month > 7) {
       monthclass = "fall"
     }
 
-    if (hours < 5 || hours > 19) {
-      dayclass = "night"
-      monthclass = "";
+    else if (month > 4) {
+      monthclass = "summer"
     }
 
-    else if (hours > 17) {
+    else {
+      monthclass = "spring"
+    }
+
+    if (time_of_day < 6 || time_of_day >= sunset_end_times[month]) {
+      dayclass = "night"
+    }
+
+    else if (time_of_day >= sunset_start_times[month]) {
       dayclass = "sunset"
     }
+
     return (
       <div className={"container-fluid full-height background-common background-gradient_" + dayclass + monthclass}>
         <div className="row">
