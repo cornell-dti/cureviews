@@ -20,7 +20,7 @@ export default class App extends Component {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     let time_of_day = hours;
-    if (date.getMinutes() > 30) {
+    if (minutes > 30) {
       time_of_day += 0.51;
     }
 
