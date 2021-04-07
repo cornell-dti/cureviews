@@ -10,6 +10,10 @@ import { Session } from '../meteor-session';
 import { includesProfanity } from "common/profanity";
 import axios from 'axios';
 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import './css/customToast.css'
+
 /*
   Form Component.
 
@@ -208,8 +212,8 @@ export default class Form extends Component {
       : //else
       [] //set to this
     const isCovid = this.state.isCovid;
-    if (text.length > 0
-      && text !== null) {
+
+    if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
         text: text,
@@ -228,12 +232,24 @@ export default class Form extends Component {
     }
   }
 
+  createNotification(text, success) {
+    toast.configure()
+    if (success) {
+      toast.success(text, { position: toast.POSITION.TOP_RIGHT })
+    }
+    else {
+      toast.error(text, { position: toast.POSITION.TOP_RIGHT })
+    }
+  }
+
   submitReview() {
     // Call the API insert function
 
-    axios.post("/v2/insertReview", {token: Session.get("token"), 
-    review: Session.get("review") !== "" ? Session.get("review") : this.state.review, 
-    classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId") }).then(response => {
+    axios.post("/v2/insertReview", {
+      token: Session.get("token"),
+      review: Session.get("review") !== "" ? Session.get("review") : this.state.review,
+      classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId")
+    }).then(response => {
       const res = response.data.result;
       if (res.error || res.resCode === 1) {
         // Success, so reset form
@@ -246,11 +262,11 @@ export default class Form extends Component {
         Session.setPersistent({ "review_num": "" });
         Session.setPersistent({ "courseId": "" });
         this.hide();
-        alert('Thanks for reviewing! New reviews are updated every 24 hours.');
+        this.createNotification('Thanks for reviewing! New reviews are updated every 24 hours.', true)
       }
       else {
         console.log(res.error);
-        alert("An unknown error occured, please try again.", "danger");
+        this.createNotification("An unknown error occured, please try again.", false)
         Session.setPersistent({ "review": "" });
         Session.setPersistent({ "review_major": "" });
         Session.setPersistent({ "review_num": "" });
@@ -261,7 +277,7 @@ export default class Form extends Component {
 
   submitError() {
     this.hide();
-    alert("You may only submit a review with a @cornell.edu email address, please try again.", "danger");
+    this.createNotification("You may only submit a review with a @cornell.edu email address, please try again.", false)
   }
 
   // Validation function. Checks if the median are filled out,

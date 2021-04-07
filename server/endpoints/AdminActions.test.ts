@@ -49,6 +49,7 @@ const reviewToUndoReport = new Reviews({
   workload: 5,
 });
 
+
 beforeAll(async () => {
   // get mongoose all set up
   mongoServer = new MongoMemoryServer();
@@ -58,6 +59,12 @@ beforeAll(async () => {
   const app = express();
   serverCloseHandle = app.listen(testingPort, async () => { });
   configure(app);
+
+  await sampleReview.save();
+  await newCourse1.save();
+  await reviewToUndoReport.save();
+  await sampleReview.save();
+  await newCourse1.save();
 });
 
 afterAll(async () => {
@@ -68,9 +75,14 @@ afterAll(async () => {
 });
 
 describe('tests', () => {
+  it('fetchReviewableClasses-works', async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/fetchReviewableClasses`, { token: "non-empty" });
+    const ids = res.data.result.map((e) => e._id);
+    expect(ids.includes(reviewToUndoReportId)).toBeTruthy();
+    expect(ids.includes(sampleReviewId)).toBeTruthy();
+  });
+
   it('makeReviewVisible-works', async () => {
-    await sampleReview.save();
-    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/makeReviewVisible`, { review: sampleReview, token: "non-empty" });
     expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findOne({ _id: newCourse1._id }).exec();
@@ -80,20 +92,16 @@ describe('tests', () => {
   });
 
   it('undoReportReview-works', async () => {
-    await reviewToUndoReport.save();
-    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/undoReportReview`, { review: reviewToUndoReport, token: "non empty" });
-    expect(res.data.result).toEqual(1);
+    expect(res.data.result.resCode).toEqual(1);
     const reviewFromDb = await Reviews.findById(reviewToUndoReport._id).exec();
     expect(reviewFromDb.visible).toEqual(1);
     await reviewToUndoReport.remove();
   });
 
   it('removeReview-works', async () => {
-    await sampleReview.save();
-    await newCourse1.save();
     const res = await axios.post(`http://localhost:${testingPort}/v2/removeReview`, { review: sampleReview, token: "non-empty" });
-    expect(res.data.result).toEqual(1);
+    expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findById(newCourse1._id);
     expect(course.classDifficulty).toEqual(null);
     expect(course.classWorkload).toEqual(null);

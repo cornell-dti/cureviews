@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Meteor } from "../meteor-shim";
+import axios from "axios";
 import Form from './Form.jsx';
 import './css/CourseCard.css';
 import { Class, Review } from 'common';
@@ -10,10 +10,10 @@ type Props = {
   reviews: readonly Review[];
 };
 
-type State ={
+type State = {
   rating: string;
   ratingColor: string;
-  diff:string;
+  diff: string;
   diffColor: string;
   workload: string;
   workloadColor: string;
@@ -34,11 +34,11 @@ type State ={
 
 export class CourseCard extends Component<Props, State> {
   defaultGaugeState: State;
-  
+
   constructor(props: Props) {
     super(props);
     // default gauge values
-     this.defaultGaugeState = {
+    this.defaultGaugeState = {
       rating: "-",
       ratingColor: "#E64458",
       diff: "-",
@@ -61,12 +61,12 @@ export class CourseCard extends Component<Props, State> {
   updateState(selectedClass: any) {
     if (selectedClass !== null && selectedClass !== undefined) {
       // gather data on the reviews and set mandatory flags.
-        // set the new state to metrics stored in DB for this class
-        this.setState({
-          rating: selectedClass.classRating,
-          workload: selectedClass.classWorkload,
-          diff: selectedClass.classDifficulty
-        });
+      // set the new state to metrics stored in DB for this class
+      this.setState({
+        rating: selectedClass.classRating,
+        workload: selectedClass.classWorkload,
+        diff: selectedClass.classDifficulty
+      });
     }
     else {
       this.setState(this.defaultGaugeState); //default gauge values
@@ -87,7 +87,7 @@ export class CourseCard extends Component<Props, State> {
         <p className="coursecard-class-info">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
         </p>
-        <Form course={theClass} inUse={true}/>
+        <Form course={theClass} inUse={true} />
       </div>
     );
   }
@@ -99,8 +99,14 @@ export default ({ course }: { readonly course: any }) => {
   const [reviews, setReviews] = useState<readonly Review[]>([]);
 
   useEffect(() => {
-    Meteor.subscribe('reviews', course._id, 1, 0, (_: any, reviews: readonly Review[]) => {
-      setReviews(reviews);
+    axios.post(`/v2/getReviewsByCourseId`, { courseId: course._id }).then(response => {
+      const reviews = response.data.result
+      if (reviews) {
+        setReviews(reviews);
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(`Unable to find reviews by course by id = ${course._id}`);
+      }
     });
   }, [course]);
 

@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Meteor } from "../meteor-shim";
 import axios from 'axios';
 import Review from './Review.jsx';
 
@@ -102,18 +101,20 @@ export class CourseReviews extends Component<Props, State> {
   // Report this review. Find the review in the local database and change
   // its 'reported' flag to true.
   reportReview = (review: ReviewType) => {
-    Meteor.call('reportReview', review, (error: any, result: 1 | 0) => {
-      if (!error && result === 1) {
-        let idx = 0;
-        while (idx < this.state.reviews.length && this.state.reviews[idx].key !== review._id) {
-          idx++;
+    axios.post("/v2/reportReview", { id: review._id })
+      .then((response) => {
+        const result = response.data.result.resCode;
+        if (result === 1) {
+          let idx = 0;
+          while (idx < this.state.reviews.length && this.state.reviews[idx].key !== review._id) {
+            idx++;
+          }
+          this.setState({ reviews: this.state.reviews.slice(0, idx).concat(this.state.reviews.slice(idx + 1)) });
+          console.log("Reported review #" + review._id);
+        } else {
+          console.log("Error reporting review!");
         }
-        this.setState({ reviews: this.state.reviews.slice(0, idx).concat(this.state.reviews.slice(idx + 1)) });
-        console.log("reported review #" + review._id);
-      } else {
-        console.log(error)
-      }
-    });
+      });
   };
 
   // Loop through the list of reivews and render them (as a list)
@@ -171,8 +172,14 @@ export default ({ courseId }: { readonly courseId: string }) => {
   const [reviews, setReviews] = useState<readonly ReviewType[]>([]);
 
   useEffect(() => {
-    Meteor.subscribe("reviews", courseId, 1, 0, "", (_: any, reviews: readonly ReviewType[]) => {
-      setReviews(reviews);
+    axios.post(`/v2/getReviewsByCourseId`, { courseId: courseId }).then(response => {
+      const reviews = response.data.result
+      if (reviews) {
+        setReviews(reviews);
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(`Unable to find reviews by course by id = ${courseId}`);
+      }
       setLoading(false);
     });
   }, [courseId]);

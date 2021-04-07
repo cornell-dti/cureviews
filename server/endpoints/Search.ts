@@ -5,7 +5,7 @@ import { Classes, Subjects, Professors } from "../dbDefs";
 
 // The type for a search query
 interface Search {
-    query: string;
+  query: string;
 }
 
 /*
@@ -54,7 +54,7 @@ const courseSort = (query) => (a, b) => {
   const bCourseStr = `${b.classSub} ${b.classNum}`;
   const queryLen = query.length;
   return editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen))
-      - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen));
+    - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen));
 };
 
 // Helper to check if a string is a subject code
@@ -183,6 +183,46 @@ export const getProfessorsByQuery: Endpoint<Search> = {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getProfessorsByQuery' endpoint");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { error: "Internal Server Error" };
+    }
+  },
+};
+
+export const getCoursesByMajor: Endpoint<Search> = {
+  guard: [body("query").notEmpty().isAscii()],
+  callback: async (ctx: Context, search: Search) => {
+    try {
+      let courses = [];
+      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if (regex.test(search.query)) {
+        courses = await Classes.find({ classSub: search.query }).exec();
+      }
+      return courses;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getCoursesByMajor' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { error: "Internal Server Error" };
+    }
+  },
+};
+
+export const getCoursesByProfessor: Endpoint<Search> = {
+  guard: [body("query").notEmpty().isAscii()],
+  callback: async (ctx: Context, search: Search) => {
+    try {
+      let courses = [];
+      const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+      if (regex.test(search.query)) {
+        courses = await Classes.find({ classProfessors: search.query }).exec();
+      }
+      return courses;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getCoursesByProfessor' method");
       // eslint-disable-next-line no-console
       console.log(error);
       return { error: "Internal Server Error" };

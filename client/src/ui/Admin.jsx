@@ -2,7 +2,6 @@ import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import UpdateReview from './UpdateReview.tsx';
 import "./css/Admin.css";
-import { Meteor } from "../meteor-shim";
 import { Session } from "../meteor-session";
 import Statistics from './Statistics.tsx';
 import axios from 'axios';
@@ -95,53 +94,46 @@ export class Admin extends Component {
   // Call when user asks to remove a review. Accesses the Reviews database
   // and deletes the review with this id.
   removeReview(review, isUnapproved) {
-    Meteor.call('removeReview', review, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Review removed");
-        if (isUnapproved) {
-          const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
-          this.setState({ unapprovedReviews: updatedUnapprovedReviews });
+    axios.post("/v2/removeReview", { review: review, token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result.resCode;
+        if (result === 1) {
+          console.log("Review removed");
+          if (isUnapproved) {
+            const updatedUnapprovedReviews = this.removeReviewFromList(review, this.state.unapprovedReviews);
+            this.setState({ unapprovedReviews: updatedUnapprovedReviews });
+          } else {
+            console.log(this.state.reportedReviews);
+            const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
+            this.setState({ reportedReviews: updatedReportedReviews });
+          }
         } else {
-          console.log(this.state.reportedReviews);
-          const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
-          this.setState({ reportedReviews: updatedReportedReviews });
+          console.log("Unable to remove review")
         }
-
-      } else {
-        console.log(error)
-      }
-    });
+      });
   }
 
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   unReportReview(review) {
-    Meteor.call('undoReportReview', review, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Review unreported");
-        const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
-        this.setState({ reportedReviews: updatedReportedReviews });
-      } else {
-        console.log(error)
-      }
-    });
+    axios.post("/v2/undoReportReview", { review: review, token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result.resCode;
+        if (result === 1) {
+          console.log("Review unreported");
+          const updatedReportedReviews = this.removeReviewFromList(review, this.state.reportedReviews);
+          this.setState({ reportedReviews: updatedReportedReviews });
+        } else {
+          console.log("Unable to undo report review!");
+        }
+      });
   }
 
   // Call when user selects "Add New Semester" button. Runs code to check the
   // course API for new classes and updates classes existing in the database.
   // sShould run once a semester, when new classes are added to the roster.
   addNewSem(initiate) {
-    console.log("updating to new semester");
-    this.setState({ disableNewSem: true, loadingSemester: 1 });
-    Meteor.call('addNewSemester', initiate, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Added new semester courses");
-        this.setState({ disableNewSem: false, loadingSemester: 2 });
-      } else {
-        console.log("Error at Meteor Call: addNewSemester");
-        console.log(error);
-      }
-    });
+    console.log("Deprecated functionality");
   }
 
   // Call when user selects "Initialize Database" button. Scrapes the Cornell
@@ -152,45 +144,39 @@ export class Admin extends Component {
   // NOTE: requries an initialize flag to ensure the function is only run on
   // a button click without this, it will run every time this component is created.
   addAllCourses(initiate) {
-    console.log("adding all classes");
-    this.setState({ disableInit: true, loadingInit: 1 });
-    Meteor.call('addAll', initiate, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Added new semester courses");
-        this.setState({ disableInit: false, loadingInit: 2 });
-      } else {
-        console.log("Error at Meteor Call :addAll");
-        console.log(error)
-      }
-    });
+    console.log("Deprecated functionality");
   }
 
   updateProfessors(initiate) {
     console.log("Updating professors");
     this.setState({ disableInit: true, loadingProfs: 1 });
-    Meteor.call('setProfessors', initiate, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Updated the professors");
-        this.setState({ disableInit: false, loadingProfs: 2 });
-      } else {
-        console.log("Error at Meteor Call :setProfessors");
-        console.log(error)
-      }
-    });
+
+    axios.post("/v2/setProfessors", { token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result.resCode;
+        if (result === 1) {
+          console.log("Updated the professors");
+          this.setState({ disableInit: false, loadingProfs: 2 });
+        } else {
+          console.log("Error at setProfessors");
+        }
+      });
   }
 
   resetProfessors(initiate) {
     console.log("Setting the professors to an empty array");
     this.setState({ disableInit: true, resettingProfs: 1 });
-    Meteor.call('resetProfessors', initiate, Session.get("token"), (error, result) => {
-      if (!error && result === 1) {
-        console.log("Reset all the professors to empty arrays");
-        this.setState({ disableInit: false, resettingProfs: 2 });
-      } else {
-        console.log("Error at Meteor Call :resetProfessors");
-        console.log(error)
-      }
-    });
+
+    axios.post("/v2/resetProfessors", { token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result.resCode;
+        if (result === 1) {
+          console.log("Reset all the professors to empty arrays");
+          this.setState({ disableInit: false, resettingProfs: 2 });
+        } else {
+          console.log("Error at resetProfessors");
+        }
+      });
   }
 
   // handle the first click to the "Initialize Database" button. Show an alert
@@ -356,11 +342,19 @@ export default () => {
   const [reviewsToApprove, setReviewsToApprove] = useState([]);
 
   useEffect(() => {
-    Meteor.subscribe('reviews', '', 0, null, Session.get('token'), (err, reviewsToApprove) => {
-      setReviewsToApprove(reviewsToApprove);
-      setLoading(false);
-    });
+    axios.post("/v2/fetchReviewableClasses", { token: Session.get("token") })
+      .then((response) => {
+        const result = response.data.result;
+        if (result.resCode !== 0) {
+          setReviewsToApprove(result);
+          setLoading(false);
+        } else {
+          console.log("Error at fetchReviewableClasses");
+        }
+      });
   }, []);
+
+
 
   if (!loading) {
     return <Admin reviewsToApprove={reviewsToApprove}></Admin>;
