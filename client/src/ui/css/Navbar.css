@@ -2,26 +2,33 @@
   .navbar {
     height: 102px;
     padding-bottom: 21px;
-    padding-left: 21px;
-    padding-right: 29px;
   }
 
   .logo-container{
     display: none;
+  }
+
+  .navbar-searchbar-container{
+    margin-left: 21px;
+    margin-right: 29px;
   }
 }
 
 @media screen and (min-width: 1000px) {
   .navbar {
     min-height: 127.43px;
-    padding-left: 10px;
-    padding-right: 10px;
+  }
+
+  .navbar-searchbar-container{
+    margin-right: 120px;
   }
 }
 
 .navbar {
   width: 100%;
   padding-top: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
   box-shadow: 0px 2.49858px 2.49858px rgba(0, 0, 0, 0.08);
   z-index: 110;
   top: 0px;
@@ -40,7 +47,6 @@
 
 .navbar-searchbar-container{
   width: 100%;
-  margin-right: 10vw;
 }
 
 .scale-logo-navbar{
