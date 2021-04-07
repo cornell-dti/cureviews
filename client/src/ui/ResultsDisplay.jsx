@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import "./css/ResultsDisplay.css"; // css files
+import "./css/SearchResultsMobile.css"
 import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
-
+import CourseReviews from './CourseReviews';
 
 /*
   ResultsDisplay Component.
@@ -33,7 +34,8 @@ export default class ResultsDisplay extends Component {
         "5000+": true
       },
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
-      filteredItems: this.props.courses
+      filteredItems: this.props.courses,
+      fullscreen: false
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -295,6 +297,17 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
             <div className="col-md-3 col-sm-12 col-xs-12 results">
+              <button className="button" onClick={() => this.setState({ fullscreen: true })}>click me</button>
+              <div className={this.state.fullscreen ? 'fullscreen' : ""}>
+                <div>
+                  <div className="search-results-text">
+                    {"<"} Search Results
+                  </div>
+                  <PreviewCard course={this.state.card_course} mobile={true} />
+                  {/*<CourseReviews courseId={this.state.card_course._id} />*/}
+                </div>
+              </div>
+
 
               <div className="row no-left-margin">
                 <div>
@@ -322,7 +335,7 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
             <div className="hidden-xs hidden-sm col preview">
-              <PreviewCard course={this.state.card_course} />
+              <PreviewCard course={this.state.card_course} mobile={false} />
             </div>
           </div>
         }
