@@ -155,7 +155,7 @@ ClassView.propTypes = {
 //  re-render when new classes are added to the database.
 export default props => {
   const [loading, setLoading] = useState(true);
-  const [allCourses, setAllCourses] = useState([]);
+  const [allCourses] = useState([]);
 
   useEffect(() => {
     setLoading(false);
