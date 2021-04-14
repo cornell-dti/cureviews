@@ -43,6 +43,7 @@ const testReviews = [
   {
     _id: "4Y8k7DnX3PLNdwRPr",
     text: "review text for cs 2110",
+    user: "User1234",
     difficulty: 1,
     quality: 4,
     class: "oH37S3mJ4eAsktypy",
@@ -56,6 +57,7 @@ const testReviews = [
   {
     _id: "4Y8k7DnX3PLNdwRPq",
     text: "review text for cs 2110 number 2",
+    user: "User1234",
     difficulty: 1,
     quality: 5,
     class: "oH37S3mJ4eAsktypy",
@@ -229,4 +231,13 @@ describe('tests', () => {
     expect(res.data.result).toBe(1);
     expect((await Students.find({}).exec()).filter((s) => s.netId === "cv4620").length).toBe(1);
   });
+
+  it("user id's not being leaked by querying reviews", async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
+    expect(res.data.result.length).toBe(testReviews.length);
+
+    const classOfReviews = testReviews.map((r) => r.user);
+    expect(res.data.result.map(r => r.user).sort()).not.toEqual(classOfReviews.sort());
+    expect(res.data.result.map(r => r.user).sort()).toEqual(["", ""])
+  })
 });

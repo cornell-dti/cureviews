@@ -3,7 +3,7 @@ import { getCrossListOR } from "common/CourseCard";
 import { Review } from "common";
 import { includesProfanity } from "common/profanity";
 import { Context, Endpoint } from "../endpoints";
-import { Classes, Reviews } from "../dbDefs";
+import { Classes, ReviewDocument, Reviews, Students } from "../dbDefs";
 import { getCourseById as getCourseByIdCallback, insertUser as insertUserCallback, JSONNonempty } from "./utils";
 import { getVerificationTicket } from "./Auth";
 
@@ -32,6 +32,21 @@ interface ClassByInfoQuery {
 
 export interface ReviewRequest {
   id: string;
+}
+
+/**
+ * Santize the reviews, so that we don't leak information about who posted what.
+ * Even if the user id is leaked, however, that still gives no way of getting back to the netID.
+ * Still, better safe than sorry.
+ * @param lst the list of reviews to sanitize. Possibly a singleton list.
+ * @returns a copy of the reviews, but with the user id field removed.
+ */
+export const sanitizeReviews = (lst: ReviewDocument[]) => {
+  return (lst.map(doc => {
+    let copy = JSON.parse(JSON.stringify(doc));
+    copy.user = "";
+    return copy;
+  }));
 }
 
 /**
@@ -72,7 +87,7 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
       if (course) {
         const crossListOR = getCrossListOR(course);
         const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
-        return reviews;
+        return sanitizeReviews(reviews);
       }
 
       return { error: "Malformed Query" };
@@ -127,6 +142,8 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
           return { resCode: 0, error: "Your review contains profanity, please edit your response." };
         }
 
+        const studentId = (await Students.findOne({ "netId": ticket.email.replace("@cornell.edu", "") }))._id;
+
         try {
           // Attempt to insert the review
           const fullReview = new Reviews({
@@ -142,6 +159,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             professors: review.professors,
             likes: 0,
             isCovid: review.isCovid,
+            user: studentId
           });
 
           await fullReview.save();
