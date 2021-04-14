@@ -140,7 +140,8 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
           return { resCode: 0, error: "Your review contains profanity, please edit your response." };
         }
 
-        const studentId = (await Students.findOne({ netId: ticket.email.replace("@cornell.edu", "") }))._id;
+        const netId = ticket.email.replace("@cornell.edu", "");
+        const student = (await Students.findOne({ netId }));
 
         try {
           // Attempt to insert the review
@@ -157,10 +158,13 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             professors: review.professors,
             likes: 0,
             isCovid: review.isCovid,
-            user: studentId,
+            user: student._id,
           });
 
           await fullReview.save();
+
+          const newReviews = student.reviews ? student.reviews.concat([fullReview._id]) : [fullReview._id];
+          await Students.updateOne({ netId }, { $set: { reviews: newReviews } }).exec();
 
           return { resCode: 1, errMsg: "" };
         } catch (error) {

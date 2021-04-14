@@ -109,24 +109,6 @@ afterAll(async () => {
   await serverCloseHandle.close();
 });
 
-/**
- * Removes reviews in [reviews] from db directly (not using any endpoints).
- */
-const removeReviews = async (reviews: Review[]) => {
-  await Promise.all(
-    reviews.map(async (review: Review) => {
-      (await Reviews.find({
-        workload: review.workload,
-        professors: review.professors,
-        isCovid: review.isCovid,
-        text: review.text,
-        difficulty: review.difficulty,
-        rating: review.rating,
-      }).remove().exec());
-    }),
-  );
-};
-
 describe('tests', () => {
   it('getReviewsByCourseId - getting review of class that exists (cs 2110)', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
@@ -188,10 +170,15 @@ describe('tests', () => {
 
     const res = await axios.post(`http://localhost:${testingPort}/v2/insertReview`, { classId: cs2110Id, review: reviewToInsert, token: "fakeTokenDti1" });
     expect(res.data.result.resCode).toBe(1);
-    expect((await Reviews.find({ text: reviewToInsert.text }).exec()).length).toBe(1);
+    const reviews = await Reviews.find({ text: reviewToInsert.text }).exec();
+    expect(reviews.length).toBe(1);
 
-    // state of db is same as original state at end of beforeAll function
-    await removeReviews([reviewToInsert]);
+    const dtiUser = await Students.findOne({ netId: "dti1" });
+    const review = reviews[0];
+    // Was the user logged correctly as the creator of the review?
+    expect(review.user).toBe(dtiUser._id);
+    // Has the review been added to the creator?
+    expect(dtiUser.reviews).toContain(review._id);
   });
 
   it("like/dislike - increment", async () => {
