@@ -237,7 +237,7 @@ describe('tests', () => {
     expect(res.data.result.length).toBe(testReviews.length);
 
     const classOfReviews = testReviews.map((r) => r.user);
-    expect(res.data.result.map(r => r.user).sort()).not.toEqual(classOfReviews.sort());
-    expect(res.data.result.map(r => r.user).sort()).toEqual(["", ""])
-  })
+    expect(res.data.result.map((r) => r.user).sort()).not.toEqual(classOfReviews.sort());
+    expect(res.data.result.map((r) => r.user).sort()).toEqual(["", ""]);
+  });
 });

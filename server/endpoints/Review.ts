@@ -41,13 +41,11 @@ export interface ReviewRequest {
  * @param lst the list of reviews to sanitize. Possibly a singleton list.
  * @returns a copy of the reviews, but with the user id field removed.
  */
-export const sanitizeReviews = (lst: ReviewDocument[]) => {
-  return (lst.map(doc => {
-    let copy = JSON.parse(JSON.stringify(doc));
-    copy.user = "";
-    return copy;
-  }));
-}
+export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => {
+  const copy = JSON.parse(JSON.stringify(doc));
+  copy.user = "";
+  return copy;
+}));
 
 /**
  * Get a course with this course_id from the Classes collection
@@ -142,7 +140,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
           return { resCode: 0, error: "Your review contains profanity, please edit your response." };
         }
 
-        const studentId = (await Students.findOne({ "netId": ticket.email.replace("@cornell.edu", "") }))._id;
+        const studentId = (await Students.findOne({ netId: ticket.email.replace("@cornell.edu", "") }))._id;
 
         try {
           // Attempt to insert the review
@@ -159,7 +157,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             professors: review.professors,
             likes: 0,
             isCovid: review.isCovid,
-            user: studentId
+            user: studentId,
           });
 
           await fullReview.save();
