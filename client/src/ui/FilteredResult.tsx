@@ -5,7 +5,7 @@ import './css/FilteredResult.css';
 
 type Props = {
   course: Class;
-  previewHandler: (arg1:any,arg2:any) => any;
+  previewHandler: (arg1: any, arg2: any) => any;
   selected: boolean;
   index: number;
   sortBy: 'rating' | 'relevance' | 'diff' | 'work';
@@ -31,8 +31,8 @@ type State = {
           sortBy: string, the metric to display on this component
 */
 
-export default class FilteredResult extends Component<Props,State> {
-  constructor(props:Props) {
+export default class FilteredResult extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     // set gauge values
     this.state = {
@@ -47,7 +47,7 @@ export default class FilteredResult extends Component<Props,State> {
 
   }
 
-  componentDidUpdate(prevProps:Props) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps !== this.props) {
       this.setState({
         course: this.props.course,
@@ -58,7 +58,7 @@ export default class FilteredResult extends Component<Props,State> {
   }
 
   //Returns the color corresponding to the [val] for the [metric]
-  getColor(metric:string, val:any) { 
+  getColor(metric: string, val: any) {
     if (metric === "Overall Rating" || metric === "Relevance") {
       if (val !== "?" && 3.0 <= val && val < 4.0) {
         return "#f9cc30";
@@ -129,15 +129,19 @@ export default class FilteredResult extends Component<Props,State> {
             {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
           </h2>
           <div className="result-card-rating-text">
-            <p className="result-card-sort-by-text">
-              <strong>{this.updateSortNumberTitle()}</strong>
-            </p>
-            <p className="result-card-sort-by-value">
-              {this.getSortNumber(1)}
-            </p>
-            <p>
-              /5
-            </p>
+            <div className="overall-rating-border">
+              <div>
+                <p className="margin-btm-0">
+                  <strong>{this.updateSortNumberTitle()}</strong>
+                </p>
+                <p className="result-card-sort-by-value margin-btm-0">
+                  {this.getSortNumber(1)}
+                </p>
+                <p className="margin-btm-0 out-of-five">
+                  /5
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </li>

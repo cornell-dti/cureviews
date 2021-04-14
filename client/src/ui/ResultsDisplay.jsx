@@ -267,7 +267,7 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
           <div className="results-column-container">
-            <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
+            <div className="hidden-xs hidden-sm  col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -294,16 +294,16 @@ export default class ResultsDisplay extends Component {
                 />
               </div>
             </div>
-            <div className="col-md-3 col-sm-3 col-xs-3 results">
+            <div className="col-md-3 col-sm-12 col-xs-12 results">
 
               <div className="row no-left-margin">
                 <div>
                   <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length === 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
                   for &quot;{this.props.userInput}&quot;</p></div>
               </div>
-              <div className="row no-left-margin">
+              <div className="row no-left-margin mdown-8">
                 <div className="results-sort-by-container">
-                  <p className="results-sort-by-text">
+                  <p className="hidden-xs hidden-sm results-sort-by-text">
                     Sort By:
                     </p>
                   <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
@@ -321,7 +321,7 @@ export default class ResultsDisplay extends Component {
                 </ul>
               </div>
             </div>
-            <div className="col preview">
+            <div className="hidden-xs hidden-sm col preview">
               <PreviewCard course={this.state.card_course} />
             </div>
           </div>
