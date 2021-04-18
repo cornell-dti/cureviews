@@ -35,7 +35,8 @@ export default class ResultsDisplay extends Component {
       },
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
       filteredItems: this.props.courses,
-      fullscreen: false
+      fullscreen: false,
+      transformGauges: false
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -45,7 +46,7 @@ export default class ResultsDisplay extends Component {
     this.filterClasses = this.filterClasses.bind(this);
     this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
-
+    this.scrollReviews = this.scrollReviews.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -173,20 +174,27 @@ export default class ResultsDisplay extends Component {
       card_course: course,
       active_card: index
     });
+    this.setState({ transformGauges: false });
   }
 
   //Displays the filtered items as FilteredResult components if there are any
   //The original list as FilteredResult components otherwise
   renderResults() {
+
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
       : this.state.courseList;
     return items.map((result, index) => (
-      <FilteredResult key={index} index={index}
-        selected={index === this.state.active_card}
-        course={result} previewHandler={this.previewHandler}
-        sortBy={this.state.selected} />
+      <div onClick={() => this.setState({ fullscreen: true })} >
+        <FilteredResult key={index} index={index}
+          selected={index === this.state.active_card}
+          course={result} previewHandler={this.previewHandler}
+          sortBy={this.state.selected} />
+      </div>
+
     ));
+
+
 
   }
 
@@ -244,6 +252,16 @@ export default class ResultsDisplay extends Component {
     // callback(this.filterColors(inputValue));
   }
 
+  scrollReviews(e) {
+    const currentScrollY = e.target.scrollTop;
+    console.log("scroll : ", currentScrollY);
+    if (currentScrollY > 80) {
+      this.setState({ transformGauges: true });
+    } else {
+      this.setState({ transformGauges: false });
+    }
+  }
+
   render() {
     return (
       <div className="row loading-margin-top noLeftRightMargin">
@@ -297,16 +315,28 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
             <div className="col-md-3 col-sm-12 col-xs-12 results">
-              <button className="button" onClick={() => this.setState({ fullscreen: true })}>click me</button>
-              <div className={this.state.fullscreen ? 'fullscreen' : ""}>
+              {
+                this.state.fullscreen &&
                 <div>
-                  <div className="search-results-text">
-                    {"<"} Search Results
+                  <div className={this.state.fullscreen ? 'fullscreen' : ""}>
+                    <div>
+                      <div className="mobile-search-gradient">
+                        <div className="search-results-text" onClick={() => this.setState({ fullscreen: false })}>
+                          {"< "} Search Results
+                    </div>
+                        <PreviewCard course={this.state.card_course} mobile={true} transformGauges={this.state.transformGauges} />
+                      </div>
+
+                      <CourseReviews courseId={this.state.card_course._id} onScroll={this.scrollReviews} />
+                      <div className="button-position-search-results">
+                        <button type="submit" className="btn btn-primary review-bottom-button">Leave A Review</button>
+                      </div>
+                    </div>
                   </div>
-                  <PreviewCard course={this.state.card_course} mobile={true} />
-                  {/*<CourseReviews courseId={this.state.card_course._id} />*/}
                 </div>
-              </div>
+
+              }
+
 
 
               <div className="row no-left-margin">

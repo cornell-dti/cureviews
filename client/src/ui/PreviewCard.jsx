@@ -136,7 +136,9 @@ export default class PreviewCard extends Component {
   }
 
   render() {
-    console.log(this.props.mobile);
+    //console.log(this.props.mobile);
+    //console.log("transform gauges", this.props.transformGauges);
+
 
     let theClass = this.props.course;
     const offered = lastOfferedSems(theClass);
@@ -154,25 +156,49 @@ export default class PreviewCard extends Component {
             </p>
           </div>
         </div>
-        <div className="row gaugeHolder">
 
-          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)}
-              isInPreviewCard={true} text="Overall" />
+        {
+          !this.props.transformGauges &&
+          <div className="row gaugeHolder">
+            <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+              <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)}
+                isInPreviewCard={true} text="Overall" />
 
+            </div>
+            <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+              <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)}
+                isInPreviewCard={true} text="Difficulty" />
+
+            </div>
+            <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+              <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)}
+                isInPreviewCard={true} text="Workload" />
+
+            </div>
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)}
-              isInPreviewCard={true} text="Difficulty" />
+        }
+        {
+          this.props.transformGauges &&
+          <div className="row gaugeHolder m-bot-0">
+            <div className="rating-mobile-box">
+              <div className="row plain-row rating-text">
+                <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
+                  Overall <span className="text-padding">{parseFloat(this.state.rating).toFixed()}</span>
+                </div>
+                <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
+                  Difficulty <span className="text-padding">{parseFloat(this.state.diff).toFixed()}</span>
+                </div>
+                <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
+                  Workload <span className="text-padding">{parseFloat(this.state.workload).toFixed()}</span>
+                </div>
 
+              </div>
+            </div>
           </div>
-          <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-            <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)}
-              isInPreviewCard={true} text="Workload" />
 
-          </div>
+        }
 
-        </div>
+
         <div className="row top-review-text noLeftRightSpacing">
           <div className="col-md-12 col-sm-12 remove-left-padding">
             {(this.state.numReviews !== 0 && !this.props.mobile) &&
@@ -182,40 +208,49 @@ export default class PreviewCard extends Component {
             }
           </div>
         </div>
-        <div className="row noLeftRightSpacing">
 
-          <div className="review-holder">
-            {/*If class has review show top review and link*/}
-            {
-              (!this.props.mobile && this.state.numReviews !== 0) &&
+        {
+          !this.props.transformGauges &&
+          <div className="row noLeftRightSpacing">
 
-              <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
-            }
+            <div className="review-holder">
+              {/*If class has review show top review and link*/}
+              {
+                (!this.props.mobile && this.state.numReviews !== 0) &&
+
+                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
+              }
 
 
-            {
-              (this.state.numReviews !== 0 && this.state.numReviews > 1) &&
-              <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
-              </a>
-            }
+              {
+                (this.state.numReviews !== 0 && this.state.numReviews > 1) &&
+                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
+                </a>
+              }
 
-            {/*If class has 0 reviews text and button*/}
-            {
-              this.state.numReviews === 0 &&
-              <p className="preview-empty-top-review">
-                No reviews yet
+              {/*If class has 0 reviews text and button*/}
+              {
+                this.state.numReviews === 0 &&
+                <p className="preview-empty-top-review">
+                  No reviews yet
                 </p>
-            }
-            {
-              (this.state.numReviews === 0 || this.state.numReviews === 1) &&
-              <a className="col-md-12 col-sm-12 preview-review-button"
-                href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                Leave a review
+              }
+              {
+                (this.state.numReviews === 0 || this.state.numReviews === 1) &&
+                <a className="col-md-12 col-sm-12 preview-review-button"
+                  href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  Leave a review
               </a>
-            }
+              }
+            </div>
           </div>
-        </div>
+        }
+
+        {
+
+        }
+
       </div>
     );
 

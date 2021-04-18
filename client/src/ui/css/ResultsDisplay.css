@@ -191,6 +191,34 @@
     display: none;
     /* make scrollbar transparent */
   }
+
+  .mobile-search-gradient {
+    background: linear-gradient(180deg, #F4F9FE 0%, #FFFFFF 50%);
+  }
+
+  .button-position-search-results {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .review-bottom-button {
+    width: 100%;
+    height: 47px;
+    background: #0076FF;
+    border-radius: 10px;
+
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+
+    color: #FFFFFF;
+  }
 }
 
 .fullscreen {
