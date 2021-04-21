@@ -44,6 +44,7 @@
   }
   .review-number-text, .review-number-text-preview{
     padding-right: 5.5vw;
+    padding-left: 2vw;
     font-weight: normal;
   }
   .review-professor-text{
@@ -54,6 +55,13 @@
     line-height: 18px;
     display: inline;
     color: blue;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .review-number-text, .review-number-text-preview{
+    font-weight: bold;
+    padding-left: 2vw;
   }
 }
 
@@ -98,10 +106,7 @@
   font-stretch: normal;
 }
 
-.review-number-text, .review-number-text-preview{
-  font-weight: bold;
-  padding-left: 2vw;
-}
+
 
 .review-professor-container{
   margin-bottom:8px;
