@@ -136,10 +136,6 @@ export default class PreviewCard extends Component {
   }
 
   render() {
-    //console.log(this.props.mobile);
-    //console.log("transform gauges", this.props.transformGauges);
-
-
     let theClass = this.props.course;
     const offered = lastOfferedSems(theClass);
     return (

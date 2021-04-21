@@ -29,7 +29,6 @@ export class CourseReviews extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { comparator: "helpful", reviews: [] };
-    //alert(this.props.a)
   }
 
   componentDidMount() {
@@ -138,8 +137,6 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   render() {
-
-    //console.log("onscrool", this.props.onScroll);
 
     let title = "Past Reviews (" + this.state.reviews.length + ")";
     if (this.props.courseId === "-1") {
