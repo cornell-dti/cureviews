@@ -221,9 +221,8 @@ export default class PreviewCard extends Component {
                 <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
               }
 
-
               {
-                (this.state.numReviews !== 0 && this.state.numReviews > 1) &&
+                (!this.props.mobile && this.state.numReviews !== 0 && this.state.numReviews > 1) &&
                 <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                   See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
                 </a>
@@ -231,13 +230,13 @@ export default class PreviewCard extends Component {
 
               {/*If class has 0 reviews text and button*/}
               {
-                this.state.numReviews === 0 &&
+                (!this.props.mobile && this.state.numReviews === 0) &&
                 <p className="preview-empty-top-review">
                   No reviews yet
                 </p>
               }
               {
-                (this.state.numReviews === 0 || this.state.numReviews === 1) &&
+                (this.props.mobile || (this.state.numReviews === 0 || this.state.numReviews === 1)) &&
                 <a className="col-md-12 col-sm-12 preview-review-button"
                   href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                   Leave a review
@@ -246,11 +245,6 @@ export default class PreviewCard extends Component {
             </div>
           </div>
         }
-
-        {
-
-        }
-
       </div>
     );
 

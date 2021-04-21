@@ -177,6 +177,9 @@ export default class ResultsDisplay extends Component {
     this.setState({ transformGauges: false });
   }
 
+  computeHeight() {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  }
   //Displays the filtered items as FilteredResult components if there are any
   //The original list as FilteredResult components otherwise
   renderResults() {
@@ -184,8 +187,14 @@ export default class ResultsDisplay extends Component {
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
       : this.state.courseList;
+
+
+
     return items.map((result, index) => (
-      <div onClick={() => this.setState({ fullscreen: true })} >
+      <div onClick={() => this.setState({
+        fullscreen:
+          (this.computeHeight() < 1000 ? true : false)
+      })} >
         <FilteredResult key={index} index={index}
           selected={index === this.state.active_card}
           course={result} previewHandler={this.previewHandler}
@@ -314,6 +323,7 @@ export default class ResultsDisplay extends Component {
                 />
               </div>
             </div>
+
             <div className="col-md-3 col-sm-12 col-xs-12 results">
               {
                 this.state.fullscreen &&
@@ -323,12 +333,12 @@ export default class ResultsDisplay extends Component {
                       <div className="mobile-search-gradient">
                         <div className="search-results-text" onClick={() => this.setState({ fullscreen: false })}>
                           {"< "} Search Results
-                    </div>
+                        </div>
                         <PreviewCard course={this.state.card_course} mobile={true} transformGauges={this.state.transformGauges} />
                       </div>
 
                       <CourseReviews courseId={this.state.card_course._id} onScroll={this.scrollReviews} />
-                      <div className="button-position-search-results">
+                      <div className={"button-position-search-results " + (this.state.transformGauges ? "" : "hidden-xs hidden-sm hidden-md")}>
                         <button type="submit" className="btn btn-primary review-bottom-button">Leave A Review</button>
                       </div>
                     </div>
