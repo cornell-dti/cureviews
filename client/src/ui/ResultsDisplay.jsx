@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import "./css/ResultsDisplay.css"; // css files
-import "./css/SearchResultsMobile.css"
 import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
