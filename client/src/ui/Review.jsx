@@ -95,6 +95,58 @@ export default class Review extends Component {
     return review_month + "/" + review_day + "/" + review_year;
   }
 
+  review_styling = (rev, number_label_class, number_text_class) => {
+    if (window.screen.width < 992) {
+      return (
+        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container-mobile noLeftRightPadding">
+
+          <p className={number_label_class}>
+            <span>Overall</span>
+            <span className={number_text_class}>
+              {(rev.rating != null) ? rev.rating : rev.quality}
+            </span>
+            <span>Difficulty</span>
+            <span className={number_text_class}>
+              {rev.difficulty}
+            </span>
+            <span>Workload</span>
+            <span className={number_text_class}>
+              {(rev.workload) ? rev.workload : "-"}
+            </span>
+          </p>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
+
+          <p className={number_label_class}>
+            <span className="review-number-label-span">Overall</span>
+            <span className={number_text_class}>
+              {(rev.rating != null) ? rev.rating : rev.quality}
+            </span>
+          </p>
+
+          <p className={number_label_class}>
+            <span className="review-number-label-span">Difficulty</span>
+            <span className={number_text_class}>
+              {rev.difficulty}
+            </span>
+          </p>
+
+          <p className={number_label_class}>
+            <span className="review-number-label-span">Workload</span>
+            <span className={number_text_class}>
+              {(rev.workload) ? rev.workload : "-"}
+            </span>
+          </p>
+        </div>
+      )
+    }
+
+  }
+
   render() {
     const review = this.props.info;
     return (
@@ -114,29 +166,7 @@ export default class Review extends Component {
           </div>
         }
         <div className={"row " + this.review_body_container_class}>
-          <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
-
-            <p className={this.review_number_label_class}>
-              <span className="review-number-label-span">Overall</span>
-              <span className={this.review_number_text_class}>
-                {(review.rating != null) ? review.rating : review.quality}
-              </span>
-            </p>
-
-            <p className={this.review_number_label_class}>
-              <span className="review-number-label-span">Difficulty</span>
-              <span className={this.review_number_text_class}>
-                {review.difficulty}
-              </span>
-            </p>
-
-            <p className={this.review_number_label_class}>
-              <span className="review-number-label-span">Workload</span>
-              <span className={this.review_number_text_class}>
-                {(review.workload) ? review.workload : "-"}
-              </span>
-            </p>
-          </div>
+          {this.review_styling(review, this.review_number_label_span, this.review_number_text_class)}
           <div className="col-xl-10 col-lg-9 col-md-8 col-sm-12 noLeftRightPadding">
             <div className="row noLeftRightSpacing review-professor-container">
               <p>

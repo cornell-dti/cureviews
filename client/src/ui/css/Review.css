@@ -33,6 +33,30 @@
   /* margin-right: 25px; */
 }
 
+@media screen and (max-width: 992px) {
+  .review-container{
+    min-width: 327px;
+    background: #FFFFFF;
+    border: 0.625px solid #D0E5F5;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-bottom: 48px;
+  }
+  .review-number-text, .review-number-text-preview{
+    padding-right: 5.5vw;
+    font-weight: normal;
+  }
+  .review-professor-text{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: var(--semi-bold-weight);
+    font-style: normal;
+    line-height: 18px;
+    display: inline;
+    color: blue;
+  }
+}
+
 .review-report {
   color: #9b9b9b;
   margin-top: 14px;
@@ -52,22 +76,18 @@
   min-width: 85px;
 }
 
+.review-labels-container-mobile{
+  background: #F4F9FE;
+  text-align: center;
+  left: 3%;
+}
+
 .review-body-right-col{
   padding: 0px 0 0 5%;
 }
 
 .review-number-labels-container{
   padding:0px;
-}
-
-@media screen and (max-width: 992px) {
-
-  .review-number-text, .review-number-text-preview{
-    padding-right: 5vw;
-    padding-left: 0 !important;
-    float: right;
-  }
-
 }
 
 .review-number-label{
