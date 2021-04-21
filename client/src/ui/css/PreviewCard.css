@@ -40,8 +40,8 @@
 }
 
 @media (max-width: 1000px) {
-  
-  .first-rating-box-padding{
+
+  .first-rating-box-padding {
     padding-left: 9px;
     padding-right: 0px;
   }
@@ -111,6 +111,7 @@
 
   .gaugeHolder {
     margin: 0px 0px 32px 0px;
+    padding-right: 16px;
   }
 
   .top-review-text {
