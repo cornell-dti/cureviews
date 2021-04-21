@@ -182,14 +182,14 @@ export default class PreviewCard extends Component {
           <div className="row gaugeHolder m-bot-0">
             <div className="rating-mobile-box">
               <div className="row plain-row rating-text">
-                <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
-                  Overall <span className="text-padding">{parseFloat(this.state.rating).toFixed()}</span>
+                <div className="col-xs-4 col-sm-4 col-md-4 first-rating-box-padding">
+                  Overall <span className="text-padding">{parseFloat(this.state.rating).toFixed(1)}</span>
                 </div>
                 <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
-                  Difficulty <span className="text-padding">{parseFloat(this.state.diff).toFixed()}</span>
+                  Difficulty <span className="text-padding">{parseFloat(this.state.diff).toFixed(1)}</span>
                 </div>
                 <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
-                  Workload <span className="text-padding">{parseFloat(this.state.workload).toFixed()}</span>
+                  Workload <span className="text-padding">{parseFloat(this.state.workload).toFixed(1)}</span>
                 </div>
 
               </div>

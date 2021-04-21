@@ -40,9 +40,15 @@
 }
 
 @media (max-width: 1000px) {
-  .rating-box-padding {
+  
+  .first-rating-box-padding{
     padding-left: 9px;
-    padding-right: 9px;
+    padding-right: 0px;
+  }
+
+  .rating-box-padding {
+    padding-left: 0px;
+    padding-right: 5px;
   }
 
   .text-padding {
