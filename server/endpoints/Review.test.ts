@@ -98,7 +98,7 @@ beforeAll(async () => {
 
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
-  serverCloseHandle = app.listen(testingPort, async () => { });
+  serverCloseHandle = app.listen(testingPort);
   configure(app);
 });
 
@@ -210,7 +210,11 @@ describe('tests', () => {
 
     const gObj1 = {
       email: "cv4620@cornell.edu",
+      // This is the google people, not us. It has to be this way:
+      // https://googleapis.dev/nodejs/google-auth-library/latest/interfaces/TokenPayload.html
+      // @typescript-eslint/camelcase
       given_name: user1.firstName,
+      // @typescript-eslint/camelcase
       family_name: user1.lastName,
     };
 

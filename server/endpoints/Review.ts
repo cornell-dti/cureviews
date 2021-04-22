@@ -21,6 +21,8 @@ interface InsertReviewRequest {
 }
 
 export interface InsertUserRequest {
+  // TODO: one day, there may be types for this object. Today is not that day.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   googleObject: any;
 }
 
@@ -42,7 +44,7 @@ export interface ReviewRequest {
  * @returns a copy of the reviews, but with the user id field removed.
  */
 export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => {
-  const copy = JSON.parse(JSON.stringify(doc));
+  const copy = doc;
   copy.user = "";
   return copy;
 }));
@@ -202,7 +204,6 @@ export const incrementLike: Endpoint<ReviewRequest> = {
       const review = await Reviews.findOne({ _id: request.id }).exec();
 
       if (review.lastLikedIP === ctx.ip) {
-        console.log(`${ctx.ip} has tried to like a review twice!`);
         return { resCode: 0, error: "Cannot like a review twice!" };
       }
       if (review.likes === undefined) {
@@ -236,7 +237,6 @@ export const decrementLike: Endpoint<ReviewRequest> = {
       const review = await Reviews.findOne({ _id: request.id }).exec();
 
       if (review.lastDislikedIP === ctx.ip) {
-        console.log(`${ctx.ip} has tried to dislike a review twice!`);
         return { resCode: 0, error: "Cannot dislike a review twice!" };
       }
 

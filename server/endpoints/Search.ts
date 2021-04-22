@@ -13,8 +13,8 @@ interface Search {
  * Thanks again Dray!
  */
 
-// uses levenshtein algorithm to return the minimum edit distance between two strings
-// exposed for testing
+// uses levenshtein algorithm to return the minimum edit distance between two strings.
+// It is exposed here for testing
 export const editDistance = (a, b) => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
@@ -139,7 +139,11 @@ export const getClassesByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii().whitelist("^[A-Za-z0-9 ]+$")],
   callback: async (ctx: Context, search: Search) => {
     try {
-      const classes = await Classes.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      const classes = await Classes.find(
+        { $text: { $search: search.query } },
+        { score: { $meta: "textScore" } },
+        { sort: { score: { $meta: "textScore" } } },
+      ).exec();
       if (classes && classes.length > 0) {
         return classes.sort(courseSort(search.query));
       }

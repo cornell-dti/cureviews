@@ -1,8 +1,7 @@
 import { ValidationChain, body } from "express-validator";
 import { InsertUserRequest, CourseIdQuery } from "./Review";
-import { Classes, Students, Subjects, Reviews } from "../dbDefs";
+import { Classes, Students } from "../dbDefs";
 import { getUserByNetId, getVerificationTicket } from "./Auth";
-import { DefaultDict, Token } from "./AdminChart";
 
 import shortid = require("shortid");
 
@@ -54,6 +53,7 @@ export const insertUser = async (request: InsertUserRequest) => {
       return 1;
     }
 
+    // eslint-disable-next-line no-console
     console.log("Error: Some user values are null in insertUser");
     return 0;
   } catch (error) {
