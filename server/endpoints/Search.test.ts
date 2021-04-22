@@ -9,7 +9,7 @@ import { Classes, Students, Subjects, Professors } from "../dbDefs";
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 37760;
+const testingPort = 37766;
 
 beforeAll(async () => {
   // get mongoose all set up
