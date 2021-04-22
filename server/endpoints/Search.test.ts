@@ -115,7 +115,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
-  serverCloseHandle.close();
+  if (serverCloseHandle) serverCloseHandle.close();
 });
 
 describe('tests', () => {
