@@ -6,7 +6,7 @@ import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
 import CourseReviews from './CourseReviews';
-
+import ResultsDisplayMobile from './ResultsDisplayMobile';
 /*
   ResultsDisplay Component.
 
@@ -46,6 +46,7 @@ export default class ResultsDisplay extends Component {
     this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
     this.scrollReviews = this.scrollReviews.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -192,7 +193,7 @@ export default class ResultsDisplay extends Component {
     return items.map((result, index) => (
       <div onClick={() => this.setState({
         fullscreen:
-          (this.computeHeight() < 1000 ? true : false)
+          (this.computeHeight() < 992 ? true : false)
       })} >
         <FilteredResult key={index} index={index}
           selected={index === this.state.active_card}
@@ -262,12 +263,15 @@ export default class ResultsDisplay extends Component {
 
   scrollReviews(e) {
     const currentScrollY = e.target.scrollTop;
-    console.log("scroll : ", currentScrollY);
     if (currentScrollY > 80) {
       this.setState({ transformGauges: true });
     } else {
       this.setState({ transformGauges: false });
     }
+  }
+
+  toggleFullscreen() {
+    this.setState({ fullscreen: false })
   }
 
   render() {
@@ -326,24 +330,9 @@ export default class ResultsDisplay extends Component {
             <div className="col-md-3 col-sm-12 col-xs-12 results">
               {
                 this.state.fullscreen &&
-                <div>
-                  <div className={this.state.fullscreen ? 'fullscreen' : ""}>
-                    <div>
-                      <div className="mobile-search-gradient">
-                        <div className="search-results-text" onClick={() => this.setState({ fullscreen: false })}>
-                          {"< "} Search Results
-                        </div>
-                        <PreviewCard course={this.state.card_course} mobile={true} transformGauges={this.state.transformGauges} />
-                      </div>
-
-                      <CourseReviews courseId={this.state.card_course._id} onScroll={this.scrollReviews} />
-                      <div className={"button-position-search-results " + (this.state.transformGauges ? "" : "hidden-xs hidden-sm hidden-md")}>
-                        <button type="submit" className="btn btn-primary review-bottom-button">Leave A Review</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                <ResultsDisplayMobile classView={false} onClickText={this.toggleFullscreen}
+                  card_course={this.state.card_course} transformGauges={this.state.transformGauges}
+                  scrollReviews={this.scrollReviews} />
               }
 
 

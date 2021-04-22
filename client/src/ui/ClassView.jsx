@@ -11,6 +11,8 @@ import "./css/ClassView.css";
 import PropTypes from "prop-types";
 import 'rodal/lib/rodal.css';
 import './css/Form.css';
+import './css/ResultsDisplay.css'
+import ResultsDisplayMobile from "./ResultsDisplayMobile";
 
 /*
   ClassView component.
@@ -43,13 +45,16 @@ export class ClassView extends Component {
       number: number,
       subject: subject,
       selectedClass: null,
-      classDoesntExist: false
+      classDoesntExist: false,
+      //for mobile
+      transformGauges: false
     };
 
     //Used to prevent endless reloading in componentDidUpdate
     this.firstLoad = true;
 
     this.updateCurrentClass = this.updateCurrentClass.bind(this);
+    this.scrollReviews = this.scrollReviews.bind(this);
   }
 
   // Once the component loads, make a call to the backend for class object.
@@ -90,36 +95,53 @@ export class ClassView extends Component {
     }
   }
 
+  scrollReviews(e) {
+    const currentScrollY = e.target.scrollTop;
+    if (currentScrollY > 80) {
+      this.setState({ transformGauges: true });
+    } else {
+      this.setState({ transformGauges: false });
+    }
+  }
+
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
   render() {
     if (this.state.selectedClass) {
       courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
       return (
-        <div className="container-fluid container-top-gap-fix classViewContainer">
-          <Navbar />
-          <div className="clearfix" />
-          <div className="container-width no-padding classview-column-container">
-            <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
-              <CourseCard course={this.state.selectedClass} />
-            </div>
-            <div className="col navbar-margin classview-right-panel">
-              <div className="row classview-gauge-container">
-                <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty" />
-                </div>
-                <div className="col-md-4 col-sm-4 col-xs-4">
-                  <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload" />
-                </div>
+        <div>
+          <div className="hidden-lg hidden-xl hidden-md">
+            <ResultsDisplayMobile classView={true} onClickText={this.toggleFullscreen}
+              card_course={this.state.selectedClass} transformGauges={this.state.transformGauges}
+              scrollReviews={this.scrollReviews} />
+          </div>
+          <div className="hidden-sm hidden-xs  container-fluid container-top-gap-fix classViewContainer">
+            <Navbar />
+            <div className="clearfix" />
+            <div className="container-width no-padding classview-column-container">
+              <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
+                <CourseCard course={this.state.selectedClass} />
               </div>
-              <div className="row no-padding classview-reviews-container">
-                <CourseReviews courseId={this.state.selectedClass._id} />
+              <div className="col navbar-margin classview-right-panel">
+                <div className="row classview-gauge-container">
+                  <div className="col-md-4 col-sm-4 col-xs-4">
+                    <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall" />
+                  </div>
+                  <div className="col-md-4 col-sm-4 col-xs-4">
+                    <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty" />
+                  </div>
+                  <div className="col-md-4 col-sm-4 col-xs-4">
+                    <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload" />
+                  </div>
+                </div>
+                <div className="row no-padding classview-reviews-container">
+                  <CourseReviews courseId={this.state.selectedClass._id} />
+                </div>
               </div>
             </div>
           </div>
         </div>
+
       );
     } else if (this.state.classDoesntExist) {
       // Class was not found, so show a 404 error graphic.
@@ -127,7 +149,7 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
           <div className="class-error-container">
-            <img className="errorgauge" src="/error.svg" width="400px" height="auto" alt="error" />
+            <img className="errorgauge" src="/error.svg" width="100vw" height="auto" alt="error" />
             <h2 className="error-text">{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
             <h2 className="error-text">Please search for a different class.</h2>
           </div>
@@ -139,7 +161,7 @@ export class ClassView extends Component {
       return (
         <div className="classview-loading">
           <Loading />;
-        </div>
+          </div>
       )
     }
   }
