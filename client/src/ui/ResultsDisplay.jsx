@@ -5,8 +5,8 @@ import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
-
-
+import CourseReviews from './CourseReviews';
+import ResultsDisplayMobile from './ResultsDisplayMobile';
 /*
   ResultsDisplay Component.
 
@@ -33,7 +33,9 @@ export default class ResultsDisplay extends Component {
         "5000+": true
       },
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
-      filteredItems: this.props.courses
+      filteredItems: this.props.courses,
+      fullscreen: false,
+      transformGauges: false
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -43,7 +45,8 @@ export default class ResultsDisplay extends Component {
     this.filterClasses = this.filterClasses.bind(this);
     this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
-
+    this.scrollReviews = this.scrollReviews.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -171,20 +174,36 @@ export default class ResultsDisplay extends Component {
       card_course: course,
       active_card: index
     });
+    this.setState({ transformGauges: false });
   }
 
+  computeHeight() {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  }
   //Displays the filtered items as FilteredResult components if there are any
   //The original list as FilteredResult components otherwise
   renderResults() {
+
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
       : this.state.courseList;
+
+
+
     return items.map((result, index) => (
-      <FilteredResult key={index} index={index}
-        selected={index === this.state.active_card}
-        course={result} previewHandler={this.previewHandler}
-        sortBy={this.state.selected} />
+      <div onClick={() => this.setState({
+        fullscreen:
+          (this.computeHeight() < 992 ? true : false)
+      })} >
+        <FilteredResult key={index} index={index}
+          selected={index === this.state.active_card}
+          course={result} previewHandler={this.previewHandler}
+          sortBy={this.state.selected} />
+      </div>
+
     ));
+
+
 
   }
 
@@ -242,6 +261,19 @@ export default class ResultsDisplay extends Component {
     // callback(this.filterColors(inputValue));
   }
 
+  scrollReviews(e) {
+    const currentScrollY = e.target.scrollTop;
+    if (currentScrollY > 80) {
+      this.setState({ transformGauges: true });
+    } else {
+      this.setState({ transformGauges: false });
+    }
+  }
+
+  toggleFullscreen() {
+    this.setState({ fullscreen: false })
+  }
+
   render() {
     return (
       <div className="row loading-margin-top noLeftRightMargin">
@@ -294,7 +326,16 @@ export default class ResultsDisplay extends Component {
                 />
               </div>
             </div>
+
             <div className="col-md-3 col-sm-12 col-xs-12 results">
+              {
+                this.state.fullscreen &&
+                <ResultsDisplayMobile classView={false} onClickText={this.toggleFullscreen}
+                  card_course={this.state.card_course} transformGauges={this.state.transformGauges}
+                  scrollReviews={this.scrollReviews} />
+              }
+
+
 
               <div className="row no-left-margin">
                 <div>
@@ -322,7 +363,7 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
             <div className="hidden-xs hidden-sm col preview">
-              <PreviewCard course={this.state.card_course} />
+              <PreviewCard course={this.state.card_course} mobile={false} />
             </div>
           </div>
         }

@@ -7,7 +7,10 @@ import RecentReview from './RecentReview';
 import { Review as ReviewType } from 'common';
 import './css/CourseReviews.css';
 
-type Props = { courseId: string; reviews: readonly ReviewType[]; loading: boolean };
+type Props = {
+  courseId: string; reviews: readonly ReviewType[]; loading: boolean,
+  onScroll?: any
+};
 type State = { comparator: 'helpful'; reviews: any };
 
 /*
@@ -134,6 +137,7 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   render() {
+
     let title = "Past Reviews (" + this.state.reviews.length + ")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
@@ -155,7 +159,7 @@ export class CourseReviews extends Component<Props, State> {
           </div>
         </div>
         <div>
-          <ul className="coursereviews-review-ul">
+          <ul onScroll={(e) => this.props.onScroll(e)} className="coursereviews-review-ul">
             {this.state.reviews}
           </ul>
         </div>
@@ -168,7 +172,7 @@ export class CourseReviews extends Component<Props, State> {
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
-export default ({ courseId }: { readonly courseId: string }) => {
+export default ({ courseId, onScroll }: { readonly courseId: string, onScroll: any }) => {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<readonly ReviewType[]>([]);
 
@@ -179,5 +183,5 @@ export default ({ courseId }: { readonly courseId: string }) => {
     });
   }, [courseId]);
 
-  return <CourseReviews courseId={courseId} reviews={reviews} loading={loading} />;
+  return <CourseReviews courseId={courseId} reviews={reviews} loading={loading} onScroll={onScroll} />;
 };

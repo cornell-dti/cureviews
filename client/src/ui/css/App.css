@@ -23,7 +23,7 @@
     margin: 120px 0px 0px 120px;
   }
 }
-  
+
 @media (max-width: 1000px) {
   .homepage-text {
     font-size: 18px;
@@ -48,36 +48,37 @@
   padding-top: 10px;
 }
 
-.background-gradient{
-  
-  background-image: url("/slope.svg"), linear-gradient(180deg, 
-                                                      rgba(104, 165, 236, 0.65) 0%, 
-                                                      rgba(104, 165, 236, 0.1) 77.1%, 
-                                                      rgba(168, 211, 245, 0.7) 100%);
+.background-gradient {
+
+  background-image: url("/slope.svg"), linear-gradient(180deg,
+      rgba(104, 165, 236, 0.65) 0%,
+      rgba(104, 165, 236, 0.1) 77.1%,
+      rgba(168, 211, 245, 0.7) 100%);
   background-repeat: no-repeat;
   background-size: 101%;
   background-position-y: 103%;
 }
 
-.dti-logo{
+.dti-logo {
   position: absolute;
   bottom: 10px;
   right: 30px;
 }
 
- /* Needed so that background is flush against bottom */
-.full-height{
+/* Needed so that background is flush against bottom */
+.full-height {
   min-height: 100vh;
   background-color: #F4F9FE;
 }
+
 /* I believe this is only used in recentreview.jsx so will remove soon TODO */
-.container{
+.container {
   background-color: rgba(255, 255, 255, 0);
 }
 
 ::-webkit-scrollbar {
   width: .6%;
-  padding-right:100%;
+  padding-right: 100%;
 }
 
 ::-webkit-scrollbar-track {
