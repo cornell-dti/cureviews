@@ -6,56 +6,193 @@
 
 .filter-container {
   font-family: "Source Sans Pro", sans-serif;
-  padding-left: 6%;
-  padding-top: 28px;
   line-height: 37px;
-  min-width: 200px;
 }
 
-.filter-title {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
+@media (min-width: 1000px) {
+  .filter-container {
+    padding-left: 6%;
+    padding-top: 28px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .filter-container {
+    margin-top: 36px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
+
+.filter-title{
   font-style: normal;
-  line-height: normal;
-  align-items: center;
-  text-decoration-line: underline;
-  margin-bottom: 23px;
   color: #000000;
+  align-items: center;
+  margin-bottom: 23px;
+}
+
+@media (min-width: 1000px) {
+  .filter-title {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 18px;
+    font-weight: var(--semi-bold-weight);
+    line-height: normal;
+    text-decoration-line: underline;
+  }
+}
+
+@media (max-width: 1000px) {
+  .filter-title {
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    padding-top: 44px;
+    padding-left: 15px;
+  }
 }
 
 .filter-sub-category {
   padding-bottom: 20px;
 }
 
-.filter-sub-title {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--semi-bold-weight);
+.filter-sub-title{
   font-style: normal;
-  line-height: normal;
   align-items: center;
   color: #807B7B;
 }
 
+@media (min-width: 1000px) {
+.filter-sub-title {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  line-height: normal;
+}
+}
+
+@media (max-width: 1000px) {
+  .filter-sub-title {
+    height: 22px;
+    font-family: Source Sans Pro;
+    font-weight: 600;
+    font-size: 22px;
+    display: flex;
+    letter-spacing: -0.104749px;
+  }
+}
+
+.filter-checkbox-label{
+  font-style: normal;
+  color: #000000;
+  margin: 0px 0px 0px 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+}
+
+@media (min-width: 1000px) {
 .filter-checkbox-label {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
-  font-style: normal;
   line-height: normal;
   align-items: center;
-  color: #000000;
-  margin: 0px 0px 0px 10px;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
 }
 
+@media (max-width: 1000px) {
+  .filter-checkbox-label {
+  font-family: Source Sans Pro;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 18px;
+  letter-spacing: -0.104749px;
+  }
+}
 
 .filter-entry-container {
   display: flex;
+}
+
+@media (min-width: 1000px) {
+.filter-entry-container {
   margin: 10px 0;
+}
+}
+
+@media (max-width: 1000px) {
+  .filter-entry-container {
+    padding: 10.5px 0;
+  }
+}
+
+.mobile-filter-box {
+  padding: 26px 18px 0px 18px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  background-color: white;
+  border: 1px solid #ECECEC;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.mobile-filter-button{
+  border: 1px solid #0076FF;
+  background-color: Transparent;
+  background-image: url("/filterIcon.svg");
+  background-repeat: no-repeat;
+  background-position: 16px 9px;
+  margin-top: 20px; 
+  padding-left: 35px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+  border-radius: 10px;
+
+  float: right;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 19px;
+  letter-spacing: -0.225605px;
+  color: #0076FF;
+}
+
+.mobile-filter-done-button{
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 20px; 
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.0756154px;
+  border: none;
+  background: none;
+  float: right;
+  color: #0076FF;
+}
+
+.filter-popup {
+  background-color: #FFFFFF;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 200;
+}
+
+.no-left-padding{
+  padding-left: 0px;
 }
 
 .filter-major-disabled {
@@ -238,8 +375,6 @@
   font-size: 18px;
 }
 
-
-
 .no-results {
   width: auto;
   height: 400px;
@@ -267,3 +402,5 @@ ul {
   padding-right: 8%;
   padding-left: 1.5%;
 }
+
+
