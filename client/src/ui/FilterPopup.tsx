@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import "./css/ResultsDisplay.css";
 import ResultsDisplay from './ResultsDisplay';
-import AsyncSelect from "react-select/async";
 
 type Props = any
 
