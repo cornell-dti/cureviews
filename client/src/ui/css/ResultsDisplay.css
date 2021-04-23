@@ -263,6 +263,12 @@
   color: #0076FF;
 }
 
+@media (max-width: 1000px) {
+  .results-sort-by-select{
+    text-decoration-line: underline;
+  }
+}
+
 .results-sort-by-text {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
