@@ -23,7 +23,7 @@
     margin: 120px 0px 0px 120px;
   }
 }
-  
+
 @media (max-width: 1000px) {
   .homepage-text {
     font-size: 18px;
@@ -164,19 +164,20 @@
   right: 30px;
 }
 
- /* Needed so that background is flush against bottom */
-.full-height{
+/* Needed so that background is flush against bottom */
+.full-height {
   min-height: 100vh;
   background-color: #F4F9FE;
 }
+
 /* I believe this is only used in recentreview.jsx so will remove soon TODO */
-.container{
+.container {
   background-color: rgba(255, 255, 255, 0);
 }
 
 ::-webkit-scrollbar {
   width: .6%;
-  padding-right:100%;
+  padding-right: 100%;
 }
 
 ::-webkit-scrollbar-track {
