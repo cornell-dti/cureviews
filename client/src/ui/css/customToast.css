@@ -1,0 +1,14 @@
+
+/* .Toastify__toast-container {
+  width: 50%;
+  height: 50%;
+}
+*/
+.Toastify__toast-container--top-right {
+  top: 22%;
+  /* margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px; */
+} 

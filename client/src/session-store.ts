@@ -1,4 +1,4 @@
-export class MeteorSession {
+export class SessionStore {
   get(key: string) {
     const item = localStorage.getItem(key);
     return !item ? undefined : JSON.parse(item);
@@ -11,4 +11,4 @@ export class MeteorSession {
   }
 }
 
-export const Session = new MeteorSession();
+export const Session = new SessionStore();

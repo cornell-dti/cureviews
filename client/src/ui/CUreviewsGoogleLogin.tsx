@@ -1,9 +1,9 @@
 // @ts-nocheck
 // The existing code is problematic...
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
-import { Session } from '../meteor-session';
+import { Session } from '../session-store';
 
 /*
   Google Login C Component. Specific to this project.
@@ -36,8 +36,8 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
 
   //Using meteor session to save the redirct page to Session
   saveRedirectToSession = (from: string) => {
-    Session.setPersistent({"redirectFrom": from});
-    if (Session.get("redirectFrom") !== from){
+    Session.setPersistent({ "redirectFrom": from });
+    if (Session.get("redirectFrom") !== from) {
       console.log("Error saving redirectFrom to session");
       return 0;
     }
@@ -50,39 +50,39 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
   // as a prop passed into <GoogleLogin> component below.
   responseGoogle = (response: GoogleLoginResponse) => {
     const token = response.tokenId;
-    if (token){
+    if (token) {
       // @ts-ignore
-      if (this.saveToken(token) === 1){
+      if (this.saveToken(token) === 1) {
         console.log(Session.get("token"));
         // console.log("Succesfully saved token to session");
-      } else{
+      } else {
         console.log("Error saving token");
       }
-      this.setState({lastVerification : new Date().getTime()});
+      this.setState({ lastVerification: new Date().getTime() });
     }
   }
 
   getRedirectURI = () => {
-    if(window.location.host.includes("localhost")){
+    if (window.location.host.includes("localhost")) {
       return "http://" + window.location.host + "/auth/"
     }
-      return "https://" + window.location.host + "/auth/"
+    return "https://" + window.location.host + "/auth/"
   };
 
   render() {
     return (
       <div>
-        <br/>
+        <br />
         <GoogleLogin
           clientId="836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com"
           hostedDomain="cornell.edu"
           render={renderProps => (
             <script>{(this.props.executeLogin
-                      && Math.abs(this.state.lastVerification - new Date().getTime()) >  5000) ?
+              && Math.abs(this.state.lastVerification - new Date().getTime()) > 5000) ?
               setTimeout(function () {
                 renderProps.onClick()
               }, this.props.waitTime)
-               : 1 }</script>
+              : 1}</script>
           )}
           uxMode="redirect"
           redirectUri={this.getRedirectURI()}
