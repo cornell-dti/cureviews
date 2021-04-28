@@ -94,6 +94,7 @@ const ReviewSchema = new Schema<ReviewDocument>({
   reported: { type: Number }, // reported flag - 1 if review was reported, 0 otherwise
   professors: { type: [String] }, // list of professors that have thought the course over past semesters
   likes: { type: Number, min: 0 }, // number of likes a review has
+  likedBy: { type: [String] },
   isCovid: { type: Boolean },
   lastLikedIP: { type: String, required: false }, // TODO temp fix, see Review.ts incrementLike
   lastDislikedIP: { type: String, required: false },
