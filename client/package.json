@@ -21,6 +21,7 @@
     "react-select": "^3.1.0",
     "react-show-more-text": "^1.4.0",
     "react-summary-gauge-2": "^1.0.4",
+    "react-toastify": "^7.0.3",
     "rodal": "^1.8.1",
     "typescript": "^3.8.3"
   },

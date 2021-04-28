@@ -1,27 +1,47 @@
-.gauge-component-container{
+/*desktop*/
+@media (min-width: 1000px) {
+  .gauge-text-top-preview {
+    font-size: 50px;
+    text-align: center;
+    line-height: 45px;
+  }
+
+  .gauge-text-bottom {
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+  }
+
+  .gauge-text-padding-preview {
+    padding-left: 3% !important;
+  }
+
+  .gauge-text-container {
+    justify-content: center;
+  }
+}
+
+.gauge-component-container {
   height: 95px;
 }
 
 .gauge-text-container {
-  font-family: "Source Sans Pro", sans-serif; 
+  font-family: "Source Sans Pro", sans-serif;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   height: 100%;
   display: inline-flex;
-  justify-content: center;
 }
 
-.gauge-text-padding{
+.gauge-text-padding {
   padding-left: 12% !important;
 }
 
-.gauge-text-padding-preview{
-  padding-left: 3% !important;
-}
 
-.gauge-text{
+
+.gauge-text {
   display: inline-grid;
   margin-top: auto;
   margin-bottom: auto;
@@ -33,25 +53,16 @@
   line-height: 30px;
 }
 
-.gauge-text-top-preview {
-  font-size: 50px;
-  text-align: center;
-  line-height: 45px;
 
-}
 
-.gauge-text-bottom {
-  font-size: 15px;
-  text-align: center;
-  line-height: 25px;
-}
+
 
 @media screen and (max-width: 1200px) {
-  
-  .gauge-component-container{
+
+  .gauge-component-container {
     height: 50px;
   }
-  
+
   .gauge-text-top {
     font-size: 3vw;
     text-align: center;
@@ -72,7 +83,7 @@
   }
 }
 
-.gauge-height-center{
+.gauge-height-center {
   height: 100%;
   display: flex;
   align-items: center;
@@ -88,11 +99,33 @@
   width: 84%;
 }
 
-.no-left-margin{
+.no-left-margin {
   margin-left: 0px
 }
 
 .no-side-padding {
   padding-left: 0;
   padding-right: 0;
+}
+
+@media (max-width: 1000px) {
+  .gauge-text-top-preview {
+    text-align: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+  }
+
+  .gauge-text-bottom {
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #000000;
+  }
 }

@@ -1,38 +1,155 @@
 /* Panel Styling */
 
-.preview-holder{
+/*desktop*/
+@media (min-width: 1000px) {
+  .preview-panel {
+    padding: 40px 10% 25px 11%;
+    border-radius: 10px;
+    background-color: white;
+  }
+
+  .preview-class-link {
+    color: #0076FF;
+    font-size: 32px;
+  }
+
+  .preview-class-title {
+    margin: 0px;
+  }
+
+  .preview-class-info {
+    margin-bottom: 31px;
+  }
+
+  .gaugeHolder {
+    margin: 5px 0px 30px 0px;
+  }
+
+  .top-review-text {
+    padding: 0 0 5px 0;
+  }
+
+  .review-holder {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .preview-review-button {
+    height: 55px;
+  }
+}
+
+@media (max-width: 1000px) {
+
+  .first-rating-box-padding {
+    padding-left: 9px;
+    padding-right: 0px;
+  }
+
+  .rating-box-padding {
+    padding-left: 0px;
+    padding-right: 5px;
+  }
+
+  .text-padding {
+    padding-left: 5px;
+  }
+
+  .rating-text {
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+
+  }
+
+  .preview-review-button {
+    height: 48px;
+  }
+
+  .plain-row {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  .rating-mobile-box {
+    /* Background */
+
+    background: #F4F9FE;
+    /* Light */
+
+    border: 2px solid #B7D8FF;
+    border-radius: 5px;
+  }
+
+  .preview-panel {
+    padding-top: 27px;
+    padding-left: 35px;
+    padding-right: 19px;
+    padding-bottom: 22px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .preview-class-link {
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 32px;
+    letter-spacing: -0.0819218px;
+    color: #000000;
+  }
+
+  .preview-class-title {
+    margin-bottom: 10px;
+  }
+
+  .preview-class-info {
+    margin-bottom: 26px;
+  }
+
+  .gaugeHolder {
+    margin: 0px 0px 32px 0px;
+    padding-right: 16px;
+  }
+
+  .top-review-text {
+    padding: 0px;
+  }
+
+  .review-holder {
+    margin-left: auto;
+    margin-right: 15px;
+  }
+
+}
+
+.preview-holder {
   margin-right: 2vw;
   margin-left: 20px;
 }
 
-.review-holder{
+.review-holder {
   margin-left: auto;
-  margin-right: auto;
 }
 
-.preview-panel{
+.preview-panel {
   width: 100%;
-  border-radius: 10px;
-  background-color: white;
-  padding: 40px 10% 25px 11%;
+
+
 }
 
-.preview-class-link{
-  color: #0076FF;
-  font-size: 32px;
-}
-
-.preview-class-title{
+.preview-class-title {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 32px;
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  margin: 0;
 }
 
-.preview-class-info{
+.preview-class-info {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
@@ -40,16 +157,15 @@
   font-stretch: normal;
   line-height: normal;
   color: #A1A1A1;
-  margin-bottom: 31px;
 }
 
-.top-review-text {
-  padding: 0 0 5px 0;
+.m-bot-0 {
+  margin-bottom: 0px;
 }
 
 /* Preview Review Styling */
 
-.preview-top-review-label{
+.preview-top-review-label {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--semi-bold-weight);
@@ -61,7 +177,7 @@
 
 
 
-.preview-empty-top-review{
+.preview-empty-top-review {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--regular-weight);
@@ -73,14 +189,13 @@
   padding-bottom: 100px;
 }
 
-.preview-review-button{
+.preview-review-button {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: var(--regular-weight);
   font-size: 18px;
   color: white;
   text-align: center;
   border-radius: 10px;
-  height: 55px;
   width: 100%;
   background: #0076FF;
   padding: 10px;
@@ -90,25 +205,25 @@
 
 /* Gauge Styling */
 
-.gaugeHolder{
-  margin: 5px 0px 30px 0px;
-}
+
 
 .remove-left-padding {
   padding-left: 0px;
 }
 
-.left-gauge{
+.left-gauge {
   text-align: left;
 }
-.center-gauge{
+
+.center-gauge {
   text-align: center;
 }
-.right-gauge{
+
+.right-gauge {
   text-align: right;
 }
 
-.gaugeHolder svg text:first-of-type{
+.gaugeHolder svg text:first-of-type {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px !important;
   font-weight: var(--semi-bold-weight);
@@ -119,7 +234,7 @@
   fill: #000000 !important;
 }
 
-.gaugeHolder svg text:last-of-type{
+.gaugeHolder svg text:last-of-type {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 19px !important;
   font-weight: var(--semi-bold-weight);
@@ -130,10 +245,11 @@
   color: #000000;
 }
 
-.gaugeHolder svg{
+.gaugeHolder svg {
   overflow: visible !important;
 }
 
-#gauge, #gauge-body{
+#gauge,
+#gauge-body {
   width: 50%;
 }

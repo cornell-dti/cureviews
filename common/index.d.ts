@@ -23,6 +23,7 @@ export interface Student {
   readonly affiliation: string;
   readonly token: string;
   readonly privilege: string; // user privilege level
+  reviews: string[];
 }
 
 export interface Subject {

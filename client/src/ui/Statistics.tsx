@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Session } from "../meteor-session";
+import { Session } from "../session-store";
 import Accordian from './Accordian';
 
 import { LineChart } from 'react-chartkick';
@@ -85,7 +85,7 @@ export default class Statistics extends Component<Props, State>{
 
   getReviewsPerClassCSV() {
     let strRet = "class,total\n";
-    this.state.howManyReviewsEachClass.map((obj) => {
+    this.state.howManyReviewsEachClass.forEach((obj) => {
       strRet += obj._id + "," + obj.total + "\n";
     });
     return strRet;
