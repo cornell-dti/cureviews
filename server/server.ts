@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Meteor } from "./shim";
 import { fetchAddCourses } from "./dbInit";
 import { Classes, Students } from "./dbDefs";
 import { configure } from "./endpoints";
@@ -21,14 +20,10 @@ app.use(express.static(path.join(__dirname, "../../client/build")));
 
 function setup() {
   const port = process.env.PORT || 8080;
-  Meteor.registerApp(app);
-  Promise.all([import("./methods"), import("./publications")]).then(() => {
-    Meteor.bind();
-    app.get('*', (_, response) => response.sendFile(path.join(__dirname, '../../client/build/index.html')));
-    // eslint-disable-next-line no-console
-    configure(app);
-    app.listen(port, () => console.log(`Listening on port ${port}...`));
-  });
+  app.get('*', (_, response) => response.sendFile(path.join(__dirname, '../../client/build/index.html')));
+  configure(app);
+
+  app.listen(port, () => console.log(`Listening on port ${port}...`));
 }
 
 const uri = process.env.MONGODB_URL ? process.env.MONGODB_URL : "this will error";
