@@ -38,7 +38,7 @@ export default class ResultsDisplay extends Component {
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
       filteredItems: this.props.courses,
       fullscreen: false,
-      transformGauges: false
+      transformGauges: false,
       showFilterPopup: false
     };
     this.previewHandler = this.previewHandler.bind(this);
