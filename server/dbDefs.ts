@@ -52,6 +52,7 @@ const StudentSchema = new Schema<StudentDocument>({
   token: { type: String }, // random token generated during login process
   privilege: { type: String }, // user privilege level
   reviews: { type: [String] }, // the reviews that this user has posted.
+  likedReviews: { type: [String] },
 });
 export const Students = mongoose.model<StudentDocument>("students", StudentSchema);
 

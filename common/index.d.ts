@@ -24,6 +24,7 @@ export interface Student {
   readonly token: string;
   readonly privilege: string; // user privilege level
   reviews: string[];
+  likedReviews: string[];
 }
 
 export interface Subject {
