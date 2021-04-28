@@ -212,9 +212,9 @@ describe('tests', () => {
       email: "cv4620@cornell.edu",
       // This is the google people, not us. It has to be this way:
       // https://googleapis.dev/nodejs/google-auth-library/latest/interfaces/TokenPayload.html
-      // @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/camelcase
       given_name: user1.firstName,
-      // @typescript-eslint/camelcase
+      // eslint-disable-next-line  @typescript-eslint/camelcase
       family_name: user1.lastName,
     };
 

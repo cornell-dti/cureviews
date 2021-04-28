@@ -14,6 +14,12 @@ This pull request is the first step towards implementing feature Foo
 
 <!-- Provide screenshots or point out the additional unit tests -->
 
+### Linter Warnings <!-- Required -->
+
+<!-- Please make sure that you are not adding linter warnings. Similarly, make sure that `yarn workspace client run` yields no warnings. -->
+
+Before this PR (i.e. on the main branch), there are X linter warnings. After my PR, there are Y.
+
 ### Notes <!-- Optional -->
 
 <!--- List any important or subtle points, future considerations, or other items of note. -->

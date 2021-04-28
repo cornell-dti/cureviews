@@ -68,6 +68,8 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
 
         return { resCode: 1 };
       }
+
+      return { resCode: 0 };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'makeVisible' method");
