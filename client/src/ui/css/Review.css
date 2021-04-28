@@ -1,16 +1,5 @@
 /* Individual Review Styling */
 
-.covidTag{
-  background-color: #ffec5e;
-  border-radius: 5px;
-  width: 70%;
-  margin-left: 0.2%;
-  border-color: #ffd666;
-  border-width: 3px;
-  border-style: solid;
-  padding: 4px;
-}
-
 .review-number-label-span{
   display: inline-flex;
   width: 56px;
@@ -40,12 +29,16 @@
     border: 0.625px solid #D0E5F5;
     box-sizing: border-box;
     border-radius: 10px;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
   }
   .review-number-text, .review-number-text-preview{
-    padding-right: 5.5vw;
+    padding-right: 4vw;
     padding-left: 2vw;
     font-weight: normal;
+  }
+
+  .review-text-label{
+    padding-left: 3vw;
   }
   .review-professor-text{
     font-family: "Source Sans Pro", sans-serif;
@@ -56,12 +49,59 @@
     display: inline;
     color: blue;
   }
+
+  .covidTag{
+    background-color: #ffec5e;
+    border-radius: 5px;
+    width: 95%;
+    margin-left: 0.2%;
+    border-color: #ffd666;
+    border-width: 3px;
+    border-style: solid;
+    padding: 4px;
+  }
+
+  .review-body-container {
+    margin: auto;
+    padding: 8px 27px 21px 28px;
+  }
+
+  .review-labels-container{
+    background: #F4F9FE;
+    text-align: center;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+  }
 }
 
 @media screen and (min-width: 992px) {
   .review-number-text, .review-number-text-preview{
     font-weight: bold;
     padding-left: 2vw;
+  }
+
+  .covidTag{
+    background-color: #ffec5e;
+    border-radius: 5px;
+    width: 70%;
+    margin-left: 0.2%;
+    border-color: #ffd666;
+    border-width: 3px;
+    border-style: solid;
+    padding: 4px;
+  }
+
+  .review-body-container {
+    margin: auto;
+    padding: 8px 50px 21px 30px;
+  }
+
+  .review-labels-container{
+    min-width: 85px;
   }
 }
 
@@ -73,21 +113,6 @@
 
 .review-report:hover {
   color: #4990e2;
-}
-
-.review-body-container {
-  margin: auto;
-  padding: 8px 50px 21px 30px;
-}
-
-.review-labels-container{
-  min-width: 85px;
-}
-
-.review-labels-container-mobile{
-  background: #F4F9FE;
-  text-align: center;
-  left: 3%;
 }
 
 .review-body-right-col{
@@ -105,8 +130,6 @@
   font-style: normal;
   font-stretch: normal;
 }
-
-
 
 .review-professor-container{
   margin-bottom:8px;

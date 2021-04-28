@@ -135,6 +135,21 @@ export class CourseReviews extends Component<Props, State> {
     }
   }
 
+  sort_reviews = () => {
+    if (window.screen.width > 992) {
+      return (
+        <div className="coursereviews-sort-container">
+          <div className="coursereviews-sort"> Sort By:
+              <select onChange={this.handleSelect} className="coursereviews-sort-options">
+              <option value="helpful">Most Helpful</option>
+              <option value="recent">Recent</option>
+            </select>
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
 
     let title = "Past Reviews (" + this.state.reviews.length + ")";
@@ -148,14 +163,7 @@ export class CourseReviews extends Component<Props, State> {
           <div className="coursereviews-past-reviews-text">
             {title}
           </div>
-          <div className="coursereviews-sort-container">
-            <div className="coursereviews-sort"> Sort By:
-              <select onChange={this.handleSelect} className="coursereviews-sort-options">
-                <option value="helpful">Most Helpful</option>
-                <option value="recent">Recent</option>
-              </select>
-            </div>
-          </div>
+          {this.sort_reviews()}
         </div>
         <div>
           <ul onScroll={(e) => this.props.onScroll(e)} className="coursereviews-review-ul">

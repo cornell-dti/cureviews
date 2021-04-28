@@ -98,10 +98,10 @@ export default class Review extends Component {
   review_styling = (rev, number_label_class, number_text_class) => {
     if (window.screen.width < 992) {
       return (
-        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container-mobile noLeftRightPadding">
+        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
 
           <p className={number_label_class}>
-            <span>Overall</span>
+            <span className='review-text-label'>Overall</span>
             <span className={number_text_class}>
               {(rev.rating != null) ? rev.rating : rev.quality}
             </span>
