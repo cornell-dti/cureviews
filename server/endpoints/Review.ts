@@ -217,7 +217,7 @@ export const incrementLike: Endpoint<ReviewRequest> = {
         }
 
         // if likedReviews is undefined its fine. $push creates empty arr
-        Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
+        await Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
 
         if (review.likes === undefined) {
           await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1, lastLikedIP: ctx.ip }, $push: { likedBy: student.id } }).exec();
@@ -261,10 +261,11 @@ export const decrementLike: Endpoint<ReviewRequest> = {
       const netId = ticket.email.replace("@cornell.edu", "");
       const student = (await Students.findOne({ netId }));
 
-
       if (student.likedReviews === undefined || !student.likedReviews.includes(review.id)) {
         return { resCode: 0, error: "Error: user already disliked" };
       }
+
+      await Students.updateOne({ netId }, { $pull: { likedReviews: review.id } });
 
       if (review.likes === undefined) {
         await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0, lastDislikedIP: ctx.ip } }, { $pull: { likedBy: student.netId } }).exec();

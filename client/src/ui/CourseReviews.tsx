@@ -137,6 +137,8 @@ export class CourseReviews extends Component<Props, State> {
 
   render() {
 
+    console.log(this.props.onScroll);
+
     let title = "Past Reviews (" + this.state.reviews.length + ")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
@@ -158,9 +160,18 @@ export class CourseReviews extends Component<Props, State> {
           </div>
         </div>
         <div>
-          <ul onScroll={(e) => this.props.onScroll(e)} className="coursereviews-review-ul">
-            {this.state.reviews}
-          </ul>
+          {
+            this.props.onScroll !== undefined &&
+            <ul onScroll={(e) => this.props.onScroll(e)} className="coursereviews-review-ul">
+              {this.state.reviews}
+            </ul>
+          }
+          {
+            this.props.onScroll === undefined &&
+            <ul className="coursereviews-review-ul">
+              {this.state.reviews}
+            </ul>
+          }
         </div>
       </div>
     );
