@@ -212,7 +212,7 @@ export const incrementLike: Endpoint<ReviewRequest> = {
         const netId = ticket.email.replace("@cornell.edu", "");
         const student = (await Students.findOne({ netId }));
 
-        if (student.likedReviews.includes(review.id)) {
+        if (student.likedReviews !== undefined && student.likedReviews.includes(review.id)) {
           return { resCode: 0, error: "Error: user already liked" };
         }
 
@@ -261,7 +261,8 @@ export const decrementLike: Endpoint<ReviewRequest> = {
       const netId = ticket.email.replace("@cornell.edu", "");
       const student = (await Students.findOne({ netId }));
 
-      if (!student.likedReviews.includes(review.id)) {
+
+      if (student.likedReviews === undefined || !student.likedReviews.includes(review.id)) {
         return { resCode: 0, error: "Error: user already disliked" };
       }
 
