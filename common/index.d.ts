@@ -46,7 +46,7 @@ export interface Review {
   reported?: number;
   professors?: string[];
   likes?: number;
-  likedBy: { type: string[] };
+  likedBy: string[];
   isCovid?: boolean;
   lastLikedIP?: string;
   lastDislikedIP?: string;
