@@ -4,6 +4,7 @@ import axios from 'axios';
 import './css/PreviewCard.css';
 import Gauge from './Gauge.tsx';
 import Review from './Review.jsx';
+import Form from './Form.jsx';
 import MobileReviewForm from './MobileReviewForm.tsx';
 import { lastOfferedSems } from 'common/CourseCard';
 
@@ -246,7 +247,8 @@ export default class PreviewCard extends Component {
               </button>
 
               }
-              {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />}
+              {/* {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />} */}
+              {this.state.showMobileReviewForm && <Form course={this.props.course} inUse={true} />}
             </div>
           </div>
         }

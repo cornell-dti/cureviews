@@ -339,10 +339,143 @@ export default class Form extends Component {
     this.setState({ isCovid: event.target.checked });
   }
 
+  renderFormMobile = () => {
+    const err = this.validateInputs(this.state.text, this.state.professors);
+    const isEnabled = err.allTrue;
+    return (
+      <div>
+        <div className="mobile-form-container">
+          <input class="X-button" type="button"></input>
 
-  render() {
-    // check to see if all inputs are valid. If some inputs are invalide, disable the
-    // post button and add red border around inputs that need to be changed.
+          <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
+
+            <p className="form-header-text">Leave a Review</p>
+
+            {this.state.showCovid && <label className="covidCheckboxContainer">
+              <span className="covidCheckboxLabel">Taken Virtually</span>
+              <input
+                className="covidCheckboxInput"
+                name="isCovid"
+                type="checkbox"
+                checked={this.state.isCovid}
+                onChange={this.handleCovidBox} />
+            </label>}
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">Professor</div>
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectedProfessors}
+                  onChange={(professors) => this.handleProfChange(professors)}
+                  isMulti
+                  options={this.getProfOptions()}
+                  ref={this.profSelect}
+                  placeholder="Select"
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-12 col-sm-12 col-xs-12">
+                <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
+                  Please select the professor(s) you took this class with!
+                      </div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Overall</h1>
+              </div>
+              {this.createMetricBoxes(5, "rating")}
+            </div>
+            <div className="row form-bottom-row-spacing">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Not for me</div>
+                <div className="metricDescR">Loved it</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Difficulty</h1>
+              </div>
+              {this.createMetricBoxes(5, "diff")}
+            </div>
+            <div className="row form-bottom-row-spacing">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Piece of cake</div>
+                <div className="metricDescR">Challenging</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3">
+                <h1 className="form-label">Workload</h1>
+              </div>
+              {this.createMetricBoxes(5, "workload")}
+            </div>
+            <div className="row">
+              <div className="col-md-offset-3 col-md-9">
+                <div className="metricDescL">Not much at all</div>
+                <div className="metricDescR">Lots of work</div>
+              </div>
+            </div>
+
+
+
+            <div className="row form-textbox-row">
+              <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+                onChange={(event) => this.handleTextChange(event)}
+              />
+              <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
+              <div className={err.text && this.state.text !== "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
+              <div className={!err.text && !err.textEmpty && err.profanity ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains profanity, please edit your response.</div>
+            </div>
+
+            <div className="row form-button-top-bottom-spacing">
+              <div className="col-md-12 col-sm-12 col-xs-12">
+                <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
+          <div id="modal-background">
+            <div id="modal-top">
+              <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+              <p id="modal-title" className="center-block">Email Verification</p>
+            </div>
+            <div id="">
+              <p id="modal-text" className="center-block">
+                You’re almost there! - log in with cornell.edu to
+                verify you are a student.
+                </p>
+              <p id="modal-text" className="center-block">
+                (Don’t worry, your identity will always be kept secret!)
+                </p>
+              <p id="modal-footer" className="center-block">
+                You will be redirected to our login page.
+                Not seeing it? Click here.
+                </p>
+              <CUreviewsGoogleLogin
+                executeLogin={this.state.visible}
+                waitTime={3000}
+                redirectFrom="course" />
+            </div>
+          </div>
+
+        </Rodal>
+      </div>
+    );
+  }
+
+  renderFormDesktop = () => {
     const err = this.validateInputs(this.state.text, this.state.professors);
     const isEnabled = err.allTrue;
     return (
@@ -471,6 +604,18 @@ export default class Form extends Component {
         </Rodal>
       </div>
     );
+  }
+
+
+  render() {
+    // check to see if all inputs are valid. If some inputs are invalide, disable the
+    // post button and add red border around inputs that need to be changed.
+    if (window.screen.width < 992) {
+      return this.renderFormMobile()
+    }
+    else {
+      return this.renderFormDesktop()
+    }
   }
 }
 

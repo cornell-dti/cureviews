@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "./css/MobileReviewForm.css";
+import "./Form.jsx";
 
 type Props = any
 

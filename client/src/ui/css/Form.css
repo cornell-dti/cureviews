@@ -1,5 +1,37 @@
 /* Form Main Component Styling */
 
+/* mobile */
+@media (max-width: 992px) {
+
+}
+
+.mobile-form-container{
+  background-color: #FFFFFF;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 200;
+}
+
+.X-button{
+  background-color: Transparent;
+  background-image: url("/X.svg");
+  background-repeat: no-repeat;
+  background-position: 16px 9px;
+  margin-top: 20px; 
+  padding-left: 35px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+/* desktop */
+
 .covidCheckboxContainer{
   margin-top: 15px;
 }
@@ -41,6 +73,15 @@
   color: #0076FF;
   margin-bottom:25px;
   text-align:left;
+}
+
+@media (max-width: 992px) {
+  .form-header-text{
+    font-family: Source Sans Pro;
+    font-size: 28px;
+    line-height: 35px;
+    color: #000000;
+  }
 }
 
 .form-textbox-row{
