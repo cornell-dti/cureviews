@@ -4,6 +4,7 @@ import axios from 'axios';
 import './css/PreviewCard.css';
 import Gauge from './Gauge.tsx';
 import Review from './Review.jsx';
+import MobileReviewForm from './MobileReviewForm.tsx';
 import { lastOfferedSems } from 'common/CourseCard';
 
 /*
@@ -28,11 +29,13 @@ export default class PreviewCard extends Component {
       topReview: {},
       numReviews: 0,
       topReviewLikes: 0,
+      showMobileReviewForm: false
     };
 
     this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
     this.updateGauges = this.updateGauges.bind(this);
+    this.setShowMobileReviewForm = this.setShowMobileReviewForm.bind(this);
   }
 
   componentDidMount() {
@@ -135,6 +138,10 @@ export default class PreviewCard extends Component {
     this.updateTopReview();
   }
 
+  setShowMobileReviewForm() {
+    this.setState({ showMobileReviewForm: (!this.state.showMobileReviewForm) })
+  }
+
   render() {
     let theClass = this.props.course;
     const offered = lastOfferedSems(theClass);
@@ -233,11 +240,13 @@ export default class PreviewCard extends Component {
               }
               {
                 (this.props.mobile || (this.state.numReviews === 0 || this.state.numReviews === 1)) &&
-                <a className="col-md-12 col-sm-12 preview-review-button"
-                  href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                <button type="submit" className="col-md-12 col-sm-12 preview-review-button"
+                  onClick={this.setShowMobileReviewForm}>
                   Leave a review
-              </a>
+              </button>
+
               }
+              {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />}
             </div>
           </div>
         }
