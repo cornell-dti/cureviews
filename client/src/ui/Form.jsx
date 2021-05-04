@@ -345,23 +345,23 @@ export default class Form extends Component {
     return (
       <div>
         <div className="mobile-form-container">
-          <input class="X-button" type="button"></input>
+          <input class="X-button" type="button" onClick={this.props.setShowMobileReviewForm}></input>
 
           <form className="form" onSubmit={this.handleSubmit.bind(this)} ref={this.formElement}>
 
             <p className="form-header-text">Leave a Review</p>
 
-            {this.state.showCovid && <label className="covidCheckboxContainer">
-              <span className="covidCheckboxLabel">Taken Virtually</span>
-              <input
+            {this.state.showCovid && <label className="covidCheckboxContainer form-bottom-row-spacing2">
+            <input
                 className="covidCheckboxInput"
                 name="isCovid"
                 type="checkbox"
                 checked={this.state.isCovid}
                 onChange={this.handleCovidBox} />
+                <span className="covidCheckboxLabel">Taken Virtually</span>
             </label>}
 
-            <div className="row">
+            <div className="row form-bottom-row-spacing">
               <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">Professor</div>
               </div>
@@ -408,7 +408,7 @@ export default class Form extends Component {
             </div>
             <div className="row form-bottom-row-spacing">
               <div className="col-md-offset-3 col-md-9">
-                <div className="metricDescL">Piece of cake</div>
+                <div className="metricDescL">Easy</div>
                 <div className="metricDescR">Challenging</div>
               </div>
             </div>
@@ -421,7 +421,7 @@ export default class Form extends Component {
             </div>
             <div className="row">
               <div className="col-md-offset-3 col-md-9">
-                <div className="metricDescL">Not much at all</div>
+                <div className="metricDescL">Not so much</div>
                 <div className="metricDescR">Lots of work</div>
               </div>
             </div>

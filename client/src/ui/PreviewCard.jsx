@@ -248,7 +248,7 @@ export default class PreviewCard extends Component {
 
               }
               {/* {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />} */}
-              {this.state.showMobileReviewForm && <Form course={this.props.course} inUse={true} />}
+              {this.state.showMobileReviewForm && <Form course={this.props.course} inUse={true} state={this.state} props={this.props}  setShowMobileReviewForm ={this.setShowMobileReviewForm}/>}
             </div>
           </div>
         }

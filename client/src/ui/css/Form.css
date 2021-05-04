@@ -27,12 +27,11 @@
   background-color: Transparent;
   background-image: url("/X.svg");
   background-repeat: no-repeat;
-  background-position: 16px 9px;
-  margin-top: 20px; 
-  padding-left: 35px;
-  padding-right: 16px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  background-position: center;
+  border-color: transparent;
+  border-radius: 0px;
+  padding: auto;
+  margin: 24px 0px 0px 18px
 }
 
 /* desktop */
@@ -41,14 +40,29 @@
   margin-top: 15px;
 }
 
-.covidCheckboxInput{
-  margin-left: 10px !important;
+@media (min-width: 992px){
+  .covidCheckboxInput{
+    margin-left: 10px !important;
+  }
+}
+
+@media (max-width: 992px){
+  .covidCheckboxInput{
+    margin-right: 7px !important;
+    margin-top: 0px !important;
+  }
 }
 
 .covidCheckboxLabel{
   position: relative;
   vertical-align: middle;
   bottom: 1px;
+}
+
+@media (max-width: 992px){
+  .covidCheckboxLabel{
+    bottom: 2px;
+  }
 }
 
 .form-menu {
@@ -60,8 +74,6 @@
   box-sizing: border-box;
   border-radius: 10px;
 }
-
-
 
 @media (min-width: 992px) {
   .form{
@@ -77,7 +89,7 @@
   .form{
     margin-left: 22px;
     margin-right: 22px;
-    margin-top: 33px;
+    margin-top: 25px;
     margin-bottom: 39px;
   }
 }
@@ -107,6 +119,14 @@
   padding-right: 13px;  
 }
 
+@media (max-width: 992px) {
+  .form-textbox-row{
+    padding-top: 23px;
+    padding-left: 15px;
+  padding-right: 15px; 
+  }
+}
+
 .form-input-text{
   text-align: left;
   font-family: "Source Sans Pro", sans-serif;
@@ -121,6 +141,12 @@
   border: 0.673729px solid #65ACFF;
   box-sizing: border-box;
   border-radius: 10px;
+}
+
+@media (max-width: 992px) {
+  .form-input-text{
+    height:200px;
+  }
 }
 
 .form-field-error{
@@ -149,7 +175,7 @@
     font-family: Source Sans Pro;
     font-size: 16px;
     line-height: 20px;
-    padding-left: 4px;
+    padding-left: 2px;
   }
 }
 
@@ -159,7 +185,7 @@
 
 @media (max-width: 992px) {
   .form-professor-label{
-    padding-left: 4px;
+    padding-left: 2px;
   }
 }
 
@@ -180,8 +206,24 @@
 
 }
 
+@media (max-width: 992px) {
+  .form-postbutton{
+    width: 323px;
+    height: 46px;
+    left: 26px;
+    top: 727px;
+
+    background: #0076FF;
+    border-radius: 5.65207px;
+  }
+}
+
 .form-bottom-row-spacing{
   margin-bottom: 27px;
+}
+
+.form-bottom-row-spacing2{
+  margin-bottom: 20px;
 }
 
 .form-button-top-bottom-spacing {
@@ -202,8 +244,8 @@
 }
 
 @media (max-width: 992px) {
-  .react-select-alignment {
-    height:26px;
+  .react-select-container {
+    height: 26px;
   }
 }
 
@@ -221,6 +263,11 @@
   border-color: #9FCBFF !important;
   border-radius: 7px !important;
 }
+
+@media (max-width: 992px) {
+
+}
+
 
 .react-select__indicator-separator{
   display: none;
@@ -480,6 +527,16 @@ input[type="range"] {
   color: #979797;
 }
 
+@media (max-width: 992px){
+  .metricDescR,.metricDescL {
+    font-family: Source Sans Pro;
+    font-size: 11px;
+    line-height: 14px;
+    text-align: center;
+    padding-left: 78px;
+  }
+}
+
 .metricDescR{
   float: right;
 }
@@ -493,13 +550,29 @@ input[type="range"] {
   padding-right:17px;
 }
 
-.inactiveBox{
-  background: #979797 !important;
-}
-
-
 .activeBox{
   background: #0076FF !important;
+}
+
+@media (min-width: 992px) {
+  .inactiveBox{
+    background: #979797 !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .inactiveBox{
+    height: 12px;
+    width: 44px;
+    background: #ECECEC;
+    border-radius: 2.82603px;
+  }
+
+  .activeBox{
+    height: 12px;
+    width: 44px;
+    border-radius: 2.82603px;
+  }
 }
 
 .inactiveText{
@@ -516,6 +589,18 @@ input[type="range"] {
   padding:0;
   padding-bottom: 3.0px;
 }
+
+@media (max-width: 992px) {
+  .inactiveText, .activeText{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+  }
+}
+
 .metricBoxWrapper:hover{
   cursor: pointer;
 }
