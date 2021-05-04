@@ -5,6 +5,9 @@ import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
+import FilterPopup from './FilterPopup';
+
+
 import CourseReviews from './CourseReviews';
 import ResultsDisplayMobile from './ResultsDisplayMobile';
 /*
@@ -35,7 +38,8 @@ export default class ResultsDisplay extends Component {
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
       filteredItems: this.props.courses,
       fullscreen: false,
-      transformGauges: false
+      transformGauges: false,
+      showFilterPopup: false
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -45,6 +49,7 @@ export default class ResultsDisplay extends Component {
     this.filterClasses = this.filterClasses.bind(this);
     this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
+    this.setShowFilterPopup = this.setShowFilterPopup.bind(this);
     this.scrollReviews = this.scrollReviews.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
@@ -261,6 +266,10 @@ export default class ResultsDisplay extends Component {
     // callback(this.filterColors(inputValue));
   }
 
+  setShowFilterPopup(){
+    this.setState({showFilterPopup : (!this.state.showFilterPopup) })
+  }
+
   scrollReviews(e) {
     const currentScrollY = e.target.scrollTop;
     if (currentScrollY > 80) {
@@ -343,16 +352,24 @@ export default class ResultsDisplay extends Component {
                   for &quot;{this.props.userInput}&quot;</p></div>
               </div>
               <div className="row no-left-margin mdown-8">
-                <div className="results-sort-by-container">
-                  <p className="hidden-xs hidden-sm results-sort-by-text">
-                    Sort By:
+                <div className="col-lg-12 col-md-12 col-sm-10 col-xs-10 no-left-padding">
+                  <div className="results-sort-by-container">
+                    <p className="hidden-xs hidden-sm results-sort-by-text">
+                      Sort By:
                     </p>
-                  <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
-                    <option value="relevance">Relevance</option>
-                    <option value="rating">Overall Rating</option>
-                    <option value="diff" >Difficulty</option>
-                    <option value="work">Workload</option>
-                  </select>
+                    <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
+                      <option value="relevance">Relevance</option>
+                      <option value="rating">Overall Rating</option>
+                      <option value="diff" >Difficulty</option>
+                      <option value="work">Workload</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm-2 col-xs-2 no-left-padding">
+                  <div className="hidden-md hidden-lg hidden-xl">
+                    <input class="mobile-filter-button" type="button" value="Filter" onClick={this.setShowFilterPopup}/>
+                      {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} handleMajorFilterChange={this.handleMajorFilterChange}   setShowFilterPopup={this.setShowFilterPopup}/>}
+                  </div> 
                 </div>
               </div>
 
