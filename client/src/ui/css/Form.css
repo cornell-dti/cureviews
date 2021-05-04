@@ -1,6 +1,11 @@
 /* Form Main Component Styling */
 
 /* mobile */
+
+@media (min-width: 992px) {
+
+}
+
 @media (max-width: 992px) {
 
 }
@@ -56,12 +61,25 @@
   border-radius: 10px;
 }
 
-.form{
-  padding-right: 10%;
-  padding-left: 10%;
-  padding-top: 20px;
-  padding-bottom: 30px;
-  border-radius: 100px;
+
+
+@media (min-width: 992px) {
+  .form{
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    border-radius: 100px;
+  }
+}
+
+@media (max-width: 992px) {
+  .form{
+    margin-left: 22px;
+    margin-right: 22px;
+    margin-top: 33px;
+    margin-bottom: 39px;
+  }
 }
 
 .form-header-text{
@@ -113,16 +131,36 @@
   font-family: "Source Sans Pro", sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  
+
   color: #000000;
+}
+
+@media (min-width: 992px) {
+  .form-label{
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-label{
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    line-height: 20px;
+    padding-left: 4px;
+  }
 }
 
 .form-professor-label{
   padding-top:10px;
+}
+
+@media (max-width: 992px) {
+  .form-professor-label{
+    padding-left: 4px;
+  }
 }
 
 .form-postbutton{
@@ -161,6 +199,12 @@
 
 .react-select-container{
   width: 100%;
+}
+
+@media (max-width: 992px) {
+  .react-select-alignment {
+    height:26px;
+  }
 }
 
 /* Leaving these useful properties of "react-select"
