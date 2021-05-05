@@ -47,7 +47,7 @@
     font-style: normal;
     line-height: 18px;
     display: inline;
-    color: blue;
+    color: #0076FF;
   }
 
   .covidTag{
@@ -76,6 +76,17 @@
     line-height: 20px;
     text-align: center;
   }
+
+  .review-professor-label{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: var(--semi-bold-weight);
+    font-style: normal;
+    line-height: 18px;
+    margin: 5px 0 6px 0;
+    display: inline;
+    color: #A2A1A1;
+  }
 }
 
 @media screen and (min-width: 992px) {
@@ -102,6 +113,25 @@
 
   .review-labels-container{
     min-width: 85px;
+  }
+
+  .review-professor-text{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: var(--semi-bold-weight);
+    font-style: normal;
+    line-height: 18px;
+    display: inline;
+  }
+
+  .review-professor-label{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: var(--semi-bold-weight);
+    font-style: normal;
+    line-height: 18px;
+    margin: 5px 0 6px 0;
+    display: inline;
   }
 }
 
@@ -133,26 +163,6 @@
 
 .review-professor-container{
   margin-bottom:8px;
-}
-
-.review-professor-label{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  line-height: 18px;
-  margin: 5px 0 6px 0;
-  display: inline;
-}
-
-
-.review-professor-text{
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 14px;
-  font-weight: var(--semi-bold-weight);
-  font-style: normal;
-  line-height: 18px;
-  display: inline;
 }
 
 .review-text {
