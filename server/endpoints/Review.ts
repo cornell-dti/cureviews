@@ -221,9 +221,9 @@ export const incrementLike: Endpoint<ReviewRequest> = {
         await Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
 
         if (review.likes === undefined) {
-          await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1, lastLikedIP: ctx.ip }, $push: { likedBy: student.id } }).exec();
+          await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1 }, $push: { likedBy: student.id } }).exec();
         } else {
-          await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1, lastLikedIP: ctx.ip }, $push: { likedBy: student.id } }).exec();
+          await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1 }, $push: { likedBy: student.id } }).exec();
         }
 
         return { resCode: 1 };
@@ -269,11 +269,11 @@ export const decrementLike: Endpoint<ReviewRequest> = {
       await Students.updateOne({ netId }, { $pull: { likedReviews: review.id } });
 
       if (review.likes === undefined) {
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0, lastDislikedIP: ctx.ip } }, { $pull: { likedBy: student.netId } }).exec();
+        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0 } }, { $pull: { likedBy: student.netId } }).exec();
       } else {
         // bound the rating at 0
         await Reviews.updateOne({ _id: request.id },
-          { $set: { likes: Math.max(0, review.likes - 1), lastDislikedIP: ctx.ip } }, { $pull: { likedBy: student.netId } }).exec();
+          { $set: { likes: Math.max(0, review.likes - 1) } }, { $pull: { likedBy: student.netId } }).exec();
       }
       return { resCode: 1 };
     } catch (error) {
