@@ -101,6 +101,16 @@
     color: #000000;
   }
 
+  .preview-class-link-scroll {
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: -0.0819218px;
+    color: #000000;
+  }
+
   .preview-class-title {
     margin-bottom: 10px;
   }

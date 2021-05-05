@@ -37,7 +37,7 @@ export default class ResultsDisplayMobile extends Component<Props, State> {
             <PreviewCard course={this.props.card_course} mobile={true} transformGauges={this.props.transformGauges} />
           </div>
 
-          <CourseReviews courseId={this.props.card_course._id} onScroll={this.props.scrollReviews} />
+          <CourseReviews courseId={this.props.card_course._id} onScroll={this.props.scrollReviews} transformGauges={this.props.transformGauges} />
           <div className={"button-position-search-results " + (this.props.transformGauges ? "" : "hidden-xs hidden-sm hidden-md")}>
             <button type="submit" className="btn btn-primary review-bottom-button">Leave A Review</button>
           </div>
