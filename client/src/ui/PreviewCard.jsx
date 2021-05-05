@@ -242,7 +242,7 @@ export default class PreviewCard extends Component {
                 (this.props.mobile || (this.state.numReviews === 0 || this.state.numReviews === 1)) &&
                 <button type="submit" className="col-md-12 col-sm-12 preview-review-button"
                   onClick={this.setShowMobileReviewForm}>
-                  Leave a review
+                  Leave a Review
               </button>
 
               }
