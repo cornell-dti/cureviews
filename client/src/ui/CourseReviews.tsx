@@ -136,9 +136,6 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   render() {
-
-    console.log(this.props.onScroll);
-
     let title = "Past Reviews (" + this.state.reviews.length + ")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";

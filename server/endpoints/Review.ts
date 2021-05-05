@@ -271,7 +271,8 @@ export const decrementLike: Endpoint<ReviewRequest> = {
         await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0, lastDislikedIP: ctx.ip } }, { $pull: { likedBy: student.netId } }).exec();
       } else {
         // bound the rating at 0
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: Math.max(0, review.likes - 1), lastDislikedIP: ctx.ip } }, { $pull: { likedBy: student.netId } }).exec();
+        await Reviews.updateOne({ _id: request.id },
+          { $set: { likes: Math.max(0, review.likes - 1), lastDislikedIP: ctx.ip } }, { $pull: { likedBy: student.netId } }).exec();
       }
       return { resCode: 1 };
     } catch (error) {
