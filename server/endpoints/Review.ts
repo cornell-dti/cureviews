@@ -43,8 +43,9 @@ export interface ReviewRequest {
  * @returns a copy of the reviews, but with the user id field removed.
  */
 export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => {
-  const copy = JSON.parse(JSON.stringify(doc));
+  const copy = doc;
   copy.user = "";
+  copy.likedBy = [];
   return copy;
 }));
 
