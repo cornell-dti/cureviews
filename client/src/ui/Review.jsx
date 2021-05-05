@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './css/Review.css';
 import ShowMoreText from 'react-show-more-text';
 import axios from 'axios';
-
+import { Session } from '../session-store';
 
 /*
   Review Component.
@@ -51,7 +51,7 @@ export default class Review extends Component {
   increment(review) {
     console.log("here");
     if (this.state.liked === false) {
-      axios.post("/v2/incrementLike", { id: review._id }).then(response => {
+      axios.post("/v2/incrementLike", { id: review._id, token: Session.get("token") }).then(response => {
         const res = response.data.result;
         if (res.resCode === 1) {
           if (!this.state.numLikes) {
@@ -71,7 +71,7 @@ export default class Review extends Component {
       });
     }
     else {
-      axios.post("/v2/decrementLike", { id: review._id }).then(response => {
+      axios.post("/v2/decrementLike", { id: review._id, token: Session.get("token") }).then(response => {
         const res = response.data.result;
         if (res.resCode === 1) {
           this.setState({
@@ -143,8 +143,8 @@ export default class Review extends Component {
                 <span className="review-professor-label">Professor: </span>
                 {(review.professors && review.professors.length !== 0) ?
                   review.professors.map((prof, index) =>
-                  (<span className="review-professor-text" key={index}>
-                    {index > 0 ? ", " : ""}{prof}</span>))
+                    (<span className="review-professor-text" key={index}>
+                      {index > 0 ? ", " : ""}{prof}</span>))
                   : <span className="review-professor-text">N/A</span>
                 }
               </p>
