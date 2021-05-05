@@ -208,10 +208,7 @@
 
 @media (max-width: 992px) {
   .form-postbutton{
-    width: 323px;
     height: 46px;
-    left: 26px;
-    top: 727px;
 
     background: #0076FF;
     border-radius: 5.65207px;
