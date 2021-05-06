@@ -85,6 +85,7 @@
   background-color: rgba(255, 255, 255, 0.62);
   display: flex;
   text-decoration: none;
+  overflow-x: hidden;
 }
 
 .contrasting-result-background .resultbutton, .contrasting-result-background .resultbutton:hover {

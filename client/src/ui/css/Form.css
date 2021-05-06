@@ -1,17 +1,69 @@
 /* Form Main Component Styling */
 
+/* mobile */
+
+@media (min-width: 992px) {
+
+}
+
+@media (max-width: 992px) {
+
+}
+
+.mobile-form-container{
+  background-color: #FFFFFF;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 200;
+  overflow: scroll;
+}
+
+.X-button{
+  background-color: Transparent;
+  background-image: url("/X.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border-color: transparent;
+  border-radius: 0px;
+  padding: auto;
+  margin: 24px 0px 0px 18px
+}
+
+/* desktop */
+
 .covidCheckboxContainer{
   margin-top: 15px;
 }
 
-.covidCheckboxInput{
-  margin-left: 10px !important;
+@media (min-width: 992px){
+  .covidCheckboxInput{
+    margin-left: 10px !important;
+  }
+}
+
+@media (max-width: 992px){
+  .covidCheckboxInput{
+    margin-right: 7px !important;
+    margin-top: 0px !important;
+  }
 }
 
 .covidCheckboxLabel{
   position: relative;
   vertical-align: middle;
   bottom: 1px;
+}
+
+@media (max-width: 992px){
+  .covidCheckboxLabel{
+    bottom: 2px;
+  }
 }
 
 .form-menu {
@@ -24,12 +76,23 @@
   border-radius: 10px;
 }
 
-.form{
-  padding-right: 10%;
-  padding-left: 10%;
-  padding-top: 20px;
-  padding-bottom: 30px;
-  border-radius: 100px;
+@media (min-width: 992px) {
+  .form{
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    border-radius: 100px;
+  }
+}
+
+@media (max-width: 992px) {
+  .form{
+    margin-left: 22px;
+    margin-right: 22px;
+    margin-top: 25px;
+    margin-bottom: 39px;
+  }
 }
 
 .form-header-text{
@@ -43,9 +106,26 @@
   text-align:left;
 }
 
+@media (max-width: 992px) {
+  .form-header-text{
+    font-family: Source Sans Pro;
+    font-size: 28px;
+    line-height: 35px;
+    color: #000000;
+  }
+}
+
 .form-textbox-row{
   padding-left: 13px;
   padding-right: 13px;  
+}
+
+@media (max-width: 992px) {
+  .form-textbox-row{
+    padding-top: 23px;
+    padding-left: 15px;
+  padding-right: 15px; 
+  }
 }
 
 .form-input-text{
@@ -64,6 +144,12 @@
   border-radius: 10px;
 }
 
+@media (max-width: 992px) {
+  .form-input-text{
+    height:200px;
+  }
+}
+
 .form-field-error{
   color: #FF314A;
 }
@@ -72,16 +158,36 @@
   font-family: "Source Sans Pro", sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  
+
   color: #000000;
+}
+
+@media (min-width: 992px) {
+  .form-label{
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-label{
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    line-height: 20px;
+    padding-left: 2px;
+  }
 }
 
 .form-professor-label{
   padding-top:10px;
+}
+
+@media (max-width: 992px) {
+  .form-professor-label{
+    padding-left: 2px;
+  }
 }
 
 .form-postbutton{
@@ -98,11 +204,24 @@
     color: #FFFFFF;
     border-radius: 6.73729px;
     border-width: 0px;
+    margin-bottom: 5vh;
+}
 
+@media (max-width: 992px) {
+  .form-postbutton{
+    height: 46px;
+
+    background: #0076FF;
+    border-radius: 5.65207px;
+  }
 }
 
 .form-bottom-row-spacing{
   margin-bottom: 27px;
+}
+
+.form-bottom-row-spacing2{
+  margin-bottom: 20px;
 }
 
 .form-button-top-bottom-spacing {
@@ -122,6 +241,12 @@
   width: 100%;
 }
 
+@media (max-width: 992px) {
+  .react-select-container {
+    height: 26px;
+  }
+}
+
 /* Leaving these useful properties of "react-select"
     for future modifications:
     __value-container
@@ -136,6 +261,7 @@
   border-color: #9FCBFF !important;
   border-radius: 7px !important;
 }
+
 
 .react-select__indicator-separator{
   display: none;
@@ -240,6 +366,11 @@ textarea {
     border: 1px solid #999999;
 }
 
+.mobile-textarea{
+  height: 200px;
+}
+
+
 .rating-icon{
   background: black;
   border-radius: 10%;
@@ -288,6 +419,10 @@ input[type="range"] {
 .noLeftRightMargin{
   margin-right: 0;
   margin-left: 0;
+}
+
+.modalForm{
+  z-index:1009;
 }
 
 #modal-top{
@@ -381,7 +516,7 @@ input[type="range"] {
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
-    font-size: 12.5px;
+  font-size: 12.5px;
   text-align: center;
   height:10px;
 }
@@ -393,6 +528,16 @@ input[type="range"] {
   font-size: 12px;
   line-height: 15px;
   color: #979797;
+}
+
+@media (max-width: 992px){
+  .metricDescR,.metricDescL {
+    font-family: Source Sans Pro;
+    font-size: 11px;
+    line-height: 14px;
+    text-align: center;
+    padding-left: 22vw;
+  }
 }
 
 .metricDescR{
@@ -408,13 +553,29 @@ input[type="range"] {
   padding-right:17px;
 }
 
-.inactiveBox{
-  background: #979797 !important;
-}
-
-
 .activeBox{
   background: #0076FF !important;
+}
+
+@media (min-width: 992px) {
+  .inactiveBox{
+    background: #979797 !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .inactiveBox{
+    height: 12px;
+    width: 12vw;
+    background: #ECECEC;
+    border-radius: 2.82603px;
+  }
+
+  .activeBox{
+    height: 12px;
+    width: 12vw;
+    border-radius: 2.82603px;
+  }
 }
 
 .inactiveText{
@@ -431,6 +592,18 @@ input[type="range"] {
   padding:0;
   padding-bottom: 3.0px;
 }
+
+@media (max-width: 992px) {
+  .inactiveText, .activeText{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+  }
+}
+
 .metricBoxWrapper:hover{
   cursor: pointer;
 }
@@ -445,4 +618,8 @@ input[type="range"] {
 
 .metricBoxWrapper:hover .inactiveText{
   color: #86BEFF;
+}
+
+.metricDesc-margin-left{
+  margin-left: 23%;
 }

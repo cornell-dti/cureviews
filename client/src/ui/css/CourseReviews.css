@@ -1,17 +1,53 @@
-.coursereviews-header{
-  margin-bottom:34px;
-  padding-right: 35px;
+@media screen and (max-width: 992px) {
+  .coursereviews-header{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-left: 28px;
+  }
+  
+  .coursereviews-past-reviews-text{
+    font-family: "Source Sans Pro", sans-serif; 
+    font-size: 18px;
+    font-weight: var(--regular-weight);
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    display: inline;
+    color: #807B7B;
+  }
+
+  .coursereviews-review-ul{
+    overflow-y:scroll !important;
+    height:65vh;
+    padding-right: 30px;
+    padding-left: 24px;
+    background-color: white;
+    padding-bottom: 12px;
+  }
 }
 
-.coursereviews-past-reviews-text{
-  font-family: "Source Sans Pro", sans-serif; 
-  font-size: 24px;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  display: inline;
-  color: #A1A1A1;
+@media screen and (min-width: 992px) {
+  .coursereviews-header{
+    margin-bottom:34px;
+    padding-right: 35px;
+  }
+  
+  .coursereviews-past-reviews-text{
+    font-family: "Source Sans Pro", sans-serif; 
+    font-size: 24px;
+    font-weight: var(--regular-weight);
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    display: inline;
+    color: #A1A1A1;
+  }
+
+  .coursereviews-review-ul{
+    overflow-y:scroll !important;
+    height:65vh;
+    padding-right: 30px;  
+  }
 }
 
 .coursereviews-sort-container{
@@ -44,13 +80,6 @@
   border:none;
 
   color: #0076FF;
-}
-
-.coursereviews-review-ul{
-  overflow-y:scroll !important;
-  height:65vh;
-  padding-right: 30px;
-
 }
 
 .coursereviews-review-ul::-webkit-scrollbar {
