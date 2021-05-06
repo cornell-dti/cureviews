@@ -68,7 +68,7 @@ export default class SearchBar extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps) {
+    if (this.state.query.toLowerCase() !== "" && (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps)) {
       axios.post(`/v2/getClassesByQuery`, { query: this.state.query }).then(response => {
         const queryCourseList = response.data.result;
         if (queryCourseList.length !== 0) {
