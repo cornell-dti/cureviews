@@ -239,12 +239,17 @@ export default class PreviewCard extends Component {
                 </p>
               }
               {
-                (this.props.mobile || (this.state.numReviews === 0 || this.state.numReviews === 1)) &&
+                this.props.mobile &&
                 <button type="submit" className="col-md-12 col-sm-12 preview-review-button"
                   onClick={this.setShowMobileReviewForm}>
                   Leave a Review
               </button>
-
+              }
+              {
+                (!this.props.mobile && (this.state.numReviews === 0 || this.state.numReviews === 1)) &&
+                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+                  Leave a Review
+                </a>
               }
               {/* {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />} */}
               {this.state.showMobileReviewForm && <Form course={this.props.course} inUse={true} state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />}
