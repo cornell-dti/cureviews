@@ -6,9 +6,6 @@ import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
 import FilterPopup from './FilterPopup';
-
-
-import CourseReviews from './CourseReviews';
 import ResultsDisplayMobile from './ResultsDisplayMobile';
 /*
   ResultsDisplay Component.
