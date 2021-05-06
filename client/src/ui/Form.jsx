@@ -524,7 +524,7 @@ export default class Form extends Component {
               {this.createMetricBoxes(5, "rating")}
             </div>
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-offset-3 col-md-9">
+              <div className="col-md-offset-3 col-md-9 metricDesc-margin-left">
                 <div className="metricDescL">Not for me</div>
                 <div className="metricDescR">Loved it</div>
               </div>
@@ -537,7 +537,7 @@ export default class Form extends Component {
               {this.createMetricBoxes(5, "diff")}
             </div>
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-offset-3 col-md-9">
+              <div className="col-md-offset-3 col-md-9 metricDesc-margin-left">
                 <div className="metricDescL">Piece of cake</div>
                 <div className="metricDescR">Challenging</div>
               </div>
@@ -550,7 +550,7 @@ export default class Form extends Component {
               {this.createMetricBoxes(5, "workload")}
             </div>
             <div className="row">
-              <div className="col-md-offset-3 col-md-9">
+              <div className="col-md-offset-3 col-md-9 metricDesc-margin-left">
                 <div className="metricDescL">Not much at all</div>
                 <div className="metricDescR">Lots of work</div>
               </div>
