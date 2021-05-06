@@ -336,7 +336,7 @@
 
   .button-position-search-results {
     position: absolute;
-    bottom: 20px;
+    bottom: 10vh;
     width: 100%;
     padding-left: 28px;
     padding-right: 28px;
