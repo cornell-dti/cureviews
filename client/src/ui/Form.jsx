@@ -426,10 +426,8 @@ export default class Form extends Component {
               </div>
             </div>
 
-
-
             <div className="row form-textbox-row">
-              <textarea ref={this.textArea} className={"form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
+              <textarea ref={this.textArea} className={"mobile-textarea form-input-text" + (err.text || err.textEmpty ? "error" : "")} type="text" value={this.state.text}
                 onChange={(event) => this.handleTextChange(event)}
               />
               <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>

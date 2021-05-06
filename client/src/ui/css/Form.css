@@ -366,6 +366,11 @@ textarea {
     border: 1px solid #999999;
 }
 
+.mobile-textarea{
+  height: 200px;
+}
+
+
 .rating-icon{
   background: black;
   border-radius: 10%;
