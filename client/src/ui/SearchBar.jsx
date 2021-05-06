@@ -6,6 +6,8 @@ import ProfessorResult from './ProfessorResult';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 import axios from "axios";
+import { Session } from '../session-store';
+
 
 /*
   SearchBar Component.
@@ -65,6 +67,8 @@ export default class SearchBar extends Component {
       this.setState({ index: this.state.allSubjects.length + 1 });
     }
     this.setState({ query: query });
+
+    Session.setPersistent({"last-search": query});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -148,7 +152,6 @@ export default class SearchBar extends Component {
     else {
       this.updateQuery(e);
     }
-
   }
 
   mouseHover = () => {

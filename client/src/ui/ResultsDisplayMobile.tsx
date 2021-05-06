@@ -3,6 +3,7 @@ import PreviewCard from './PreviewCard';
 import CourseReviews from './CourseReviews';
 import Form from './Form.jsx';
 import { Link } from 'react-router-dom';
+import { Session } from '../session-store';
 
 interface Props {
   onClickText: () => void;
@@ -50,7 +51,7 @@ export default class ResultsDisplayMobile extends Component<Props, State> {
             {
               this.props.classView &&
               <div className="search-results-text">
-                <Link to="/" style={{ textDecoration: 'none', color: '#0076FF' }}>{"< "} Search Results</Link>
+                <Link to={`/results/keyword/${Session.get("last-search").split(" ").join("+")}`} style={{ textDecoration: 'none', color: '#0076FF' }}>{"< "} Search Results</Link>
               </div>
             }
 
