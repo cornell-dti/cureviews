@@ -6,9 +6,6 @@ import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
 import FilterPopup from './FilterPopup';
-
-
-import CourseReviews from './CourseReviews';
 import ResultsDisplayMobile from './ResultsDisplayMobile';
 /*
   ResultsDisplay Component.
@@ -266,8 +263,8 @@ export default class ResultsDisplay extends Component {
     // callback(this.filterColors(inputValue));
   }
 
-  setShowFilterPopup(){
-    this.setState({showFilterPopup : (!this.state.showFilterPopup) })
+  setShowFilterPopup() {
+    this.setState({ showFilterPopup: (!this.state.showFilterPopup) })
   }
 
   scrollReviews(e) {
@@ -367,9 +364,9 @@ export default class ResultsDisplay extends Component {
                 </div>
                 <div className="col-sm-2 col-xs-2 no-left-padding">
                   <div className="hidden-md hidden-lg hidden-xl">
-                    <input class="mobile-filter-button" type="button" value="Filter" onClick={this.setShowFilterPopup}/>
-                      {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} handleMajorFilterChange={this.handleMajorFilterChange}   setShowFilterPopup={this.setShowFilterPopup}/>}
-                  </div> 
+                    <input class="mobile-filter-button" type="button" value="Filter" onClick={this.setShowFilterPopup} />
+                    {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} handleMajorFilterChange={this.handleMajorFilterChange} setShowFilterPopup={this.setShowFilterPopup} />}
+                  </div>
                 </div>
               </div>
 
