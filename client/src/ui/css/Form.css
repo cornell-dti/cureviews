@@ -421,6 +421,10 @@ input[type="range"] {
   margin-left: 0;
 }
 
+.modalForm{
+  z-index:1009;
+}
+
 #modal-top{
   height: 35%;
   padding-top: 15px;
