@@ -150,7 +150,7 @@ export default class PreviewCard extends Component {
         <div className="row">
           <div className="col-md-12 col-sm-12">
             <p className="preview-class-title">
-              <a className="preview-class-link" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+              <a className={"" + (this.props.transformGauges ? "preview-class-link-scroll" : "preview-class-link")} href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
                 {theClass.classTitle}
               </a>
             </p>

@@ -8,7 +8,8 @@ import './css/CourseReviews.css';
 
 type Props = {
   courseId: string; reviews: readonly ReviewType[]; loading: boolean,
-  onScroll?: any
+  onScroll?: any,
+  transformGauges?: any
 };
 type State = { comparator: 'helpful'; reviews: any };
 
@@ -135,8 +136,22 @@ export class CourseReviews extends Component<Props, State> {
     }
   }
 
-  render() {
+  sort_reviews = () => {
+    if (window.screen.width > 992) {
+      return (
+        <div className="coursereviews-sort-container">
+          <div className="coursereviews-sort"> Sort By:
+              <select onChange={this.handleSelect} className="coursereviews-sort-options">
+              <option value="helpful">Most Helpful</option>
+              <option value="recent">Recent</option>
+            </select>
+          </div>
+        </div>
+      )
+    }
+  }
 
+  render() {
     let title = "Past Reviews (" + this.state.reviews.length + ")";
     if (this.props.courseId === "-1") {
       title = "Recent Reviews";
@@ -144,23 +159,25 @@ export class CourseReviews extends Component<Props, State> {
     return (
 
       <div>
-        <div className="coursereviews-header">
+        <div className={"" + (this.props.transformGauges ? "hidden" : "coursereviews-header")}>
           <div className="coursereviews-past-reviews-text">
             {title}
           </div>
-          <div className="coursereviews-sort-container">
-            <div className="coursereviews-sort"> Sort By:
-              <select onChange={this.handleSelect} className="coursereviews-sort-options">
-                <option value="helpful">Most Helpful</option>
-                <option value="recent">Recent</option>
-              </select>
-            </div>
-          </div>
+          {this.sort_reviews()}
         </div>
         <div>
-          <ul onScroll={(e) => this.props.onScroll(e)} className="coursereviews-review-ul">
-            {this.state.reviews}
-          </ul>
+          {
+            this.props.onScroll !== undefined &&
+            <ul onScroll={(e) => this.props.onScroll(e)} className="coursereviews-review-ul">
+              {this.state.reviews}
+            </ul>
+          }
+          {
+            this.props.onScroll === undefined &&
+            <ul className="coursereviews-review-ul">
+              {this.state.reviews}
+            </ul>
+          }
         </div>
       </div>
     );
@@ -171,7 +188,7 @@ export class CourseReviews extends Component<Props, State> {
 
 // wrap in a container class that allows the component to dynamically grab data
 // the component will automatically re-render when databse data changes!
-export default ({ courseId, onScroll }: { readonly courseId: string, onScroll: any }) => {
+export default ({ courseId, onScroll, transformGauges }: { readonly courseId: string, onScroll: any, transformGauges: any }) => {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<readonly ReviewType[]>([]);
 
@@ -188,5 +205,5 @@ export default ({ courseId, onScroll }: { readonly courseId: string, onScroll: a
     });
   }, [courseId]);
 
-  return <CourseReviews courseId={courseId} reviews={reviews} loading={loading} onScroll={onScroll} />;
+  return <CourseReviews courseId={courseId} reviews={reviews} loading={loading} onScroll={onScroll} transformGauges={transformGauges} />;
 };

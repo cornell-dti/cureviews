@@ -52,6 +52,7 @@ const StudentSchema = new Schema<StudentDocument>({
   token: { type: String }, // random token generated during login process
   privilege: { type: String }, // user privilege level
   reviews: { type: [String] }, // the reviews that this user has posted.
+  likedReviews: { type: [String] },
 });
 export const Students = mongoose.model<StudentDocument>("students", StudentSchema);
 
@@ -94,9 +95,8 @@ const ReviewSchema = new Schema<ReviewDocument>({
   reported: { type: Number }, // reported flag - 1 if review was reported, 0 otherwise
   professors: { type: [String] }, // list of professors that have thought the course over past semesters
   likes: { type: Number, min: 0 }, // number of likes a review has
+  likedBy: { type: [String] },
   isCovid: { type: Boolean },
-  lastLikedIP: { type: String, required: false }, // TODO temp fix, see Review.ts incrementLike
-  lastDislikedIP: { type: String, required: false },
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature
