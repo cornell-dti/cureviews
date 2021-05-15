@@ -136,14 +136,16 @@ export const regexClassesSearch = async (searchString) => {
  * Query for classes using a query
  */
 export const getClassesByQuery: Endpoint<Search> = {
-  guard: [body("query").notEmpty().isAscii().whitelist("^[A-Za-z0-9 ]+$")],
+  guard: [body("query").notEmpty()],
   callback: async (ctx: Context, search: Search) => {
+    // Filter by not-whitespace, then match any not word.
+    const query = search.query.replace(/(?=[^\s])\W/g, "");
     try {
-      const classes = await Classes.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      const classes = await Classes.find({ $text: { $search: query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
       if (classes && classes.length > 0) {
-        return classes.sort(courseSort(search.query));
+        return classes.sort(courseSort(query));
       }
-      return await regexClassesSearch(search.query);
+      return await regexClassesSearch(query);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getClassesByQuery' endpoint");

@@ -96,7 +96,7 @@ export default class Review extends Component {
   }
 
   review_styling = (rev, number_label_class, number_text_class) => {
-    if (window.screen.width < 992) {
+    if (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) < 992) {
       return (
         <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
 
@@ -173,8 +173,8 @@ export default class Review extends Component {
                 <span className="review-professor-label">Professor: </span>
                 {(review.professors && review.professors.length !== 0) ?
                   review.professors.map((prof, index) =>
-                    (<span className="review-professor-text" key={index}>
-                      {index > 0 ? ", " : ""}{prof}</span>))
+                  (<span className="review-professor-text" key={index}>
+                    {index > 0 ? ", " : ""}{prof}</span>))
                   : <span className="review-professor-text">N/A</span>
                 }
               </p>
