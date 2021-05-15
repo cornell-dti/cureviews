@@ -147,6 +147,11 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
         const netId = ticket.email.replace("@cornell.edu", "");
         const student = (await Students.findOne({ netId }));
 
+        const related = await Reviews.find({ class: classId });
+        if (related.find((v) => v.text === review.text)) {
+          return { resCode: 1, error: "Review is a duplicate of an already existing review for this class!" };
+        }
+
         try {
           // Attempt to insert the review
           const fullReview = new Reviews({

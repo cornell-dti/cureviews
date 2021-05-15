@@ -38,6 +38,8 @@ export default class ResultsDisplayMobile extends Component<Props, State> {
   }
 
   render() {
+    const last = Session.get("last-search");
+
     return (
       <div className="fullscreen">
         <div>
@@ -51,7 +53,7 @@ export default class ResultsDisplayMobile extends Component<Props, State> {
             {
               this.props.classView &&
               <div className="search-results-text">
-                <Link to={`/results/keyword/${Session.get("last-search").split(" ").join("+")}`} style={{ textDecoration: 'none', color: '#0076FF' }}>{"< "} Search Results</Link>
+                <Link to={last ? `/results/keyword/${last.split(" ").join("+")}` : "/"} style={{ textDecoration: 'none', color: '#0076FF' }}>{"< "} Search Results</Link>
               </div>
             }
 

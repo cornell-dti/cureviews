@@ -41,7 +41,6 @@ export default class ResultsDisplay extends Component {
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
     this.getSubjectOptions = this.getSubjectOptions.bind(this);
-    this.handleMajorFilterChange = this.handleMajorFilterChange.bind(this);
     this.renderCheckboxes = this.renderCheckboxes.bind(this);
     this.filterClasses = this.filterClasses.bind(this);
     this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
@@ -225,20 +224,6 @@ export default class ResultsDisplay extends Component {
     ))
   }
 
-
-  handleMajorFilterChange(selectedMajors) {
-
-    if (selectedMajors === null) {
-      selectedMajors = []
-    }
-
-    let newFilterMap = this.state.filterMap;
-
-    newFilterMap.set("subjects", selectedMajors)
-
-    this.setState({ filterMap: newFilterMap }, () => this.filterClasses());
-  }
-
   getSubjectOptions(inputValue, callback) {
     console.log("Deprecated functionality");
     // Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
@@ -315,22 +300,7 @@ export default class ResultsDisplay extends Component {
                 <p className="filter-sub-title">Level</p>
                 {this.renderCheckboxes("levels")}
               </div>
-              <div className={"filter-sub-category " + (this.props.type === "major" ? "filter-major-disabled" : "")}>
-                <p className="filter-sub-title">Major</p>
-                <AsyncSelect
-                  className=""
-                  isMulti
-                  isDisabled={this.props.type === "major"}
-                  placeholder={"Search Major"}
-                  classNamePrefix={"react-major-select"}
-                  isClearable={true}
-                  defaultOptions={false}
-                  loadOptions={this.getSubjectOptions}
-                  onChange={this.handleMajorFilterChange}
-                  value={this.state.filterMap.get("subjects")}
-                  noOptionsMessage={() => "No Subjects Match"}
-                />
-              </div>
+              
             </div>
 
             <div className="col-md-3 col-sm-12 col-xs-12 results">
@@ -365,7 +335,7 @@ export default class ResultsDisplay extends Component {
                 <div className="col-sm-2 col-xs-2 no-left-padding">
                   <div className="hidden-md hidden-lg hidden-xl">
                     <input class="mobile-filter-button" type="button" value="Filter" onClick={this.setShowFilterPopup} />
-                    {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} handleMajorFilterChange={this.handleMajorFilterChange} setShowFilterPopup={this.setShowFilterPopup} />}
+                    {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} setShowFilterPopup={this.setShowFilterPopup} />}
                   </div>
                 </div>
               </div>
