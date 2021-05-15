@@ -1,5 +1,30 @@
+@media screen and (max-width: 1000px) {
+  .navbar {
+    height: 102px;
+    padding-bottom: 21px;
+  }
+
+  .logo-container{
+    display: none;
+  }
+
+  .navbar-searchbar-container{
+    margin-left: 21px;
+    margin-right: 29px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .navbar {
+    min-height: 127.43px;
+  }
+
+  .navbar-searchbar-container{
+    margin-right: 120px;
+  }
+}
+
 .navbar {
-  min-height: 127.43px;
   width: 100%;
   padding-top: 40px;
   padding-left: 10px;
@@ -22,7 +47,6 @@
 
 .navbar-searchbar-container{
   width: 100%;
-  margin-right: 10vw;
 }
 
 .scale-logo-navbar{

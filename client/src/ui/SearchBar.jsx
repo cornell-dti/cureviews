@@ -6,6 +6,8 @@ import ProfessorResult from './ProfessorResult';
 import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 import axios from "axios";
+import { Session } from '../session-store';
+
 
 /*
   SearchBar Component.
@@ -65,10 +67,12 @@ export default class SearchBar extends Component {
       this.setState({ index: this.state.allSubjects.length + 1 });
     }
     this.setState({ query: query });
+
+    Session.setPersistent({"last-search": query});
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps) {
+    if (this.state.query.toLowerCase() !== "" && (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps)) {
       axios.post(`/v2/getClassesByQuery`, { query: this.state.query }).then(response => {
         const queryCourseList = response.data.result;
         if (queryCourseList.length !== 0) {
@@ -148,7 +152,6 @@ export default class SearchBar extends Component {
     else {
       this.updateQuery(e);
     }
-
   }
 
   mouseHover = () => {
@@ -273,10 +276,11 @@ export default class SearchBar extends Component {
   }
 
   render() {
+    const text = window.innerWidth >= 840 ? "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”" : "Search any keyword"
     return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
-        <div className={"col-lg-12 col-md-12 col-sm-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
-          <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue={this.props.isInNavbar ? (this.props.userInput ? this.props.userInput : "") : ""} placeholder={this.props.isInNavbar ? "" : "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”"} autoComplete="off" />
+        <div className={"col-lg-12 col-md-12 col-sm-12 col-xs-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
+          <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue={this.props.isInNavbar ? (this.props.userInput ? this.props.userInput : "") : ""} placeholder={this.props.isInNavbar ? "" : text} autoComplete="off" />
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}

@@ -5,8 +5,8 @@ import FilteredResult from './FilteredResult.tsx';
 import PreviewCard from './PreviewCard.jsx';
 import Loading from 'react-loading-animation';
 import AsyncSelect from "react-select/async";
-
-
+import FilterPopup from './FilterPopup';
+import ResultsDisplayMobile from './ResultsDisplayMobile';
 /*
   ResultsDisplay Component.
 
@@ -33,7 +33,10 @@ export default class ResultsDisplay extends Component {
         "5000+": true
       },
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
-      filteredItems: this.props.courses
+      filteredItems: this.props.courses,
+      fullscreen: false,
+      transformGauges: false,
+      showFilterPopup: false
     };
     this.previewHandler = this.previewHandler.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -43,7 +46,9 @@ export default class ResultsDisplay extends Component {
     this.filterClasses = this.filterClasses.bind(this);
     this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
     this.sort = this.sort.bind(this);
-
+    this.setShowFilterPopup = this.setShowFilterPopup.bind(this);
+    this.scrollReviews = this.scrollReviews.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -171,20 +176,36 @@ export default class ResultsDisplay extends Component {
       card_course: course,
       active_card: index
     });
+    this.setState({ transformGauges: false });
   }
 
+  computeHeight() {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  }
   //Displays the filtered items as FilteredResult components if there are any
   //The original list as FilteredResult components otherwise
   renderResults() {
+
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
       : this.state.courseList;
+
+
+
     return items.map((result, index) => (
-      <FilteredResult key={index} index={index}
-        selected={index === this.state.active_card}
-        course={result} previewHandler={this.previewHandler}
-        sortBy={this.state.selected} />
+      <div onClick={() => this.setState({
+        fullscreen:
+          (this.computeHeight() < 992 ? true : false)
+      })} >
+        <FilteredResult key={index} index={index}
+          selected={index === this.state.active_card}
+          course={result} previewHandler={this.previewHandler}
+          sortBy={this.state.selected} />
+      </div>
+
     ));
+
+
 
   }
 
@@ -242,6 +263,23 @@ export default class ResultsDisplay extends Component {
     // callback(this.filterColors(inputValue));
   }
 
+  setShowFilterPopup() {
+    this.setState({ showFilterPopup: (!this.state.showFilterPopup) })
+  }
+
+  scrollReviews(e) {
+    const currentScrollY = e.target.scrollTop;
+    if (currentScrollY > 80) {
+      this.setState({ transformGauges: true });
+    } else {
+      this.setState({ transformGauges: false });
+    }
+  }
+
+  toggleFullscreen() {
+    this.setState({ fullscreen: false })
+  }
+
   render() {
     return (
       <div className="row loading-margin-top noLeftRightMargin">
@@ -267,7 +305,7 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
           <div className="results-column-container">
-            <div className="col-md-2 col-sm-2 col-xs-2 filter-container" >
+            <div className="hidden-xs hidden-sm  col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -294,24 +332,41 @@ export default class ResultsDisplay extends Component {
                 />
               </div>
             </div>
-            <div className="col-md-3 col-sm-3 col-xs-3 results">
+
+            <div className="col-md-3 col-sm-12 col-xs-12 results">
+              {
+                this.state.fullscreen &&
+                <ResultsDisplayMobile classView={false} onClickText={this.toggleFullscreen}
+                  card_course={this.state.card_course} transformGauges={this.state.transformGauges}
+                  scrollReviews={this.scrollReviews} />
+              }
+
+
 
               <div className="row no-left-margin">
                 <div>
                   <p className="results-num-classes-found">We found <strong>{this.state.filteredItems.length === 0 ? this.state.courseList.length : this.state.filteredItems.length}</strong> courses
                   for &quot;{this.props.userInput}&quot;</p></div>
               </div>
-              <div className="row no-left-margin">
-                <div className="results-sort-by-container">
-                  <p className="results-sort-by-text">
-                    Sort By:
+              <div className="row no-left-margin mdown-8">
+                <div className="col-lg-12 col-md-12 col-sm-10 col-xs-10 no-left-padding">
+                  <div className="results-sort-by-container">
+                    <p className="hidden-xs hidden-sm results-sort-by-text">
+                      Sort By:
                     </p>
-                  <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
-                    <option value="relevance">Relevance</option>
-                    <option value="rating">Overall Rating</option>
-                    <option value="diff" >Difficulty</option>
-                    <option value="work">Workload</option>
-                  </select>
+                    <select value={this.state.selected} className="results-sort-by-select" onChange={(e) => this.handleSelect(e)}>
+                      <option value="relevance">Relevance</option>
+                      <option value="rating">Overall Rating</option>
+                      <option value="diff" >Difficulty</option>
+                      <option value="work">Workload</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm-2 col-xs-2 no-left-padding">
+                  <div className="hidden-md hidden-lg hidden-xl">
+                    <input class="mobile-filter-button" type="button" value="Filter" onClick={this.setShowFilterPopup} />
+                    {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} handleMajorFilterChange={this.handleMajorFilterChange} setShowFilterPopup={this.setShowFilterPopup} />}
+                  </div>
                 </div>
               </div>
 
@@ -321,8 +376,8 @@ export default class ResultsDisplay extends Component {
                 </ul>
               </div>
             </div>
-            <div className="col preview">
-              <PreviewCard course={this.state.card_course} />
+            <div className="hidden-xs hidden-sm col preview">
+              <PreviewCard course={this.state.card_course} mobile={false} />
             </div>
           </div>
         }

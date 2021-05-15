@@ -4,6 +4,7 @@
   height: 50%;
 }
 */
+@media (max-width: 992px) {
 .Toastify__toast-container--top-right {
   top: 22%;
   /* margin: 0;
@@ -12,3 +13,12 @@
   transform: translate(-50%, -50%);
   font-size: 32px; */
 } 
+}
+
+@media (max-width: 992px) {
+  .Toastify__toast-container--top-right {
+    top: 0%;
+    width: 100%;
+    left: 0%;
+  } 
+}

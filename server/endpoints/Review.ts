@@ -34,6 +34,7 @@ interface ClassByInfoQuery {
 
 export interface ReviewRequest {
   id: string;
+  token: string;
 }
 
 /**
@@ -46,6 +47,7 @@ export interface ReviewRequest {
 export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => {
   const copy = doc;
   copy.user = "";
+  copy.likedBy = [];
   return copy;
 }));
 
@@ -198,21 +200,37 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
  * TODO: migrate to a proper account-based solution
  */
 export const incrementLike: Endpoint<ReviewRequest> = {
-  guard: [body("id").notEmpty().isAscii()],
+  guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
+    const { token } = request;
     try {
       const review = await Reviews.findOne({ _id: request.id }).exec();
 
-      if (review.lastLikedIP === ctx.ip) {
-        return { resCode: 0, error: "Cannot like a review twice!" };
-      }
-      if (review.likes === undefined) {
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1, lastLikedIP: ctx.ip } }).exec();
-      } else {
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1, lastLikedIP: ctx.ip } }).exec();
-      }
+      const ticket = await getVerificationTicket(token);
 
-      return { resCode: 1 };
+      if (!ticket) return { resCode: 0, error: "Missing verification ticket" };
+
+      if (ticket.hd === "cornell.edu") {
+        await insertUserCallback({ googleObject: ticket });
+        const netId = ticket.email.replace("@cornell.edu", "");
+        const student = (await Students.findOne({ netId }));
+
+        if (student.likedReviews !== undefined && student.likedReviews.includes(review.id)) {
+          return { resCode: 0, error: "Error: user already liked" };
+        }
+
+        // if likedReviews is undefined its fine. $push creates empty arr
+        await Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
+
+        if (review.likes === undefined) {
+          await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1 }, $push: { likedBy: student.id } }).exec();
+        } else {
+          await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1 }, $push: { likedBy: student.id } }).exec();
+        }
+
+        return { resCode: 1 };
+      }
+      return { resCode: 0, error: "Error: non-Cornell email attempted to insert review" };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'incrementLike' method");
@@ -231,20 +249,33 @@ export const incrementLike: Endpoint<ReviewRequest> = {
  */
 
 export const decrementLike: Endpoint<ReviewRequest> = {
-  guard: [body("id").notEmpty().isAscii()],
+  guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
+    const { token } = request;
     try {
       const review = await Reviews.findOne({ _id: request.id }).exec();
+      const ticket = await getVerificationTicket(token);
 
-      if (review.lastDislikedIP === ctx.ip) {
-        return { resCode: 0, error: "Cannot dislike a review twice!" };
+      if (!ticket) return { resCode: 0, error: "Missing verification ticket" };
+
+      if (ticket.hd !== "cornell.edu") return { resCode: 0, error: "Error: non-Cornell email attempted to insert review" };
+
+      await insertUserCallback({ googleObject: ticket });
+      const netId = ticket.email.replace("@cornell.edu", "");
+      const student = (await Students.findOne({ netId }));
+
+      if (student.likedReviews === undefined || !student.likedReviews.includes(review.id)) {
+        return { resCode: 0, error: "Error: user already disliked" };
       }
 
+      await Students.updateOne({ netId }, { $pull: { likedReviews: review.id } });
+
       if (review.likes === undefined) {
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0, lastDislikedIP: ctx.ip } }).exec();
+        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0 } }, { $pull: { likedBy: student.netId } }).exec();
       } else {
         // bound the rating at 0
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: Math.max(0, review.likes - 1), lastDislikedIP: ctx.ip } }).exec();
+        await Reviews.updateOne({ _id: request.id },
+          { $set: { likes: Math.max(0, review.likes - 1) } }, { $pull: { likedBy: student.netId } }).exec();
       }
       return { resCode: 1 };
     } catch (error) {

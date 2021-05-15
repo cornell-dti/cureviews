@@ -24,6 +24,7 @@ export interface Student {
   readonly token: string;
   readonly privilege: string; // user privilege level
   reviews: string[];
+  likedReviews: string[];
 }
 
 export interface Subject {
@@ -45,9 +46,8 @@ export interface Review {
   reported?: number;
   professors?: string[];
   likes?: number;
+  likedBy: string[];
   isCovid?: boolean;
-  lastLikedIP?: string;
-  lastDislikedIP?: string;
 }
 
 export interface Professor {
