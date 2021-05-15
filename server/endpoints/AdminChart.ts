@@ -45,7 +45,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
           const subshort = subject.subShort;
           retArr.push(subshort);
         }));
-        const arrHM = [] as any[]; // [ {"cs": {date1: totalNum}, math: {date1, totalNum} },
+        const arrHM = []; // [ {"cs": {date1: totalNum}, math: {date1, totalNum} },
         // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
         for (let i = 0; i < range * 30; i += step) {
           // "data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
@@ -66,18 +66,18 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
             },
           },
           ];
-          const hashMap: any = {}; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
+          const hashMap = { total: null }; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
           // eslint-disable-next-line no-await-in-loop
-          const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
+          const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline);
           // eslint-disable-next-line no-await-in-loop
           await Promise.all(results.map(async (data) => { // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
-            const results = await Classes.find({
+            const res = await Classes.find({
               _id: data._id,
             }, {
               classSub: 1,
             }).exec();
 
-            const sub = results[0]; // finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
+            const sub = res[0]; // finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
             // date of this review minus the hrs mins sec
             const timeStringYMD = new Date(new Date().setDate(new Date().getDate() - i)).toISOString().split('T')[0];
             if (retArr.includes(sub.classSub)) { // if thos review is one of the top 15 we want.
@@ -121,6 +121,9 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
         }
         return hm2;
       }
+
+      // user is not admin
+      return null;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getReviewsOverTimeTop15' method");
@@ -154,9 +157,9 @@ const topSubjectsCB = async (_ctx: Context, request: Token) => {
     ];
     // reviewedSubjects is a dictionary-like object of subjects (key) and
     // number of reviews (value) associated with that subject
-    const reviewedSubjects = new DefaultDict();
+    const reviewedSubjects = new DefaultDict<number>();
     // run the query and return the class name and number of reviews written to it
-    const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline, () => { });
+    const results = await Reviews.aggregate<{ reviewCount: number; _id: string }>(pipeline);
 
     await Promise.all(results.map(async (course) => {
       const classObject = (await Classes.find({ _id: course._id }).exec())[0];
@@ -216,7 +219,7 @@ export const howManyEachClass: Endpoint<Token> = {
             },
           },
         ];
-        return await Classes.aggregate(pipeline, () => { });
+        return await Classes.aggregate(pipeline);
       }
       return null;
     } catch (error) {
@@ -274,7 +277,7 @@ export const howManyReviewsEachClass: Endpoint<Token> = {
             },
           },
         ];
-        const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline, () => { });
+        const results = await Reviews.aggregate<{ _id: string; total: number }>(pipeline);
 
         const ret = await Promise.all(results.map(async (data) => {
           const subNum = (await Classes.find({ _id: data._id }, { classSub: 1, classNum: 1 }).exec())[0];
@@ -296,13 +299,13 @@ export const howManyReviewsEachClass: Endpoint<Token> = {
 };
 
 // Recreation of Python's defaultdict to be used in topSubjects method
-export class DefaultDict<T = any> {
+export class DefaultDict<T> {
   [key: string]: T | Function;
 
   get(key: string): T | null {
     const val = this[key];
 
-    if (this.hasOwnProperty(key) && typeof val !== "function") {
+    if (Object.prototype.hasOwnProperty.call(this, key) && typeof val !== "function") {
       return val;
     }
     return null;

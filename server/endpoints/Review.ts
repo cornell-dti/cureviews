@@ -21,6 +21,8 @@ interface InsertReviewRequest {
 }
 
 export interface InsertUserRequest {
+  // TODO: one day, there may be types for this object. Today is not that day.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   googleObject: any;
 }
 

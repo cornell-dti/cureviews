@@ -8,7 +8,7 @@ const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.a
 
 // The type for a search query
 interface AdminRequest {
-    token: string;
+  token: string;
 }
 
 /**
@@ -23,8 +23,9 @@ interface AdminRequest {
 export const getVerificationTicket = async (token?: string) => {
   try {
     if (token === null) {
+      // eslint-disable-next-line no-console
       console.log("Token was undefined in getVerificationTicket");
-      return null; // Token was undefined
+      return null;
     }
     const ticket = await client.verifyIdToken({
       idToken: token,
