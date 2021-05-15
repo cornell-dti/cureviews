@@ -352,13 +352,13 @@ export default class Form extends Component {
             <p className="form-header-text">Leave a Review</p>
 
             {this.state.showCovid && <label className="covidCheckboxContainer form-bottom-row-spacing2">
-            <input
+              <input
                 className="covidCheckboxInput"
                 name="isCovid"
                 type="checkbox"
                 checked={this.state.isCovid}
                 onChange={this.handleCovidBox} />
-                <span className="covidCheckboxLabel">Taken Virtually</span>
+              <span className="covidCheckboxLabel">Taken Virtually</span>
             </label>}
 
             <div className="row form-bottom-row-spacing">
@@ -608,7 +608,7 @@ export default class Form extends Component {
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
-    if (window.screen.width < 992) {
+    if (window.screen.width < 993) {
       return this.renderFormMobile()
     }
     else {
