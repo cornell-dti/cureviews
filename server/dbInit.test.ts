@@ -41,11 +41,11 @@ beforeAll(async () => {
     classRating: 5,
     classWorkload: 5,
     classDifficulty: 5,
-  }).save().catch((err) => { console.log(err); });
+  }).save();
 
   // We need to pretend to have access to a cornell classes endpoint
   const app = express();
-  serverCloseHandle = app.listen(testingPort, async () => {});
+  serverCloseHandle = app.listen(testingPort);
 
   app.get("/hello", (req, res) => {
     res.send("Hello world");
@@ -99,7 +99,11 @@ beforeAll(async () => {
             subject: "gork",
             catalogNbr: "2110",
             titleLong: "Advanced Study of Angry Fungi",
-            enrollGroups: [{ classSections: [{ ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }, { firstName: "Prof.", lastName: "Urgok" }] }] }] }],
+            enrollGroups: [{
+              classSections: [
+                { ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }, { firstName: "Prof.", lastName: "Urgok" }] }] },
+              ],
+            }],
           },
         ],
       },

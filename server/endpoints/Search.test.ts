@@ -108,7 +108,7 @@ beforeAll(async () => {
 
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
-  serverCloseHandle = app.listen(testingPort, async () => { });
+  serverCloseHandle = app.listen(testingPort);
   configure(app);
 });
 
@@ -196,12 +196,13 @@ describe('tests', () => {
     expect(res.data.result.map((e) => e.fullName)).not.toContain("Jean-Luc Picard");
   });
 
-  // Will not accept non-ascii:
+  // Will accept ascii, but give no guarantees as to what is returned.
   it('getClassesByQuery-non Ascii', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "भारत" }).catch((e) => e);
-    expect(res.message).toBe("Request failed with status code 400");
+    expect(res.data.result).toBeTruthy();
   });
 
+  // Not for these however.
   it('getSubjectsByQuery-non Ascii', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "भारत" }).catch((e) => e);
     expect(res.message).toBe("Request failed with status code 400");

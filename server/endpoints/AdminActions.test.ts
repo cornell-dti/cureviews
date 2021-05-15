@@ -57,7 +57,7 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
-  serverCloseHandle = app.listen(testingPort, async () => { });
+  serverCloseHandle = app.listen(testingPort);
   configure(app);
 
   await sampleReview.save();

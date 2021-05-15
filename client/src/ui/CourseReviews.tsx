@@ -137,7 +137,7 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   sort_reviews = () => {
-    if (window.screen.width > 992) {
+    if (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) > 992) {
       return (
         <div className="coursereviews-sort-container">
           <div className="coursereviews-sort"> Sort By:
