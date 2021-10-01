@@ -6,7 +6,7 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  color: #0076FF;
+  color: #0076ff;
   margin-bottom: 25px;
 }
 
@@ -48,7 +48,7 @@
   padding-top: 10px;
 }
 
-.background-common{
+.background-common {
   background-repeat: no-repeat;
   background-size: 101%;
   background-position-y: 103%;
@@ -59,111 +59,106 @@
   bottom: 0px;
 }
 
-.background-gradient_afternoonsummer{
-  
+.background-gradient_afternoonsummer {
   background-image: url("/bg_afternoon_summer.svg"),
-  linear-gradient(180deg, 
-                rgba(123, 179, 244, 0.7) 0%, 
-                rgba(255, 255, 255, 0) 77.1%);                            
+    linear-gradient(
+      180deg,
+      rgba(123, 179, 244, 0.7) 0%,
+      rgba(255, 255, 255, 0) 77.1%
+    );
 }
 
-.background-gradient_sunsetsummer{
-  
+.background-gradient_sunsetsummer {
   background-image: url("/bg_sunset_summer.svg"),
-  linear-gradient(201.93deg, 
-                rgba(91, 154, 226, 0.7) 19.17%, 
-                rgba(255, 228, 196, 0.7) 57.66%, 
-                rgba(253, 144, 65, 0.7) 84.88%);
+    linear-gradient(
+      201.93deg,
+      rgba(91, 154, 226, 0.7) 19.17%,
+      rgba(255, 228, 196, 0.7) 57.66%,
+      rgba(253, 144, 65, 0.7) 84.88%
+    );
 }
 
-.background-gradient_nightsummer{
-  
+.background-gradient_nightsummer {
   background-image: url("/bg_night_summer.svg"),
-  linear-gradient(302.67deg, 
-                #0C2C69 49.07%, 
-                #144199 97.23%);
+    linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
-.background-gradient_afternoonfall{
-  
+.background-gradient_afternoonfall {
   background-image: url("/bg_afternoon_fall.svg"),
-  linear-gradient(180deg, 
-                rgba(255, 255, 255, 0) 0%, 
-                rgba(255, 218, 175, 0.42) 77.1%);
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 218, 175, 0.42) 77.1%
+    );
 }
 
-.background-gradient_sunsetfall{
-  
+.background-gradient_sunsetfall {
   background-image: url("/bg_sunset_fall.svg"),
-  linear-gradient(201.93deg, 
-                rgba(0, 93, 189, 0.7) 19.17%, 
-                rgba(145, 125, 181, 0.7) 50.25%, 
-                rgba(255, 164, 94, 0.7) 84.88%);                           
+    linear-gradient(
+      201.93deg,
+      rgba(0, 93, 189, 0.7) 19.17%,
+      rgba(145, 125, 181, 0.7) 50.25%,
+      rgba(255, 164, 94, 0.7) 84.88%
+    );
 }
 
-.background-gradient_nightfall{
-  
+.background-gradient_nightfall {
   background-image: url("/bg_night_fall.svg"),
-  linear-gradient(302.67deg, 
-                #0C2C69 49.07%, 
-                #144199 97.23%);
+    linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
-.background-gradient_afternoonwinter{
-  
+.background-gradient_afternoonwinter {
   background-image: url("/bg_afternoon_winter.svg"),
-  linear-gradient(180deg, 
-                rgba(138, 185, 239, 0.7) 12.85%, 
-                rgba(185, 217, 255, 0) 77.1%);                            
+    linear-gradient(
+      180deg,
+      rgba(138, 185, 239, 0.7) 12.85%,
+      rgba(185, 217, 255, 0) 77.1%
+    );
 }
 
-.background-gradient_sunsetwinter{
-  
+.background-gradient_sunsetwinter {
   background-image: url("/bg_sunset_winter.svg"),
-  linear-gradient(201.93deg, 
-                rgba(2, 32, 66, 0.7) 14.7%, 
-                rgba(10, 68, 108, 0.7) 27.25%, 
-                rgba(144, 133, 147, 0.7) 55.16%, 
-                rgba(252, 137, 48, 0.7) 75.47%, 
-                rgba(222, 89, 24, 0.7) 84.88%);
+    linear-gradient(
+      201.93deg,
+      rgba(2, 32, 66, 0.7) 14.7%,
+      rgba(10, 68, 108, 0.7) 27.25%,
+      rgba(144, 133, 147, 0.7) 55.16%,
+      rgba(252, 137, 48, 0.7) 75.47%,
+      rgba(222, 89, 24, 0.7) 84.88%
+    );
 }
 
-.background-gradient_nightwinter{
-  
+.background-gradient_nightwinter {
   background-image: url("/bg_night_winter.svg"),
-  linear-gradient(302.67deg, 
-                #0C2C69 49.07%, 
-                #144199 97.23%);
+    linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
-.background-gradient_afternoonspring{
-  
-  background-image: url("/bg_afternoon_spring.svg"), 
-  linear-gradient(180deg, 
-                rgba(51, 145, 254, 0.7) 7.5%, 
-                rgba(255, 255, 255, 0.7) 79.5%)                                                             
+.background-gradient_afternoonspring {
+  background-image: url("/bg_afternoon_spring.svg"),
+    linear-gradient(
+      180deg,
+      rgba(51, 145, 254, 0.7) 7.5%,
+      rgba(255, 255, 255, 0.7) 79.5%
+    );
 }
 
-.background-gradient_sunsetspring{
-  
+.background-gradient_sunsetspring {
   background-image: url("/bg_sunset_spring.svg"),
-  linear-gradient(201.93deg, 
-                rgba(164, 193, 209, 0.7) 19.17%, 
-                rgba(246, 228, 218, 0.7) 50.25%, 
-                rgba(255, 182, 121, 0.7) 73.5%, 
-                rgba(247, 124, 74, 0.7) 84.88%);
-                            
+    linear-gradient(
+      201.93deg,
+      rgba(164, 193, 209, 0.7) 19.17%,
+      rgba(246, 228, 218, 0.7) 50.25%,
+      rgba(255, 182, 121, 0.7) 73.5%,
+      rgba(247, 124, 74, 0.7) 84.88%
+    );
 }
 
-.background-gradient_nightspring{
-  
+.background-gradient_nightspring {
   background-image: url("/bg_night_spring.svg"),
-  linear-gradient(302.67deg, 
-                #0C2C69 49.07%, 
-                #144199 97.23%);
+    linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
-.dti-logo{
+.dti-logo {
   position: absolute;
   bottom: 10px;
   right: 30px;
@@ -172,7 +167,7 @@
 /* Needed so that background is flush against bottom */
 .full-height {
   min-height: 100vh;
-  background-color: #F4F9FE;
+  background-color: #f4f9fe;
 }
 
 /* I believe this is only used in recentreview.jsx so will remove soon TODO */
@@ -181,15 +176,37 @@
 }
 
 ::-webkit-scrollbar {
-  width: .6%;
+  width: 0.6%;
   padding-right: 100%;
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px #ECECEC;
+  -webkit-box-shadow: inset 0 0 6px #ececec;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #807B7B;
+  background: #807b7b;
   border-radius: 13.5731px;
+}
+
+.sign-in-button {
+  position: absolute;
+  right: 80px;
+  top: 50px;
+
+  width: 137px;
+  height: 39px;
+
+  background: #ffffff;
+  border-radius: 10px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+  letter-spacing: -0.22px;
+
+  color: #000000;
 }
