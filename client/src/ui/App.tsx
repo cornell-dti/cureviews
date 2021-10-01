@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar.jsx';
+import LoginModal from './LoginModal';
 import "./css/App.css";
 
 
@@ -54,8 +55,11 @@ export default class App extends Component {
     return (
       <div className={"container-fluid full-height background-common background-gradient_" + dayclass + monthclass}>
 
-        <button type="button" className="btn btn-light sign-in-button">Sign In</button>
-        
+        <button type="button" className="btn btn-light sign-in-button" data-toggle="modal" data-target="#signinModal">
+          Sign In
+        </button>
+        <LoginModal />
+
         <div className="row">
           <img src='/logo.svg' className="img-responsive scale-logo-homepage" alt="CU Reviews Logo" />
         </div>
