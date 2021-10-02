@@ -37,6 +37,11 @@ export interface ReviewRequest {
   token: string;
 }
 
+// The type of a query with a studentId
+export interface StudentIdQuery{
+  studentId: string;
+}
+
 /**
  * Santize the reviews, so that we don't leak information about who posted what.
  * Even if the user id is leaked, however, that still gives no way of getting back to the netID.
@@ -192,6 +197,26 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
       // eslint-disable-next-line no-console
       console.log(error);
       return { resCode: 0, error: "Error: at 'insert' method" };
+    }
+  },
+};
+
+/**
+ * Counts the number of reviews made by a given student id.
+ */
+
+export const countReviewsByStudentId: Endpoint<StudentIdQuery> = {
+  guard: [body("studentId").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: StudentIdQuery) => {
+    const { studentId } = request;
+    try {
+      return Reviews.count({ user: studentId });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'countReviewsByStudentId' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return -1;
     }
   },
 };
