@@ -1,58 +1,69 @@
 /* Classview Layout Styling */
 
-.container-top-gap-fix{
+.container-top-gap-fix {
   padding-top: 0 !important;
   padding: 0;
 }
 
-.no-padding{
+.no-padding {
   padding: 0 !important;
 }
 
-.navbar-margin{
+.navbar-margin {
   margin-top: 45px;
 }
 
-.classview-column-container{
+.classview-column-container {
   display: flex;
 }
 
-.classview-right-panel{
+.classview-right-panel {
   padding: 0 5vw 0 5vw;
   overflow: hidden;
   min-width: 320px;
+  width: 100%;
 }
 
-.classview-gauge-container{
+.classview-gauge-container {
   border-radius: 10px;
   background-color: #ffffff;
-  padding: 20px 10px;
-  margin-right: 8%;
-  margin-left: 0;
+  padding: 30px 15px 30px 0;
+  height: 150px;
 }
 
-.classview-reviews-container{
+.classview-gauge {
+  height: 100%;
+}
+
+@media (min-width: 1200px) {
+  .classview-gauge {
+    height: 100%;
+    /* padding: 0 50px; TODO: media queries for diff padding */
+  }
+}
+
+.classview-reviews-container {
   margin-right: 0;
   margin-top: 30px;
   margin-left: 0;
 }
 
-.classview-loading{
+.classview-loading {
   padding-top: 300px;
 }
 
-.classview-coursecard-min-width{
+.classview-coursecard-min-width {
   min-width: 530px;
   display: flex;
 }
 
-.errorgauge{
+.errorgauge {
   margin: 9vh auto 7vh auto;
   display: flex;
 }
 
-.error-text{
-  font-family: "Source Sans Pro", sans-serif; 
+.error-text {
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 36px;
   font-weight: var(--regular-weight);
   font-style: normal;
@@ -61,8 +72,8 @@
   text-align: center;
 }
 
-.animate-form{
-  transition-property: bottom;  /*NOTE: this only animates movement*/
+.animate-form {
+  transition-property: bottom; /*NOTE: this only animates movement*/
   transition-duration: 0.7s;
   transition-timing-function: cubic-bezier(0.46, 0.03, 0.52, 0.96);
   transition-delay: 0s;

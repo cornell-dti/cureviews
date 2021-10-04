@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import './css/PreviewCard.css';
-import Gauge from './Gauge.tsx';
-import Review from './Review.jsx';
-import Form from './Form.jsx';
-import { lastOfferedSems } from 'common/CourseCard';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import "./css/PreviewCard.css";
+import Gauge from "./Gauge.tsx";
+import Review from "./Review.jsx";
+import Form from "./Form.jsx";
+import { lastOfferedSems } from "common/CourseCard";
 
 /*
   Preview Card component.
@@ -29,7 +29,7 @@ export default class PreviewCard extends Component {
       topReview: {},
       numReviews: 0,
       topReviewLikes: 0,
-      showMobileReviewForm: false
+      showMobileReviewForm: false,
     };
 
     this.updateColors = this.updateColors.bind(this);
@@ -50,96 +50,106 @@ export default class PreviewCard extends Component {
 
   //If the value of the metric is null, set the Gauge value to "-"
   updateGauges() {
-    this.setState({
-      id: this.props.course._id,
-      rating: Number(this.props.course.classRating) ? this.props.course.classRating : "-",
-      diff: Number(this.props.course.classDifficulty) ? this.props.course.classDifficulty : "-",
-      workload: Number(this.props.course.classWorkload) ? this.props.course.classWorkload : "-",
-    }, () => this.updateColors());
+    this.setState(
+      {
+        id: this.props.course._id,
+        rating: Number(this.props.course.classRating)
+          ? this.props.course.classRating
+          : "-",
+        diff: Number(this.props.course.classDifficulty)
+          ? this.props.course.classDifficulty
+          : "-",
+        workload: Number(this.props.course.classWorkload)
+          ? this.props.course.classWorkload
+          : "-",
+      },
+      () => this.updateColors()
+    );
   }
 
   //Updates the top review to be the one with the most likes
   updateTopReview() {
-    axios.post(`/v2/getReviewsByCourseId`, { courseId: this.props.course._id }).then(response => {
-      const reviews = response.data.result
-      if (reviews) {
-        if (reviews.length > 0) {
-          reviews.sort((a, b) => (((a.likes) ? a.likes : 0) < ((b.likes) ? b.likes : 0)) ? 1 : -1)
-          this.setState({
-            topReview: reviews[0],
-            topReviewLikes: reviews[0].likes ? reviews[0].likes : 0,  //Account for undefined likes in review obj
-            numReviews: reviews.length
-          });
-        }
-        else {
-          this.setState({
-            topReview: {},
-            numReviews: 0
-          });
+    axios
+      .post(`/v2/getReviewsByCourseId`, { courseId: this.props.course._id })
+      .then((response) => {
+        const reviews = response.data.result;
+        if (reviews) {
+          if (reviews.length > 0) {
+            reviews.sort((a, b) =>
+              (a.likes ? a.likes : 0) < (b.likes ? b.likes : 0) ? 1 : -1
+            );
+            this.setState({
+              topReview: reviews[0],
+              topReviewLikes: reviews[0].likes ? reviews[0].likes : 0, //Account for undefined likes in review obj
+              numReviews: reviews.length,
+            });
+          } else {
+            this.setState({
+              topReview: {},
+              numReviews: 0,
+            });
+            // eslint-disable-next-line no-console
+            console.log(
+              `No professor reviews for course by id = ${this.props.course._id}}`
+            );
+          }
+        } else {
           // eslint-disable-next-line no-console
-          console.log(`No professor reviews for course by id = ${this.props.course._id}}`);
+          console.log(
+            `Unable to find reviews by course by id = ${this.props.course._id}`
+          );
         }
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(`Unable to find reviews by course by id = ${this.props.course._id}`);
-      }
-    });
+      });
   }
 
   //Updates the colors of the metrics
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
-        ratingColor: "#f9cc30"
-      })
-    }
-    else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
+        ratingColor: "#f9cc30",
+      });
+    } else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
       this.setState({
-        ratingColor: "#53B277"
-      })
-    }
-    else {
+        ratingColor: "#53B277",
+      });
+    } else {
       this.setState({
-        ratingColor: "#E64458"
-      })
+        ratingColor: "#E64458",
+      });
     }
 
     if (0 < this.state.diff && this.state.diff < 3.0) {
       this.setState({
-        diffColor: "#53B277"
-      })
-    }
-    else if (3.0 <= this.state.diff && this.state.diff < 4.0) {
+        diffColor: "#53B277",
+      });
+    } else if (3.0 <= this.state.diff && this.state.diff < 4.0) {
       this.setState({
-        diffColor: "#f9cc30"
-      })
-    }
-    else {
+        diffColor: "#f9cc30",
+      });
+    } else {
       this.setState({
-        diffColor: "#E64458"
-      })
+        diffColor: "#E64458",
+      });
     }
 
     if (0 < this.state.workload && this.state.workload < 3.0) {
       this.setState({
-        workloadColor: "#53B277"
-      })
-    }
-    else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
+        workloadColor: "#53B277",
+      });
+    } else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
       this.setState({
-        workloadColor: "#f9cc30"
-      })
-    }
-    else {
+        workloadColor: "#f9cc30",
+      });
+    } else {
       this.setState({
-        workloadColor: "#E64458"
-      })
+        workloadColor: "#E64458",
+      });
     }
     this.updateTopReview();
   }
 
   setShowMobileReviewForm() {
-    this.setState({ showMobileReviewForm: (!this.state.showMobileReviewForm) })
+    this.setState({ showMobileReviewForm: !this.state.showMobileReviewForm });
   }
 
   render() {
@@ -150,120 +160,152 @@ export default class PreviewCard extends Component {
         <div className="row">
           <div className="col-md-12 col-sm-12">
             <p className="preview-class-title">
-              <a className={"" + (this.props.transformGauges ? "preview-class-link-scroll" : "preview-class-link")} href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
+              <a
+                className={
+                  "" +
+                  (this.props.transformGauges
+                    ? "preview-class-link-scroll"
+                    : "preview-class-link")
+                }
+                href={`/course/${theClass.classSub.toUpperCase()}/${
+                  theClass.classNum
+                }`}
+              >
                 {theClass.classTitle}
               </a>
             </p>
             <p className="preview-class-info">
-              {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
+              {theClass.classSub.toUpperCase() +
+                " " +
+                theClass.classNum +
+                ", " +
+                offered}
             </p>
           </div>
         </div>
 
-        {
-          !this.props.transformGauges &&
+        {!this.props.transformGauges && (
           <div className="row gaugeHolder">
             <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-              <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.rating)}
-                isInPreviewCard={true} text="Overall" />
-
+              <Gauge rating={parseFloat(this.state.rating)} label="Overall" />
             </div>
             <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-              <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.diff)}
-                isInPreviewCard={true} text="Difficulty" />
-
+              <Gauge rating={parseFloat(this.state.diff)} label="Difficulty" />
             </div>
             <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
-              <Gauge width="13vw" height="10vh" rating={parseFloat(this.state.workload)}
-                isInPreviewCard={true} text="Workload" />
-
+              <Gauge
+                rating={parseFloat(this.state.workload)}
+                label="Workload"
+              />
             </div>
           </div>
-        }
-        {
-          this.props.transformGauges &&
+        )}
+        {this.props.transformGauges && (
           <div className="row gaugeHolder m-bot-0">
             <div className="rating-mobile-box">
               <div className="row plain-row rating-text">
                 <div className="col-xs-4 col-sm-4 col-md-4 first-rating-box-padding">
-                  Overall <span className="text-padding">{parseFloat(this.state.rating).toFixed(1)}</span>
+                  Overall{" "}
+                  <span className="text-padding">
+                    {parseFloat(this.state.rating).toFixed(1)}
+                  </span>
                 </div>
                 <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
-                  Difficulty <span className="text-padding">{parseFloat(this.state.diff).toFixed(1)}</span>
+                  Difficulty{" "}
+                  <span className="text-padding">
+                    {parseFloat(this.state.diff).toFixed(1)}
+                  </span>
                 </div>
                 <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
-                  Workload <span className="text-padding">{parseFloat(this.state.workload).toFixed(1)}</span>
+                  Workload{" "}
+                  <span className="text-padding">
+                    {parseFloat(this.state.workload).toFixed(1)}
+                  </span>
                 </div>
-
               </div>
             </div>
           </div>
-
-        }
-
+        )}
 
         <div className="row top-review-text noLeftRightSpacing">
           <div className="col-md-12 col-sm-12 remove-left-padding">
-            {(this.state.numReviews !== 0 && !this.props.mobile) &&
-
+            {this.state.numReviews !== 0 && !this.props.mobile && (
               <p className="preview-top-review-label">Top Review</p>
-
-            }
+            )}
           </div>
         </div>
 
-        {
-          !this.props.transformGauges &&
+        {!this.props.transformGauges && (
           <div className="row noLeftRightSpacing">
-
             <div className="review-holder">
               {/*If class has review show top review and link*/}
-              {
-                (!this.props.mobile && this.state.numReviews !== 0) &&
+              {!this.props.mobile && this.state.numReviews !== 0 && (
+                <Review
+                  key={this.state.topReview._id}
+                  info={this.state.topReview}
+                  isPreview={true}
+                  likes={this.state.topReviewLikes}
+                />
+              )}
 
-                <Review key={this.state.topReview._id} info={this.state.topReview} isPreview={true} likes={this.state.topReviewLikes} />
-              }
-
-              {
-                (!this.props.mobile && this.state.numReviews !== 0 && this.state.numReviews > 1) &&
-                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  See {this.state.numReviews} more review{this.state.numReviews > 1 ? "s" : ""}
-                </a>
-              }
+              {!this.props.mobile &&
+                this.state.numReviews !== 0 &&
+                this.state.numReviews > 1 && (
+                  <a
+                    className="col-md-12 preview-review-button"
+                    href={`/course/${theClass.classSub.toUpperCase()}/${
+                      theClass.classNum
+                    }`}
+                  >
+                    See {this.state.numReviews} more review
+                    {this.state.numReviews > 1 ? "s" : ""}
+                  </a>
+                )}
 
               {/*If class has 0 reviews text and button*/}
-              {
-                (!this.props.mobile && this.state.numReviews === 0) &&
-                <p className="preview-empty-top-review">
-                  No reviews yet
-                </p>
-              }
-              {
-                this.props.mobile &&
-                <button type="submit" className="col-md-12 col-sm-12 preview-review-button"
-                  onClick={this.setShowMobileReviewForm}>
+              {!this.props.mobile && this.state.numReviews === 0 && (
+                <p className="preview-empty-top-review">No reviews yet</p>
+              )}
+              {this.props.mobile && (
+                <button
+                  type="submit"
+                  className="col-md-12 col-sm-12 preview-review-button"
+                  onClick={this.setShowMobileReviewForm}
+                >
                   Leave a Review
-              </button>
-              }
-              {
-                (!this.props.mobile && (this.state.numReviews === 0 || this.state.numReviews === 1)) &&
-                <a className="col-md-12 preview-review-button" href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum}`}>
-                  Leave a Review
-                </a>
-              }
+                </button>
+              )}
+              {!this.props.mobile &&
+                (this.state.numReviews === 0 ||
+                  this.state.numReviews === 1) && (
+                  <a
+                    className="col-md-12 preview-review-button"
+                    href={`/course/${theClass.classSub.toUpperCase()}/${
+                      theClass.classNum
+                    }`}
+                  >
+                    Leave a Review
+                  </a>
+                )}
               {/* {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />} */}
-              {this.state.showMobileReviewForm && <Form course={this.props.course} inUse={true} state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />}
+              {this.state.showMobileReviewForm && (
+                <Form
+                  course={this.props.course}
+                  inUse={true}
+                  state={this.state}
+                  props={this.props}
+                  setShowMobileReviewForm={this.setShowMobileReviewForm}
+                />
+              )}
             </div>
           </div>
-        }
+        )}
       </div>
     );
-
   }
 }
 
-
 // takes in the database object representing this review
 PreviewCard.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
 };
