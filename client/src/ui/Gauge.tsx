@@ -43,15 +43,17 @@ export default function Gauge({ rating, label }: GaugeProps) {
           <div className={styles.gaugeLabel}>{label}</div>
         </div>
       </div>
-      <CircularProgressbar
-        className={styles.gaugeCircle}
-        value={gaugeState.percentage}
-        strokeWidth={10}
-        styles={buildStyles({
-          pathColor: gaugeState.color,
-          strokeLinecap: "butt",
-        })}
-      />
+      <div className={styles.gaugeCircleContainer}>
+        <CircularProgressbar
+          className={styles.gaugeCircle}
+          value={gaugeState.percentage}
+          strokeWidth={10}
+          styles={buildStyles({
+            pathColor: gaugeState.color,
+            strokeLinecap: "butt",
+          })}
+        />
+      </div>
     </div>
   );
 }

@@ -58,8 +58,12 @@
   }
 }
 
-.gaugeCircle {
+.gaugeCircleContainer {
   flex: 1;
+  height: 100%;
+}
+
+.gaugeCircle {
   height: 100%;
   overflow: visible !important;
 }
