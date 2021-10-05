@@ -446,7 +446,7 @@ export default class Form extends Component {
         <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
             <div id="modal-top">
-              <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+              <img src='/logo.svg' className="img-fluid center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
               <p id="modal-title" className="center-block">Email Verification</p>
             </div>
             <div id="">
@@ -577,7 +577,7 @@ export default class Form extends Component {
         <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
             <div id="modal-top">
-              <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+              <img src='/logo.svg' className="img-fluid center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
               <p id="modal-title" className="center-block">Email Verification</p>
             </div>
             <div id="">

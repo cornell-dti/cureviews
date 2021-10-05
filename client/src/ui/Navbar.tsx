@@ -23,7 +23,7 @@ export default class Navbar extends Component<{ readonly userInput: string }> {
       <div className="navbar">
         <div className="logo-container">
           <a className="" href="/">
-            <img src='/logo.svg' className="img-responsive scale-logo-navbar" alt="CU Reviews Logo" />
+            <img src='/logo.svg' className="img-fluid scale-logo-navbar" alt="CU Reviews Logo" />
           </a>
         </div>
         <div className="col navbar-searchbar-container">
