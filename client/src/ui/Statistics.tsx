@@ -137,18 +137,19 @@ export default class Statistics extends Component<Props, State>{
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
 
         <div className="row align-bottom">
-          <div className="col-xs-7"> </div>
-          <div className="col-xs-2">
-            <label htmlFor="range">Range in months</label>
-            <input className="form-control " type="number" id="range" name="range" min="1" value={this.state.range} onChange={e => this.setState({ range: parseInt(e.target.value, 10) })} />
-          </div>
+          <div className="row">
+            <div className="col">
+              <label htmlFor="range">Range in months</label>
+              <input className="form-control " type="number" id="range" name="range" min="1" value={this.state.range} onChange={e => this.setState({ range: parseInt(e.target.value, 10) })} />
+            </div>
 
-          <div className="col-xs-2">
-            <label htmlFor="step">Step in days</label>
-            <input className="form-control" type="number" id="step" name="step" min="1" value={this.state.step} onChange={e => this.setState({ step: parseInt(e.target.value, 10) })} />
-          </div>
-          <div className="col-xs-1">
-            <button type="button" className="btn btn-primary" onClick={this.handleClick}>Load Chart</button>
+            <div className="col">
+              <label htmlFor="step">Step in days</label>
+              <input className="form-control" type="number" id="step" name="step" min="1" value={this.state.step} onChange={e => this.setState({ step: parseInt(e.target.value, 10) })} />
+            </div>
+            <div className="col">
+              <button type="button" className="btn btn-primary" onClick={this.handleClick}>Load Chart</button>
+            </div>
           </div>
         </div>
       </div>
