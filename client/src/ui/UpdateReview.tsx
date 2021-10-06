@@ -96,23 +96,23 @@ export default class UpdateReview extends Component<Props, State> {
             <b>Posted </b> {moment(review.date).fromNow()}
           </div>
         </div>
-        <div className="panel panel-default">
-          <div className="panel-body">
+        <div className="card">
+          <div className="card-body">
             <div className="col-sm-1">
-              <div className="panel panel-default">
-                <div className="panel-body text-center">{review.rating}</div>
+              <div className="card">
+                <div className="card-body text-center">{review.rating}</div>
               </div>
-              <div className="panel panel-default">
-                <div className="panel-body text-center">{review.difficulty}</div>
+              <div className="card">
+                <div className="card-body text-center">{review.difficulty}</div>
               </div>
-              <div className="panel panel-default">
-                <div className="panel-body text-center">{review.professors}</div>
+              <div className="card">
+                <div className="card-body text-center">{review.professors}</div>
               </div>
             </div>
             <div className="col-sm-2">
-              <div className="panel-body"> Overall Rating</div>
-              <div className="panel-body"> Difficulty</div>
-              <div className="panel-body"> Professor(s)</div>
+              <div className="card-body"> Overall Rating</div>
+              <div className="card-body"> Difficulty</div>
+              <div className="card-body"> Professor(s)</div>
             </div>
             <div className="col-sm-9">
               {review.text}
