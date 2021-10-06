@@ -76,7 +76,7 @@ export default class RecentReview extends Component<Props, State> {
           </div>
         </div>
         <div className="review">
-          <div className="panel-body-3">
+          <div className="card-body-3">
             <div className="row reviewNumbers">
               <div className="col-md-2 col-xs-2 col-xs-2">
                 <div className="container" id="box" style={this.getQualColor(review.quality)}>
