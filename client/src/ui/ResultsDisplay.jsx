@@ -280,7 +280,7 @@ export default class ResultsDisplay extends Component {
         {
           this.state.courseList.length === 0 && this.props.loading === false
           &&
-          <div className="col-md-12 col-sm-12 col-xs-12 results">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 results">
             <img src="/noResults.svg" className="img-fluid no-results" alt="No class found"></img>
             <div className="no-results-text">Sorry! No classes match your search.</div>
           </div>
@@ -290,7 +290,7 @@ export default class ResultsDisplay extends Component {
           this.state.courseList.length !== 0 && this.props.loading !== true
           &&
           <div className="results-column-container">
-            <div className="hidden-xs hidden-sm  col-md-2 col-sm-2 col-xs-2 filter-container" >
+            <div className="hidden-xs hidden-sm  col-lg-2 col-md-2 col-sm-2 col-xs-2 filter-container" >
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -303,7 +303,7 @@ export default class ResultsDisplay extends Component {
               
             </div>
 
-            <div className="col-md-3 col-sm-12 col-xs-12 results">
+            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 results">
               {
                 this.state.fullscreen &&
                 <ResultsDisplayMobile classView={false} onClickText={this.toggleFullscreen}
@@ -319,7 +319,7 @@ export default class ResultsDisplay extends Component {
                   for &quot;{this.props.userInput}&quot;</p></div>
               </div>
               <div className="row no-left-margin mdown-8">
-                <div className="col-lg-12 col-md-12 col-sm-10 col-xs-10 no-left-padding">
+                <div className="col-xl-12 col-lg-12 col-md-10 col-sm-10 col-xs-10 no-left-padding">
                   <div className="results-sort-by-container">
                     <p className="hidden-xs hidden-sm results-sort-by-text">
                       Sort By:
@@ -332,7 +332,7 @@ export default class ResultsDisplay extends Component {
                     </select>
                   </div>
                 </div>
-                <div className="col-sm-2 col-xs-2 no-left-padding">
+                <div className="col-md-2 col-sm-2 col-xs-2 no-left-padding">
                   <div className="hidden-md hidden-lg hidden-xl">
                     <input class="mobile-filter-button" type="button" value="Filter" onClick={this.setShowFilterPopup} />
                     {this.state.showFilterPopup && <FilterPopup state={this.state} props={this.props} renderCheckboxes={this.renderCheckboxes} getSubjectOptions={this.getSubjectOptions} setShowFilterPopup={this.setShowFilterPopup} />}

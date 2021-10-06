@@ -154,7 +154,7 @@ export default class Review extends Component {
         {
           !this.props.isPreview &&
           <div className="row noLeftRightSpacing">
-            <div className="col-md-12 col-xs-12 col-xs-12">
+            <div className="col-lg-12 col-md-12 col-xs-12 col-xs-12">
               <button className="review-report" onClick={() => {
                 this.props.reportHandler(review);
                 alert('This post has been reported and will be reviewed.');

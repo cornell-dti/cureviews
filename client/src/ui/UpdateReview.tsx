@@ -90,7 +90,7 @@ export default class UpdateReview extends Component<Props, State> {
     return (
       <li id={review._id}>
         <div className="row">
-          <div className="col-sm-12">
+          <div className="col-md-12">
             <b>Course:</b> {this.state.shortName}: {this.state.longName}
             <br></br>
             <b>Posted </b> {moment(review.date).fromNow()}
@@ -98,7 +98,7 @@ export default class UpdateReview extends Component<Props, State> {
         </div>
         <div className="card">
           <div className="card-body">
-            <div className="col-sm-1">
+            <div className="col-md-1">
               <div className="card">
                 <div className="card-body text-center">{review.rating}</div>
               </div>
@@ -109,12 +109,12 @@ export default class UpdateReview extends Component<Props, State> {
                 <div className="card-body text-center">{review.professors}</div>
               </div>
             </div>
-            <div className="col-sm-2">
+            <div className="col-md-2">
               <div className="card-body"> Overall Rating</div>
               <div className="card-body"> Difficulty</div>
               <div className="card-body"> Professor(s)</div>
             </div>
-            <div className="col-sm-9">
+            <div className="col-md-9">
               {review.text}
               {this.renderButtons(review)}
             </div>
