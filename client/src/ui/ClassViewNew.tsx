@@ -63,22 +63,18 @@ export default function ClassView() {
 
   if (pageStatus === PageStatus.Error) {
     return (
-      <div className="container-fluid container-top-gap-fix">
+      <div className={`row ${styles.errorContainer}`}>
         {/* TODO: no props on orig implementation */}
         <Navbar userInput={input} />
-        <div className="class-error-container">
-          <img
-            className="errorgauge"
-            src="/error.svg"
-            width="100vw"
-            height="auto"
-            alt="error"
-          />
-          <h2 className="error-text">
-            {"Sorry, we couldn't find the class you're searching for."}
-          </h2>
-          <h2 className="error-text">Please search for a different class.</h2>
-        </div>
+        <img
+          className={styles.errorGauge}
+          src="/error.svg"
+          width="100vw"
+          height="auto"
+          alt="error"
+        />
+        <h2>Sorry, we couldn't find the class you're searching for.</h2>
+        <h2>Please search for a different class.</h2>
       </div>
     );
   }
