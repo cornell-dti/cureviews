@@ -1,6 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
 import axios from "axios";
-import Form from './Form.jsx';
 import './css/CourseCard.css';
 import { Class, Review } from 'common';
 import { lastOfferedSems } from 'common/CourseCard';
@@ -87,7 +86,6 @@ export class CourseCard extends Component<Props, State> {
         <p className="coursecard-class-info">
           {theClass.classSub.toUpperCase() + " " + theClass.classNum + ", " + offered}
         </p>
-        <Form course={theClass} inUse={true} />
       </div>
     );
   }

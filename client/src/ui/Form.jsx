@@ -608,12 +608,13 @@ export default class Form extends Component {
   render() {
     // check to see if all inputs are valid. If some inputs are invalide, disable the
     // post button and add red border around inputs that need to be changed.
-    if (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) < 992) {
-      return this.renderFormMobile()
-    }
-    else {
-      return this.renderFormDesktop()
-    }
+    // if (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) < 992) {
+    //   return this.renderFormMobile()
+    // }
+    // else {
+    //   return this.renderFormDesktop()
+    // }
+    return this.renderFormDesktop()
   }
 }
 

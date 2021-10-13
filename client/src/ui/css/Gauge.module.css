@@ -3,7 +3,7 @@
 .gaugeContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: left;
   align-items: center;
   height: 100%;
 }
@@ -13,12 +13,10 @@
   font-weight: var(--regular-weight);
   line-height: normal;
   height: 100%;
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  padding-right: 8px;
   max-width: 50%;
 }
 
@@ -38,6 +36,16 @@
   font-size: 12px;
 }
 
+.gaugeCircleContainer {
+  height: 100%;
+  padding-left: 8px;
+}
+
+.gaugeCircle {
+  height: 100%;
+  overflow: visible !important;
+}
+
 @media (min-width: 768px) {
   .gaugeRating {
     font-size: 36px;
@@ -45,6 +53,10 @@
 
   .gaugeLabel {
     font-size: 14px;
+  }
+
+  .gaugeCircleContainer {
+    padding-left: 24px;
   }
 }
 
@@ -56,14 +68,4 @@
   .gaugeLabel {
     font-size: 16px;
   }
-}
-
-.gaugeCircleContainer {
-  flex: 1;
-  height: 100%;
-}
-
-.gaugeCircle {
-  height: 100%;
-  overflow: visible !important;
 }

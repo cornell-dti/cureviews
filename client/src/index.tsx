@@ -5,7 +5,7 @@ import React from "react";
 import { render } from "react-dom";
 
 import Login from "./ui/Login";
-import ClassView from "./ui/ClassView.jsx";
+import ClassView from "./ui/ClassViewNew";
 import App from "./ui/App";
 import AuthRedirect from "./ui/AuthRedirect";
 
@@ -22,7 +22,7 @@ application component the user should see based on the URL they enter.
 */
 render(
   <BrowserRouter>
-    <div className="container-fluid full-height noLeftRightPadding">
+    <div className="container-fluid">
       <Route name="app" exact path="/" component={App} />
       <Route name="admin" exact path="/admin" component={Login} />
       <Route
