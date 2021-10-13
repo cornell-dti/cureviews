@@ -158,7 +158,7 @@ export default class PreviewCard extends Component {
     return (
       <div className="preview-panel">
         <div className="row">
-          <div className="col-md-12 col-sm-12">
+          <div className="col-lg-12 col-md-12 col-sm-12">
             <p className="preview-class-title">
               <a
                 className={
@@ -186,13 +186,13 @@ export default class PreviewCard extends Component {
 
         {!this.props.transformGauges && (
           <div className="row gaugeHolder">
-            <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 remove-left-padding">
               <Gauge rating={parseFloat(this.state.rating)} label="Overall" />
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 remove-left-padding">
               <Gauge rating={parseFloat(this.state.diff)} label="Difficulty" />
             </div>
-            <div className="col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 remove-left-padding">
               <Gauge
                 rating={parseFloat(this.state.workload)}
                 label="Workload"
@@ -204,19 +204,19 @@ export default class PreviewCard extends Component {
           <div className="row gaugeHolder m-bot-0">
             <div className="rating-mobile-box">
               <div className="row plain-row rating-text">
-                <div className="col-xs-4 col-sm-4 col-md-4 first-rating-box-padding">
+                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 first-rating-box-padding">
                   Overall{" "}
                   <span className="text-padding">
                     {parseFloat(this.state.rating).toFixed(1)}
                   </span>
                 </div>
-                <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
+                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
                   Difficulty{" "}
                   <span className="text-padding">
                     {parseFloat(this.state.diff).toFixed(1)}
                   </span>
                 </div>
-                <div className="col-xs-4 col-sm-4 col-md-4 rating-box-padding">
+                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
                   Workload{" "}
                   <span className="text-padding">
                     {parseFloat(this.state.workload).toFixed(1)}
@@ -228,7 +228,7 @@ export default class PreviewCard extends Component {
         )}
 
         <div className="row top-review-text noLeftRightSpacing">
-          <div className="col-md-12 col-sm-12 remove-left-padding">
+          <div className="col-lg-12 col-md-12 col-sm-12 remove-left-padding">
             {this.state.numReviews !== 0 && !this.props.mobile && (
               <p className="preview-top-review-label">Top Review</p>
             )}
@@ -252,7 +252,7 @@ export default class PreviewCard extends Component {
                 this.state.numReviews !== 0 &&
                 this.state.numReviews > 1 && (
                   <a
-                    className="col-md-12 preview-review-button"
+                    className="col-lg-12 preview-review-button"
                     href={`/course/${theClass.classSub.toUpperCase()}/${
                       theClass.classNum
                     }`}
@@ -269,7 +269,7 @@ export default class PreviewCard extends Component {
               {this.props.mobile && (
                 <button
                   type="submit"
-                  className="col-md-12 col-sm-12 preview-review-button"
+                  className="col-lg-12 col-md-12 col-sm-12 preview-review-button"
                   onClick={this.setShowMobileReviewForm}
                 >
                   Leave a Review
@@ -279,7 +279,7 @@ export default class PreviewCard extends Component {
                 (this.state.numReviews === 0 ||
                   this.state.numReviews === 1) && (
                   <a
-                    className="col-md-12 preview-review-button"
+                    className="col-lg-12 preview-review-button"
                     href={`/course/${theClass.classSub.toUpperCase()}/${
                       theClass.classNum
                     }`}

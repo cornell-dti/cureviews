@@ -131,7 +131,7 @@ export class ClassView extends Component {
             <Navbar />
             <div className="clearfix" />
             <div className="container-width no-padding classview-column-container">
-              <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
+              <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
                 <CourseCard course={this.state.selectedClass} />
               </div>
               <div className="col navbar-margin classview-right-panel">
