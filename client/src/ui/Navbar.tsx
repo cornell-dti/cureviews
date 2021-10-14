@@ -20,7 +20,7 @@ export default class Navbar extends Component<{ readonly userInput: string }> {
 
   render() {
     return (
-      <div className="navbar">
+      <div className="custom-navbar">
         <div className="logo-container">
           <a className="" href="/">
             <img src='/logo.svg' className="img-fluid scale-logo-navbar" alt="CU Reviews Logo" />
