@@ -1,62 +1,62 @@
-:root {  
+:root {
   --regular-weight: 400;
   --semi-bold-weight: 600;
 }
 
+html,
 body {
-    font-family: sans-serif;
+  height: 100%;
+  /* overflow: hidden; */
+}
 
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+body {
+  font-family: "Source Sans Pro", sans-serif;
 
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .container-width {
-    width: 100%;
+  width: 100%;
 }
 .secondary-text {
-    color: #4A4A4A;
-    font-size: 14px;
-    font-weight: normal;
-    opacity: .75;
+  color: #4a4a4a;
+  font-size: 14px;
+  font-weight: normal;
+  opacity: 0.75;
 }
 
 h1 {
-    margin: 0;
+  margin: 0;
 }
 
 .divider {
-    border-width: 1px;
-    color: #ddd;
-    margin: 5px 0 10px 0;
- }
+  border-width: 1px;
+  color: #ddd;
+  margin: 5px 0 10px 0;
+}
 
 div.sm-spacing {
-    padding: 10px;
+  padding: 10px;
 }
 
 div.med-spacing {
-    padding: 20px;
+  padding: 20px;
 }
 
 div.lrg-spacing {
-    padding: 40px;
+  padding: 40px;
 }
 
 ul {
-    background: white;
-    margin: 0;
-    padding: 0;
+  background: white;
+  margin: 0;
+  padding: 0;
 }
 
-.noLeftRightPadding{
+.noLeftRightPadding {
   padding-left: 0px;
   padding-right: 0px;
 }

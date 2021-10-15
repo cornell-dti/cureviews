@@ -52,7 +52,7 @@ export default class App extends Component {
     }
 
     return (
-      <div className={"container-fluid full-height background-common background-gradient_" + dayclass + monthclass}>
+      <div className={"row full-height background-common background-gradient_" + dayclass + monthclass}>
         <div className="row">
           <img src='/logo.svg' className="img-responsive scale-logo-homepage" alt="CU Reviews Logo" />
         </div>

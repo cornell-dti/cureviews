@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { courseVisited } from "./js/Feedback";
 import Navbar from "./Navbar";
 import styles from "./css/ClassView.module.css";
-import CourseCard from "./CourseCard";
+import { lastOfferedSems } from "common/CourseCard";
 import Gauge from "./Gauge";
 import CourseReviews from "./CourseReviews";
 import Form from "./Form";
@@ -38,25 +38,18 @@ export default function ClassView() {
 
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
-      // TODO: rewrite with async await
-      console.log(number, subject);
+      const response = await axios.post(`/v2/getCourseByInfo`, {
+        number,
+        subject: subject.toLowerCase(), // TODO: fix backend to handle this
+      });
 
-      axios
-        .post(`/v2/getCourseByInfo`, {
-          number,
-          subject: subject.toLowerCase(), // TODO: fix backend to handle this
-        })
-        .then((response) => {
-          console.log(response);
-
-          const course = response.data.result;
-          if (course) {
-            setSelectedClass(course);
-            setPageStatus(PageStatus.Success);
-          } else {
-            setPageStatus(PageStatus.Error);
-          }
-        });
+      const course = response.data.result;
+      if (course) {
+        setSelectedClass(course);
+        setPageStatus(PageStatus.Success);
+      } else {
+        setPageStatus(PageStatus.Error);
+      }
     }
     updateCurrentClass(number, subject);
   }, [number, subject]);
@@ -82,37 +75,50 @@ export default function ClassView() {
   if (pageStatus === PageStatus.Success && !!selectedClass) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
-      <div className={`row ${styles.content}`}>
+      <div className={`row ${styles.classView}`}>
         <Navbar userInput={input} />
-        <div className={`col-md-4 ${styles.courseInfoColumn}`}>
-          <CourseCard course={selectedClass} />
-          {/* TODO: show button for leaving a review on sm/xs screens */}
-          <div className={`hidden-sm hidden-xs ${styles.reviewFormContainer}`}>
-            <Form course={selectedClass} inUse={true} />
-          </div>
-        </div>
-        <div className={`col-md-8 ${styles.courseReviewColumn}`}>
-          <div className={styles.gaugeContainer}>
-            <div className={styles.gauge}>
-              <Gauge rating={selectedClass!.classRating} label="Overall" />
+        <div className={`${styles.content}`}>
+          <div className={`col-lg-4 col-md-5 ${styles.courseInfoColumn}`}>
+            <div>
+              <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
+              <p className={styles.courseSubtitle}>
+                {selectedClass.classSub.toUpperCase() +
+                  " " +
+                  selectedClass.classNum +
+                  ", " +
+                  lastOfferedSems(selectedClass)}
+              </p>
             </div>
-            <div className={styles.gauge}>
-              <Gauge
-                rating={selectedClass.classDifficulty}
-                label="Difficulty"
+            {/* TODO: show button for leaving a review on sm/xs screens */}
+            <div
+              className={`hidden-sm hidden-xs ${styles.reviewFormContainer}`}
+            >
+              <Form course={selectedClass} inUse={true} />
+            </div>
+          </div>
+          <div className={`col-lg-8 col-md-7 ${styles.courseReviewColumn}`}>
+            <div className={styles.gaugeContainer}>
+              <div className={styles.gauge}>
+                <Gauge rating={selectedClass!.classRating} label="Overall" />
+              </div>
+              <div className={styles.gauge}>
+                <Gauge
+                  rating={selectedClass.classDifficulty}
+                  label="Difficulty"
+                />
+              </div>
+              <div className={styles.gauge}>
+                <Gauge rating={selectedClass.classWorkload} label="Workload" />
+              </div>
+            </div>
+            <h2 className={styles.pastReviews}>Past Reviews</h2>
+            <div className={styles.courseReviews}>
+              <CourseReviews
+                courseId={selectedClass._id}
+                onScroll={undefined}
+                transformGauges={undefined}
               />
             </div>
-            <div className={styles.gauge}>
-              <Gauge rating={selectedClass.classWorkload} label="Workload" />
-            </div>
-          </div>
-          <h2 className={styles.pastReviews}>Past Reviews</h2>
-          <div className={styles.courseReviews}>
-            <CourseReviews
-              courseId={selectedClass._id}
-              onScroll={undefined}
-              transformGauges={undefined}
-            />
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ application component the user should see based on the URL they enter.
 */
 render(
   <BrowserRouter>
-    <div className="container-fluid">
+    <div className="container-fluid full-height">
       <Route name="app" exact path="/" component={App} />
       <Route name="admin" exact path="/admin" component={Login} />
       <Route

@@ -1,5 +1,12 @@
+.classView {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .content {
-  height: 100vh;
+  overflow: auto;
+  flex: 1;
 }
 
 .courseInfoColumn {
@@ -7,11 +14,28 @@
   padding: 35px 35px 0;
 }
 
+.courseTitle {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 32px;
+  font-weight: var(--semi-bold-weight);
+  letter-spacing: -0.13px;
+  color: #000000;
+}
+
+.courseSubtitle {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 24px;
+  font-weight: var(--regular-weight);
+  letter-spacing: -0.13px;
+  color: #a2a1a1;
+  margin: 16px 0 0 0;
+}
+
 .gaugeContainer {
   width: 100%;
   background-color: #ffffff;
   height: 150px;
-  padding: 30px 0;
+  padding: 30px 5px;
   display: flex;
   justify-content: space-between;
 }
@@ -71,6 +95,7 @@
   .courseInfoColumn {
     background-color: transparent;
     padding: 70px;
+    height: 100%;
   }
 
   .gaugeContainer {
@@ -84,6 +109,6 @@
     padding-right: 70px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /* height: 100%; */
   }
 }
