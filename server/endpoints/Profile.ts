@@ -1,22 +1,26 @@
 import { body } from "express-validator";
-import { Reviews } from "../dbDefs";
+import { Reviews, Students } from "../dbDefs";
 import { Context, Endpoint } from "../endpoints";
 
 // The type of a query with a studentId
-export interface StudentIdQuery{
-  studentId: string;
+export interface NetIdQuery{
+  netId: string;
 }
 
 /**
  * Counts the number of reviews made by a given student id.
  */
 
-export const countReviewsByStudentId: Endpoint<StudentIdQuery> = {
-  guard: [body("studentId").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: StudentIdQuery) => {
-    const { studentId } = request;
+export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
+  guard: [body("netId").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: NetIdQuery) => {
+    const { netId } = request;
     try {
-      return Reviews.count({ user: studentId });
+      Students.findOne({ netId })
+        .then((student) => {
+          Reviews.find({ user: student._id })
+            .then((reviews) => reviews.length);
+        });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'countReviewsByStudentId' method");
