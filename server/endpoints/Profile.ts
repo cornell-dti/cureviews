@@ -16,7 +16,7 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      Students.findOne({ netId })
+      await Students.findOne({ netId })
         .then((student) => {
           Reviews.find({ user: student._id })
             .then((reviews) => reviews.length);
