@@ -64,6 +64,7 @@
 .courseReviews {
   width: 100%;
   overflow-y: auto;
+  min-height: 500px;
 }
 
 .errorContainer {
@@ -79,6 +80,7 @@
 @media (min-width: 768px) {
   .gaugeContainer {
     justify-content: space-around;
+    padding: 30px;
   }
 
   .pastReviews {
@@ -94,7 +96,7 @@
 @media (min-width: 992px) {
   .courseInfoColumn {
     background-color: transparent;
-    padding: 70px;
+    padding: 70px 50px 70px 70px;
     height: 100%;
   }
 
@@ -109,6 +111,5 @@
     padding-right: 70px;
     display: flex;
     flex-direction: column;
-    /* height: 100%; */
   }
 }
