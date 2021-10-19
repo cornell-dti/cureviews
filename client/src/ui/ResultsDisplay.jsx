@@ -331,7 +331,7 @@ export default class ResultsDisplay extends Component {
         {/* Case where results are returned (non-empty) */}
         {this.state.courseList.length !== 0 && this.props.loading !== true && (
           <div className="results-column-container">
-            <div className=".d-none.d-md-block  col-lg-2 col-md-2 col-sm-2 col-xs-2 filter-container">
+            <div className="d-none d-md-block  col-lg-2 col-md-2 col-sm-2 col-xs-2 filter-container">
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -370,7 +370,7 @@ export default class ResultsDisplay extends Component {
               <div className="row no-left-margin mdown-8">
                 <div className="col-xl-12 col-lg-12 col-md-10 col-sm-10 col-xs-10 no-left-padding">
                   <div className="results-sort-by-container">
-                    <p className=".d-none.d-md-block results-sort-by-text">
+                    <p className="d-none d-md-block results-sort-by-text">
                       Sort By:
                     </p>
                     <select
@@ -386,7 +386,7 @@ export default class ResultsDisplay extends Component {
                   </div>
                 </div>
                 <div className="col-md-2 col-sm-2 col-xs-2 no-left-padding">
-                  <div className=".d-none.d-xs-block.d-md-none">
+                  <div className="d-none d-xs-block d-md-none">
                     <input
                       class="mobile-filter-button"
                       type="button"
@@ -410,7 +410,7 @@ export default class ResultsDisplay extends Component {
                 <ul>{this.renderResults()}</ul>
               </div>
             </div>
-            <div className=".d-none.d-md-block col preview">
+            <div className="d-none d-md-block col preview">
               <PreviewCard course={this.state.card_course} mobile={false} />
             </div>
           </div>

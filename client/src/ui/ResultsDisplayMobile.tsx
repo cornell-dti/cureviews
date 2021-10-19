@@ -61,7 +61,7 @@ export default class ResultsDisplayMobile extends Component<Props, State> {
           </div>
 
           <CourseReviews courseId={this.props.card_course._id} onScroll={this.props.scrollReviews} transformGauges={this.props.transformGauges} />
-          <div className={"button-position-search-results " + (this.props.transformGauges ? "" : ".d-none.d-lg-block")}>
+          <div className={"button-position-search-results " + (this.props.transformGauges ? "" : "d-none d-lg-block")}>
             <button type="submit" className="btn btn-primary review-bottom-button" onClick={this.setShowMobileReviewForm}>Leave A Review</button>
           </div>
           {this.state.showMobileReviewForm && <Form course={this.props.card_course} inUse={true} state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />}
