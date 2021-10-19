@@ -118,7 +118,7 @@ export class ClassView extends Component {
       );
       return (
         <div>
-          <div className="d-none d-xs-block d-md-none">
+          <div className="d-none d-xs-block d-lg-none">
             <ResultsDisplayMobile
               classView={true}
               onClickText={this.toggleFullscreen}
@@ -127,7 +127,7 @@ export class ClassView extends Component {
               scrollReviews={this.scrollReviews}
             />
           </div>
-          <div className="d-none d-md-block container-fluid container-top-gap-fix classViewContainer">
+          <div className="d-none d-lg-block container-fluid container-top-gap-fix classViewContainer">
             <Navbar />
             <div className="clearfix" />
             <div className="container-width no-padding classview-column-container">
