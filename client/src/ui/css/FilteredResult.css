@@ -1,5 +1,5 @@
 /* desktop*/
-@media (min-width: 1000px) {
+@media (min-width: 992px) {
   .result-card {
     margin: 32px 0;
   }
@@ -9,7 +9,7 @@
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 992px) {
   .result-card {
     margin: 16px 0;
   }
@@ -24,13 +24,13 @@
 
   .overall-rating-border {
     display: inline-flex;
-    border: 1px solid #B7D8FF;
+    border: 1px solid #b7d8ff;
     box-sizing: border-box;
     border-radius: 5px;
     padding-left: 9px;
     padding-top: 4px;
     padding-bottom: 4px;
-    background: #F4F9FE;
+    background: #f4f9fe;
   }
 
   .out-of-five {
@@ -38,7 +38,7 @@
   }
 
   .result-card-clicked {
-    border: 2.49858px solid #0076FF;
+    border: 2.49858px solid #0076ff;
   }
 }
 
@@ -49,17 +49,14 @@
   list-style-type: none;
 }
 
-
-
 .result-card-title {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   line-height: normal;
-  color: #0076FF;
+  color: #0076ff;
   margin-bottom: 7px;
-
 }
 
 .result-card-subtitle {
@@ -70,7 +67,7 @@
   line-height: normal;
   color: #777777;
   margin-top: 0px;
-  margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .result-card-rating-text p {
