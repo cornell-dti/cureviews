@@ -61,12 +61,17 @@
   }
 
   .filter-checkbox-label {
+    width: 100%;
     font-family: "Source Sans Pro", sans-serif;
     font-size: 18px;
     font-weight: var(--regular-weight);
     line-height: normal;
     align-items: center;
     overflow: hidden;
+  }
+
+  .filter-checkmark {
+    margin-right: 8px;
   }
 
   .filter-entry-container {
