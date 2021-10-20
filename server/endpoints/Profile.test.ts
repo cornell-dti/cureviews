@@ -67,7 +67,23 @@ const testReviews = [
     visible: 1,
     reported: 0,
   },
+  {
+    _id: "4Y8k7DnX3PLNdwRPq",
+    text: "review text for cs 3110",
+    user: "User1234",
+    difficulty: 3,
+    quality: 3,
+    class: "cJSmM8bnwm2QFnmAn",
+    grade: 5,
+    date: new Date().toISOString(),
+    atten: 0,
+    visible: 1,
+    reported: 0,
+    likes: 5,
+  },
 ];
+
+const testTotalLikes = 5;
 
 const validTokenPayload: TokenPayload = {
   email: 'dti1@cornell.edu',
@@ -110,8 +126,8 @@ afterAll(async () => {
 });
 
 describe('tests', () => {
-  it('get the number of likes', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getTotalLikesByStudentId`, { studentId: "pA84yH9rs" });
-    expect(res.data.result).toBe(1);
+  it('getTotalLikesByStudentId - counting the number of likes a student got on their reviews', async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getTotalLikesByStudentId`, { netId: "cv4620" });
+    expect(res.data.result).toBe(testTotalLikes);
   });
 });
