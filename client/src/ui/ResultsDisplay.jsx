@@ -354,7 +354,7 @@ export default class ResultsDisplay extends Component {
                 />
               )}
 
-              <div className="row no-left-margin">
+              <div className="no-left-margin">
                 <div>
                   <p className="results-num-classes-found">
                     We found{" "}
@@ -367,7 +367,7 @@ export default class ResultsDisplay extends Component {
                   </p>
                 </div>
               </div>
-              <div className="row no-left-margin mdown-8">
+              <div className="no-left-margin mdown-8">
                 <div className="col-xl-12 col-lg-12 col-md-10 col-sm-10 col-xs-10 no-left-padding">
                   <div className="results-sort-by-container">
                     <p className="d-none d-md-block results-sort-by-text">
