@@ -14,7 +14,7 @@ import * as Auth from "./Auth";
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 8000;
+const testingPort = 8080;
 
 // inital classes that are present at start of all tests.
 const testClasses = [
