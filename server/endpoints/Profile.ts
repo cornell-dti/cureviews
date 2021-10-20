@@ -1,20 +1,22 @@
 import { body } from "express-validator";
-import { Review } from "common";
 import { Context, Endpoint } from "../endpoints";
-import { Reviews } from "../dbDefs";
+import { Reviews, Students } from "../dbDefs";
 
 // The type of a query with a studentId
-export interface StudentIdQuery {
-  studentId: string;
+export interface NetIdQuery {
+  netId: string;
 }
 
-export const getTotalLikesByStudentId: Endpoint<StudentIdQuery> = {
-  guard: [body("studentId").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: StudentIdQuery) => {
-    const { studentId } = request;
+export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
+  guard: [body("netId").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: NetIdQuery) => {
+    const { netId } = request;
     let totalLikes = 0;
     try {
-      (await Reviews.find({ user: studentId }).exec()).forEach((review) => { totalLikes += review.likes; });
+      await Students.findOne({ netId })
+        .then(async (student) => {
+          (await Reviews.find({ user: student._id })).forEach((review) => { totalLikes += review.likes; });
+        });
       return { resCode: 1, totalLikes };
     } catch (error) {
       // eslint-disable-next-line no-console
