@@ -8,21 +8,7 @@ import { lastOfferedSems } from "common/CourseCard";
 import Gauge from "./Gauge";
 import CourseReviews from "./CourseReviews";
 import Form from "./Form";
-
-type ClassSchema = {
-  _id: string; // overwritten _id field to play nice with our old db
-  classSub: string; // subject, like "PHIL" or "CS"
-  classNum: string; // course number, like 1110
-  classTitle: string; // class title, like 'Introduction to Algorithms'
-  classPrereq: string; // list of pre-req classes, a string of Classes _id.
-  crossList: string; // list of classes that are crosslisted with this one, a string of Classes _id.
-  classFull: string; // full class title to search by, formated as 'classSub classNum: classTitle'
-  classSems: string; // list of semesters this class was offered, like ['FA17', 'FA16']
-  classProfessors: string; // list of professors that have taught the course over past semesters
-  classRating: number; // the average class rating from reviews
-  classWorkload: number; // the average workload rating from reviews
-  classDifficulty: number; // the average difficulty rating from reviews
-};
+import { Class } from "common";
 
 enum PageStatus {
   Loading,
@@ -33,7 +19,7 @@ enum PageStatus {
 export default function ClassView() {
   const { number, subject, input } = useParams<any>();
 
-  const [selectedClass, setSelectedClass] = useState<ClassSchema>();
+  const [selectedClass, setSelectedClass] = useState<Class>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
 
   useEffect(() => {
