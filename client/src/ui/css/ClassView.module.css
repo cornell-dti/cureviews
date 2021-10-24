@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: #ffffff;
 }
 
 .content {
-  overflow: auto;
+  overflow-y: auto;
   flex: 1;
 }
 
@@ -62,6 +63,7 @@
 }
 
 .courseReviews {
+  background-color: transparent;
   width: 100%;
   overflow-y: auto;
   min-height: 500px;
@@ -78,6 +80,10 @@
 }
 
 @media (min-width: 768px) {
+  .classView {
+    background-color: transparent;
+  }
+
   .gaugeContainer {
     justify-content: space-around;
     padding: 30px;
