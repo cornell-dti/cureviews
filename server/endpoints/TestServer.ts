@@ -9,7 +9,7 @@ import { configure } from "../endpoints";
 export const testingPort = 8080;
 
 /**
- * This class is sets up the express endpoint and mongo memory server for testing.
+ * This class sets up the express endpoint and mongo memory server for testing.
  */
 export default class TestingServer {
   private mongoServer: MongoMemoryServer;
