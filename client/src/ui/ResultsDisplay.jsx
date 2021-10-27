@@ -355,55 +355,52 @@ export default class ResultsDisplay extends Component {
                 />
               )}
 
-              <div className="no-left-margin">
+              <div>
+                <p className="results-num-classes-found">
+                  We found{" "}
+                  <strong>
+                    {this.state.filteredItems.length === 0
+                      ? this.state.courseList.length
+                      : this.state.filteredItems.length}
+                  </strong>{" "}
+                  courses for &quot;{this.props.userInput}&quot;
+                </p>
+              </div>
+
+              <div className="row results-buttons">
                 <div>
-                  <p className="results-num-classes-found">
-                    We found{" "}
-                    <strong>
-                      {this.state.filteredItems.length === 0
-                        ? this.state.courseList.length
-                        : this.state.filteredItems.length}
-                    </strong>{" "}
-                    courses for &quot;{this.props.userInput}&quot;
+                  <p className="d-none d-lg-block results-sort-by-text">
+                    Sort By:
                   </p>
                 </div>
-              </div>
-              <div className="no-left-margin mdown-8">
-                <div className="col-xl-12 col-lg-12 col-md-10 col-sm-10 col-xs-10 no-left-padding">
-                  <div className="results-sort-by-container">
-                    <p className="d-none d-md-block results-sort-by-text">
-                      Sort By:
-                    </p>
-                    <select
-                      value={this.state.selected}
-                      className="results-sort-by-select"
-                      onChange={(e) => this.handleSelect(e)}
-                    >
-                      <option value="relevance">Relevance</option>
-                      <option value="rating">Overall Rating</option>
-                      <option value="diff">Difficulty</option>
-                      <option value="work">Workload</option>
-                    </select>
-                  </div>
+                <div className="col">
+                  <select
+                    value={this.state.selected}
+                    className="results-sort-by-select"
+                    onChange={(e) => this.handleSelect(e)}
+                  >
+                    <option value="relevance">Relevance</option>
+                    <option value="rating">Overall Rating</option>
+                    <option value="diff">Difficulty</option>
+                    <option value="work">Workload</option>
+                  </select>
                 </div>
-                <div className="col-md-2 col-sm-2 col-xs-2 no-left-padding">
-                  <div className="d-none d-xs-block d-lg-none">
-                    <input
-                      class="mobile-filter-button"
-                      type="button"
-                      value="Filter"
-                      onClick={this.setShowFilterPopup}
+                <div className="col d-xs-block d-lg-none">
+                  <input
+                    class="mobile-filter-button"
+                    type="button"
+                    value="Filter"
+                    onClick={this.setShowFilterPopup}
+                  />
+                  {this.state.showFilterPopup && (
+                    <FilterPopup
+                      state={this.state}
+                      props={this.props}
+                      renderCheckboxes={this.renderCheckboxes}
+                      getSubjectOptions={this.getSubjectOptions}
+                      setShowFilterPopup={this.setShowFilterPopup}
                     />
-                    {this.state.showFilterPopup && (
-                      <FilterPopup
-                        state={this.state}
-                        props={this.props}
-                        renderCheckboxes={this.renderCheckboxes}
-                        getSubjectOptions={this.getSubjectOptions}
-                        setShowFilterPopup={this.setShowFilterPopup}
-                      />
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
 
