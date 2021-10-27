@@ -42,7 +42,7 @@ const testUsers: Student[] = [{
   affiliation: null,
   token: "fakeTokencv4620",
   privilege: "regular",
-  reviews: testReviews,
+  reviews: [],
   likedReviews: [],
 }];
 
