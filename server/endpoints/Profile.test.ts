@@ -42,6 +42,16 @@ const testUsers: Student[] = [{
   affiliation: null,
   token: "fakeTokencv4620",
   privilege: "regular",
+  reviews: ["4Y8k7DnX3PLNdwRPr", "4Y8k7DnX3PLNdwRPq"],
+  likedReviews: [],
+},
+{ _id: "bleh",
+  firstName: "whatever",
+  lastName: "ok",
+  netId: "dhs234",
+  affiliation: null,
+  token: "fakeTokencv4620",
+  privilege: "regular",
   reviews: [],
   likedReviews: [],
 }];
@@ -73,5 +83,9 @@ describe('tests', () => {
   it('countReviewsByStudentId - counting reviews made by a particular student with netid cv4620', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/countReviewsByStudentId`, { netId: "cv4620" });
     expect(res.data.result).toBe(testUsers[0].reviews.length);
+  });
+  it('countReviewsByStudentId - counting reviews made by a particular student with netid dhs234', async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/countReviewsByStudentId`, { netId: "dhs234" });
+    expect(res.data.result).toBe(testUsers[1].reviews.length);
   });
 });
