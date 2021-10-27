@@ -6,110 +6,105 @@ import express from "express";
 import axios from 'axios';
 import { TokenPayload } from 'google-auth-library';
 
-import { Review } from 'common';
+import { Review, Student, Class, Subject, Professor } from 'common';
 import { configure } from "../endpoints";
 import { Classes, Reviews, Students } from "../dbDefs";
 import * as Auth from "./Auth";
 
-let mongoServer: MongoMemoryServer;
-let serverCloseHandle;
+import TestingServer, { testingPort } from './TestServer';
 
-const testingPort = 33633;
+const testServer = new TestingServer(testingPort);
 
-// inital classes that are present at start of all tests.
-const testClasses = [
-  {
-    _id: "oH37S3mJ4eAsktypy",
-    classSub: "cs",
-    classNum: "2110",
-    classTitle: "Object-Oriented Programming and Data Structures",
-    classPrereq: [],
-    classFull: "cs 2110 object-oriented programming and data structures",
-    classSems: ["FA14", "SP15", "SU15", "FA15", "SP16", "SU16", "FA16", "SP17",
-      "SU17", "FA17", "SP18", "FA18", "SU18", "SP19", "FA19", "SU19"],
-    crossList: ["q75SxmqkTFEfaJwZ3"],
-    classProfessors: ["David Gries", "Douglas James", "Siddhartha Chaudhuri",
-      "Graeme Bailey", "John Foster", "Ross Tate", "Michael George",
-      "Eleanor Birrell", "Adrian Sampson", "Natacha Crooks", "Anne Bracy",
-      "Michael Clarkson"],
-    classDifficulty: 2.9,
-    classRating: null,
-    classWorkload: 3,
-  },
-];
+beforeAll(async () => {
+  const testClasses: Class[] = [
+    {
+      _id: "oH37S3mJ4eAsktypy",
+      classSub: "cs",
+      classNum: "2110",
+      classTitle: "Object-Oriented Programming and Data Structures",
+      classPrereq: [],
+      classFull: "cs 2110 object-oriented programming and data structures",
+      classSems: ["FA14", "SP15", "SU15", "FA15", "SP16", "SU16", "FA16", "SP17",
+        "SU17", "FA17", "SP18", "FA18", "SU18", "SP19", "FA19", "SU19"],
+      crossList: ["q75SxmqkTFEfaJwZ3"],
+      classProfessors: ["David Gries", "Douglas James", "Siddhartha Chaudhuri",
+        "Graeme Bailey", "John Foster", "Ross Tate", "Michael George",
+        "Eleanor Birrell", "Adrian Sampson", "Natacha Crooks", "Anne Bracy",
+        "Michael Clarkson"],
+      classDifficulty: 2.9,
+      classRating: null,
+      classWorkload: 3,
+    },
+  ];
 
-const testStudents = [
-  {
-    _id: "Irrelevant",
-    firstName: "John",
-    lastName: "Smith",
-    netId: "js0",
-    affiliation: null,
-    token: null,
-    privilege: "regular",
-    reviews: ["4Y8k7DnX3PLNdwRPr", "2hsb388HzRZMTyfkp", "3yMwTbiyd4MZLPQJF"],
-  },
-];
+  const testStudents: Student[] = [
+    {
+      _id: "Irrelevant",
+      firstName: "John",
+      lastName: "Smith",
+      netId: "js0",
+      affiliation: null,
+      token: null,
+      privilege: "regular",
+      reviews: ["4Y8k7DnX3PLNdwRPr", "2hsb388HzRZMTyfkp", "3yMwTbiyd4MZLPQJF"],
+      likedReviews: [],
+    },
+  ];
 
-// inital reviews that are present at start of all tests.
-const testReviews = [
-  {
-    _id: "4Y8k7DnX3PLNdwRPr",
-    text: "review text for cs 2110",
-    user: "User1234",
-    difficulty: 1,
-    quality: 4,
-    class: "oH37S3mJ4eAsktypy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
-    visible: 1,
-    reported: 0,
-    likes: 2,
-  },
-  {
-    _id: "2hsb388HzRZMTyfkp",
-    text: "review text for cs 2110 number 2",
-    user: "User1234",
-    difficulty: 1,
-    quality: 5,
-    class: "oH37S3mJ4eAsktypy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
-    visible: 1,
-    reported: 0,
-    likes: 0,
-  },
-  {
-    _id: "3yMwTbiyd4MZLPQJF",
-    text: "review text for cs 3110",
-    user: "User1234",
-    difficulty: 3,
-    quality: 3,
-    class: "cJSmM8bnwm2QFnmAn",
-    grade: 5,
-    date: new Date().toISOString(),
-    atten: 0,
-    visible: 1,
-    reported: 0,
-    likes: 5,
-  },
-  {
-    _id: "52x7j6tkXHxvrZizx",
-    text: "review text for cs 3110 - 2",
-    user: "User1234",
-    difficulty: 3,
-    quality: 3,
-    class: "cJSmM8bnwm2QFnmAn",
-    grade: 5,
-    date: new Date().toISOString(),
-    atten: 0,
-    visible: 1,
-    reported: 0,
-    likes: 5,
-  },
-];
+  // inital reviews that are present at start of all tests.
+  const testReviews: Review[] = [
+    {
+      _id: "4Y8k7DnX3PLNdwRPr",
+      text: "review text for cs 2110",
+      user: "User1234",
+      difficulty: 1,
+      class: "oH37S3mJ4eAsktypy",
+      date: new Date(),
+      visible: 1,
+      reported: 0,
+      likes: 2,
+      likedBy: [],
+    },
+    {
+      _id: "2hsb388HzRZMTyfkp",
+      text: "review text for cs 2110 number 2",
+      user: "User1234",
+      difficulty: 1,
+      class: "oH37S3mJ4eAsktypy",
+      date: new Date(),
+      visible: 1,
+      reported: 0,
+      likes: 0,
+      likedBy: [],
+    },
+    {
+      _id: "3yMwTbiyd4MZLPQJF",
+      text: "review text for cs 3110",
+      user: "User1234",
+      difficulty: 3,
+      class: "cJSmM8bnwm2QFnmAn",
+      date: new Date(),
+      visible: 1,
+      reported: 0,
+      likes: 5,
+      likedBy: [],
+    },
+    {
+      _id: "52x7j6tkXHxvrZizx",
+      text: "review text for cs 3110 - 2",
+      user: "User1234",
+      difficulty: 3,
+      class: "cJSmM8bnwm2QFnmAn",
+      date: new Date(),
+      visible: 1,
+      reported: 0,
+      likes: 5,
+      likedBy: [],
+    },
+  ];
+
+  await testServer.setUpDB(testReviews, testStudents, testClasses, undefined, undefined);
+});
 
 const testTotalLikes = 7;
 
@@ -126,35 +121,9 @@ const validTokenPayload: TokenPayload = {
 const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket')
   .mockImplementation(async (token?: string) => validTokenPayload);
 
-beforeAll(async () => {
-  // get mongoose all set up
-  mongoServer = new MongoMemoryServer();
-  const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  await Promise.all(
-    testClasses.map(async (c) => await (new Classes(c).save())),
-  );
-
-  await Promise.all(
-    testStudents.map(async (c) => await (new Students(c).save())),
-  );
-
-  await Promise.all(
-    testReviews.map(async (r) => await (new Reviews(r).save())),
-  );
-
-  // Set up a mock version of the v2 endpoints to test against
-  const app = express();
-  serverCloseHandle = app.listen(testingPort);
-  configure(app);
-});
-
 afterAll(async () => {
-  await mockVerificationTicket.mockRestore();
-  await mongoose.disconnect();
-  await mongoServer.stop();
-  if (serverCloseHandle) serverCloseHandle.close();
+  mockVerificationTicket.mockRestore();
+  await testServer.shutdownTestingServer();
 });
 
 
