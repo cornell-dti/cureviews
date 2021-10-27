@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
-import { Reviews, Students } from "../dbDefs";
+import { ReviewDocument, Reviews, Students } from "../dbDefs";
 
 // The type of a query with a studentId
 export interface NetIdQuery {
@@ -13,10 +13,17 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     const { netId } = request;
     let totalLikes = 0;
     try {
-      await Students.findOne({ netId })
-        .then(async (student) => {
-          (await Reviews.find({ user: student._id })).forEach((review) => { totalLikes += review.likes; });
-        });
+      const studentDoc = await Students.findOne({ netId });
+      const reviewIds = studentDoc.reviews;
+      const reviews: ReviewDocument[] = await Promise.all(
+        (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
+      );
+      reviews.forEach((review) => {
+        if ('likes' in review) {
+          totalLikes += review.likes;
+        }
+      });
+
       return { resCode: 1, totalLikes };
     } catch (error) {
       // eslint-disable-next-line no-console

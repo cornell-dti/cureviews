@@ -14,7 +14,7 @@ import * as Auth from "./Auth";
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 8080;
+const testingPort = 33633;
 
 // inital classes that are present at start of all tests.
 const testClasses = [
@@ -38,6 +38,19 @@ const testClasses = [
   },
 ];
 
+const testStudents = [
+  {
+    _id: "Irrelevant",
+    firstName: "John",
+    lastName: "Smith",
+    netId: "js0",
+    affiliation: null,
+    token: null,
+    privilege: "regular",
+    reviews: ["4Y8k7DnX3PLNdwRPr", "2hsb388HzRZMTyfkp", "3yMwTbiyd4MZLPQJF"],
+  },
+];
+
 // inital reviews that are present at start of all tests.
 const testReviews = [
   {
@@ -55,7 +68,7 @@ const testReviews = [
     likes: 2,
   },
   {
-    _id: "4Y8k7DnX3PLNdwRPq",
+    _id: "2hsb388HzRZMTyfkp",
     text: "review text for cs 2110 number 2",
     user: "User1234",
     difficulty: 1,
@@ -66,10 +79,25 @@ const testReviews = [
     atten: 0,
     visible: 1,
     reported: 0,
+    likes: 0,
   },
   {
-    _id: "4Y8k7DnX3PLNdwRPq",
+    _id: "3yMwTbiyd4MZLPQJF",
     text: "review text for cs 3110",
+    user: "User1234",
+    difficulty: 3,
+    quality: 3,
+    class: "cJSmM8bnwm2QFnmAn",
+    grade: 5,
+    date: new Date().toISOString(),
+    atten: 0,
+    visible: 1,
+    reported: 0,
+    likes: 5,
+  },
+  {
+    _id: "52x7j6tkXHxvrZizx",
+    text: "review text for cs 3110 - 2",
     user: "User1234",
     difficulty: 3,
     quality: 3,
@@ -83,7 +111,7 @@ const testReviews = [
   },
 ];
 
-const testTotalLikes = 5;
+const testTotalLikes = 7;
 
 const validTokenPayload: TokenPayload = {
   email: 'dti1@cornell.edu',
@@ -109,6 +137,10 @@ beforeAll(async () => {
   );
 
   await Promise.all(
+    testStudents.map(async (c) => await (new Students(c).save())),
+  );
+
+  await Promise.all(
     testReviews.map(async (r) => await (new Reviews(r).save())),
   );
 
@@ -122,12 +154,13 @@ afterAll(async () => {
   await mockVerificationTicket.mockRestore();
   await mongoose.disconnect();
   await mongoServer.stop();
-  await serverCloseHandle.close();
+  if (serverCloseHandle) serverCloseHandle.close();
 });
+
 
 describe('tests', () => {
   it('getTotalLikesByStudentId - counting the number of likes a student got on their reviews', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getTotalLikesByStudentId`, { netId: "cv4620" });
-    expect(res.data.result).toBe(testTotalLikes);
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getTotalLikesByStudentId`, { netId: "js0" });
+    expect(res.data.result.totalLikes).toBe(testTotalLikes);
   });
 });
