@@ -1,21 +1,14 @@
 /* eslint-disable import/prefer-default-export */
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import express from "express";
-
 import axios from 'axios';
 import { TokenPayload } from 'google-auth-library';
 
 import { Review } from 'common';
-import { configure } from "../endpoints";
-import { Classes, Reviews, Students } from "../dbDefs";
+import { Reviews, Students } from "../dbDefs";
 import * as Auth from "./Auth";
+import TestingServer from './TestServer';
 
-let mongoServer: MongoMemoryServer;
-let serverCloseHandle;
-
-const testingPort = 8000;
-
+const testingPort = 8080;
+const testServer = new TestingServer(testingPort);
 // inital classes that are present at start of all tests.
 const testClasses = [
   {
@@ -39,33 +32,28 @@ const testClasses = [
 ];
 
 // inital reviews that are present at start of all tests.
-const testReviews = [
+
+const testReviews: Review[] = [
   {
     _id: "4Y8k7DnX3PLNdwRPr",
     text: "review text for cs 2110",
     user: "User1234",
     difficulty: 1,
-    quality: 4,
     class: "oH37S3mJ4eAsktypy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
     visible: 1,
     reported: 0,
     likes: 2,
+    likedBy: ["user1234", "user0"],
   },
   {
     _id: "4Y8k7DnX3PLNdwRPq",
     text: "review text for cs 2110 number 2",
     user: "User1234",
     difficulty: 1,
-    quality: 5,
     class: "oH37S3mJ4eAsktypy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
     visible: 1,
     reported: 0,
+    likedBy: [],
   },
 ];
 
@@ -84,29 +72,12 @@ const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket')
 
 beforeAll(async () => {
   // get mongoose all set up
-  mongoServer = new MongoMemoryServer();
-  const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  await Promise.all(
-    testClasses.map(async (c) => await (new Classes(c).save())),
-  );
-
-  await Promise.all(
-    testReviews.map(async (r) => await (new Reviews(r).save())),
-  );
-
-  // Set up a mock version of the v2 endpoints to test against
-  const app = express();
-  serverCloseHandle = app.listen(testingPort);
-  configure(app);
+  await testServer.setUpDB(testReviews, undefined, testClasses, undefined, undefined);
 });
 
 afterAll(async () => {
   await mockVerificationTicket.mockRestore();
-  await mongoose.disconnect();
-  await mongoServer.stop();
-  await serverCloseHandle.close();
+  await testServer.shutdownTestingServer();
 });
 
 describe('tests', () => {

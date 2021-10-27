@@ -10,7 +10,7 @@
     "prestart": "yarn build",
     "start": "node dist/server.js",
     "heroku-start": "node dist/server.js",
-    "test": "jest"
+    "test": "jest -i"
   },
   "jest": {
     "testEnvironment": "node",
