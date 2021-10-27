@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { Reviews, Students } from "../dbDefs";
+import { Students } from "../dbDefs";
 import { Context, Endpoint } from "../endpoints";
 
 // The type of a query with a studentId
@@ -16,11 +16,8 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      await Students.findOne({ netId })
-        .then((student) => {
-          Reviews.find({ user: student._id })
-            .then((reviews) => reviews.length);
-        });
+      const student = await Students.findOne({ netId });
+      return student.reviews.length;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'countReviewsByStudentId' method");
