@@ -1,16 +1,16 @@
-import React, { Component, useEffect, useState } from 'react';
-import axios from 'axios';
-import CourseCard from './CourseCard';
-import Gauge from './Gauge';
-import Navbar from './Navbar';
-import CourseReviews from './CourseReviews';
+import React, { Component, useEffect, useState } from "react";
+import axios from "axios";
+import CourseCard from "./CourseCard";
+import Gauge from "./Gauge";
+import Navbar from "./Navbar";
+import CourseReviews from "./CourseReviews";
 import "./css/App.css";
-import { courseVisited } from './js/Feedback';
+import { courseVisited } from "./js/Feedback";
 import "./css/ClassView.css";
 import PropTypes from "prop-types";
-import 'rodal/lib/rodal.css';
-import './css/Form.css';
-import './css/ResultsDisplay.css'
+import "rodal/lib/rodal.css";
+import "./css/Form.css";
+import "./css/ResultsDisplay.css";
 import ResultsDisplayMobile from "./ResultsDisplayMobile";
 
 /*
@@ -46,7 +46,7 @@ export class ClassView extends Component {
       selectedClass: null,
       classDoesntExist: false,
       //for mobile
-      transformGauges: false
+      transformGauges: false,
     };
 
     //Used to prevent endless reloading in componentDidUpdate
@@ -59,19 +59,23 @@ export class ClassView extends Component {
   // Once the component loads, make a call to the backend for class object.
   // Update the local state accordingly.  Called from componentDidUpdate()
   updateCurrentClass(classNumber, classSubject) {
-    axios.post(`/v2/getCourseByInfo`, { number: classNumber, subject: classSubject }).then(response => {
-      const course = response.data.result
-      if (course) {
-        this.setState({
-          selectedClass: course
-        });
-      }
-      else {
-        this.setState({
-          classDoesntExist: true
-        });
-      }
-    });
+    axios
+      .post(`/v2/getCourseByInfo`, {
+        number: classNumber,
+        subject: classSubject,
+      })
+      .then((response) => {
+        const course = response.data.result;
+        if (course) {
+          this.setState({
+            selectedClass: course,
+          });
+        } else {
+          this.setState({
+            classDoesntExist: true,
+          });
+        }
+      });
   }
 
   componentDidUpdate(prevProps) {
@@ -80,14 +84,16 @@ export class ClassView extends Component {
     const number = this.props.routeInfo.match.params.number;
     const subject = this.props.routeInfo.match.params.subject.toLowerCase();
 
-    if ((prevProps.routeInfo.match.params.number !== number
-      || prevProps.routeInfo.match.params.subject.toLowerCase() !== subject)
-      || this.firstLoad) {
+    if (
+      prevProps.routeInfo.match.params.number !== number ||
+      prevProps.routeInfo.match.params.subject.toLowerCase() !== subject ||
+      this.firstLoad
+    ) {
       this.setState({
         number: number,
         subject: subject,
         selectedClass: null,
-        classDoesntExist: false
+        classDoesntExist: false,
       });
       this.firstLoad = false;
       this.updateCurrentClass(number, subject);
@@ -106,31 +112,51 @@ export class ClassView extends Component {
   // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
   render() {
     if (this.state.selectedClass) {
-      courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
+      courseVisited(
+        this.state.selectedClass.classSub,
+        this.state.selectedClass.classNum
+      );
       return (
         <div>
-          <div className="hidden-lg hidden-xl hidden-md">
-            <ResultsDisplayMobile classView={true} onClickText={this.toggleFullscreen}
-              card_course={this.state.selectedClass} transformGauges={this.state.transformGauges}
-              scrollReviews={this.scrollReviews} />
+          <div className="d-none d-xs-block d-lg-none">
+            <ResultsDisplayMobile
+              classView={true}
+              onClickText={this.toggleFullscreen}
+              card_course={this.state.selectedClass}
+              transformGauges={this.state.transformGauges}
+              scrollReviews={this.scrollReviews}
+            />
           </div>
-          <div className="hidden-sm hidden-xs  container-fluid container-top-gap-fix classViewContainer">
+          <div className="d-none d-lg-block container-fluid container-top-gap-fix classViewContainer">
             <Navbar />
             <div className="clearfix" />
             <div className="container-width no-padding classview-column-container">
-              <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
+              <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
                 <CourseCard course={this.state.selectedClass} />
               </div>
               <div className="col navbar-margin classview-right-panel">
                 <div className="row classview-gauge-container">
-                  <div className="col-md-4 col-sm-4 col-xs-4">
-                    <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classRating)} text="Overall" />
+                  <div className="col-xs-4 classview-gauge">
+                    <Gauge
+                      rating={parseFloat(this.state.selectedClass.classRating)}
+                      label="Overall"
+                    />
                   </div>
-                  <div className="col-md-4 col-sm-4 col-xs-4">
-                    <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classDifficulty)} text="Difficulty" />
+                  <div className="col-xs-4 classview-gauge">
+                    <Gauge
+                      rating={parseFloat(
+                        this.state.selectedClass.classDifficulty
+                      )}
+                      label="Difficulty"
+                    />
                   </div>
-                  <div className="col-md-4 col-sm-4 col-xs-4">
-                    <Gauge width="14vw" height="10vh" rating={parseFloat(this.state.selectedClass.classWorkload)} text="Workload" />
+                  <div className="col-xs-4 classview-gauge">
+                    <Gauge
+                      rating={parseFloat(
+                        this.state.selectedClass.classWorkload
+                      )}
+                      label="Workload"
+                    />
                   </div>
                 </div>
                 <div className="row no-padding classview-reviews-container">
@@ -140,7 +166,6 @@ export class ClassView extends Component {
             </div>
           </div>
         </div>
-
       );
     } else if (this.state.classDoesntExist) {
       // Class was not found, so show a 404 error graphic.
@@ -148,20 +173,28 @@ export class ClassView extends Component {
         <div className="container-fluid container-top-gap-fix">
           <Navbar />
           <div className="class-error-container">
-            <img className="errorgauge" src="/error.svg" width="100vw" height="auto" alt="error" />
-            <h2 className="error-text">{'Sorry, we couldn\'t find the class you\'re searching for.'}</h2>
+            <img
+              className="errorgauge"
+              src="/error.svg"
+              width="100vw"
+              height="auto"
+              alt="error"
+            />
+            <h2 className="error-text">
+              {"Sorry, we couldn't find the class you're searching for."}
+            </h2>
             <h2 className="error-text">Please search for a different class.</h2>
           </div>
         </div>
       );
     } else {
       // While a class is being searched for, render a loading animation.
-      const Loading = require('react-loading-animation');
+      const Loading = require("react-loading-animation");
       return (
         <div className="classview-loading">
           <Loading />;
-          </div>
-      )
+        </div>
+      );
     }
   }
 }
@@ -169,13 +202,13 @@ export class ClassView extends Component {
 // takes no props
 ClassView.propTypes = {
   allCourses: PropTypes.array.isRequired,
-  match: PropTypes.object
+  match: PropTypes.object,
 };
 
 // wrap in a container class that allows the component to dynamically grab courses
 // that contain this query anywhere in their full name. The component will automatically
 //  re-render when new classes are added to the database.
-export default props => {
+export default (props) => {
   const [loading, setLoading] = useState(true);
   const [allCourses] = useState([]);
 
@@ -183,5 +216,11 @@ export default props => {
     setLoading(false);
   }, []);
 
-  return <ClassView routeInfo={props} allCourses={allCourses} loading={loading}></ClassView>;
+  return (
+    <ClassView
+      routeInfo={props}
+      allCourses={allCourses}
+      loading={loading}
+    ></ClassView>
+  );
 };

@@ -1,20 +1,14 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import express from "express";
-
 import axios from 'axios';
 import { TokenPayload } from 'google-auth-library';
 
-import { configure } from "../endpoints";
-import { Classes, Reviews, Students, Subjects } from "../dbDefs";
+import { Class, Review, Student, Subject } from 'common';
 import * as Auth from "./Auth";
+import TestingServer, { testingPort } from './TestServer';
 
-let mongoServer: MongoMemoryServer;
-let serverCloseHandle;
+const testServer = new TestingServer(testingPort);
 
-const testingPort = 8090;
 
-export const testClasses = [
+export const testClasses: Class[] = [
   {
     _id: "oH37S3mJ4eAsktypy",
     classSub: "cs",
@@ -66,58 +60,54 @@ export const testClasses = [
 ];
 
 // inital reviews that are present at start of all tests.
-export const testReviews = [
+export const testReviews: Review[] = [
   {
     _id: "4Y8k7DnX3PLNdwRPr",
     text: "review text for cs 2110",
     difficulty: 1,
-    quality: 4,
     class: "oH37S3mJ4eAsktypy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
     visible: 1,
     reported: 0,
+    user: "nje",
+    likedBy: [],
+    date: new Date(),
   },
   {
     _id: "4Y8k7DnX3PLNdwRPq",
     text: "review text for cs 2110 number 2",
     difficulty: 1,
-    quality: 5,
     class: "oH37S3mJ4eAsktypy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
     visible: 1,
     reported: 0,
+    user: "nje",
+    likedBy: [],
+    date: new Date(),
   },
   {
     _id: "4Y8k7rthjX3PLNdwRPq",
     text: "review 1 for cs 2112",
     difficulty: 5,
-    quality: 5,
     class: "oH37S3mJ4eAsdsdpy",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
     visible: 1,
     reported: 0,
+    user: "nje",
+    likedBy: [],
+    date: new Date(),
   },
   {
     _id: "4Y8k7rthjX3PLNdwjhgfuytRPq",
     text: "review 1 for math 3110",
     difficulty: 5,
-    quality: 5,
     class: "fhgweiufhwu23",
-    grade: 6,
-    date: new Date().toISOString(),
-    atten: 0,
     visible: 1,
     reported: 0,
+    user: "nje",
+    likedBy: [],
+    date: new Date(),
   },
 ];
 
-const testSubjects = [
+const testSubjects: Subject[] = [
   {
     _id: "cs57687980g",
     subShort: "cs",
@@ -140,7 +130,7 @@ const validTokenPayload: TokenPayload = {
   hd: "cornell.edu",
 };
 
-const testUsers = [
+const testStudents: Student[] = [
   {
     _id: "Irrelevant2",
     firstName: "Dan Thomas",
@@ -149,6 +139,8 @@ const testUsers = [
     affiliation: null,
     token: "fakeTokenDti1",
     privilege: "admin",
+    reviews: [],
+    likedReviews: [],
   },
 ];
 
@@ -156,38 +148,12 @@ const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket')
   .mockImplementation(async (token: string) => validTokenPayload);
 
 beforeAll(async () => {
-  // get mongoose all set up
-  mongoServer = new MongoMemoryServer();
-  const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  await Promise.all(
-    testClasses.map(async (c) => await (new Classes(c).save())),
-  );
-
-  await Promise.all(
-    testReviews.map(async (r) => await (new Reviews(r).save())),
-  );
-
-  await Promise.all(
-    testUsers.map(async (u) => await (new Students(u).save())),
-  );
-
-  await Promise.all(
-    testSubjects.map(async (s) => await (new Subjects(s).save())),
-  );
-
-  // Set up a mock version of the v2 endpoints to test against
-  const app = express();
-  serverCloseHandle = app.listen(testingPort);
-  configure(app);
+  await testServer.setUpDB(testReviews, testStudents, testClasses, undefined, testSubjects);
 });
 
 afterAll(async () => {
-  await mockVerificationTicket.mockRestore();
-  await mongoose.disconnect();
-  await mongoServer.stop();
-  await serverCloseHandle.close();
+  mockVerificationTicket.mockRestore();
+  await testServer.shutdownTestingServer();
 });
 
 describe('tests', () => {
