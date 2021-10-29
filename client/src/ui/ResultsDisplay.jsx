@@ -252,17 +252,19 @@ export default class ResultsDisplay extends Component {
   renderCheckboxes(group) {
     let group_list = Array.from(this.state.filterMap.get(group).keys());
     return group_list.map((name, index) => (
-      <label className="filter-checkbox-label">
-        <input
-          onChange={(e) => this.checkboxOnChange(e)}
-          type="checkbox"
-          checked={this.state.filterMap.get(group).get(name)}
-          group={group}
-          name={name}
-        />
-        <span class="filter-checkmark"></span>
-        {name}
-      </label>
+      <div>
+        <label className="filter-checkbox-label">
+          <input
+            className="filter-checkbox"
+            onChange={(e) => this.checkboxOnChange(e)}
+            type="checkbox"
+            checked={this.state.filterMap.get(group).get(name)}
+            group={group}
+            name={name}
+          />
+          {name}
+        </label>
+      </div>
     ));
   }
 
@@ -313,7 +315,7 @@ export default class ResultsDisplay extends Component {
         {/* Case where results are still being loaded */}
         {this.props.loading === true && (
           <div className="loading-results">
-            <Loading />;
+            <Loading />
           </div>
         )}
         {/* Case where no results returned */}
@@ -373,7 +375,7 @@ export default class ResultsDisplay extends Component {
                     Sort By:
                   </p>
                 </div>
-                <div className="col">
+                <div className="col noPadding">
                   <select
                     value={this.state.selected}
                     className="results-sort-by-select"
@@ -385,7 +387,7 @@ export default class ResultsDisplay extends Component {
                     <option value="work">Workload</option>
                   </select>
                 </div>
-                <div className="col d-xs-block d-lg-none">
+                <div className="col d-xs-block d-lg-none noPadding">
                   <input
                     class="mobile-filter-button"
                     type="button"
