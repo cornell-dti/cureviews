@@ -14,13 +14,15 @@ const LoginModal = () => {
             </button>
           </div>
           <div className="modal-body">
-            <div>
-              
+            <div className="signin-message">
+              <p>Don't worry - all of your reviews will be <b>anonymous!</b></p>
             </div>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
+            <div className="signin-button-container">
+              <button type="button" className="btn btn-primary">Verify Cornell Email</button>
+            </div>
+            <div className="signin-logo-container">
+              <img src='/dti_logo.png' className="signing-dti-logo" alt="DTI Logo" />
+            </div>
           </div>
         </div>
       </div>
