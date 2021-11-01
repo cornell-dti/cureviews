@@ -1,11 +1,21 @@
 import React from 'react'
 
-import '../ui/css/ProfileCard.css'
+import styles from "./css/ProfileCard.module.css";
 
-export default function ProfileCard() {
+type ProfileCardProps = {
+  title: string;
+  value: string;
+  image: any;
+};
+
+export default function ProfileCard({title, value, image} : ProfileCardProps) {
   return (
-    <div>
-      <h3>Profile Card</h3>
+    <div className={styles.profileCardContainer}>
+      <div className={styles.profileCardCenterText}>
+        <div className={styles.profileCardValue}>{value}</div>
+        <div className={styles.profileCardTitle}>{title}</div>
+        <img className={styles.profileCardImage} src={image} alt="total reviews icon"/>
+      </div>
     </div>
   )
 }
