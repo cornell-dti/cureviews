@@ -17,13 +17,17 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
     const { netId } = request;
     try {
       const student = await Students.findOne({ netId });
-      return student.reviews.length;
+      if (student.reviews == null) {
+        return { code: 500, message: "No reviews object were associated." };
+      }
+
+      return { code: 200, message: student.reviews.length };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'countReviewsByStudentId' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return -1;
+      return { code: 500, message: error.message };
     }
   },
 };

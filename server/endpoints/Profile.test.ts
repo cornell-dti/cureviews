@@ -57,6 +57,17 @@ const testUsers: Student[] = [
     reviews: [],
     likedReviews: [],
   },
+  {
+    _id: "test1",
+    firstName: "test",
+    lastName: "test",
+    netId: "hu33",
+    affiliation: null,
+    token: "fakeTokencv4620",
+    privilege: "regular",
+    reviews: null,
+    likedReviews: [],
+  },
 ];
 
 const validTokenPayload: TokenPayload = {
@@ -95,13 +106,23 @@ describe("tests", () => {
       `http://localhost:${testingPort}/v2/countReviewsByStudentId`,
       { netId: "cv4620" },
     );
-    expect(res.data.result).toBe(testUsers[0].reviews.length);
+    expect(res.data.result.message).toBe(testUsers[0].reviews.length);
+    expect(res.data.result.code).toBe(200);
   });
   it("countReviewsByStudentId - counting reviews made by a particular student with netid dhs234", async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/v2/countReviewsByStudentId`,
       { netId: "dhs234" },
     );
-    expect(res.data.result).toBe(testUsers[1].reviews.length);
+    expect(res.data.result.message).toBe(testUsers[1].reviews.length);
+    expect(res.data.result.code).toBe(200);
+  });
+  it("countReviewsByStudentId - counting reviews made by a particular student with netid hu33", async () => {
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/countReviewsByStudentId`,
+      { netId: "hu33" },
+    );
+    expect(res.data.result.message).toBe("No reviews object were associated.");
+    expect(res.data.result.code).toBe(500);
   });
 });
