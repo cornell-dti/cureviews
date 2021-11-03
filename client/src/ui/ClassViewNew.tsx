@@ -8,7 +8,7 @@ import { lastOfferedSems } from "common/CourseCard";
 import Gauge from "./Gauge";
 import CourseReviews from "./CourseReviews";
 import Form from "./Form";
-import { Class } from "common";
+import { Class, Review } from "common";
 
 enum PageStatus {
   Loading,
@@ -20,9 +20,20 @@ export default function ClassView() {
   const { number, subject, input } = useParams<any>();
 
   const [selectedClass, setSelectedClass] = useState<Class>();
+  const [reviews, setReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
 
+  /**
+   * Arrow functions for sorting reviews
+   */
+  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
+  const sortByDate = (a: Review, b: Review) =>
+    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
+
   useEffect(() => {
+    /**
+     * Fetches current course info and reviews and updates UI state
+     */
     async function updateCurrentClass(number: number, subject: string) {
       const response = await axios.post(`/v2/getCourseByInfo`, {
         number,
@@ -32,6 +43,17 @@ export default function ClassView() {
       const course = response.data.result;
       if (course) {
         setSelectedClass(course);
+
+        // after getting valid course info, fetch reviews
+        const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
+          courseId: course._id,
+        });
+        const reviews = reviewsResponse.data.result;
+        // convert date field of Review to JavaScript Date object
+        reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
+        reviews.sort(sortByLikes);
+        setReviews(reviews);
+
         setPageStatus(PageStatus.Success);
       } else {
         setPageStatus(PageStatus.Error);
@@ -39,6 +61,32 @@ export default function ClassView() {
     }
     updateCurrentClass(number, subject);
   }, [number, subject]);
+
+  /**
+   * Sorts reviews based on selected filter
+   */
+  function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
+    const value = event.target.value;
+    const currentReviews = reviews && [...reviews];
+    if (value === "helpful") {
+      currentReviews?.sort(sortByLikes);
+    } else if (value === "recent") {
+      currentReviews?.sort(sortByDate);
+    }
+    setReviews(currentReviews);
+  }
+
+  /**
+   * Attempts to report review, and filters out the reported review locally
+   * @param reviewId - id of review to report
+   */
+  async function reportReview(reviewId: string) {
+    const response = await axios.post("/v2/reportReview", { id: reviewId });
+    const responseCode = response.data.result.resCode;
+    if (responseCode === 1) {
+      setReviews(reviews?.filter((element) => element._id !== reviewId));
+    }
+  }
 
   if (pageStatus === PageStatus.Error) {
     return (
@@ -58,7 +106,7 @@ export default function ClassView() {
     );
   }
 
-  if (pageStatus === PageStatus.Success && !!selectedClass) {
+  if (pageStatus === PageStatus.Success && !!selectedClass && !!reviews) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
       <div className={`${styles.classView}`}>
@@ -95,13 +143,26 @@ export default function ClassView() {
                 <Gauge rating={selectedClass.classWorkload} label="Workload" />
               </div>
             </div>
-            <h2 className={styles.pastReviews}>Past Reviews</h2>
+            <div className={styles.reviewsHeader}>
+              <h2 className={styles.pastReviews}>
+                Past Reviews ({reviews?.length})
+              </h2>
+              <div>
+                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+                  Sort By:
+                </label>
+                <select
+                  onChange={sortReviewsBy}
+                  className={styles.sortBySelect}
+                  id="sort-reviews-by"
+                >
+                  <option value="helpful">Most Helpful</option>
+                  <option value="recent">Recent</option>
+                </select>
+              </div>
+            </div>
             <div className={styles.courseReviews}>
-              <CourseReviews
-                courseId={selectedClass._id}
-                onScroll={undefined}
-                transformGauges={undefined}
-              />
+              <CourseReviews reviews={reviews} onReportReview={reportReview} />
             </div>
           </div>
         </div>
