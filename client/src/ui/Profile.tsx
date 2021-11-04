@@ -26,7 +26,7 @@ export default function Profile({
             title='Reviews Total'
             value='12'
             image='/total_reviews_icon.svg'
-          ></ProfileCard>
+          />
           <ProfileCard
             title='People found your reviews helpful'
             value='7'
