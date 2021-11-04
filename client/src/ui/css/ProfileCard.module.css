@@ -1,4 +1,5 @@
 @import "../../index.css";
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 .profileCardContainer {
   width: 267px;
@@ -50,5 +51,3 @@
 .profileCardImage {
   margin-left: 10%;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
