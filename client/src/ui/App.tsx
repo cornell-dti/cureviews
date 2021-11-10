@@ -65,7 +65,7 @@ export default class App extends Component {
             <img src='/logo.svg' className="img-fluid scale-logo-homepage" alt="CU Reviews Logo" />
           </div>
           <div className="row homepage-text-padding">
-            <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+            <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
               <div className="row">
                 <p className="homepage-text">Search for Cornell courses, rate past classes, and share feedback</p>
               </div>

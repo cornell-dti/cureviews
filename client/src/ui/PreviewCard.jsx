@@ -186,13 +186,13 @@ export default class PreviewCard extends Component {
 
         {!this.props.transformGauges && (
           <div className="row gaugeHolder">
-            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
               <Gauge rating={parseFloat(this.state.rating)} label="Overall" />
             </div>
-            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
               <Gauge rating={parseFloat(this.state.diff)} label="Difficulty" />
             </div>
-            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 remove-left-padding">
+            <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
               <Gauge
                 rating={parseFloat(this.state.workload)}
                 label="Workload"
@@ -204,19 +204,19 @@ export default class PreviewCard extends Component {
           <div className="row gaugeHolder m-bot-0">
             <div className="rating-mobile-box">
               <div className="row plain-row rating-text">
-                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 first-rating-box-padding">
+                <div className="col-4 col-sm-4 col-md-4 col-lg-4 first-rating-box-padding">
                   Overall{" "}
                   <span className="text-padding">
                     {parseFloat(this.state.rating).toFixed(1)}
                   </span>
                 </div>
-                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
+                <div className="col-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
                   Difficulty{" "}
                   <span className="text-padding">
                     {parseFloat(this.state.diff).toFixed(1)}
                   </span>
                 </div>
-                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
+                <div className="col-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
                   Workload{" "}
                   <span className="text-padding">
                     {parseFloat(this.state.workload).toFixed(1)}

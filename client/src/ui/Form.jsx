@@ -362,10 +362,10 @@ export default class Form extends Component {
             </label>}
 
             <div className="row form-bottom-row-spacing">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">Professor</div>
               </div>
-              <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+              <div className="col-lg-8 col-md-8 col-sm-8 col-8 form-select-alignment" ref={this.selectHolder}>
                 <Select
                   className="react-select-container"
                   classNamePrefix="react-select"
@@ -380,7 +380,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
                       </div>
@@ -388,7 +388,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Overall</h1>
               </div>
               {this.createMetricBoxes(5, "rating")}
@@ -401,7 +401,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Difficulty</h1>
               </div>
               {this.createMetricBoxes(5, "diff")}
@@ -414,7 +414,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Workload</h1>
               </div>
               {this.createMetricBoxes(5, "workload")}
@@ -436,7 +436,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row form-button-top-bottom-spacing">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
               </div>
             </div>
@@ -492,10 +492,10 @@ export default class Form extends Component {
 
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">Professor</div>
               </div>
-              <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+              <div className="col-lg-8 col-md-8 col-sm-8 col-8 form-select-alignment" ref={this.selectHolder}>
                 <Select
                   className="react-select-container"
                   classNamePrefix="react-select"
@@ -510,7 +510,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
                       </div>
@@ -518,7 +518,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Overall</h1>
               </div>
               {this.createMetricBoxes(5, "rating")}
@@ -531,7 +531,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Difficulty</h1>
               </div>
               {this.createMetricBoxes(5, "diff")}
@@ -544,7 +544,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Workload</h1>
               </div>
               {this.createMetricBoxes(5, "workload")}
@@ -567,7 +567,7 @@ export default class Form extends Component {
             </label>}
 
             <div className="row form-button-top-bottom-spacing">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
               </div>
             </div>

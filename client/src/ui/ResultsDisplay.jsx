@@ -320,7 +320,7 @@ export default class ResultsDisplay extends Component {
         )}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 results">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-12 results">
             <img
               src="/noResults.svg"
               className="img-responsive no-results"
@@ -334,7 +334,7 @@ export default class ResultsDisplay extends Component {
         {/* Case where results are returned (non-empty) */}
         {this.state.courseList.length !== 0 && this.props.loading !== true && (
           <div className="results-column-container">
-            <div className="d-none d-lg-block col-lg-2 col-md-2 col-sm-2 col-xs-2 filter-container">
+            <div className="d-none d-lg-block col-lg-2 col-md-2 col-sm-2 col-2 filter-container">
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -346,7 +346,7 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
 
-            <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12 results">
+            <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 results">
               {this.state.fullscreen && (
                 <ResultsDisplayMobile
                   classView={false}
