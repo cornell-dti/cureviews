@@ -224,7 +224,6 @@ export const getCoursesByProfessor: Endpoint<Search> = {
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if (regex.test(search.query)) {
         const professorRegex = search.query.replace('+', '.*.');
-        console.log(professorRegex);
         courses = await Classes.find({ classProfessors: { $regex: professorRegex, $options: "i" } }).exec();
       }
       return courses;
