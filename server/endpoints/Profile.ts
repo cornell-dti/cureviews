@@ -24,13 +24,13 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
         }
       });
 
-      return { resCode: 1, totalLikes };
+      return { code: 200, message: totalLikes };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getTotalLikesByStudentId' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return { code: 500, message: error.message };
     }
   },
 };
