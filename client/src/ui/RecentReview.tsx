@@ -78,20 +78,20 @@ export default class RecentReview extends Component<Props, State> {
         <div className="review">
           <div className="card-body-3">
             <div className="row reviewNumbers">
-              <div className="col-lg-2 col-md-2 col-xs-2 col-xs-2">
+              <div className="col-lg-2 col-md-2 col-2 col-2">
                 <div className="container" id="box" style={this.getQualColor(review.quality)}>
                   <div id="text">{review.quality}</div>
                 </div>
               </div>
-              <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div className="col-lg-4 col-md-4 col-sm-4 col-4">
                 <p id="label">Overall Quality</p>
               </div>
-              <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+              <div className="col-lg-2 col-md-2 col-sm-2 col-2" >
                 <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
                   <div id="text">{review.difficulty}</div>
                 </div>
               </div>
-              <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+              <div className="col-lg-2 col-md-2 col-sm-2 col-2">
                 <p id="label">Difficulty</p>
               </div>
             </div>

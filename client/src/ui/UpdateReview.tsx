@@ -99,7 +99,7 @@ export default class UpdateReview extends Component<Props, State> {
         <div className="card">
           <div className="card-body">
             <div className="row">
-              <div className="col-md-3 col-sm-6 col-xs-6">
+              <div className="col-md-3 col-sm-6 col-6">
                 <div className="card">
                   <div className="card-body text-center">{review.rating}</div>
                 </div>
@@ -110,12 +110,12 @@ export default class UpdateReview extends Component<Props, State> {
                   <div className="card-body text-center">{review.professors}</div>
                 </div>
               </div>
-              <div className="col-md-3 col-sm-6 col-xs-6">
+              <div className="col-md-3 col-sm-6 col-6">
                 <div className="card-body"> Overall Rating</div>
                 <div className="card-body"> Difficulty</div>
                 <div className="card-body"> Professor(s)</div>
               </div>
-              <div className="col-md-6 col-sm-12 col-xs-12">
+              <div className="col-md-6 col-sm-12 col-12">
                 {review.text}
               </div>
             </div>
