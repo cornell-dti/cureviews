@@ -36,18 +36,6 @@
   margin-bottom: 60px;
 }
 
-.signin-bottom-message {
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 15px;
-  text-align: center;
-
-  /* Gray */
-  color: #a2a1a1;
-}
-
 .signin-dti-logo-container {
   margin-top: 20px;
   display: flex;

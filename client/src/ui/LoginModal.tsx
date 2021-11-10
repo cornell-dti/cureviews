@@ -23,16 +23,13 @@ const LoginModal = () => {
             <div className="signin-button-container">
               <button type="button" className="btn btn-primary signin-button" onClick={() => (setExecuteLogin(true))}>Verify Cornell Email</button>
             </div>
-            <div className="signin-bottom-message">
-              <p>You will be redirected to our login page. Not seeing it? <a href="https://www.google.com/">Click here</a></p>
-            </div>
             <div className="signin-dti-logo-container">
               <img src='/dti-logo-grey.png' className="signing-dti-logo" alt="DTI Logo" />
             </div>
             <CUreviewsGoogleLogin
                   executeLogin={executeLogin}
                   waitTime={1500}
-                  redirectFrom="admin"/>
+                  redirectFrom=""/>
           </div>
         </div>
       </div>
