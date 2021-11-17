@@ -362,10 +362,10 @@ export default class Form extends Component {
             </label>}
 
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">Professor</div>
               </div>
-              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+              <div className="col-lg-8 col-md-8 col-sm-8 col-8 form-select-alignment" ref={this.selectHolder}>
                 <Select
                   className="react-select-container"
                   classNamePrefix="react-select"
@@ -380,7 +380,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
                       </div>
@@ -388,39 +388,39 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Overall</h1>
               </div>
               {this.createMetricBoxes(5, "rating")}
             </div>
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-offset-3 col-md-9">
+              <div className="col-lg-3 col-md-offset-3 col-md-9">
                 <div className="metricDescL">Not for me</div>
                 <div className="metricDescR">Loved it</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Difficulty</h1>
               </div>
               {this.createMetricBoxes(5, "diff")}
             </div>
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-offset-3 col-md-9">
+              <div className="offset-lg-3 col-lg-9">
                 <div className="metricDescL">Easy</div>
                 <div className="metricDescR">Challenging</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Workload</h1>
               </div>
               {this.createMetricBoxes(5, "workload")}
             </div>
             <div className="row">
-              <div className="col-md-offset-3 col-md-9">
+              <div className="offset-lg-3 col-lg-9">
                 <div className="metricDescL">Not so much</div>
                 <div className="metricDescR">Lots of work</div>
               </div>
@@ -436,7 +436,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row form-button-top-bottom-spacing">
-              <div className="col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
               </div>
             </div>
@@ -446,7 +446,7 @@ export default class Form extends Component {
         <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
             <div id="modal-top">
-              <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+              <img src='/logo.svg' className="img-fluid center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
               <p id="modal-title" className="center-block">Email Verification</p>
             </div>
             <div id="">
@@ -492,10 +492,10 @@ export default class Form extends Component {
 
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">Professor</div>
               </div>
-              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+              <div className="col-lg-8 col-md-8 col-sm-8 col-8 form-select-alignment" ref={this.selectHolder}>
                 <Select
                   className="react-select-container"
                   classNamePrefix="react-select"
@@ -510,7 +510,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
                       </div>
@@ -518,39 +518,39 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Overall</h1>
               </div>
               {this.createMetricBoxes(5, "rating")}
             </div>
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-offset-3 col-md-9 metricDesc-margin-left">
+              <div className="offset-lg-3 col-lg-9 metricDesc-margin-left">
                 <div className="metricDescL">Not for me</div>
                 <div className="metricDescR">Loved it</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Difficulty</h1>
               </div>
               {this.createMetricBoxes(5, "diff")}
             </div>
             <div className="row form-bottom-row-spacing">
-              <div className="col-md-offset-3 col-md-9 metricDesc-margin-left">
+              <div className="offset-lg-3 col-lg-9 metricDesc-margin-left">
                 <div className="metricDescL">Piece of cake</div>
                 <div className="metricDescR">Challenging</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3">
+              <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                 <h1 className="form-label">Workload</h1>
               </div>
               {this.createMetricBoxes(5, "workload")}
             </div>
             <div className="row">
-              <div className="col-md-offset-3 col-md-9 metricDesc-margin-left">
+              <div className="offset-lg-3 col-lg-9 metricDesc-margin-left">
                 <div className="metricDescL">Not much at all</div>
                 <div className="metricDescR">Lots of work</div>
               </div>
@@ -567,7 +567,7 @@ export default class Form extends Component {
             </label>}
 
             <div className="row form-button-top-bottom-spacing">
-              <div className="col-md-12 col-sm-12 col-xs-12">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <button disabled={!isEnabled} className="form-postbutton" onClick={() => { this.setState({ postClicks: this.state.postClicks + 1 }); }}>Submit</button>
               </div>
             </div>
@@ -577,7 +577,7 @@ export default class Form extends Component {
         <Rodal animation="zoom" height={520} width={window.innerWidth / 3} measure="px" className="modalForm" visible={this.state.visible} onClose={this.hide.bind(this)}>
           <div id="modal-background">
             <div id="modal-top">
-              <img src='/logo.svg' className="img-responsive center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
+              <img src='/logo.svg' className="img-fluid center-block scale-logo-modal" id="img-padding-top" alt="CU Reviews Logo" />
               <p id="modal-title" className="center-block">Email Verification</p>
             </div>
             <div id="">

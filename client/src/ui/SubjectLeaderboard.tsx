@@ -51,7 +51,7 @@ export default class SubjectLeaderboard extends Component<{}, State> {
         <legend className="subheader">Most Reviews by Subject</legend>
         {/* Note that the id:"reviewpanel" and "reviewul" still refer to this component as a 
         component.  I did not change the name to keep the styling consistent*/}
-        <div className="panel panel-default" id="reviewpanel">
+        <div className="card card-default" id="reviewpanel">
           <div>
             <ul id="reviewul">
               {this.renderCourses()}
