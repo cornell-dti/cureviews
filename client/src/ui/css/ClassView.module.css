@@ -12,6 +12,56 @@
   flex: 1;
 }
 
+.authModal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+.reviewModal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+.reviewModalForm {
+  margin-top: 50px;
+}
+
+.modalOverlay {
+  position: fixed;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  .authModal {
+    margin: auto;
+    height: 500px;
+    width: 480px;
+    border-radius: 10px;
+  }
+
+  .reviewModal {
+    margin: auto;
+    height: 700px;
+    width: 500px;
+    border-radius: 10px;
+  }
+}
+
 .courseInfoColumn {
   background: #ffffff;
   padding: 35px 35px 0;
@@ -34,6 +84,14 @@
   margin: 16px 0 0 0;
 }
 
+.reviewFormContainer {
+  margin-top: 30px;
+  border-radius: 10px;
+  /* border: 1px solid #ccc; */
+  background-color: #ffffff;
+  padding: 20px;
+}
+
 .gaugeContainer {
   width: 100%;
   background-color: #ffffff;
@@ -46,6 +104,22 @@
 .gauge {
   height: 100%;
   padding: 0 8px 0 0;
+}
+
+.startReviewButton {
+  background-color: #0076ff;
+  color: #ffffff !important;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.startReviewButton:hover {
+  background-color: #0076ff;
+  color: #ffffff !important;
 }
 
 .courseReviewColumn {

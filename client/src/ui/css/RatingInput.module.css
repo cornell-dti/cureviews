@@ -1,0 +1,50 @@
+@import "../../index.css";
+
+.ratingInputLabel {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  font-weight: var(--regular-weight);
+}
+
+.ratingInput {
+  display: flex;
+  flex-direction: row;
+}
+
+.ratingUnit {
+  flex: 1;
+  width: 0;
+  text-align: center;
+  padding-right: 8px;
+}
+
+.ratingUnit:last-child {
+  padding-right: 0;
+}
+
+.ratingButton {
+  padding-top: 8px;
+  height: 8px;
+  width: 100%;
+  background-color: #ececec;
+  border-radius: 10px;
+}
+
+.ratingButtonSelected {
+  background-color: #0076ff;
+}
+
+.ratingButtonHover {
+  background-color: #b7d8ff;
+}
+
+.ratingMinMaxLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #979797;
+  font-weight: var(--regular-weight) !important;
+}

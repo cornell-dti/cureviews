@@ -3,6 +3,7 @@ import "./index.css";
 
 import React from "react";
 import { render } from "react-dom";
+import Modal from "react-modal";
 
 import Login from "./ui/Login";
 import ClassView from "./ui/ClassViewNew";
@@ -13,6 +14,7 @@ import Profile from "./ui/Profile";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Results } from "./ui/Results";
 
+Modal.setAppElement("#render-target");
 /*
 Generates appliation component sent to the client side entry point (main.html)
 as an HTML object with id "render-target".
