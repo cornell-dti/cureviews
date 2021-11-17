@@ -25,6 +25,7 @@ export default function ClassView() {
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [courseReviews, setCourseReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
+  const [scrollTop, setScrollTop] = useState(0);
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -171,7 +172,7 @@ export default function ClassView() {
   if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
-      <div className={`row ${styles.classView}`}>
+      <div className={`${styles.classView}`}>
         <Modal
           isOpen={isReviewModalOpen}
           className={styles.reviewModal}
@@ -188,7 +189,6 @@ export default function ClassView() {
           >
             <span aria-hidden="true">&times;</span>
           </button>
-          {/* {JSON.stringify(newReview)} */}
           <div className={styles.reviewModalForm}>
             <ReviewForm
               professors={selectedClass.classProfessors}
@@ -211,8 +211,13 @@ export default function ClassView() {
         <div className="row">
           <Navbar userInput={input} />
         </div>
-        <div className={`${styles.content}`}>
-          <div className={`col-lg-4 col-md-5 ${styles.courseInfoColumn}`}>
+        <div
+          className={`row ${styles.content}`}
+          onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
+        >
+          <div
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn}`}
+          >
             <div>
               <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
               <p className={styles.courseSubtitle}>
@@ -233,7 +238,7 @@ export default function ClassView() {
               />
             </div>
           </div>
-          <div className={`col-xl-8 col-lg-7 ${styles.courseReviewColumn}`}>
+          <div className={`col ${styles.courseReviewColumn}`}>
             <div className={styles.gaugeContainer}>
               <div className={styles.gauge}>
                 <Gauge rating={selectedClass!.classRating} label="Overall" />
@@ -249,7 +254,7 @@ export default function ClassView() {
               </div>
             </div>
             <button
-              className={`btn hidden-md hidden-lg ${styles.startReviewButton}`}
+              className={`btn d-lg-none ${styles.startReviewButton}`}
               onClick={() => onStartReview()}
             >
               Start a review
@@ -277,6 +282,18 @@ export default function ClassView() {
                 reviews={courseReviews}
                 onReportReview={reportReview}
               />
+              <div
+                className={`d-lg-none ${
+                  scrollTop <= 400 && "d-none"
+                } ${styles.fixedButtonContainer}`}
+              >
+                <button
+                  className={`btn ${styles.startReviewButton}`}
+                  onClick={() => onStartReview()}
+                >
+                  Start a review
+                </button>
+              </div>
             </div>
           </div>
         </div>
