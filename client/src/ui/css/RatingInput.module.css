@@ -24,18 +24,22 @@
 }
 
 .ratingButton {
-  padding-top: 8px;
-  height: 8px;
+  padding: 0;
   width: 100%;
-  background-color: #ececec;
-  border-radius: 10px;
 }
 
-.ratingButtonSelected {
+.ratingButtonPill {
+  height: 8px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ececec;
+}
+
+.ratingButtonPillSelected {
   background-color: #0076ff;
 }
 
-.ratingButtonHover {
+.ratingButtonPillHover {
   background-color: #b7d8ff;
 }
 

@@ -44,13 +44,19 @@ export default function RatingInput({
           >
             <button
               id={`${name}-${i}`}
-              className={`${styles.ratingButton}
-            ${i >= value && i < hoverValue && styles.ratingButtonHover}
-            ${i < hoverValue && styles.ratingButtonSelected}`}
+              className={styles.ratingButton}
               onClick={() => setValue(i + 1)}
               onFocus={() => setHoverValue(i + 1)}
               onBlur={() => setHoverValue(value)}
             >
+              <div
+                className={`${styles.ratingButtonPill}
+                  ${
+                    i >= value && i < hoverValue && styles.ratingButtonPillHover
+                  }
+                  ${i < hoverValue && styles.ratingButtonPillSelected}
+                `}
+              />
               {i + 1}
             </button>
           </span>
