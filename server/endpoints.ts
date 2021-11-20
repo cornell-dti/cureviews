@@ -16,6 +16,7 @@ import {
   incrementLike,
   decrementLike,
 } from "./endpoints/Review";
+import { countReviewsByStudentId } from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import {
   getCoursesByProfessor,
@@ -79,6 +80,7 @@ export function configure(app: express.Application) {
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
   register(app, "incrementLike", incrementLike);
   register(app, "decrementLike", decrementLike);
+  register(app, "countReviewsByStudentId", countReviewsByStudentId);
 }
 
 function register<T>(
