@@ -8,17 +8,17 @@ import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubject
 import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
 
 export interface Context {
-  ip: string;
+    ip: string;
 }
 
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
-  guard: ValidationChain[];
-  // TODO: this is needed for backwards compatibility with many of the methods
-  // This is bad in the long run. Please fix.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callback: (ctx: Context, args: T) => any;
+    guard: ValidationChain[];
+    // TODO: this is needed for backwards compatibility with many of the methods
+    // This is bad in the long run. Please fix.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    callback: (ctx: Context, args: T) => any;
 }
 
 /*
