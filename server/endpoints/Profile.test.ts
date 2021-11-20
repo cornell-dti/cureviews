@@ -118,19 +118,6 @@ const testUsers: Student[] = [
     reviews: null,
     likedReviews: [],
   },
-  /*
-  {
-    _id: "testid",
-    firstName: "John",
-    lastName: "Smith",
-    netId: "js0",
-    affiliation: null,
-    token: null,
-    privilege: "regular",
-    reviews: ["4Y8k7DnX3PLNdwRPr", "4Y8k7DnX3PLNdwRPq", "3yMwTbiyd4MZLPQJF"],
-    likedReviews: [],
-  },
-  */
 ];
 
 beforeAll(async () => {
