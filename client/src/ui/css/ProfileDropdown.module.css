@@ -6,12 +6,7 @@
   cursor: pointer;
 }
 
-.profileMenuTrigger {
-  width: 53px;
-  height: 53px;
-}
-
-.profileMenuTrigger img {
+.profileBear {
   width: 53px;
   height: 53px;
 }

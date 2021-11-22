@@ -25,16 +25,16 @@ export default function ProfileDropdown() {
 
   return (
     <div className={styles.profileMenuContainer}>
-      <div onClick={toggling} className={styles.profileMenuTrigger}>
-        <img
-          src='/profile_bear.png'
-          alt='profile bear'
-          className={styles.profileBear}
-        />
-      </div>
+      <img
+        src='/profile_bear.png'
+        alt='profile bear'
+        className={styles.profileBear}
+        ref={dropdownRef}
+        onClick={toggling}
+      />
 
       {open ? (
-        <div ref={dropdownRef} className={styles.profileMenuCard}>
+        <div className={styles.profileMenuCard}>
           <a href='/profile' className={styles.profileMenuLink}>
             My Reviews
           </a>
