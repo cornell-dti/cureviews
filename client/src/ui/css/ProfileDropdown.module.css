@@ -55,3 +55,15 @@
 
   color: #ffffff;
 }
+
+@media (max-width: 800px) {
+  .profileMenuCard {
+    width: 210px;
+    height: 130px;
+    padding: 15px;
+  }
+
+  .profileMenuSignOutButton {
+    margin-top: 15px;
+  }
+}
