@@ -54,18 +54,18 @@ export default class App extends Component {
           monthclass
         }
       >
-        <div className='row'>
+        <div className="row">
           <ProfileDropdown />
           <img
-            src='/logo.svg'
-            className='img-responsive scale-logo-homepage'
-            alt='CU Reviews Logo'
+            src="/logo.svg"
+            className="img-responsive scale-logo-homepage"
+            alt="CU Reviews Logo"
           />
         </div>
-        <div className='row homepage-text-padding'>
-          <div className='col-lg-7 col-md-7 col-sm-12 col-xs-12'>
-            <div className='row'>
-              <p className='homepage-text'>
+        <div className="row homepage-text-padding">
+          <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+            <div className="row">
+              <p className="homepage-text">
                 Search for Cornell courses, rate past classes, and share
                 feedback
               </p>
@@ -73,8 +73,8 @@ export default class App extends Component {
             <SearchBar />
           </div>
         </div>
-        <div className=''>
-          <img src='/dti_logo.png' className='dti-logo' alt='DTI Logo' />
+        <div className="">
+          <img src="/dti_logo.png" className="dti-logo" alt="DTI Logo" />
         </div>
       </div>
     );
