@@ -8,8 +8,8 @@ export default function ProfileDropdown() {
   const toggling = () => setOpen(!open);
 
   useEffect(() => {
-    const pageClickEvent = () => {
-      if (dropdownRef.current !== null) {
+    const pageClickEvent = (e) => {
+      if (dropdownRef.current !== null && dropdownRef.current.contains(e.target)) {
         setOpen(!open);
       }
     };
