@@ -41,7 +41,7 @@ export default function ProfileDropdown() {
           <a href='/classes' className={styles.profileMenuLink}>
             Watched Classes
           </a>
-          <button className={styles.profileMenuSignOutButton}>Sign Out</button>{" "}
+          <button className={styles.profileMenuSignOutButton}>Sign Out</button>
         </div>
       ) : (
         <div></div>
