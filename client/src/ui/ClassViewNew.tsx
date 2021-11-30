@@ -12,6 +12,8 @@ import ReviewForm, { NewReview } from "./ReviewForm";
 import ModalContentAuth from "./ModalContentAuth";
 import { Class, Review } from "common";
 import { Session } from "../session-store";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 enum PageStatus {
   Loading,
@@ -146,6 +148,29 @@ export default function ClassView() {
   }
 
   /**
+   * Submit review and clear session storage
+   */
+  async function onSubmitReview(review: NewReview) {
+    const result = (
+      await axios.post("/v2/insertReview", {
+        token: Session.get("token"),
+        review: review,
+        classId: selectedClass?._id,
+      })
+    ).data.result;
+
+    if (result.resCode === 1) {
+      clearSessionReview();
+      setIsReviewModalOpen(false);
+      toast.success(
+        "Thanks for reviewing! New reviews are updated every 24 hours."
+      );
+    } else {
+      toast.error("An error occurred, please try again.");
+    }
+  }
+
+  /**
    * Error page
    */
   if (pageStatus === PageStatus.Error) {
@@ -173,6 +198,15 @@ export default function ClassView() {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
       <div className={`${styles.classView}`}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <Modal
           isOpen={isReviewModalOpen}
           className={styles.reviewModal}
@@ -193,7 +227,7 @@ export default function ClassView() {
             <ReviewForm
               professors={selectedClass.classProfessors}
               value={newReview}
-              onSubmitReview={(a) => {}}
+              onSubmitReview={onSubmitReview}
               actionButtonLabel="Submit review"
             />
           </div>
@@ -228,7 +262,6 @@ export default function ClassView() {
                   lastOfferedSems(selectedClass)}
               </p>
             </div>
-            {/* TODO: show button for leaving a review on sm/xs screens */}
             <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
               <ReviewForm
                 professors={selectedClass.classProfessors}
@@ -283,9 +316,9 @@ export default function ClassView() {
                 onReportReview={reportReview}
               />
               <div
-                className={`d-lg-none ${
-                  scrollTop <= 400 && "d-none"
-                } ${styles.fixedButtonContainer}`}
+                className={`d-lg-none ${scrollTop <= 400 && "d-none"} ${
+                  styles.fixedButtonContainer
+                }`}
               >
                 <button
                   className={`btn ${styles.startReviewButton}`}
