@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./css/RatingInput.module.css";
 
 type RatingInputProps = {
@@ -22,39 +22,57 @@ export default function RatingInput({
   maxLabel,
   className,
 }: RatingInputProps) {
-  const [hoverValue, setHoverValue] = useState(value);
+  const [hoverIndex, setHoverIndex] = useState(value - 1);
+
+  const buttonRefs = useMemo(
+    () => Array.from({ length: maxRating }).map(() => React.createRef<any>()),
+    [maxRating]
+  );
 
   useEffect(() => {
-    setHoverValue(value);
+    setHoverIndex(value - 1);
   }, [value]);
+
+  function handleKeyDown({ key }: any) {
+    if (key === "ArrowLeft" && hoverIndex >= 1) {
+      buttonRefs[hoverIndex - 1].current.focus();
+    }
+
+    if (key === "ArrowRight" && hoverIndex < maxRating - 1) {
+      buttonRefs[hoverIndex + 1].current.focus();
+    }
+  }
 
   return (
     <div className={className}>
-      <label htmlFor={name} className={styles.ratingInputLabel}>
-        {label}
-      </label>
-      <div className={styles.ratingInput} id={name}>
-        {/* {value} */}
+      <label className={styles.ratingInputLabel}>{label}</label>
+      <div
+        className={styles.ratingInput}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+      >
         {Array.from({ length: maxRating }).map((u, i) => (
           <span
             className={styles.ratingUnit}
             key={`${name}-${i}`}
-            onMouseEnter={() => setHoverValue(i + 1)}
-            onMouseLeave={() => setHoverValue(value)}
+            onMouseEnter={() => setHoverIndex(i)}
+            onMouseLeave={() => setHoverIndex(value - 1)}
           >
             <button
-              id={`${name}-${i}`}
+              ref={buttonRefs[i]}
               className={styles.ratingButton}
               onClick={() => setValue(i + 1)}
-              onFocus={() => setHoverValue(i + 1)}
-              onBlur={() => setHoverValue(value)}
+              onFocus={() => setValue(i + 1)}
+              tabIndex={-1}
             >
               <div
                 className={`${styles.ratingButtonPill}
                   ${
-                    i >= value && i < hoverValue && styles.ratingButtonPillHover
+                    i >= value &&
+                    i < hoverIndex + 1 &&
+                    styles.ratingButtonPillHover
                   }
-                  ${i < hoverValue && styles.ratingButtonPillSelected}
+                  ${i < hoverIndex + 1 && styles.ratingButtonPillSelected}
                 `}
               />
               {i + 1}
