@@ -28,6 +28,11 @@
   font-weight: var(--regular-weight);
 }
 
+.errorText {
+  color: #ff0000;
+  margin-top: 4px;
+}
+
 .actionButton {
   background-color: #0076ff;
   color: #ffffff !important;
