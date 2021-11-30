@@ -35,11 +35,26 @@ export default function ReviewForm({
   const [selectedProfessors, setSelectedProfessors] = useState<string[]>(
     value?.professors || []
   );
+  const [isSelectedProfessorsInvalid, setIsSelectedProfessorsInvalid] =
+    useState(false);
   const [reviewText, setReviewText] = useState(value?.text || "");
+  const [isReviewTextInvalid, setIsReviewTextInvalid] = useState(false);
   const [isCovid, setIsCovid] = useState(value?.isCovid || false);
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || [];
+  }
+
+  function isInputValid(): boolean {
+    const regex = new RegExp(
+      /^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i
+    );
+    const isReviewTextValid =
+      !isReviewCommentVisible || (!!reviewText && regex.test(reviewText));
+    setIsReviewTextInvalid(!isReviewTextValid);
+    const isSelectedProfessorsValid = selectedProfessors.length > 0;
+    setIsSelectedProfessorsInvalid(!isSelectedProfessorsValid);
+    return isReviewTextValid && isSelectedProfessorsValid;
   }
 
   return (
@@ -55,6 +70,7 @@ export default function ReviewForm({
         <Select
           value={toSelectOptions(selectedProfessors)}
           onChange={(professors: any) => {
+            setIsSelectedProfessorsInvalid(false);
             setSelectedProfessors(
               professors?.map(({ value, label }: any) => value)
             );
@@ -63,6 +79,9 @@ export default function ReviewForm({
           options={toSelectOptions(professors)}
           placeholder="Select professors"
         />
+        {isSelectedProfessorsInvalid && (
+          <div className={styles.errorText}>Please select your professors.</div>
+        )}
       </div>
       <div className={styles.ratingInput}>
         <RatingInput
@@ -98,15 +117,23 @@ export default function ReviewForm({
         />
       </div>
       {isReviewCommentVisible && (
-        <label className={styles.reviewComment}>
-          <span>Review comment</span>
-          <textarea
-            value={reviewText}
-            onChange={(event) => {
-              setReviewText(event.target.value);
-            }}
-          />
-        </label>
+        <div>
+          <label className={styles.reviewComment}>
+            <span>Review comment</span>
+            <textarea
+              value={reviewText}
+              onChange={(event) => {
+                setIsReviewTextInvalid(false);
+                setReviewText(event.target.value);
+              }}
+            />
+          </label>
+          {isReviewTextInvalid && (
+            <div className={styles.errorText}>
+              Please add text to your review.
+            </div>
+          )}
+        </div>
       )}
       <label className={styles.covidCheckboxLabel}>
         <input
@@ -121,16 +148,18 @@ export default function ReviewForm({
       </label>
       <button
         className={`btn ${styles.actionButton}`}
-        onClick={() =>
-          onSubmitReview({
-            rating: overallRating,
-            difficulty: difficultyRating,
-            workload: workloadRating,
-            professors: selectedProfessors,
-            text: reviewText,
-            isCovid,
-          })
-        }
+        onClick={() => {
+          if (isInputValid()) {
+            onSubmitReview({
+              rating: overallRating,
+              difficulty: difficultyRating,
+              workload: workloadRating,
+              professors: selectedProfessors,
+              text: reviewText,
+              isCovid,
+            });
+          }
+        }}
       >
         {actionButtonLabel}
       </button>
