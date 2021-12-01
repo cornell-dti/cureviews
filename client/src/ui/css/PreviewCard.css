@@ -1,7 +1,7 @@
 /* Panel Styling */
 
 /*desktop*/
-@media (min-width: 1000px) {
+@media (min-width: 992px) {
   .preview-panel {
     padding: 40px 10% 25px 11%;
     border-radius: 10px;
@@ -9,7 +9,7 @@
   }
 
   .preview-class-link {
-    color: #0076FF;
+    color: #0076ff;
     font-size: 32px;
   }
 
@@ -39,8 +39,7 @@
   }
 }
 
-@media (max-width: 1000px) {
-
+@media (max-width: 992px) {
   .first-rating-box-padding {
     padding-left: 9px;
     padding-right: 0px;
@@ -61,7 +60,6 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 20px;
-
   }
 
   .preview-review-button {
@@ -76,10 +74,10 @@
   .rating-mobile-box {
     /* Background */
 
-    background: #F4F9FE;
+    background: #f4f9fe;
     /* Light */
 
-    border: 2px solid #B7D8FF;
+    border: 2px solid #b7d8ff;
     border-radius: 5px;
   }
 
@@ -133,7 +131,6 @@
     margin-left: auto;
     margin-right: 15px;
   }
-
 }
 
 .preview-holder {
@@ -147,8 +144,6 @@
 
 .preview-panel {
   width: 100%;
-
-
 }
 
 .preview-class-title {
@@ -167,7 +162,7 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  color: #A1A1A1;
+  color: #a1a1a1;
 }
 
 .m-bot-0 {
@@ -183,10 +178,8 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  color: #807B7B;
+  color: #807b7b;
 }
-
-
 
 .preview-empty-top-review {
   font-family: "Source Sans Pro", sans-serif;
@@ -208,15 +201,13 @@
   text-align: center;
   border-radius: 10px;
   width: 100%;
-  background: #0076FF;
+  background: #0076ff;
   padding: 10px;
   display: inline-grid;
   align-content: space-evenly;
 }
 
 /* Gauge Styling */
-
-
 
 .remove-left-padding {
   padding-left: 0px;

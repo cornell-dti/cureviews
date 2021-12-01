@@ -22,17 +22,17 @@ export default class Accordian extends Component<Props> {
     let collapseOneId = "collapseOne" + this.getRandNum();
 
     return (
-      <div className="panel-group" id={accId} role="tablist" aria-multiselectable="true">
-        <div className="panel panel-default">
-          <div className="panel-heading" role="tab" id={headingOneId}>
-            <h4 className="panel-title">
+      <div id={accId} role="tablist" aria-multiselectable="true">
+        <div className="card card-default">
+          <div className="card-header" role="tab" id={headingOneId}>
+            <h4 className="card-title">
               <a data-toggle="collapse" data-parent={"#" + accId} href={"#" + collapseOneId} aria-expanded="true" aria-controls={collapseOneId}>
                 {this.props.title}
               </a>
             </h4>
           </div>
-          <div id={collapseOneId} className="panel-collapse collapse" role="tabpanel" aria-labelledby={headingOneId}>
-            <div className="panel-body">
+          <div id={collapseOneId} className="card-collapse collapse" role="tabpanel" aria-labelledby={headingOneId}>
+            <div className="card-body">
               <table className="table table-striped">
                 <thead>
                   <tr>

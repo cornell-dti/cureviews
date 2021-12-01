@@ -118,7 +118,7 @@ export class ClassView extends Component {
       );
       return (
         <div>
-          <div className="hidden-lg hidden-xl hidden-md">
+          <div className="d-none d-xs-block d-lg-none">
             <ResultsDisplayMobile
               classView={true}
               onClickText={this.toggleFullscreen}
@@ -127,22 +127,22 @@ export class ClassView extends Component {
               scrollReviews={this.scrollReviews}
             />
           </div>
-          <div className="hidden-sm hidden-xs  container-fluid container-top-gap-fix classViewContainer">
+          <div className="d-none d-lg-block container-fluid container-top-gap-fix classViewContainer">
             <Navbar />
             <div className="clearfix" />
             <div className="container-width no-padding classview-column-container">
-              <div className="col-md-5 col-sm-5 col-xs-5 sticky no-padding navbar-margin classview-coursecard-min-width">
+              <div className="col-lg-5 col-md-5 col-sm-5 col-5 sticky no-padding navbar-margin classview-coursecard-min-width">
                 <CourseCard course={this.state.selectedClass} />
               </div>
               <div className="col navbar-margin classview-right-panel">
                 <div className="row classview-gauge-container">
-                  <div className="col-xs-4 classview-gauge">
+                  <div className="col-4 classview-gauge">
                     <Gauge
                       rating={parseFloat(this.state.selectedClass.classRating)}
                       label="Overall"
                     />
                   </div>
-                  <div className="col-xs-4 classview-gauge">
+                  <div className="col-4 classview-gauge">
                     <Gauge
                       rating={parseFloat(
                         this.state.selectedClass.classDifficulty
@@ -150,7 +150,7 @@ export class ClassView extends Component {
                       label="Difficulty"
                     />
                   </div>
-                  <div className="col-xs-4 classview-gauge">
+                  <div className="col-4 classview-gauge">
                     <Gauge
                       rating={parseFloat(
                         this.state.selectedClass.classWorkload

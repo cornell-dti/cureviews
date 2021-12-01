@@ -68,7 +68,7 @@ export default class RecentReview extends Component<Props, State> {
     return (
       <li>
         <div className="row">
-          <div className="col-sm-12">
+          <div className="col-lg-12">
             <a className="classNameLink" href={this.state.link}>
               <b><u>{this.state.shortName}</u></b>: {this.state.longName}
             </a>
@@ -76,29 +76,29 @@ export default class RecentReview extends Component<Props, State> {
           </div>
         </div>
         <div className="review">
-          <div className="panel-body-3">
+          <div className="card-body-3">
             <div className="row reviewNumbers">
-              <div className="col-md-2 col-xs-2 col-xs-2">
+              <div className="col-lg-2 col-md-2 col-2 col-2">
                 <div className="container" id="box" style={this.getQualColor(review.quality)}>
                   <div id="text">{review.quality}</div>
                 </div>
               </div>
-              <div className="col-md-4 col-sm-4 col-xs-4">
+              <div className="col-lg-4 col-md-4 col-sm-4 col-4">
                 <p id="label">Overall Quality</p>
               </div>
-              <div className="col-md-2 col-sm-2 col-xs-2" >
+              <div className="col-lg-2 col-md-2 col-sm-2 col-2" >
                 <div className="container" id="box" style={this.getDiffColor(review.difficulty)}>
                   <div id="text">{review.difficulty}</div>
                 </div>
               </div>
-              <div className="col-md-2 col-sm-2 col-xs-2">
+              <div className="col-lg-2 col-md-2 col-sm-2 col-2">
                 <p id="label">Difficulty</p>
               </div>
             </div>
             <div className="row">
               <div className="review-text" id="review_text">{review.text}</div>
             </div>
-            <div className="col-sm-12">
+            <div className="col-md-12">
               <button id="button_text" onClick={() => { this.props.reportHandler(review); alert('This post has been reported and will be reviewed. Course metrics will not change until the post has been reviewed') }}>Report</button>
             </div>
           </div>
