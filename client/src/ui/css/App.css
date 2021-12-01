@@ -188,3 +188,25 @@
   background: #807b7b;
   border-radius: 13.5731px;
 }
+
+.sign-in-button {
+  position: absolute;
+  right: 80px;
+  top: 50px;
+
+  width: 137px;
+  height: 39px;
+
+  background: #ffffff;
+  border-radius: 10px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+  letter-spacing: -0.22px;
+
+  color: #000000;
+}
