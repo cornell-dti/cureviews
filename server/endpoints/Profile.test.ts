@@ -176,7 +176,7 @@ const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket')
   .mockImplementation(async (token?: string) => validTokenPayload);
 
 afterAll(async () => {
-  mockVerificationTicket.mockRestore();
+  await mockVerificationTicket.mockRestore();
   await testServer.shutdownTestingServer();
 });
 
