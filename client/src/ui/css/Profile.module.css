@@ -1,0 +1,100 @@
+.profileContainer {
+  position: absolute;
+  width: 360px;
+  height: 742px;
+  left: 87px;
+
+  background: #ffffff;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.profileTitle {
+  margin-top: 10px;
+  margin-left: 37px;
+  margin-bottom: 20px;
+
+  text-align: left;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 156%;
+
+  letter-spacing: -0.128928px;
+
+  color: #000000;
+
+  border-radius: 19.6611px;
+}
+
+.profileVerifiedEmail {
+  margin-top: 8%;
+  margin-bottom: 25px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 38%;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.0819218px;
+  text-align: center;
+
+  color: #a2a1a1;
+}
+
+.profileUserStatisticsText {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+
+  width: 286px;
+  height: 53px;
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  color: #000000;
+
+  border-radius: 19.6611px;
+  margin-bottom: 20px;
+}
+
+.profileSignOutButton {
+  margin-top: 35px;
+  text-align: center;
+
+  background: #0076ff;
+  border-radius: 10px;
+
+  width: 267px;
+  height: 41px;
+}
+
+.profileSignOutText {
+  height: 41px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  color: #ffffff;
+}
