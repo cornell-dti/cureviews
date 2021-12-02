@@ -45,27 +45,31 @@ export default function ClassView() {
    */
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
-      const response = await axios.post(`/v2/getCourseByInfo`, {
-        number,
-        subject: subject.toLowerCase(), // TODO: fix backend to handle this
-      });
-
-      const course = response.data.result;
-      if (course) {
-        setSelectedClass(course);
-
-        // after getting valid course info, fetch reviews
-        const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
-          courseId: course._id,
+      try {
+        const response = await axios.post(`/v2/getCourseByInfo`, {
+          number,
+          subject: subject.toLowerCase(), // TODO: fix backend to handle this
         });
-        const reviews = reviewsResponse.data.result;
-        // convert date field of Review to JavaScript Date object
-        reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
-        reviews.sort(sortByLikes);
-        setCourseReviews(reviews);
 
-        setPageStatus(PageStatus.Success);
-      } else {
+        const course = response.data.result;
+        if (course) {
+          setSelectedClass(course);
+
+          // after getting valid course info, fetch reviews
+          const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
+            courseId: course._id,
+          });
+          const reviews = reviewsResponse.data.result;
+          // convert date field of Review to JavaScript Date object
+          reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
+          reviews.sort(sortByLikes);
+          setCourseReviews(reviews);
+
+          setPageStatus(PageStatus.Success);
+        } else {
+          setPageStatus(PageStatus.Error);
+        }
+      } catch (e) {
         setPageStatus(PageStatus.Error);
       }
     }
@@ -103,12 +107,16 @@ export default function ClassView() {
    * @param reviewId - id of review to report
    */
   async function reportReview(reviewId: string) {
-    const response = await axios.post("/v2/reportReview", { id: reviewId });
-    const responseCode = response.data.result.resCode;
-    if (responseCode === 1) {
-      setCourseReviews(
-        courseReviews?.filter((element) => element._id !== reviewId)
-      );
+    try {
+      const response = await axios.post("/v2/reportReview", { id: reviewId });
+      const responseCode = response.data.result.resCode;
+      if (responseCode === 1) {
+        setCourseReviews(
+          courseReviews?.filter((element) => element._id !== reviewId)
+        );
+      }
+    } catch (e) {
+      toast.error("Failed to report review.");
     }
   }
 
@@ -151,21 +159,23 @@ export default function ClassView() {
    * Submit review and clear session storage
    */
   async function onSubmitReview(review: NewReview) {
-    const result = (
-      await axios.post("/v2/insertReview", {
+    try {
+      const response = await axios.post("/v2/insertReview", {
         token: Session.get("token"),
         review: review,
         classId: selectedClass?._id,
-      })
-    ).data.result;
+      });
 
-    if (result.resCode === 1) {
-      clearSessionReview();
-      setIsReviewModalOpen(false);
-      toast.success(
-        "Thanks for reviewing! New reviews are updated every 24 hours."
-      );
-    } else {
+      if (response.data.result.resCode === 1) {
+        clearSessionReview();
+        setIsReviewModalOpen(false);
+        toast.success(
+          "Thanks for reviewing! New reviews are updated every 24 hours."
+        );
+      } else {
+        toast.error("An error occurred, please try again.");
+      }
+    } catch (e) {
       toast.error("An error occurred, please try again.");
     }
   }
