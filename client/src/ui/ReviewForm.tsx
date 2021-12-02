@@ -130,7 +130,8 @@ export default function ReviewForm({
           </label>
           {isReviewTextInvalid && (
             <div className={styles.errorText}>
-              Please add text to your review.
+              Please add text to your review, or make sure there are no illegal
+              characters.
             </div>
           )}
         </div>
