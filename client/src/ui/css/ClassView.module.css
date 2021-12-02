@@ -55,7 +55,9 @@
   }
 
   .reviewModal {
-    margin: 20px auto;
+    margin: auto;
+    height: fit-content;
+    max-height: 90%;
     width: 500px;
     border-radius: 10px;
     overflow: auto;
