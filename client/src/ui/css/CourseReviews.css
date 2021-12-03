@@ -17,7 +17,6 @@
   }
 
   .coursereviews-review-ul{
-    overflow-y:scroll !important;
     /* height:65vh; */
     /* padding-right: 30px; */
     /* padding-left: 24px; */
@@ -44,7 +43,6 @@
   }
 
   .coursereviews-review-ul{
-    overflow-y:scroll !important;
     /* height:65vh; */
     /* padding-right: 30px;   */
   }
