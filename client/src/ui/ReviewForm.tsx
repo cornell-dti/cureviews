@@ -52,7 +52,8 @@ export default function ReviewForm({
     const isReviewTextValid =
       !isReviewCommentVisible || (!!reviewText && regex.test(reviewText));
     setIsReviewTextInvalid(!isReviewTextValid);
-    const isSelectedProfessorsValid = selectedProfessors.length > 0;
+    const isSelectedProfessorsValid =
+      selectedProfessors && selectedProfessors.length > 0;
     setIsSelectedProfessorsInvalid(!isSelectedProfessorsValid);
     return isReviewTextValid && isSelectedProfessorsValid;
   }
