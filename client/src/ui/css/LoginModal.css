@@ -1,0 +1,44 @@
+.loginModal {
+  border-radius: 10px;
+}
+
+.signin-cureviews-logo-container {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signin-cureviews-logo {
+  width: 112px;
+}
+
+.signin-message {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  letter-spacing: 0.115413px;
+}
+
+.signin-button-container {
+  margin-top: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signin-button {
+  width: 320px;
+  margin-bottom: 60px;
+}
+
+.signin-dti-logo-container {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

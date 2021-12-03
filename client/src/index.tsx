@@ -8,6 +8,7 @@ import Login from "./ui/Login";
 import ClassView from "./ui/ClassViewNew";
 import App from "./ui/App";
 import AuthRedirect from "./ui/AuthRedirect";
+import Profile from "./ui/Profile";
 
 import { BrowserRouter, Route } from "react-router-dom";
 import { Results } from "./ui/Results";
@@ -38,6 +39,7 @@ render(
         path="/results/:type/:input"
         component={Results}
       />
+      <Route name="profile" exact path="/profile" component={Profile} />
     </div>
   </BrowserRouter>,
   document.getElementById("render-target")

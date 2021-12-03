@@ -252,15 +252,18 @@ export default class ResultsDisplay extends Component {
   renderCheckboxes(group) {
     let group_list = Array.from(this.state.filterMap.get(group).keys());
     return group_list.map((name, index) => (
-      <div className="filter-entry-container" key={index}>
-        <input
-          onChange={(e) => this.checkboxOnChange(e)}
-          type="checkbox"
-          checked={this.state.filterMap.get(group).get(name)}
-          group={group}
-          name={name}
-        />
-        <label className="filter-checkbox-label">{name}</label>
+      <div>
+        <label className="filter-checkbox-label">
+          <input
+            className="filter-checkbox"
+            onChange={(e) => this.checkboxOnChange(e)}
+            type="checkbox"
+            checked={this.state.filterMap.get(group).get(name)}
+            group={group}
+            name={name}
+          />
+          {name}
+        </label>
       </div>
     ));
   }
@@ -312,12 +315,12 @@ export default class ResultsDisplay extends Component {
         {/* Case where results are still being loaded */}
         {this.props.loading === true && (
           <div className="loading-results">
-            <Loading />;
+            <Loading />
           </div>
         )}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
-          <div className="col-md-12 col-sm-12 col-xs-12 results">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-12 results">
             <img
               src="/noResults.svg"
               className="img-responsive no-results"
@@ -331,7 +334,7 @@ export default class ResultsDisplay extends Component {
         {/* Case where results are returned (non-empty) */}
         {this.state.courseList.length !== 0 && this.props.loading !== true && (
           <div className="results-column-container">
-            <div className="hidden-xs hidden-sm  col-md-2 col-sm-2 col-xs-2 filter-container">
+            <div className="d-none d-lg-block col-lg-2 col-md-2 col-sm-2 col-2 filter-container">
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>
@@ -343,7 +346,7 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
 
-            <div className="col-md-3 col-sm-12 col-xs-12 results">
+            <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 results">
               {this.state.fullscreen && (
                 <ResultsDisplayMobile
                   classView={false}
@@ -354,55 +357,52 @@ export default class ResultsDisplay extends Component {
                 />
               )}
 
-              <div className="row no-left-margin">
+              <div>
+                <p className="results-num-classes-found">
+                  We found{" "}
+                  <strong>
+                    {this.state.filteredItems.length === 0
+                      ? this.state.courseList.length
+                      : this.state.filteredItems.length}
+                  </strong>{" "}
+                  courses for &quot;{this.props.userInput}&quot;
+                </p>
+              </div>
+
+              <div className="row results-buttons">
                 <div>
-                  <p className="results-num-classes-found">
-                    We found{" "}
-                    <strong>
-                      {this.state.filteredItems.length === 0
-                        ? this.state.courseList.length
-                        : this.state.filteredItems.length}
-                    </strong>{" "}
-                    courses for &quot;{this.props.userInput}&quot;
+                  <p className="d-none d-lg-block results-sort-by-text">
+                    Sort By:
                   </p>
                 </div>
-              </div>
-              <div className="row no-left-margin mdown-8">
-                <div className="col-lg-12 col-md-12 col-sm-10 col-xs-10 no-left-padding">
-                  <div className="results-sort-by-container">
-                    <p className="hidden-xs hidden-sm results-sort-by-text">
-                      Sort By:
-                    </p>
-                    <select
-                      value={this.state.selected}
-                      className="results-sort-by-select"
-                      onChange={(e) => this.handleSelect(e)}
-                    >
-                      <option value="relevance">Relevance</option>
-                      <option value="rating">Overall Rating</option>
-                      <option value="diff">Difficulty</option>
-                      <option value="work">Workload</option>
-                    </select>
-                  </div>
+                <div className="col noPadding">
+                  <select
+                    value={this.state.selected}
+                    className="results-sort-by-select"
+                    onChange={(e) => this.handleSelect(e)}
+                  >
+                    <option value="relevance">Relevance</option>
+                    <option value="rating">Overall Rating</option>
+                    <option value="diff">Difficulty</option>
+                    <option value="work">Workload</option>
+                  </select>
                 </div>
-                <div className="col-sm-2 col-xs-2 no-left-padding">
-                  <div className="hidden-md hidden-lg hidden-xl">
-                    <input
-                      class="mobile-filter-button"
-                      type="button"
-                      value="Filter"
-                      onClick={this.setShowFilterPopup}
+                <div className="col d-xs-block d-lg-none noPadding">
+                  <input
+                    class="mobile-filter-button"
+                    type="button"
+                    value="Filter"
+                    onClick={this.setShowFilterPopup}
+                  />
+                  {this.state.showFilterPopup && (
+                    <FilterPopup
+                      state={this.state}
+                      props={this.props}
+                      renderCheckboxes={this.renderCheckboxes}
+                      getSubjectOptions={this.getSubjectOptions}
+                      setShowFilterPopup={this.setShowFilterPopup}
                     />
-                    {this.state.showFilterPopup && (
-                      <FilterPopup
-                        state={this.state}
-                        props={this.props}
-                        renderCheckboxes={this.renderCheckboxes}
-                        getSubjectOptions={this.getSubjectOptions}
-                        setShowFilterPopup={this.setShowFilterPopup}
-                      />
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -410,7 +410,7 @@ export default class ResultsDisplay extends Component {
                 <ul>{this.renderResults()}</ul>
               </div>
             </div>
-            <div className="hidden-xs hidden-sm col preview">
+            <div className="d-none d-lg-block col preview">
               <PreviewCard course={this.state.card_course} mobile={false} />
             </div>
           </div>
