@@ -61,10 +61,10 @@ export default function ClassView() {
   if (pageStatus === PageStatus.Success && !!selectedClass) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
-      <div className={`row ${styles.classView}`}>
+      <div className={`${styles.classView}`}>
         <Navbar userInput={input} />
-        <div className={`${styles.content}`}>
-          <div className={`col-lg-4 col-md-5 ${styles.courseInfoColumn}`}>
+        <div className={`row ${styles.content}`}>
+          <div className={`col-xl-4 col-lg-5 ${styles.courseInfoColumn}`}>
             <div>
               <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
               <p className={styles.courseSubtitle}>
@@ -76,13 +76,11 @@ export default function ClassView() {
               </p>
             </div>
             {/* TODO: show button for leaving a review on sm/xs screens */}
-            <div
-              className={`hidden-sm hidden-xs ${styles.reviewFormContainer}`}
-            >
+            <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
               <Form course={selectedClass} inUse={true} />
             </div>
           </div>
-          <div className={`col-lg-8 col-md-7 ${styles.courseReviewColumn}`}>
+          <div className={`col-xl-8 col-lg-7 ${styles.courseReviewColumn}`}>
             <div className={styles.gaugeContainer}>
               <div className={styles.gauge}>
                 <Gauge rating={selectedClass!.classRating} label="Overall" />

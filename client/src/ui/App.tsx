@@ -47,11 +47,11 @@ export default class App extends Component {
     }
 
     return (
-      <div>
+      <div className="row">
         <LoginModal />
         <div
           className={
-            "row full-height background-common background-gradient_" +
+            "col full-height background-common background-gradient_" +
             dayclass +
             monthclass
           }
