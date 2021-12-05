@@ -7,7 +7,6 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import './css/Form.css';
 import { Session } from '../session-store';
-import { includesProfanity } from "common/profanity";
 import axios from 'axios';
 
 import { toast } from 'react-toastify'
@@ -290,10 +289,9 @@ export default class Form extends Component {
       textEmpty: this.state.postClicks > 0 && (text === null || text === undefined || text.length === 0),
       text: text != null && text !== undefined && text.length > 0 && !regex.test(text),
       professorsEmpty: this.state.postClicks > 0 && (this.state.professors.length > 0 && this.state.selectedProfessors.length === 0),
-      profanity: includesProfanity(text),
       allFalse: false
     };
-    errs.allTrue = !(errs.text || errs.textEmpty || errs.professorsEmpty || errs.profanity);
+    errs.allTrue = !(errs.text || errs.textEmpty || errs.professorsEmpty);
 
     // console.log(errs);
     return errs;
@@ -432,7 +430,6 @@ export default class Form extends Component {
               />
               <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
               <div className={err.text && this.state.text !== "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-              <div className={!err.text && !err.textEmpty && err.profanity ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains profanity, please edit your response.</div>
             </div>
 
             <div className="row form-button-top-bottom-spacing">
@@ -487,7 +484,6 @@ export default class Form extends Component {
               />
               <div ref={this.emptyMsg} className={err.textEmpty ? "form-field-error" : "hidden"}>Please add text to your review!</div>
               <div className={err.text && this.state.text !== "" ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains illegal characters, please remove them.</div>
-              <div className={!err.text && !err.textEmpty && err.profanity ? "form-field-error" : "hidden"} id="errorMsg" >Your review contains profanity, please edit your response.</div>
             </div>
 
 

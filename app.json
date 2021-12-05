@@ -17,7 +17,6 @@
     }
   },
   "addons": [
-    "mongolab",
     "papertrail"
   ],
   "buildpacks": [
