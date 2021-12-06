@@ -1,5 +1,4 @@
 .profileContainer {
-  position: absolute;
   width: 360px;
   height: 742px;
   left: 87px;
@@ -7,6 +6,8 @@
   background: #ffffff;
   border-radius: 10px;
   margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .profileInfo {
@@ -97,4 +98,91 @@
   justify-content: center;
 
   color: #ffffff;
+}
+
+.myReviews {
+  margin-right: 40px;
+  margin-left: 40px;
+}
+
+.myReviewsHeader {
+  margin-top: 42px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 50px;
+  /* or 156% */
+
+  letter-spacing: -0.128928px;
+
+  color: #000000;
+
+  border-radius: 19.6611px;
+}
+
+.myReviewsList {
+}
+
+.pendingHeader {
+  margin-top: 10px;
+}
+
+.pendingHeaderText {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 11px;
+  /* or 45% */
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  /* Gray */
+
+  color: #a2a1a1;
+}
+
+.hidePending {
+  margin-right: 0px;
+}
+
+.hidePendingText {
+  text-align: right;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 19px;
+  /* or 104% */
+
+  letter-spacing: -0.225605px;
+  text-decoration-line: underline;
+
+  color: #0076ff;
+}
+
+.pastHeader {
+  margin-top: 10px;
+}
+
+.pastHeaderText {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 11px;
+  /* or 45% */
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  /* Gray */
+
+  color: #a2a1a1;
 }
