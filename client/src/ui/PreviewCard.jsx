@@ -245,6 +245,7 @@ export default class PreviewCard extends Component {
                   info={this.state.topReview}
                   isPreview={true}
                   likes={this.state.topReviewLikes}
+                  pending={false}
                 />
               )}
 

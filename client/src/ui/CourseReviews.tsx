@@ -130,7 +130,7 @@ export class CourseReviews extends Component<Props, State> {
       ));
     } else {
       reviews.forEach((review) => (
-        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false} />)
+        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false} pending={false}/>)
       ));
       return reviewCompList;
     }

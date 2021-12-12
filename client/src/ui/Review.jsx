@@ -28,10 +28,12 @@ export default class Review extends Component {
     this.review_body_container_class = props.isPreview ? "review-body-container-preview" : "review-body-container";
     this.review_number_text_class = props.isPreview ? "review-number-text-preview" : "review-number-text";
     this.review_number_label_class = props.isPreview ? "review-number-label-preview" : "review-number-label";
-    this.review_text_class = props.isPreview ? "review-text-preview" : "review-text";
+    this.review_text_class = (props.pending ? "review-text-pending" : (props.isPreview ? "review-text-preview" : "review-text"));
     this.review_body_right_col = props.isPreview ? "review-body-right-col-preview" : "review-body-right-col";
     this.reviewToDate = this.reviewToDate.bind(this);
     this.executeOnClick = this.executeOnClick.bind(this);
+
+    this.review_container_style_class = props.pending ? "review-container-style-pending" : "review-container-style";
   }
 
   executeOnClick() {
@@ -150,7 +152,7 @@ export default class Review extends Component {
   render() {
     const review = this.props.info;
     return (
-      <div className="review-container" style={this.expanded ? { margin: 32 - this.state.height / 80 } : {}} >
+      <div className={"review-container " + this.review_container_style_class} style={this.expanded ? { margin: 32 - this.state.height / 80 } : {}} >
         {
           !this.props.isPreview &&
           <div className="row noLeftRightSpacing">
@@ -232,5 +234,6 @@ Review.propTypes = {
   reportHandler: PropTypes.func,
   sortHandler: PropTypes.func,
   isPreview: PropTypes.bool.isRequired,
-  likes: PropTypes.number
+  likes: PropTypes.number,
+  pending: PropTypes.bool.isRequired
 };
