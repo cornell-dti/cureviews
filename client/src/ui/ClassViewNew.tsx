@@ -110,7 +110,9 @@ export default function ClassView() {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
       <div className={`${styles.classView}`}>
-        <Navbar userInput={input} />
+        <div className="row">
+          <Navbar userInput={input} />
+        </div>
         <div className={`row ${styles.content}`}>
           <div className={`col-xl-4 col-lg-5 ${styles.courseInfoColumn}`}>
             <div>
