@@ -1,7 +1,6 @@
 import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import { Review } from "common";
-import { includesProfanity } from "common/profanity";
 import { Context, Endpoint } from "../endpoints";
 import { Classes, ReviewDocument, Reviews, Students } from "../dbDefs";
 import {
@@ -167,6 +166,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
 
         await insertUserCallback({ googleObject: ticket });
 
+<<<<<<< HEAD
         if (includesProfanity(review.text)) {
           // eslint-disable-next-line no-console
           console.log("profanity detected in review.");
@@ -176,6 +176,8 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
           };
         }
 
+=======
+>>>>>>> 0eb1bd325aecc0bbdde29f53db1587345f06363a
         const netId = ticket.email.replace("@cornell.edu", "");
         const student = await Students.findOne({ netId });
 
