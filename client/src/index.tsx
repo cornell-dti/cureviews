@@ -11,6 +11,8 @@ import AuthRedirect from './ui/AuthRedirect';
 import { BrowserRouter, Route } from "react-router-dom";
 import { Results } from './ui/Results';
 
+import NotFound from "./ui/NotFound";
+
 /*
 Generates appliation component sent to the client side entry point (main.html)
 as an HTML object with id "render-target".
@@ -27,6 +29,7 @@ render(
             <Route name="permalink" exact path="/course/:subject/:number" component={ClassView} />
             <Route name="auth" exact path="/auth" component={AuthRedirect} />
             <Route name="permalink" exact path="/results/:type/:input" component={Results} />
+            <Route component={NotFound} />
         </div>
     </BrowserRouter>,
     document.getElementById('render-target')
