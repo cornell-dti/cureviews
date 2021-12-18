@@ -420,15 +420,3 @@ ul {
   padding-right: 8%;
   padding-left: 1.5%;
 }
-
-/* Not Found styling */
- 
-.not-found-padding-top{
-  padding-top: 90px;
-}
-.not-found-text {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 50px;
-  font-weight: var(--regular-weight);
-  text-align: center;
-}
