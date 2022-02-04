@@ -228,7 +228,15 @@ export const reportReview: Endpoint<ReviewRequest> = {
       const student = await Students.findOne({ netId: request.netId });
       const { lastReported, numReported } = student;
 
-      const nextDate = new Date(new Date() - 24 * 60 * 60 * 1000);
+      const lastReportedTime = lastReported.getTime();
+      const oneDay = new Date().getTime() + 1 * 24 * 60 * 60 * 1000;
+
+      if (numReported >= 3 && lastReportedTime < oneDay) {
+        return {
+          resCode: 0,
+          message: "Reported too many reviews. Try again in 24 hours.",
+        };
+      }
 
       await Reviews.updateOne(
         { _id: request.id },
@@ -236,6 +244,15 @@ export const reportReview: Endpoint<ReviewRequest> = {
       );
       const course = (await Reviews.findOne({ _id: request.id })).class;
       const res = await updateCourseMetrics(course);
+
+      if (numReported === 0) {
+        const newDay = new Date();
+        await student.updateOne({
+          lastReported: newDay,
+          numReported: numReported + 1,
+        });
+      }
+
       return { resCode: res.resCode };
     } catch (error) {
       // eslint-disable-next-line no-console
