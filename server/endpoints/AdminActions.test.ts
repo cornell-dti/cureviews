@@ -4,7 +4,7 @@ import express from "express";
 import axios from "axios";
 
 import { configure } from "../endpoints";
-import { Classes, Reviews } from "../dbDefs";
+import { Classes, Reviews, Students } from "../dbDefs";
 import * as Utils from "./utils";
 
 let mongoServer: MongoMemoryServer;
@@ -51,6 +51,18 @@ const reviewToUndoReport = new Reviews({
   workload: 5,
 });
 
+const testStudent = new Students({
+  _id: "Irrelevant",
+  firstName: "Cornellius",
+  lastName: "Vanderbilt",
+  netId: "cv4620",
+  affiliation: null,
+  token: "fakeTokencv4620",
+  privilege: "regular",
+  reviews: ["4Y8k7DnX3PLNdwRPr", "4Y8k7DnX3PLNdwRPq", "3yMwTbiyd4MZLPQJF"],
+  likedReviews: [],
+});
+
 beforeAll(async () => {
   // get mongoose all set up
   mongoServer = new MongoMemoryServer();
@@ -82,8 +94,10 @@ describe("tests", () => {
   it("limiting reportReview", async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/v2/fetchReviewableClasses`,
-      { id: sampleReview._id, netId:  },
+      { id: sampleReview._id, netId: testStudent.netId },
     );
+    const { resCode } = res.data.result;
+    expect(resCode.toBe(200));
   });
 
   it("fetchReviewableClasses-works", async () => {
