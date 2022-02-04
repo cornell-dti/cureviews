@@ -96,6 +96,15 @@ _Screenshots coming soon_
 
 ## Contributors
 
+### 2022 - 2021
+
+- **Akash Aryal** - Developer
+- **Andrew Gao** - Developer
+- **Julie Jeong** - Developer
+- **Jack Farley** - Developer
+- **Michelle Li** - Developer
+- **Ankit Lakkapragada** - Developer
+
 ### 2021-2020
 
 - **Angela Chen** - Product Manager
