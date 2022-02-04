@@ -16,10 +16,6 @@ import {
   incrementLike,
   decrementLike,
 } from "./endpoints/Review";
-import {
-  countReviewsByStudentId,
-  getTotalLikesByStudentId,
-} from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import {
   getCoursesByProfessor,
