@@ -96,9 +96,9 @@ _Screenshots coming soon_
 
 ## Contributors
 
-### 2022 - 2021
+### 2021 - 2022
 
-- **Akash Aryal** - Developer
+- **Akash Aryal** - Technical Product Manager
 - **Andrew Gao** - Developer
 - **Julie Jeong** - Developer
 - **Jack Farley** - Developer
