@@ -130,7 +130,7 @@ export class CourseReviews extends Component<Props, State> {
       ));
     } else {
       reviews.forEach((review) => (
-        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false} pending={false}/>)
+        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false} pending={false} includeTitle={true} />)
       ));
       return reviewCompList;
     }
@@ -141,7 +141,7 @@ export class CourseReviews extends Component<Props, State> {
       return (
         <div className="coursereviews-sort-container">
           <div className="coursereviews-sort"> Sort By:
-              <select onChange={this.handleSelect} className="coursereviews-sort-options">
+            <select onChange={this.handleSelect} className="coursereviews-sort-options">
               <option value="helpful">Most Helpful</option>
               <option value="recent">Recent</option>
             </select>

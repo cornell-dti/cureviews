@@ -31,6 +31,26 @@
   color: #979797;
 }
 
+.review-title-style {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #000000;
+}
+
+.review-title-style-pending {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #545454;
+}
+
 .review-container {
   box-sizing: border-box;
   border-radius: 10px;

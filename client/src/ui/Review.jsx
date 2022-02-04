@@ -34,6 +34,7 @@ export default class Review extends Component {
     this.executeOnClick = this.executeOnClick.bind(this);
 
     this.review_container_style_class = props.pending ? "review-container-style-pending" : "review-container-style";
+    this.review_title_style_class = props.pending ? "review-title-style-pending" : "review-title-style";
   }
 
   executeOnClick() {
@@ -170,6 +171,12 @@ export default class Review extends Component {
         <div className={"row " + this.review_body_container_class}>
           {this.review_styling(review, this.review_number_label_span, this.review_number_text_class)}
           <div className="col-xl-10 col-lg-9 col-md-8 col-sm-12 noLeftRightPadding">
+            {
+              this.props.includeTitle &&
+              <div className={this.review_title_style_class}>
+                <p>{this.props.info.class}</p>
+              </div>
+            }
             <div className="row noLeftRightSpacing review-professor-container">
               <p>
                 <span className="review-professor-label">Professor: </span>
@@ -198,7 +205,7 @@ export default class Review extends Component {
               {review.isCovid &&
                 <div className="row covidTag">
                   <span role="img" aria-label="alert"> ⚠️</span>This student's experience was affected by COVID-19
-              </div>}
+                </div>}
               <div className="row">
 
                 <p className="review-date">{this.reviewToDate(review)}</p>
@@ -213,7 +220,7 @@ export default class Review extends Component {
                       alt={this.state.liked ? "Liked" : "Not Liked Yet"}
                     />
                     <p className="upvote-text">Helpful
-                        ({this.state.numLikes ? this.state.numLikes : 0})</p>
+                      ({this.state.numLikes ? this.state.numLikes : 0})</p>
                   </button>
                 }
               </div>
@@ -235,5 +242,6 @@ Review.propTypes = {
   sortHandler: PropTypes.func,
   isPreview: PropTypes.bool.isRequired,
   likes: PropTypes.number,
-  pending: PropTypes.bool.isRequired
+  pending: PropTypes.bool.isRequired,
+  includeTitle: PropTypes.bool.isRequired,
 };

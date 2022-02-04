@@ -167,9 +167,8 @@ export default class PreviewCard extends Component {
                     ? "preview-class-link-scroll"
                     : "preview-class-link")
                 }
-                href={`/course/${theClass.classSub.toUpperCase()}/${
-                  theClass.classNum
-                }`}
+                href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
+                  }`}
               >
                 {theClass.classTitle}
               </a>
@@ -246,6 +245,7 @@ export default class PreviewCard extends Component {
                   isPreview={true}
                   likes={this.state.topReviewLikes}
                   pending={false}
+                  includeTitle={false}
                 />
               )}
 
@@ -254,9 +254,8 @@ export default class PreviewCard extends Component {
                 this.state.numReviews > 1 && (
                   <a
                     className="col-lg-12 preview-review-button"
-                    href={`/course/${theClass.classSub.toUpperCase()}/${
-                      theClass.classNum
-                    }`}
+                    href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
+                      }`}
                   >
                     See {this.state.numReviews} more review
                     {this.state.numReviews > 1 ? "s" : ""}
@@ -281,9 +280,8 @@ export default class PreviewCard extends Component {
                   this.state.numReviews === 1) && (
                   <a
                     className="col-lg-12 preview-review-button"
-                    href={`/course/${theClass.classSub.toUpperCase()}/${
-                      theClass.classNum
-                    }`}
+                    href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
+                      }`}
                   >
                     Leave a Review
                   </a>
