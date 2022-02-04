@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import axios from 'axios';
-import { TokenPayload } from 'google-auth-library';
+import axios from "axios";
+import { TokenPayload } from "google-auth-library";
 
-import { Review } from 'common';
+import { Review } from "common";
 import { Reviews, Students } from "../dbDefs";
 import * as Auth from "./Auth";
-import TestingServer from './TestServer';
+import TestingServer from "./TestServer";
 
 const testingPort = 8080;
 const testServer = new TestingServer(testingPort);
@@ -18,13 +18,39 @@ const testClasses = [
     classTitle: "Object-Oriented Programming and Data Structures",
     classPrereq: [],
     classFull: "cs 2110 object-oriented programming and data structures",
-    classSems: ["FA14", "SP15", "SU15", "FA15", "SP16", "SU16", "FA16", "SP17",
-      "SU17", "FA17", "SP18", "FA18", "SU18", "SP19", "FA19", "SU19"],
+    classSems: [
+      "FA14",
+      "SP15",
+      "SU15",
+      "FA15",
+      "SP16",
+      "SU16",
+      "FA16",
+      "SP17",
+      "SU17",
+      "FA17",
+      "SP18",
+      "FA18",
+      "SU18",
+      "SP19",
+      "FA19",
+      "SU19",
+    ],
     crossList: ["q75SxmqkTFEfaJwZ3"],
-    classProfessors: ["David Gries", "Douglas James", "Siddhartha Chaudhuri",
-      "Graeme Bailey", "John Foster", "Ross Tate", "Michael George",
-      "Eleanor Birrell", "Adrian Sampson", "Natacha Crooks", "Anne Bracy",
-      "Michael Clarkson"],
+    classProfessors: [
+      "David Gries",
+      "Douglas James",
+      "Siddhartha Chaudhuri",
+      "Graeme Bailey",
+      "John Foster",
+      "Ross Tate",
+      "Michael George",
+      "Eleanor Birrell",
+      "Adrian Sampson",
+      "Natacha Crooks",
+      "Anne Bracy",
+      "Michael Clarkson",
+    ],
     classDifficulty: 2.9,
     classRating: null,
     classWorkload: 3,
@@ -58,7 +84,7 @@ const testReviews: Review[] = [
 ];
 
 const validTokenPayload: TokenPayload = {
-  email: 'dti1@cornell.edu',
+  email: "dti1@cornell.edu",
   iss: undefined,
   sub: undefined,
   iat: undefined,
@@ -67,12 +93,19 @@ const validTokenPayload: TokenPayload = {
   hd: "cornell.edu",
 };
 
-const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket')
+const mockVerificationTicket = jest
+  .spyOn(Auth, "getVerificationTicket")
   .mockImplementation(async (token?: string) => validTokenPayload);
 
 beforeAll(async () => {
   // get mongoose all set up
-  await testServer.setUpDB(testReviews, undefined, testClasses, undefined, undefined);
+  await testServer.setUpDB(
+    testReviews,
+    undefined,
+    testClasses,
+    undefined,
+    undefined,
+  );
 });
 
 afterAll(async () => {
@@ -80,48 +113,84 @@ afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe('tests', () => {
-  it('getReviewsByCourseId - getting review of class that exists (cs 2110)', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
+describe("tests", () => {
+  it("getReviewsByCourseId - getting review of class that exists (cs 2110)", async () => {
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getReviewsByCourseId`,
+      { courseId: "oH37S3mJ4eAsktypy" },
+    );
     expect(res.data.result.length).toBe(testReviews.length);
 
     const classOfReviews = testReviews.map((r) => r.class);
-    expect(res.data.result.map((r) => r.class).sort()).toEqual(classOfReviews.sort());
+    expect(res.data.result.map((r) => r.class).sort()).toEqual(
+      classOfReviews.sort(),
+    );
   });
 
   it("getReviewsByCourseId - getting review for a class that does not exist", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "ert" });
-    expect(res.data.result).toEqual({ error: 'Malformed Query' });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getReviewsByCourseId`,
+      { courseId: "ert" },
+    );
+    expect(res.data.result).toEqual({ error: "Malformed Query" });
   });
 
   it("getCourseById - getting cs2110", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getCourseById`, { courseId: "oH37S3mJ4eAsktypy" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getCourseById`,
+      { courseId: "oH37S3mJ4eAsktypy" },
+    );
     expect(res.data.result._id).toBe("oH37S3mJ4eAsktypy");
-    expect(res.data.result.classTitle).toBe("Object-Oriented Programming and Data Structures");
+    expect(res.data.result.classTitle).toBe(
+      "Object-Oriented Programming and Data Structures",
+    );
   });
 
-  it('getCourseById - class does not exist', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getCourseById`, { courseId: "blah" });
+  it("getCourseById - class does not exist", async () => {
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getCourseById`,
+      { courseId: "blah" },
+    );
     expect(res.data.result).toBe(null);
   });
 
-  it('getCourseByInfo - getting cs2110', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getCourseByInfo`, { subject: "cs", number: "2110" });
+  it("getCourseByInfo - getting cs2110", async () => {
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getCourseByInfo`,
+      { subject: "cs", number: "2110" },
+    );
     expect(res.data.result._id).toBe("oH37S3mJ4eAsktypy");
-    expect(res.data.result.classTitle).toBe("Object-Oriented Programming and Data Structures");
+    expect(res.data.result.classTitle).toBe(
+      "Object-Oriented Programming and Data Structures",
+    );
   });
 
-  it('getCourseByInfo - demonstrate regex irrelevance', async () => {
+  it("getCourseByInfo - demonstrate regex irrelevance", async () => {
     // Will not accept non-numeric:
-    const res1 = await axios.post(`http://localhost:${testingPort}/v2/getCourseByInfo`, { subject: "Vainamoinen", number: "ab2187c" }).catch((e) => e);
+    const res1 = await axios
+      .post(`http://localhost:${testingPort}/v2/getCourseByInfo`, {
+        subject: "Vainamoinen",
+        number: "ab2187c",
+      })
+      .catch((e) => e);
     expect(res1.message).toBe("Request failed with status code 400");
 
     // Will not accept non-ascii:
-    const res2 = await axios.post(`http://localhost:${testingPort}/v2/getCourseByInfo`, { subject: "向岛维纳默宁", number: "1234" }).catch((e) => e);
+    const res2 = await axios
+      .post(`http://localhost:${testingPort}/v2/getCourseByInfo`, {
+        subject: "向岛维纳默宁",
+        number: "1234",
+      })
+      .catch((e) => e);
     expect(res2.message).toBe("Request failed with status code 400");
 
     // Both also does not work:
-    const res3 = await axios.post(`http://localhost:${testingPort}/v2/getCourseByInfo`, { subject: "向岛维纳默宁", number: "ab2187c" }).catch((e) => e);
+    const res3 = await axios
+      .post(`http://localhost:${testingPort}/v2/getCourseByInfo`, {
+        subject: "向岛维纳默宁",
+        number: "ab2187c",
+      })
+      .catch((e) => e);
     expect(res3.message).toBe("Request failed with status code 400");
   });
 
@@ -140,7 +209,10 @@ describe('tests', () => {
       rating: 4,
     };
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/insertReview`, { classId: cs2110Id, review: reviewToInsert, token: "fakeTokenDti1" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/insertReview`,
+      { classId: cs2110Id, review: reviewToInsert, token: "fakeTokenDti1" },
+    );
     expect(res.data.result.resCode).toBe(1);
     const reviews = await Reviews.find({ text: reviewToInsert.text }).exec();
     expect(reviews.length).toBe(1);
@@ -154,18 +226,27 @@ describe('tests', () => {
   });
 
   it("like/dislike - increment", async () => {
-    const res1 = await axios.post(`http://localhost:${testingPort}/v2/incrementLike`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
+    const res1 = await axios.post(
+      `http://localhost:${testingPort}/v2/incrementLike`,
+      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
+    );
 
     expect(res1.data.result.resCode).toBe(1);
     expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(3);
 
-    const res2 = await axios.post(`http://localhost:${testingPort}/v2/incrementLike`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
+    const res2 = await axios.post(
+      `http://localhost:${testingPort}/v2/incrementLike`,
+      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
+    );
     expect(res2.data.result.resCode).toBe(0);
     expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(3);
   });
 
   it("like/dislike - decrement", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/decrementLike`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/decrementLike`,
+      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
+    );
     expect(res.data.result.resCode).toBe(1);
     expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(2);
   });
@@ -191,17 +272,28 @@ describe('tests', () => {
       family_name: user1.lastName,
     };
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/insertUser`, { googleObject: gObj1 });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/insertUser`,
+      { googleObject: gObj1 },
+    );
     expect(res.data.result).toBe(1);
-    expect((await Students.find({}).exec()).filter((s) => s.netId === "cv4620").length).toBe(1);
+    expect(
+      (await Students.find({}).exec()).filter((s) => s.netId === "cv4620")
+        .length,
+    ).toBe(1);
   });
 
   it("user id's not being leaked by querying reviews", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByCourseId`, { courseId: "oH37S3mJ4eAsktypy" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getReviewsByCourseId`,
+      { courseId: "oH37S3mJ4eAsktypy" },
+    );
     expect(res.data.result.length).toBe(testReviews.length);
 
     const classOfReviews = testReviews.map((r) => r.user);
-    expect(res.data.result.map((r) => r.user).sort()).not.toEqual(classOfReviews.sort());
+    expect(res.data.result.map((r) => r.user).sort()).not.toEqual(
+      classOfReviews.sort(),
+    );
     expect(res.data.result.map((r) => r.user).sort()).toEqual(["", ""]);
   });
 });

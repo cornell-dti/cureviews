@@ -247,10 +247,13 @@ export const reportReview: Endpoint<ReviewRequest> = {
 
       if (numReported === 0) {
         const newDay = new Date();
-        await student.updateOne({
-          lastReported: newDay,
-          numReported: numReported + 1,
-        });
+        await Students.updateOne(
+          { netId: request.netId },
+          {
+            lastReported: newDay,
+            numReported: numReported + 1,
+          },
+        );
       }
 
       return { resCode: res.resCode };
