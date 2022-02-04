@@ -1,0 +1,69 @@
+.profileMenuContainer {
+  margin-top: 38px;
+  margin-right: 36px;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.profileBear {
+  width: 53px;
+  height: 53px;
+}
+
+.profileMenuCard {
+  background-color: white;
+  position: absolute;
+  right: 0;
+  width: 210px;
+  height: 171px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 28px;
+  border-radius: 5px;
+}
+
+.profileMenuLink {
+  display: block;
+  color: black;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.profileMenuLink:hover {
+  color: #0076ff;
+}
+
+.profileMenuSignOutButton {
+  text-align: center;
+  width: 100%;
+  background: #0076ff;
+  border-radius: 10px;
+  margin-top: 30px;
+
+  padding: 5px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 23px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  color: #ffffff;
+}
+
+@media (max-width: 800px) {
+  .profileMenuCard {
+    width: 210px;
+    height: 130px;
+    padding: 15px;
+  }
+
+  .profileMenuSignOutButton {
+    margin-top: 15px;
+  }
+}
