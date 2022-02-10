@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import './css/Review.css';
-import ShowMoreText from 'react-show-more-text';
-import axios from 'axios';
-import { Session } from '../session-store';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import "./css/Review.css";
+import ShowMoreText from "react-show-more-text";
+import axios from "axios";
+import { Session } from "../session-store";
 
 /*
   Review Component.
@@ -38,13 +38,17 @@ export default class Review extends Component {
   }
 
   executeOnClick() {
-
     if (!this.state.expanded) {
-      let newHeight = this.state.height + (this.props.info.text.length % 500) / 20 * (this.props.isPreview ? 4.25 : 10.25);
+      let newHeight =
+        this.state.height +
+        ((this.props.info.text.length % 500) / 20) *
+        (this.props.isPreview ? 4.25 : 10.25);
       this.setState({ expanded: !this.state.expanded, height: newHeight });
-    }
-    else {
-      this.setState({ expanded: !this.state.expanded, height: this.props.isPreview ? 206 : 196 });
+    } else {
+      this.setState({
+        expanded: !this.state.expanded,
+        height: this.props.isPreview ? 206 : 196,
+      });
     }
   }
 
@@ -54,42 +58,50 @@ export default class Review extends Component {
   increment(review) {
     console.log("here");
     if (this.state.liked === false) {
-      axios.post("/v2/incrementLike", { id: review._id, token: Session.get("token") }).then(response => {
-        const res = response.data.result;
-        if (res.resCode === 1) {
-          if (!this.state.numLikes) {
+      axios
+        .post("/v2/incrementLike", {
+          id: review._id,
+          token: Session.get("token"),
+        })
+        .then((response) => {
+          const res = response.data.result;
+          if (res.resCode === 1) {
+            if (!this.state.numLikes) {
+              this.setState({
+                liked: true,
+                numLikes: 1,
+              });
+            } else {
+              this.setState({
+                liked: true,
+                numLikes: this.state.numLikes + 1,
+              });
+            }
+          } else {
+            console.log("Error while incrementing likes: " + res.error);
+          }
+        });
+    } else {
+      axios
+        .post("/v2/decrementLike", {
+          id: review._id,
+          token: Session.get("token"),
+        })
+        .then((response) => {
+          const res = response.data.result;
+          if (res.resCode === 1) {
             this.setState({
-              liked: true,
-              numLikes: 1
+              liked: false,
+              numLikes: this.state.numLikes - 1,
             });
           } else {
-            this.setState({
-              liked: true,
-              numLikes: this.state.numLikes + 1
-            });
+            console.log("Error while decrementing likes: " + res.error);
           }
-        } else {
-          console.log("Error while incrementing likes: " + res.error);
-        }
-      });
-    }
-    else {
-      axios.post("/v2/decrementLike", { id: review._id, token: Session.get("token") }).then(response => {
-        const res = response.data.result;
-        if (res.resCode === 1) {
-          this.setState({
-            liked: false,
-            numLikes: this.state.numLikes - 1
-          });
-        } else {
-          console.log("Error while decrementing likes: " + res.error);
-        }
-      });
+        });
     }
   }
 
   reviewToDate(review) {
-
     review.date = new Date(review.date);
     let review_year = String(review.date.getFullYear()).substring(2);
     let review_month = review.date.getMonth() + 1;
@@ -99,56 +111,53 @@ export default class Review extends Component {
   }
 
   review_styling = (rev, number_label_class, number_text_class) => {
-    if (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) < 992) {
+    if (
+      Math.max(
+        document.documentElement.clientWidth || 0,
+        window.innerWidth || 0
+      ) < 992
+    ) {
       return (
-        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
-
+        <div className="col-xl-2 col-lg-3 col-12 review-labels-container noLeftRightPadding">
           <p className={number_label_class}>
-            <span className='review-text-label'>Overall</span>
+            <span className="review-text-label">Overall</span>
             <span className={number_text_class}>
-              {(rev.rating != null) ? rev.rating : rev.quality}
+              {rev.rating != null ? rev.rating : rev.quality}
             </span>
             <span>Difficulty</span>
-            <span className={number_text_class}>
-              {rev.difficulty}
-            </span>
+            <span className={number_text_class}>{rev.difficulty}</span>
             <span>Workload</span>
             <span className={number_text_class}>
-              {(rev.workload) ? rev.workload : "-"}
+              {rev.workload ? rev.workload : "-"}
             </span>
           </p>
         </div>
-      )
-    }
-    else {
+      );
+    } else {
       return (
-        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-12 review-labels-container noLeftRightPadding">
-
+        <div className="col-xl-2 col-lg-3 col-12 review-labels-container noLeftRightPadding">
           <p className={number_label_class}>
             <span className="review-number-label-span">Overall</span>
             <span className={number_text_class}>
-              {(rev.rating != null) ? rev.rating : rev.quality}
+              {rev.rating != null ? rev.rating : rev.quality}
             </span>
           </p>
 
           <p className={number_label_class}>
             <span className="review-number-label-span">Difficulty</span>
-            <span className={number_text_class}>
-              {rev.difficulty}
-            </span>
+            <span className={number_text_class}>{rev.difficulty}</span>
           </p>
 
           <p className={number_label_class}>
             <span className="review-number-label-span">Workload</span>
             <span className={number_text_class}>
-              {(rev.workload) ? rev.workload : "-"}
+              {rev.workload ? rev.workload : "-"}
             </span>
           </p>
         </div>
-      )
+      );
     }
-
-  }
+  };
 
   render() {
     const review = this.props.info;
@@ -157,20 +166,29 @@ export default class Review extends Component {
         {
           !this.props.isPreview &&
           <div className="row noLeftRightSpacing">
-            <div className="col-lg-12 col-md-12 col-12 col-12">
-              <button className="review-report" onClick={() => {
-                this.props.reportHandler(review);
-                alert('This post has been reported and will be reviewed.');
-              }}>
-                <span className="glyphicon glyphicon-flag"
-                ></span>
+            <div
+              className="col-lg-12 col-md-12 col-12"
+              style={{ height: "36px" }}
+            >
+              <button
+                className="review-report"
+                onClick={() => {
+                  this.props.reportHandler(review);
+                  alert("This post has been reported and will be reviewed.");
+                }}
+              >
+                <img src="/report-flag.svg" alt="Report review" />
               </button>
             </div>
           </div>
         }
         <div className={"row " + this.review_body_container_class}>
-          {this.review_styling(review, this.review_number_label_span, this.review_number_text_class)}
-          <div className="col-xl-10 col-lg-9 col-md-8 col-sm-12 noLeftRightPadding">
+          {this.review_styling(
+            review,
+            this.review_number_label_span,
+            this.review_number_text_class
+          )}
+          <div className="col-xl-10 col-lg-9 col-12 noLeftRightPadding">
             {
               this.props.includeTitle &&
               <div className={this.review_title_style_class}>
@@ -180,60 +198,75 @@ export default class Review extends Component {
             <div className="row noLeftRightSpacing review-professor-container">
               <p>
                 <span className="review-professor-label">Professor: </span>
-                {(review.professors && review.professors.length !== 0) ?
-                  review.professors.map((prof, index) =>
-                  (<span className="review-professor-text" key={index}>
-                    {index > 0 ? ", " : ""}{prof}</span>))
-                  : <span className="review-professor-text">N/A</span>
-                }
+                {review.professors && review.professors.length !== 0 ? (
+                  review.professors.map((prof, index) => (
+                    <span className="review-professor-text" key={index}>
+                      {index > 0 ? ", " : ""}
+                      {prof}
+                    </span>
+                  ))
+                ) : (
+                  <span className="review-professor-text">N/A</span>
+                )}
               </p>
             </div>
 
             <div className="row noLeftRightSpacing">
-              <div className={this.review_text_class} >
+              <div className={this.review_text_class}>
                 <ShowMoreText
                   lines={3}
-                  more='Show more'
-                  less='Show less'
-                  anchorClass='showMoreText'
+                  more="Show more"
+                  less="Show less"
+                  anchorClass="showMoreText"
                   onClick={this.executeOnClick}
                   expanded={this.state.expanded}
                 >
                   {review.text}
                 </ShowMoreText>
               </div>
-              {review.isCovid &&
+              {review.isCovid && (
                 <div className="row covidTag">
-                  <span role="img" aria-label="alert"> ⚠️</span>This student's experience was affected by COVID-19
-                </div>}
+                  <span role="img" aria-label="alert">
+                    {" "}
+                    ⚠️
+                  </span>
+                  This student's experience was affected by COVID-19
+                </div>
+              )}
               <div className="row">
-
-                <p className="review-date">{this.reviewToDate(review)}</p>
-                {!this.props.isPreview &&
-                  <button className=
-                    {(this.state.liked === true ? "review-voted" : "review-upvote")}
+                <p className="col review-date">{this.reviewToDate(review)}</p>
+                {!this.props.isPreview && (
+                  <button
+                    className={
+                      this.state.liked === true
+                        ? "review-voted"
+                        : "review-upvote"
+                    }
                     onClick={() => {
                       this.increment(review);
-                    }}>
+                    }}
+                  >
                     <img
-                      src={this.state.liked ? "/handClap_liked.svg" : "/handClap.svg"}
+                      src={
+                        this.state.liked
+                          ? "/handClap_liked.svg"
+                          : "/handClap.svg"
+                      }
                       alt={this.state.liked ? "Liked" : "Not Liked Yet"}
                     />
-                    <p className="upvote-text">Helpful
-                      ({this.state.numLikes ? this.state.numLikes : 0})</p>
-                  </button>
-                }
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
+                    <p className="upvote-text">
+                      Helpful ({this.state.numLikes ? this.state.numLikes : 0})
+                    </p>
+                  </button >
+                )}
+              </div >
+            </div >
+          </div >
+        </div >
+      </div >
     );
   }
 }
-
 
 // takes in the database object representing this review
 Review.propTypes = {

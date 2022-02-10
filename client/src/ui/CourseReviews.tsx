@@ -152,19 +152,9 @@ export class CourseReviews extends Component<Props, State> {
   }
 
   render() {
-    let title = "Past Reviews (" + this.state.reviews.length + ")";
-    if (this.props.courseId === "-1") {
-      title = "Recent Reviews";
-    }
     return (
 
       <div>
-        <div className={"" + (this.props.transformGauges ? "hidden" : "coursereviews-header")}>
-          <div className="coursereviews-past-reviews-text">
-            {title}
-          </div>
-          {this.sort_reviews()}
-        </div>
         <div>
           {
             this.props.onScroll !== undefined &&
