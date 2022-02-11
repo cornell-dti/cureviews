@@ -63,7 +63,9 @@ export default class Form extends Component {
       review: {},
       courseId: '',
       isCovid: false,
-      showCovid: true
+      showCovid: true,
+      gradeRecieved: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"],
+      major: ""
     };
 
     for (let i = 1; i <= 5; i++) {
@@ -549,6 +551,45 @@ export default class Form extends Component {
               <div className="offset-lg-3 col-lg-9 metricDesc-margin-left">
                 <div className="metricDescL">Not much at all</div>
                 <div className="metricDescR">Lots of work</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">Grade Received</div>
+                <div className="form-label form-optional-label">(optional)</div>
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.gradeRecieved}
+                  onChange={(professors) => this.handleProfChange(professors)}
+                  isMulti
+                  options={this.gradeRecieved}
+                  ref={this.profSelect}
+                  placeholder="Select"
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">What's your major?</div>
+                <div className="form-label form-optional-label">(optional)</div>
+
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectegdProfessors}
+                  onChange={(professors) => this.handleProfChange(professors)}
+                  isMulti
+                  options={this.getProfOptions()}
+                  ref={this.profSelect}
+                  placeholder="Select"
+                />
               </div>
             </div>
 
