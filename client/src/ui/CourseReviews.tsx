@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
-import Review from './Review.jsx';
+import Review from './NewReview';
 
 import RecentReview from './RecentReview';
 import { Review as ReviewType } from 'common';
@@ -130,7 +130,7 @@ export class CourseReviews extends Component<Props, State> {
       ));
     } else {
       reviews.forEach((review) => (
-        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false} pending={false} includeTitle={true} />)
+        reviewCompList.push(<Review key={review._id} info={review} reportHandler={this.reportReview} isPreview={false} isPending={false} includeTitle={true} />)
       ));
       return reviewCompList;
     }
