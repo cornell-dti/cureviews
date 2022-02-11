@@ -44,13 +44,9 @@ export default function RatingInput({
   }
 
   return (
-    <div className={className}>
+    <div className={className} tabIndex={0} onKeyDown={handleKeyDown}>
       <label className={styles.ratingInputLabel}>{label}</label>
-      <div
-        className={styles.ratingInput}
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-      >
+      <div className={styles.ratingInput}>
         {Array.from({ length: maxRating }).map((u, i) => (
           <span
             className={styles.ratingUnit}
