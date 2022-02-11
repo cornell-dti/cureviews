@@ -31,7 +31,6 @@ export default function ClassView() {
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [newReview, setNewReview] = useState<any>();
 
   /**
    * Arrow functions for sorting reviews
@@ -82,11 +81,16 @@ export default function ClassView() {
    */
   useEffect(() => {
     const sessionReview = Session.get("review");
-    if (sessionReview !== undefined && sessionReview !== "") {
-      setNewReview(sessionReview);
-      setIsReviewModalOpen(true);
+    const sessionCourseId = Session.get("courseId");
+    if (
+      sessionReview !== undefined &&
+      sessionReview !== "" &&
+      sessionCourseId !== undefined &&
+      sessionCourseId !== ""
+    ) {
+      submitReview(sessionReview, sessionCourseId);
     }
-  }, [setNewReview, setIsReviewModalOpen]);
+  }, []);
 
   /**
    * Sorts reviews based on selected filter
@@ -121,20 +125,16 @@ export default function ClassView() {
   }
 
   /**
-   * Save review and redirect information to session storage
+   * Open review modal
    */
-  function onStartReview(
-    review: NewReview = {
-      rating: 3,
-      difficulty: 3,
-      workload: 3,
-      text: "",
-      isCovid: false,
-      professors: [],
-    }
-  ) {
-    setIsAuthModalOpen(true);
+  function onLeaveReview() {
+    setIsReviewModalOpen(true);
+  }
 
+  /**
+   * Save review information to session storage and begin redirect to auth
+   */
+  function onSubmitReview(review: NewReview) {
     Session.setPersistent({
       review: review,
     });
@@ -143,6 +143,8 @@ export default function ClassView() {
     });
     Session.setPersistent({ review_num: selectedClass?.classNum });
     Session.setPersistent({ courseId: selectedClass?._id });
+
+    setIsAuthModalOpen(true);
   }
 
   /**
@@ -158,12 +160,12 @@ export default function ClassView() {
   /**
    * Submit review and clear session storage
    */
-  async function onSubmitReview(review: NewReview) {
+  async function submitReview(review: NewReview, classId: string) {
     try {
       const response = await axios.post("/v2/insertReview", {
         token: Session.get("token"),
         review: review,
-        classId: selectedClass?._id,
+        classId: classId,
       });
 
       if (response.data.result.resCode === 1) {
@@ -217,6 +219,8 @@ export default function ClassView() {
           draggable
           pauseOnHover
         />
+
+        {/* review modal for mobile reviews */}
         <Modal
           isOpen={isReviewModalOpen}
           className={styles.reviewModal}
@@ -236,12 +240,13 @@ export default function ClassView() {
           <div className={styles.reviewModalForm}>
             <ReviewForm
               professors={selectedClass.classProfessors}
-              value={newReview}
               onSubmitReview={onSubmitReview}
               actionButtonLabel="Submit review"
             />
           </div>
         </Modal>
+
+        {/* auth redirect modal */}
         <Modal
           className={styles.authModal}
           isOpen={isAuthModalOpen}
@@ -252,9 +257,11 @@ export default function ClassView() {
         >
           <ModalContentAuth />
         </Modal>
+
         <div className="row">
           <Navbar userInput={input} />
         </div>
+
         <div
           className={`row ${styles.content}`}
           onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
@@ -272,12 +279,12 @@ export default function ClassView() {
                   lastOfferedSems(selectedClass)}
               </p>
             </div>
+            {/* review form, only shown on larger screens */}
             <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
               <ReviewForm
                 professors={selectedClass.classProfessors}
-                onSubmitReview={onStartReview}
-                isReviewCommentVisible={false}
-                actionButtonLabel="Start a review"
+                onSubmitReview={onSubmitReview}
+                actionButtonLabel="Submit a review"
               />
             </div>
           </div>
@@ -296,11 +303,12 @@ export default function ClassView() {
                 <Gauge rating={selectedClass.classWorkload} label="Workload" />
               </div>
             </div>
+            {/* leave a review button, only shown on smaller screens */}
             <button
               className={`btn d-lg-none ${styles.startReviewButton}`}
-              onClick={() => onStartReview()}
+              onClick={() => onLeaveReview()}
             >
-              Start a review
+              Leave a review
             </button>
             <div className={styles.reviewsHeader}>
               <h2 className={styles.pastReviews}>
@@ -332,9 +340,9 @@ export default function ClassView() {
               >
                 <button
                   className={`btn ${styles.startReviewButton}`}
-                  onClick={() => onStartReview()}
+                  onClick={() => onLeaveReview()}
                 >
-                  Start a review
+                  Leave a review
                 </button>
               </div>
             </div>
