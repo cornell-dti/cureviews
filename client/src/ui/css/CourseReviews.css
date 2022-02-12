@@ -17,10 +17,9 @@
   }
 
   .coursereviews-review-ul{
-    overflow-y:scroll !important;
-    height:65vh;
-    padding-right: 30px;
-    padding-left: 24px;
+    /* height:65vh; */
+    /* padding-right: 30px; */
+    /* padding-left: 24px; */
     background-color: white;
     padding-bottom: 12px;
   }
@@ -44,9 +43,8 @@
   }
 
   .coursereviews-review-ul{
-    overflow-y:scroll !important;
-    height:65vh;
-    padding-right: 30px;  
+    /* height:65vh; */
+    /* padding-right: 30px;   */
   }
 }
 
@@ -81,18 +79,3 @@
 
   color: #0076FF;
 }
-
-.coursereviews-review-ul::-webkit-scrollbar {
-  width: 8px;
-  padding-right:8px;
-}
-
-.coursereviews-review-ul::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px #ECECEC;
-}
-
-.coursereviews-review-ul::-webkit-scrollbar-thumb {
-  background: #807B7B;
-  border-radius: 13.5731px;
-}
-
