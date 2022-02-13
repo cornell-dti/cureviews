@@ -112,8 +112,8 @@ describe("tests", () => {
     expect(ids.includes(sampleReviewId)).toBeTruthy();
   });
 
-  it("makeReviewVisible-works", async () => {
-    const res = await axios.post(
+  it("makeReviewVisible-works", async () = {
+    const res = await axios.post(>
       `http://localhost:${testingPort}/v2/makeReviewVisible`,
       { review: sampleReview, token: "non-empty" },
     );
