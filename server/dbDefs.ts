@@ -2,13 +2,10 @@ import mongoose, { Schema } from "mongoose";
 import { Class, Student, Subject, Review, Professor } from "common";
 
 /*
-
  Database definitions file. Defines all collections in the local database,
  with collection attributes, types, and required fields.
-
  Used by both the Server and Client to define local and minimongo database
  structures.
-
 */
 
 /* # Classes collection.
@@ -31,7 +28,6 @@ const ClassSchema = new Schema<ClassDocument>({
   classRating: { type: Number }, // the average class rating from reviews
   classWorkload: { type: Number }, // the average workload rating from reviews
   classDifficulty: { type: Number }, // the average difficulty rating from reviews
-
 });
 
 export const Classes = mongoose.model<ClassDocument>("classes", ClassSchema);
@@ -53,8 +49,13 @@ const StudentSchema = new Schema<StudentDocument>({
   privilege: { type: String }, // user privilege level
   reviews: { type: [String] }, // the reviews that this user has posted.
   likedReviews: { type: [String] },
+  lastReported: { type: Date }, // the last time this user reported a review
+  numReported: { type: Number }, // number of times this user has reported a review within 24 hours
 });
-export const Students = mongoose.model<StudentDocument>("students", StudentSchema);
+export const Students = mongoose.model<StudentDocument>(
+  "students",
+  StudentSchema,
+);
 
 /* # Subjects Collection
    # List of all course subject groups and their full text names
@@ -70,7 +71,10 @@ const SubjectSchema = new Schema<SubjectDocument>({
   subShort: { type: String }, // subject, like "PHIL" or "CS"
   subFull: { type: String }, // subject full name, like 'Computer Science'
 });
-export const Subjects = mongoose.model<SubjectDocument>("subjects", SubjectSchema);
+export const Subjects = mongoose.model<SubjectDocument>(
+  "subjects",
+  SubjectSchema,
+);
 
 /* # Reviews Collection.
    # Stores each review inputted by a user. Linked with the course that was
@@ -117,7 +121,10 @@ const ProfessorSchema = new Schema<ProfessorDocument>({
   courses: { type: [String] }, // a list of the ids all the courses
   major: { type: String }, // professor affliation by probable major
 });
-export const Professors = mongoose.model<ProfessorDocument>("professors", ProfessorSchema);
+export const Professors = mongoose.model<ProfessorDocument>(
+  "professors",
+  ProfessorSchema,
+);
 
 /* # Validation Collection.
    # Stores passwords and other sensitive application keys.
@@ -133,4 +140,7 @@ interface ValidationDocument extends mongoose.Document {
   adminPass?: string;
 }
 
-export const Validation = mongoose.model<ValidationDocument>("validation", ValidationSchema);
+export const Validation = mongoose.model<ValidationDocument>(
+  "validation",
+  ValidationSchema,
+);

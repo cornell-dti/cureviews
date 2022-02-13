@@ -2,11 +2,14 @@ import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
 import { Context, Endpoint } from "../endpoints";
-import { Reviews, ReviewDocument, Classes } from "../dbDefs";
-import { updateProfessors, findAllSemesters, resetProfessorArray } from "../dbInit";
+import { Students, Reviews, ReviewDocument, Classes } from "../dbDefs";
+import {
+  updateProfessors,
+  findAllSemesters,
+  resetProfessorArray,
+} from "../dbInit";
 import { getCourseById, verifyToken } from "./utils";
 import { ReviewRequest } from "./Review";
-
 
 // The type for a request with an admin action for a review
 interface AdminReviewRequest {
@@ -26,17 +29,32 @@ export const updateCourseMetrics = async (courseId) => {
     const course = await getCourseById({ courseId });
     if (course) {
       const crossListOR = getCrossListOR(course);
-      const reviews = await Reviews.find({ visible: 1, reported: 0, $or: crossListOR }, {}, { sort: { date: -1 }, limit: 700 }).exec();
+      const reviews = await Reviews.find(
+        { visible: 1, reported: 0, $or: crossListOR },
+        {},
+        { sort: { date: -1 }, limit: 700 },
+      ).exec();
       const state = getMetricValues(reviews);
-      await Classes.updateOne({ _id: courseId },
+      await Classes.updateOne(
+        { _id: courseId },
         {
           $set: {
             // If no data is available, getMetricValues returns "-" for metric
-            classDifficulty: (state.diff !== "-" && !isNaN(Number(state.diff)) ? Number(state.diff) : null),
-            classRating: (state.rating !== "-" && !isNaN(Number(state.rating)) ? Number(state.rating) : null),
-            classWorkload: (state.workload !== "-" && !isNaN(Number(state.workload)) ? Number(state.workload) : null),
+            classDifficulty:
+              state.diff !== "-" && !isNaN(Number(state.diff))
+                ? Number(state.diff)
+                : null,
+            classRating:
+              state.rating !== "-" && !isNaN(Number(state.rating))
+                ? Number(state.rating)
+                : null,
+            classWorkload:
+              state.workload !== "-" && !isNaN(Number(state.workload))
+                ? Number(state.workload)
+                : null,
           },
-        });
+        },
+      );
       return { resCode: 1 };
     }
 
@@ -63,7 +81,10 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if (regex.test(adminReviewRequest.review._id) && userIsAdmin) {
-        await Reviews.updateOne({ _id: adminReviewRequest.review._id }, { $set: { visible: 1 } });
+        await Reviews.updateOne(
+          { _id: adminReviewRequest.review._id },
+          { $set: { visible: 1 } },
+        );
         await updateCourseMetrics(adminReviewRequest.review.class);
 
         return { resCode: 1 };
@@ -84,12 +105,19 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
  * "Undo" the reporting of a flagged review and make it visible again
  */
 export const undoReportReview: Endpoint<AdminReviewRequest> = {
-  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAscii()],
+  guard: [
+    body("review").notEmpty(),
+    body("token").notEmpty().isAscii(),
+    body("review._id").isAscii(),
+  ],
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
       if (userIsAdmin) {
-        await Reviews.updateOne({ _id: adminReviewRequest.review._id }, { $set: { visible: 1, reported: 0 } });
+        await Reviews.updateOne(
+          { _id: adminReviewRequest.review._id },
+          { $set: { visible: 1, reported: 0 } },
+        );
         await updateCourseMetrics(adminReviewRequest.review.class);
         return { resCode: 1 };
       }
@@ -108,7 +136,11 @@ export const undoReportReview: Endpoint<AdminReviewRequest> = {
  * Remove a review, used for both submitted and flagged reviews
  */
 export const removeReview: Endpoint<AdminReviewRequest> = {
-  guard: [body("review").notEmpty(), body("token").notEmpty().isAscii(), body("review._id").isAscii()],
+  guard: [
+    body("review").notEmpty(),
+    body("token").notEmpty().isAscii(),
+    body("review._id").isAscii(),
+  ],
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       const userIsAdmin = await verifyToken(adminReviewRequest.token);
@@ -133,7 +165,10 @@ export const removeReview: Endpoint<AdminReviewRequest> = {
  */
 export const setProfessors: Endpoint<AdminProfessorsRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, adminProfessorsRequest: AdminProfessorsRequest) => {
+  callback: async (
+    ctx: Context,
+    adminProfessorsRequest: AdminProfessorsRequest,
+  ) => {
     try {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
@@ -161,7 +196,10 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
  */
 export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, adminProfessorsRequest: AdminProfessorsRequest) => {
+  callback: async (
+    ctx: Context,
+    adminProfessorsRequest: AdminProfessorsRequest,
+  ) => {
     try {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
@@ -184,13 +222,51 @@ export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
 };
 
 export const reportReview: Endpoint<ReviewRequest> = {
-  guard: [body("id").notEmpty().isAscii()],
+  guard: [body("id").notEmpty().isAscii(), body("netId").notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
     try {
-      await Reviews.updateOne({ _id: request.id }, { $set: { visible: 0, reported: 1 } });
-      const course = (await Reviews.findOne({ _id: request.id })).class;
-      const res = await updateCourseMetrics(course);
-      return { resCode: res.resCode };
+      const student = await Students.findOne({ netId: request.netId });
+      if (student !== null) {
+        const { lastReported, numReported } = student;
+
+        const lastReportedTime = lastReported.getTime();
+        const oneDay = new Date().getTime() + 1 * 24 * 60 * 60 * 1000;
+
+        if (numReported >= 3 && lastReportedTime < oneDay) {
+          return {
+            resCode: 0,
+            message: "Reported too many reviews. Try again in 24 hours.",
+          };
+        }
+
+        await Reviews.updateOne(
+          { _id: request.id },
+          { $set: { visible: 0, reported: 1 } },
+        );
+        const course = (await Reviews.findOne({ _id: request.id })).class;
+        const res = await updateCourseMetrics(course);
+
+        if (lastReportedTime === oneDay) {
+          await Students.updateOne(
+            { netId: request.netId },
+            {
+              numReported: 0,
+            },
+          );
+        } else if (numReported === 0) {
+          const newDay = new Date();
+          await Students.updateOne(
+            { netId: request.netId },
+            {
+              lastReported: newDay,
+              numReported: numReported + 1,
+            },
+          );
+        }
+
+        return { resCode: res.resCode };
+      }
+      return { resCode: 0 };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'reportReview' method");
@@ -207,7 +283,11 @@ export const fetchReviewableClasses: Endpoint<AdminProfessorsRequest> = {
     try {
       const userIsAdmin = await verifyToken(request.token);
       if (userIsAdmin) {
-        return Reviews.find({ visible: 0 }, {}, { sort: { date: -1 }, limit: 700 });
+        return Reviews.find(
+          { visible: 0 },
+          {},
+          { sort: { date: -1 }, limit: 700 },
+        );
       }
       return { resCode: 0 };
     } catch (error) {
