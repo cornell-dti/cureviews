@@ -262,6 +262,13 @@ export const reportReview: Endpoint<ReviewRequest> = {
               numReported: numReported + 1,
             },
           );
+        } else {
+          await Students.updateOne(
+            { netId: request.netId },
+            {
+              numReported: numReported + 1,
+            },
+          );
         }
 
         return { resCode: res.resCode };
