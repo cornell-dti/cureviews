@@ -4,7 +4,7 @@ import "react-circular-progressbar/dist/styles.css";
 import styles from "./css/Gauge.module.css";
 
 type GaugeProps = {
-  rating: number;
+  rating: number | undefined;
   label: string;
 };
 
@@ -22,7 +22,7 @@ export default function Gauge({ rating, label }: GaugeProps) {
   });
 
   useEffect(() => {
-    if (!isNaN(rating)) {
+    if (rating && !isNaN(rating)) {
       let percentage = 20 * rating; // rating is 1-5
       let color = `hsl(212, 100%, ${86 - percentage * 0.36}%)`;
       setGaugeState({
