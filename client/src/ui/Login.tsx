@@ -58,11 +58,11 @@ export default class Login extends Component<{}, { message: string; executeLogin
       return (
         <div className="container-width whiteBg">
           <div className="pushDown">
-            <div className="panel panel-default">
-              <div className="panel-heading">
-                <h3 className="panel-title">Please wait to be authenticated</h3>
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Please wait to be authenticated</h3>
               </div>
-              <div className="panel-body">
+              <div className="card-body">
                 <CUreviewsGoogleLogin
                   executeLogin={this.state.executeLogin}
                   waitTime={1500}

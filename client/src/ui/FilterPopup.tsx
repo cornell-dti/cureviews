@@ -7,7 +7,7 @@ export default class FilterPopup extends Component<Props, {}> {
   render() {
     return (
       <div className="filter-popup">
-        <div className="hidden-md hidden-lg filter-container" >
+        <div className="d-lg-none filter-container" >
 
           <div>
             <input className="mobile-filter-done-button" type="button" value="DONE" onClick={this.props.setShowFilterPopup} />

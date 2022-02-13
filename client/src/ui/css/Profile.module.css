@@ -1,0 +1,239 @@
+.classView {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.content {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.profileContainer {
+  position: absolute;
+  width: 360px;
+  height: 742px;
+  left: 87px;
+
+  background: #ffffff;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.profileTitle {
+  margin-top: 10px;
+  margin-left: 37px;
+  margin-bottom: 20px;
+
+  text-align: left;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 156%;
+
+  letter-spacing: -0.128928px;
+
+  color: #000000;
+
+  border-radius: 19.6611px;
+}
+
+.profileVerifiedEmail {
+  margin-top: 8%;
+  margin-bottom: 25px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 38%;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.0819218px;
+  text-align: center;
+
+  color: #a2a1a1;
+}
+
+.profileUserStatisticsText {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+
+  width: 286px;
+  height: 53px;
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  color: #000000;
+
+  border-radius: 19.6611px;
+  margin-bottom: 20px;
+}
+
+.profileSignOutButton {
+  margin-top: 35px;
+  text-align: center;
+
+  background: #0076ff;
+  border-radius: 10px;
+
+  width: 267px;
+  height: 41px;
+}
+
+.profileSignOutText {
+  height: 41px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  color: #ffffff;
+}
+
+.courseReviews {
+  background-color: transparent;
+  width: 100%;
+  overflow-y: auto;
+  min-height: 500px;
+}
+
+.courseInfoColumn {
+  background: #ffffff;
+  padding: 35px 35px 0;
+}
+
+.courseReviewColumn {
+  padding-left: 0;
+  background-color: #ffffff;
+  height: 100%;
+  padding: 0 24px 35px;
+}
+
+.myReviews {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 50px;
+  /* or 156% */
+  letter-spacing: -0.128928px;
+  color: #000000;
+  padding: 0 0 20px;
+  margin: 0;
+}
+
+.reviewsHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  color: #a1a1a1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sortContainer {
+  float: right;
+}
+
+.sort {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  display: inline;
+  text-decoration-line: underline;
+  color: #807b7b;
+}
+
+.sortBySelect {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  margin-left: 10px;
+  background-color: transparent !important;
+  border: none;
+
+  color: #0076ff;
+}
+
+.sortByLabel {
+  font-weight: var(--regular-weight);
+  font-size: 18px;
+  text-decoration-line: underline;
+  color: #807b7b;
+}
+
+.sortBySelect {
+  font-weight: var(--regular-weight);
+  margin-left: 10px;
+  font-size: 18px;
+  border: none;
+  background-color: transparent;
+  color: #0076ff;
+}
+
+.pastReviews {
+  flex: 1;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  color: #807b7b;
+  padding: 0 0 20px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .classView {
+    background-color: transparent;
+  }
+
+  .pastReviews {
+    font-size: 24px;
+    padding-top: 35px;
+  }
+
+  .courseReviewColumn {
+    padding: 0 35px 35px;
+  }
+}
+
+@media (min-width: 992px) {
+  .courseInfoColumn {
+    background-color: transparent;
+    padding: 70px 50px 70px 70px;
+    height: 100%;
+  }
+
+  .courseReviewColumn {
+    background-color: transparent;
+    padding-right: 70px;
+    display: flex;
+    flex-direction: column;
+  }
+}
