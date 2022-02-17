@@ -5,7 +5,6 @@ import FilteredResult from "./FilteredResult.tsx";
 import PreviewCard from "./PreviewCard.jsx";
 import Loading from "react-loading-animation";
 import FilterPopup from "./FilterPopup";
-import ResultsDisplayMobile from "./ResultsDisplayMobile";
 /*
   ResultsDisplay Component.
 
@@ -231,11 +230,13 @@ export default class ResultsDisplay extends Component {
 
     return items.map((result, index) => (
       <div
-        onClick={() =>
-          this.setState({
-            fullscreen: this.computeHeight() < 992 ? true : false,
-          })
-        }
+        onClick={() => {
+          if (this.computeHeight() < 992) {
+            this.props.history.push(
+              `/course/${result?.classSub?.toUpperCase()}/${result?.classNum}`
+            );
+          }
+        }}
       >
         <FilteredResult
           key={index}
@@ -347,16 +348,6 @@ export default class ResultsDisplay extends Component {
             </div>
 
             <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 results">
-              {this.state.fullscreen && (
-                <ResultsDisplayMobile
-                  classView={false}
-                  onClickText={this.toggleFullscreen}
-                  card_course={this.state.card_course}
-                  transformGauges={this.state.transformGauges}
-                  scrollReviews={this.scrollReviews}
-                />
-              )}
-
               <div>
                 <p className="results-num-classes-found">
                   We found{" "}
