@@ -49,7 +49,7 @@ const StudentSchema = new Schema<StudentDocument>({
   privilege: { type: String }, // user privilege level
   reviews: { type: [String] }, // the reviews that this user has posted.
   likedReviews: { type: [String] },
-  lastReported: { type: Date }, // the last time this user reported a review
+  lastReported1: { type: Date }, // the last time this user reported a review
   numReported: { type: Number }, // number of times this user has reported a review within 24 hours
 });
 export const Students = mongoose.model<StudentDocument>(

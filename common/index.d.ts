@@ -27,7 +27,7 @@ export interface Student {
   readonly privilege: string; // user privilege level
   reviews: string[];
   likedReviews: string[];
-  readonly lastReported: Date;
+  readonly lastReported1: Date;
   readonly numReported: number;
 }
 

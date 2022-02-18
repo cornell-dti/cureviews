@@ -227,18 +227,27 @@ export const reportReview: Endpoint<ReviewRequest> = {
     try {
       const student = await Students.findOne({ netId: request.netId });
       if (student !== null) {
-        const { lastReported, numReported } = student;
+        const { lastReported1, numReported } = student;
+        console.log(student);
+        console.log(lastReported1);
+        const lastReportedTime = lastReported1.getTime();
+        const oneDay = lastReportedTime + 1 * 24 * 60 * 60 * 1000;
 
-        const lastReportedTime = lastReported.getTime();
-        const oneDay = new Date().getTime() + 1 * 24 * 60 * 60 * 1000;
-
-        if (numReported >= 3 && lastReportedTime < oneDay) {
+        if (numReported >= 3 && lastReportedTime > oneDay) {
+          console.log("hello");
           return {
             resCode: 0,
             message: "Reported too many reviews. Try again in 24 hours.",
           };
         }
-
+        if (lastReportedTime > oneDay) {
+          await Students.updateOne(
+            { netId: request.netId },
+            {
+              numReported: 0,
+            },
+          );
+        }
         await Reviews.updateOne(
           { _id: request.id },
           { $set: { visible: 0, reported: 1 } },
@@ -246,19 +255,12 @@ export const reportReview: Endpoint<ReviewRequest> = {
         const course = (await Reviews.findOne({ _id: request.id })).class;
         const res = await updateCourseMetrics(course);
 
-        if (lastReportedTime === oneDay) {
-          await Students.updateOne(
-            { netId: request.netId },
-            {
-              numReported: 0,
-            },
-          );
-        } else if (numReported === 0) {
+        if (numReported === 0) {
           const newDay = new Date();
           await Students.updateOne(
             { netId: request.netId },
             {
-              lastReported: newDay,
+              lastReported1: newDay,
               numReported: numReported + 1,
             },
           );
@@ -273,6 +275,7 @@ export const reportReview: Endpoint<ReviewRequest> = {
 
         return { resCode: res.resCode };
       }
+      console.log("hi");
       return { resCode: 0 };
     } catch (error) {
       // eslint-disable-next-line no-console
