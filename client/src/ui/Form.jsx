@@ -65,7 +65,7 @@ export default class Form extends Component {
       isCovid: false,
       showCovid: true,
       gradeSelected: "",
-      major: ""
+      selectedMajors: []
     };
 
     for (let i = 1; i <= 5; i++) {
@@ -117,6 +117,14 @@ export default class Form extends Component {
     }
 
     this.setState({ gradeRecieved: selectedGrade });
+  }
+
+  handleMajorChange(majors){
+    if (majors === null) {
+      majors = []
+    }
+
+    this.setState({ selectedMajors: majors });
   }
 
   //Called when mouse  enters a metric box to chane highlighting
@@ -346,6 +354,90 @@ export default class Form extends Component {
       
       return gradeOptions
     }
+
+  getMajorOptions() {
+      const majorOptions = [];
+      this.majorsOptions = ["Computer science",
+      "Biology/biological sciences",
+      "Labor and industrial relations",
+      "Hotel/motel administration/management",
+      "Agricultural economics",
+      "Biological and biomedical sciences",
+      "Econometrics and quantitative economics",
+      "Information technology",
+      "Mechanical engineering",
+      "Political science and government",
+      "Animal sciences",
+      "Electrical and electronics engineering",
+      "Mathematics",
+      "Communication",
+      "Natural resources/conservation",
+      "Operations research",
+      "Psychology",
+      "Agriculture",
+      "Architectural and building sciences/technology",
+      "Human development and family studies",
+      "Sociology",
+      "Chemical engineering",
+      "Public policy analysis",
+      "Chemistry",
+      "Physics",
+      "History",
+      "Bioengineering and biomedical engineering",
+      "English language and literature",
+      "Nutrition sciences",
+      "Statistics",
+      "International public health/international health",
+      "Civil engineering",
+      "Biometry/biometrics",
+      "City/urban, community and regional planning",
+      "Agricultural engineering",
+      "Plant sciences",
+      "Food science",
+      "Engineering physics/applied physics",
+      "Fine/studio arts",
+      "Environmental/environmental health engineering",
+      "Philosophy",
+      "Materials engineering",
+      "International agriculture",
+      "American/united states studies/civilization",
+      "Apparel and textiles",
+      "Asian studies/civilization",
+      "Spanish language and literature",
+      "Computer and information sciences",
+      "Linguistics",
+      "Near and middle eastern studies",
+      "General studies",
+      "Landscape architecture",
+      "Geological and earth sciences/geosciences",
+      "Anthropology",
+      "Classics and classical languages, literatures, and linguistics",
+      "Visual and performing arts",
+      "Comparative literature",
+      "French language and literature",
+      "Engineering",
+      "Entomology",
+      "Music",
+      "Italian language and literature",
+      "Astronomy",
+      "Archeology",
+      "Science, technology and society",
+      "Art history, criticism and conservation",
+      "Atmospheric sciences and meteorology",
+      "Gay/lesbian studies",
+      "African-american/black studies",
+      "Textile science",
+      "Religion/religious studies",
+      "German studies",
+      "Economics"];
+      this.majorsOptions.forEach((major) =>
+      majorOptions.push({
+          "value": major,
+          "label": major
+        }))
+      
+      return majorOptions
+  }
 
   show() {
     this.setState({ visible: true });
@@ -603,11 +695,10 @@ export default class Form extends Component {
                 <Select
                   className="react-select-container"
                   classNamePrefix="react-select"
-                  value={this.state.selectegdProfessors}
-                  onChange={(professors) => this.handleProfChange(professors)}
+                  value={this.state.selectedMajors}
+                  onChange={(majors) => this.handleMajorChange(majors)}
                   isMulti
-                  options={this.getProfOptions()}
-                  ref={this.profSelect}
+                  options={this.getMajorOptions()}
                   placeholder="Select"
                 />
               </div>
