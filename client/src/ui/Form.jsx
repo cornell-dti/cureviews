@@ -110,6 +110,8 @@ export default class Form extends Component {
     this.setState({ selectedProfessors: selectedProfessors });
   }
 
+  // Save the selected grade in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleGradeChange(selectedGrade) {
 
     if (selectedGrade === null) {
@@ -119,6 +121,8 @@ export default class Form extends Component {
     this.setState({ gradeRecieved: selectedGrade });
   }
 
+  // Save the current majors selected string for majors in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
   handleMajorChange(majors){
     if (majors === null) {
       majors = []
