@@ -1,5 +1,5 @@
 import React from "react";
-import ReviewCard from "./NewReview.jsx";
+import ReviewCard from "./ReviewNew";
 import { Review } from "common";
 
 type CourseReviewsProps = {
@@ -19,10 +19,12 @@ export default function CourseReviews({
     <div>
       {reviews.map((review) => (
         <ReviewCard
-          key={review._id}
-          info={review}
+          reviewId={review._id}
+          review={review}
           reportHandler={reportReview}
           isPreview={false}
+          myReviewsPage={false}
+          isPending={false}
         />
       ))}
     </div>

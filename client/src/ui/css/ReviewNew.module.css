@@ -1,0 +1,33 @@
+
+.reviewContainer {
+    background: #FFFFFF;
+    border: 0.625px solid #B7D8FF;
+    box-sizing: border-box;
+    border-radius: 10px;
+
+    margin-bottom: 22px;
+    padding: 8px;
+}
+
+.flagContainer {
+    width: 100%;
+    color: #9b9b9b;
+    text-align: right;
+
+    border: red solid;
+}
+
+.ratingsContainer {
+    border: green solid;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .ratingElem {
+        display: inline;
+    }
+}
+
+.contentContainer {
+    border: blue solid;
+}
