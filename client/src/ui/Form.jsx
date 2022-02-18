@@ -64,7 +64,7 @@ export default class Form extends Component {
       courseId: '',
       isCovid: false,
       showCovid: true,
-      gradeRecieved: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"],
+      gradeSelected: "",
       major: ""
     };
 
@@ -108,6 +108,15 @@ export default class Form extends Component {
     }
 
     this.setState({ selectedProfessors: selectedProfessors });
+  }
+
+  handleGradeChange(selectedGrade) {
+
+    if (selectedGrade === null) {
+      this.gradeRecieved = ""
+    }
+
+    this.setState({ gradeRecieved: selectedGrade });
   }
 
   //Called when mouse  enters a metric box to chane highlighting
@@ -325,6 +334,18 @@ export default class Form extends Component {
       return profOptions
     }
   }
+
+  getGradeOptions() {
+      const gradeOptions = [];
+      this.gradeRecieved = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
+      this.gradeRecieved.forEach((grade) =>
+        gradeOptions.push({
+          "value": grade,
+          "label": grade
+        }))
+      
+      return gradeOptions
+    }
 
   show() {
     this.setState({ visible: true });
@@ -564,10 +585,9 @@ export default class Form extends Component {
                   className="react-select-container"
                   classNamePrefix="react-select"
                   value={this.state.gradeRecieved}
-                  onChange={(professors) => this.handleProfChange(professors)}
-                  isMulti
-                  options={this.gradeRecieved}
-                  ref={this.profSelect}
+                  onChange={(grade) => this.handleGradeChange(grade)}
+                  isSingle
+                  options={this.getGradeOptions()}
                   placeholder="Select"
                 />
               </div>
