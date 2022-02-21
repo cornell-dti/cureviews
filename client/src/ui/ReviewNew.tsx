@@ -24,6 +24,17 @@ export default function Review({
     isPending,
 }: ReviewProps) {
 
+    function getDateString() {
+        if (!review.date) return "";
+
+        review.date = new Date(review.date);
+        let review_year = String(review.date.getFullYear()).substring(2);
+        let review_month = review.date.getMonth() + 1;
+        let review_day = review.date.getDate();
+
+        return review_month + "/" + review_day + "/" + review_year;
+    }
+
     function TitleAndProfessor() {
 
         var profString = "Professor: ";
@@ -34,10 +45,11 @@ export default function Review({
         if (!myReviewsPage) {
             return (
                 <>
+                    <h5>
+                        {"Course Title"}
+                    </h5>
                     <p>
-                    </p>
-                    <p>
-
+                        {"Course Code | " + profString}
                     </p>
                 </>
             )
@@ -51,7 +63,7 @@ export default function Review({
 
     return (
 
-        <div className={`${styles.reviewContainer}`}>
+        <div className={`${styles.reviewContainer + ' ' + styles.reviewText}`}>
             {/* Flag */}
             {
                 !isPreview &&
@@ -72,7 +84,7 @@ export default function Review({
 
                 {/* Ratings section. */}
                 <div className="col-md-4 col-lg-4 col-xl-3">
-                    <div className={`${styles.ratingsContainer}`}>
+                    <div className={`${styles.ratingsContainer + ' ' + styles.ratingsText}`}>
                         <p className={`${styles.ratingElem}`}>
                             <span>Overall</span>
                             <span>{review.rating ? review.rating : "-"}</span>
@@ -96,7 +108,12 @@ export default function Review({
                         <TitleAndProfessor></TitleAndProfessor>
 
                         {/* Review Text */}
-                        <p>{review.text}</p>
+                        <p className={`${styles.contentText}`}>{review.text}</p>
+
+                        {/* Date, Like Button*/}
+                        <p className={`${styles.dateText}`}>
+                            {getDateString()}
+                        </p>
                     </div>
                 </div>
             </div>

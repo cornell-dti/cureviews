@@ -31,3 +31,32 @@
 .contentContainer {
     border: blue solid;
 }
+
+
+/* Text */
+.reviewText {
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+
+    color: #000000;
+}
+
+.ratingsText {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.contentText {
+    font-size: 15px;
+    line-height: 19px;
+}
+
+.dateText {
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #9B9B9B;
+}
