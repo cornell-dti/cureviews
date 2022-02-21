@@ -24,6 +24,31 @@ export default function Review({
     isPending,
 }: ReviewProps) {
 
+    function TitleAndProfessor() {
+
+        var profString = "Professor: ";
+        if (review.professors && review.professors.length > 0)
+            profString += review.professors.join(", ");
+        else profString += "N/A"
+
+        if (!myReviewsPage) {
+            return (
+                <>
+                    <p>
+                    </p>
+                    <p>
+
+                    </p>
+                </>
+            )
+        }
+        else {
+            return (
+                <p>{profString}</p>
+            )
+        }
+    }
+
     return (
 
         <div className={`${styles.reviewContainer}`}>
@@ -44,6 +69,7 @@ export default function Review({
 
             {/* Main Section */}
             <div className="row">
+
                 {/* Ratings section. */}
                 <div className="col-md-4 col-lg-4 col-xl-3">
                     <div className={`${styles.ratingsContainer}`}>
@@ -65,12 +91,12 @@ export default function Review({
                 {/* Title, professor, review */}
                 <div className="col-md-8 col-lg-8 col-xl-9">
                     <div className={`${styles.contentContainer}`}>
-                        <div>
-                            Review Content
-                        </div>
-                        <div>
-                            Review Text
-                        </div>
+
+                        {/* Title And Professor */}
+                        <TitleAndProfessor></TitleAndProfessor>
+
+                        {/* Review Text */}
+                        <p>{review.text}</p>
                     </div>
                 </div>
             </div>
