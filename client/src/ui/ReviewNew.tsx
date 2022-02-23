@@ -6,6 +6,7 @@ import { Review as ReviewType } from "common";
 
 import styles from "./css/ReviewNew.module.css";
 
+// use review.visible for pending
 
 type ReviewProps = {
     reviewId: string,
@@ -13,7 +14,6 @@ type ReviewProps = {
     reportHandler: (review: ReviewType) => void,
     isPreview: boolean,
     myReviewsPage: boolean,
-    isPending: boolean,
 }
 
 export default function Review({
@@ -21,7 +21,6 @@ export default function Review({
     reportHandler,
     isPreview,
     myReviewsPage,
-    isPending,
 }: ReviewProps) {
 
     function getDateString() {
@@ -42,13 +41,13 @@ export default function Review({
             profString += review.professors.join(", ");
         else profString += "N/A"
 
-        if (!myReviewsPage) {
+        if (myReviewsPage) {
             return (
                 <>
-                    <h5>
+                    <h5 className={styles.courseTitle}>
                         {"Course Title"}
                     </h5>
-                    <p>
+                    <p className={styles.courseCodeAndProf}>
                         {"Course Code | " + profString}
                     </p>
                 </>
@@ -56,18 +55,18 @@ export default function Review({
         }
         else {
             return (
-                <p>{profString}</p>
+                <p className={styles.professors}>{profString}</p>
             )
         }
     }
 
     return (
 
-        <div className={`${styles.reviewContainer + ' ' + styles.reviewText}`}>
+        <div className={styles.reviewContainer}>
             {/* Flag */}
             {
                 !isPreview &&
-                <div className={`${styles.flagContainer}`}>
+                <div className={styles.flagContainer}>
                     <button
                         onClick={() => {
                             reportHandler(review);
@@ -84,34 +83,33 @@ export default function Review({
 
                 {/* Ratings section. */}
                 <div className="col-md-4 col-lg-4 col-xl-3">
-                    <div className={`${styles.ratingsContainer + ' ' + styles.ratingsText}`}>
-                        <p className={`${styles.ratingElem}`}>
+                    <div className={styles.ratingsContainer}>
+                        <div className={styles.ratingElem}>
                             <span>Overall</span>
-                            <span>{review.rating ? review.rating : "-"}</span>
-                        </p>
-                        <p className={`${styles.ratingElem}`}>
+                            <span className={styles.ratingNum}>{review.rating ? review.rating : "-"}</span>
+                        </div>
+                        <div className={styles.ratingElem}>
                             <span>Difficulty</span>
-                            <span>{review.difficulty ? review.difficulty : "-"}</span>
-                        </p>
-                        <p className={`${styles.ratingElem}`}>
+                            <span className={styles.ratingNum}>{review.difficulty ? review.difficulty : "-"}</span>
+                        </div>
+                        <div className={styles.ratingElem}>
                             <span>Workload</span>
-                            <span>{review.workload ? review.workload : "-"}</span>
-                        </p>
+                            <span className={styles.ratingNum}>{review.workload ? review.workload : "-"}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Title, professor, review */}
                 <div className="col-md-8 col-lg-8 col-xl-9">
-                    <div className={`${styles.contentContainer}`}>
-
+                    <div className={styles.contentContainer}>
                         {/* Title And Professor */}
                         <TitleAndProfessor></TitleAndProfessor>
 
                         {/* Review Text */}
-                        <p className={`${styles.contentText}`}>{review.text}</p>
+                        <p className={styles.reviewText}>{review.text}</p>
 
                         {/* Date, Like Button*/}
-                        <p className={`${styles.dateText}`}>
+                        <p className={styles.date}>
                             {getDateString()}
                         </p>
                     </div>

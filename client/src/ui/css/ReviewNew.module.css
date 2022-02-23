@@ -2,40 +2,12 @@
 /* General Structure */
 .reviewContainer {
     background: #FFFFFF;
-    border: 0.625px solid #B7D8FF;
     box-sizing: border-box;
     border-radius: 10px;
 
     margin-bottom: 22px;
     padding: 8px;
-}
 
-.flagContainer {
-    width: 100%;
-    color: #9b9b9b;
-    text-align: right;
-
-    border: red solid;
-}
-
-.ratingsContainer {
-    border: green solid;
-    display: block;
-}
-
-@media (max-width: 768px) {
-    .ratingElem {
-        display: inline;
-    }
-}
-
-.contentContainer {
-    border: blue solid;
-}
-
-
-/* Text */
-.reviewText {
     font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
@@ -45,17 +17,68 @@
     color: #000000;
 }
 
-.ratingsText {
+.flagContainer {
+    width: 100%;
+    color: #9b9b9b;
+    text-align: right;
+}
+
+.ratingsContainer {
+
     font-size: 14px;
     line-height: 18px;
 }
 
-.contentText {
+@media (max-width: 768px) {
+    .ratingsContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.ratingElem {
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.ratingNum {
+    float: right;
+
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .contentContainer {
+        padding-right: 30px;
+    }
+}
+
+.courseTitle {
+    margin-bottom: 0px;
+
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+}
+
+.courseCodeAndProf {
+    font-size: 12px;
+    line-height: 15px;
+    color: #A2A1A1;
+}
+
+.professors {
+    font-weight: var(--semi-bold-weight);
+}
+
+.reviewText {
     font-size: 15px;
     line-height: 19px;
 }
 
-.dateText {
+.date {
     font-size: 12px;
     line-height: 15px;
 

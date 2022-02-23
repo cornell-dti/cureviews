@@ -24,7 +24,6 @@ export default function CourseReviews({
           reportHandler={reportReview}
           isPreview={false}
           myReviewsPage={false}
-          isPending={false}
         />
       ))}
     </div>
