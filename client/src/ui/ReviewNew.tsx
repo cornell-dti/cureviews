@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { Session } from "../session-store";
+import ShowMoreText from "react-show-more-text";
 import { Review as ReviewType } from "common";
 
 import styles from "./css/ReviewNew.module.css";
@@ -23,6 +24,9 @@ export default function Review({
     myReviewsPage,
 }: ReviewProps) {
 
+    const [expanded, setExpanded] = useState<boolean>(false);
+    const [height, setHeight] = useState<number>(isPreview ? 206 : 196);
+
     function getDateString() {
         if (!review.date) return "";
 
@@ -32,6 +36,20 @@ export default function Review({
         let review_day = review.date.getDate();
 
         return review_month + "/" + review_day + "/" + review_year;
+    }
+
+    function executeOnClick() {
+        if (!expanded) {
+            let newHeight =
+                height +
+                ((review.text.length % 500) / 20) *
+                (isPreview ? 4.25 : 10.25);
+            setExpanded(!expanded);
+            setHeight(newHeight);
+        } else {
+            setExpanded(!expanded)
+            setHeight(isPreview ? 206 : 196);
+        }
     }
 
     function TitleAndProfessor() {
@@ -82,7 +100,7 @@ export default function Review({
             <div className="row">
 
                 {/* Ratings section. */}
-                <div className="col-md-4 col-lg-4 col-xl-3">
+                <div className="col-md-3 col-lg-4 col-xl-3">
                     <div className={styles.ratingsContainer}>
                         <div className={styles.ratingElem}>
                             <span>Overall</span>
@@ -100,13 +118,24 @@ export default function Review({
                 </div>
 
                 {/* Title, professor, review */}
-                <div className="col-md-8 col-lg-8 col-xl-9">
+                <div className="col-md-9 col-lg-8 col-xl-9">
                     <div className={styles.contentContainer}>
                         {/* Title And Professor */}
                         <TitleAndProfessor></TitleAndProfessor>
 
                         {/* Review Text */}
-                        <p className={styles.reviewText}>{review.text}</p>
+                        <p className={styles.reviewText}>
+                            <ShowMoreText
+                                lines={3}
+                                more="Show more"
+                                less="Show less"
+                                anchorClass="showMoreText"
+                                onClick={executeOnClick}
+                                expanded={expanded}
+                            >
+                                {review.text}
+                            </ShowMoreText>
+                        </p>
 
                         {/* Date, Like Button*/}
                         <p className={styles.date}>

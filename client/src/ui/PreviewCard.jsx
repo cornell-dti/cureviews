@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import "./css/PreviewCard.css";
 import Gauge from "./Gauge.tsx";
-import Review from "./Review.jsx";
+import Review from "./ReviewNew";
 import Form from "./Form.jsx";
 import { lastOfferedSems } from "common/CourseCard";
 
@@ -240,11 +240,9 @@ export default class PreviewCard extends Component {
               {/*If class has review show top review and link*/}
               {!this.props.mobile && this.state.numReviews !== 0 && (
                 <Review
-                  key={this.state.topReview._id}
-                  info={this.state.topReview}
+                  reviewId={this.state.topReview._id}
+                  review={this.state.topReview}
                   isPreview={true}
-                  likes={this.state.topReviewLikes}
-                  pending={false}
                   includeTitle={false}
                 />
               )}
