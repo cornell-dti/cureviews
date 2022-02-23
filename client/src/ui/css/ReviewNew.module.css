@@ -1,10 +1,8 @@
 
 /* General Structure */
 .reviewContainer {
-    background: #FFFFFF;
     box-sizing: border-box;
     border-radius: 10px;
-    border: 0.625px solid #B7D8FF;
 
     margin-bottom: 22px;
     padding: 8px;
@@ -14,8 +12,21 @@
     font-weight: normal;
     font-size: 14px;
     line-height: 18px;
+}
 
+.reviewContainerStyle {
+    background: #FFFFFF;
+    border: 0.625px solid #B7D8FF;
+
+    /* text */
     color: #000000;
+}
+
+.reviewContainerStylePending {
+    background: #F9F9F9;
+    border: 1px dashed #979797;
+
+    color: #979797;
 }
 
 .flagContainer {
@@ -44,8 +55,8 @@
     width: 100px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .ratingNum {

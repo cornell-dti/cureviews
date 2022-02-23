@@ -17,7 +17,18 @@ type ReviewProps = {
     myReviewsPage: boolean,
 }
 
+/*
+  Review Component.
+
+  Simple styling component that renders a single review (an li element)
+  to show in a ClassView. These reivews will include:
+   - how long ago the reivew was added
+   - all review content
+   - report button
+   - like button
+*/
 export default function Review({
+    reviewId,
     review,
     reportHandler,
     isPreview,
@@ -26,6 +37,8 @@ export default function Review({
 
     const [expanded, setExpanded] = useState<boolean>(false);
     const [height, setHeight] = useState<number>(isPreview ? 206 : 196);
+
+    const review_container_style = review.visible ? styles.reviewContainerStyle : styles.reviewContainerStylePending;
 
     function getDateString() {
         if (!review.date) return "";
@@ -80,7 +93,7 @@ export default function Review({
 
     return (
 
-        <div className={styles.reviewContainer}>
+        <div className={styles.reviewContainer + " " + review_container_style}>
             {/* Flag */}
             {
                 !isPreview &&
