@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Session } from "../session-store";
 import ShowMoreText from "react-show-more-text";
