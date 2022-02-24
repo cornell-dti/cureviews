@@ -1,5 +1,4 @@
 import React, { Component, useState } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
 import { Session } from "../session-store";
 import ShowMoreText from "react-show-more-text";
@@ -66,12 +65,40 @@ export default function Review({
         }
     }
 
-    function incrementLike() {
-
+    // for liking the review
+    function increment() {
+        if (liked) {
+            axios.post("/v2/decrementLike", {
+                id: review._id,
+                token: Session.get("token")
+            }).then((response) => {
+                const res = response.data.result;
+                if (res.resCode === 1) {
+                    setLiked(false);
+                    review.likes = review.likes ? review.likes - 1 : 0;
+                } else {
+                    console.log("Error while decrementing likes: " + res.error);
+                }
+            })
+        }
+        else {
+            axios.post("/v2/incrementLike", {
+                id: review._id,
+                token: Session.get("token"),
+            })
+                .then((response) => {
+                    const res = response.data.result;
+                    if (res.resCode === 1) {
+                        setLiked(true);
+                        review.likes = review.likes ? review.likes + 1 : 1;
+                    } else {
+                        console.log("Error while incrementing likes: " + res.error);
+                    }
+                })
+        }
     }
 
     function TitleAndProfessor() {
-
         var profString = "Professor: ";
         if (review.professors && review.professors.length > 0)
             profString += review.professors.join(", ");
@@ -97,7 +124,6 @@ export default function Review({
     }
 
     return (
-
         <div className={styles.reviewContainer + " " + review_container_style}>
             {/* Flag */}
             {
@@ -168,7 +194,7 @@ export default function Review({
                                 <div className="col">
                                     <button
                                         className={liked === true ? "review-voted" : "review-upvote"}
-                                        onClick={() => { incrementLike() }}
+                                        onClick={() => { increment(); }}
                                     >
                                         <img
                                             src={liked ? "/handClap_liked.svg" : "/handClap.svg"}
