@@ -13,7 +13,6 @@ type ReviewProps = {
     review: ReviewType,
     reportHandler: (review: ReviewType) => void,
     isPreview: boolean,
-    myReviewsPage: boolean,
 }
 
 /*
@@ -31,7 +30,6 @@ export default function Review({
     review,
     reportHandler,
     isPreview,
-    myReviewsPage,
 }: ReviewProps) {
 
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -104,14 +102,14 @@ export default function Review({
             profString += review.professors.join(", ");
         else profString += "N/A"
 
-        if (myReviewsPage) {
+        if (review.classTitle) {
             return (
                 <>
                     <h5 className={styles.courseTitle}>
-                        {"Course Title"}
+                        {review.classTitle}
                     </h5>
                     <p className={styles.courseCodeAndProf}>
-                        {"Course Code | " + profString}
+                        {review.classSub?.toUpperCase() + " " + review.classNum?.toUpperCase() + " | " + profString}
                     </p>
                 </>
             )

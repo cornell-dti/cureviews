@@ -23,7 +23,6 @@ export default function CourseReviews({
           review={review}
           reportHandler={reportReview}
           isPreview={false}
-          myReviewsPage={false}
         />
       ))}
     </div>

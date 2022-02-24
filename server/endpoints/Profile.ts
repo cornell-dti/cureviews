@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
-import { ReviewDocument, Reviews, Students } from "../dbDefs";
+import { ReviewDocument, Reviews, Students, Classes } from "../dbDefs";
 
 // The type of a query with a studentId
 export interface NetIdQuery {
@@ -82,7 +82,18 @@ async function getreviewIDsByStudentID(netId: string) {
   const studentDoc = await Students.findOne({ netId });
   const reviewIds = studentDoc.reviews;
   const reviews: ReviewDocument[] = await Promise.all(
-    (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
+    (reviewIds).map(async (reviewId) => {
+      const review = await Reviews.findOne({ _id: reviewId });
+      if (!review) return review;
+      const reviewObj = review.toObject();
+
+      const course = await Classes.findOne({ _id: review.class });
+      reviewObj.classTitle = course.classTitle;
+      reviewObj.classSub = course.classSub;
+      reviewObj.classNum = course.classNum;
+
+      return reviewObj;
+    }),
   );
   return reviews;
 }
