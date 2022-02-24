@@ -111,6 +111,15 @@
     color: #9B9B9B;
 }
 
+.upvoteText {
+    font-size: 12px;
+    line-height: 15px;
+    display: inline;
+    align-items: center;
+    text-align: right;
+    color: #807b7b;
+  }
+
 @media screen and (max-width: 992px) {
     .covidTag {
         background-color: #ffec5e;

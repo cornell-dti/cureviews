@@ -37,6 +37,7 @@ export default function Review({
 
     const [expanded, setExpanded] = useState<boolean>(false);
     const [height, setHeight] = useState<number>(isPreview ? 206 : 196);
+    const [liked, setLiked] = useState<boolean>(false);
 
     const review_container_style = review.visible ? styles.reviewContainerStyle : styles.reviewContainerStylePending;
 
@@ -63,6 +64,10 @@ export default function Review({
             setExpanded(!expanded)
             setHeight(isPreview ? 206 : 196);
         }
+    }
+
+    function incrementLike() {
+
     }
 
     function TitleAndProfessor() {
@@ -151,9 +156,31 @@ export default function Review({
                         </p>
 
                         {/* Date, Like Button*/}
-                        <p className={styles.date}>
-                            {getDateString()}
-                        </p>
+                        <div className="row">
+                            <div className="col">
+                                <p className={styles.date}>
+                                    {getDateString()}
+                                </p>
+                            </div>
+
+                            {/* Like Button */}
+                            {!isPreview && (
+                                <div className="col">
+                                    <button
+                                        className={liked === true ? "review-voted" : "review-upvote"}
+                                        onClick={() => { incrementLike() }}
+                                    >
+                                        <img
+                                            src={liked ? "/handClap_liked.svg" : "/handClap.svg"}
+                                            alt={liked ? "Liked" : "Not Liked Yet"}
+                                        />
+                                        <p className={styles.upvoteText}>
+                                            Helpful ({review.likes ? review.likes : 0})
+                                        </p>
+                                    </button >
+                                </div>
+                            )}
+                        </div>
 
                         {review.isCovid && (
                             <div className={`${styles.covidTag} row`}>
