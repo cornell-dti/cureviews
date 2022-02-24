@@ -154,6 +154,15 @@ export default function Review({
                         <p className={styles.date}>
                             {getDateString()}
                         </p>
+
+                        {review.isCovid && (
+                            <div className={`${styles.covidTag} row`}>
+                                <span role="img" aria-label="alert">
+                                    {" "}
+                                </span>
+                                This student's experience was affected by COVID-19
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
