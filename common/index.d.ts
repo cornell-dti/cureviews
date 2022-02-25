@@ -48,6 +48,8 @@ export interface Review {
   likes?: number;
   likedBy: string[];
   isCovid?: boolean;
+  gradeSelected?: string;
+  selectedMajors?: string[];
 }
 
 export interface Professor {

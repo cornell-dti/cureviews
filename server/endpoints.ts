@@ -68,6 +68,7 @@ function register<T>(
   app.post(`/v2/${name}`, guard, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(":(");
       return res.status(400).json({ errors: errors.array() });
     }
 

@@ -112,13 +112,13 @@ export default class Form extends Component {
 
   // Save the selected grade in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleGradeChange(selectedGrade) {
-
-    if (selectedGrade === null) {
-      this.gradeRecieved = ""
+  handleGradeChange(grade) {
+    if (grade === null) {
+      this.selectedGrade = ""
     }
 
-    this.setState({ gradeRecieved: selectedGrade });
+    this.setState({ selectedGrade: grade });
+    console.log(this.state)
   }
 
   // Save the current majors selected string for majors in the local state.
@@ -234,7 +234,8 @@ export default class Form extends Component {
       : //else
       [] //set to this
     const isCovid = this.state.isCovid;
-
+    const gradeSelected = this.state.gradeSelected
+    const selectedMajors = this.state.selectedMajors
     if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
@@ -243,7 +244,9 @@ export default class Form extends Component {
         difficulty: diff,
         workload: work,
         professors: prof,
-        isCovid: isCovid
+        isCovid: isCovid,
+        gradeSelected: gradeSelected,
+        selectedMajors:selectedMajors
       };
       this.setState({ "review": newReview })
 
@@ -266,6 +269,8 @@ export default class Form extends Component {
 
   submitReview() {
     // Call the API insert function
+
+    console.log(Session.get("review") !== "" ? Session.get("review") : this.state.review)
 
     axios.post("/v2/insertReview", {
       token: Session.get("token"),
@@ -436,7 +441,6 @@ export default class Form extends Component {
       "Economics"];
       this.majorsOptions.forEach((major) =>
       majorOptions.push({
-          "value": major,
           "label": major
         }))
       
