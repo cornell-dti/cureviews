@@ -59,7 +59,7 @@ export default function Profile({
 
   if (!loading) {
     return (
-      <div className="row">
+      <div className={"row"}>
         <div className={`col-4 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
@@ -121,7 +121,6 @@ export default function Profile({
         </div>
       </div>
     );
-  } else {
-    return <>Loading...</>;
   }
+  return <>Loading...</>;
 }

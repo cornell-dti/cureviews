@@ -61,3 +61,27 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     }
   },
 };
+
+/**
+ * [getReviewsByStudentId] returns a list of review objects that are created by the given student's netID
+ */
+export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
+  guard: [body("netId").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: NetIdQuery) => {
+    const { netId } = request;
+    try {
+      const studentDoc = await Students.findOne({ netId });
+      const reviewIds = studentDoc.reviews;
+      const reviews: ReviewDocument[] = await Promise.all(
+        (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
+      );
+      return { code: 200, message: reviews };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getReviewsByStudentId' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { code: 500, message: error.message };
+    }
+  },
+};

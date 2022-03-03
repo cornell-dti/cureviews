@@ -2,7 +2,7 @@ import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
 import { totalReviews, howManyReviewsEachClass, howManyEachClass, topSubjects, getReviewsOverTimeTop15 } from "./endpoints/AdminChart";
 import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo, incrementLike, decrementLike } from "./endpoints/Review";
-import { countReviewsByStudentId, getTotalLikesByStudentId } from "./endpoints/Profile";
+import { countReviewsByStudentId, getTotalLikesByStudentId, getReviewsByStudentId } from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
@@ -56,6 +56,7 @@ export function configure(app: express.Application) {
   register(app, "decrementLike", decrementLike);
   register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
   register(app, "countReviewsByStudentId", countReviewsByStudentId);
+  register(app, "getReviewsByStudentId", getReviewsByStudentId);
 }
 
 function register<T>(

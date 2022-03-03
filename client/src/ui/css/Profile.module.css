@@ -21,7 +21,6 @@
 .profileRight {
   display: flex;
   margin-top: 42px;
-  margin-left: 83px;
   margin-right: 136px;
   padding: 0 !important;
   height: 100%;
@@ -29,6 +28,7 @@
 
 .profileReviewsContainer {
   width: 100%;
+  height: 100%;
 }
 
 .profileContainer {
@@ -133,7 +133,9 @@
   background-color: transparent;
   width: 100%;
   overflow-y: auto;
+  padding-right: 30px;
   min-height: 500px;
+  max-height: 579px;
 }
 
 .courseInfoColumn {
