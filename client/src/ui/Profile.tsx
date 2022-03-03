@@ -12,7 +12,11 @@ type ProfileProps = {
 export default function Profile({
   imageSrc = "/profile_bear.png",
 }: ProfileProps) {
+  const [netId, setNetId] = useState("");
   const [verifiedEmail, setVerifiedEmail] = useState("");
+  const [reviewsTotal, setReviewsTotal] = useState("");
+  const [reviewsHelpful, setReviewsHelpful] = useState("");
+  const [viewsTotal, setViewsTotal] = useState("");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
@@ -20,15 +24,40 @@ export default function Profile({
     });
 
     const res = response.data.result;
-    console.log(res);
     if (res.code === 200) {
-      console.log(res.message);
       setVerifiedEmail(res.message);
+    }
+
+    setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
+  }
+
+  async function getReviewsTotal() {
+    const response = await axios.post("/v2/countReviewsByStudentId", {
+      netId,
+    });
+
+    const res = response.data.result;
+    if (res.code === 200) {
+      setReviewsTotal(res.message);
     }
   }
 
+  async function getReviewsHelpful() {
+    const response = await axios.post("/v2/getTotalLikesByStudentId", {
+      netId,
+    });
+
+    const res = response.data.result;
+    if (res.code === 200) {
+      setReviewsHelpful(res.message);
+    }
+  }
+
+  async function getViewsTotal() {}
+
   getVerifiedEmail();
-  console.log("hello" + verifiedEmail);
+  getReviewsTotal();
+  getReviewsHelpful();
   return (
     <div className={styles.profileContainer}>
       <div className={styles.profileTitle}>Profile</div>
@@ -41,12 +70,12 @@ export default function Profile({
         <div className={styles.profileUserStatistics}>
           <ProfileCard
             title="Reviews Total"
-            value="12"
+            value={reviewsTotal}
             image="/total_reviews_icon.svg"
           />
           <ProfileCard
             title="People found your reviews helpful"
-            value="7"
+            value={reviewsHelpful}
             image="/helpful_review_icon.svg"
           ></ProfileCard>
           <ProfileCard

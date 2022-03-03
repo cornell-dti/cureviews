@@ -20,7 +20,6 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
     try {
       const ticket = await getVerificationTicket(token);
       if (ticket.hd === "cornell.edu") {
-        console.log(ticket.email);
         return { code: 200, message: ticket.email };
       }
 
