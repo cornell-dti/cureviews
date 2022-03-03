@@ -60,7 +60,7 @@ export default function Profile({
   if (!loading) {
     return (
       <div className="row">
-        <div className="col-4">
+        <div className={`col-4 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
@@ -94,24 +94,26 @@ export default function Profile({
             </div>
           </div>
         </div>
-        <div className="col">
-          <div className={styles.reviewsHeader}>
-            <h2 className={styles.myReviews}>My Reviews ({reviews?.length})</h2>
-            <div className={styles.sortContainer}>
-              <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-                Sort By:
-              </label>
-              <select
-                onChange={sortReviewsBy}
-                className={styles.sortBySelect}
-                id="sort-reviews-by"
-              >
-                <option value="helpful">Most Helpful</option>
-                <option value="recent">Recent</option>
-              </select>
+        <div className={`col ${styles.profileRight}`}>
+          <div className={styles.profileReviewsContainer}>
+            <div className={styles.reviewsHeader}>
+              <h2 className={styles.myReviews}>
+                My Reviews ({reviews?.length})
+              </h2>
+              <div className={styles.sortContainer}>
+                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+                  Sort By:
+                </label>
+                <select
+                  onChange={sortReviewsBy}
+                  className={styles.sortBySelect}
+                  id="sort-reviews-by"
+                >
+                  <option value="helpful">Most Helpful</option>
+                  <option value="recent">Recent</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div>
             <div className={styles.courseReviews}>
               <CourseReviews2 reviews={reviews} />
             </div>
