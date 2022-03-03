@@ -83,16 +83,7 @@ async function getreviewIDsByStudentID(netId: string) {
   const reviewIds = studentDoc.reviews;
   const reviews: ReviewDocument[] = await Promise.all(
     (reviewIds).map(async (reviewId) => {
-      const review = await Reviews.findOne({ _id: reviewId });
-      if (!review) return review;
-      const reviewObj = review.toObject();
-
-      const course = await Classes.findOne({ _id: review.class });
-      reviewObj.classTitle = course.classTitle;
-      reviewObj.classSub = course.classSub;
-      reviewObj.classNum = course.classNum;
-
-      return reviewObj;
+      return await Reviews.findOne({ _id: reviewId });
     }),
   );
   return reviews;

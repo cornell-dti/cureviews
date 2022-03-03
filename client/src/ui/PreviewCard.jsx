@@ -242,8 +242,9 @@ export default class PreviewCard extends Component {
                 <Review
                   reviewId={this.state.topReview._id}
                   review={this.state.topReview}
+                  reportHandler={this.reportHandler}
                   isPreview={true}
-                  includeTitle={false}
+                  profilePage={false}
                 />
               )}
 

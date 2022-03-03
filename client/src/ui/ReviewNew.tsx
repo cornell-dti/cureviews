@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Session } from "../session-store";
 import ShowMoreText from "react-show-more-text";
@@ -13,6 +13,7 @@ type ReviewProps = {
     review: ReviewType,
     reportHandler: (review: ReviewType) => void,
     isPreview: boolean,
+    profilePage: boolean,
 }
 
 /*
@@ -30,13 +31,19 @@ export default function Review({
     review,
     reportHandler,
     isPreview,
+    profilePage
 }: ReviewProps) {
 
     const [expanded, setExpanded] = useState<boolean>(false);
     const [height, setHeight] = useState<number>(isPreview ? 206 : 196);
     const [liked, setLiked] = useState<boolean>(false);
 
+    const [courseTitle, setCourseTitle] = useState<string>("");
+    const [courseSub, setCourseSub] = useState<string>("");
+    const [courseNum, setCourseNum] = useState<string>("");
+
     const review_container_style = review.visible ? styles.reviewContainerStyle : styles.reviewContainerStylePending;
+    const ratings_container_color = review.visible ? styles.ratingsContainerColor : "";
 
     function getDateString() {
         if (!review.date) return "";
@@ -96,20 +103,36 @@ export default function Review({
         }
     }
 
+    /*
+     * Fetch the course information.
+     */
+    useEffect(() => {
+        async function updateCourse() {
+            const response = await axios.post(`/v2/getCourseById`, { courseId: review.class });
+            const course = response.data.result;
+
+            setCourseTitle(course.classTitle);
+            setCourseSub(course.classSub);
+            setCourseNum(course.classNum);
+        }
+
+        if (profilePage) updateCourse();
+    }, [review, profilePage]);
+
     function TitleAndProfessor() {
         var profString = "Professor: ";
         if (review.professors && review.professors.length > 0)
             profString += review.professors.join(", ");
         else profString += "N/A"
 
-        if (review.classTitle) {
+        if (profilePage) {
             return (
                 <>
                     <h5 className={styles.courseTitle}>
-                        {review.classTitle}
+                        {courseTitle}
                     </h5>
                     <p className={styles.courseCodeAndProf}>
-                        {review.classSub?.toUpperCase() + " " + review.classNum?.toUpperCase() + " | " + profString}
+                        {courseSub?.toUpperCase() + " " + courseNum?.toUpperCase() + " | " + profString}
                     </p>
                 </>
             )
@@ -143,7 +166,7 @@ export default function Review({
 
                 {/* Ratings section. */}
                 <div className="col-md-3 col-lg-4 col-xl-3">
-                    <div className={styles.ratingsContainer}>
+                    <div className={styles.ratingsContainer + " " + ratings_container_color}>
                         <div className={styles.ratingElem}>
                             <span>Overall</span>
                             <span className={styles.ratingNum}>{review.rating ? review.rating : "-"}</span>
