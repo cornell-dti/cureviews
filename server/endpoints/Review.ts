@@ -124,11 +124,9 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
     .concat(JSONNonempty("review", ["text", "difficulty", "rating", "workload", "professors", "isCovid"])),
   callback: async (ctx: Context, request: InsertReviewRequest) => {
     try {
-      console.log("hits endpoint")
       const { token } = request;
       const { classId } = request;
       const { review } = request;
-      console.log(review)
       const ticket = await getVerificationTicket(token);
 
       if (!ticket) return { resCode: 0, error: "Missing verification ticket" };
