@@ -270,7 +270,6 @@ export default class Form extends Component {
   }
 
   submitReview() {
-    console.log(Session.get("review") !== "" ? Session.get("review") : this.state.review)
     // Call the API insert function
     axios.post("/v2/insertReview", {
       token: Session.get("token"),
