@@ -66,7 +66,11 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      const reviews = await getreviewIDsByStudentID(netId);
+      const studentDoc = await Students.findOne({ netId });
+      const reviewIds = studentDoc.reviews;
+      const reviews: ReviewDocument[] = await Promise.all(
+        (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
+      );
       return { code: 200, message: reviews };
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -77,12 +81,3 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
     }
   },
 };
-
-async function getreviewIDsByStudentID(netId: string) {
-  const studentDoc = await Students.findOne({ netId });
-  const reviewIds = studentDoc.reviews;
-  const reviews: ReviewDocument[] = await Promise.all(
-    (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
-  );
-  return reviews;
-}
