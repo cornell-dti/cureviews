@@ -48,7 +48,7 @@ export interface Review {
   likes?: number;
   likedBy: string[];
   isCovid?: boolean;
-  gradeSelected?: string;
+  selectedGrade?: string;
   selectedMajors?: string[];
 }
 

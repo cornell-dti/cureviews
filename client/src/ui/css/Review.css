@@ -51,6 +51,11 @@
     color: #0076ff;
   }
 
+  .majors-element {
+    text-align: right;
+    display: inline;
+  }
+
   .covidTag {
     background-color: #ffec5e;
     border-radius: 5px;
