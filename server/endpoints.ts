@@ -57,7 +57,6 @@ export function configure(app: express.Application) {
   register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
   register(app, "getReviewsByStudentId", getReviewsByStudentId);
   register(app, "countReviewsByStudentId", countReviewsByStudentId);
-  register(app, "getReviewsByStudentId", getReviewsByStudentId);
 }
 
 function register<T>(

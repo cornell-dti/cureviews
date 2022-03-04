@@ -8,7 +8,7 @@ import "./css/ResultsDisplay.css";
 import { Review as ReviewType } from "common";
 
 import styles from "./css/Profile.module.css";
-import CourseReviews2 from "./CourseReviews2";
+import CourseReviews from "./CourseReviews";
 import axios from "axios";
 
 type netId = string;
@@ -20,10 +20,11 @@ type ProfileProps = {
 
 export default function Profile({
   imageSrc = "/profile_bear.png",
-  netId = "myl39",
+  netId = "nyc9",
 }: ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
+  //create a new state for pending & non-pending reviews reviews
 
   /**
    * Arrow functions for sorting reviews
@@ -114,9 +115,13 @@ export default function Profile({
                 </select>
               </div>
             </div>
-            <div className={styles.courseReviews}>
-              <CourseReviews2 reviews={reviews} />
-            </div>
+            {reviews ? (
+              <div className={styles.courseReviews}>
+                <CourseReviews reviews={reviews} />
+              </div>
+            ) : (
+              <div>no reviews</div>
+            )}
           </div>
         </div>
       </div>
