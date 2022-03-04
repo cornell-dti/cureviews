@@ -4,7 +4,7 @@ import { Session } from "../session-store";
 import ShowMoreText from "react-show-more-text";
 import { Review as ReviewType } from "common";
 
-import styles from "./css/ReviewNew.module.css";
+import styles from "./css/Review.module.css";
 
 // use review.visible for pending
 

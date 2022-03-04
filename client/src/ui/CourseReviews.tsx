@@ -1,5 +1,5 @@
 import React from "react";
-import ReviewCard from "./ReviewNew";
+import ReviewCard from "./Review";
 import { Review } from "common";
 
 type CourseReviewsProps = {

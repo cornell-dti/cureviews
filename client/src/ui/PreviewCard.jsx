@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import "./css/PreviewCard.css";
 import Gauge from "./Gauge.tsx";
-import Review from "./ReviewNew";
+import Review from "./Review";
 import Form from "./Form.jsx";
 import { lastOfferedSems } from "common/CourseCard";
 
