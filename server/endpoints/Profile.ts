@@ -72,6 +72,10 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
     try {
       const studentDoc = await Students.findOne({ netId });
       const reviewIds = studentDoc.reviews;
+      if (reviewIds === null) {
+        return { code: 200, message: [] };
+      }
+      console.log(reviewIds);
       const reviews: ReviewDocument[] = await Promise.all(
         (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
       );

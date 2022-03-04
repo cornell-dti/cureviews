@@ -18,9 +18,11 @@ type ProfileProps = {
   netId: string;
 };
 
+//axl4
+
 export default function Profile({
   imageSrc = "/profile_bear.png",
-  netId = "nyc9",
+  netId = "sj598",
 }: ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
@@ -37,12 +39,7 @@ export default function Profile({
   useEffect(() => {
     axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
       const reviews = response.data.result.message;
-      if (reviews) {
-        setReviews(reviews);
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(`Unable to find reviews by student by id = ${netId}`);
-      }
+      setReviews(reviews);
       setLoading(false);
     });
   }, [netId]);
@@ -115,13 +112,12 @@ export default function Profile({
                 </select>
               </div>
             </div>
-            {reviews ? (
+            {reviews.length > 0 && (
               <div className={styles.courseReviews}>
                 <CourseReviews reviews={reviews} />
               </div>
-            ) : (
-              <div>no reviews</div>
             )}
+            {reviews.length === 0 && <div>no reviewsss</div>}
           </div>
         </div>
       </div>
