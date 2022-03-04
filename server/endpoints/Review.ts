@@ -165,7 +165,6 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             selectedGrade: review.selectedGrade,
             selectedMajors: review.selectedMajors,
           });
-          console.log(fullReview)
           await fullReview.save();
 
           const newReviews = student.reviews ? student.reviews.concat([fullReview._id]) : [fullReview._id];
