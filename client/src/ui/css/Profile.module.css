@@ -228,6 +228,47 @@
   margin: 0;
 }
 
+.noReviewsContainer {
+  margin-top: 40px;
+}
+
+.noReviewsTitle {
+  text-align: center;
+  margin-top: 75px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+
+  color: #000000;
+}
+
+.noReviewsSubtitle {
+  text-align: center;
+  margin-top: 24px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+
+  color: #000000;
+}
+
+.noReviewsImage {
+  display: block;
+  width: 246px;
+  height: 237.21px;
+  margin-top: 47px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media (min-width: 768px) {
   .classView {
     background-color: transparent;

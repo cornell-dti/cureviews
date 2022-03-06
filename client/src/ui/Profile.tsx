@@ -18,11 +18,10 @@ type ProfileProps = {
   netId: string;
 };
 
-//axl4
-
 export default function Profile({
   imageSrc = "/profile_bear.png",
-  netId = "sj598",
+  //for LOCAL TESTING use axl4 to check the case where a student has no reviews and myl39 for reviews
+  netId = "axl4",
 }: ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
@@ -117,7 +116,26 @@ export default function Profile({
                 <CourseReviews reviews={reviews} />
               </div>
             )}
-            {reviews.length === 0 && <div>no reviewsss</div>}
+            {reviews.length === 0 && (
+              <>
+                <div className={styles.noReviewsContainer}>
+                  <div className={styles.noReviewsTitle}>
+                    Oops! Seems like you haven’t written any reviews yet.
+                  </div>
+                  <div className={styles.noReviewsSubtitle}>
+                    Add an anonymous review and get notified when a your review
+                    is approved.
+                  </div>
+                  <div className={styles.noReviewsImage}>
+                    <img
+                      src="/noReviews.svg"
+                      alt="No Reviews"
+                      height="100%"
+                    ></img>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
