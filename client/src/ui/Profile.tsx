@@ -20,12 +20,13 @@ type ProfileProps = {
 
 export default function Profile({
   imageSrc = "/profile_bear.png",
-  //for LOCAL TESTING use axl4 to check the case where a student has no reviews and myl39 for reviews
-  netId = "axl4",
+  //for LOCAL TESTING use axl4 for no reviews, myl39 for past reviews, sj598 for pending + past reviews
+  netId = "sj598",
 }: ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
-  //create a new state for pending & non-pending reviews reviews
+  const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
+  const [pastReviews, setPastReviews] = useState<ReviewType[]>([]);
 
   /**
    * Arrow functions for sorting reviews
@@ -38,10 +39,20 @@ export default function Profile({
   useEffect(() => {
     axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
       const reviews = response.data.result.message;
+      const pendingReviews = reviews.filter(function (review: ReviewType) {
+        return review.visible === 1;
+      });
+      const pastReviews = reviews.filter(function (review: ReviewType) {
+        return review.visible === 0;
+      });
       setReviews(reviews);
+      setPendingReviews(pendingReviews);
+      setPastReviews(pastReviews);
       setLoading(false);
     });
   }, [netId]);
+
+  console.log(pendingReviews.length);
 
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
@@ -94,7 +105,7 @@ export default function Profile({
         <div className={`col ${styles.profileRight}`}>
           <div className={styles.profileReviewsContainer}>
             <div className={styles.reviewsHeader}>
-              <h2 className={styles.myReviews}>
+              <h2 className={styles.myReviewsText}>
                 My Reviews ({reviews?.length})
               </h2>
               <div className={styles.sortContainer}>
@@ -111,11 +122,6 @@ export default function Profile({
                 </select>
               </div>
             </div>
-            {reviews.length > 0 && (
-              <div className={styles.courseReviews}>
-                <CourseReviews reviews={reviews} />
-              </div>
-            )}
             {reviews.length === 0 && (
               <>
                 <div className={styles.noReviewsContainer}>
@@ -133,6 +139,40 @@ export default function Profile({
                       height="100%"
                     ></img>
                   </div>
+                </div>
+              </>
+            )}
+            {reviews.length > 0 && pendingReviews.length > 0 && (
+              <>
+                <div className="row">
+                  <div className={`col ${styles.pendingHeader}`}>
+                    <p className={styles.pendingHeaderText}>
+                      Pending ({pendingReviews?.length})
+                    </p>
+                  </div>
+                  <div className={`col ${styles.hidePending}`}>
+                    <p className={styles.hidePendingText}>Hide</p>
+                  </div>
+                </div>
+                <div className={styles.pendingReviews}>
+                  <CourseReviews reviews={pendingReviews} />
+                </div>
+                <div className="row">
+                  <div className={`col ${styles.pastHeader}`}>
+                    <p className={styles.pastHeaderText}>
+                      Past Reviews ({pastReviews?.length})
+                    </p>
+                  </div>
+                </div>
+                <div className={styles.pastReviews}>
+                  <CourseReviews reviews={pastReviews} />
+                </div>
+              </>
+            )}
+            {reviews.length > 0 && pendingReviews.length === 0 && (
+              <>
+                <div className={styles.myReviews}>
+                  <CourseReviews reviews={reviews} />
                 </div>
               </>
             )}

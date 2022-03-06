@@ -129,13 +129,29 @@
   color: #ffffff;
 }
 
-.courseReviews {
+.myReviews {
   background-color: transparent;
   width: 100%;
   overflow-y: auto;
   padding-right: 30px;
-  min-height: 500px;
+  min-height: 200px;
   max-height: 579px;
+}
+
+.pendingReviews {
+  background-color: transparent;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 30px;
+  max-height: 200px;
+}
+
+.pastReviews {
+  background-color: transparent;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 30px;
+  max-height: 300px;
 }
 
 .courseInfoColumn {
@@ -150,7 +166,7 @@
   padding: 0 24px 35px;
 }
 
-.myReviews {
+.myReviewsText {
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
@@ -218,16 +234,6 @@
   color: #0076ff;
 }
 
-.pastReviews {
-  flex: 1;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
-  font-weight: var(--regular-weight);
-  color: #807b7b;
-  padding: 0 0 20px;
-  margin: 0;
-}
-
 .noReviewsContainer {
   margin-top: 40px;
 }
@@ -269,16 +275,73 @@
   margin-right: auto;
 }
 
+.pendingHeader {
+  margin-top: 10px;
+}
+
+.pendingHeaderText {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 11px;
+  /* or 45% */
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  /* Gray */
+
+  color: #a2a1a1;
+}
+
+.hidePending {
+  margin-right: 0px;
+}
+
+.hidePendingText {
+  text-align: right;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 19px;
+  /* or 104% */
+
+  letter-spacing: -0.225605px;
+  text-decoration-line: underline;
+
+  color: #0076ff;
+}
+
+.pastHeader {
+  /* margin-top: 61.5px; */
+  margin-top: 30px;
+}
+
+.pastHeaderText {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 11px;
+  /* or 45% */
+
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: -0.128928px;
+
+  /* Gray */
+
+  color: #a2a1a1;
+}
+
 @media (min-width: 768px) {
   .classView {
     background-color: transparent;
   }
-
-  .pastReviews {
-    font-size: 24px;
-    padding-top: 35px;
-  }
-
   .courseReviewColumn {
     padding: 0 35px 35px;
   }
