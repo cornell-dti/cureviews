@@ -27,7 +27,7 @@ export default function ClassView() {
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [courseReviews, setCourseReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
-  const [scrollTop, setScrollTop] = useState(0);
+  const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -38,6 +38,13 @@ export default function ClassView() {
   const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
   const sortByDate = (a: Review, b: Review) =>
     !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
+
+  useEffect(() => {
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 110);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   /**
    * Fetches current course info and reviews and updates UI state
@@ -262,22 +269,28 @@ export default function ClassView() {
           <Navbar userInput={input} />
         </div>
 
-        <div
-          className={`row ${styles.content}`}
-          onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
-        >
+        <div className={`row ${styles.content}`}>
           <div
-            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn}`}
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
+              isPastScrollThreshold && styles.courseInfoColumnShadow
+            }`}
           >
-            <div>
-              <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
-              <p className={styles.courseSubtitle}>
-                {selectedClass.classSub.toUpperCase() +
-                  " " +
-                  selectedClass.classNum +
-                  ", " +
-                  lastOfferedSems(selectedClass)}
-              </p>
+            <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
+            <p className={styles.courseSubtitle}>
+              {selectedClass.classSub.toUpperCase() +
+                " " +
+                selectedClass.classNum +
+                ", " +
+                lastOfferedSems(selectedClass)}
+            </p>
+            <div
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                styles.ratingMobileBox
+              }`}
+            >
+              <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
+              <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
+              <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
             </div>
             {/* review form, only shown on larger screens */}
             <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
@@ -289,7 +302,11 @@ export default function ClassView() {
             </div>
           </div>
           <div className={`col ${styles.courseReviewColumn}`}>
-            <div className={styles.gaugeContainer}>
+            <div
+              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
+                styles.gaugeContainer
+              }`}
+            >
               <div className={styles.gauge}>
                 <Gauge rating={selectedClass!.classRating} label="Overall" />
               </div>
@@ -305,7 +322,9 @@ export default function ClassView() {
             </div>
             {/* leave a review button, only shown on smaller screens */}
             <button
-              className={`btn d-lg-none ${styles.startReviewButton}`}
+              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
+                styles.startReviewButton
+              }`}
               onClick={() => onLeaveReview()}
             >
               Leave a review
@@ -334,7 +353,7 @@ export default function ClassView() {
                 onReportReview={reportReview}
               />
               <div
-                className={`d-lg-none ${scrollTop <= 400 && "d-none"} ${
+                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
                   styles.fixedButtonContainer
                 }`}
               >
