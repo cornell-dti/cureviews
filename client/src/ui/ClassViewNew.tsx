@@ -40,7 +40,7 @@ export default function ClassView() {
     !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
 
   useEffect(() => {
-    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 110);
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 28);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -265,7 +265,7 @@ export default function ClassView() {
           <ModalContentAuth />
         </Modal>
 
-        <div className="row">
+        <div className="row d-none d-lg-block">
           <Navbar userInput={input} />
         </div>
 
