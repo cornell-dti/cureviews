@@ -78,7 +78,9 @@ export default class SearchBar extends Component {
         if (queryCourseList.length !== 0) {
           // Save the Class object that matches the request
           this.setState({
-            allCourses: queryCourseList
+            allCourses: queryCourseList.sort(
+              (a, b) => b.score - a.score || a.classNum - b.classNum
+            ),
           });
         }
         else {
