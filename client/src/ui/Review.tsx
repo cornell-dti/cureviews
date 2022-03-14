@@ -9,11 +9,11 @@ import styles from "./css/Review.module.css";
 // use review.visible for pending
 
 type ReviewProps = {
-    reviewId: string,
+    key: string,
     review: ReviewType,
     reportHandler: (review: ReviewType) => void,
     isPreview: boolean,
-    profilePage: boolean,
+    isProfile: boolean,
 }
 
 /*
@@ -27,11 +27,11 @@ type ReviewProps = {
    - like button
 */
 export default function Review({
-    reviewId,
+    key,
     review,
     reportHandler,
     isPreview,
-    profilePage
+    isProfile
 }: ReviewProps) {
 
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -116,8 +116,8 @@ export default function Review({
             setCourseNum(course.classNum);
         }
 
-        if (profilePage) updateCourse();
-    }, [review, profilePage]);
+        if (isProfile) updateCourse();
+    }, [review, isProfile]);
 
     function TitleAndProfessor() {
         var profString = "Professor: ";
@@ -125,7 +125,7 @@ export default function Review({
             profString += review.professors.join(", ");
         else profString += "N/A"
 
-        if (profilePage) {
+        if (isProfile) {
             return (
                 <>
                     <h5 className={styles.courseTitle}>

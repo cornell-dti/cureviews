@@ -240,11 +240,11 @@ export default class PreviewCard extends Component {
               {/*If class has review show top review and link*/}
               {!this.props.mobile && this.state.numReviews !== 0 && (
                 <Review
-                  reviewId={this.state.topReview._id}
+                  key={this.state.topReview._id}
                   review={this.state.topReview}
                   reportHandler={this.reportHandler}
                   isPreview={true}
-                  profilePage={false}
+                  isProfile={false}
                 />
               )}
 
