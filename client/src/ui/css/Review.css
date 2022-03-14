@@ -142,6 +142,30 @@
   }
 }
 
+.grade-major-container {
+  display: flex;
+  gap: 100px;
+  margin-bottom: 16px;
+}
+
+.grade-major-label {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: 18px;
+  display: inline;
+}
+
+.grade-major-text {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: 18px;
+  display: inline;
+}
+
 .review-report {
   color: #9b9b9b;
   margin-top: 14px;

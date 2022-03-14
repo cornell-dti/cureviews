@@ -213,27 +213,29 @@ export default class Review extends Component {
                 )}
               </p>
             </div>
-            <div className="row noLeftRightSpacing review-professor-container">
-              <p>
-                <span className="review-professor-label">Grade: </span>
-                {review.selectedGrade && review.selectedGrade.length !== 0 ? (
-                  <span className="review-professor-text">{review.selectedGrade}
-                  </span>
-                ) : (
-                  <span className="review-professor-text">N/A</span>
-                )}
-                  <span className="review-professor-label">Major(s): </span>
-                  {review.selectedMajors && review.selectedMajors.length !== 0 ? (
-                    review.selectedMajors.map((major, index) => (
-                      <span className="review-professor-text" key={index}>
-                        {index > 0 ? ", " : ""}
-                        {major}
+            <div className = "grade-major-container">
+                <div>
+                  <span className="grade-major-label">Grade: </span>
+                    {review.selectedGrade && review.selectedGrade.length !== 0 ? (
+                      <span className="grade-major-text">{review.selectedGrade}
                       </span>
-                    ))
-                  ) : (
-                    <span className="review-professor-text">N/A</span>
-                  )}
-              </p>
+                    ) : (
+                      <span className="grade-major-text">N/A</span>
+                    )}
+                  </div>
+                  <div>
+                    <span className="grade-major-label">Major(s): </span>
+                    {review.selectedMajors && review.selectedMajors.length !== 0 ? (
+                      review.selectedMajors.map((major, index) => (
+                        <span className="grade-major-text" key={index}>
+                          {index > 0 ? ", " : ""}
+                          {major}
+                        </span>
+                      ))
+                      ) : (
+                        <span className="grade-major-text">N/A</span>
+                        )}
+                  </div>
             </div>
 
             <div className="row noLeftRightSpacing">
