@@ -20,7 +20,7 @@ type ProfileProps = {
 
 export default function Profile({
   imageSrc = "/profile_bear.png",
-  //for LOCAL TESTING use axl4 for no reviews, myl39 for past reviews, sj598 for pending + past reviews
+  //for LOCAL TESTING use axl4 for no reviews, ag974 for past reviews, sj598 for pending + past reviews
   netId = "sj598",
 }: ProfileProps) {
   const [loading, setLoading] = useState(true);
@@ -68,7 +68,7 @@ export default function Profile({
   if (!loading) {
     return (
       <div className={"row"}>
-        <div className={`col-4 ${styles.profileLeft}`}>
+        <div className={`col-3 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
