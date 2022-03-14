@@ -82,7 +82,7 @@ async function getreviewIDsByStudentID(netId: string) {
   const studentDoc = await Students.findOne({ netId });
   const reviewIds = studentDoc.reviews;
   const reviews: ReviewDocument[] = await Promise.all(
-    (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId });),
+    reviewIds.map(async reviewId => await Reviews.findOne({ _id: reviewId })),
   );
   return reviews;
 }
