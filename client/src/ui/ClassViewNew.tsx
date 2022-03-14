@@ -164,7 +164,12 @@ export default function ClassView() {
               </div>
             </div>
             <div className={styles.courseReviews}>
-              <CourseReviews reviews={reviews} onReportReview={reportReview} />
+              <CourseReviews
+                reviews={reviews}
+                onReportReview={reportReview}
+                isPreview={false}
+                isProfile={false}
+              />
             </div>
           </div>
         </div>

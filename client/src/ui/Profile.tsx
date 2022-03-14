@@ -40,10 +40,10 @@ export default function Profile({
     axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
       const reviews = response.data.result.message;
       const pendingReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 1;
+        return review.visible === 0;
       });
       const pastReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 0;
+        return review.visible === 1;
       });
       setReviews(reviews);
       setPendingReviews(pendingReviews);
@@ -155,7 +155,11 @@ export default function Profile({
                   </div>
                 </div>
                 <div className={styles.pendingReviews}>
-                  <CourseReviews reviews={pendingReviews} />
+                  <CourseReviews
+                    reviews={pendingReviews}
+                    isPreview={false}
+                    isProfile={true}
+                  />
                 </div>
                 <div className="row">
                   <div className={`col ${styles.pastHeader}`}>
@@ -165,14 +169,22 @@ export default function Profile({
                   </div>
                 </div>
                 <div className={styles.pastReviews}>
-                  <CourseReviews reviews={pastReviews} />
+                  <CourseReviews
+                    reviews={pastReviews}
+                    isPreview={false}
+                    isProfile={true}
+                  />
                 </div>
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
               <>
                 <div className={styles.myReviews}>
-                  <CourseReviews reviews={reviews} />
+                  <CourseReviews
+                    reviews={reviews}
+                    isPreview={false}
+                    isProfile={true}
+                  />
                 </div>
               </>
             )}
