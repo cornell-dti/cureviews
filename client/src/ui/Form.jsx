@@ -228,16 +228,13 @@ export default class Form extends Component {
     const diff = this.state.diff;
     const work = this.state.workload;
     const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0
-      this.state.selectedProfessors.map(professor => { return professor.label }) //set to this
+      this.state.selectedProfessors.map(professor => professor.label) //set to this
       : //else
       [] //set to this
     const isCovid = this.state.isCovid;
     const grade = this.state.selectedGrade.length !== 0 ? //If length is not 0
       this.state.selectedGrade.label : ''   
-    const major = this.state.selectedMajors.length !== 0 ? //If length is not 0
-      this.state.selectedMajors.map(major => { return major.label }) //set to this
-      : //else
-      [] //set to this    
+    const major =  this.state.selectedMajors.map((major) => major.label)  
     if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
@@ -352,15 +349,12 @@ export default class Form extends Component {
   }
 
   getGradeOptions() {
-      const gradeOptions = [];
-      this.gradeRecieved = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
-      this.gradeRecieved.forEach((grade) =>
-        gradeOptions.push({
+      this.gradeReceived = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
+      return this.gradeReceived.map((grade) =>
+        ({
           "value": grade,
           "label": grade
         }))
-      
-      return gradeOptions
     }
 
   getMajorOptions() {
@@ -677,7 +671,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+              <div className="col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">Grade Received</div>
                 <div className="form-label form-optional-label">(optional)</div>
               </div>
@@ -696,7 +690,7 @@ export default class Form extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-3 col-sm-3 col-xs-3 form-bottom-row-spacing">
+              <div className="col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
                 <div className="form-label form-professor-label">What's your major?</div>
                 <div className="form-label form-optional-label">(optional)</div>
 
