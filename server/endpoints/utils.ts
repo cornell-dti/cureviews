@@ -34,14 +34,16 @@ export const insertUser = async (request: InsertUserRequest) => {
   try {
     // Check user object has all required fields
     if (googleObject.email.replace("@cornell.edu", "") !== null) {
-      const user = await getUserByNetId(googleObject.email.replace("@cornell.edu", ""));
+      const user = await getUserByNetId(
+        googleObject.email.replace("@cornell.edu", ""),
+      );
       if (user === null) {
         const newUser = new Students({
           _id: shortid.generate(),
           // Check to see if Google returns first and last name
           // If not, insert empty string to database
-          firstName: googleObject.given_name ? googleObject.given_name : "",
-          lastName: googleObject.family_name ? googleObject.family_name : "",
+          firstName: googleObject.givenName ? googleObject.givenName : "",
+          lastName: googleObject.familyName ? googleObject.familyName : "",
           netId: googleObject.email.replace("@cornell.edu", ""),
           affiliation: null,
           token: null,
@@ -83,9 +85,11 @@ export const verifyToken = async (token: string) => {
     if (regex.test(token)) {
       const ticket = await getVerificationTicket(token);
       if (ticket && ticket.email) {
-        const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
+        const user = await getUserByNetId(
+          ticket.email.replace("@cornell.edu", ""),
+        );
         if (user) {
-          return user.privilege === 'admin';
+          return user.privilege === "admin";
         }
       }
     }
