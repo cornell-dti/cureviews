@@ -358,7 +358,6 @@ export default class Form extends Component {
     }
 
   getMajorOptions() {
-      const majorOptions = [];
       this.majorsOptions = ["Computer science",
       "Biology/biological sciences",
       "Labor and industrial relations",
@@ -432,14 +431,11 @@ export default class Form extends Component {
       "Religion/religious studies",
       "German studies",
       "Economics"];
-      this.majorsOptions.forEach((major) =>
-      majorOptions.push({
-        "value": major,
-        "label": major
-
+      return this.majorsOptions.map((major) =>
+        ({
+          "value": major,
+          "label": major
         }))
-      
-      return majorOptions
   }
 
   show() {
