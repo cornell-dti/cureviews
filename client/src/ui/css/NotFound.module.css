@@ -1,4 +1,6 @@
-.notFoundMarginTop{
+@import "../../index.css";
+
+.notFoundMarginTop {
   margin-top: 100px;
 }
 
