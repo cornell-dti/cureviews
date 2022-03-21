@@ -188,6 +188,30 @@ export default function Review({
                         {/* Title And Professor */}
                         <TitleAndProfessor></TitleAndProfessor>
 
+                    <div className = "grade-major-container">
+                        <div>
+                            <span className="grade-major-label">Grade: </span>
+                                {review.selectedGrade && review.selectedGrade.length !== 0 ? (
+                                <span className="grade-major-text">{review.selectedGrade}
+                                </span>
+                                ) : (
+                                <span className="grade-major-text">N/A</span>
+                                )}
+                        </div>
+                        <div>
+                            <span className="grade-major-label">Major(s): </span>
+                            {review.selectedMajors && review.selectedMajors.length !== 0 ? (
+                            review.selectedMajors.map((major, index) => (
+                                <span className="grade-major-text" key={index}>
+                                {index > 0 ? ", " : ""}
+                                {major}
+                                </span>
+                            ))
+                            ) : (
+                                <span className="grade-major-text">N/A</span>
+                                )}
+                        </div>
+                    </div>
                         {/* Review Text */}
                         <p className={styles.reviewText}>
                             <ShowMoreText
