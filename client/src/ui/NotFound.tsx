@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import styles from "./css/NotFound.module.css";
 
 export default function NotFound() {
   return (
-    <div className='col-12'>
+    <div className="col-12">
       <div>
         <div className={styles.notFoundMarginTop}></div>
       </div>
