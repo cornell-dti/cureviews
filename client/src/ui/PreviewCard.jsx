@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import "./css/PreviewCard.css";
 import Gauge from "./Gauge.tsx";
-import Review from "./Review.jsx";
+import Review from "./Review";
 import Form from "./Form.jsx";
 import { lastOfferedSems } from "common/CourseCard";
 
@@ -167,9 +167,8 @@ export default class PreviewCard extends Component {
                     ? "preview-class-link-scroll"
                     : "preview-class-link")
                 }
-                href={`/course/${theClass.classSub.toUpperCase()}/${
-                  theClass.classNum
-                }`}
+                href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
+                  }`}
               >
                 {theClass.classTitle}
               </a>
@@ -242,9 +241,10 @@ export default class PreviewCard extends Component {
               {!this.props.mobile && this.state.numReviews !== 0 && (
                 <Review
                   key={this.state.topReview._id}
-                  info={this.state.topReview}
+                  review={this.state.topReview}
+                  reportHandler={this.reportHandler}
                   isPreview={true}
-                  likes={this.state.topReviewLikes}
+                  isProfile={false}
                 />
               )}
 
@@ -253,9 +253,8 @@ export default class PreviewCard extends Component {
                 this.state.numReviews > 1 && (
                   <a
                     className="col-lg-12 preview-review-button"
-                    href={`/course/${theClass.classSub.toUpperCase()}/${
-                      theClass.classNum
-                    }`}
+                    href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
+                      }`}
                   >
                     See {this.state.numReviews} more review
                     {this.state.numReviews > 1 ? "s" : ""}
@@ -280,9 +279,8 @@ export default class PreviewCard extends Component {
                   this.state.numReviews === 1) && (
                   <a
                     className="col-lg-12 preview-review-button"
-                    href={`/course/${theClass.classSub.toUpperCase()}/${
-                      theClass.classNum
-                    }`}
+                    href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
+                      }`}
                   >
                     Leave a Review
                   </a>

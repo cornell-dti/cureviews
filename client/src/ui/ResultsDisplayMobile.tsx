@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PreviewCard from './PreviewCard';
-import CourseReviews from './CourseReviews';
 import Form from './Form.jsx';
 import { Link } from 'react-router-dom';
 import { Session } from '../session-store';
@@ -60,7 +59,6 @@ export default class ResultsDisplayMobile extends Component<Props, State> {
             <PreviewCard course={this.props.card_course} mobile={true} transformGauges={this.props.transformGauges} />
           </div>
 
-          <CourseReviews courseId={this.props.card_course._id} onScroll={this.props.scrollReviews} transformGauges={this.props.transformGauges} />
           <div className={"button-position-search-results " + (this.props.transformGauges ? "" : "d-none d-lg-block")}>
             <button type="submit" className="btn btn-primary review-bottom-button" onClick={this.setShowMobileReviewForm}>Leave A Review</button>
           </div>
