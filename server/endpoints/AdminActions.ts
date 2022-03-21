@@ -272,7 +272,6 @@ export const reportReview: Endpoint<ReviewRequest> = {
 
         return { resCode: res.resCode };
       }
-      console.log("hi");
       return { resCode: 0 };
     } catch (error) {
       // eslint-disable-next-line no-console
