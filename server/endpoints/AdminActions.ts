@@ -226,6 +226,7 @@ export const reportReview: Endpoint<ReviewRequest> = {
   callback: async (ctx: Context, request: ReviewRequest) => {
     try {
       const student = await Students.findOne({ netId: request.netId });
+<<<<<<< HEAD
       if (student !== null) {
         const { lastReported, numReported } = student;
 
@@ -274,6 +275,39 @@ export const reportReview: Endpoint<ReviewRequest> = {
         return { resCode: res.resCode };
       }
       return { resCode: 0 };
+=======
+      const { lastReported, numReported } = student;
+
+      const lastReportedTime = lastReported.getTime();
+      const oneDay = new Date().getTime() + 1 * 24 * 60 * 60 * 1000;
+
+      if (numReported >= 3 && lastReportedTime < oneDay) {
+        return {
+          resCode: 0,
+          message: "Reported too many reviews. Try again in 24 hours.",
+        };
+      }
+
+      await Reviews.updateOne(
+        { _id: request.id },
+        { $set: { visible: 0, reported: 1 } },
+      );
+      const course = (await Reviews.findOne({ _id: request.id })).class;
+      const res = await updateCourseMetrics(course);
+
+      if (numReported === 0) {
+        const newDay = new Date();
+        await Students.updateOne(
+          { netId: request.netId },
+          {
+            lastReported: newDay,
+            numReported: numReported + 1,
+          },
+        );
+      }
+
+      return { resCode: res.resCode };
+>>>>>>> a4edef8a731ed6c03d4832abf8ee566241b73a1c
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'reportReview' method");

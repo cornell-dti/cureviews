@@ -113,10 +113,11 @@ describe("tests", () => {
   });
 
   it("makeReviewVisible-works", async () = {
-    const res = await axios.post(>
+    const res = await axios.post(
       `http://localhost:${testingPort}/v2/makeReviewVisible`,
       { review: sampleReview, token: "non-empty" },
     );
+
     expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findOne({ _id: newCourse1._id }).exec();
     console.log(course);

@@ -5,10 +5,18 @@ import React from "react";
 import { render } from "react-dom";
 
 import Login from "./ui/Login";
+<<<<<<< HEAD
 import ClassView from "./ui/ClassViewNew";
 import App from "./ui/App";
 import AuthRedirect from "./ui/AuthRedirect";
 import Profile from "./ui/Profile";
+=======
+import ClassView from "./ui/ClassView.jsx";
+import App from "./ui/App";
+import AuthRedirect from "./ui/AuthRedirect";
+import Profile from "./ui/Profile";
+import WatchedClasses from "./ui/WatchedClasses";
+>>>>>>> 5f88f9d3e085ae593c99aad61425816a02bbbc9a
 
 import { BrowserRouter, Route } from "react-router-dom";
 import { Results } from "./ui/Results";
@@ -23,24 +31,31 @@ application component the user should see based on the URL they enter.
 */
 render(
   <BrowserRouter>
-    <div className="container-fluid full-height">
-      <Route name="app" exact path="/" component={App} />
-      <Route name="admin" exact path="/admin" component={Login} />
+    <div className='container-fluid full-height noLeftRightPadding'>
+      <Route name='app' exact path='/' component={App} />
+      <Route name='admin' exact path='/admin' component={Login} />
       <Route
-        name="permalink"
+        name='permalink'
         exact
-        path="/course/:subject/:number"
+        path='/course/:subject/:number'
         component={ClassView}
       />
-      <Route name="auth" exact path="/auth" component={AuthRedirect} />
+      <Route name='auth' exact path='/auth' component={AuthRedirect} />
       <Route
-        name="permalink"
+        name='permalink'
         exact
-        path="/results/:type/:input"
+        path='/results/:type/:input'
         component={Results}
       />
-      <Route name="profile" exact path="/profile" component={Profile} />
+      {/* implement private route */}
+      <Route name='profile' exact path='/profile' component={Profile} />
+      <Route
+        name='watchedClasses'
+        exact
+        path='/classes'
+        component={WatchedClasses}
+      />
     </div>
   </BrowserRouter>,
-  document.getElementById("render-target")
+  document.getElementById("render-target"),
 );

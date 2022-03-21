@@ -36,6 +36,7 @@ interface ClassByInfoQuery {
 }
 
 export interface ReviewRequest {
+  netId: string;
   id: string;
   token: string;
   netId: string;
@@ -166,6 +167,18 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
 
         await insertUserCallback({ googleObject: ticket });
 
+<<<<<<< HEAD
+        if (includesProfanity(review.text)) {
+          // eslint-disable-next-line no-console
+          console.log("profanity detected in review.");
+          return {
+            resCode: 0,
+            error: "Your review contains profanity, please edit your response.",
+          };
+        }
+
+=======
+>>>>>>> 0eb1bd325aecc0bbdde29f53db1587345f06363a
         const netId = ticket.email.replace("@cornell.edu", "");
         const student = await Students.findOne({ netId });
 
