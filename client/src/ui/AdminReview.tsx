@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import "./css/Review.css";
+import "./css/AdminReview.css";
 
 type Props = {
   info: any;

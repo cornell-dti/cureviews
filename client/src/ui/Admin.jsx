@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import UpdateReview from './UpdateReview.tsx';
+import UpdateReview from './AdminReview.tsx';
 import "./css/Admin.css";
 import { Session } from "../session-store";
 import Statistics from './Statistics.tsx';

@@ -1770,6 +1770,13 @@
     "@types/react-dom" "*"
     "@types/react-transition-group" "*"
 
+"@types/react-show-more-text@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/react-show-more-text/-/react-show-more-text-1.4.2.tgz#0a704838ee750b749592ce04bd1d365de7da4846"
+  integrity sha512-CinPPhpxYFVKx4V0yqQGK0HUbHdlvLH8fQ/Ccp5XNKuQyIyc6bDMQz5b8bIBqmhMcCvn6AvSz3MmPpwNVCjmHQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@*":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.1.tgz#e1a3cb278df7f47f17b5082b1b3da17170bd44b1"
@@ -4138,8 +4145,6 @@ dom-converter@^0.2:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/dom-converter/-/dom-converter-0.2.0.tgz#6721a9daee2e293682955b6afe416771627bb768"
   integrity sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==
-  dependencies:
-    utila "~0.4"
 
 dom-helpers@^5.0.1:
   version "5.1.4"
