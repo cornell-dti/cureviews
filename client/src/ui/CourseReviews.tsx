@@ -19,11 +19,11 @@ export default function CourseReviews({
     <div>
       {reviews.map((review) => (
         <ReviewCard
-          reviewId={review._id}
+          key={review._id}
           review={review}
           reportHandler={reportReview}
           isPreview={false}
-          profilePage={false}
+          isProfile={false}
         />
       ))}
     </div>
