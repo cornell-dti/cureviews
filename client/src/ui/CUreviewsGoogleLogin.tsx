@@ -52,8 +52,8 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
     const token = response.tokenId;
     if (token) {
       // @ts-ignore
-      if (this.saveToken(token) === 1) {
-        console.log(Session.get("token"));
+      if (this.saveToken(token) === 0) {
+        console.log(Session.getToken());
         // console.log("Succesfully saved token to session");
       } else {
         console.log("Error saving token");

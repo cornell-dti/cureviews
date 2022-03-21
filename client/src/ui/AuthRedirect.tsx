@@ -29,11 +29,11 @@ export default class AuthRedirect extends Component<Props> {
   //Using meteor session to save the token to Session
   saveToken(token: string) {
     Session.setPersistent({ "token": token });
-    if (Session.get("token") !== token) {
+    if (Session.getToken() !== token) {
       console.log("Error saving token to session")
-      return 0;
+      return 1;
     }
-    return 1;
+    return 0;
   }
 
   render() {

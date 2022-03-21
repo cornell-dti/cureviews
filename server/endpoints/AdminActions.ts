@@ -150,7 +150,7 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
       console.log("Error: at 'setProfessors' ");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return { resCode: 1 };
     }
   },
 };

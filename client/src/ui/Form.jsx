@@ -245,7 +245,7 @@ export default class Form extends Component {
     // Call the API insert function
 
     axios.post("/v2/insertReview", {
-      token: Session.get("token"),
+      token: Session.getToken(),
       review: Session.get("review") !== "" ? Session.get("review") : this.state.review,
       classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId")
     }).then(response => {
@@ -381,7 +381,7 @@ export default class Form extends Component {
               <div className="col-md-12 col-sm-12 col-xs-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
-                      </div>
+                </div>
               </div>
             </div>
 
@@ -450,14 +450,14 @@ export default class Form extends Component {
               <p id="modal-text" className="center-block">
                 You’re almost there! - log in with cornell.edu to
                 verify you are a student.
-                </p>
+              </p>
               <p id="modal-text" className="center-block">
                 (Don’t worry, your identity will always be kept secret!)
-                </p>
+              </p>
               <p id="modal-footer" className="center-block">
                 You will be redirected to our login page.
                 Not seeing it? Click here.
-                </p>
+              </p>
               <CUreviewsGoogleLogin
                 executeLogin={this.state.visible}
                 waitTime={3000}
@@ -509,7 +509,7 @@ export default class Form extends Component {
               <div className="col-md-12 col-sm-12 col-xs-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
-                      </div>
+                </div>
               </div>
             </div>
 
@@ -580,14 +580,14 @@ export default class Form extends Component {
               <p id="modal-text" className="center-block">
                 You’re almost there! - log in with cornell.edu to
                 verify you are a student.
-                </p>
+              </p>
               <p id="modal-text" className="center-block">
                 (Don’t worry, your identity will always be kept secret!)
-                </p>
+              </p>
               <p id="modal-footer" className="center-block">
                 You will be redirected to our login page.
                 Not seeing it? Click here.
-                </p>
+              </p>
               <CUreviewsGoogleLogin
                 executeLogin={this.state.visible}
                 waitTime={3000}

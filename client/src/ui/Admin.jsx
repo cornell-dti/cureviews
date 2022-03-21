@@ -81,7 +81,7 @@ export class Admin extends Component {
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
-    axios.post("/v2/makeReviewVisible", { review: review, token: Session.get("token") })
+    axios.post("/v2/makeReviewVisible", { review: review, token: Session.getToken() })
       .then((response) => {
         const result = response.data.result;
         if (result.resCode === 1) {
@@ -94,7 +94,7 @@ export class Admin extends Component {
   // Call when user asks to remove a review. Accesses the Reviews database
   // and deletes the review with this id.
   removeReview(review, isUnapproved) {
-    axios.post("/v2/removeReview", { review: review, token: Session.get("token") })
+    axios.post("/v2/removeReview", { review: review, token: Session.getToken() })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -116,7 +116,7 @@ export class Admin extends Component {
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   unReportReview(review) {
-    axios.post("/v2/undoReportReview", { review: review, token: Session.get("token") })
+    axios.post("/v2/undoReportReview", { review: review, token: Session.getToken() })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -151,10 +151,10 @@ export class Admin extends Component {
     console.log("Updating professors");
     this.setState({ disableInit: true, loadingProfs: 1 });
 
-    axios.post("/v2/setProfessors", { token: Session.get("token") })
+    axios.post("/v2/setProfessors", { token: Session.getToken() })
       .then((response) => {
         const result = response.data.result.resCode;
-        if (result === 1) {
+        if (result === 0) {
           console.log("Updated the professors");
           this.setState({ disableInit: false, loadingProfs: 2 });
         } else {
@@ -167,7 +167,7 @@ export class Admin extends Component {
     console.log("Setting the professors to an empty array");
     this.setState({ disableInit: true, resettingProfs: 1 });
 
-    axios.post("/v2/resetProfessors", { token: Session.get("token") })
+    axios.post("/v2/resetProfessors", { token: Session.getToken() })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -342,7 +342,7 @@ export default () => {
   const [reviewsToApprove, setReviewsToApprove] = useState([]);
 
   useEffect(() => {
-    axios.post("/v2/fetchReviewableClasses", { token: Session.get("token") })
+    axios.post("/v2/fetchReviewableClasses", { token: Session.getToken() })
       .then((response) => {
         const result = response.data.result;
         if (result.resCode !== 0) {

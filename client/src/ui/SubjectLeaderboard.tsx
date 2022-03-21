@@ -19,7 +19,7 @@ export default class SubjectLeaderboard extends Component<{}, State> {
   componentDidMount() {
     // get the top subjects by number of reviews, using a Meteor function
     // defined in imports/api/classes
-    axios.post(`/v2/topSubjects`, { token: Session.get("token") }).then((res) => {
+    axios.post(`/v2/topSubjects`, { token: Session.getToken() }).then((res) => {
       let data = res.data.result;
       this.setState({ topSubjects: data });
     }).catch((err) => {

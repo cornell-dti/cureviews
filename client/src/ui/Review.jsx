@@ -49,9 +49,8 @@ export default class Review extends Component {
   // in the current state. If so, the number of likes decreases by 1 as if removing a like.
   // Otherwise, the number of likes increases by 1.
   increment(review) {
-    console.log("here");
     if (this.state.liked === false) {
-      axios.post("/v2/incrementLike", { id: review._id, token: Session.get("token") }).then(response => {
+      axios.post("/v2/incrementLike", { id: review._id, token: Session.getToken() }).then(response => {
         const res = response.data.result;
         if (res.resCode === 1) {
           if (!this.state.numLikes) {
@@ -71,7 +70,7 @@ export default class Review extends Component {
       });
     }
     else {
-      axios.post("/v2/decrementLike", { id: review._id, token: Session.get("token") }).then(response => {
+      axios.post("/v2/decrementLike", { id: review._id, token: Session.getToken() }).then(response => {
         const res = response.data.result;
         if (res.resCode === 1) {
           this.setState({
@@ -196,7 +195,7 @@ export default class Review extends Component {
               {review.isCovid &&
                 <div className="row covidTag">
                   <span role="img" aria-label="alert"> ⚠️</span>This student's experience was affected by COVID-19
-              </div>}
+                </div>}
               <div className="row">
 
                 <p className="review-date">{this.reviewToDate(review)}</p>
@@ -211,7 +210,7 @@ export default class Review extends Component {
                       alt={this.state.liked ? "Liked" : "Not Liked Yet"}
                     />
                     <p className="upvote-text">Helpful
-                        ({this.state.numLikes ? this.state.numLikes : 0})</p>
+                      ({this.state.numLikes ? this.state.numLikes : 0})</p>
                   </button>
                 }
               </div>
