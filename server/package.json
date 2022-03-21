@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.6",
+    "@types/nodemailer": "^6.4.4",
     "@types/shortid": "^0.0.29",
     "axios": "^0.21.1",
     "common": "0.0.1",
