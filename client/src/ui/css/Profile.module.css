@@ -34,7 +34,8 @@
 
 .profileContainer {
   width: 360px;
-  height: 742px;
+  height: 100%;
+  padding-bottom: 25px;
   left: 87px;
   background: #ffffff;
   border-radius: 10px;

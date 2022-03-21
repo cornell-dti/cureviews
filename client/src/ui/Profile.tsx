@@ -90,11 +90,6 @@ export default function Profile({
                   value="7"
                   image="/helpful_review_icon.svg"
                 ></ProfileCard>
-                <ProfileCard
-                  title="Views Total"
-                  value="12"
-                  image="/views_icon.svg"
-                ></ProfileCard>
               </div>
               <button className={styles.profileSignOutButton}>
                 <p className={styles.profileSignOutText}>Signout</p>
