@@ -228,13 +228,10 @@ export const reportReview: Endpoint<ReviewRequest> = {
       const student = await Students.findOne({ netId: request.netId });
       if (student !== null) {
         const { lastReported1, numReported } = student;
-        console.log(student);
-        console.log(lastReported1);
         const lastReportedTime = lastReported1.getTime();
         const oneDay = lastReportedTime + 1 * 24 * 60 * 60 * 1000;
 
-        if (numReported >= 3 && lastReportedTime > oneDay) {
-          console.log("hello");
+        if (numReported >= 3 && new Date().getTime() <= oneDay) {
           return {
             resCode: 0,
             message: "Reported too many reviews. Try again in 24 hours.",
