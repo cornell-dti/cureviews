@@ -124,10 +124,46 @@ beforeAll(async () => {
   await testServer.setUpDB(testReviews, testUsers, testClasses, undefined, undefined);
 });
 
-const testTotalLikes = 7;
+const testGetTotalLikes = 7;
+const testGetReviews1 = [{
+  _id: "4Y8k7DnX3PLNdwRPr",
+  text: "review text for cs 2110",
+  user: "User1234",
+  difficulty: 1,
+  class: "oH37S3mJ4eAsktypy",
+  date: new Date(),
+  visible: 1,
+  reported: 0,
+  likes: 2,
+  likedBy: [],
+},
+{
+  _id: "4Y8k7DnX3PLNdwRPq",
+  text: "review text for cs 2110 number 2",
+  user: "User1234",
+  difficulty: 1,
+  class: "oH37S3mJ4eAsktypy",
+  date: new Date(),
+  visible: 1,
+  reported: 0,
+  likes: 0,
+  likedBy: [],
+},
+{
+  _id: "3yMwTbiyd4MZLPQJF",
+  text: "review text for cs 3110",
+  user: "User1234",
+  difficulty: 3,
+  class: "cJSmM8bnwm2QFnmAn",
+  date: new Date(),
+  visible: 1,
+  reported: 0,
+  likes: 5,
+  likedBy: [],
+}];
 
 const validTokenPayload: TokenPayload = {
-  email: "dti1@cornell.edu",
+  email: 'dti1@cornell.edu',
   iss: undefined,
   sub: undefined,
   iat: undefined,
@@ -172,7 +208,13 @@ describe("tests", () => {
   it('getTotalLikesByStudentId - counting the number of likes a student got on their reviews', async () => {
     const res = await axios.post(`http://localhost:${testingPort}/v2/getTotalLikesByStudentId`,
       { netId: "cv4620" });
-    expect(res.data.result.message).toBe(testTotalLikes);
+    expect(res.data.result.message).toBe(testGetTotalLikes);
+    expect(res.data.result.code).toBe(200);
+  });
+  it('getReviewsByStudentId - returning a review object list that a student wrote', async () => {
+    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsByStudentId`,
+      { netId: "cv4620" });
+    expect(res.data.result.message.length).toBe(testGetReviews1.length);
     expect(res.data.result.code).toBe(200);
   });
 });
