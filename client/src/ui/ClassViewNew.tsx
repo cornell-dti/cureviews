@@ -87,6 +87,31 @@ export default function ClassView() {
    * auth)
    */
   useEffect(() => {
+    /**
+     * Submit review and clear session storage
+     */
+    async function submitReview(review: NewReview, classId: string) {
+      try {
+        const response = await axios.post("/v2/insertReview", {
+          token: Session.get("token"),
+          review: review,
+          classId: classId,
+        });
+
+        if (response.data.result.resCode === 1) {
+          clearSessionReview();
+          setIsReviewModalOpen(false);
+          toast.success(
+            "Thanks for reviewing! New reviews are updated every 24 hours."
+          );
+        } else {
+          toast.error("An error occurred, please try again.");
+        }
+      } catch (e) {
+        toast.error("An error occurred, please try again.");
+      }
+    }
+
     const sessionReview = Session.get("review");
     const sessionCourseId = Session.get("courseId");
     if (
@@ -162,31 +187,6 @@ export default function ClassView() {
     Session.setPersistent({ review_major: "" });
     Session.setPersistent({ review_num: "" });
     Session.setPersistent({ courseId: "" });
-  }
-
-  /**
-   * Submit review and clear session storage
-   */
-  async function submitReview(review: NewReview, classId: string) {
-    try {
-      const response = await axios.post("/v2/insertReview", {
-        token: Session.get("token"),
-        review: review,
-        classId: classId,
-      });
-
-      if (response.data.result.resCode === 1) {
-        clearSessionReview();
-        setIsReviewModalOpen(false);
-        toast.success(
-          "Thanks for reviewing! New reviews are updated every 24 hours."
-        );
-      } else {
-        toast.error("An error occurred, please try again.");
-      }
-    } catch (e) {
-      toast.error("An error occurred, please try again.");
-    }
   }
 
   /**
