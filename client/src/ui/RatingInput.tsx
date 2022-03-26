@@ -12,6 +12,11 @@ type RatingInputProps = {
   className?: string;
 };
 
+/**
+ * This component allows users to input ratings up to `maxRating` using their
+ * pointer or arrow keys. It is controlled with `value` and `setValue` and
+ * renders the value with "pills."
+ */
 export default function RatingInput({
   name,
   label,

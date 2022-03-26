@@ -20,6 +20,10 @@ export type NewReview = {
   isCovid: boolean;
 };
 
+/**
+ * This component contains the form UI, state, and validation to write a new
+ * review.
+ */
 export default function ReviewForm({
   actionButtonLabel,
   onSubmitReview,
