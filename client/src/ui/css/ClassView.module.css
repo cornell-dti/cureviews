@@ -68,7 +68,7 @@
 
 .courseSubtitle {
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: var(--regular-weight);
   letter-spacing: -0.13px;
   color: #a2a1a1;
@@ -192,6 +192,10 @@
 }
 
 @media (min-width: 768px) {
+  .courseSubtitle {
+    font-size: 24px;
+  }
+
   .authModal {
     margin: auto;
     height: 500px;
