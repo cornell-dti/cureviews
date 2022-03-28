@@ -64,7 +64,9 @@ export default class Form extends Component {
       review: {},
       courseId: '',
       isCovid: false,
-      showCovid: true
+      showCovid: true,
+      selectedGrade: '',
+      selectedMajors: []
     };
 
     for (let i = 1; i <= 5; i++) {
@@ -107,6 +109,25 @@ export default class Form extends Component {
     }
 
     this.setState({ selectedProfessors: selectedProfessors });
+  }
+
+   // Save the selected grade in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleGradeChange(grade) {
+    if (grade === null) {
+      grade = ""
+    }
+
+    this.setState({ selectedGrade: grade });
+  }
+
+  // Save the current majors selected string for majors in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleMajorChange(majors){
+    if (majors === null) {
+      majors = []
+    }
+    this.setState({ selectedMajors: majors });
   }
 
   //Called when mouse  enters a metric box to chane highlighting
@@ -208,11 +229,13 @@ export default class Form extends Component {
     const diff = this.state.diff;
     const work = this.state.workload;
     const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0
-      this.state.selectedProfessors.map(professor => { return professor.label }) //set to this
+      this.state.selectedProfessors.map(professor => professor.label) //set to this //set to this
       : //else
       [] //set to this
     const isCovid = this.state.isCovid;
-
+    const grade = this.state.selectedGrade.length !== 0 ? //If length is not 0
+      this.state.selectedGrade.label : ''   
+    const major =  this.state.selectedMajors.map((major) => major.label)
     if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
@@ -221,7 +244,9 @@ export default class Form extends Component {
         difficulty: diff,
         workload: work,
         professors: prof,
-        isCovid: isCovid
+        isCovid: isCovid,
+        selectedGrade: grade,
+        selectedMajors: major
       };
       this.setState({ "review": newReview })
 
@@ -325,6 +350,96 @@ export default class Form extends Component {
       return profOptions
     }
   }
+
+  getGradeOptions() {
+    this.gradeReceived = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
+    return this.gradeReceived.map((grade) =>
+      ({
+        "value": grade,
+        "label": grade
+      }))
+  }
+
+getMajorOptions() {
+    this.majorsOptions = ["Computer science",
+    "Biology/biological sciences",
+    "Labor and industrial relations",
+    "Hotel/motel administration/management",
+    "Agricultural economics",
+    "Biological and biomedical sciences",
+    "Econometrics and quantitative economics",
+    "Information technology",
+    "Mechanical engineering",
+    "Political science and government",
+    "Animal sciences",
+    "Electrical and electronics engineering",
+    "Mathematics",
+    "Communication",
+    "Natural resources/conservation",
+    "Operations research",
+    "Psychology",
+    "Agriculture",
+    "Architectural and building sciences/technology",
+    "Human development and family studies",
+    "Sociology",
+    "Chemical engineering",
+    "Public policy analysis",
+    "Chemistry",
+    "Physics",
+    "History",
+    "Bioengineering and biomedical engineering",
+    "English language and literature",
+    "Nutrition sciences",
+    "Statistics",
+    "International public health/international health",
+    "Civil engineering",
+    "Biometry/biometrics",
+    "City/urban, community and regional planning",
+    "Agricultural engineering",
+    "Plant sciences",
+    "Food science",
+    "Engineering physics/applied physics",
+    "Fine/studio arts",
+    "Environmental/environmental health engineering",
+    "Philosophy",
+    "Materials engineering",
+    "International agriculture",
+    "American/united states studies/civilization",
+    "Apparel and textiles",
+    "Asian studies/civilization",
+    "Spanish language and literature",
+    "Computer and information sciences",
+    "Linguistics",
+    "Near and middle eastern studies",
+    "General studies",
+    "Landscape architecture",
+    "Geological and earth sciences/geosciences",
+    "Anthropology",
+    "Classics and classical languages, literatures, and linguistics",
+    "Visual and performing arts",
+    "Comparative literature",
+    "French language and literature",
+    "Engineering",
+    "Entomology",
+    "Music",
+    "Italian language and literature",
+    "Astronomy",
+    "Archeology",
+    "Science, technology and society",
+    "Art history, criticism and conservation",
+    "Atmospheric sciences and meteorology",
+    "Gay/lesbian studies",
+    "African-american/black studies",
+    "Textile science",
+    "Religion/religious studies",
+    "German studies",
+    "Economics"];
+    return this.majorsOptions.map((major) =>
+      ({
+        "value": major,
+        "label": major
+      }))
+}
 
   show() {
     this.setState({ visible: true });
