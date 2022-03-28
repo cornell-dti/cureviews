@@ -670,6 +670,42 @@ getMajorOptions() {
                 <div className="metricDescR">Lots of work</div>
               </div>
             </div>
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">Grade Received</div>
+                <div className="form-label form-optional-label">(optional)</div>
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectedGrade}
+                  onChange={(grade) => this.handleGradeChange(grade)}
+                  isSingle
+                  options={this.getGradeOptions()}
+                  placeholder="Select"
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">What's your major?</div>
+                <div className="form-label form-optional-label">(optional)</div>
+
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectedMajors}
+                  onChange={(majors) => this.handleMajorChange(majors)}
+                  isMulti
+                  options={this.getMajorOptions()}
+                  placeholder="Select"
+                />
+              </div>
+            </div>
 
             {this.state.showCovid && <label className="covidCheckboxContainer">
               <span className="covidCheckboxLabel">Your experience was affected by COVID-19</span>
