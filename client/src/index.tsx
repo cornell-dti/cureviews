@@ -3,6 +3,7 @@ import "./index.css";
 
 import React from "react";
 import { render } from "react-dom";
+import Modal from "react-modal";
 
 import Login from "./ui/Login";
 import ClassView from "./ui/ClassViewNew";
@@ -14,6 +15,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
+Modal.setAppElement("#render-target");
 
 /*
 Generates appliation component sent to the client side entry point (main.html)

@@ -1,0 +1,59 @@
+@import "../../index.css";
+
+.reviewHeader {
+  margin-top: 0;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 24px;
+  color: #0076ff;
+}
+
+.selectProfessorLabel {
+  margin-top: 8px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  font-weight: var(--regular-weight);
+}
+
+.ratingInput {
+  margin-top: 16px;
+}
+
+.reviewComment {
+  width: 100%;
+  margin-top: 8px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  font-weight: var(--regular-weight);
+}
+
+.errorText {
+  color: #ff0000;
+  margin-top: 4px;
+}
+
+.actionButton {
+  background-color: #0076ff;
+  color: #ffffff !important;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.actionButton:hover {
+  background-color: #0076ff;
+  color: #ffffff !important;
+}
+
+.covidCheckboxLabel {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.covidCheckboxLabelText {
+  margin-left: 10px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  font-weight: var(--regular-weight);
+}
