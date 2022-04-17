@@ -11,8 +11,6 @@ import styles from "./css/Profile.module.css";
 import CourseReviews from "./CourseReviews";
 import axios from "axios";
 
-type netId = string;
-
 type ProfileProps = {
   imageSrc: any;
   netId: string;
@@ -51,8 +49,6 @@ export default function Profile({
       setLoading(false);
     });
   }, [netId]);
-
-  console.log(pendingReviews.length);
 
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
@@ -118,24 +114,22 @@ export default function Profile({
               </div>
             </div>
             {reviews.length === 0 && (
-              <>
-                <div className={styles.noReviewsContainer}>
-                  <div className={styles.noReviewsTitle}>
-                    Oops! Seems like you haven’t written any reviews yet.
-                  </div>
-                  <div className={styles.noReviewsSubtitle}>
-                    Add an anonymous review and get notified when a your review
-                    is approved.
-                  </div>
-                  <div className={styles.noReviewsImage}>
-                    <img
-                      src="/noReviews.svg"
-                      alt="No Reviews"
-                      height="100%"
-                    ></img>
-                  </div>
+              <div className={styles.noReviewsContainer}>
+                <div className={styles.noReviewsTitle}>
+                  Oops! Seems like you haven’t written any reviews yet.
                 </div>
-              </>
+                <div className={styles.noReviewsSubtitle}>
+                  Add an anonymous review and get notified when a your review is
+                  approved.
+                </div>
+                <div className={styles.noReviewsImage}>
+                  <img
+                    src="/noReviews.svg"
+                    alt="No Reviews"
+                    height="100%"
+                  ></img>
+                </div>
+              </div>
             )}
             {reviews.length > 0 && pendingReviews.length > 0 && (
               <>
