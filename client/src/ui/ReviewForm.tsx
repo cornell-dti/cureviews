@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import RatingInput from "./RatingInput";
 import styles from "./css/ReviewForm.module.css";
 
@@ -72,7 +72,7 @@ export default function ReviewForm({
         >
           Professor
         </label>
-        <Select
+        <CreatableSelect
           value={toSelectOptions(selectedProfessors)}
           onChange={(professors: any) => {
             setIsSelectedProfessorsInvalid(false);
