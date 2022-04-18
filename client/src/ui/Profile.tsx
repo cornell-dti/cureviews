@@ -16,7 +16,6 @@ export default function Profile({
   const [verifiedEmail, setVerifiedEmail] = useState("");
   const [reviewsTotal, setReviewsTotal] = useState("");
   const [reviewsHelpful, setReviewsHelpful] = useState("");
-  const [viewsTotal, setViewsTotal] = useState("");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
@@ -53,8 +52,6 @@ export default function Profile({
     }
   }
 
-  async function getViewsTotal() {}
-
   getVerifiedEmail();
   getReviewsTotal();
   getReviewsHelpful();
@@ -77,11 +74,6 @@ export default function Profile({
             title="People found your reviews helpful"
             value={reviewsHelpful}
             image="/helpful_review_icon.svg"
-          ></ProfileCard>
-          <ProfileCard
-            title="Views Total"
-            value="12"
-            image="/views_icon.svg"
           ></ProfileCard>
         </div>
         <button className={styles.profileSignOutButton}>
