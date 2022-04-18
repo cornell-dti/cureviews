@@ -9,6 +9,7 @@ type ReviewFormProps = {
   value?: NewReview;
   isReviewCommentVisible?: boolean;
   professors?: string[];
+  majors?: string[];
 };
 
 export type NewReview = {
@@ -18,6 +19,8 @@ export type NewReview = {
   workload: number;
   professors: string[];
   isCovid: boolean;
+  grade: string;
+  major: string[];
 };
 
 /**
@@ -44,6 +47,10 @@ export default function ReviewForm({
   const [reviewText, setReviewText] = useState(value?.text || "");
   const [isReviewTextInvalid, setIsReviewTextInvalid] = useState(false);
   const [isCovid, setIsCovid] = useState(value?.isCovid || false);
+  const [selectedGrade, setGradeSelected] = useState(value?.grade || "");
+  const [selectedMajors, setMajorSelected] =useState<string[]>(
+    value?.major || []
+  );
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || [];
@@ -121,6 +128,116 @@ export default function ReviewForm({
           maxLabel="Lots of work"
         />
       </div>
+      <div>
+        <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          Grade Received
+          (optional)
+        </label>
+        <Select
+          value={{value: selectedGrade, label: selectedGrade}}
+          onChange={(grade: any) => {
+            setGradeSelected(grade.value)
+            ;
+          }}
+          isSingle
+          options={toSelectOptions(["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"])}
+          placeholder="Select Grade"
+        />
+      </div>
+      <div>
+        <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          What's your major? (optional)
+        </label>
+        <Select
+          value={toSelectOptions(selectedMajors)}
+          onChange={(majors: any) => {
+            setMajorSelected(
+              majors?.map(({ value, label }: any) => value)
+            );
+          }}
+          isMulti
+          options={toSelectOptions(["Computer science",
+          "Biology/biological sciences",
+          "Labor and industrial relations",
+          "Hotel/motel administration/management",
+          "Agricultural economics",
+          "Biological and biomedical sciences",
+          "Econometrics and quantitative economics",
+          "Information technology",
+          "Mechanical engineering",
+          "Political science and government",
+          "Animal sciences",
+          "Electrical and electronics engineering",
+          "Mathematics",
+          "Communication",
+          "Natural resources/conservation",
+          "Operations research",
+          "Psychology",
+          "Agriculture",
+          "Architectural and building sciences/technology",
+          "Human development and family studies",
+          "Sociology",
+          "Chemical engineering",
+          "Public policy analysis",
+          "Chemistry",
+          "Physics",
+          "History",
+          "Bioengineering and biomedical engineering",
+          "English language and literature",
+          "Nutrition sciences",
+          "Statistics",
+          "International public health/international health",
+          "Civil engineering",
+          "Biometry/biometrics",
+          "City/urban, community and regional planning",
+          "Agricultural engineering",
+          "Plant sciences",
+          "Food science",
+          "Engineering physics/applied physics",
+          "Fine/studio arts",
+          "Environmental/environmental health engineering",
+          "Philosophy",
+          "Materials engineering",
+          "International agriculture",
+          "American/united states studies/civilization",
+          "Apparel and textiles",
+          "Asian studies/civilization",
+          "Spanish language and literature",
+          "Computer and information sciences",
+          "Linguistics",
+          "Near and middle eastern studies",
+          "General studies",
+          "Landscape architecture",
+          "Geological and earth sciences/geosciences",
+          "Anthropology",
+          "Classics and classical languages, literatures, and linguistics",
+          "Visual and performing arts",
+          "Comparative literature",
+          "French language and literature",
+          "Engineering",
+          "Entomology",
+          "Music",
+          "Italian language and literature",
+          "Astronomy",
+          "Archeology",
+          "Science, technology and society",
+          "Art history, criticism and conservation",
+          "Atmospheric sciences and meteorology",
+          "Gay/lesbian studies",
+          "African-american/black studies",
+          "Textile science",
+          "Religion/religious studies",
+          "German studies",
+          "Economics"])}
+          placeholder="Select Major(s)"
+        />
+      </div>
       {isReviewCommentVisible && (
         <div>
           <label className={styles.reviewComment}>
@@ -163,6 +280,8 @@ export default function ReviewForm({
               professors: selectedProfessors,
               text: reviewText,
               isCovid,
+              grade: selectedGrade,
+              major: selectedMajors,
             });
           }
         }}

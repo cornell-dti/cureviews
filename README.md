@@ -100,7 +100,7 @@ _Screenshots coming soon_
 ### 2021 - 2022
 
 - **Akash Aryal** - Technical Product Manager
-- **Andrew Gao** - Developer
+- **Andrew Gao** - Develop  er
 - **Julie Jeong** - Developer
 - **Jack Farley** - Developer
 - **Michelle Li** - Developer
