@@ -5,7 +5,7 @@ export const fetchMailingList = {
     const mailingList = await Students.find({ mailingList: true }).exec();
     const mailingListStr = "";
     const leftClose = "\"";
-    const rightClose = "\", "
+    const rightClose = "@cornell.edu\", "
 
     mailingList.forEach(function (student) {
       mailingListStr.concat(leftClose);
