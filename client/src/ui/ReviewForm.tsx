@@ -9,7 +9,6 @@ type ReviewFormProps = {
   value?: NewReview;
   isReviewCommentVisible?: boolean;
   professors?: string[];
-  majors?: string[];
 };
 
 export type NewReview = {
@@ -281,7 +280,7 @@ export default function ReviewForm({
               text: reviewText,
               isCovid,
               grade: selectedGrade,
-              major: selectedMajors,
+              major: selectedMajors
             });
           }
         }}
