@@ -28,7 +28,9 @@ export default class Login extends Component<{}, { message: string; executeLogin
 
   componentWillMount() {
     // The following is used to show admin panel if a user's token is found to be an admin
-    if (Session.get("token") && Session.get("token") !== "") {
+    const token = Session.get("token");
+    const exp = JSON.parse(atob(token.split(".")[1])).exp;
+    if (token && token !== "" && exp < Math.floor(Date.now() / 1000)) {
       axios.post(`/v2/tokenIsAdmin`, { token: Session.get("token") })
         .then((res) => {
           const result = res.data.result;

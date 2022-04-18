@@ -159,9 +159,9 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
         // This has to be an atomic upset. Otherwise, this causes some race condition badness
         const professorIfExists = await Professors.findOneAndUpdate({ fullName: `${p.firstName} ${p.lastName}` },
           { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } }, {
-            upsert: true,
-            new: true,
-          });
+          upsert: true,
+          new: true,
+        });
 
         return professorIfExists.fullName;
       })).catch((err) => {
@@ -412,7 +412,7 @@ export async function updateProfessors(semesters: any) {
                 const { classSections } = courses[course].enrollGroups[0]; // This returns an array
                 for (const section in classSections) {
                   if (classSections[section].ssrComponent == 'LEC'
-                                      || classSections[section].ssrComponent == 'SEM') {
+                    || classSections[section].ssrComponent == 'SEM') {
                     // Checks to see if class has scheduled meetings before checking them
                     if (classSections[section].meetings.length > 0) {
                       const professors = classSections[section].meetings[0].instructors;
@@ -447,7 +447,7 @@ export async function updateProfessors(semesters: any) {
               console.log(`Error on course ${courses[course].subject} ${courses[course].catalogNbr}`);
               console.log(error);
 
-              return 0;
+              return 1;
             }
           }
         }
@@ -455,7 +455,7 @@ export async function updateProfessors(semesters: any) {
     }
   }
   console.log('Finished updateProfessors');
-  return 1;
+  return 0;
 }
 
 export async function resetProfessorArray(semesters: any) {
