@@ -53,6 +53,7 @@ const StudentSchema = new Schema<StudentDocument>({
   privilege: { type: String }, // user privilege level
   reviews: { type: [String] }, // the reviews that this user has posted.
   likedReviews: { type: [String] },
+  mailingList: { type: Boolean },
 });
 export const Students = mongoose.model<StudentDocument>("students", StudentSchema);
 

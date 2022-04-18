@@ -5,6 +5,7 @@ import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCours
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
+import { fetchMailingList } from "./endpoints/Email";
 
 export interface Context {
   ip: string;
@@ -53,6 +54,7 @@ export function configure(app: express.Application) {
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
   register(app, "incrementLike", incrementLike);
   register(app, "decrementLike", decrementLike);
+  register(app, "fetchMailingList", fetchMailingList);
 }
 
 function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
