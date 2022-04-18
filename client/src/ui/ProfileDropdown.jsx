@@ -38,9 +38,6 @@ export default function ProfileDropdown() {
           <a href='/profile' className={styles.profileMenuLink}>
             My Reviews
           </a>
-          <a href='/classes' className={styles.profileMenuLink}>
-            Watched Classes
-          </a>
           <button className={styles.profileMenuSignOutButton}>Sign Out</button>
         </div>
       ) : (
