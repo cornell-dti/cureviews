@@ -1,0 +1,21 @@
+.logo {
+  margin: 50px auto 0;
+  width: 100px;
+}
+
+.title {
+  width: 100%;
+  font-size: 22px;
+  width: 100%;
+  color: #4a90e2;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.text {
+  width: 100%;
+  text-align: center;
+  font-size: 17px;
+  padding: 0 20px;
+  margin-top: 20px;
+}
