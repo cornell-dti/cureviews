@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import RatingInput from "./RatingInput";
 import styles from "./css/ReviewForm.module.css";
+import { majors } from "client/src/ui/majors";
 
 type ReviewFormProps = {
   actionButtonLabel: string;
@@ -47,7 +48,7 @@ export default function ReviewForm({
   const [isReviewTextInvalid, setIsReviewTextInvalid] = useState(false);
   const [isCovid, setIsCovid] = useState(value?.isCovid || false);
   const [selectedGrade, setGradeSelected] = useState(value?.grade || "");
-  const [selectedMajors, setMajorSelected] =useState<string[]>(
+  const [selectedMajors, setMajorSelected] = useState<string[]>(
     value?.major || []
   );
 
@@ -132,17 +133,29 @@ export default function ReviewForm({
           className={styles.selectProfessorLabel}
           htmlFor="select-professor"
         >
-          Grade Received
-          (optional)
+          Grade Received (optional)
         </label>
         <Select
-          value={{value: selectedGrade, label: selectedGrade}}
+          value={{ value: selectedGrade, label: selectedGrade }}
           onChange={(grade: any) => {
-            setGradeSelected(grade.value)
-            ;
+            setGradeSelected(grade.value);
           }}
           isSingle
-          options={toSelectOptions(["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"])}
+          options={toSelectOptions([
+            "A+",
+            "A",
+            "A-",
+            "B+",
+            "B",
+            "B-",
+            "C+",
+            "C",
+            "C-",
+            "D+",
+            "D",
+            "D-",
+            "F",
+          ])}
           placeholder="Select Grade"
         />
       </div>
@@ -156,84 +169,10 @@ export default function ReviewForm({
         <Select
           value={toSelectOptions(selectedMajors)}
           onChange={(majors: any) => {
-            setMajorSelected(
-              majors?.map(({ value, label }: any) => value)
-            );
+            setMajorSelected(majors?.map(({ value, label }: any) => value));
           }}
           isMulti
-          options={toSelectOptions(["Computer science",
-          "Biology/biological sciences",
-          "Labor and industrial relations",
-          "Hotel/motel administration/management",
-          "Agricultural economics",
-          "Biological and biomedical sciences",
-          "Econometrics and quantitative economics",
-          "Information technology",
-          "Mechanical engineering",
-          "Political science and government",
-          "Animal sciences",
-          "Electrical and electronics engineering",
-          "Mathematics",
-          "Communication",
-          "Natural resources/conservation",
-          "Operations research",
-          "Psychology",
-          "Agriculture",
-          "Architectural and building sciences/technology",
-          "Human development and family studies",
-          "Sociology",
-          "Chemical engineering",
-          "Public policy analysis",
-          "Chemistry",
-          "Physics",
-          "History",
-          "Bioengineering and biomedical engineering",
-          "English language and literature",
-          "Nutrition sciences",
-          "Statistics",
-          "International public health/international health",
-          "Civil engineering",
-          "Biometry/biometrics",
-          "City/urban, community and regional planning",
-          "Agricultural engineering",
-          "Plant sciences",
-          "Food science",
-          "Engineering physics/applied physics",
-          "Fine/studio arts",
-          "Environmental/environmental health engineering",
-          "Philosophy",
-          "Materials engineering",
-          "International agriculture",
-          "American/united states studies/civilization",
-          "Apparel and textiles",
-          "Asian studies/civilization",
-          "Spanish language and literature",
-          "Computer and information sciences",
-          "Linguistics",
-          "Near and middle eastern studies",
-          "General studies",
-          "Landscape architecture",
-          "Geological and earth sciences/geosciences",
-          "Anthropology",
-          "Classics and classical languages, literatures, and linguistics",
-          "Visual and performing arts",
-          "Comparative literature",
-          "French language and literature",
-          "Engineering",
-          "Entomology",
-          "Music",
-          "Italian language and literature",
-          "Astronomy",
-          "Archeology",
-          "Science, technology and society",
-          "Art history, criticism and conservation",
-          "Atmospheric sciences and meteorology",
-          "Gay/lesbian studies",
-          "African-american/black studies",
-          "Textile science",
-          "Religion/religious studies",
-          "German studies",
-          "Economics"])}
+          options={toSelectOptions(majors)}
           placeholder="Select Major(s)"
         />
       </div>
@@ -280,7 +219,7 @@ export default function ReviewForm({
               text: reviewText,
               isCovid,
               grade: selectedGrade,
-              major: selectedMajors
+              major: selectedMajors,
             });
           }
         }}
