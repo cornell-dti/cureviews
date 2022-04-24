@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import UpdateReview from './UpdateReview.tsx';
+import UpdateReview from './AdminReview.tsx';
 import "./css/Admin.css";
 import { Session } from "../session-store";
 import Statistics from './Statistics.tsx';
@@ -298,11 +298,11 @@ export class Admin extends Component {
 
               <br />
 
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title">New Reviews</h3>
+              <div className="card">
+                <div className="card-header">
+                  <h3 className="card-title">New Reviews</h3>
                 </div>
-                <div className="panel-body">
+                <div className="card-body">
                   <ul>
                     {this.state.unapprovedReviews}
                   </ul>
@@ -311,11 +311,11 @@ export class Admin extends Component {
 
               <br />
 
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title">Reported Reviews</h3>
+              <div className="card card-default">
+                <div className="card-heading">
+                  <h3 className="card-title">Reported Reviews</h3>
                 </div>
-                <div className="panel-body">
+                <div className="card-body">
                   <ul>
                     {this.state.reportedReviews}
                   </ul>
