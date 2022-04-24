@@ -154,7 +154,6 @@ export class Admin extends Component {
     axios.post("/v2/setProfessors", { token: Session.get("token") })
       .then((response) => {
         const result = response.data.result.resCode;
-        console.log(response.data);
         if (result === 0) {
           console.log("Updated the professors");
           this.setState({ disableInit: false, loadingProfs: 2 });
