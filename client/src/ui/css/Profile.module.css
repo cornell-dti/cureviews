@@ -5,6 +5,10 @@
   background-color: #ffffff;
 }
 
+.fullScreen{
+  height: 100%;
+}
+
 .content {
   overflow-y: auto;
   flex: 1;
@@ -30,11 +34,13 @@
 .profileReviewsContainer {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .profileContainer {
   width: 360px;
-  height: 100%;
+  height: 660px;
   padding-bottom: 25px;
   left: 87px;
   background: #ffffff;
@@ -145,7 +151,7 @@
   width: 100%;
   overflow-y: auto;
   padding-right: 30px;
-  max-height: 200px;
+  height:200px;
 }
 
 .pastReviews {
@@ -153,7 +159,9 @@
   width: 100%;
   overflow-y: auto;
   padding-right: 30px;
-  max-height: 300px;
+  min-height: 300px;
+  flex: 1;
+  padding-bottom: 20px;
 }
 
 .courseInfoColumn {

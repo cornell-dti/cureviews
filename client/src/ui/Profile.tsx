@@ -63,7 +63,7 @@ export default function Profile({
 
   if (!loading) {
     return (
-      <div className={"row"}>
+      <div className={`row ${styles.fullScreen}`}>
         <div className={`col-3 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
