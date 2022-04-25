@@ -2,7 +2,7 @@ import { Students } from "../dbDefs";
 
 export const fetchMailingList = {
   try{
-    const mailingList = await Students.find({ mailingList: true }).exec();
+    const mailingList = await Students.find({ onMailingList: true }).exec();
     const mailingListStr = "";
     const leftClose = "\"";
     const rightClose = "@cornell.edu\", "
@@ -15,7 +15,7 @@ export const fetchMailingList = {
 
     return mailingListStr;
   }catch (error) {
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console  
     console.log("Error: at 'fetchMailingList' endpoint");
     // eslint-disable-next-line no-console
     console.log(error);
