@@ -50,8 +50,11 @@ export default class App extends Component {
 
     function displayButton() {
       const token = Session.get("token");
-      const exp = JSON.parse(atob(token.split(".")[1])).exp;
-      if (token && token !== "" && exp < Math.floor(Date.now() / 1000)) {
+      if (
+        token &&
+        token !== "" &&
+        new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
+      ) {
         console.log("hello");
         return <ProfileDropdown />;
       } else {
