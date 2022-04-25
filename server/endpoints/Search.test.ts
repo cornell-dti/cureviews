@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { Student, Class, Subject, Professor } from 'common';
-import TestingServer, { testingPort } from './TestServer';
-
+import axios from "axios";
+import { Student, Class, Subject, Professor } from "common";
+import TestingServer, { testingPort } from "./TestServer";
 
 const testServer = new TestingServer(testingPort);
 
@@ -17,8 +16,9 @@ beforeAll(async () => {
       privilege: "regular",
       reviews: [],
       likedReviews: [],
+      lastReported: new Date(),
+      numReported: 0,
     },
-
   ];
 
   const testClasses: Class[] = [
@@ -68,7 +68,6 @@ beforeAll(async () => {
       subShort: "FEDN",
       subFull: "The Study of Where No Man has Gone Before!",
     },
-
   ];
 
   const testProfessors: Professor[] = [
@@ -86,110 +85,231 @@ beforeAll(async () => {
     },
   ];
 
-  await testServer.setUpDB(undefined, testStudents, testClasses, testProfessors, testSubjects);
+  await testServer.setUpDB(
+    undefined,
+    testStudents,
+    testClasses,
+    testProfessors,
+    testSubjects,
+  );
 });
 
 afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe('tests', () => {
-  it('getClassesByQuery-works', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+describe("tests", () => {
+  it("getClassesByQuery-works", async () => {
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getClassesByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res1 = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK 1" });
+    const res1 = await axios.post(
+      `http://localhost:${testingPort}/v2/getClassesByQuery`,
+      { query: "MORK 1" },
+    );
     // we expect it to be MORK 1110 first, and then MORK 2110
-    expect(res1.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+    expect(res1.data.result.map((e) => e.classFull)).toStrictEqual([
+      "MORK 1110: Introduction to Testing",
+      "MORK 2110: Intermediate Testing",
+    ]);
   });
 
   it('getClassesByQuery-works "MORK1" ', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getClassesByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK1" });
-    expect(res.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getClassesByQuery`,
+      { query: "MORK1" },
+    );
+    expect(res.data.result.map((e) => e.classFull)).toStrictEqual([
+      "MORK 1110: Introduction to Testing",
+      "MORK 2110: Intermediate Testing",
+    ]);
   });
 
   it('getClassesByQuery-works "MORK 1110" ', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getClassesByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "MORK1110" });
-    expect(res.data.result.map((e) => e.classFull)).toStrictEqual(["MORK 1110: Introduction to Testing"]);
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getClassesByQuery`,
+      { query: "MORK1110" },
+    );
+    expect(res.data.result.map((e) => e.classFull)).toStrictEqual([
+      "MORK 1110: Introduction to Testing",
+    ]);
   });
 
-  it('getSubjectsByQuery-works', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+  it("getSubjectsByQuery-works", async () => {
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "MORK" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getSubjectsByQuery`,
+      { query: "MORK" },
+    );
     expect(res.data.result.map((e) => e.subShort)).toContain("MORK");
     expect(res.data.result.map((e) => e.subShort)).not.toContain("MAD");
     expect(res.data.result.map((e) => e.subShort)).not.toContain("FEDN");
   });
 
-  it('getProfessorsByQuery-works', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+  it("getProfessorsByQuery-works", async () => {
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res1 = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "Gazghul Thraka" });
+    const res1 = await axios.post(
+      `http://localhost:${testingPort}/v2/getProfessorsByQuery`,
+      { query: "Gazghul Thraka" },
+    );
     expect(res1.data.result.map((e) => e.fullName)).toContain("Gazghul Thraka");
-    expect(res1.data.result.map((e) => e.fullName)).not.toContain("Jean-Luc Picard");
+    expect(res1.data.result.map((e) => e.fullName)).not.toContain(
+      "Jean-Luc Picard",
+    );
 
-    const res2 = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "Jean-Luc Picard" });
-    expect(res2.data.result.map((e) => e.fullName)).not.toContain("Gazghul Thraka");
-    expect(res2.data.result.map((e) => e.fullName)).toContain("Jean-Luc Picard");
+    const res2 = await axios.post(
+      `http://localhost:${testingPort}/v2/getProfessorsByQuery`,
+      { query: "Jean-Luc Picard" },
+    );
+    expect(res2.data.result.map((e) => e.fullName)).not.toContain(
+      "Gazghul Thraka",
+    );
+    expect(res2.data.result.map((e) => e.fullName)).toContain(
+      "Jean-Luc Picard",
+    );
   });
 
   // Query has no matching results:
-  it('getClassesByQuery-no matching classes', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+  it("getClassesByQuery-no matching classes", async () => {
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getClassesByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "random" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getClassesByQuery`,
+      { query: "random" },
+    );
     // we expect no results to be returned
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual([]);
-    expect(res.data.result.map((e) => e.classFull)).not.toContain(["MORK 1110: Introduction to Testing", "MORK 2110: Intermediate Testing"]);
+    expect(res.data.result.map((e) => e.classFull)).not.toContain([
+      "MORK 1110: Introduction to Testing",
+      "MORK 2110: Intermediate Testing",
+    ]);
   });
 
-  it('getSubjectsByQuery-no matching subjects', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+  it("getSubjectsByQuery-no matching subjects", async () => {
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "RAND" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getSubjectsByQuery`,
+      { query: "RAND" },
+    );
     // we expect no results to be returned
     expect(res.data.result.map((e) => e.subShort)).toStrictEqual([]);
     expect(res.data.result.map((e) => e.subShort)).not.toContain("MORK");
     expect(res.data.result.map((e) => e.subShort)).not.toContain("MAD");
     expect(res.data.result.map((e) => e.subShort)).not.toContain("FEDN");
 
-    const res2 = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "RAND1" });
+    const res2 = await axios.post(
+      `http://localhost:${testingPort}/v2/getSubjectsByQuery`,
+      { query: "RAND1" },
+    );
     expect(res2.data.result.map((e) => e.subShort)).toStrictEqual([]);
   });
 
-  it('getProfessorsByQuery-no matching professors', async () => {
-    expect(await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { "not query": "other" }).catch((e) => "failed!")).toBe("failed!");
+  it("getProfessorsByQuery-no matching professors", async () => {
+    expect(
+      await axios
+        .post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, {
+          "not query": "other",
+        })
+        .catch((e) => "failed!"),
+    ).toBe("failed!");
 
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "Random Professor" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getProfessorsByQuery`,
+      { query: "Random Professor" },
+    );
     // we expect no results to be returned
     expect(res.data.result.map((e) => e.fullName)).toStrictEqual([]);
-    expect(res.data.result.map((e) => e.fullName)).not.toContain("Gazghul Thraka");
-    expect(res.data.result.map((e) => e.fullName)).not.toContain("Jean-Luc Picard");
+    expect(res.data.result.map((e) => e.fullName)).not.toContain(
+      "Gazghul Thraka",
+    );
+    expect(res.data.result.map((e) => e.fullName)).not.toContain(
+      "Jean-Luc Picard",
+    );
   });
 
   // Will accept ascii, but give no guarantees as to what is returned.
-  it('getClassesByQuery-non Ascii', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "भारत" }).catch((e) => e);
+  it("getClassesByQuery-non Ascii", async () => {
+    const res = await axios
+      .post(`http://localhost:${testingPort}/v2/getClassesByQuery`, {
+        query: "भारत",
+      })
+      .catch((e) => e);
     expect(res.data.result).toBeTruthy();
   });
 
   // Not for these however.
-  it('getSubjectsByQuery-non Ascii', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, { query: "भारत" }).catch((e) => e);
+  it("getSubjectsByQuery-non Ascii", async () => {
+    const res = await axios
+      .post(`http://localhost:${testingPort}/v2/getSubjectsByQuery`, {
+        query: "भारत",
+      })
+      .catch((e) => e);
     expect(res.message).toBe("Request failed with status code 400");
   });
 
-  it('getProfessorsByQuery-non Ascii', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, { query: "भारत" }).catch((e) => e);
+  it("getProfessorsByQuery-non Ascii", async () => {
+    const res = await axios
+      .post(`http://localhost:${testingPort}/v2/getProfessorsByQuery`, {
+        query: "भारत",
+      })
+      .catch((e) => e);
     expect(res.message).toBe("Request failed with status code 400");
   });
 
-  it('getClassesByQuery- empty query', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getClassesByQuery`, { query: "" }).catch((e) => e);
+  it("getClassesByQuery- empty query", async () => {
+    const res = await axios
+      .post(`http://localhost:${testingPort}/v2/getClassesByQuery`, {
+        query: "",
+      })
+      .catch((e) => e);
     expect(res.message).toBe("Request failed with status code 400");
   });
 });
