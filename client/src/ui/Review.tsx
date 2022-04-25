@@ -199,8 +199,7 @@ export default function Review({
               <div className="grade-major-container">
                 <div>
                   <span className="grade-major-label">Grade: </span>
-                  {review.grade && review.grade.length !== 0 && /^([^0-9]*)$/
-.test(review.grade) ? (
+                  {review.grade && review.grade.length !== 0 && /^([^0-9]*)$/.test(review.grade) ? (
                     <span className="grade-major-text">{review.grade}</span>
                   ) : (
                     <span className="grade-major-text">N/A</span>
