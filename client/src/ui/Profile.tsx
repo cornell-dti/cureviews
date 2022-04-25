@@ -76,9 +76,6 @@ export default function Profile({
             image="/helpful_review_icon.svg"
           ></ProfileCard>
         </div>
-        <button className={styles.profileSignOutButton}>
-          <p className={styles.profileSignOutText}>Signout</p>
-        </button>
       </div>
     </div>
   );

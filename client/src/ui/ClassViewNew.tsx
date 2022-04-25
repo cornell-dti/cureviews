@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
+import Modal from "react-modal";
 import { courseVisited } from "./js/Feedback";
 import Navbar from "./Navbar";
 import styles from "./css/ClassView.module.css";
 import { lastOfferedSems } from "common/CourseCard";
 import Gauge from "./Gauge";
 import CourseReviews from "./CourseReviews";
-import Form from "./Form";
+import ReviewForm, { NewReview } from "./ReviewForm";
+import ModalContentAuth from "./ModalContentAuth";
 import { Class, Review } from "common";
+import { Session } from "../session-store";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 enum PageStatus {
   Loading,
@@ -20,8 +25,12 @@ export default function ClassView() {
   const { number, subject, input } = useParams<any>();
 
   const [selectedClass, setSelectedClass] = useState<Class>();
-  const [reviews, setReviews] = useState<Review[]>();
+  const [courseReviews, setCourseReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
+  const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   /**
    * Arrow functions for sorting reviews
@@ -31,31 +40,42 @@ export default function ClassView() {
     !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
 
   useEffect(() => {
-    /**
-     * Fetches current course info and reviews and updates UI state
-     */
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 28);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /**
+   * Fetches current course info and reviews and updates UI state
+   */
+  useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
-      const response = await axios.post(`/v2/getCourseByInfo`, {
-        number,
-        subject: subject.toLowerCase(), // TODO: fix backend to handle this
-      });
-
-      const course = response.data.result;
-      if (course) {
-        setSelectedClass(course);
-
-        // after getting valid course info, fetch reviews
-        const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
-          courseId: course._id,
+      try {
+        const response = await axios.post(`/v2/getCourseByInfo`, {
+          number,
+          subject: subject.toLowerCase(), // TODO: fix backend to handle this
         });
-        const reviews = reviewsResponse.data.result;
-        // convert date field of Review to JavaScript Date object
-        reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
-        reviews.sort(sortByLikes);
-        setReviews(reviews);
 
-        setPageStatus(PageStatus.Success);
-      } else {
+        const course = response.data.result;
+        if (course) {
+          setSelectedClass(course);
+
+          // after getting valid course info, fetch reviews
+          const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
+            courseId: course._id,
+          });
+          const reviews = reviewsResponse.data.result;
+          // convert date field of Review to JavaScript Date object
+          reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
+          reviews.sort(sortByLikes);
+          setCourseReviews(reviews);
+
+          setPageStatus(PageStatus.Success);
+        } else {
+          setPageStatus(PageStatus.Error);
+        }
+      } catch (e) {
         setPageStatus(PageStatus.Error);
       }
     }
@@ -63,17 +83,59 @@ export default function ClassView() {
   }, [number, subject]);
 
   /**
+   * Checks if there is a review stored in Session (i.e. this redirected from
+   * auth)
+   */
+  useEffect(() => {
+    /**
+     * Submit review and clear session storage
+     */
+    async function submitReview(review: NewReview, classId: string) {
+      try {
+        const response = await axios.post("/v2/insertReview", {
+          token: Session.get("token"),
+          review: review,
+          classId: classId,
+        });
+
+        if (response.data.result.resCode === 1) {
+          clearSessionReview();
+          setIsReviewModalOpen(false);
+          toast.success(
+            "Thanks for reviewing! New reviews are updated every 24 hours."
+          );
+        } else {
+          toast.error("An error occurred, please try again.");
+        }
+      } catch (e) {
+        toast.error("An error occurred, please try again.");
+      }
+    }
+
+    const sessionReview = Session.get("review");
+    const sessionCourseId = Session.get("courseId");
+    if (
+      sessionReview !== undefined &&
+      sessionReview !== "" &&
+      sessionCourseId !== undefined &&
+      sessionCourseId !== ""
+    ) {
+      submitReview(sessionReview, sessionCourseId);
+    }
+  }, []);
+
+  /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
-    const currentReviews = reviews && [...reviews];
+    const currentReviews = courseReviews && [...courseReviews];
     if (value === "helpful") {
       currentReviews?.sort(sortByLikes);
     } else if (value === "recent") {
       currentReviews?.sort(sortByDate);
     }
-    setReviews(currentReviews);
+    setCourseReviews(currentReviews);
   }
 
   /**
@@ -81,13 +143,55 @@ export default function ClassView() {
    * @param reviewId - id of review to report
    */
   async function reportReview(reviewId: string) {
-    const response = await axios.post("/v2/reportReview", { id: reviewId });
-    const responseCode = response.data.result.resCode;
-    if (responseCode === 1) {
-      setReviews(reviews?.filter((element) => element._id !== reviewId));
+    try {
+      const response = await axios.post("/v2/reportReview", { id: reviewId });
+      const responseCode = response.data.result.resCode;
+      if (responseCode === 1) {
+        setCourseReviews(
+          courseReviews?.filter((element) => element._id !== reviewId)
+        );
+      }
+    } catch (e) {
+      toast.error("Failed to report review.");
     }
   }
 
+  /**
+   * Open review modal
+   */
+  function onLeaveReview() {
+    setIsReviewModalOpen(true);
+  }
+
+  /**
+   * Save review information to session storage and begin redirect to auth
+   */
+  function onSubmitReview(review: NewReview) {
+    Session.setPersistent({
+      review: review,
+    });
+    Session.setPersistent({
+      review_major: selectedClass?.classSub.toUpperCase(),
+    });
+    Session.setPersistent({ review_num: selectedClass?.classNum });
+    Session.setPersistent({ courseId: selectedClass?._id });
+
+    setIsAuthModalOpen(true);
+  }
+
+  /**
+   * Clear review stored in session storage
+   */
+  function clearSessionReview() {
+    Session.setPersistent({ review: "" });
+    Session.setPersistent({ review_major: "" });
+    Session.setPersistent({ review_num: "" });
+    Session.setPersistent({ courseId: "" });
+  }
+
+  /**
+   * Error page
+   */
   if (pageStatus === PageStatus.Error) {
     return (
       <div className={`row ${styles.errorContainer}`}>
@@ -106,32 +210,103 @@ export default function ClassView() {
     );
   }
 
-  if (pageStatus === PageStatus.Success && !!selectedClass && !!reviews) {
+  /**
+   * Successful render
+   */
+  if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
       <div className={`${styles.classView}`}>
-        <div className="row">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+
+        {/* review modal for mobile reviews */}
+        <Modal
+          isOpen={isReviewModalOpen}
+          className={styles.reviewModal}
+          overlayClassName={styles.modalOverlay}
+        >
+          <button
+            type="button"
+            className="close pull-left"
+            aria-label="Close"
+            onClick={() => {
+              setIsReviewModalOpen(false);
+              clearSessionReview();
+            }}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div className={styles.reviewModalForm}>
+            <ReviewForm
+              professors={selectedClass.classProfessors}
+              onSubmitReview={onSubmitReview}
+              actionButtonLabel="Submit review"
+            />
+          </div>
+        </Modal>
+
+        {/* auth redirect modal */}
+        <Modal
+          className={styles.authModal}
+          isOpen={isAuthModalOpen}
+          overlayClassName={styles.modalOverlay}
+          onRequestClose={() => setIsAuthModalOpen(false)}
+          shouldCloseOnOverlayClick
+          shouldCloseOnEsc
+        >
+          <ModalContentAuth />
+        </Modal>
+
+        <div className="row d-none d-lg-block">
           <Navbar userInput={input} />
         </div>
+
         <div className={`row ${styles.content}`}>
-          <div className={`col-xl-4 col-lg-5 ${styles.courseInfoColumn}`}>
-            <div>
-              <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
-              <p className={styles.courseSubtitle}>
-                {selectedClass.classSub.toUpperCase() +
-                  " " +
-                  selectedClass.classNum +
-                  ", " +
-                  lastOfferedSems(selectedClass)}
-              </p>
+          <div
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
+              isPastScrollThreshold && styles.courseInfoColumnShadow
+            }`}
+          >
+            <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
+            <p className={styles.courseSubtitle}>
+              {selectedClass.classSub.toUpperCase() +
+                " " +
+                selectedClass.classNum +
+                ", " +
+                lastOfferedSems(selectedClass)}
+            </p>
+            <div
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                styles.ratingMobileBox
+              }`}
+            >
+              <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
+              <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
+              <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
             </div>
-            {/* TODO: show button for leaving a review on sm/xs screens */}
+            {/* review form, only shown on larger screens */}
             <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
-              <Form course={selectedClass} inUse={true} />
+              <ReviewForm
+                professors={selectedClass.classProfessors}
+                onSubmitReview={onSubmitReview}
+                actionButtonLabel="Submit a review"
+              />
             </div>
           </div>
-          <div className={`col-xl-8 col-lg-7 ${styles.courseReviewColumn}`}>
-            <div className={styles.gaugeContainer}>
+          <div className={`col ${styles.courseReviewColumn}`}>
+            <div
+              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
+                styles.gaugeContainer
+              }`}
+            >
               <div className={styles.gauge}>
                 <Gauge rating={selectedClass!.classRating} label="Overall" />
               </div>
@@ -145,9 +320,18 @@ export default function ClassView() {
                 <Gauge rating={selectedClass.classWorkload} label="Workload" />
               </div>
             </div>
+            {/* leave a review button, only shown on smaller screens */}
+            <button
+              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
+                styles.startReviewButton
+              }`}
+              onClick={() => onLeaveReview()}
+            >
+              Leave a review
+            </button>
             <div className={styles.reviewsHeader}>
               <h2 className={styles.pastReviews}>
-                Past Reviews ({reviews?.length})
+                Past Reviews ({courseReviews?.length})
               </h2>
               <div>
                 <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
@@ -164,7 +348,22 @@ export default function ClassView() {
               </div>
             </div>
             <div className={styles.courseReviews}>
-              <CourseReviews reviews={reviews} onReportReview={reportReview} />
+              <CourseReviews
+                reviews={courseReviews}
+                onReportReview={reportReview}
+              />
+              <div
+                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                  styles.fixedButtonContainer
+                }`}
+              >
+                <button
+                  className={`btn ${styles.startReviewButton}`}
+                  onClick={() => onLeaveReview()}
+                >
+                  Leave a review
+                </button>
+              </div>
             </div>
           </div>
         </div>
