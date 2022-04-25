@@ -3,6 +3,7 @@ import SearchBar from "./SearchBar.jsx";
 import LoginModal from "./LoginModal";
 import ProfileDropdown from "./ProfileDropdown.jsx";
 import "./css/App.css";
+import { Session } from "../session-store";
 
 /*
   App Component. Uppermost View component in the component tree,
@@ -47,18 +48,14 @@ export default class App extends Component {
       dayclass = "sunset";
     }
 
-    return (
-      <div className="row">
-        <ProfileDropdown />
-
-        <LoginModal />
-        <div
-          className={
-            "col full-height background-common background-gradient_" +
-            dayclass +
-            monthclass
-          }
-        >
+    function displayButton() {
+      const token = Session.get("token");
+      const exp = JSON.parse(atob(token.split(".")[1])).exp;
+      if (token && token !== "" && exp < Math.floor(Date.now() / 1000)) {
+        console.log("hello");
+        return <ProfileDropdown />;
+      } else {
+        return (
           <button
             type="button"
             className="btn btn-light sign-in-button"
@@ -67,6 +64,20 @@ export default class App extends Component {
           >
             Sign In
           </button>
+        );
+      }
+    }
+    return (
+      <div className="row">
+        <LoginModal />
+        <div
+          className={
+            "col full-height background-common background-gradient_" +
+            dayclass +
+            monthclass
+          }
+        >
+          {displayButton()}
 
           <div className="row">
             <img
