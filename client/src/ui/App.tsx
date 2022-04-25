@@ -55,7 +55,6 @@ export default class App extends Component {
         token !== "" &&
         new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
       ) {
-        console.log("hello");
         return <ProfileDropdown />;
       } else {
         return (
