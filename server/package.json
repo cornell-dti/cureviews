@@ -14,6 +14,8 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "testRunner": "jest-circus/runner",
+    "testTimeout": 20000,
     "moduleFileExtensions": [
       "js",
       "ts"
@@ -43,6 +45,7 @@
     "@types/jest": "^25.2.1",
     "@types/mongodb": "^3.5.4",
     "@types/mongoose": "^5.7.7",
+    "jest-circus": "24",
     "ts-jest": "24"
   }
 }
