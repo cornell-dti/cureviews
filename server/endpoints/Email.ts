@@ -1,21 +1,22 @@
 import { Students } from "../dbDefs";
 
-export const fetchMailingList = {
-  try{
+// eslint-disable-next-line import/prefer-default-export
+export const fetchMailingList = async () => {
+  try {
     const mailingList = await Students.find({ onMailingList: true }).exec();
     const mailingListStr = "";
     const leftClose = "\"";
-    const rightClose = "@cornell.edu\", "
+    const rightClose = "@cornell.edu\", ";
 
-    mailingList.forEach(function (student) {
+    mailingList.forEach((student) => {
       mailingListStr.concat(leftClose);
-      mailingListStr.concat(student.netId); 
+      mailingListStr.concat(student.netId);
       mailingListStr.concat(rightClose);
     });
 
     return mailingListStr;
-  }catch (error) {
-    // eslint-disable-next-line no-console  
+  } catch (error) {
+    // eslint-disable-next-line no-console
     console.log("Error: at 'fetchMailingList' endpoint");
     // eslint-disable-next-line no-console
     console.log(error);
