@@ -224,15 +224,6 @@
   color: #807b7b;
 }
 
-.sortBySelect {
-  font-weight: var(--regular-weight);
-  margin-left: 10px;
-  font-size: 18px;
-  border: none;
-  background-color: transparent;
-  color: #0076ff;
-}
-
 .noReviewsContainer {
   margin-top: 40px;
 }
