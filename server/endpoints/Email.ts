@@ -3,7 +3,7 @@ import { Students } from "../dbDefs";
 // eslint-disable-next-line import/prefer-default-export
 export const fetchMailingList = async () => {
   try {
-    const mailingList = await Students.find({ onMailingList: true }).exec();
+    const mailingList = await Students.find({ onMailingList: { $exists: true, $nin: false } }).exec();
     const mailingListStr = "";
     const leftClose = "\"";
     const rightClose = "@cornell.edu\", ";
