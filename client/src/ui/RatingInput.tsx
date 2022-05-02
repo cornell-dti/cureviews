@@ -10,6 +10,7 @@ type RatingInputProps = {
   minLabel?: string;
   maxLabel?: string;
   className?: string;
+  isOverall: boolean;
 };
 
 /**
@@ -26,8 +27,10 @@ export default function RatingInput({
   minLabel,
   maxLabel,
   className,
+  isOverall,
 }: RatingInputProps) {
   const [hoverIndex, setHoverIndex] = useState(value - 1);
+  const [color, setColor] = useState<string>("");
 
   const buttonRefs = useMemo(
     () => Array.from({ length: maxRating }).map(() => React.createRef<any>()),
@@ -36,6 +39,10 @@ export default function RatingInput({
 
   useEffect(() => {
     setHoverIndex(value - 1);
+  }, [value]);
+
+  useEffect(() => {
+    setColor(getColor(value));
   }, [value]);
 
   function handleKeyDown({ key }: any) {
@@ -48,6 +55,16 @@ export default function RatingInput({
     }
   }
 
+  function getColor(index: number) {
+    if (0 <= index && index < 3) {
+      return isOverall ? "Red" : "Green";
+    } else if (3 <= index && index < 4) {
+      return "Yellow";
+    } else {
+      return isOverall ? "Green" : "Red";
+    }
+  }
+
   return (
     <div className={className} tabIndex={0} onKeyDown={handleKeyDown}>
       <label className={styles.ratingInputLabel}>{label}</label>
@@ -56,14 +73,26 @@ export default function RatingInput({
           <span
             className={styles.ratingUnit}
             key={`${name}-${i}`}
-            onMouseEnter={() => setHoverIndex(i)}
-            onMouseLeave={() => setHoverIndex(value - 1)}
+            onMouseEnter={() => {
+              setHoverIndex(i);
+              setColor(getColor(i));
+            }}
+            onMouseLeave={() => {
+              setHoverIndex(value - 1);
+              setColor(getColor(value - 1));
+            }}
           >
             <button
               ref={buttonRefs[i]}
               className={styles.ratingButton}
-              onClick={() => setValue(i + 1)}
-              onFocus={() => setValue(i + 1)}
+              onClick={() => {
+                setValue(i + 1);
+                setColor(getColor(value));
+              }}
+              onFocus={() => {
+                setValue(i + 1);
+                setColor(getColor(value));
+              }}
               tabIndex={-1}
             >
               <div
@@ -71,9 +100,12 @@ export default function RatingInput({
                   ${
                     i >= value &&
                     i < hoverIndex + 1 &&
-                    styles.ratingButtonPillHover
+                    styles["ratingButtonPillHover" + color]
                   }
-                  ${i < hoverIndex + 1 && styles.ratingButtonPillSelected}
+                  ${
+                    i < hoverIndex + 1 &&
+                    styles["ratingButtonPillSelected" + color]
+                  }
                 `}
               />
               {i + 1}

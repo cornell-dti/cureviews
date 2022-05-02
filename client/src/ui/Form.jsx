@@ -173,7 +173,7 @@ export default class Form extends Component {
       let isHovered = this.state[metric + " " + i] ? "boxHover" : "";
       boxes.push(<div className="metricBoxWrapper"
         onClick={() => this.clickMetricBox(metric, i)} onMouseEnter={() => this.handleBoxHoverEnter(metric, i)} onMouseLeave={() => this.handleBoxHoverLeave(metric, i)}>
-        <div id={metric + " " + i} className={this.state[metric] < i ? "metricBox inactiveBox " + isHovered : "metricBox activeBox"}></div>
+        <div id={metric + " " + i} className={this.state[metric] < i ? "metricBox inactiveBox" + isHovered : "metricBox activeBox"}></div>
         <p className={this.state[metric] < i ? "inactiveText" : "activeText"}>{i}</p>
 
       </div>)

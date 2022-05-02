@@ -39,8 +39,37 @@
   background-color: #0076ff;
 }
 
+.ratingButtonPillSelectedRed {
+  background-color: #FF756C;
+}
+
+.ratingButtonPillSelectedYellow {
+  background-color: #F8CC30;
+}
+
+.ratingButtonPillSelectedGreen {
+  background-color: #53B227;
+}
+
+/*
+Red: rgba(225, 117, 108, 0.5), #e1756c80
+Yellow: rgba(248, 204, 48, 0.5), #f8cc3080
+Green: rgba(83, 178, 39, 0.5), #53b22780
+*/
 .ratingButtonPillHover {
   background-color: #b7d8ff;
+}
+
+.ratingButtonPillHoverRed {
+  background-color: #e1756c80;
+}
+
+.ratingButtonPillHoverYellow {
+  background-color: #f8cc3080;
+}
+
+.ratingButtonPillHoverGreen {
+  background-color: #53b22780; 
 }
 
 .ratingMinMaxLabel {
