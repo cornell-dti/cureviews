@@ -356,7 +356,7 @@ export async function updateProfessors(semesters: any) {
   console.log('In updateProfessors method');
   for (const semester in semesters) {
     // get all classes in this semester
-    console.log(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`);
+    // console.log(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`);
     try {
       await axios.get(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`, { timeout: 30000 });
     } catch (error) {
@@ -373,9 +373,9 @@ export async function updateProfessors(semesters: any) {
     } else {
       const response = result.data;
       // console.log(response);
-      const sub = response.data.subjects; // array of the subjects
-      for (const course in sub) { // for every subject
-        const parent = sub[course];
+      const subjects = response.data.subjects; // array of the subjects
+      for (const department in subjects) { // for every subject
+        const parent = subjects[department];
         // console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
         try {
           await axios.get(`https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`, { timeout: 30000 });
@@ -440,7 +440,7 @@ export async function updateProfessors(semesters: any) {
                     }
                   }
                 }
-                Classes.update({ _id: matchedCourse._id }, { $set: { classProfessors: oldProfessors } });
+                await Classes.update({ _id: matchedCourse._id }, { $set: { classProfessors: oldProfessors } }).exec();
               }
             } catch (error) {
               console.log('Error in updateProfessors: 5');

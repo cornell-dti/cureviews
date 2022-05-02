@@ -12,7 +12,7 @@ export const setAuthToken = (token: string) => {
 export const getAuthToken = () => {
     const token = Session.get("token");
     const exp = JSON.parse(atob(token.split(".")[1])).exp;
-    if (token && token !== "" && exp < Math.floor(Date.now() / 1000)) {
+    if (token && token !== "" && exp > Math.floor(Date.now() / 1000)) {
         return token;
     }
     else return null;
