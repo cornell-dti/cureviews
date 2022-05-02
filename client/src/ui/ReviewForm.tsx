@@ -3,6 +3,7 @@ import Select from "react-select";
 import RatingInput from "./RatingInput";
 import styles from "./css/ReviewForm.module.css";
 import { majors } from "client/src/ui/majors";
+import Toggle from "./Toggle";
 
 type ReviewFormProps = {
   actionButtonLabel: string;
@@ -51,6 +52,16 @@ export default function ReviewForm({
   const [selectedMajors, setMajorSelected] = useState<string[]>(
     value?.major || []
   );
+  const [checked1, setChecked1] = useState();
+  const [checked2, setChecked2] = useState();
+  const [checked3, setChecked3] = useState();
+  const [checked4, setChecked4] = useState();
+  const [checked5, setChecked5] = useState();
+  const [checked6, setChecked6] = useState();
+  const [checked7, setChecked7] = useState();
+
+
+
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || [];
@@ -216,13 +227,13 @@ export default function ReviewForm({
         </label>
         </div>
         <div>
-        <input name = "tags" type = "checkbox"/> 
-        <input name = "tags" type = "checkbox"/> 
-        <input name = "tags" type = "checkbox"/>
-        <input name = "tags" type = "checkbox"/> 
-        <input name = "tags" type = "checkbox"/> 
-        <input name = "tags" type = "checkbox"/> 
-        <input name = "tags" type = "checkbox"/> 
+        <Toggle label="Participation Matters" onCheck={setChecked1} checked={checked1} />
+        <Toggle label="Homework Heavy" onCheck={setChecked2} checked={checked2} />
+        <Toggle label="Group Projects" onCheck={setChecked3} checked={checked3} />
+        <Toggle label="Fun Lectures" onCheck={setChecked4} checked={checked4} />
+        <Toggle label="Lecture Heavy" onCheck={setChecked5} checked={checked5} />
+        <Toggle label="OH is Your Best Friend" onCheck={setChecked6} checked={checked6} />
+        <Toggle label="Get Ready to Read" onCheck={setChecked7} checked={checked7} />
       </div>
       <button
         className={`btn ${styles.actionButton}`}

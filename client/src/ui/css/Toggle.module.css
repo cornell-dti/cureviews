@@ -1,0 +1,21 @@
+.checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.label {
+  color: #979797;
+  background: #ECECEC;
+  border-radius: 3.36864px;
+  padding: 5px;
+  font-size: 13px;
+  margin-left: 6px;
+  margin-bottom: 10px;
+
+}
+
+.labelChecked {
+  background: #0076FF;
+  color: white;
+}
