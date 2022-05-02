@@ -36,11 +36,11 @@ export default function ReviewForm({
 }: ReviewFormProps) {
   const [overallRating, setOverallRating] = useState(value?.rating || 3);
   const [difficultyRating, setDifficultyRating] = useState(
-    value?.difficulty || 3
+    value?.difficulty || 3,
   );
   const [workloadRating, setWorkloadRating] = useState(value?.workload || 3);
   const [selectedProfessors, setSelectedProfessors] = useState<string[]>(
-    value?.professors || []
+    value?.professors || [],
   );
   const [isSelectedProfessorsInvalid, setIsSelectedProfessorsInvalid] =
     useState(false);
@@ -58,7 +58,7 @@ export default function ReviewForm({
 
   function isInputValid(): boolean {
     const regex = new RegExp(
-      /^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i
+      /^(?=.*[A-Z0-9])[\w:;.,?$%*#@[\]!--{}/\\()"'/$ ]+$/i,
     );
     const isReviewTextValid =
       !isReviewCommentVisible || (!!reviewText && regex.test(reviewText));
@@ -84,7 +84,7 @@ export default function ReviewForm({
           onChange={(professors: any) => {
             setIsSelectedProfessorsInvalid(false);
             setSelectedProfessors(
-              professors?.map(({ value, label }: any) => value)
+              professors?.map(({ value, label }: any) => value),
             );
           }}
           isMulti
@@ -186,6 +186,7 @@ export default function ReviewForm({
                 setIsReviewTextInvalid(false);
                 setReviewText(event.target.value);
               }}
+              placeholder="What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?"
             />
           </label>
           {isReviewTextInvalid && (
