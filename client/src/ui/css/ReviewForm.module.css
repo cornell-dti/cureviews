@@ -57,3 +57,39 @@
   color: #000000;
   font-weight: var(--regular-weight);
 }
+
+input[name="tags"]{
+  -webkit-appearance: initial;
+  content: "Participation Matters";
+  content-visibility: visible;
+  appearance: initial;
+  width: 100px;
+  height: 40px;
+  border: none;
+  background:#979797;
+  border-radius: 3.36864px;
+  position: relative;
+}
+input[name="tags"]:checked {
+  background: #0076FF;
+  content: "Participation Matters";
+  content-visibility: visible;
+
+
+
+}
+input[name="tags"]:checked:after {
+  content: "Participation Matters";
+  content-visibility: visible;
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  
+ 
+   
+}

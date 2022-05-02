@@ -207,6 +207,23 @@ export default function ReviewForm({
           My experience was affected by COVID-19
         </span>
       </label>
+      <div>
+      <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          Select Tags (optional)
+        </label>
+        </div>
+        <div>
+        <input name = "tags" type = "checkbox"/> 
+        <input name = "tags" type = "checkbox"/> 
+        <input name = "tags" type = "checkbox"/>
+        <input name = "tags" type = "checkbox"/> 
+        <input name = "tags" type = "checkbox"/> 
+        <input name = "tags" type = "checkbox"/> 
+        <input name = "tags" type = "checkbox"/> 
+      </div>
       <button
         className={`btn ${styles.actionButton}`}
         onClick={() => {
