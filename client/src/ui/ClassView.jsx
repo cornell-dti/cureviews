@@ -140,6 +140,7 @@ export class ClassView extends Component {
                     <Gauge
                       rating={parseFloat(this.state.selectedClass.classRating)}
                       label="Overall"
+                      isOverall={true}
                     />
                   </div>
                   <div className="col-4 classview-gauge">
@@ -148,6 +149,7 @@ export class ClassView extends Component {
                         this.state.selectedClass.classDifficulty
                       )}
                       label="Difficulty"
+                      isOverall={false}
                     />
                   </div>
                   <div className="col-4 classview-gauge">
@@ -156,6 +158,7 @@ export class ClassView extends Component {
                         this.state.selectedClass.classWorkload
                       )}
                       label="Workload"
+                      isOverall={false}
                     />
                   </div>
                 </div>

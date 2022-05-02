@@ -6,6 +6,7 @@ import styles from "./css/Gauge.module.css";
 type GaugeProps = {
   rating: number | undefined;
   label: string;
+  isOverall: boolean;
   // add a field
 };
 
@@ -15,7 +16,7 @@ type GaugeState = {
   rating: number | string;
 };
 
-export default function Gauge({ rating, label }: GaugeProps) {
+export default function Gauge({ rating, label, isOverall }: GaugeProps) {
   const [gaugeState, setGaugeState] = useState<GaugeState>({
     color: "#000",
     percentage: 0.0,
@@ -25,7 +26,19 @@ export default function Gauge({ rating, label }: GaugeProps) {
   useEffect(() => {
     if (rating && !isNaN(rating)) {
       let percentage = 20 * rating; // rating is 1-5
-      let color = `hsl(212, 100%, ${86 - percentage * 0.36}%)`;
+      let color;
+
+      let red = `hsla(4, 100%, 71%)`;
+      let yellow = `hsl(47, 94%, 58%)`;
+      let green = `hsl(101, 64%, 43%)`;
+
+      if (0 <= rating && rating < 3) {
+        color = isOverall ? red : green;
+      } else if (3 <= rating && rating < 4) {
+        color = yellow;
+      } else {
+        color = isOverall ? green : red;
+      }
 
       setGaugeState({
         percentage: percentage,

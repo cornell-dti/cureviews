@@ -186,15 +186,20 @@ export default class PreviewCard extends Component {
         {!this.props.transformGauges && (
           <div className="row gaugeHolder">
             <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge rating={parseFloat(this.state.rating)} label="Overall" />
+              <Gauge rating={parseFloat(this.state.rating)} 
+              label="Overall"                      
+              isOverall={true} />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge rating={parseFloat(this.state.diff)} label="Difficulty" />
+              <Gauge rating={parseFloat(this.state.diff)} 
+              label="Difficulty"                      
+              isOverall={false} />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
               <Gauge
                 rating={parseFloat(this.state.workload)}
                 label="Workload"
+                isOverall={false}
               />
             </div>
           </div>
