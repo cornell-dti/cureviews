@@ -6,10 +6,6 @@ import mongoose from "mongoose";
 import { Subjects, Classes, Professors } from "./dbDefs";
 import { fetchSubjects, fetchClassesForSubject, fetchAddCourses } from "./dbInit";
 
-// May require additional time for downloading 100 mb (!) worth of MongoDB binaries
-// **We might not want to run this with CI**
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
-
 let testServer: MongoMemoryServer;
 let serverCloseHandle;
 
