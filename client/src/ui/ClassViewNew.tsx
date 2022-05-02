@@ -351,6 +351,8 @@ export default function ClassView() {
               <CourseReviews
                 reviews={courseReviews}
                 onReportReview={reportReview}
+                isPreview={false}
+                isProfile={false}
               />
               <div
                 className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
