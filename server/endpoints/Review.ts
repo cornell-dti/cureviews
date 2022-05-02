@@ -168,6 +168,8 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             likes: 0,
             isCovid: review.isCovid,
             user: student._id,
+            grade: review.grade,
+            major: review.major,
           });
 
           await fullReview.save();

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import RatingInput from "./RatingInput";
 import styles from "./css/ReviewForm.module.css";
+import { majors } from "client/src/ui/majors";
 
 type ReviewFormProps = {
   actionButtonLabel: string;
@@ -18,6 +19,8 @@ export type NewReview = {
   workload: number;
   professors: string[];
   isCovid: boolean;
+  grade: string;
+  major: string[];
 };
 
 /**
@@ -44,6 +47,10 @@ export default function ReviewForm({
   const [reviewText, setReviewText] = useState(value?.text || "");
   const [isReviewTextInvalid, setIsReviewTextInvalid] = useState(false);
   const [isCovid, setIsCovid] = useState(value?.isCovid || false);
+  const [selectedGrade, setGradeSelected] = useState(value?.grade || "");
+  const [selectedMajors, setMajorSelected] = useState<string[]>(
+    value?.major || []
+  );
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || [];
@@ -121,6 +128,54 @@ export default function ReviewForm({
           maxLabel="Lots of work"
         />
       </div>
+      <div>
+        <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          Grade Received (optional)
+        </label>
+        <Select
+          value={{ value: selectedGrade, label: selectedGrade }}
+          onChange={(grade: any) => {
+            setGradeSelected(grade.value);
+          }}
+          isSingle
+          options={toSelectOptions([
+            "A+",
+            "A",
+            "A-",
+            "B+",
+            "B",
+            "B-",
+            "C+",
+            "C",
+            "C-",
+            "D+",
+            "D",
+            "D-",
+            "F",
+          ])}
+          placeholder="Select Grade"
+        />
+      </div>
+      <div>
+        <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          What's your major? (optional)
+        </label>
+        <Select
+          value={toSelectOptions(selectedMajors)}
+          onChange={(majors: any) => {
+            setMajorSelected(majors?.map(({ value, label }: any) => value));
+          }}
+          isMulti
+          options={toSelectOptions(majors)}
+          placeholder="Select Major(s)"
+        />
+      </div>
       {isReviewCommentVisible && (
         <div>
           <label className={styles.reviewComment}>
@@ -163,6 +218,8 @@ export default function ReviewForm({
               professors: selectedProfessors,
               text: reviewText,
               isCovid,
+              grade: selectedGrade,
+              major: selectedMajors,
             });
           }
         }}
