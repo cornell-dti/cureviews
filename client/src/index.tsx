@@ -28,8 +28,22 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
+
+const token = Session.get("token");
+function isAuthenticated() {
+  if (
+    token &&
+    token !== "" &&
+    new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 const defaultProtectedRouteProps: ProtectedRouteProps = {
-  isAuthenticated: Session.isAuthenticated(),
+  isAuthenticated: isAuthenticated(),
   authenticationPath: "/",
 };
 
@@ -52,7 +66,12 @@ render(
           path="/results/:type/:input"
           component={Results}
         />
-        <Route name="profile" exact path="/profile" component={Profile} />
+        <PrivateRoute
+          {...defaultProtectedRouteProps}
+          exact={true}
+          path="/profile"
+          component={Profile}
+        />
         <Route component={NotFound} />
       </Switch>
     </div>

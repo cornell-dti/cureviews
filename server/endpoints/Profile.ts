@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
-import { ReviewDocument, Reviews, Students, Classes } from "../dbDefs";
+import { ReviewDocument, Reviews, Students } from "../dbDefs";
 
 // The type of a query with a studentId
 export interface NetIdQuery {
@@ -42,7 +42,7 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     try {
       const reviews = await getreviewIDsByStudentID(netId);
       reviews.forEach((review) => {
-        if ('likes' in review) {
+        if ("likes" in review) {
           totalLikes += review.likes;
         }
       });
