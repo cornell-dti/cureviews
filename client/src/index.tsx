@@ -15,6 +15,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
+import PrivateRoute, { ProtectedRouteProps } from "./PrivateRoute";
+import { Session } from "./session-store";
+
 Modal.setAppElement("#render-target");
 
 /*
@@ -25,29 +28,34 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
+const defaultProtectedRouteProps: ProtectedRouteProps = {
+  isAuthenticated: Session.isAuthenticated(),
+  authenticationPath: "/",
+};
+
 render(
-    <BrowserRouter>
-        <div className="container-fluid full-height">
-            <Switch>
-                <Route name="app" exact path="/" component={App} />
-                <Route name="admin" exact path="/admin" component={Login} />
-                <Route
-                    name="permalink"
-                    exact
-                    path="/course/:subject/:number"
-                    component={ClassView}
-                />
-                <Route name="auth" exact path="/auth" component={AuthRedirect} />
-                <Route
-                    name="permalink"
-                    exact
-                    path="/results/:type/:input"
-                    component={Results}
-                />
-                <Route name="profile" exact path="/profile" component={Profile} />
-                <Route component={NotFound} />
-            </Switch>
-        </div>
-    </BrowserRouter>,
-    document.getElementById("render-target")
+  <BrowserRouter>
+    <div className="container-fluid full-height">
+      <Switch>
+        <Route name="app" exact path="/" component={App} />
+        <Route name="admin" exact path="/admin" component={Login} />
+        <Route
+          name="permalink"
+          exact
+          path="/course/:subject/:number"
+          component={ClassView}
+        />
+        <Route name="auth" exact path="/auth" component={AuthRedirect} />
+        <Route
+          name="permalink"
+          exact
+          path="/results/:type/:input"
+          component={Results}
+        />
+        <Route name="profile" exact path="/profile" component={Profile} />
+        <Route component={NotFound} />
+      </Switch>
+    </div>
+  </BrowserRouter>,
+  document.getElementById("render-target"),
 );
