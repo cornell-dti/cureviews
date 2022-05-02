@@ -158,10 +158,8 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
       const profs: string[] = await Promise.all(professors.map(async (p) => {
         // This has to be an atomic upset. Otherwise, this causes some race condition badness
         const professorIfExists = await Professors.findOneAndUpdate({ fullName: `${p.firstName} ${p.lastName}` },
-          { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } }, {
-          upsert: true,
-          new: true,
-        });
+          { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } },
+          { upsert: true, new: true });
 
         return professorIfExists.fullName;
       })).catch((err) => {
@@ -373,7 +371,7 @@ export async function updateProfessors(semesters: any) {
     } else {
       const response = result.data;
       // console.log(response);
-      const subjects = response.data.subjects; // array of the subjects
+      const { subjects } = response.data; // array of the subjects
       for (const department in subjects) { // for every subject
         const parent = subjects[department];
         // console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
