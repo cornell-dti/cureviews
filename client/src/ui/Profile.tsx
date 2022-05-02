@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProfileCard from "./ProfileCard";
+import Navbar from "./Navbar";
 import "./css/ClassView.css";
 import "./css/App.css";
 import "rodal/lib/rodal.css";
@@ -108,6 +109,7 @@ export default function Profile({
   if (!loading) {
     return (
       <div className={`row ${styles.fullScreen}`}>
+        <Navbar userInput="" />
         <div className={`col-3 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
