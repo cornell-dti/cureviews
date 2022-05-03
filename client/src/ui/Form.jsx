@@ -9,6 +9,7 @@ import './css/Form.css';
 import { Session } from '../session-store';
 import { includesProfanity } from "common/profanity";
 import axios from 'axios';
+import {majors} from 'client/src/ui/majors'
 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -64,7 +65,9 @@ export default class Form extends Component {
       review: {},
       courseId: '',
       isCovid: false,
-      showCovid: true
+      showCovid: true,
+      selectedGrade: '',
+      selectedMajors: []
     };
 
     for (let i = 1; i <= 5; i++) {
@@ -107,6 +110,25 @@ export default class Form extends Component {
     }
 
     this.setState({ selectedProfessors: selectedProfessors });
+  }
+
+   // Save the selected grade in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleGradeChange(grade) {
+    if (grade === null) {
+      grade = ""
+    }
+
+    this.setState({ selectedGrade: grade });
+  }
+
+  // Save the current majors selected string for majors in the local state.
+  // Called whenever this form element changes to trigger re-render to run validation.
+  handleMajorChange(majors){
+    if (majors === null) {
+      majors = []
+    }
+    this.setState({ selectedMajors: majors });
   }
 
   //Called when mouse  enters a metric box to chane highlighting
@@ -208,11 +230,13 @@ export default class Form extends Component {
     const diff = this.state.diff;
     const work = this.state.workload;
     const prof = this.state.selectedProfessors.length !== 0 ? //If length is not 0
-      this.state.selectedProfessors.map(professor => { return professor.label }) //set to this
+      this.state.selectedProfessors.map(professor => professor.label) //set to this //set to this
       : //else
       [] //set to this
     const isCovid = this.state.isCovid;
-
+    const grade = this.state.selectedGrade.length !== 0 ? //If length is not 0
+      this.state.selectedGrade.label : ''   
+    const major =  this.state.selectedMajors.map((major) => major.label)
     if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
@@ -221,7 +245,9 @@ export default class Form extends Component {
         difficulty: diff,
         workload: work,
         professors: prof,
-        isCovid: isCovid
+        isCovid: isCovid,
+        selectedGrade: grade,
+        selectedMajors: major
       };
       this.setState({ "review": newReview })
 
@@ -325,6 +351,24 @@ export default class Form extends Component {
       return profOptions
     }
   }
+
+  getGradeOptions() {
+    this.gradeReceived = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
+    return this.gradeReceived.map((grade) =>
+      ({
+        "value": grade,
+        "label": grade
+      }))
+  }
+
+getMajorOptions() {
+    this.majorsOptions = majors;
+    return this.majorsOptions.map((major) =>
+      ({
+        "value": major,
+        "label": major
+      }))
+}
 
   show() {
     this.setState({ visible: true });
@@ -553,6 +597,42 @@ export default class Form extends Component {
               <div className="offset-lg-3 col-lg-9 metricDesc-margin-left">
                 <div className="metricDescL">Not much at all</div>
                 <div className="metricDescR">Lots of work</div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">Grade Received</div>
+                <div className="form-label form-optional-label">(optional)</div>
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectedGrade}
+                  onChange={(grade) => this.handleGradeChange(grade)}
+                  isSingle
+                  options={this.getGradeOptions()}
+                  placeholder="Select"
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-3 col-sm-3 col-3 form-bottom-row-spacing">
+                <div className="form-label form-professor-label">What's your major?</div>
+                <div className="form-label form-optional-label">(optional)</div>
+
+              </div>
+              <div className="col-md-8 col-sm-8 col-xs-8 form-select-alignment" ref={this.selectHolder}>
+                <Select
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  value={this.state.selectedMajors}
+                  onChange={(majors) => this.handleMajorChange(majors)}
+                  isMulti
+                  options={this.getMajorOptions()}
+                  placeholder="Select"
+                />
               </div>
             </div>
 
