@@ -137,8 +137,8 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
     try {
       const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
-        const semesters = findAllSemesters();
-        const val = updateProfessors(semesters);
+        const semesters = await findAllSemesters();
+        const val = await updateProfessors(semesters);
         if (val) {
           return { resCode: val };
         }

@@ -39,6 +39,10 @@ const initState = {
 
 export default class SearchBar extends Component {
 
+  static DEBOUNCE_TIME = 200;
+  controller;
+  searchTimeout;
+
   constructor(props) {
     super(props);
 
@@ -71,55 +75,102 @@ export default class SearchBar extends Component {
     Session.setPersistent({"last-search": query});
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.query.toLowerCase() !== "" && (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps)) {
-      axios.post(`/v2/getClassesByQuery`, { query: this.state.query }).then(response => {
-        const queryCourseList = response.data.result;
-        if (queryCourseList.length !== 0) {
-          // Save the Class object that matches the request
-          this.setState({
-            allCourses: queryCourseList
-          });
-        }
-        else {
-          this.setState({
-            allCourses: []
-          });
-        }
+  /**
+   * Compares classes based on score, then class number, then alphabetically by
+   * subject.
+   * @param {Class} a 
+   * @param {Class} b 
+   * @returns -1, 0, or 1
+   */
+  sortCourses(a, b) {
+    const sortByAlphabet = (a, b) => {
+      const aSub = a.classSub.toLowerCase();
+      const bSub = b.classSub.toLowerCase();
+      if (aSub < bSub) {
+        return -1;
+      } else if (aSub > bSub) {
+        return 1;
+      } else {
+        return 0;
       }
-      )
-        .catch(e => console.log("Getting courses failed!"));
+    };
 
-      axios.post(`/v2/getSubjectsByQuery`, { query: this.state.query }).then(response => {
-        const subjectList = response.data.result;
-        if (subjectList && subjectList.length !== 0) {
-          // Save the list of Subject objects that matches the request
-          this.setState({
-            allSubjects: subjectList
-          });
-        }
-        else {
-          this.setState({
-            allSubjects: []
-          });
-        }
-      }).catch(e => console.log("Getting subjects failed!"));
+    return b.score - a.score || a.classNum - b.classNum || sortByAlphabet(a, b);
+  }
 
-      axios.post(`/v2/getProfessorsByQuery`, { query: this.state.query }).then(response => {
-        const professorList = response.data.result;
-        if (professorList && professorList.length !== 0) {
-          // Save the list of Subject objects that matches the request
-          this.setState({
-            allProfessors: professorList
-          });
-        }
-        else {
-          this.setState({
-            allProfessors: []
-          });
-        }
-      }).catch(e => console.log("Getting professors failed!"));
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.query.toLowerCase() !== "" &&
+      (this.state.query.toLowerCase() !== prevState.query.toLowerCase() ||
+        this.props !== prevProps)
+    ) {
+      if (this.controller) this.controller.abort();
+      this.controller = new AbortController();
+      clearTimeout(this.searchTimeout);
 
+      this.searchTimeout = setTimeout(() => {
+        axios
+          .post(
+            `/v2/getClassesByQuery`,
+            { query: this.state.query },
+            { signal: this.controller.signal }
+          )
+          .then((response) => {
+            const queryCourseList = response.data.result;
+            if (queryCourseList.length !== 0) {
+              this.setState({
+                allCourses: queryCourseList.sort(this.sortCourses),
+              });
+            } else {
+              this.setState({
+                allCourses: [],
+              });
+            }
+          })
+          .catch((e) => console.log("Getting courses failed!"));
+
+      axios
+        .post(
+          `/v2/getSubjectsByQuery`,
+          { query: this.state.query },
+          { signal: this.controller.signal }
+        )
+        .then((response) => {
+          const subjectList = response.data.result;
+          if (subjectList && subjectList.length !== 0) {
+            // Save the list of Subject objects that matches the request
+            this.setState({
+              allSubjects: subjectList,
+            });
+          } else {
+            this.setState({
+              allSubjects: [],
+            });
+          }
+        })
+        .catch((e) => console.log("Getting subjects failed!"));
+
+      axios
+        .post(
+          `/v2/getProfessorsByQuery`,
+          { query: this.state.query },
+          { signal: this.controller.signal }
+        )
+        .then((response) => {
+          const professorList = response.data.result;
+          if (professorList && professorList.length !== 0) {
+            // Save the list of Subject objects that matches the request
+            this.setState({
+              allProfessors: professorList,
+            });
+          } else {
+            this.setState({
+              allProfessors: [],
+            });
+          }
+        })
+        .catch((e) => console.log("Getting professors failed!"));
+      }, this.DEBOUNCE_TIME)
     }
   }
 
