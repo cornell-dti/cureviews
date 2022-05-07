@@ -10,21 +10,62 @@ import { Review as ReviewType } from "common";
 import styles from "./css/Profile.module.css";
 import CourseReviews from "./CourseReviews";
 import axios from "axios";
+import { Session } from "../session-store";
+import Navbar from "./Navbar";
 
 type ProfileProps = {
   imageSrc: any;
-  netId: string;
 };
 
 export default function Profile({
   imageSrc = "/profile_bear.png",
-  //for LOCAL TESTING use axl4 for no reviews, ag974 for past reviews, sj598 for pending + past reviews
-  netId = "sj598",
-}: ProfileProps) {
+}: //for LOCAL TESTING use axl4 for no reviews, ag974 for past reviews, sj598 for pending + past reviews
+ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [pastReviews, setPastReviews] = useState<ReviewType[]>([]);
+
+  const [reviewsTotal, setReviewsTotal] = useState("");
+  const [reviewsHelpful, setReviewsHelpful] = useState("");
+  const [verifiedEmail, setVerifiedEmail] = useState("");
+
+  const [netId, setNetId] = useState("");
+
+  async function getVerifiedEmail() {
+    const response = await axios.post("/v2/getStudentEmailByToken", {
+      token: Session.get("token"),
+    });
+
+    const res = response.data.result;
+    if (res.code === 200) {
+      console.log(res.message);
+      setVerifiedEmail(res.message);
+    }
+
+    setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
+  }
+  async function getReviewsTotal() {
+    const response = await axios.post("/v2/countReviewsByStudentId", {
+      netId,
+    });
+
+    const res = response.data.result;
+    if (res.code === 200) {
+      setReviewsTotal(res.message);
+    }
+  }
+
+  async function getReviewsHelpful() {
+    const response = await axios.post("/v2/getTotalLikesByStudentId", {
+      netId,
+    });
+
+    const res = response.data.result;
+    if (res.code === 200) {
+      setReviewsHelpful(res.message);
+    }
+  }
 
   /**
    * Arrow functions for sorting reviews
@@ -61,9 +102,15 @@ export default function Profile({
     setReviews(currentReviews);
   }
 
+  getVerifiedEmail();
+  getReviewsTotal();
+  getReviewsHelpful();
+
   if (!loading) {
     return (
       <div className={`row ${styles.fullScreen}`}>
+        <Navbar userInput="" />
+
         <div className={`col-3 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
@@ -78,12 +125,12 @@ export default function Profile({
               <div className={styles.profileUserStatistics}>
                 <ProfileCard
                   title="Reviews Total"
-                  value="12"
+                  value={reviewsTotal}
                   image="/total_reviews_icon.svg"
                 />
                 <ProfileCard
                   title="People found your reviews helpful"
-                  value="7"
+                  value={reviewsHelpful}
                   image="/helpful_review_icon.svg"
                 ></ProfileCard>
               </div>

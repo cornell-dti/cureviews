@@ -1,6 +1,6 @@
 import { ValidationChain, body } from "express-validator";
 import { InsertUserRequest, CourseIdQuery } from "./Review";
-import { Classes, Students } from "../dbDefs";
+import { Classes, Students, Reviews } from "../dbDefs";
 import { getUserByNetId, getVerificationTicket } from "./Auth";
 
 import shortid = require("shortid");
@@ -34,7 +34,9 @@ export const insertUser = async (request: InsertUserRequest) => {
   try {
     // Check user object has all required fields
     if (googleObject.email.replace("@cornell.edu", "") !== null) {
-      const user = await getUserByNetId(googleObject.email.replace("@cornell.edu", ""));
+      const user = await getUserByNetId(
+        googleObject.email.replace("@cornell.edu", ""),
+      );
       if (user === null) {
         const newUser = new Students({
           _id: shortid.generate(),
@@ -83,18 +85,31 @@ export const verifyToken = async (token: string) => {
     if (regex.test(token)) {
       const ticket = await getVerificationTicket(token);
       if (ticket && ticket.email) {
-        const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
+        const user = await getUserByNetId(
+          ticket.email.replace("@cornell.edu", ""),
+        );
         if (user) {
-          return user.privilege === 'admin';
+          return user.privilege === "admin";
         }
       }
     }
     return false;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log("Error: at 'verufyToken' method");
+    console.log("Error: at 'verifyToken' method");
     // eslint-disable-next-line no-console
     console.log(error);
     return false;
+  }
+};
+
+export const findReviews = async (reviewId: string) => {
+  try {
+    const review = await Reviews.findOne({ _id: reviewId });
+
+    if (review == null) {
+    }
+  } catch (error) {
+    console.log("Error");
   }
 };
