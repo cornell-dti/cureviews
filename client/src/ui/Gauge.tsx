@@ -7,7 +7,6 @@ type GaugeProps = {
   rating: number | undefined;
   label: string;
   isOverall: boolean;
-  // add a field
 };
 
 type GaugeState = {
@@ -50,7 +49,7 @@ export default function Gauge({ rating, label, isOverall }: GaugeProps) {
     } else {
       setGaugeState({ color: "#000", rating: "-", percentage: 0.0 });
     }
-  }, [setGaugeState, rating]);
+  }, [setGaugeState, rating, isOverall]);
 
   return (
     <div className={styles.gaugeContainer}>
