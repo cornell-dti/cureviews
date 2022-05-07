@@ -70,12 +70,12 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     try {
       const studentDoc = await Students.findOne({ netId });
       const reviewIds = studentDoc.reviews;
-      const reviews: ReviewDocument[] = await Promise.all(
+      let reviews: ReviewDocument[] = await Promise.all(
         reviewIds.map(
           async (reviewId) => await Reviews.findOne({ _id: reviewId }),
         ),
       );
-      reviews.filter((review) => review !== null);
+      reviews = reviews.filter((review) => review !== null);
       reviews.forEach((review) => {
         if ("likes" in review) {
           totalLikes += review.likes;
@@ -106,12 +106,12 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
       if (reviewIds === null) {
         return { code: 200, message: [] };
       }
-      const reviews: ReviewDocument[] = await Promise.all(
+      let reviews: ReviewDocument[] = await Promise.all(
         reviewIds.map(
           async (reviewId) => await Reviews.findOne({ _id: reviewId }),
         ),
       );
-      reviews.filter((review) => review !== null);
+      reviews = reviews.filter((review) => review !== null);
       return { code: 200, message: reviews };
     } catch (error) {
       // eslint-disable-next-line no-console
