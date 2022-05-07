@@ -10,7 +10,7 @@ export default ({ label, checked, onCheck }) => {
         checked={checked}
         onChange={(event) => {
           // console.log(event.target.checked);
-          onCheck(event.target.checked);
+          onCheck(label, event.target.checked);
         }}
       />
       {label}

@@ -99,6 +99,7 @@ const ReviewSchema = new Schema<ReviewDocument>({
   isCovid: { type: Boolean },
   grade: { type: String },
   major: { type: [String] },
+  tags: { type: [String] },
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature

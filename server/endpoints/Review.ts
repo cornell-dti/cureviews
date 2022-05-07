@@ -170,8 +170,8 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             user: student._id,
             grade: review.grade,
             major: review.major,
+            tags: review.tags,
           });
-
           await fullReview.save();
 
           const newReviews = student.reviews ? student.reviews.concat([fullReview._id]) : [fullReview._id];

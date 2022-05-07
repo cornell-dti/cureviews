@@ -22,6 +22,7 @@ export type NewReview = {
   isCovid: boolean;
   grade: string;
   major: string[];
+  tags: string[];
 };
 
 /**
@@ -52,20 +53,55 @@ export default function ReviewForm({
   const [selectedMajors, setMajorSelected] = useState<string[]>(
     value?.major || []
   );
-  const [checked1, setChecked1] = useState();
-  const [checked2, setChecked2] = useState();
-  const [checked3, setChecked3] = useState();
-  const [checked4, setChecked4] = useState();
-  const [checked5, setChecked5] = useState();
-  const [checked6, setChecked6] = useState();
-  const [checked7, setChecked7] = useState();
-
-
-
+  const selectedTags: any[] = [];
+  const [tagState, setTagState] = useState<{[key: string]: any}>({
+    "Participation Matters": {
+      tagLabel: "Participation Matters",
+      isChecked: false
+    },
+    "Homework Heavy": {
+      tagLabel: "Homework Heavy",
+      isChecked: false
+    },  
+    "Group Projects": {
+      tagLabel: "Group Projects",
+      isChecked: false
+    }, 
+    "Fun Lectures": {
+      tagLabel: "Fun Lectures",
+      isChecked: false
+    }, 
+    "Lecture Heavy": {
+      tagLabel: "Lecture Heavy",
+      isChecked: false
+    }, 
+    "OH is Your Best Friend": {
+      tagLabel: "OH is Your Best Friend",
+      isChecked: false
+    },
+    "Get Ready to Read": {
+      tagLabel: "Get Ready to Read",
+      isChecked: false
+    }
+  });
+  
+  const onCheck = (tagName: string, val: boolean) => {
+    setTagState({
+      ...tagState,
+      [tagName]: { tagLabel: tagName, isChecked: val }
+    });
+  };
+ 
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || [];
   }
+  
+  function checkTags(){
+    Object.keys(tagState).map((tagKey) => {if (tagState[tagKey].isChecked) {selectedTags.push(tagState[tagKey].tagLabel)} }); 
+    return selectedTags;
+  }
+  
 
   function isInputValid(): boolean {
     const regex = new RegExp(
@@ -227,17 +263,18 @@ export default function ReviewForm({
         </label>
         </div>
         <div>
-        <Toggle label="Participation Matters" onCheck={setChecked1} checked={checked1} />
-        <Toggle label="Homework Heavy" onCheck={setChecked2} checked={checked2} />
-        <Toggle label="Group Projects" onCheck={setChecked3} checked={checked3} />
-        <Toggle label="Fun Lectures" onCheck={setChecked4} checked={checked4} />
-        <Toggle label="Lecture Heavy" onCheck={setChecked5} checked={checked5} />
-        <Toggle label="OH is Your Best Friend" onCheck={setChecked6} checked={checked6} />
-        <Toggle label="Get Ready to Read" onCheck={setChecked7} checked={checked7} />
+        {Object.keys(tagState).map((tagKey) => (
+        <Toggle
+          key={tagKey}
+          label={tagState[tagKey].tagLabel}
+          onCheck={onCheck}
+          checked={tagState[tagKey].isChecked}
+        />
+      ))}
       </div>
       <button
         className={`btn ${styles.actionButton}`}
-        onClick={() => {
+        onClick={() => { checkTags()
           if (isInputValid()) {
             onSubmitReview({
               rating: overallRating,
@@ -248,6 +285,7 @@ export default function ReviewForm({
               isCovid,
               grade: selectedGrade,
               major: selectedMajors,
+              tags: selectedTags
             });
           }
         }}
