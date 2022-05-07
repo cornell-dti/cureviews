@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
-import { ReviewDocument, Reviews, Students, Classes } from "../dbDefs";
+import { ReviewDocument, Reviews, Students } from "../dbDefs";
 
 import { getVerificationTicket } from "./Auth";
 
