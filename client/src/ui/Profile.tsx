@@ -106,9 +106,6 @@ ProfileProps) {
   getReviewsTotal();
   getReviewsHelpful();
 
-  console.log(verifiedEmail);
-  console.log(Session.get("token"));
-
   if (!loading) {
     return (
       <div className={`row ${styles.fullScreen}`}>
