@@ -8,7 +8,7 @@
     "@types/react": "^16.9.26",
     "@types/react-dom": "^16.9.5",
     "axios": "^0.21.2",
-    "bootstrap": "^3",
+    "bootstrap": "^4",
     "chart.js": "^2.9.4",
     "common": "0.0.1",
     "react": "^16.13.1",
