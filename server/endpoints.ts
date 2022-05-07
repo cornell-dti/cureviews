@@ -16,10 +16,28 @@ import {
   incrementLike,
   decrementLike,
 } from "./endpoints/Review";
-import { countReviewsByStudentId, getTotalLikesByStudentId, getReviewsByStudentId } from "./endpoints/Profile";
+import {
+  countReviewsByStudentId,
+  getTotalLikesByStudentId,
+  getReviewsByStudentId,
+  getStudentEmailByToken,
+} from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
-import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
-import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview, setProfessors } from "./endpoints/AdminActions";
+import {
+  getCoursesByProfessor,
+  getCoursesByMajor,
+  getClassesByQuery,
+  getSubjectsByQuery,
+  getProfessorsByQuery,
+} from "./endpoints/Search";
+import {
+  fetchReviewableClasses,
+  reportReview,
+  makeReviewVisible,
+  undoReportReview,
+  removeReview,
+  setProfessors,
+} from "./endpoints/AdminActions";
 
 export interface Context {
   ip: string;
@@ -72,6 +90,7 @@ export function configure(app: express.Application) {
   register(app, "getReviewsByStudentId", getReviewsByStudentId);
   register(app, "countReviewsByStudentId", countReviewsByStudentId);
   register(app, "setProfessors", setProfessors);
+  register(app, "getStudentEmailByToken", getStudentEmailByToken);
 }
 
 function register<T>(

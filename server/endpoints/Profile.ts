@@ -2,10 +2,38 @@ import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
 import { ReviewDocument, Reviews, Students, Classes } from "../dbDefs";
 
+import { getVerificationTicket } from "./Auth";
+
 // The type of a query with a studentId
 export interface NetIdQuery {
   netId: string;
 }
+
+export interface ProfileRequest {
+  token: string;
+}
+
+export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
+  guard: [body("token").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: ProfileRequest) => {
+    const { token } = request;
+
+    try {
+      const ticket = await getVerificationTicket(token);
+      if (ticket.hd === "cornell.edu") {
+        return { code: 200, message: ticket.email };
+      }
+
+      return { code: 500, message: "Invalid email" };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getStudentEmailByToken' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { code: 500, message: error.message };
+    }
+  },
+};
 
 /**
  * Counts the number of reviews made by a given student id.
@@ -43,10 +71,12 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
       const studentDoc = await Students.findOne({ netId });
       const reviewIds = studentDoc.reviews;
       const reviews: ReviewDocument[] = await Promise.all(
-        (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
+        reviewIds.map(
+          async (reviewId) => await Reviews.findOne({ _id: reviewId }),
+        ),
       );
       reviews.forEach((review) => {
-        if ('likes' in review) {
+        if ("likes" in review) {
           totalLikes += review.likes;
         }
       });
@@ -76,7 +106,9 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
         return { code: 200, message: [] };
       }
       const reviews: ReviewDocument[] = await Promise.all(
-        (reviewIds).map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
+        reviewIds.map(
+          async (reviewId) => await Reviews.findOne({ _id: reviewId }),
+        ),
       );
       return { code: 200, message: reviews };
     } catch (error) {
