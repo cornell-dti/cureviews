@@ -75,6 +75,7 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
           async (reviewId) => await Reviews.findOne({ _id: reviewId }),
         ),
       );
+      reviews.filter((review) => review !== null);
       reviews.forEach((review) => {
         if ("likes" in review) {
           totalLikes += review.likes;
@@ -110,6 +111,7 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
           async (reviewId) => await Reviews.findOne({ _id: reviewId }),
         ),
       );
+      reviews.filter((review) => review !== null);
       return { code: 200, message: reviews };
     } catch (error) {
       // eslint-disable-next-line no-console
