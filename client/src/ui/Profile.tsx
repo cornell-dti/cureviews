@@ -106,6 +106,10 @@ ProfileProps) {
   getReviewsTotal();
   getReviewsHelpful();
 
+  function signOut() {
+    Session.set("token", null);
+  }
+
   if (!loading) {
     return (
       <div className={`row ${styles.fullScreen}`}>
@@ -134,7 +138,7 @@ ProfileProps) {
                   image="/helpful_review_icon.svg"
                 ></ProfileCard>
               </div>
-              <button className={styles.profileSignOutButton}>
+              <button className={styles.profileSignOutButton} onClick={signOut}>
                 <p className={styles.profileSignOutText}>Signout</p>
               </button>
             </div>

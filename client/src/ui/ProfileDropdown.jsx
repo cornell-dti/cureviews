@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import styles from "../ui/css/ProfileDropdown.module.css";
+import { Session } from "../session-store";
 
 export default function ProfileDropdown() {
   const dropdownRef = useRef(null);
@@ -23,6 +24,11 @@ export default function ProfileDropdown() {
     };
   }, [open]);
 
+  function signOut() {
+    Session.set("token", null)
+    setOpen(false)
+  }
+
   return (
     <div className={styles.profileMenuContainer}>
       <img
@@ -38,7 +44,7 @@ export default function ProfileDropdown() {
           <a href='/profile' className={styles.profileMenuLink}>
             My Reviews
           </a>
-          <button className={styles.profileMenuSignOutButton}>Sign Out</button>
+          <button className={styles.profileMenuSignOutButton} onClick={signOut}>Sign Out</button>
         </div>
       ) : (
         <div></div>
