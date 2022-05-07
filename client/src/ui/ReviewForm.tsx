@@ -53,7 +53,6 @@ export default function ReviewForm({
   const [selectedMajors, setMajorSelected] = useState<string[]>(
     value?.major || []
   );
-  const selectedTags: any[] = [];
   const [tagState, setTagState] = useState<{[key: string]: any}>({
     "Participation Matters": {
       tagLabel: "Participation Matters",
@@ -98,7 +97,9 @@ export default function ReviewForm({
   }
   
   function checkTags(){
-    Object.keys(tagState).map((tagKey) => {if (tagState[tagKey].isChecked) {selectedTags.push(tagState[tagKey].tagLabel)} }); 
+    const selectedTags = Object.keys(tagState).filter((tagKey) => 
+      tagState[tagKey].isChecked
+    ); 
     return selectedTags;
   }
   
@@ -274,7 +275,7 @@ export default function ReviewForm({
       </div>
       <button
         className={`btn ${styles.actionButton}`}
-        onClick={() => { checkTags()
+        onClick={() => { 
           if (isInputValid()) {
             onSubmitReview({
               rating: overallRating,
@@ -285,7 +286,7 @@ export default function ReviewForm({
               isCovid,
               grade: selectedGrade,
               major: selectedMajors,
-              tags: selectedTags
+              tags: checkTags()
             });
           }
         }}
