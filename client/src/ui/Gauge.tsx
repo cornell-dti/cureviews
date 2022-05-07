@@ -28,13 +28,15 @@ export default function Gauge({ rating, label, isOverall }: GaugeProps) {
       let percentage = 20 * rating; // rating is 1-5
       let color;
 
-      let red = `hsla(4, 100%, 71%)`;
+      let red = `hsl(4, 100%, 71%)`;
       let yellow = `hsl(47, 94%, 58%)`;
       let green = `hsl(101, 64%, 43%)`;
 
-      if (0 <= rating && rating < 3) {
+      let ratingRounded = parseFloat(rating.toFixed(1));
+
+      if (0 <= ratingRounded && ratingRounded < 3) {
         color = isOverall ? red : green;
-      } else if (3 <= rating && rating < 4) {
+      } else if (3.0 <= ratingRounded && ratingRounded < 4) {
         color = yellow;
       } else {
         color = isOverall ? green : red;

@@ -39,9 +39,6 @@ export default function RatingInput({
 
   useEffect(() => {
     setHoverIndex(value - 1);
-  }, [value]);
-
-  useEffect(() => {
     setColor(getColor(value));
   }, [value]);
 
@@ -75,11 +72,11 @@ export default function RatingInput({
             key={`${name}-${i}`}
             onMouseEnter={() => {
               setHoverIndex(i);
-              setColor(getColor(i));
+              setColor(getColor(i + 1));
             }}
             onMouseLeave={() => {
               setHoverIndex(value - 1);
-              setColor(getColor(value - 1));
+              setColor(getColor(value));
             }}
           >
             <button
@@ -87,11 +84,11 @@ export default function RatingInput({
               className={styles.ratingButton}
               onClick={() => {
                 setValue(i + 1);
-                setColor(getColor(value));
+                setColor(getColor(i + 1));
               }}
               onFocus={() => {
                 setValue(i + 1);
-                setColor(getColor(value));
+                setColor(getColor(i + 1));
               }}
               tabIndex={-1}
             >
