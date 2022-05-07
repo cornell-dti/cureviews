@@ -39,8 +39,46 @@
   background-color: #0076ff;
 }
 
+/*
+Red: rgba(225, 117, 108, 1), #FF756C
+Yellow: rgba(248, 204, 48, 1), #F8CC30
+Green: rgba(83, 178, 39, 1), #53B227
+*/
+
+.ratingButtonPillSelectedRed {
+  background-color: #FF756C;
+}
+
+.ratingButtonPillSelectedYellow {
+  background-color: #F8CC30;
+}
+
+.ratingButtonPillSelectedGreen {
+  background-color: #53B227;
+}
+
+/*
+For hovering, use colors that are 50% opacity of normal colors
+
+Red: rgba(225, 117, 108, 0.5), #e1756c80
+Yellow: rgba(248, 204, 48, 0.5), #f8cc3080
+Green: rgba(83, 178, 39, 0.5), #53b22780
+*/
+
 .ratingButtonPillHover {
   background-color: #b7d8ff;
+}
+
+.ratingButtonPillHoverRed {
+  background-color: #e1756c80;
+}
+
+.ratingButtonPillHoverYellow {
+  background-color: #f8cc3080;
+}
+
+.ratingButtonPillHoverGreen {
+  background-color: #53b22780; 
 }
 
 .ratingMinMaxLabel {
