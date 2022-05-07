@@ -37,9 +37,13 @@ export default class Course extends Component<Props> {
       }
     // check if a query was provided, if so underline parts of the class name
     if (this.props.query) {
-      if (text.toLowerCase().indexOf(this.props.query) !== -1) {
-        const startIndex = text.toLowerCase().indexOf(this.props.query);
-        const endIndex = startIndex + this.props.query.length;
+      const textLowerCase = text.toLowerCase();
+      const queryLowerCase = this.props.query.toLowerCase();
+      const queryIndex = textLowerCase.indexOf(queryLowerCase)
+
+      if (queryIndex !== -1) {
+        const startIndex = queryIndex;
+        const endIndex = startIndex + queryLowerCase.length;
         text = <span className="ellipsis">{text.substring(0,startIndex)}<span className='matching-text'>{text.substring(startIndex,endIndex)}</span>{text.substring(endIndex)}</span>
       } else {
         // based on search technique in server/publications, results without a contains match
@@ -47,7 +51,7 @@ export default class Course extends Component<Props> {
         // text in the substring of query after the subject.
 
         // substring of query after the subject, without trailing spaces
-        const queryWithoutSubject = this.props.query.substring(classInfo.classSub.length).trim();
+        const queryWithoutSubject = queryLowerCase.substring(classInfo.classSub.length).trim();
         // search substring of text after subject for substring of query.
         const textWithoutSubject = classInfo.classNum + ": " + classInfo.classTitle;
         const startIndex = textWithoutSubject.toLowerCase().indexOf(queryWithoutSubject);

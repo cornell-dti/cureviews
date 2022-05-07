@@ -9,6 +9,5 @@
     "build": "exit 0"
   },
   "dependencies": {
-    "bad-words": "^3.0.3"
   }
 }

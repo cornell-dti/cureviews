@@ -64,6 +64,7 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
 
   getRedirectURI = () => {
     if (window.location.host.includes("localhost")) {
+      
       return "http://" + window.location.host + "/auth/"
     }
     return "https://" + window.location.host + "/auth/"
