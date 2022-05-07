@@ -13,19 +13,6 @@ export class SessionStore {
       localStorage.setItem(key, JSON.stringify(value)),
     );
   }
-
-  isAuthenticated() {
-    const token = this.get("token");
-    if (
-      token &&
-      token !== "" &&
-      new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }
 
 export const Session = new SessionStore();
