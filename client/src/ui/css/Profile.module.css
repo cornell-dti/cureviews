@@ -1,13 +1,39 @@
+.fullScreen{
+  height: 100%;
+  overflow: auto;
+}
+
+.profileLeft {
+  display: flex;
+  margin-top: 42px;
+  margin-left: 87px;
+  padding: 0 !important;
+  height: 100%;
+}
+
+.profileRight {
+  display: flex;
+  margin-top: 42px;
+  margin-right: 136px;
+  margin-left: 83px;
+  padding: 0 !important;
+  height: 100%;
+}
+
+.profileReviewsContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .profileContainer {
   width: 360px;
-  height: 742px;
+  height: 660px;
+  padding-bottom: 20px;
   left: 87px;
-
   background: #ffffff;
   border-radius: 10px;
-  margin-top: 30px;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .profileInfo {
@@ -101,28 +127,142 @@
 }
 
 .myReviews {
-  margin-right: 40px;
-  margin-left: 40px;
+  background-color: transparent;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 30px;
+  min-height: 200px;
+  max-height: 579px;
 }
 
-.myReviewsHeader {
-  margin-top: 42px;
+.pendingReviews {
+  background-color: transparent;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 30px;
+  height:200px;
+}
 
+.pastReviews {
+  background-color: transparent;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 30px;
+  margin-bottom: 20px;
+  min-height: 300px;
+  flex: 1;
+}
+
+.courseInfoColumn {
+  background: #ffffff;
+  padding: 35px 35px 0;
+}
+
+.courseReviewColumn {
+  padding-left: 0;
+  background-color: #ffffff;
+  height: 100%;
+  padding: 0 24px 35px;
+}
+
+.myReviewsText {
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
   font-size: 32px;
   line-height: 50px;
   /* or 156% */
-
   letter-spacing: -0.128928px;
-
   color: #000000;
-
-  border-radius: 19.6611px;
+  padding: 0 0 20px;
+  margin: 0;
 }
 
-.myReviewsList {
+.reviewsHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  color: #a1a1a1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sortContainer {
+  float: right;
+}
+
+.sort {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  display: inline;
+  text-decoration-line: underline;
+  color: #807b7b;
+}
+
+.sortBySelect {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  margin-left: 10px;
+  background-color: transparent !important;
+  border: none;
+
+  color: #0076ff;
+}
+
+.sortByLabel {
+  font-weight: var(--regular-weight);
+  font-size: 18px;
+  text-decoration-line: underline;
+  color: #807b7b;
+}
+
+.noReviewsContainer {
+  margin-top: 40px;
+}
+
+.noReviewsTitle {
+  text-align: center;
+  margin-top: 75px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+
+  color: #000000;
+}
+
+.noReviewsSubtitle {
+  text-align: center;
+  margin-top: 24px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+
+  color: #000000;
+}
+
+.noReviewsImage {
+  display: block;
+  width: 246px;
+  height: 237.21px;
+  margin-top: 47px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pendingHeader {
@@ -167,7 +307,8 @@
 }
 
 .pastHeader {
-  margin-top: 10px;
+  /* margin-top: 61.5px; */
+  margin-top: 30px;
 }
 
 .pastHeaderText {
@@ -185,4 +326,28 @@
   /* Gray */
 
   color: #a2a1a1;
+}
+
+@media (min-width: 768px) {
+  .classView {
+    background-color: transparent;
+  }
+  .courseReviewColumn {
+    padding: 0 35px 35px;
+  }
+}
+
+@media (min-width: 992px) {
+  .courseInfoColumn {
+    background-color: transparent;
+    padding: 70px 50px 70px 70px;
+    height: 100%;
+  }
+
+  .courseReviewColumn {
+    background-color: transparent;
+    padding-right: 70px;
+    display: flex;
+    flex-direction: column;
+  }
 }
