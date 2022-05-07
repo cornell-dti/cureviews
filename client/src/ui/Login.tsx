@@ -4,6 +4,7 @@ import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
 import { Session } from "../session-store";
 import axios from 'axios';
+import { getAuthToken } from '../auth_utils';
 /*
   Admin Interface Login Component.
 
@@ -28,7 +29,8 @@ export default class Login extends Component<{}, { message: string; executeLogin
 
   componentWillMount() {
     // The following is used to show admin panel if a user's token is found to be an admin
-    if (Session.get("token") && Session.get("token") !== "") {
+    const token = getAuthToken();
+    if (token) {
       axios.post(`/v2/tokenIsAdmin`, { token: Session.get("token") })
         .then((res) => {
           const result = res.data.result;

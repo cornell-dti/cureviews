@@ -1,24 +1,56 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { totalReviews, howManyReviewsEachClass, howManyEachClass, topSubjects, getReviewsOverTimeTop15 } from "./endpoints/AdminChart";
-import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo, incrementLike, decrementLike } from "./endpoints/Review";
-import { countReviewsByStudentId, getTotalLikesByStudentId, getReviewsByStudentId } from "./endpoints/Profile";
+import {
+  totalReviews,
+  howManyReviewsEachClass,
+  howManyEachClass,
+  topSubjects,
+  getReviewsOverTimeTop15,
+} from "./endpoints/AdminChart";
+import {
+  getReviewsByCourseId,
+  getCourseById,
+  insertReview,
+  insertUser,
+  getCourseByInfo,
+  incrementLike,
+  decrementLike,
+} from "./endpoints/Review";
+import {
+  countReviewsByStudentId,
+  getTotalLikesByStudentId,
+  getReviewsByStudentId,
+  getStudentEmailByToken,
+} from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
-import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
-import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview } from "./endpoints/AdminActions";
+import {
+  getCoursesByProfessor,
+  getCoursesByMajor,
+  getClassesByQuery,
+  getSubjectsByQuery,
+  getProfessorsByQuery,
+} from "./endpoints/Search";
+import {
+  fetchReviewableClasses,
+  reportReview,
+  makeReviewVisible,
+  undoReportReview,
+  removeReview,
+  setProfessors,
+} from "./endpoints/AdminActions";
 
 export interface Context {
-    ip: string;
+  ip: string;
 }
 
 // A type which captures an endpoint, and the guard for that endpoint
 // INVARIANT: If an object passes the guard, it can be coerced into type T
 export interface Endpoint<T> {
-    guard: ValidationChain[];
-    // TODO: this is needed for backwards compatibility with many of the methods
-    // This is bad in the long run. Please fix.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (ctx: Context, args: T) => any;
+  guard: ValidationChain[];
+  // TODO: this is needed for backwards compatibility with many of the methods
+  // This is bad in the long run. Please fix.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  callback: (ctx: Context, args: T) => any;
 }
 
 /*
@@ -57,6 +89,8 @@ export function configure(app: express.Application) {
   register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
   register(app, "getReviewsByStudentId", getReviewsByStudentId);
   register(app, "countReviewsByStudentId", countReviewsByStudentId);
+  register(app, "setProfessors", setProfessors);
+  register(app, "getStudentEmailByToken", getStudentEmailByToken);
 }
 
 function register<T>(

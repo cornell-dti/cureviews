@@ -4,10 +4,14 @@ export class SessionStore {
     return !item ? undefined : JSON.parse(item);
   }
 
-  set(key: string, data: any) { localStorage.setItem(key, JSON.stringify(data)); }
+  set(key: string, data: any) {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
 
   setPersistent(items: { [key: string]: any }) {
-    Object.entries(items).forEach(([key, value]) => localStorage.setItem(key, JSON.stringify(value)));
+    Object.entries(items).forEach(([key, value]) =>
+      localStorage.setItem(key, JSON.stringify(value)),
+    );
   }
 }
 

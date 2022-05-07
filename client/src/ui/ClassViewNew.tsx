@@ -308,16 +308,25 @@ export default function ClassView() {
               }`}
             >
               <div className={styles.gauge}>
-                <Gauge rating={selectedClass!.classRating} label="Overall" />
+                <Gauge
+                  rating={selectedClass!.classRating}
+                  label="Overall"
+                  isOverall={true}
+                />
               </div>
               <div className={styles.gauge}>
                 <Gauge
                   rating={selectedClass.classDifficulty}
                   label="Difficulty"
+                  isOverall={false}
                 />
               </div>
               <div className={styles.gauge}>
-                <Gauge rating={selectedClass.classWorkload} label="Workload" />
+                <Gauge
+                  rating={selectedClass.classWorkload}
+                  label="Workload"
+                  isOverall={false}
+                />
               </div>
             </div>
             {/* leave a review button, only shown on smaller screens */}
