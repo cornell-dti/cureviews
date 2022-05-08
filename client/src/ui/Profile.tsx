@@ -12,6 +12,7 @@ import CourseReviews from "./CourseReviews";
 import axios from "axios";
 import { Session } from "../session-store";
 import Navbar from "./Navbar";
+import { Redirect } from "react-router-dom";
 
 type ProfileProps = {
   imageSrc: any;
@@ -31,6 +32,21 @@ ProfileProps) {
   const [verifiedEmail, setVerifiedEmail] = useState("");
 
   const [netId, setNetId] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = Session.get("token");
+
+    if (
+      token &&
+      token !== "" &&
+      new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
+    ) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn]);
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
@@ -108,9 +124,10 @@ ProfileProps) {
 
   function signOut() {
     Session.set("token", null);
+    setIsLoggedIn(false);
   }
 
-  if (!loading) {
+  if (!loading && isLoggedIn) {
     return (
       <div className={`row ${styles.fullScreen}`}>
         <Navbar userInput="" />
@@ -232,6 +249,8 @@ ProfileProps) {
         </div>
       </div>
     );
+  } else if (!loading && !isLoggedIn) {
+    return <Redirect to="/" />;
   }
   return <>Loading...</>;
 }
