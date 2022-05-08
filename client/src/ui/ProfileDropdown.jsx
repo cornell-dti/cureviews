@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import styles from "../ui/css/ProfileDropdown.module.css";
-import { Session } from "../session-store";
 
-export default function ProfileDropdown() {
+export default function ProfileDropdown(props) {
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
   const toggling = () => setOpen(!open);
@@ -24,11 +23,6 @@ export default function ProfileDropdown() {
     };
   }, [open]);
 
-  function signOut() {
-    Session.set("token", null)
-    setOpen(false)
-  }
-
   return (
     <div className={styles.profileMenuContainer}>
       <img
@@ -44,7 +38,7 @@ export default function ProfileDropdown() {
           <a href='/profile' className={styles.profileMenuLink}>
             My Reviews
           </a>
-          <button className={styles.profileMenuSignOutButton} onClick={signOut}>Sign Out</button>
+          <button className={styles.profileMenuSignOutButton} onClick={props.signOut}>Sign Out</button>
         </div>
       ) : (
         <div></div>
