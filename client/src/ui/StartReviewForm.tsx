@@ -52,6 +52,7 @@ export default function StartReviewForm({
           maxRating={5}
           minLabel="Not for me"
           maxLabel="Loved it"
+          isOverall={true}
         />
       </div>
       <div className={styles.ratingInput}>
@@ -63,6 +64,7 @@ export default function StartReviewForm({
           maxRating={5}
           minLabel="Piece of cake"
           maxLabel="Challenging"
+          isOverall={false}
         />
       </div>
       <div className={styles.ratingInput}>
@@ -74,6 +76,7 @@ export default function StartReviewForm({
           maxRating={5}
           minLabel="Not much"
           maxLabel="Lots of work"
+          isOverall={false}
         />
       </div>
       <label className={styles.covidCheckboxLabel}>
