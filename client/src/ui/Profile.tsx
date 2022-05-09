@@ -156,7 +156,7 @@ ProfileProps) {
                 ></ProfileCard>
               </div>
               <button className={styles.profileSignOutButton} onClick={signOut}>
-                <p className={styles.profileSignOutText}>Signout</p>
+                <p className={styles.profileSignOutText}>Sign Out</p>
               </button>
             </div>
           </div>
