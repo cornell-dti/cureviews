@@ -1,11 +1,39 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
-import { ReviewDocument, Reviews, Students, Classes } from "../dbDefs";
+import { ReviewDocument, Reviews, Students } from "../dbDefs";
+
+import { getVerificationTicket } from "./Auth";
 
 // The type of a query with a studentId
 export interface NetIdQuery {
   netId: string;
 }
+
+export interface ProfileRequest {
+  token: string;
+}
+
+export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
+  guard: [body("token").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: ProfileRequest) => {
+    const { token } = request;
+
+    try {
+      const ticket = await getVerificationTicket(token);
+      if (ticket.hd === "cornell.edu") {
+        return { code: 200, message: ticket.email };
+      }
+
+      return { code: 500, message: "Invalid email" };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getStudentEmailByToken' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return { code: 500, message: error.message };
+    }
+  },
+};
 
 /**
  * Counts the number of reviews made by a given student id.
@@ -40,9 +68,16 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     const { netId } = request;
     let totalLikes = 0;
     try {
-      const reviews = await getreviewIDsByStudentID(netId);
+      const studentDoc = await Students.findOne({ netId });
+      const reviewIds = studentDoc.reviews;
+      let reviews: ReviewDocument[] = await Promise.all(
+        reviewIds.map(
+          async (reviewId) => await Reviews.findOne({ _id: reviewId }),
+        ),
+      );
+      reviews = reviews.filter((review) => review !== null);
       reviews.forEach((review) => {
-        if ('likes' in review) {
+        if ("likes" in review) {
           totalLikes += review.likes;
         }
       });
@@ -66,7 +101,17 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      const reviews = await getreviewIDsByStudentID(netId);
+      const studentDoc = await Students.findOne({ netId });
+      const reviewIds = studentDoc.reviews;
+      if (reviewIds === null) {
+        return { code: 200, message: [] };
+      }
+      let reviews: ReviewDocument[] = await Promise.all(
+        reviewIds.map(
+          async (reviewId) => await Reviews.findOne({ _id: reviewId }),
+        ),
+      );
+      reviews = reviews.filter((review) => review !== null);
       return { code: 200, message: reviews };
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -77,12 +122,3 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
     }
   },
 };
-
-async function getreviewIDsByStudentID(netId: string) {
-  const studentDoc = await Students.findOne({ netId });
-  const reviewIds = studentDoc.reviews;
-  const reviews: ReviewDocument[] = await Promise.all(
-    reviewIds.map(async (reviewId) => await Reviews.findOne({ _id: reviewId })),
-  );
-  return reviews;
-}

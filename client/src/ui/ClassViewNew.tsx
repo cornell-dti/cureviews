@@ -27,7 +27,7 @@ export default function ClassView() {
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [courseReviews, setCourseReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
-  const [scrollTop, setScrollTop] = useState(0);
+  const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -38,6 +38,16 @@ export default function ClassView() {
   const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
   const sortByDate = (a: Review, b: Review) =>
     !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
+
+  /**
+   * Fetches current course info and reviews and updates UI state
+   */
+  useEffect(() => {
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 28);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   /**
    * Fetches current course info and reviews and updates UI state
@@ -80,6 +90,31 @@ export default function ClassView() {
    * auth)
    */
   useEffect(() => {
+    /**
+     * Submit review and clear session storage
+     */
+    async function submitReview(review: NewReview, classId: string) {
+      try {
+        const response = await axios.post("/v2/insertReview", {
+          token: Session.get("token"),
+          review: review,
+          classId: classId,
+        });
+
+        if (response.data.result.resCode === 1) {
+          clearSessionReview();
+          setIsReviewModalOpen(false);
+          toast.success(
+            "Thanks for reviewing! New reviews are updated every 24 hours."
+          );
+        } else {
+          toast.error("An error occurred, please try again.");
+        }
+      } catch (e) {
+        toast.error("An error occurred, please try again.");
+      }
+    }
+
     const sessionReview = Session.get("review");
     const sessionCourseId = Session.get("courseId");
     if (
@@ -158,31 +193,6 @@ export default function ClassView() {
   }
 
   /**
-   * Submit review and clear session storage
-   */
-  async function submitReview(review: NewReview, classId: string) {
-    try {
-      const response = await axios.post("/v2/insertReview", {
-        token: Session.get("token"),
-        review: review,
-        classId: classId,
-      });
-
-      if (response.data.result.resCode === 1) {
-        clearSessionReview();
-        setIsReviewModalOpen(false);
-        toast.success(
-          "Thanks for reviewing! New reviews are updated every 24 hours."
-        );
-      } else {
-        toast.error("An error occurred, please try again.");
-      }
-    } catch (e) {
-      toast.error("An error occurred, please try again.");
-    }
-  }
-
-  /**
    * Error page
    */
   if (pageStatus === PageStatus.Error) {
@@ -258,26 +268,32 @@ export default function ClassView() {
           <ModalContentAuth />
         </Modal>
 
-        <div className="row">
+        <div className="row d-none d-lg-block">
           <Navbar userInput={input} />
         </div>
 
-        <div
-          className={`row ${styles.content}`}
-          onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
-        >
+        <div className={`row ${styles.content}`}>
           <div
-            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn}`}
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
+              isPastScrollThreshold && styles.courseInfoColumnShadow
+            }`}
           >
-            <div>
-              <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
-              <p className={styles.courseSubtitle}>
-                {selectedClass.classSub.toUpperCase() +
-                  " " +
-                  selectedClass.classNum +
-                  ", " +
-                  lastOfferedSems(selectedClass)}
-              </p>
+            <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
+            <p className={styles.courseSubtitle}>
+              {selectedClass.classSub.toUpperCase() +
+                " " +
+                selectedClass.classNum +
+                ", " +
+                lastOfferedSems(selectedClass)}
+            </p>
+            <div
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                styles.ratingMobileBox
+              }`}
+            >
+              <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
+              <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
+              <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
             </div>
             {/* review form, only shown on larger screens */}
             <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
@@ -289,23 +305,38 @@ export default function ClassView() {
             </div>
           </div>
           <div className={`col ${styles.courseReviewColumn}`}>
-            <div className={styles.gaugeContainer}>
+            <div
+              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
+                styles.gaugeContainer
+              }`}
+            >
               <div className={styles.gauge}>
-                <Gauge rating={selectedClass!.classRating} label="Overall" />
+                <Gauge
+                  rating={selectedClass!.classRating}
+                  label="Overall"
+                  isOverall={true}
+                />
               </div>
               <div className={styles.gauge}>
                 <Gauge
                   rating={selectedClass.classDifficulty}
                   label="Difficulty"
+                  isOverall={false}
                 />
               </div>
               <div className={styles.gauge}>
-                <Gauge rating={selectedClass.classWorkload} label="Workload" />
+                <Gauge
+                  rating={selectedClass.classWorkload}
+                  label="Workload"
+                  isOverall={false}
+                />
               </div>
             </div>
             {/* leave a review button, only shown on smaller screens */}
             <button
-              className={`btn d-lg-none ${styles.startReviewButton}`}
+              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
+                styles.startReviewButton
+              }`}
               onClick={() => onLeaveReview()}
             >
               Leave a review
@@ -332,9 +363,11 @@ export default function ClassView() {
               <CourseReviews
                 reviews={courseReviews}
                 onReportReview={reportReview}
+                isPreview={false}
+                isProfile={false}
               />
               <div
-                className={`d-lg-none ${scrollTop <= 400 && "d-none"} ${
+                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
                   styles.fixedButtonContainer
                 }`}
               >

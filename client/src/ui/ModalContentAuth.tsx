@@ -2,6 +2,9 @@ import React from "react";
 import CUreviewsGoogleLogin from "./CUreviewsGoogleLogin";
 import styles from "./css/ModalContentAuth.module.css";
 
+/**
+ * This component redirects users to Google log in.
+ */
 export default function ModalContentAuth() {
   return (
     <>

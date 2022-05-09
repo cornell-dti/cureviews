@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import RatingInput from "./RatingInput";
 import styles from "./css/ReviewForm.module.css";
+import { majors } from "client/src/ui/majors";
 
 type ReviewFormProps = {
   actionButtonLabel: string;
@@ -18,8 +19,14 @@ export type NewReview = {
   workload: number;
   professors: string[];
   isCovid: boolean;
+  grade: string;
+  major: string[];
 };
 
+/**
+ * This component contains the form UI, state, and validation to write a new
+ * review.
+ */
 export default function ReviewForm({
   actionButtonLabel,
   onSubmitReview,
@@ -40,6 +47,10 @@ export default function ReviewForm({
   const [reviewText, setReviewText] = useState(value?.text || "");
   const [isReviewTextInvalid, setIsReviewTextInvalid] = useState(false);
   const [isCovid, setIsCovid] = useState(value?.isCovid || false);
+  const [selectedGrade, setGradeSelected] = useState(value?.grade || "");
+  const [selectedMajors, setMajorSelected] = useState<string[]>(
+    value?.major || []
+  );
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || [];
@@ -93,6 +104,7 @@ export default function ReviewForm({
           maxRating={5}
           minLabel="Not for me"
           maxLabel="Loved it"
+          isOverall={true}
         />
       </div>
       <div className={styles.ratingInput}>
@@ -104,6 +116,7 @@ export default function ReviewForm({
           maxRating={5}
           minLabel="Piece of cake"
           maxLabel="Challenging"
+          isOverall={false}
         />
       </div>
       <div className={styles.ratingInput}>
@@ -115,6 +128,55 @@ export default function ReviewForm({
           maxRating={5}
           minLabel="Not much"
           maxLabel="Lots of work"
+          isOverall={false}
+        />
+      </div>
+      <div>
+        <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          Grade Received (optional)
+        </label>
+        <Select
+          value={{ value: selectedGrade, label: selectedGrade }}
+          onChange={(grade: any) => {
+            setGradeSelected(grade.value);
+          }}
+          isSingle
+          options={toSelectOptions([
+            "A+",
+            "A",
+            "A-",
+            "B+",
+            "B",
+            "B-",
+            "C+",
+            "C",
+            "C-",
+            "D+",
+            "D",
+            "D-",
+            "F",
+          ])}
+          placeholder="Select Grade"
+        />
+      </div>
+      <div>
+        <label
+          className={styles.selectProfessorLabel}
+          htmlFor="select-professor"
+        >
+          What's your major? (optional)
+        </label>
+        <Select
+          value={toSelectOptions(selectedMajors)}
+          onChange={(majors: any) => {
+            setMajorSelected(majors?.map(({ value, label }: any) => value));
+          }}
+          isMulti
+          options={toSelectOptions(majors)}
+          placeholder="Select Major(s)"
         />
       </div>
       {isReviewCommentVisible && (
@@ -127,6 +189,7 @@ export default function ReviewForm({
                 setIsReviewTextInvalid(false);
                 setReviewText(event.target.value);
               }}
+              placeholder="What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?"
             />
           </label>
           {isReviewTextInvalid && (
@@ -159,6 +222,8 @@ export default function ReviewForm({
               professors: selectedProfessors,
               text: reviewText,
               isCovid,
+              grade: selectedGrade,
+              major: selectedMajors,
             });
           }
         }}
