@@ -1,6 +1,6 @@
 import { ValidationChain, body } from "express-validator";
 import { InsertUserRequest, CourseIdQuery } from "./Review";
-import { Classes, Students, Reviews } from "../dbDefs";
+import { Classes, Students } from "../dbDefs";
 import { getUserByNetId, getVerificationTicket } from "./Auth";
 
 import shortid = require("shortid");
@@ -100,16 +100,5 @@ export const verifyToken = async (token: string) => {
     // eslint-disable-next-line no-console
     console.log(error);
     return false;
-  }
-};
-
-export const findReviews = async (reviewId: string) => {
-  try {
-    const review = await Reviews.findOne({ _id: reviewId });
-
-    if (review == null) {
-    }
-  } catch (error) {
-    console.log("Error");
   }
 };
