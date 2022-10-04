@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import { getAuthToken } from '../auth/auth_utils';
 import { Session } from '../session-store';
 
 /*
@@ -29,7 +30,7 @@ export default class AuthRedirect extends Component<Props> {
   //Using meteor session to save the token to Session
   saveToken(token: string) {
     Session.setPersistent({ "token": token });
-    if (Session.get("token") !== token) {
+    if (getAuthToken() !== token) {
       console.log("Error saving token to session")
       return 0;
     }

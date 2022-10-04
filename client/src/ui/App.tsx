@@ -4,6 +4,7 @@ import LoginModal from "./LoginModal";
 import ProfileDropdown from "./ProfileDropdown.jsx";
 import "./css/App.css";
 import { Session } from "../session-store";
+import { getAuthToken } from "../auth/auth_utils.js";
 
 /*
   App Component. Uppermost View component in the component tree,
@@ -16,7 +17,7 @@ export default function App(): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = Session.get("token");
+    const token = getAuthToken();
 
     if (
       token &&

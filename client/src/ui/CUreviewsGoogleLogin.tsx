@@ -53,7 +53,7 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
     if (token) {
       // @ts-ignore
       if (this.saveToken(token) === 1) {
-        console.log(Session.get("token"));
+        console.log(getAuthToken());
         // console.log("Succesfully saved token to session");
       } else {
         console.log("Error saving token");
@@ -64,7 +64,7 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
 
   getRedirectURI = () => {
     if (window.location.host.includes("localhost")) {
-      
+
       return "http://" + window.location.host + "/auth/"
     }
     return "https://" + window.location.host + "/auth/"

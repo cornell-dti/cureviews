@@ -13,6 +13,7 @@ import axios from "axios";
 import { Session } from "../session-store";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
+import { getAuthToken } from "../auth/auth_utils";
 
 type ProfileProps = {
   imageSrc: any;
@@ -21,7 +22,7 @@ type ProfileProps = {
 export default function Profile({
   imageSrc = "/profile_bear.png",
 }: //for LOCAL TESTING use axl4 for no reviews, ag974 for past reviews, sj598 for pending + past reviews
-ProfileProps) {
+  ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
@@ -35,7 +36,7 @@ ProfileProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = Session.get("token");
+    const token = getAuthToken();
 
     if (
       token &&
@@ -50,7 +51,7 @@ ProfileProps) {
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
-      token: Session.get("token"),
+      token: getAuthToken(),
     });
 
     const res = response.data.result;

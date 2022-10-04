@@ -1,7 +1,8 @@
-import { Session } from './session-store';
+import { useEffect, useState } from 'react';
+import { Session } from '../session-store';
 
 export const setAuthToken = (token: string) => {
-    Session.setPersistent({ "token": token });
+    setAuthToken(token);
     if (Session.get("token") !== token) {
         console.log("Error saving token to session")
         return false;
@@ -16,4 +17,15 @@ export const getAuthToken = () => {
         return token;
     }
     else return null;
+}
+
+function useAuthToken() {
+    const [token, setToken] = useState(null);
+
+    useEffect(() => {
+        const token = getAuthToken();
+        setToken(token);
+    });
+
+    return [token,];
 }

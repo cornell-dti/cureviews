@@ -17,6 +17,7 @@ import { Results } from "./ui/Results";
 import NotFound from "./ui/NotFound";
 import PrivateRoute, { ProtectedRouteProps } from "./PrivateRoute";
 import { Session } from "./session-store";
+import { getAuthToken } from "./auth/auth_utils";
 
 Modal.setAppElement("#render-target");
 
@@ -29,7 +30,7 @@ application component the user should see based on the URL they enter.
 
 */
 
-const token = Session.get("token");
+const token = getAuthToken();
 function isAuthenticated() {
   if (
     token &&

@@ -8,11 +8,12 @@ import 'rodal/lib/rodal.css';
 import './css/Form.css';
 import { Session } from '../session-store';
 import axios from 'axios';
-import {majors} from 'client/src/ui/majors'
+import { majors } from 'client/src/ui/majors'
 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './css/customToast.css'
+import { getAuthToken } from '../auth/auth_utils';
 
 /*
   Form Component.
@@ -111,7 +112,7 @@ export default class Form extends Component {
     this.setState({ selectedProfessors: selectedProfessors });
   }
 
-   // Save the selected grade in the local state.
+  // Save the selected grade in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
   handleGradeChange(grade) {
     if (grade === null) {
@@ -123,7 +124,7 @@ export default class Form extends Component {
 
   // Save the current majors selected string for majors in the local state.
   // Called whenever this form element changes to trigger re-render to run validation.
-  handleMajorChange(majors){
+  handleMajorChange(majors) {
     if (majors === null) {
       majors = []
     }
@@ -234,8 +235,8 @@ export default class Form extends Component {
       [] //set to this
     const isCovid = this.state.isCovid;
     const grade = this.state.selectedGrade.length !== 0 ? //If length is not 0
-      this.state.selectedGrade.label : ''   
-    const major =  this.state.selectedMajors.map((major) => major.label)
+      this.state.selectedGrade.label : ''
+    const major = this.state.selectedMajors.map((major) => major.label)
     if (text.length > 0 && text !== null && this.state.selectedProfessors.length > 0) {
       // create new review object
       const newReview = {
@@ -271,7 +272,7 @@ export default class Form extends Component {
     // Call the API insert function
 
     axios.post("/v2/insertReview", {
-      token: Session.get("token"),
+      token: getAuthToken(),
       review: Session.get("review") !== "" ? Session.get("review") : this.state.review,
       classId: !Session.get("courseId") ? this.props.course._id : Session.get("courseId")
     }).then(response => {
@@ -353,20 +354,20 @@ export default class Form extends Component {
   getGradeOptions() {
     this.gradeReceived = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
     return this.gradeReceived.map((grade) =>
-      ({
-        "value": grade,
-        "label": grade
-      }))
+    ({
+      "value": grade,
+      "label": grade
+    }))
   }
 
-getMajorOptions() {
+  getMajorOptions() {
     this.majorsOptions = majors;
     return this.majorsOptions.map((major) =>
-      ({
-        "value": major,
-        "label": major
-      }))
-}
+    ({
+      "value": major,
+      "label": major
+    }))
+  }
 
   show() {
     this.setState({ visible: true });
@@ -425,7 +426,7 @@ getMajorOptions() {
               <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
-                      </div>
+                </div>
               </div>
             </div>
 
@@ -493,14 +494,14 @@ getMajorOptions() {
               <p id="modal-text" className="center-block">
                 You’re almost there! - log in with cornell.edu to
                 verify you are a student.
-                </p>
+              </p>
               <p id="modal-text" className="center-block">
                 (Don’t worry, your identity will always be kept secret!)
-                </p>
+              </p>
               <p id="modal-footer" className="center-block">
                 You will be redirected to our login page.
                 Not seeing it? Click here.
-                </p>
+              </p>
               <CUreviewsGoogleLogin
                 executeLogin={this.state.visible}
                 waitTime={3000}
@@ -551,7 +552,7 @@ getMajorOptions() {
               <div className="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div ref={this.noProfMsg} className={err.professorsEmpty ? "form-field-error" : "hidden"}>
                   Please select the professor(s) you took this class with!
-                      </div>
+                </div>
               </div>
             </div>
 
@@ -658,14 +659,14 @@ getMajorOptions() {
               <p id="modal-text" className="center-block">
                 You’re almost there! - log in with cornell.edu to
                 verify you are a student.
-                </p>
+              </p>
               <p id="modal-text" className="center-block">
                 (Don’t worry, your identity will always be kept secret!)
-                </p>
+              </p>
               <p id="modal-footer" className="center-block">
                 You will be redirected to our login page.
                 Not seeing it? Click here.
-                </p>
+              </p>
               <CUreviewsGoogleLogin
                 executeLogin={this.state.visible}
                 waitTime={3000}

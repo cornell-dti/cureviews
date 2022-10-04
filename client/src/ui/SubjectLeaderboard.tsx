@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Session } from '../session-store';
+import { getAuthToken } from '../auth/auth_utils';
 
 type State = { readonly topSubjects: readonly any[] };
 
@@ -19,7 +20,7 @@ export default class SubjectLeaderboard extends Component<{}, State> {
   componentDidMount() {
     // get the top subjects by number of reviews, using a Meteor function
     // defined in imports/api/classes
-    axios.post(`/v2/topSubjects`, { token: Session.get("token") }).then((res) => {
+    axios.post(`/v2/topSubjects`, { token: getAuthToken() }).then((res) => {
       let data = res.data.result;
       this.setState({ topSubjects: data });
     }).catch((err) => {
@@ -29,7 +30,7 @@ export default class SubjectLeaderboard extends Component<{}, State> {
 
   // convert the list of class topics into numbered leaderboard of most reviewed topics.
   renderCourses() {
-    if (this.state.topSubjects !== []) {
+    if (this.state.topSubjects.length != 0) {
       return this.state.topSubjects.map((course, index) => (
         <ol className="no-hover classbutton" key={index}>
           <h3 className="text-style-2" >
