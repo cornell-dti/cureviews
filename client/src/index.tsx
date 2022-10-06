@@ -15,8 +15,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
-import { ProtectedRouteProps } from "./PrivateRoute";
-import { getAuthToken } from "./auth/auth_utils";
 import Admin from "./ui/Admin";
 
 Modal.setAppElement("#render-target");
@@ -29,24 +27,6 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
-
-const token = getAuthToken();
-function isAuthenticated() {
-  if (
-    token &&
-    token !== "" &&
-    new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-const defaultProtectedRouteProps: ProtectedRouteProps = {
-  isAuthenticated: isAuthenticated(),
-  authenticationPath: "/",
-};
 
 render(
   <BrowserRouter>

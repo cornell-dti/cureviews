@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Session } from '../session-store';
 
+export const setAuthToken = (token: string) => {
+    Session.setPersistent({ "token": token });
+    if (Session.get("token") !== token) {
+        console.log("Error saving token to session")
+        return false;
+    }
+    return true;
+}
+
 export const getAuthToken = () => {
     const token = Session.get("token");
     if (!token || token === "") {

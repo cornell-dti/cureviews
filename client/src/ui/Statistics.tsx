@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 
-import { Session } from "../session-store";
-// import Accordian from './Accordian';
-
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
 import axios from 'axios';
 import { getAuthToken } from '../auth/auth_utils';
-type Props = any
+type Props = {
+  token: string,
+}
 type State = {
   howManyEachClass: any[];
   howManyReviewsEachClass: any[];

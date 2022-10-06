@@ -46,24 +46,6 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
     return 1;
   };
 
-  //This callback function is only called when Google Log-In uses a pop-up.  We now use a redirect
-  // instead.  Therefore this callback is never used/called but I'll leave here for furture reference.
-  // Previously called by adding: onSuccess={this.responseGoogle.bind(this)}
-  // as a prop passed into <GoogleLogin> component below.
-  responseGoogle = (response: GoogleLoginResponse) => {
-    const token = response.tokenId;
-    if (token) {
-      // @ts-ignore
-      if (this.saveToken(token) === 1) {
-        console.log(getAuthToken());
-        // console.log("Succesfully saved token to session");
-      } else {
-        console.log("Error saving token");
-      }
-      this.setState({ lastVerification: new Date().getTime() });
-    }
-  }
-
   getRedirectURI = () => {
     if (window.location.host.includes("localhost")) {
 

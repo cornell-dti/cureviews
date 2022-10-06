@@ -244,7 +244,7 @@ export class Admin extends Component {
           <div className="container-width whiteBg">
             <div className="width-90">
               <h2>Admin Interface</h2>
-              <Statistics />
+              <Statistics token={this.props.token} />
               <br />
 
               <div className="text-right">
