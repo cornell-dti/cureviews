@@ -9,7 +9,6 @@ export default function Login() {
   return (
     <CUreviewsGoogleLogin
       executeLogin={true}
-      waitTime={1500}
-      redirectFrom="admin" />
+      waitTime={1500} />
   )
 }

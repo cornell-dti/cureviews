@@ -2,15 +2,6 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Session } from '../session-store';
 
-export const setAuthToken = (token: string) => {
-    setAuthToken(token);
-    if (Session.get("token") !== token) {
-        console.log("Error saving token to session")
-        return false;
-    }
-    return true;
-}
-
 export const getAuthToken = () => {
     const token = Session.get("token");
     if (!token || token === "") {
@@ -23,19 +14,27 @@ export const getAuthToken = () => {
     else return null;
 }
 
-export function useAuthToken(): string | null {
+export function useAuth(redirectFrom: string): [string | null, boolean, () => void] {
     const [token, setToken] = useState(null);
+    const [isAuthenticating, setIsAuthenticating] = useState(true);
     const history = useHistory();
 
     useEffect(() => {
         const token = getAuthToken();
 
         if (!token || token === "") {
+            Session.setPersistent({ "redirectFrom": redirectFrom });
             history.push("/login");
         }
 
         setToken(token);
+        setIsAuthenticating(false);
     });
 
-    return token;
+    const signOut = () => {
+        Session.set("token", null);
+        history.push("/");
+    }
+
+    return [token, isAuthenticating, signOut];
 }

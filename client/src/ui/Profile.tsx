@@ -10,10 +10,9 @@ import { Review as ReviewType } from "common";
 import styles from "./css/Profile.module.css";
 import CourseReviews from "./CourseReviews";
 import axios from "axios";
-import { Session } from "../session-store";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
-import { getAuthToken, useAuthToken } from "../auth/auth_utils";
+import { getAuthToken, useAuth } from "../auth/auth_utils";
 
 type ProfileProps = {
   imageSrc: any;
@@ -33,21 +32,8 @@ export default function Profile({
   const [verifiedEmail, setVerifiedEmail] = useState("");
 
   const [netId, setNetId] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const token = useAuthToken();
-
-  useEffect(() => {
-    if (
-      token &&
-      token !== "" &&
-      new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-    ) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [token]);
+  const [token, isAuthenticating, signOut] = useAuth("profile");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
@@ -123,12 +109,7 @@ export default function Profile({
   getReviewsTotal();
   getReviewsHelpful();
 
-  function signOut() {
-    Session.set("token", null);
-    setIsLoggedIn(false);
-  }
-
-  if (!loading && isLoggedIn) {
+  if (!loading && token) {
     return (
       <div className={`row ${styles.fullScreen}`}>
         <Navbar userInput="" />
@@ -250,7 +231,7 @@ export default function Profile({
         </div>
       </div>
     );
-  } else if (!loading && !isLoggedIn) {
+  } else if (!loading && !token && !isAuthenticating) {
     return <Redirect to="/" />;
   }
   return <>Loading...</>;

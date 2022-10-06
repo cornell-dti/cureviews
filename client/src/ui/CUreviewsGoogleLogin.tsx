@@ -18,7 +18,7 @@ import { Session } from '../session-store';
 type Props = {
   readonly executeLogin: boolean;
   readonly waitTime: number;
-  readonly redirectFrom: string;
+  readonly redirectFrom?: string;
 };
 
 export default class CUreviewsGoogleLogin extends Component<Props, { lastVerification: number }> {
@@ -31,7 +31,9 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
 
     //Save redirect page
     //Will be either "admin" or "course"
-    this.saveRedirectToSession(this.props.redirectFrom);
+    if (this.props.redirectFrom) {
+      this.saveRedirectToSession(this.props.redirectFrom);
+    }
   }
 
   //Using meteor session to save the redirct page to Session

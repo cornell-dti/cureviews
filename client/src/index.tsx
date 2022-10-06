@@ -70,10 +70,9 @@ render(
           path="/results/:type/:input"
           component={Results}
         />
-        <PrivateRoute
-          {...defaultProtectedRouteProps}
-          exact={true}
-          path="/profile"
+        <Route
+          name="profile"
+          exact path="/profile"
           component={Profile}
         />
         <Route component={NotFound} />
