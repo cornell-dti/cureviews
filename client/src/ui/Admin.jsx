@@ -4,7 +4,7 @@ import UpdateReview from './AdminReview.tsx';
 import "./css/Admin.css";
 import Statistics from './Statistics.tsx';
 import axios from 'axios';
-import { getAuthToken } from '../auth/auth_utils';
+import { useAuthMandatoryLogin } from '../auth/auth_utils';
 
 /*
   Admin Interface Component.
@@ -81,7 +81,7 @@ export class Admin extends Component {
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   approveReview(review) {
-    axios.post("/v2/makeReviewVisible", { review: review, token: getAuthToken() })
+    axios.post("/v2/makeReviewVisible", { review: review, token: this.props.token })
       .then((response) => {
         const result = response.data.result;
         if (result.resCode === 1) {
@@ -94,7 +94,7 @@ export class Admin extends Component {
   // Call when user asks to remove a review. Accesses the Reviews database
   // and deletes the review with this id.
   removeReview(review, isUnapproved) {
-    axios.post("/v2/removeReview", { review: review, token: getAuthToken() })
+    axios.post("/v2/removeReview", { review: review, token: this.props.token })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -116,7 +116,7 @@ export class Admin extends Component {
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   unReportReview(review) {
-    axios.post("/v2/undoReportReview", { review: review, token: getAuthToken() })
+    axios.post("/v2/undoReportReview", { review: review, token: this.props.token })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -151,7 +151,7 @@ export class Admin extends Component {
     console.log("Updating professors");
     this.setState({ disableInit: true, loadingProfs: 1 });
 
-    axios.post("/v2/setProfessors", { token: getAuthToken() })
+    axios.post("/v2/setProfessors", { token: this.props.token })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 0) {
@@ -167,7 +167,7 @@ export class Admin extends Component {
     console.log("Setting the professors to an empty array");
     this.setState({ disableInit: true, resettingProfs: 1 });
 
-    axios.post("/v2/resetProfessors", { token: getAuthToken() })
+    axios.post("/v2/resetProfessors", { token: this.props.token })
       .then((response) => {
         const result = response.data.result.resCode;
         if (result === 1) {
@@ -332,32 +332,32 @@ export class Admin extends Component {
 
 // requires a list of reviews not visible to regular users
 Admin.propTypes = {
-  reviewsToApprove: PropTypes.array.isRequired
+  token: PropTypes.string.isRequired,
+  reviewsToApprove: PropTypes.array.isRequired,
 };
 
 // wrap in a container class that allows the component to dynamically grab reivews.
 // The component will automatically re-render when new views are added to the database.
 export default () => {
-  const [loading, setLoading] = useState(true);
   const [reviewsToApprove, setReviewsToApprove] = useState([]);
+  const [token, isAuthenticating, signOut] = useAuthMandatoryLogin("admin");
 
   useEffect(() => {
-    axios.post("/v2/fetchReviewableClasses", { token: getAuthToken() })
+    axios.post("/v2/fetchReviewableClasses", { token: token })
       .then((response) => {
         const result = response.data.result;
         if (result.resCode !== 0) {
           setReviewsToApprove(result);
-          setLoading(false);
         } else {
           console.log("Error at fetchReviewableClasses");
         }
       });
-  }, []);
+  }, [token, isAuthenticating]);
 
 
 
-  if (!loading) {
-    return <Admin reviewsToApprove={reviewsToApprove}></Admin>;
+  if (!isAuthenticating) {
+    return <Admin reviewsToApprove={reviewsToApprove} token={token}></Admin>;
   } else {
     return <div>Loading...</div>;
   }

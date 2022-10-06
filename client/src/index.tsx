@@ -15,11 +15,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
-import PrivateRoute, { ProtectedRouteProps } from "./PrivateRoute";
-import { Session } from "./session-store";
+import { ProtectedRouteProps } from "./PrivateRoute";
 import { getAuthToken } from "./auth/auth_utils";
 import Admin from "./ui/Admin";
-import AdminLogin from "./ui/AdminLogin";
 
 Modal.setAppElement("#render-target");
 
@@ -55,7 +53,7 @@ render(
     <div className="container-fluid full-height">
       <Switch>
         <Route name="app" exact path="/" component={App} />
-        <Route name="admin" exact path="/admin" component={AdminLogin} />
+        <Route name="admin" exact path="/admin" component={Admin} />
         <Route
           name="permalink"
           exact

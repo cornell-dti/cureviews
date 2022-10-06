@@ -12,7 +12,7 @@ import CourseReviews from "./CourseReviews";
 import axios from "axios";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
-import { getAuthToken, useLogin } from "../auth/auth_utils";
+import { getAuthToken, useAuthMandatoryLogin } from "../auth/auth_utils";
 
 type ProfileProps = {
   imageSrc: any;
@@ -33,7 +33,7 @@ export default function Profile({
 
   const [netId, setNetId] = useState("");
 
-  const [token, isAuthenticating, signOut] = useLogin("profile");
+  const [token, isAuthenticating, signOut] = useAuthMandatoryLogin("profile");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {

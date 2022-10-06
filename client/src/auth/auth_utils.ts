@@ -14,7 +14,7 @@ export const getAuthToken = () => {
     else return null;
 }
 
-export function useLogin(redirectFrom: string): [string | null, boolean, () => void] {
+export function useAuthMandatoryLogin(redirectFrom: string): [string | null, boolean, () => void] {
     const [token, setToken] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const history = useHistory();
@@ -41,4 +41,29 @@ export function useLogin(redirectFrom: string): [string | null, boolean, () => v
     }
 
     return [token, isAuthenticating, signOut];
+}
+
+export function useAuthOptionalLogin(): [string | null, (redirectFrom: string) => void, () => void] {
+    const [token, setToken] = useState(null);
+    const history = useHistory();
+
+    useEffect(() => {
+        const token = getAuthToken();
+
+        if (token || token !== "") {
+            setToken(token);
+        }
+    });
+
+    const signIn = (redirectFrom: string) => {
+        Session.setPersistent({ "redirectFrom": redirectFrom });
+        history.push("/login");
+    }
+
+    const signOut = () => {
+        Session.set("token", null);
+        history.push("/");
+    }
+
+    return [token, signIn, signOut];
 }
