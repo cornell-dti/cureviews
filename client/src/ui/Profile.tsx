@@ -13,7 +13,7 @@ import axios from "axios";
 import { Session } from "../session-store";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
-import { getAuthToken } from "../auth/auth_utils";
+import { getAuthToken, useAuthToken } from "../auth/auth_utils";
 
 type ProfileProps = {
   imageSrc: any;
@@ -35,9 +35,9 @@ export default function Profile({
   const [netId, setNetId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = getAuthToken();
+  const token = useAuthToken();
 
+  useEffect(() => {
     if (
       token &&
       token !== "" &&
@@ -47,7 +47,7 @@ export default function Profile({
     } else {
       setIsLoggedIn(false);
     }
-  }, [isLoggedIn]);
+  }, [token]);
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {

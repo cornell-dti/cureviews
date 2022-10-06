@@ -18,6 +18,8 @@ import NotFound from "./ui/NotFound";
 import PrivateRoute, { ProtectedRouteProps } from "./PrivateRoute";
 import { Session } from "./session-store";
 import { getAuthToken } from "./auth/auth_utils";
+import Admin from "./ui/Admin";
+import AdminLogin from "./ui/AdminLogin";
 
 Modal.setAppElement("#render-target");
 
@@ -53,7 +55,7 @@ render(
     <div className="container-fluid full-height">
       <Switch>
         <Route name="app" exact path="/" component={App} />
-        <Route name="admin" exact path="/admin" component={Login} />
+        <Route name="admin" exact path="/admin" component={AdminLogin} />
         <Route
           name="permalink"
           exact
@@ -61,6 +63,7 @@ render(
           component={ClassView}
         />
         <Route name="auth" exact path="/auth" component={AuthRedirect} />
+        <Route name="login" exact path="/login" component={Login} />
         <Route
           name="permalink"
           exact

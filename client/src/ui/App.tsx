@@ -4,7 +4,7 @@ import LoginModal from "./LoginModal";
 import ProfileDropdown from "./ProfileDropdown.jsx";
 import "./css/App.css";
 import { Session } from "../session-store";
-import { getAuthToken } from "../auth/auth_utils.js";
+import { getAuthToken } from "../auth/auth_utils";
 
 /*
   App Component. Uppermost View component in the component tree,
