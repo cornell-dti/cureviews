@@ -14,7 +14,7 @@ export const getAuthToken = () => {
     else return null;
 }
 
-export function useAuth(redirectFrom: string): [string | null, boolean, () => void] {
+export function useLogin(redirectFrom: string): [string | null, boolean, () => void] {
     const [token, setToken] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const history = useHistory();
@@ -23,13 +23,17 @@ export function useAuth(redirectFrom: string): [string | null, boolean, () => vo
         const token = getAuthToken();
 
         if (!token || token === "") {
-            Session.setPersistent({ "redirectFrom": redirectFrom });
-            history.push("/login");
+            signIn(redirectFrom)
         }
 
         setToken(token);
         setIsAuthenticating(false);
     });
+
+    const signIn = (redirectFrom: string) => {
+        Session.setPersistent({ "redirectFrom": redirectFrom });
+        history.push("/login");
+    }
 
     const signOut = () => {
         Session.set("token", null);

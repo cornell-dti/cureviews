@@ -9,6 +9,6 @@ export default function Login() {
   return (
     <CUreviewsGoogleLogin
       executeLogin={true}
-      waitTime={1500} />
+      waitTime={0} />
   )
 }

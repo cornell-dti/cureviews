@@ -4,7 +4,7 @@ import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
 import { Session } from "../session-store";
 import axios from 'axios';
-import { getAuthToken, useAuth } from '../auth/auth_utils';
+import { useLogin } from '../auth/auth_utils';
 import { Redirect } from 'react-router-dom';
 /*
   Admin Interface Login Component.
@@ -19,10 +19,10 @@ import { Redirect } from 'react-router-dom';
 
 export default function AdminLogin() {
 
-    const [token, isAuthenticating, signOut] = useAuth("admin");
+    const [token, isAuthenticating, signOut] = useLogin("admin");
 
     useEffect(() => {
-        axios.post(`/v2/tokenIsAdmin`, { token: getAuthToken() })
+        axios.post(`/v2/tokenIsAdmin`, { token: token })
             .then((res) => {
                 const result = res.data.result;
                 if (result) {

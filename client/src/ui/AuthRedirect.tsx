@@ -47,6 +47,9 @@ export default class AuthRedirect extends Component<Props> {
     else if (Session.get("redirectFrom") === "profile") {
       return <Redirect push to={"/profile"}></Redirect>
     }
+    else if (Session.get("redirectFrom") === "home") {
+      return <Redirect push to={"/"}></Redirect>
+    }
     else {
       return <Redirect push to={"/"}></Redirect>
     }
