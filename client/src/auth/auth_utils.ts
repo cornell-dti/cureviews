@@ -23,7 +23,8 @@ export const getAuthToken = () => {
     else return null;
 }
 
-export function useAuthMandatoryLogin(redirectFrom: string): [string | null, boolean, () => void] {
+export function useAuthMandatoryLogin(redirectFrom: string): [boolean, string | null, boolean, () => void] {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const history = useHistory();
@@ -37,6 +38,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): [string | null, boo
 
         setToken(token);
         setIsAuthenticating(false);
+        setIsLoggedIn(true);
     });
 
     const signIn = (redirectFrom: string) => {
@@ -45,22 +47,25 @@ export function useAuthMandatoryLogin(redirectFrom: string): [string | null, boo
     }
 
     const signOut = () => {
+        setToken(null);
         Session.set("token", null);
         history.push("/");
     }
 
-    return [token, isAuthenticating, signOut];
+    return [isLoggedIn, token, isAuthenticating, signOut];
 }
 
-export function useAuthOptionalLogin(): [string | null, (redirectFrom: string) => void, () => void] {
+export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: string) => void, () => void] {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState(null);
     const history = useHistory();
 
     useEffect(() => {
         const token = getAuthToken();
 
-        if (token || token !== "") {
+        if (token && token !== "") {
             setToken(token);
+            setIsLoggedIn(true);
         }
     });
 
@@ -70,9 +75,10 @@ export function useAuthOptionalLogin(): [string | null, (redirectFrom: string) =
     }
 
     const signOut = () => {
+        setToken(null);
         Session.set("token", null);
         history.push("/");
     }
 
-    return [token, signIn, signOut];
+    return [isLoggedIn, token, signIn, signOut];
 }

@@ -9,12 +9,11 @@ import { lastOfferedSems } from "common/CourseCard";
 import Gauge from "./Gauge";
 import CourseReviews from "./CourseReviews";
 import ReviewForm, { NewReview } from "./ReviewForm";
-import ModalContentAuth from "./ModalContentAuth";
 import { Class, Review } from "common";
 import { Session } from "../session-store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAuthToken } from "../auth/auth_utils";
+import { useAuthOptionalLogin } from "../auth/auth_utils";
 
 enum PageStatus {
   Loading,
@@ -29,9 +28,9 @@ export default function ClassView() {
   const [courseReviews, setCourseReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
-
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
 
   /**
    * Arrow functions for sorting reviews
@@ -97,13 +96,13 @@ export default function ClassView() {
     async function submitReview(review: NewReview, classId: string) {
       try {
         const response = await axios.post("/v2/insertReview", {
-          token: getAuthToken(),
+          token: token,
           review: review,
           classId: classId,
         });
 
+        clearSessionReview();
         if (response.data.result.resCode === 1) {
-          clearSessionReview();
           setIsReviewModalOpen(false);
           toast.success(
             "Thanks for reviewing! New reviews are updated every 24 hours."
@@ -112,6 +111,7 @@ export default function ClassView() {
           toast.error("An error occurred, please try again.");
         }
       } catch (e) {
+        clearSessionReview();
         toast.error("An error occurred, please try again.");
       }
     }
@@ -122,11 +122,12 @@ export default function ClassView() {
       sessionReview !== undefined &&
       sessionReview !== "" &&
       sessionCourseId !== undefined &&
-      sessionCourseId !== ""
+      sessionCourseId !== "" &&
+      isLoggedIn
     ) {
       submitReview(sessionReview, sessionCourseId);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   /**
    * Sorts reviews based on selected filter
@@ -167,6 +168,10 @@ export default function ClassView() {
     setIsReviewModalOpen(true);
   }
 
+  function loginToSubmit(review: NewReview) {
+
+  }
+
   /**
    * Save review information to session storage and begin redirect to auth
    */
@@ -180,7 +185,7 @@ export default function ClassView() {
     Session.setPersistent({ review_num: selectedClass?.classNum });
     Session.setPersistent({ courseId: selectedClass?._id });
 
-    setIsAuthModalOpen(true);
+    signIn("course");
   }
 
   /**
@@ -255,18 +260,6 @@ export default function ClassView() {
               actionButtonLabel="Submit review"
             />
           </div>
-        </Modal>
-
-        {/* auth redirect modal */}
-        <Modal
-          className={styles.authModal}
-          isOpen={isAuthModalOpen}
-          overlayClassName={styles.modalOverlay}
-          onRequestClose={() => setIsAuthModalOpen(false)}
-          shouldCloseOnOverlayClick
-          shouldCloseOnEsc
-        >
-          <ModalContentAuth />
         </Modal>
 
         <div className="row d-none d-lg-block">

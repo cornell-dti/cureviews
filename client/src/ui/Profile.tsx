@@ -33,7 +33,7 @@ export default function Profile({
 
   const [netId, setNetId] = useState("");
 
-  const [token, isAuthenticating, signOut] = useAuthMandatoryLogin("profile");
+  const [isLoggedIn, token, isAuthenticating, signOut] = useAuthMandatoryLogin("profile");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {

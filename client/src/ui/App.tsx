@@ -12,7 +12,7 @@ import { useAuthOptionalLogin } from "../auth/auth_utils";
   classes and recent reviews components.
 */
 export default function App(): JSX.Element {
-  const [token, signIn, signOut] = useAuthOptionalLogin();
+  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
 
   const sunset_start_times = [
     17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
