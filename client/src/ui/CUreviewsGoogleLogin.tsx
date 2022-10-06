@@ -2,7 +2,7 @@
 // The existing code is problematic...
 
 import React, { Component } from 'react';
-import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 import { Session } from '../session-store';
 
 /*

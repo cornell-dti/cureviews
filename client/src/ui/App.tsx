@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SearchBar from "./SearchBar.jsx";
 import ProfileDropdown from "./ProfileDropdown.jsx";
 import "./css/App.css";

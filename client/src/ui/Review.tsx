@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Session } from "../session-store";
 import ShowMoreText from "react-show-more-text";
 import { Review as ReviewType } from "common";
 

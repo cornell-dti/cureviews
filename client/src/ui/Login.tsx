@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CUreviewsGoogleLogin from './CUreviewsGoogleLogin';
 import "./css/Login.css";
 

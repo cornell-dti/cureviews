@@ -30,7 +30,7 @@ export default function ClassView() {
   const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const [isLoggedIn, token, signIn] = useAuthOptionalLogin();
 
   /**
    * Arrow functions for sorting reviews
@@ -127,7 +127,7 @@ export default function ClassView() {
     ) {
       submitReview(sessionReview, sessionCourseId);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, token]);
 
   /**
    * Sorts reviews based on selected filter
@@ -166,10 +166,6 @@ export default function ClassView() {
    */
   function onLeaveReview() {
     setIsReviewModalOpen(true);
-  }
-
-  function loginToSubmit(review: NewReview) {
-
   }
 
   /**

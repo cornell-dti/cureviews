@@ -29,7 +29,18 @@ export function useAuthMandatoryLogin(redirectFrom: string): [boolean, string | 
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const history = useHistory();
 
+    const signOut = () => {
+        setToken(null);
+        Session.set("token", null);
+        history.push("/");
+    }
+
     useEffect(() => {
+        const signIn = (redirectFrom: string) => {
+            Session.setPersistent({ "redirectFrom": redirectFrom });
+            history.push("/login");
+        }
+
         const token = getAuthToken();
 
         if (!token || token === "") {
@@ -39,18 +50,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): [boolean, string | 
         setToken(token);
         setIsAuthenticating(false);
         setIsLoggedIn(true);
-    });
-
-    const signIn = (redirectFrom: string) => {
-        Session.setPersistent({ "redirectFrom": redirectFrom });
-        history.push("/login");
-    }
-
-    const signOut = () => {
-        setToken(null);
-        Session.set("token", null);
-        history.push("/");
-    }
+    }, [redirectFrom]);
 
     return [isLoggedIn, token, isAuthenticating, signOut];
 }

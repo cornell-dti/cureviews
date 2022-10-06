@@ -340,7 +340,7 @@ Admin.propTypes = {
 // The component will automatically re-render when new views are added to the database.
 export default () => {
   const [reviewsToApprove, setReviewsToApprove] = useState([]);
-  const [isLoggedIn, token, isAuthenticating, signOut] = useAuthMandatoryLogin("admin");
+  const [isLoggedIn, token, isAuthenticating] = useAuthMandatoryLogin("admin");
 
   useEffect(() => {
     axios.post("/v2/fetchReviewableClasses", { token: token })
