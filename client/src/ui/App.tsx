@@ -15,7 +15,22 @@ import { Session } from "../session-store";
 
 export default function App(imgSrc: any): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const profilePictures = [
+    "/profile_bear/profile_bear_dark_blue.svg",
+    "/profile_bear/profile_bear_light_blue.svg",
+    "/profile_bear/profile_bear_light_pink.svg",
+    "/profile_bear/profile_bear_mint.png",
+    "/profile_bear/profile_bear_orange.svg",
+    "/profile_bear/profile_bear_purple.svg",
+    "/profile_bear/profile_bear_red.svg",
+    "/profile_bear/profile_bear_yellow.svg",
+  ];
 
+  function randomPicture() {
+    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
+  }
+
+  const profilePicture = randomPicture();
   useEffect(() => {
     const token = Session.get("token");
 
