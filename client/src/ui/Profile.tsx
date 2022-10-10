@@ -14,11 +14,7 @@ import { Session } from "../session-store";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
 
-type ProfileProps = {
-  imageSrc: any;
-};
-
-export default function Profile() {
+export default function Profile(imgSrc: any) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
@@ -124,31 +120,15 @@ export default function Profile() {
     setIsLoggedIn(false);
   }
 
-  const profilePictures = [
-    "/profile_bear/profile_bear_dark_blue.svg",
-    "/profile_bear/profile_bear_light_blue.svg",
-    "/profile_bear/profile_bear_light_pink.svg",
-    "/profile_bear/profile_bear_mint.png",
-    "/profile_bear/profile_bear_orange.svg",
-    "/profile_bear/profile_bear_purple.svg",
-    "/profile_bear/profile_bear_red.svg",
-    "/profile_bear/profile_bear_yellow.svg",
-  ];
-
-  function randomPicture() {
-    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
-  }
-
   if (!loading && isLoggedIn) {
     return (
       <div className={`row ${styles.fullScreen}`}>
         <Navbar userInput="" />
-
         <div className={`col-3 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
-              <img src={randomPicture()} alt="user" />
+              <img src={`${String(imgSrc.imgSrc)}`} alt="user" />
               <div className={styles.profileVerifiedEmail}>
                 Verified as: {netId}@cornell.edu
               </div>

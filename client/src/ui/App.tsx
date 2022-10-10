@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import SearchBar from "./SearchBar.jsx";
 import LoginModal from "./LoginModal";
 import ProfileDropdown from "./ProfileDropdown.jsx";
@@ -12,24 +12,10 @@ import { Session } from "../session-store";
   Renders the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 */
-export default function App(): JSX.Element {
+
+export default function App(imgSrc: any): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const profilePictures = [
-    "/profile_bear/profile_bear_dark_blue.svg",
-    "/profile_bear/profile_bear_light_blue.svg",
-    "/profile_bear/profile_bear_light_pink.svg",
-    "/profile_bear/profile_bear_mint.png",
-    "/profile_bear/profile_bear_orange.svg",
-    "/profile_bear/profile_bear_purple.svg",
-    "/profile_bear/profile_bear_red.svg",
-    "/profile_bear/profile_bear_yellow.svg",
-  ];
 
-  function randomPicture() {
-    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
-  }
-
-  const profilePicture = randomPicture();
   useEffect(() => {
     const token = Session.get("token");
 
@@ -87,7 +73,7 @@ export default function App(): JSX.Element {
     if (isLoggedIn) {
       return (
         <ProfileDropdown
-          imgSrc={profilePicture}
+          imgSrc={`${String(imgSrc.imgSrc)}`}
           isLoggedIn={isLoggedIn}
           signOut={signOut}
         />
@@ -133,7 +119,7 @@ export default function App(): JSX.Element {
               </p>
             </div>
             <SearchBar
-              imgSrc={profilePicture}
+              imgSrc={`${String(imgSrc.imgSrc)}`}
               signOut={signOut}
               isLoggedIn={isLoggedIn}
             />
