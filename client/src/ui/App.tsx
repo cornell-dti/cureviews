@@ -14,7 +14,22 @@ import { Session } from "../session-store";
 */
 export default function App(): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const profilePictures = [
+    "/profile_bear/profile_bear_dark_blue.svg",
+    "/profile_bear/profile_bear_light_blue.svg",
+    "/profile_bear/profile_bear_light_pink.svg",
+    "/profile_bear/profile_bear_mint.png",
+    "/profile_bear/profile_bear_orange.svg",
+    "/profile_bear/profile_bear_purple.svg",
+    "/profile_bear/profile_bear_red.svg",
+    "/profile_bear/profile_bear_yellow.svg",
+  ];
 
+  function randomPicture() {
+    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
+  }
+
+  const profilePicture = randomPicture();
   useEffect(() => {
     const token = Session.get("token");
 
@@ -70,7 +85,13 @@ export default function App(): JSX.Element {
 
   function displayButton() {
     if (isLoggedIn) {
-      return <ProfileDropdown isLoggedIn={isLoggedIn} signOut={signOut} />;
+      return (
+        <ProfileDropdown
+          imgSrc={profilePicture}
+          isLoggedIn={isLoggedIn}
+          signOut={signOut}
+        />
+      );
     } else {
       return (
         <button
@@ -111,7 +132,11 @@ export default function App(): JSX.Element {
                 feedback
               </p>
             </div>
-            <SearchBar />
+            <SearchBar
+              imgSrc={profilePicture}
+              signOut={signOut}
+              isLoggedIn={isLoggedIn}
+            />
           </div>
         </div>
         <div className="">

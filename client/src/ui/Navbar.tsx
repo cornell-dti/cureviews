@@ -16,7 +16,7 @@ import SearchBar from './SearchBar.jsx';
   Include the route for View components.
 */
 
-export default class Navbar extends Component<{ readonly userInput: string }> {
+export default class Navbar extends Component<{ readonly userInput: string}> {
 
   render() {
     return (

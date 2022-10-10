@@ -18,10 +18,7 @@ type ProfileProps = {
   imageSrc: any;
 };
 
-export default function Profile({
-  imageSrc = "/profile_bear.png",
-}: //for LOCAL TESTING use axl4 for no reviews, ag974 for past reviews, sj598 for pending + past reviews
-ProfileProps) {
+export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
@@ -127,6 +124,21 @@ ProfileProps) {
     setIsLoggedIn(false);
   }
 
+  const profilePictures = [
+    "/profile_bear/profile_bear_dark_blue.svg",
+    "/profile_bear/profile_bear_light_blue.svg",
+    "/profile_bear/profile_bear_light_pink.svg",
+    "/profile_bear/profile_bear_mint.png",
+    "/profile_bear/profile_bear_orange.svg",
+    "/profile_bear/profile_bear_purple.svg",
+    "/profile_bear/profile_bear_red.svg",
+    "/profile_bear/profile_bear_yellow.svg",
+  ];
+
+  function randomPicture() {
+    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
+  }
+
   if (!loading && isLoggedIn) {
     return (
       <div className={`row ${styles.fullScreen}`}>
@@ -136,7 +148,7 @@ ProfileProps) {
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
-              <img src={imageSrc} alt="user" />
+              <img src={randomPicture()} alt="user" />
               <div className={styles.profileVerifiedEmail}>
                 Verified as: {netId}@cornell.edu
               </div>
