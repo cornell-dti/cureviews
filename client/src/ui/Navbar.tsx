@@ -32,7 +32,6 @@ let time_of_day = hours;
 if (minutes > 30) {
   time_of_day += 0.51;
 }
-
 let monthclass = "";
 let dayclass = "afternoon";
 
