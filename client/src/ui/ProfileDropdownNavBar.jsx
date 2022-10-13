@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../ui/css/ProfileDropdown.module.css";
 
-export default function ProfileDropdown(props) {
+export default function ProfileDropdownNavBar(props) {
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
   const toggling = () => setOpen(!open);
