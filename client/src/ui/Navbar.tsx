@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar.jsx";
 import LoginModal from "./LoginModal";
 import { Session } from "../session-store";
 import ProfileDropdown from "./ProfileDropdown.jsx";
+import ProfileDropdownNavBar from "./ProfileDropdownNavBar.jsx";
 
 /*
   Navbar Component. Short description if needed.
@@ -65,7 +66,7 @@ function displayButton() {
     token !== "" &&
     new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date();
   if (isLoggedIn) {
-    return <ProfileDropdown isLoggedIn={isLoggedIn} signOut={signOut} />;
+    return <ProfileDropdownNavBar isLoggedIn={isLoggedIn} signOut={signOut} />;
   } else {
     return (
       <button

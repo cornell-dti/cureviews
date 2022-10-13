@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "../ui/css/ProfileDropdown.module.css";
+import styles from "../ui/css/ProfileDropdownNavBar.module.css";
 
 export default function ProfileDropdownNavBar(props) {
   const dropdownRef = useRef(null);

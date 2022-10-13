@@ -1,14 +1,14 @@
 .profileMenuContainer {
-  margin-top: 38px;
-  margin-right: 36px;
+  margin-top: 0px;
+  margin-right: 100px;
   position: absolute;
   right: 0;
   cursor: pointer;
 }
 
 .profileBear {
-  width: 53px;
-  height: 53px;
+  width: 60px;
+  height: 60px;
 }
 
 .profileMenuCard {
