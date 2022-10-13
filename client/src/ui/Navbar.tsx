@@ -3,7 +3,6 @@ import "./css/Navbar.css";
 import SearchBar from "./SearchBar.jsx";
 import LoginModal from "./LoginModal";
 import { Session } from "../session-store";
-import ProfileDropdown from "./ProfileDropdown.jsx";
 import ProfileDropdownNavBar from "./ProfileDropdownNavBar.jsx";
 
 /*
