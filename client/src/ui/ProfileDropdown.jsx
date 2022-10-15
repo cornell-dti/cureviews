@@ -26,7 +26,7 @@ export default function ProfileDropdown(props) {
   return (
     <div className={styles.profileMenuContainer}>
       <img
-        src='/profile_bear.png'
+        src={props.imgSrc}
         alt='profile bear'
         className={styles.profileBear}
         ref={dropdownRef}
