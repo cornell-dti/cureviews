@@ -1,4 +1,4 @@
-.fullScreen{
+.fullScreen {
   height: 100%;
   overflow: auto;
 }
@@ -42,6 +42,10 @@
   align-items: center;
   text-align: center;
   justify-content: center;
+}
+
+.profileImage {
+  width: 120px;
 }
 
 .profileTitle {
@@ -140,7 +144,7 @@
   width: 100%;
   overflow-y: auto;
   padding-right: 30px;
-  height:200px;
+  height: 200px;
 }
 
 .pastReviews {
@@ -332,6 +336,7 @@
   .classView {
     background-color: transparent;
   }
+
   .courseReviewColumn {
     padding: 0 35px 35px;
   }

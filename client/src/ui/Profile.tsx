@@ -110,7 +110,7 @@ export default function Profile(imgSrc: any) {
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
-              <img src={`${String(imgSrc.imgSrc)}`} alt="user" />
+              <img className={styles.profileImage} src={`${String(imgSrc.imgSrc)}`} alt="user" />
               <div className={styles.profileVerifiedEmail}>
                 Verified as: {netId}@cornell.edu
               </div>
