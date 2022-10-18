@@ -11,8 +11,24 @@ import { useAuthOptionalLogin } from "../auth/auth_utils";
   Renders the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 */
-export default function App(): JSX.Element {
+export default function App(imgSrc: any): JSX.Element {
   const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const profilePictures = [
+    "/profile_bear/profile_bear_dark_blue.svg",
+    "/profile_bear/profile_bear_light_blue.svg",
+    "/profile_bear/profile_bear_light_pink.svg",
+    "/profile_bear/profile_bear_mint.png",
+    "/profile_bear/profile_bear_orange.svg",
+    "/profile_bear/profile_bear_purple.svg",
+    "/profile_bear/profile_bear_red.svg",
+    "/profile_bear/profile_bear_yellow.svg",
+  ];
+
+  function randomPicture() {
+    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
+  }
+
+  const profilePicture = randomPicture();
 
   const sunset_start_times = [
     17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
@@ -50,7 +66,7 @@ export default function App(): JSX.Element {
 
   function displayButton() {
     if (token) {
-      return <ProfileDropdown isLoggedIn={token} signOut={signOut} />;
+      return <ProfileDropdown imgSrc={`${String(imgSrc.imgSrc)}`} isLoggedIn={token} signOut={signOut} />;
     } else {
       return (
         <button
@@ -90,7 +106,11 @@ export default function App(): JSX.Element {
                 feedback
               </p>
             </div>
-            <SearchBar />
+            <SearchBar
+              imgSrc={`${String(imgSrc.imgSrc)}`}
+              signOut={signOut}
+              isLoggedIn={isLoggedIn}
+            />
           </div>
         </div>
         <div className="">
