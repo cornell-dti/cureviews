@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../ui/css/ProfileDropdownNavBar.module.css";
 
-export default function ProfileDropdownNavBar(props) {
+export default function ProfileDropdown(props) {
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
   const toggling = () => setOpen(!open);
@@ -25,7 +25,7 @@ export default function ProfileDropdownNavBar(props) {
   return (
     <div className={styles.profileMenuContainer}>
       <img
-        src='/profile_bear.png'
+        src={props.imgSrc}
         alt='profile bear'
         className={styles.profileBear}
         ref={dropdownRef}

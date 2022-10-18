@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SearchBar from "./SearchBar.jsx";
-import LoginModal from "./LoginModal";
 import ProfileDropdown from "./ProfileDropdown.jsx";
 import "./css/App.css";
-import { Session } from "../session-store";
+import { useAuthOptionalLogin } from "../auth/auth_utils";
 
 /*
   App Component. Uppermost View component in the component tree,
@@ -12,22 +11,8 @@ import { Session } from "../session-store";
   Renders the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 */
-export default function App(): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = Session.get("token");
-
-    if (
-      token &&
-      token !== "" &&
-      new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-    ) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
+export default function App(imgSrc: any): JSX.Element {
+  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
 
   const sunset_start_times = [
     17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
@@ -63,30 +48,24 @@ export default function App(): JSX.Element {
     dayclass = "sunset";
   }
 
-  function signOut() {
-    Session.set("token", null);
-    setIsLoggedIn(false);
-  }
-
   function displayButton() {
-    if (isLoggedIn) {
-      return <ProfileDropdown isLoggedIn={isLoggedIn} signOut={signOut} />;
+    if (token) {
+      return <ProfileDropdown imgSrc={`${String(imgSrc.imgSrc)}`} isLoggedIn={token} signOut={signOut} />;
     } else {
       return (
         <button
           type="button"
           className="btn btn-light sign-in-button"
-          data-toggle="modal"
-          data-target="#signinModal"
+          onClick={() => { signIn("home") }}
         >
           Sign In
         </button>
       );
     }
   }
+
   return (
     <div className="row">
-      <LoginModal />
       <div
         className={
           "col full-height background-common background-gradient_" +
@@ -111,7 +90,11 @@ export default function App(): JSX.Element {
                 feedback
               </p>
             </div>
-            <SearchBar />
+            <SearchBar
+              imgSrc={`${String(imgSrc.imgSrc)}`}
+              signOut={signOut}
+              isLoggedIn={isLoggedIn}
+            />
           </div>
         </div>
         <div className="">

@@ -15,8 +15,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
-import PrivateRoute, { ProtectedRouteProps } from "./PrivateRoute";
-import { Session } from "./session-store";
+import Admin from "./ui/Admin";
 
 Modal.setAppElement("#render-target");
 
@@ -29,30 +28,29 @@ application component the user should see based on the URL they enter.
 
 */
 
-const token = Session.get("token");
-function isAuthenticated() {
-  if (
-    token &&
-    token !== "" &&
-    new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+const profilePictures = [
+  "/profile_bear/profile_bear_dark_blue.svg",
+  "/profile_bear/profile_bear_light_blue.svg",
+  "/profile_bear/profile_bear_light_pink.svg",
+  "/profile_bear/profile_bear_mint.png",
+  "/profile_bear/profile_bear_orange.svg",
+  "/profile_bear/profile_bear_purple.svg",
+  "/profile_bear/profile_bear_red.svg",
+  "/profile_bear/profile_bear_yellow.svg",
+];
+
+function randomPicture() {
+  return profilePictures[Math.floor(Math.random() * profilePictures.length)];
 }
 
-const defaultProtectedRouteProps: ProtectedRouteProps = {
-  isAuthenticated: isAuthenticated(),
-  authenticationPath: "/",
-};
+const profilePicture = randomPicture();
 
 render(
   <BrowserRouter>
     <div className="container-fluid full-height">
       <Switch>
-        <Route name="app" exact path="/" component={App} />
-        <Route name="admin" exact path="/admin" component={Login} />
+        <Route name="app" exact path="/" component={() => <App imgSrc={profilePicture} />} />
+        <Route name="admin" exact path="/admin" component={Admin} />
         <Route
           name="permalink"
           exact
@@ -60,21 +58,21 @@ render(
           component={ClassView}
         />
         <Route name="auth" exact path="/auth" component={AuthRedirect} />
+        <Route name="login" exact path="/login" component={Login} />
         <Route
           name="permalink"
           exact
           path="/results/:type/:input"
           component={Results}
         />
-        <PrivateRoute
-          {...defaultProtectedRouteProps}
-          exact={true}
-          path="/profile"
-          component={Profile}
+        <Route
+          name="profile"
+          exact path="/profile"
+          component={() => <Profile imgSrc={profilePicture} />}
         />
         <Route component={NotFound} />
-      </Switch>
-    </div>
-  </BrowserRouter>,
+      </Switch >
+    </div >
+  </BrowserRouter >,
   document.getElementById("render-target"),
 );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import { setAuthToken } from '../auth/auth_utils';
 import { Session } from '../session-store';
 
 /*
@@ -22,18 +23,8 @@ export default class AuthRedirect extends Component<Props> {
     const google_hash = this.props.location.hash;
     if (google_hash !== "") {
       const google_token = google_hash.match(/(?=id_token=)([^&]+)/)![0].split("=")[1];
-      this.saveToken(google_token);
+      setAuthToken(google_token);
     }
-  }
-
-  //Using meteor session to save the token to Session
-  saveToken(token: string) {
-    Session.setPersistent({ "token": token });
-    if (Session.get("token") !== token) {
-      console.log("Error saving token to session")
-      return 0;
-    }
-    return 1;
   }
 
   render() {
@@ -42,6 +33,12 @@ export default class AuthRedirect extends Component<Props> {
     }
     else if (Session.get("redirectFrom") === "admin") {
       return <Redirect push to={"/admin"}></Redirect>
+    }
+    else if (Session.get("redirectFrom") === "profile") {
+      return <Redirect push to={"/profile"}></Redirect>
+    }
+    else if (Session.get("redirectFrom") === "home") {
+      return <Redirect push to={"/"}></Redirect>
     }
     else {
       return <Redirect push to={"/"}></Redirect>

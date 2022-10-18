@@ -1,9 +1,9 @@
 import React, { Component, useEffect, useState } from "react";
 import "./css/Navbar.css";
 import SearchBar from "./SearchBar.jsx";
-import LoginModal from "./LoginModal";
 import { Session } from "../session-store";
 import ProfileDropdownNavBar from "./ProfileDropdownNavBar.jsx";
+import { useAuthOptionalLogin } from "../auth/auth_utils";
 
 /*
   Navbar Component. Short description if needed.
@@ -17,6 +17,9 @@ import ProfileDropdownNavBar from "./ProfileDropdownNavBar.jsx";
   component tree, and any inportant information it accesses or modifies.
   Include the route for View components.
 */
+
+const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+
 const sunset_start_times = [
   17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
 ];
@@ -31,6 +34,7 @@ let time_of_day = hours;
 if (minutes > 30) {
   time_of_day += 0.51;
 }
+
 let monthclass = "";
 let dayclass = "afternoon";
 
@@ -50,27 +54,41 @@ if (time_of_day < 6 || time_of_day >= sunset_end_times[month]) {
   dayclass = "sunset";
 }
 
-function signOut() {
-  Session.set("token", null);
-  const token = Session.get("token");
-  const isLoggedIn = false;
+const profilePictures = [
+  "/profile_bear/profile_bear_dark_blue.svg",
+  "/profile_bear/profile_bear_light_blue.svg",
+  "/profile_bear/profile_bear_light_pink.svg",
+  "/profile_bear/profile_bear_mint.png",
+  "/profile_bear/profile_bear_orange.svg",
+  "/profile_bear/profile_bear_purple.svg",
+  "/profile_bear/profile_bear_red.svg",
+  "/profile_bear/profile_bear_yellow.svg",
+];
+
+function randomPicture() {
+  return profilePictures[Math.floor(Math.random() * profilePictures.length)];
 }
+
+const profilePicture = randomPicture();
 
 function displayButton() {
   const token = Session.get("token");
-  const isLoggedIn =
-    token &&
-    token !== "" &&
-    new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date();
-  if (isLoggedIn) {
-    return <ProfileDropdownNavBar isLoggedIn={isLoggedIn} signOut={signOut} />;
+  if (token) {
+    return (
+      <ProfileDropdownNavBar
+        imgSrc={`${String(profilePicture)}`}
+        isLoggedIn={token}
+        signOut={signOut}
+      />
+    );
   } else {
     return (
       <button
         type="button"
         className="btn btn-light sign-in-button"
-        data-toggle="modal"
-        data-target="#signinModal"
+        onClick={() => {
+          signIn("home");
+        }}
       >
         Sign In
       </button>
@@ -98,7 +116,6 @@ export default class Navbar extends Component<{ readonly userInput: string }> {
             isInNavbar={true}
           />
         </div>
-        <LoginModal />
         {displayButton()}
       </div>
     );
