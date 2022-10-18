@@ -88,7 +88,7 @@ export default function ReviewForm({
             );
           }}
           isMulti
-          options={toSelectOptions(professors)}
+          options={toSelectOptions([...(professors || []), "Not listed"])}
           placeholder="Select professors"
         />
         {isSelectedProfessorsInvalid && (
@@ -189,7 +189,11 @@ export default function ReviewForm({
                 setIsReviewTextInvalid(false);
                 setReviewText(event.target.value);
               }}
-              placeholder="What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?"
+              placeholder={`${
+                selectedProfessors.includes("Not listed")
+                  ? "Who was your professor? "
+                  : ""
+              }What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?`}
             />
           </label>
           {isReviewTextInvalid && (
