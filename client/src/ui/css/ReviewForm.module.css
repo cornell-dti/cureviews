@@ -8,7 +8,7 @@
 }
 
 .selectProfessorLabel {
-  margin-top: 8px;
+  margin-top: 0px;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   color: #000000;
@@ -16,12 +16,12 @@
 }
 
 .ratingInput {
-  margin-top: 16px;
+  margin-top: 4px;
 }
 
 .reviewComment {
   width: 100%;
-  margin-top: 8px;
+  margin-top: 2px;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   color: #000000;
@@ -46,8 +46,8 @@
 }
 
 .covidCheckboxLabel {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 4px;
+  margin-bottom: 6px;
 }
 
 .covidCheckboxLabelText {

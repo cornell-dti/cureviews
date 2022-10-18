@@ -146,21 +146,21 @@
   background-color: #ffffff;
   padding: 20px;
   position: sticky;
-  top: 50px;
+  top: 10px;
 }
 
 .gaugeContainer {
   width: 100%;
   background-color: #ffffff;
   height: 150px;
-  padding: 30px 5px;
+  padding: 0px 0px;
   display: flex;
   justify-content: space-between;
 }
 
 .gauge {
   height: 100%;
-  padding: 0 8px 0 0;
+  padding: 0 0px 0 0;
 }
 
 .startReviewButton {
