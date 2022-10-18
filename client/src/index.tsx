@@ -15,8 +15,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
-import PrivateRoute, { ProtectedRouteProps } from "./PrivateRoute";
-import { Session } from "./session-store";
+import Admin from "./ui/Admin";
 
 Modal.setAppElement("#render-target");
 
@@ -28,19 +27,6 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
-
-const token = Session.get("token");
-function isAuthenticated() {
-  if (
-    token &&
-    token !== "" &&
-    new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 const profilePictures = [
   "/profile_bear/profile_bear_dark_blue.svg",
@@ -59,17 +45,12 @@ function randomPicture() {
 
 const profilePicture = randomPicture();
 
-const defaultProtectedRouteProps: ProtectedRouteProps = {
-  isAuthenticated: isAuthenticated(),
-  authenticationPath: "/",
-};
-
 render(
   <BrowserRouter>
     <div className="container-fluid full-height">
       <Switch>
-        <Route name="app" exact path="/" component={() => <App imgSrc={profilePicture}/>} />
-        <Route name="admin" exact path="/admin" component={Login} />
+        <Route name="app" exact path="/" component={() => <App imgSrc={profilePicture} />} />
+        <Route name="admin" exact path="/admin" component={Admin} />
         <Route
           name="permalink"
           exact
@@ -77,21 +58,21 @@ render(
           component={ClassView}
         />
         <Route name="auth" exact path="/auth" component={AuthRedirect} />
+        <Route name="login" exact path="/login" component={Login} />
         <Route
           name="permalink"
           exact
           path="/results/:type/:input"
           component={Results}
         />
-        <PrivateRoute
-          {...defaultProtectedRouteProps}
-          exact={true}
-          path="/profile"
+        <Route
+          name="profile"
+          exact path="/profile"
           component={() => <Profile imgSrc={profilePicture} />}
         />
         <Route component={NotFound} />
-      </Switch>
-    </div>
-  </BrowserRouter>,
+      </Switch >
+    </div >
+  </BrowserRouter >,
   document.getElementById("render-target"),
 );

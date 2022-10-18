@@ -402,7 +402,7 @@ export default class ResultsDisplay extends Component {
               </div>
             </div>
             <div className="d-none d-lg-block col preview">
-              <PreviewCard course={this.state.card_course} mobile={false} />
+              <PreviewCard course={this.state.card_course} />
             </div>
           </div>
         )}

@@ -10,9 +10,9 @@ import { Review as ReviewType } from "common";
 import styles from "./css/Profile.module.css";
 import CourseReviews from "./CourseReviews";
 import axios from "axios";
-import { Session } from "../session-store";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
+import { useAuthMandatoryLogin } from "../auth/auth_utils";
 
 export default function Profile(imgSrc: any) {
   const [loading, setLoading] = useState(true);
@@ -25,25 +25,12 @@ export default function Profile(imgSrc: any) {
   const [verifiedEmail, setVerifiedEmail] = useState("");
 
   const [netId, setNetId] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = Session.get("token");
-
-    if (
-      token &&
-      token !== "" &&
-      new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-    ) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
+  const [isLoggedIn, token, isAuthenticating, signOut] = useAuthMandatoryLogin("profile");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
-      token: Session.get("token"),
+      token: token,
     });
 
     const res = response.data.result;
@@ -115,26 +102,6 @@ export default function Profile(imgSrc: any) {
   getReviewsTotal();
   getReviewsHelpful();
 
-  function signOut() {
-    Session.set("token", null);
-    setIsLoggedIn(false);
-  }
-
-  const profilePictures = [
-    "/profile_bear/profile_bear_dark_blue.svg",
-    "/profile_bear/profile_bear_light_blue.svg",
-    "/profile_bear/profile_bear_light_pink.svg",
-    "/profile_bear/profile_bear_mint.png",
-    "/profile_bear/profile_bear_orange.svg",
-    "/profile_bear/profile_bear_purple.svg",
-    "/profile_bear/profile_bear_red.svg",
-    "/profile_bear/profile_bear_yellow.svg",
-  ];
-
-  function randomPicture() {
-    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
-  }
-
   if (!loading && isLoggedIn) {
     return (
       <div className={`row ${styles.fullScreen}`}>
@@ -143,7 +110,7 @@ export default function Profile(imgSrc: any) {
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
-              <img src={`${String(imgSrc.imgSrc)}`} alt="user" />
+              <img className={styles.profileImage} src={`${String(imgSrc.imgSrc)}`} alt="user" />
               <div className={styles.profileVerifiedEmail}>
                 Verified as: {netId}@cornell.edu
               </div>
@@ -256,7 +223,7 @@ export default function Profile(imgSrc: any) {
         </div>
       </div>
     );
-  } else if (!loading && !isLoggedIn) {
+  } else if (!loading && !token && !isAuthenticating) {
     return <Redirect to="/" />;
   }
   return <>Loading...</>;
