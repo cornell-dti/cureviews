@@ -68,7 +68,7 @@ render(
         <Route
           name="profile"
           exact path="/profile"
-          component={Profile}
+          component={() => <Profile imgSrc={profilePicture} />}
         />
         <Route component={NotFound} />
       </Switch >
