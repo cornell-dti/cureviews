@@ -17,7 +17,6 @@ import ProfileDropdownNavBar from "./ProfileDropdownNavBar.jsx";
   component tree, and any inportant information it accesses or modifies.
   Include the route for View components.
 */
-
 const sunset_start_times = [
   17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
 ];
