@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
-import { Session } from "../session-store";
-// import Accordian from './Accordian';
-
 import { LineChart } from 'react-chartkick';
 import 'chart.js';
 import axios from 'axios';
-type Props = any
+type Props = {
+  token: string,
+}
 type State = {
   howManyEachClass: any[];
   howManyReviewsEachClass: any[];
@@ -45,7 +44,7 @@ export default class Statistics extends Component<Props, State>{
   }
 
   getChartData() {
-    axios.post(`/v2/getReviewsOverTimeTop15`, { token: Session.get("token"), step: this.state.step, range: this.state.range })
+    axios.post(`/v2/getReviewsOverTimeTop15`, { token: this.props.token, step: this.state.step, range: this.state.range })
       .then((resp) => {
         const res = resp.data.result;
         let data: any[] = [];
@@ -74,7 +73,7 @@ export default class Statistics extends Component<Props, State>{
   }
 
   howManyReviewsEachClass() {
-    axios.post(`/v2/howManyReviewsEachClass`, { token: Session.get("token") }).then((res) => {
+    axios.post(`/v2/howManyReviewsEachClass`, { token: this.props.token }).then((res) => {
       let data = res.data.result;
       data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
       this.setState({ howManyReviewsEachClass: data });
@@ -92,7 +91,7 @@ export default class Statistics extends Component<Props, State>{
   }
 
   getHowManyEachClass() {
-    axios.post(`/v2/howManyEachClass`, { token: Session.get("token") }).then((res) => {
+    axios.post(`/v2/howManyEachClass`, { token: this.props.token }).then((res) => {
       let data = res.data.result;
       data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total) ? -1 : 1);
       this.setState({ howManyEachClass: data });
@@ -102,7 +101,7 @@ export default class Statistics extends Component<Props, State>{
   }
 
   totalReviews() {
-    axios.post(`/v2/totalReviews`, { token: Session.get("token") }).then((res) => {
+    axios.post(`/v2/totalReviews`, { token: this.props.token }).then((res) => {
       const total = res.data.result;
       this.setState({ totalReviews: total });
     }).catch((err) => {

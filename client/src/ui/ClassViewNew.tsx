@@ -9,11 +9,11 @@ import { lastOfferedSems } from "common/CourseCard";
 import Gauge from "./Gauge";
 import CourseReviews from "./CourseReviews";
 import ReviewForm, { NewReview } from "./ReviewForm";
-import ModalContentAuth from "./ModalContentAuth";
 import { Class, Review } from "common";
 import { Session } from "../session-store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuthOptionalLogin } from "../auth/auth_utils";
 
 enum PageStatus {
   Loading,
@@ -28,9 +28,9 @@ export default function ClassView() {
   const [courseReviews, setCourseReviews] = useState<Review[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
-
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+  const [isLoggedIn, token, signIn] = useAuthOptionalLogin();
 
   /**
    * Arrow functions for sorting reviews
@@ -96,13 +96,13 @@ export default function ClassView() {
     async function submitReview(review: NewReview, classId: string) {
       try {
         const response = await axios.post("/v2/insertReview", {
-          token: Session.get("token"),
+          token: token,
           review: review,
           classId: classId,
         });
 
+        clearSessionReview();
         if (response.data.result.resCode === 1) {
-          clearSessionReview();
           setIsReviewModalOpen(false);
           toast.success(
             "Thanks for reviewing! New reviews are updated every 24 hours."
@@ -111,6 +111,7 @@ export default function ClassView() {
           toast.error("An error occurred, please try again.");
         }
       } catch (e) {
+        clearSessionReview();
         toast.error("An error occurred, please try again.");
       }
     }
@@ -121,11 +122,12 @@ export default function ClassView() {
       sessionReview !== undefined &&
       sessionReview !== "" &&
       sessionCourseId !== undefined &&
-      sessionCourseId !== ""
+      sessionCourseId !== "" &&
+      isLoggedIn
     ) {
       submitReview(sessionReview, sessionCourseId);
     }
-  }, []);
+  }, [isLoggedIn, token]);
 
   /**
    * Sorts reviews based on selected filter
@@ -179,7 +181,7 @@ export default function ClassView() {
     Session.setPersistent({ review_num: selectedClass?.classNum });
     Session.setPersistent({ courseId: selectedClass?._id });
 
-    setIsAuthModalOpen(true);
+    signIn("course");
   }
 
   /**
@@ -256,27 +258,14 @@ export default function ClassView() {
           </div>
         </Modal>
 
-        {/* auth redirect modal */}
-        <Modal
-          className={styles.authModal}
-          isOpen={isAuthModalOpen}
-          overlayClassName={styles.modalOverlay}
-          onRequestClose={() => setIsAuthModalOpen(false)}
-          shouldCloseOnOverlayClick
-          shouldCloseOnEsc
-        >
-          <ModalContentAuth />
-        </Modal>
-
         <div className="row d-none d-lg-block">
           <Navbar userInput={input} />
         </div>
 
         <div className={`row ${styles.content}`}>
           <div
-            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
-              isPastScrollThreshold && styles.courseInfoColumnShadow
-            }`}
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${isPastScrollThreshold && styles.courseInfoColumnShadow
+              }`}
           >
             <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
             <p className={styles.courseSubtitle}>
@@ -287,9 +276,8 @@ export default function ClassView() {
                 lastOfferedSems(selectedClass)}
             </p>
             <div
-              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
-                styles.ratingMobileBox
-              }`}
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${styles.ratingMobileBox
+                }`}
             >
               <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
               <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
@@ -306,9 +294,8 @@ export default function ClassView() {
           </div>
           <div className={`col ${styles.courseReviewColumn}`}>
             <div
-              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
-                styles.gaugeContainer
-              }`}
+              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${styles.gaugeContainer
+                }`}
             >
               <div className={styles.gauge}>
                 <Gauge
@@ -334,9 +321,8 @@ export default function ClassView() {
             </div>
             {/* leave a review button, only shown on smaller screens */}
             <button
-              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
-                styles.startReviewButton
-              }`}
+              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${styles.startReviewButton
+                }`}
               onClick={() => onLeaveReview()}
             >
               Leave a review
@@ -367,9 +353,8 @@ export default function ClassView() {
                 isProfile={false}
               />
               <div
-                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
-                  styles.fixedButtonContainer
-                }`}
+                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${styles.fixedButtonContainer
+                  }`}
               >
                 <button
                   className={`btn ${styles.startReviewButton}`}

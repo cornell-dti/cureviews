@@ -10,18 +10,11 @@ import { Review as ReviewType } from "common";
 import styles from "./css/Profile.module.css";
 import CourseReviews from "./CourseReviews";
 import axios from "axios";
-import { Session } from "../session-store";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
+import { useAuthMandatoryLogin } from "../auth/auth_utils";
 
-type ProfileProps = {
-  imageSrc: any;
-};
-
-export default function Profile({
-  imageSrc = "/profile_bear.png",
-}: //for LOCAL TESTING use axl4 for no reviews, ag974 for past reviews, sj598 for pending + past reviews
-ProfileProps) {
+export default function Profile(imgSrc: any) {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
@@ -32,25 +25,12 @@ ProfileProps) {
   const [verifiedEmail, setVerifiedEmail] = useState("");
 
   const [netId, setNetId] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = Session.get("token");
-
-    if (
-      token &&
-      token !== "" &&
-      new Date(JSON.parse(atob(token.split(".")[1])).exp * 1000) > new Date()
-    ) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
+  const [isLoggedIn, token, isAuthenticating, signOut] = useAuthMandatoryLogin("profile");
 
   async function getVerifiedEmail() {
     const response = await axios.post("/v2/getStudentEmailByToken", {
-      token: Session.get("token"),
+      token: token,
     });
 
     const res = response.data.result;
@@ -122,21 +102,15 @@ ProfileProps) {
   getReviewsTotal();
   getReviewsHelpful();
 
-  function signOut() {
-    Session.set("token", null);
-    setIsLoggedIn(false);
-  }
-
   if (!loading && isLoggedIn) {
     return (
       <div className={`row ${styles.fullScreen}`}>
         <Navbar userInput="" />
-
         <div className={`col-3 ${styles.profileLeft}`}>
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
-              <img src={imageSrc} alt="user" />
+              <img className={styles.profileImage} src={`${String(imgSrc.imgSrc)}`} alt="user" />
               <div className={styles.profileVerifiedEmail}>
                 Verified as: {netId}@cornell.edu
               </div>
@@ -249,7 +223,7 @@ ProfileProps) {
         </div>
       </div>
     );
-  } else if (!loading && !isLoggedIn) {
+  } else if (!loading && !token && !isAuthenticating) {
     return <Redirect to="/" />;
   }
   return <>Loading...</>;

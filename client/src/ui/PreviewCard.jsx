@@ -4,7 +4,6 @@ import axios from "axios";
 import "./css/PreviewCard.css";
 import Gauge from "./Gauge.tsx";
 import Review from "./Review";
-import Form from "./Form.jsx";
 import { lastOfferedSems } from "common/CourseCard";
 
 /*
@@ -29,13 +28,11 @@ export default class PreviewCard extends Component {
       topReview: {},
       numReviews: 0,
       topReviewLikes: 0,
-      showMobileReviewForm: false,
     };
 
     this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
     this.updateGauges = this.updateGauges.bind(this);
-    this.setShowMobileReviewForm = this.setShowMobileReviewForm.bind(this);
   }
 
   componentDidMount() {
@@ -148,10 +145,6 @@ export default class PreviewCard extends Component {
     this.updateTopReview();
   }
 
-  setShowMobileReviewForm() {
-    this.setState({ showMobileReviewForm: !this.state.showMobileReviewForm });
-  }
-
   render() {
     let theClass = this.props.course;
     const offered = lastOfferedSems(theClass);
@@ -186,14 +179,14 @@ export default class PreviewCard extends Component {
         {!this.props.transformGauges && (
           <div className="row gaugeHolder">
             <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge rating={parseFloat(this.state.rating)} 
-              label="Overall"                      
-              isOverall={true} />
+              <Gauge rating={parseFloat(this.state.rating)}
+                label="Overall"
+                isOverall={true} />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge rating={parseFloat(this.state.diff)} 
-              label="Difficulty"                      
-              isOverall={false} />
+              <Gauge rating={parseFloat(this.state.diff)}
+                label="Difficulty"
+                isOverall={false} />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
               <Gauge
@@ -233,7 +226,7 @@ export default class PreviewCard extends Component {
 
         <div className="row top-review-text noLeftRightSpacing">
           <div className="col-lg-12 col-md-12 col-sm-12 remove-left-padding">
-            {this.state.numReviews !== 0 && !this.props.mobile && (
+            {this.state.numReviews !== 0 && (
               <p className="preview-top-review-label">Top Review</p>
             )}
           </div>
@@ -243,7 +236,7 @@ export default class PreviewCard extends Component {
           <div className="row noLeftRightSpacing">
             <div className="review-holder">
               {/*If class has review show top review and link*/}
-              {!this.props.mobile && this.state.numReviews !== 0 && (
+              {this.state.numReviews !== 0 && (
                 <Review
                   key={this.state.topReview._id}
                   review={this.state.topReview}
@@ -253,8 +246,7 @@ export default class PreviewCard extends Component {
                 />
               )}
 
-              {!this.props.mobile &&
-                this.state.numReviews !== 0 &&
+              {this.state.numReviews !== 0 &&
                 this.state.numReviews > 1 && (
                   <a
                     className="col-lg-12 preview-review-button"
@@ -267,21 +259,11 @@ export default class PreviewCard extends Component {
                 )}
 
               {/*If class has 0 reviews text and button*/}
-              {!this.props.mobile && this.state.numReviews === 0 && (
+              {this.state.numReviews === 0 && (
                 <p className="preview-empty-top-review">No reviews yet</p>
               )}
-              {this.props.mobile && (
-                <button
-                  type="submit"
-                  className="col-lg-12 col-md-12 col-sm-12 preview-review-button"
-                  onClick={this.setShowMobileReviewForm}
-                >
-                  Leave a Review
-                </button>
-              )}
-              {!this.props.mobile &&
-                (this.state.numReviews === 0 ||
-                  this.state.numReviews === 1) && (
+              {(this.state.numReviews === 0 ||
+                this.state.numReviews === 1) && (
                   <a
                     className="col-lg-12 preview-review-button"
                     href={`/course/${theClass.classSub.toUpperCase()}/${theClass.classNum
@@ -290,16 +272,6 @@ export default class PreviewCard extends Component {
                     Leave a Review
                   </a>
                 )}
-              {/* {this.state.showMobileReviewForm && <MobileReviewForm state={this.state} props={this.props} setShowMobileReviewForm={this.setShowMobileReviewForm} />} */}
-              {this.state.showMobileReviewForm && (
-                <Form
-                  course={this.props.course}
-                  inUse={true}
-                  state={this.state}
-                  props={this.props}
-                  setShowMobileReviewForm={this.setShowMobileReviewForm}
-                />
-              )}
             </div>
           </div>
         )}
