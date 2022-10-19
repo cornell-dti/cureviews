@@ -77,7 +77,6 @@ export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: 
     const signOut = () => {
         setToken(null);
         Session.set("token", null);
-        history.push("/");
     }
 
     return [isLoggedIn, token, signIn, signOut];

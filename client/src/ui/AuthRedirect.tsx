@@ -40,6 +40,9 @@ export default class AuthRedirect extends Component<Props> {
     else if (Session.get("redirectFrom") === "home") {
       return <Redirect push to={"/"}></Redirect>
     }
+    else if (Session.get("redirectFrom").startsWith("path:")) {
+      return <Redirect push to={Session.get("redirectFrom").replace("path:", "")} />
+    }
     else {
       return <Redirect push to={"/"}></Redirect>
     }
