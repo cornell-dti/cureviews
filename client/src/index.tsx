@@ -16,6 +16,7 @@ import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
 import Admin from "./ui/Admin";
+import { randomPicture } from "./util/profile_picture";
 
 Modal.setAppElement("#render-target");
 
@@ -27,21 +28,6 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
-
-const profilePictures = [
-  "/profile_bear/profile_bear_dark_blue.svg",
-  "/profile_bear/profile_bear_light_blue.svg",
-  "/profile_bear/profile_bear_light_pink.svg",
-  "/profile_bear/profile_bear_mint.png",
-  "/profile_bear/profile_bear_orange.svg",
-  "/profile_bear/profile_bear_purple.svg",
-  "/profile_bear/profile_bear_red.svg",
-  "/profile_bear/profile_bear_yellow.svg",
-];
-
-function randomPicture() {
-  return profilePictures[Math.floor(Math.random() * profilePictures.length)];
-}
 
 const profilePicture = randomPicture();
 
