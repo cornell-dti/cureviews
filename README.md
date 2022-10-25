@@ -96,14 +96,28 @@ _Screenshots coming soon_
 
 ## Contributors
 
+### 2022 - 2023
+
+- **Tina Ou** - Product Manager
+- **Maywa Padungrat** - Associate Product Manager
+- **Michelle Li** - Technical Product Manager
+- **Jack Farley** - Developer
+- **Ankit Lakkapragada** - Developer
+- **Miranda Yu** - Product Marketing Manager
+
 ### 2021 - 2022
 
+- **Tina Ou** - Product Manager
 - **Akash Aryal** - Technical Product Manager
 - **Andrew Gao** - Developer
 - **Julie Jeong** - Developer
 - **Jack Farley** - Developer
 - **Michelle Li** - Developer
 - **Ankit Lakkapragada** - Developer
+- **Maywa Padungrat** - Product Designer
+- **Larrisa Chen** - Product Designer
+
+
 
 ### 2021-2020
 
