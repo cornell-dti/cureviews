@@ -55,7 +55,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): [boolean, string | 
     return [isLoggedIn, token, isAuthenticating, signOut];
 }
 
-export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: string) => void, () => void] {
+export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: string) => void, (redirectTo?: string) => void] {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState(null);
     const history = useHistory();
@@ -74,9 +74,12 @@ export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: 
         history.push("/login");
     }
 
-    const signOut = () => {
+    const signOut = (redirectTo?: string) => {
         setToken(null);
         Session.set("token", null);
+        if (redirectTo) {
+            history.push(redirectTo);
+        }
     }
 
     return [isLoggedIn, token, signIn, signOut];

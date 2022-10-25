@@ -72,7 +72,12 @@ export default function Navbar({ userInput }: NavbarProps) {
         <ProfileDropdownNavBar
           imgSrc={`${String(profilePicture)}`}
           isLoggedIn={token}
-          signOut={signOut}
+          signOut={() => {
+            if (["/profile"].includes(location.pathname)) {
+              signOut("/");
+            }
+            signOut();
+          }}
         />
       );
     } else {
