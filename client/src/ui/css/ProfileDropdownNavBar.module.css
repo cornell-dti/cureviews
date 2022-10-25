@@ -65,4 +65,9 @@
   .profileMenuSignOutButton {
     margin-top: 15px;
   }
+  .profileBear {
+    width: 0px;
+    height: 0px;
+  }
+  
 }
