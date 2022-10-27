@@ -4,7 +4,8 @@ import ShowMoreText from "react-show-more-text";
 import { Review as ReviewType } from "common";
 
 import styles from "./css/Review.module.css";
-import { getAuthToken } from "../auth/auth_utils";
+import { getAuthToken, useAuthOptionalLogin } from "../auth/auth_utils";
+import { useLocation } from "react-router-dom";
 
 // use review.visible for pending
 
@@ -31,6 +32,9 @@ export default function Review({
   isPreview,
   isProfile
 }: ReviewProps) {
+
+  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const location = useLocation();
 
   const [_review, setReview] = useState<ReviewType>(review);
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -73,6 +77,10 @@ export default function Review({
    * Increment the likes on the review.
    */
   function increment() {
+    if (!isLoggedIn) {
+      signIn("path:" + location.pathname);
+    }
+
     axios.post("/v2/updateLiked", {
       id: _review._id,
       token: getAuthToken()
@@ -107,7 +115,7 @@ export default function Review({
       setLiked(response.data.result.hasLiked);
     }
 
-    updateLiked();
+    if (isLoggedIn) updateLiked();
   }, [_review]);
 
   function TitleAndProfessor() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Session } from '../session-store';
 
 export const setAuthToken = (token: string) => {
@@ -59,6 +59,7 @@ export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState(null);
     const history = useHistory();
+    const location = useLocation();
 
     useEffect(() => {
         const token = getAuthToken();
@@ -75,10 +76,14 @@ export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: 
     }
 
     const signOut = (redirectTo?: string) => {
+        setIsLoggedIn(false);
         setToken(null);
         Session.set("token", null);
         if (redirectTo) {
             history.push(redirectTo);
+        }
+        else {
+            window.location.reload();
         }
     }
 
