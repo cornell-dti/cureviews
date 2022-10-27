@@ -14,7 +14,7 @@ import {
   insertUser,
   getCourseByInfo,
   updateLiked,
-  userHasLiked
+  userHasLiked,
 } from "./endpoints/Review";
 import {
   countReviewsByStudentId,

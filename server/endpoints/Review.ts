@@ -247,7 +247,7 @@ export const updateLiked: Endpoint<ReviewRequest> = {
       return { resCode: 1 };
     }
   },
-}
+};
 
 export const userHasLiked: Endpoint<ReviewRequest> = {
   guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
@@ -267,9 +267,10 @@ export const userHasLiked: Endpoint<ReviewRequest> = {
 
       if (student.likedReviews && student.likedReviews.includes(review.id)) {
         return { resCode: 0, hasLiked: true };
-      } else {
-        return { resCode: 0, hasLiked: false };
       }
+
+      return { resCode: 0, hasLiked: false };
+
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'decrementLike' method");
