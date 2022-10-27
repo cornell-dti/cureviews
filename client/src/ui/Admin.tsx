@@ -198,33 +198,6 @@ export default function Admin() {
             );
         }
     }
-    // Show a list of all reviews that have not been approved. Will allow admin to
-    // approve or delete with the click of button.
-    function renderUnapprovedReviews() {
-        const remFunc = removeReview;
-        const appFunc = approveReview;
-        return unapprovedReviews.map((review: Review) => {
-            if (review.reported !== 1) {
-                return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={appFunc} />;
-            }
-            return null;
-        });
-    }
-
-    // Show a list of all reviews that were reported. Will allow admin to approve
-    // or delete with the click of button.
-    function renderReportedReviews() {
-        const remFunc = removeReview;
-        const appFunc = approveReview;
-        const unRepFunc = unReportReview;
-        return unapprovedReviews.map((review: Review) => {
-            //create a new class "button" that will set the selected class to this class when it is clicked.
-            if (review.reported === 1) {
-                return <UpdateReview key={review._id} info={review} removeHandler={remFunc} approveHandler={appFunc} unReportHandler={unRepFunc} />
-            }
-            return null;
-        });
-    }
 
     function renderAdmin(token: string) {
         return (

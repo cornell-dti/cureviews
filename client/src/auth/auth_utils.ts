@@ -50,7 +50,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): [boolean, string | 
         setToken(token);
         setIsAuthenticating(false);
         setIsLoggedIn(true);
-    }, [redirectFrom]);
+    }, [redirectFrom, history]);
 
     return [isLoggedIn, token, isAuthenticating, signOut];
 }
@@ -67,7 +67,7 @@ export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: 
             setToken(token);
             setIsLoggedIn(true);
         }
-    });
+    }, []);
 
     const signIn = (redirectFrom: string) => {
         Session.setPersistent({ "redirectFrom": redirectFrom });
