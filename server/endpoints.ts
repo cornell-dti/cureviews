@@ -13,8 +13,8 @@ import {
   insertReview,
   insertUser,
   getCourseByInfo,
-  incrementLike,
-  decrementLike,
+  updateLiked,
+  userHasLiked
 } from "./endpoints/Review";
 import {
   countReviewsByStudentId,
@@ -84,8 +84,8 @@ export function configure(app: express.Application) {
   register(app, "howManyEachClass", howManyEachClass);
   register(app, "topSubjects", topSubjects);
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
-  register(app, "incrementLike", incrementLike);
-  register(app, "decrementLike", decrementLike);
+  register(app, "updateLiked", updateLiked);
+  register(app, "userHasLiked", userHasLiked);
   register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
   register(app, "getReviewsByStudentId", getReviewsByStudentId);
   register(app, "countReviewsByStudentId", countReviewsByStudentId);
