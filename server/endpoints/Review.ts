@@ -52,8 +52,6 @@ export const sanitizeReview = (doc: ReviewDocument) => {
  */
 export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => sanitizeReview(doc)));
 
-
-
 /**
  * Get a course with this course_id from the Classes collection
  */
@@ -226,9 +224,7 @@ export const updateLiked: Endpoint<ReviewRequest> = {
             await Reviews.updateOne({ _id: request.id },
               { $set: { likes: Math.max(0, review.likes - 1) } }, { $pull: { likedBy: student.netId } }).exec();
           }
-        }
-        // adding like
-        else {
+        } else { // adding like
           await Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
 
           if (review.likes === undefined) {
@@ -270,10 +266,9 @@ export const userHasLiked: Endpoint<ReviewRequest> = {
       const student = (await Students.findOne({ netId }));
 
       if (student.likedReviews && student.likedReviews.includes(review.id)) {
-        return { resCode: 0, hasLiked: true }
-      }
-      else {
-        return { resCode: 0, hasLiked: false }
+        return { resCode: 0, hasLiked: true };
+      } else {
+        return { resCode: 0, hasLiked: false };
       }
     } catch (error) {
       // eslint-disable-next-line no-console
