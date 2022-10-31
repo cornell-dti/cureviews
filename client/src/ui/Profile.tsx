@@ -42,8 +42,7 @@ export default function Profile(imgSrc: any) {
           setVerifiedEmail(res.message);
         }
 
-        // setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
-        setNetId("ag974");
+        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
       })
       .catch((e) => console.log(e.response));
   }
