@@ -93,6 +93,8 @@ export default function Profile(imgSrc: any) {
         const pastReviews = reviews.filter(function (review: ReviewType) {
           return review.visible === 1;
         });
+
+        reviews?.sort(sortByLikes);
         setReviews(reviews);
         setPendingReviews(pendingReviews);
         setPastReviews(pastReviews);
