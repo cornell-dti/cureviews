@@ -10,6 +10,7 @@ import ClassView from "./ui/ClassViewNew";
 import App from "./ui/App";
 import AuthRedirect from "./ui/AuthRedirect";
 import Profile from "./ui/Profile";
+import ProfileNew from "./ui/ProfileNew";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
@@ -55,6 +56,11 @@ render(
           name="profile"
           exact path="/profile"
           component={() => <Profile imgSrc={profilePicture} />}
+        />
+        <Route
+          name="profilenew"
+          exact path="/profilenew"
+          component={() => <ProfileNew imgSrc={profilePicture} />}
         />
         <Route component={NotFound} />
       </Switch >
