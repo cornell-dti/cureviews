@@ -16,6 +16,7 @@ import { useAuthMandatoryLogin } from "../auth/auth_utils";
 
 export default function Profile(imgSrc: any) {
   const [loading, setLoading] = useState(true);
+  const [hide, setHide] = useState(false);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [pastReviews, setPastReviews] = useState<ReviewType[]>([]);
@@ -26,25 +27,32 @@ export default function Profile(imgSrc: any) {
 
   const [netId, setNetId] = useState("");
 
-  const [isLoggedIn, token, isAuthenticating, signOut] = useAuthMandatoryLogin("profile");
+  const [isLoggedIn, token, isAuthenticating, signOut] =
+    useAuthMandatoryLogin("profile");
 
   async function getVerifiedEmail() {
-    const response = await axios.post("/v2/getStudentEmailByToken", {
-      token: token,
-    });
+    await axios
+      .post("/v2/getStudentEmailByToken", {
+        token: token,
+      })
+      .then((response) => {
+        const res = response.data.result;
+        if (res.code === 200) {
+          console.log(res.message);
+          setVerifiedEmail(res.message);
+        }
 
-    const res = response.data.result;
-    if (res.code === 200) {
-      console.log(res.message);
-      setVerifiedEmail(res.message);
-    }
-
-    setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
+        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
+      })
+      .catch((e) => console.log(e.response));
   }
   async function getReviewsTotal() {
-    const response = await axios.post("/v2/countReviewsByStudentId", {
-      netId,
-    });
+    const response = await axios.post(
+      "/v2/countReviewsByStudentId",
+      {
+        netId,
+      },
+    );
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -53,9 +61,12 @@ export default function Profile(imgSrc: any) {
   }
 
   async function getReviewsHelpful() {
-    const response = await axios.post("/v2/getTotalLikesByStudentId", {
-      netId,
-    });
+    const response = await axios.post(
+      "/v2/getTotalLikesByStudentId",
+      {
+        netId,
+      },
+    );
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -72,20 +83,37 @@ export default function Profile(imgSrc: any) {
     !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
 
   useEffect(() => {
-    axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
-      const reviews = response.data.result.message;
-      const pendingReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 0;
+    axios
+      .post(`/v2/getReviewsByStudentId`, { netId })
+      .then((response) => {
+        const reviews = response.data.result.message;
+        const pendingReviews = reviews.filter(function (review: ReviewType) {
+          return review.visible === 0;
+        });
+        const pastReviews = reviews.filter(function (review: ReviewType) {
+          return review.visible === 1;
+        });
+
+        reviews?.sort(sortByLikes);
+        setReviews(reviews);
+        setPendingReviews(pendingReviews);
+        setPastReviews(pastReviews);
+        setLoading(false);
       });
-      const pastReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 1;
-      });
-      setReviews(reviews);
-      setPendingReviews(pendingReviews);
-      setPastReviews(pastReviews);
-      setLoading(false);
-    });
   }, [netId]);
+
+  useEffect(() => {
+    const pendingReviews = reviews.filter(function (review: ReviewType) {
+      return review.visible === 0;
+    });
+    const pastReviews = reviews.filter(function (review: ReviewType) {
+      return review.visible === 1;
+    });
+    setReviews(reviews);
+    setPendingReviews(pendingReviews);
+    setPastReviews(pastReviews);
+    setLoading(false);
+  }, [reviews]);
 
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
@@ -110,7 +138,11 @@ export default function Profile(imgSrc: any) {
           <div className={styles.profileContainer}>
             <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileInfo}>
-              <img className={styles.profileImage} src={`${String(imgSrc.imgSrc)}`} alt="user" />
+              <img
+                className={styles.profileImage}
+                src={`${String(imgSrc.imgSrc)}`}
+                alt="user"
+              />
               <div className={styles.profileVerifiedEmail}>
                 Verified as: {netId}@cornell.edu
               </div>
@@ -182,15 +214,24 @@ export default function Profile(imgSrc: any) {
                     </p>
                   </div>
                   <div className={`col ${styles.hidePending}`}>
-                    <p className={styles.hidePendingText}>Hide</p>
+                    <p
+                      onClick={() => setHide(!hide)}
+                      className={styles.hidePendingText}
+                    >
+                      Hide
+                    </p>
                   </div>
                 </div>
-                <div className={styles.pendingReviews}>
-                  <CourseReviews
-                    reviews={pendingReviews}
-                    isPreview={false}
-                    isProfile={true}
-                  />
+                <div className={hide === false ? styles.pendingReviews : ""}>
+                  {hide === false ? (
+                    <CourseReviews
+                      reviews={pendingReviews}
+                      isPreview={false}
+                      isProfile={true}
+                    />
+                  ) : (
+                    <p></p>
+                  )}
                 </div>
                 <div className="row">
                   <div className={`col ${styles.pastHeader}`}>

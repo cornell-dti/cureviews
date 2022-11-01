@@ -296,7 +296,7 @@
 
 .hidePendingText {
   text-align: right;
-
+  cursor: pointer;
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
