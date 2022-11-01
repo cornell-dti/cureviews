@@ -270,7 +270,6 @@ export const userHasLiked: Endpoint<ReviewRequest> = {
       }
 
       return { resCode: 0, hasLiked: false };
-
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'decrementLike' method");
