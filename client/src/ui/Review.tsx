@@ -4,12 +4,12 @@ import ShowMoreText from "react-show-more-text";
 import { Review as ReviewType } from "common";
 
 import styles from "./css/Review.module.css";
-import { getAuthToken } from "../auth/auth_utils";
+import { getAuthToken, useAuthOptionalLogin } from "../auth/auth_utils";
+import { useLocation } from "react-router-dom";
 
 // use review.visible for pending
 
 type ReviewProps = {
-  key: string,
   review: ReviewType,
   reportHandler: (review: ReviewType) => void,
   isPreview: boolean,
@@ -27,13 +27,16 @@ type ReviewProps = {
    - like button
 */
 export default function Review({
-  key,
   review,
   reportHandler,
   isPreview,
   isProfile
 }: ReviewProps) {
 
+  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const location = useLocation();
+
+  const [_review, setReview] = useState<ReviewType>(review);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(isPreview ? 206 : 196);
   const [liked, setLiked] = useState<boolean>(false);
@@ -42,16 +45,16 @@ export default function Review({
   const [courseSub, setCourseSub] = useState<string>("");
   const [courseNum, setCourseNum] = useState<string>("");
 
-  const review_container_style = review.visible ? styles.reviewContainerStyle : styles.reviewContainerStylePending;
-  const ratings_container_color = review.visible ? styles.ratingsContainerColor : "";
+  const review_container_style = _review.visible ? styles.reviewContainerStyle : styles.reviewContainerStylePending;
+  const ratings_container_color = _review.visible ? styles.ratingsContainerColor : "";
 
   function getDateString() {
-    if (!review.date) return "";
+    if (!_review.date) return "";
 
-    review.date = new Date(review.date);
-    let review_year = String(review.date.getFullYear()).substring(2);
-    let review_month = review.date.getMonth() + 1;
-    let review_day = review.date.getDate();
+    const date = new Date(_review.date);
+    let review_year = String(date.getFullYear()).substring(2);
+    let review_month = date.getMonth() + 1;
+    let review_day = date.getDate();
 
     return review_month + "/" + review_day + "/" + review_year;
   }
@@ -60,7 +63,7 @@ export default function Review({
     if (!expanded) {
       let newHeight =
         height +
-        ((review.text.length % 500) / 20) *
+        ((_review.text.length % 500) / 20) *
         (isPreview ? 4.25 : 10.25);
       setExpanded(!expanded);
       setHeight(newHeight);
@@ -70,37 +73,20 @@ export default function Review({
     }
   }
 
-  // for liking the review
+  /**
+   * Increment the likes on the review.
+   */
   function increment() {
-    if (liked) {
-      axios.post("/v2/decrementLike", {
-        id: review._id,
-        token: getAuthToken()
-      }).then((response) => {
-        const res = response.data.result;
-        if (res.resCode === 1) {
-          setLiked(false);
-          review.likes = review.likes ? review.likes - 1 : 0;
-        } else {
-          console.log("Error while decrementing likes: " + res.error);
-        }
-      })
+    if (!isLoggedIn) {
+      signIn("path:" + location.pathname);
     }
-    else {
-      axios.post("/v2/incrementLike", {
-        id: review._id,
-        token: getAuthToken(),
-      })
-        .then((response) => {
-          const res = response.data.result;
-          if (res.resCode === 1) {
-            setLiked(true);
-            review.likes = review.likes ? review.likes + 1 : 1;
-          } else {
-            console.log("Error while incrementing likes: " + res.error);
-          }
-        })
-    }
+
+    axios.post("/v2/updateLiked", {
+      id: _review._id,
+      token: getAuthToken()
+    }).then((response) => {
+      setReview(response.data.result.review);
+    });
   }
 
   /*
@@ -108,7 +94,7 @@ export default function Review({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/v2/getCourseById`, { courseId: review.class });
+      const response = await axios.post(`/v2/getCourseById`, { courseId: _review.class });
       const course = response.data.result;
 
       setCourseTitle(course.classTitle);
@@ -117,12 +103,25 @@ export default function Review({
     }
 
     if (isProfile) updateCourse();
-  }, [review, isProfile]);
+  }, [_review, isProfile]);
+
+  useEffect(() => {
+    async function updateLiked() {
+      const response = await axios.post("/v2/userHasLiked", {
+        id: _review._id,
+        token: getAuthToken(),
+      });
+
+      setLiked(response.data.result.hasLiked);
+    }
+
+    if (isLoggedIn) updateLiked();
+  }, [_review]);
 
   function TitleAndProfessor() {
     var profString = "Professor: ";
-    if (review.professors && review.professors.length > 0)
-      profString += review.professors.join(", ");
+    if (_review.professors && _review.professors.length > 0)
+      profString += _review.professors.join(", ");
     else profString += "N/A"
 
     if (isProfile) {
@@ -151,7 +150,7 @@ export default function Review({
         <div className={styles.flagContainer}>
           <button
             onClick={() => {
-              reportHandler(review);
+              reportHandler(_review);
               alert("This post has been reported and will be reviewed.");
             }}
           >
@@ -172,19 +171,19 @@ export default function Review({
             <div className={styles.ratingElem}>
               <span>Overall</span>
               <span className={styles.ratingNum}>
-                {review.rating ? review.rating : "-"}
+                {_review.rating ? _review.rating : "-"}
               </span>
             </div>
             <div className={styles.ratingElem}>
               <span>Difficulty</span>
               <span className={styles.ratingNum}>
-                {review.difficulty ? review.difficulty : "-"}
+                {_review.difficulty ? _review.difficulty : "-"}
               </span>
             </div>
             <div className={styles.ratingElem}>
               <span>Workload</span>
               <span className={styles.ratingNum}>
-                {review.workload ? review.workload : "-"}
+                {_review.workload ? _review.workload : "-"}
               </span>
             </div>
           </div>
@@ -199,16 +198,16 @@ export default function Review({
             <div className="grade-major-container">
               <div>
                 <span className="grade-major-label">Grade: </span>
-                {review.grade && review.grade.length !== 0 && /^([^0-9]*)$/.test(review.grade) ? (
-                  <span className="grade-major-text">{review.grade}</span>
+                {_review.grade && _review.grade.length !== 0 && /^([^0-9]*)$/.test(_review.grade) ? (
+                  <span className="grade-major-text">{_review.grade}</span>
                 ) : (
                   <span className="grade-major-text">N/A</span>
                 )}
               </div>
               <div>
                 <span className="grade-major-label">Major(s): </span>
-                {review.major && review.major.length !== 0 ? (
-                  review.major.map((major, index) => (
+                {_review.major && _review.major.length !== 0 ? (
+                  _review.major.map((major, index) => (
                     <span className="grade-major-text" key={index}>
                       {index > 0 ? ", " : ""}
                       {major}
@@ -230,7 +229,7 @@ export default function Review({
                 onClick={executeOnClick}
                 expanded={expanded}
               >
-                {review.text}
+                {_review.text}
               </ShowMoreText>
             </p>
 
@@ -256,14 +255,14 @@ export default function Review({
                       alt={liked ? "Liked" : "Not Liked Yet"}
                     />
                     <p className={styles.upvoteText}>
-                      Helpful ({review.likes ? review.likes : 0})
+                      Helpful ({_review.likes ? _review.likes : 0})
                     </p>
                   </button>
                 </div>
               )}
             </div>
 
-            {review.isCovid && (
+            {_review.isCovid && (
               <div className={`${styles.covidTag} row`}>
                 <span role="img" aria-label="alert">
                   {" "}

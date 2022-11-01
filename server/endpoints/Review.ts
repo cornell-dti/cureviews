@@ -36,6 +36,13 @@ export interface ReviewRequest {
   token: string;
 }
 
+export const sanitizeReview = (doc: ReviewDocument) => {
+  const copy = doc;
+  copy.user = "";
+  copy.likedBy = [];
+  return copy;
+};
+
 /**
  * Santize the reviews, so that we don't leak information about who posted what.
  * Even if the user id is leaked, however, that still gives no way of getting back to the netID.
@@ -43,12 +50,7 @@ export interface ReviewRequest {
  * @param lst the list of reviews to sanitize. Possibly a singleton list.
  * @returns a copy of the reviews, but with the user id field removed.
  */
-export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => {
-  const copy = doc;
-  copy.user = "";
-  copy.likedBy = [];
-  return copy;
-}));
+export const sanitizeReviews = (lst: ReviewDocument[]) => (lst.map((doc) => sanitizeReview(doc)));
 
 /**
  * Get a course with this course_id from the Classes collection
@@ -130,7 +132,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
 
       const ticket = await getVerificationTicket(token);
 
-      if (!ticket) return { resCode: 0, error: "Missing verification ticket" };
+      if (!ticket) return { resCode: 1, error: "Missing verification ticket" };
 
       if (ticket.hd === "cornell.edu") {
         // insert the user into the collection if not already present
@@ -174,81 +176,80 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(error);
-          return { resCode: 0, error: "Unexpected error when adding review" };
+          return { resCode: 1, error: "Unexpected error when adding review" };
         }
       } else {
         // eslint-disable-next-line no-console
         console.log("Error: non-Cornell email attempted to insert review");
-        return { resCode: 0, error: "Error: non-Cornell email attempted to insert review" };
+        return { resCode: 1, error: "Error: non-Cornell email attempted to insert review" };
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'insert' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0, error: "Error: at 'insert' method" };
+      return { resCode: 1, error: "Error: at 'insert' method" };
     }
   },
 };
 
 /**
- * Increment the number of likes a review has gotten by 1.
- *
- * Returns resCode 1 on success
- * Returns resCode 0 on error
- *
- * TODO: migrate to a proper account-based solution
+ * Updates a like on a review. If the student has already liked the review,
+ * removes the like, and if the student has not, adds a like.
  */
-export const incrementLike: Endpoint<ReviewRequest> = {
+export const updateLiked: Endpoint<ReviewRequest> = {
   guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
     const { token } = request;
     try {
-      const review = await Reviews.findOne({ _id: request.id }).exec();
+      let review = await Reviews.findOne({ _id: request.id }).exec();
 
       const ticket = await getVerificationTicket(token);
 
-      if (!ticket) return { resCode: 0, error: "Missing verification ticket" };
+      if (!ticket) return { resCode: 1, error: "Missing verification ticket" };
 
       if (ticket.hd === "cornell.edu") {
         await insertUserCallback({ googleObject: ticket });
         const netId = ticket.email.replace("@cornell.edu", "");
         const student = (await Students.findOne({ netId }));
 
+        // removing like
         if (student.likedReviews !== undefined && student.likedReviews.includes(review.id)) {
-          return { resCode: 0, error: "Error: user already liked" };
+          await Students.updateOne({ netId }, { $pull: { likedReviews: review.id } });
+
+          if (review.likes === undefined) {
+            await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0 } }, { $pull: { likedBy: student.netId } }).exec();
+          } else {
+            // bound the rating at 0
+            await Reviews.updateOne({ _id: request.id },
+              { $set: { likes: Math.max(0, review.likes - 1) } }, { $pull: { likedBy: student.netId } }).exec();
+          }
+        } else { // adding like
+          await Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
+
+          if (review.likes === undefined) {
+            await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1 }, $push: { likedBy: student.id } }).exec();
+          } else {
+            await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1 }, $push: { likedBy: student.id } }).exec();
+          }
         }
 
-        // if likedReviews is undefined its fine. $push creates empty arr
-        await Students.updateOne({ netId: student.netId }, { $push: { likedReviews: review.id } });
+        review = await Reviews.findOne({ _id: request.id }).exec();
 
-        if (review.likes === undefined) {
-          await Reviews.updateOne({ _id: request.id }, { $set: { likes: 1 }, $push: { likedBy: student.id } }).exec();
-        } else {
-          await Reviews.updateOne({ _id: request.id }, { $set: { likes: review.likes + 1 }, $push: { likedBy: student.id } }).exec();
-        }
-
-        return { resCode: 1 };
+        return { resCode: 0, review: sanitizeReview(review) };
       }
-      return { resCode: 0, error: "Error: non-Cornell email attempted to insert review" };
+      return { resCode: 1, error: "Error: non-Cornell email attempted to insert review" };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'incrementLike' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return { resCode: 1 };
     }
   },
 };
 
-/**
- * Decrement the number of likes a review has gotten by 1.
- *
- * Returns resCode 1 on success
- * Returns resCole 0 on error
- */
-
-export const decrementLike: Endpoint<ReviewRequest> = {
+export const userHasLiked: Endpoint<ReviewRequest> = {
   guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
     const { token } = request;
@@ -256,34 +257,25 @@ export const decrementLike: Endpoint<ReviewRequest> = {
       const review = await Reviews.findOne({ _id: request.id }).exec();
       const ticket = await getVerificationTicket(token);
 
-      if (!ticket) return { resCode: 0, error: "Missing verification ticket" };
+      if (!ticket) return { resCode: 1, error: "Missing verification ticket" };
 
-      if (ticket.hd !== "cornell.edu") return { resCode: 0, error: "Error: non-Cornell email attempted to insert review" };
+      if (ticket.hd !== "cornell.edu") return { resCode: 1, error: "Error: non-Cornell email attempted to insert review" };
 
       await insertUserCallback({ googleObject: ticket });
       const netId = ticket.email.replace("@cornell.edu", "");
       const student = (await Students.findOne({ netId }));
 
-      if (student.likedReviews === undefined || !student.likedReviews.includes(review.id)) {
-        return { resCode: 0, error: "Error: user already disliked" };
+      if (student.likedReviews && student.likedReviews.includes(review.id)) {
+        return { resCode: 0, hasLiked: true };
       }
 
-      await Students.updateOne({ netId }, { $pull: { likedReviews: review.id } });
-
-      if (review.likes === undefined) {
-        await Reviews.updateOne({ _id: request.id }, { $set: { likes: 0 } }, { $pull: { likedBy: student.netId } }).exec();
-      } else {
-        // bound the rating at 0
-        await Reviews.updateOne({ _id: request.id },
-          { $set: { likes: Math.max(0, review.likes - 1) } }, { $pull: { likedBy: student.netId } }).exec();
-      }
-      return { resCode: 1 };
+      return { resCode: 0, hasLiked: false };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'decrementLike' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { resCode: 0 };
+      return { resCode: 1 };
     }
   },
 };
