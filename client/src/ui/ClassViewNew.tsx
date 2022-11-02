@@ -149,7 +149,7 @@ export default function ClassView() {
    */
   async function reportReview(reviewId: string) {
     try {
-      const response = await axios.post("/v2/reportReview", { id: reviewId });
+      const response = await axios.post("reportReview", { id: reviewId });
       const responseCode = response.data.result.resCode;
       if (responseCode === 1) {
         setCourseReviews(
