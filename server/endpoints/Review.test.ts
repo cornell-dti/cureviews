@@ -153,20 +153,14 @@ describe('tests', () => {
     expect(dtiUser.reviews).toContain(review._id);
   });
 
-  it("like/dislike - increment", async () => {
-    const res1 = await axios.post(`http://localhost:${testingPort}/v2/incrementLike`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
+  it("like/dislike - increment and decrement", async () => {
+    const res1 = await axios.post(`http://localhost:${testingPort}/v2/updateLiked`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
 
-    expect(res1.data.result.resCode).toBe(1);
+    expect(res1.data.result.resCode).toBe(0);
     expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(3);
 
-    const res2 = await axios.post(`http://localhost:${testingPort}/v2/incrementLike`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
+    const res2 = await axios.post(`http://localhost:${testingPort}/v2/updateLiked`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
     expect(res2.data.result.resCode).toBe(0);
-    expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(3);
-  });
-
-  it("like/dislike - decrement", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/decrementLike`, { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" });
-    expect(res.data.result.resCode).toBe(1);
     expect((await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" })).likes).toBe(2);
   });
 

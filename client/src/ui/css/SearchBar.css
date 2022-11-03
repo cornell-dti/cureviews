@@ -1,6 +1,6 @@
 /* Searchbar Normal (Non-Popup) */
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 992px) {
   .searchbar {
     height: 42px;
   }
@@ -9,13 +9,12 @@
     height: 42px;
   }
 
-  .search-text{
+  .search-text {
     padding-left: 45px;
   }
 }
 
-@media screen and (min-width: 1000px) {
-
+@media screen and (min-width: 992px) {
   .searchbar {
     height: 40px;
   }
@@ -24,7 +23,7 @@
     height: 52px;
   }
 
-  .search-text{
+  .search-text {
     padding-left: 40px;
   }
 }
@@ -35,18 +34,18 @@
   padding: 0;
   position: relative;
   outline: 0;
-  background: #FFFFFF;
+  background: #ffffff;
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
 }
 
 .searchbar-in-navbar {
-  border: 1.24929px solid #ECECEC;
+  border: 1.24929px solid #ececec;
   box-shadow: none;
 }
 
-.search-text{
+.search-text {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
@@ -69,8 +68,8 @@
   z-index: 1002;
 }
 
-.search-text::placeholder{
-  color: #C9C9C9;
+.search-text::placeholder {
+  color: #c9c9c9;
   font-weight: var(--regular-weight);
 }
 
@@ -93,5 +92,5 @@
 .contrasting-result-background .output {
   border-style: solid;
   border-color: #6ba7ec;
-  border-width:  0 1px 1px 1px;
+  border-width: 0 1px 1px 1px;
 }

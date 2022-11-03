@@ -35,7 +35,7 @@ Option 1:
 Previously, you would start a server like so:
 
 ```bash
-MONGODB_URL='mongodb://foo' yarn workspace server start 
+MONGODB_URL='mongodb://foo' yarn workspace server start
 ```
 
 There is also something called "fallback mode", which you can trigger by starting the server with the ALLOW_LOCAL env variable set to 1, and **without** setting MONGODB_URL. Fallback mode automatically configures a blank mongodb for use in the application, and then scrapes some data from Cornell's endpoint for you to test. There will not be any reviews by default.
@@ -64,6 +64,7 @@ mongorestore -h 127.0.0.1 --port 3001 -d test /path/to/your/bson.bson --drop
 ```
 
 You will probably need to run this for the `classes`, `subjects` and `reviews` collections (Perhaps also `students`). Ask a team member for the bsons if you need them. If this errors, it might be because the `-d test` specifies the wrong database name (`test`), in which case you should figure out your db name, and replace `-d test` with `-d dbname`. Note that it **won't** error on the command, the only evidence of an error is that none of collections will be show up on the site (i.e. no classes visible).
+
 </details>
 
 </p>
@@ -85,7 +86,7 @@ _Last updated **05/07/2020**_.
 
 ## Dependencies & Libraries
 
-- **[Node.js](https://nodejs.org/en/about/)** v10 - **Node.js provides the basis for our server.  It handles external connects and gives us access to an vast array of useful packages via Node Package Manager (NPM)**
+- **[Node.js](https://nodejs.org/en/about/)** v10 - **Node.js provides the basis for our server. It handles external connects and gives us access to an vast array of useful packages via Node Package Manager (NPM)**
 - **[Express](https://expressjs.com/)** v4.17.1 - **The package for running the web server.**
 - **[React](https://reactjs.org/)** v16.13.1 - **We use React to help us create a component-based site. Using components allow us to re-use code more efficiently and modify their implementation more quickly**
 - **[Bootstrap](http://getbootstrap.com/)** v3.3.7 - **Allows us to quickly define our front end components’ display.**
