@@ -124,7 +124,7 @@
   font-weight: var(--regular-weight);
   letter-spacing: -0.13px;
   color: #a2a1a1;
-  margin: 16px 0 0 0;
+  margin: 16px 0 10px 0;
 }
 
 .ratingMobileBox {
