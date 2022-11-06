@@ -274,7 +274,7 @@ export default function ClassView() {
           <Navbar userInput={input} />
         </div>
 
-        <div className={`row ${styles.content}`}>
+        <div className={`row ${styles.classContent}`}>
           <div
             className={`col-xl-4 col-lg-auto col-12 ${
               styles.courseInfoColumn
@@ -333,17 +333,21 @@ export default function ClassView() {
               </div>
             </div>
             {/* leave a review button, only shown on smaller screens */}
+            <div
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                styles.fixedButtonContainer
+              }`}
+            >
+              <button
+                className={`btn ${styles.startReviewButton}`}
+                onClick={() => onLeaveReview()}
+              >
+                Leave a review
+              </button>
+            </div>
           </div>
         </div>
-        <div >
-          <button
-            className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
-              styles.startReviewButton
-            }`}
-            onClick={() => onLeaveReview()}
-          >
-            Leave a review
-          </button>
+        <div className={`row ${styles.reviewsContent}`}>
           <div className={styles.reviewsHeader}>
             <h2 className={styles.pastReviews}>
               Past Reviews ({courseReviews?.length})
@@ -369,18 +373,6 @@ export default function ClassView() {
               isPreview={false}
               isProfile={false}
             />
-            <div
-              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
-                styles.fixedButtonContainer
-              }`}
-            >
-              <button
-                className={`btn ${styles.startReviewButton}`}
-                onClick={() => onLeaveReview()}
-              >
-                Leave a review
-              </button>
-            </div>
           </div>
         </div>
       </div>
