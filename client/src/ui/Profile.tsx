@@ -80,7 +80,7 @@ export default function Profile(imgSrc: any) {
   const sortByLikes = (a: ReviewType, b: ReviewType) =>
     (b.likes || 0) - (a.likes || 0);
   const sortByDate = (a: ReviewType, b: ReviewType) =>
-    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
+    (b.date instanceof Date && a.date instanceof Date) ? b.date.getTime() - a.date.getTime() : -1;
 
   useEffect(() => {
     axios

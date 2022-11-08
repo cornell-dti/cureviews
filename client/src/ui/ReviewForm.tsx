@@ -189,7 +189,7 @@ export default function ReviewForm({
                 setIsReviewTextInvalid(false);
                 setReviewText(event.target.value);
               }}
-              placeholder={`${selectedProfessors.includes("Not listed")
+              placeholder={`${selectedProfessors && selectedProfessors.includes("Not listed")
                   ? "Who was your professor? "
                   : ""
                 }What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?`}
