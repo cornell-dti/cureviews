@@ -4,12 +4,12 @@ import { Review as ReviewType } from "common";
 import { useAuthMandatoryLogin } from "../auth/auth_utils";
 import { Redirect } from "react-router";
 import Navbar from "./Navbar";
-import styles from "./css/ProfileNew.module.css";
+import styles from "./css/ProfileMobile.module.css";
 
 
 
 
-export default function ProfileNew(imgSrc: any) {
+export default function ProfileMobile(imgSrc: any) {
     const [hide, setHide] = useState(false);
     const [reviews, setReviews] = useState<ReviewType[]>([]);
     const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
