@@ -158,10 +158,7 @@ export default function ClassView() {
    */
   async function reportReview(reviewId: string) {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/v2/reportReview",
-        { id: reviewId },
-      );
+      const response = await axios.post("reportReview", { id: reviewId });
       const responseCode = response.data.result.resCode;
       if (responseCode === 1) {
         setCourseReviews(
@@ -274,11 +271,11 @@ export default function ClassView() {
           <Navbar userInput={input} />
         </div>
 
-        <div className={`row ${styles.classContent}`}>
+        <div className={`row ${styles.content}`}>
           <div
-            className={`col-xl-4 col-lg-auto col-12 ${
-              styles.courseInfoColumn
-            } ${isPastScrollThreshold && styles.courseInfoColumnShadow}`}
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
+              isPastScrollThreshold && styles.courseInfoColumnShadow
+            }`}
           >
             <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
             <p className={styles.courseSubtitle}>
@@ -298,7 +295,9 @@ export default function ClassView() {
               <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
             </div>
             <button
-              className={`${styles.startReviewButton}`}
+              className={`btn ${
+                styles.startReviewButton
+              }`}
               onClick={() => onLeaveReview()}
             >
               Leave a review
@@ -332,7 +331,33 @@ export default function ClassView() {
                 />
               </div>
             </div>
-            {/* leave a review button, only shown on smaller screens */}
+          </div>
+        </div>
+
+        <div className={`row ${styles.reviewContent}`}>
+          <h2 className={styles.pastReviews}>
+            Past Reviews ({courseReviews?.length})
+          </h2>
+          <div className={styles.reviewsHeader}>
+            <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+              Sort By:
+            </label>
+            <select
+              onChange={sortReviewsBy}
+              className={styles.sortBySelect}
+              id="sort-reviews-by"
+            >
+              <option value="helpful">Most Helpful</option>
+              <option value="recent">Recent</option>
+            </select>
+          </div>
+          <div className={styles.courseReviews}>
+            <CourseReviews
+              reviews={courseReviews}
+              onReportReview={reportReview}
+              isPreview={false}
+              isProfile={false}
+            />
             <div
               className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
                 styles.fixedButtonContainer
@@ -345,34 +370,6 @@ export default function ClassView() {
                 Leave a review
               </button>
             </div>
-          </div>
-        </div>
-        <div className={`row ${styles.reviewsContent}`}>
-          <div className={styles.reviewsHeader}>
-            <h2 className={styles.pastReviews}>
-              Past Reviews ({courseReviews?.length})
-            </h2>
-            <div>
-              <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-                Sort By:
-              </label>
-              <select
-                onChange={sortReviewsBy}
-                className={styles.sortBySelect}
-                id="sort-reviews-by"
-              >
-                <option value="helpful">Most Helpful</option>
-                <option value="recent">Recent</option>
-              </select>
-            </div>
-          </div>
-          <div className={styles.courseReviews}>
-            <CourseReviews
-              reviews={courseReviews}
-              onReportReview={reportReview}
-              isPreview={false}
-              isProfile={false}
-            />
           </div>
         </div>
       </div>
