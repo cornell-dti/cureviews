@@ -56,7 +56,7 @@ export default function ClassView() {
     async function updateCurrentClass(number: number, subject: string) {
       try {
         const response = await axios.post(
-          `http://localhost:8080/v2/getCourseByInfo`,
+          `/v2/getCourseByInfo`,
           {
             number,
             subject: subject.toLowerCase(), // TODO: fix backend to handle this
@@ -69,7 +69,7 @@ export default function ClassView() {
 
           // after getting valid course info, fetch reviews
           const reviewsResponse = await axios.post(
-            "http://localhost:8080/v2/getReviewsByCourseId",
+            "/v2/getReviewsByCourseId",
             {
               courseId: course._id,
             },
@@ -102,7 +102,7 @@ export default function ClassView() {
     async function submitReview(review: NewReview, classId: string) {
       try {
         const response = await axios.post(
-          "http://localhost:8080/v2/insertReview",
+          "/v2/insertReview",
           {
             token: token,
             review: review,
