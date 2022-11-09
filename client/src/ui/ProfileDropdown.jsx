@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../ui/css/ProfileDropdown.module.css";
+import { randomPicture } from "../util/profile_picture";
 
 export default function ProfileDropdown(props) {
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
   const toggling = () => setOpen(!open);
+  const profilePicture = randomPicture(props.token ? props.token : "");
 
   useEffect(() => {
     const pageClickEvent = (e) => {
@@ -25,7 +27,7 @@ export default function ProfileDropdown(props) {
   return (
     <div className={styles.profileMenuContainer}>
       <img
-        src={props.imgSrc}
+        src={profilePicture}
         alt='profile bear'
         className={styles.profileBear}
         ref={dropdownRef}

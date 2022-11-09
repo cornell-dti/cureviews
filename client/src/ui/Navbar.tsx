@@ -29,7 +29,7 @@ export default function Navbar({ userInput }: NavbarProps) {
   const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
   const location = useLocation();
 
-  const profilePicture = randomPicture();
+  const profilePicture = randomPicture(token ? token : "");
 
   function displayButton() {
     const token = Session.get("token");

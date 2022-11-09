@@ -50,7 +50,7 @@ export default function App(imgSrc: any): JSX.Element {
 
   function displayButton() {
     if (token) {
-      return <ProfileDropdown imgSrc={`${String(imgSrc.imgSrc)}`} isLoggedIn={token} signOut={signOut} />;
+      return <ProfileDropdown token={token} signOut={signOut} />;
     } else {
       return (
         <button

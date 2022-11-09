@@ -13,8 +13,9 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
 import { useAuthMandatoryLogin } from "../auth/auth_utils";
+import { randomPicture } from "../util/profile_picture";
 
-export default function Profile(imgSrc: any) {
+export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [hide, setHide] = useState(false);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
@@ -29,6 +30,8 @@ export default function Profile(imgSrc: any) {
 
   const [isLoggedIn, token, isAuthenticating, signOut] =
     useAuthMandatoryLogin("profile");
+
+  const profilePicture = randomPicture(token ? token : "");
 
   async function getVerifiedEmail() {
     await axios
@@ -140,7 +143,7 @@ export default function Profile(imgSrc: any) {
             <div className={styles.profileInfo}>
               <img
                 className={styles.profileImage}
-                src={`${String(imgSrc.imgSrc)}`}
+                src={`${String(profilePicture)}`}
                 alt="user"
               />
               <div className={styles.profileVerifiedEmail}>
