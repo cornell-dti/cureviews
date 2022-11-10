@@ -23,8 +23,21 @@ import {
   getStudentEmailByToken,
 } from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
-import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
-import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview, getRaffleWinner } from "./endpoints/AdminActions";
+import {
+  getCoursesByProfessor,
+  getCoursesByMajor,
+  getClassesByQuery,
+  getSubjectsByQuery,
+  getProfessorsByQuery
+} from "./endpoints/Search";
+import {
+  fetchReviewableClasses,
+  reportReview,
+  makeReviewVisible,
+  undoReportReview,
+  removeReview,
+  getRaffleWinner
+} from "./endpoints/AdminActions";
 
 export interface Context {
   ip: string;
