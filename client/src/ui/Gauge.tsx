@@ -4,8 +4,9 @@ import "react-circular-progressbar/dist/styles.css";
 import styles from "./css/Gauge.module.css";
 
 type GaugeProps = {
-  rating: number;
+  rating: number | undefined;
   label: string;
+  isOverall: boolean;
 };
 
 type GaugeState = {
@@ -14,7 +15,7 @@ type GaugeState = {
   rating: number | string;
 };
 
-export default function Gauge({ rating, label }: GaugeProps) {
+export default function Gauge({ rating, label, isOverall }: GaugeProps) {
   const [gaugeState, setGaugeState] = useState<GaugeState>({
     color: "#000",
     percentage: 0.0,
@@ -22,9 +23,24 @@ export default function Gauge({ rating, label }: GaugeProps) {
   });
 
   useEffect(() => {
-    if (!isNaN(rating)) {
+    if (rating && !isNaN(rating)) {
       let percentage = 20 * rating; // rating is 1-5
-      let color = `hsl(212, 100%, ${86 - percentage * 0.36}%)`;
+      let color;
+
+      let red = `hsl(4, 100%, 71%)`;
+      let yellow = `hsl(47, 94%, 58%)`;
+      let green = `hsl(101, 64%, 43%)`;
+
+      let ratingRounded = parseFloat(rating.toFixed(1));
+
+      if (0 <= ratingRounded && ratingRounded < 3) {
+        color = isOverall ? red : green;
+      } else if (3.0 <= ratingRounded && ratingRounded < 4) {
+        color = yellow;
+      } else {
+        color = isOverall ? green : red;
+      }
+
       setGaugeState({
         percentage: percentage,
         color: color,
@@ -33,7 +49,7 @@ export default function Gauge({ rating, label }: GaugeProps) {
     } else {
       setGaugeState({ color: "#000", rating: "-", percentage: 0.0 });
     }
-  }, [setGaugeState, rating]);
+  }, [setGaugeState, rating, isOverall]);
 
   return (
     <div className={styles.gaugeContainer}>

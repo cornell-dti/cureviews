@@ -14,6 +14,8 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "testRunner": "jest-circus/runner",
+    "testTimeout": 20000,
     "moduleFileExtensions": [
       "js",
       "ts"
@@ -25,7 +27,7 @@
   "dependencies": {
     "@types/cors": "^2.8.6",
     "@types/shortid": "^0.0.29",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "common": "0.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -43,6 +45,7 @@
     "@types/jest": "^25.2.1",
     "@types/mongodb": "^3.5.4",
     "@types/mongoose": "^5.7.7",
+    "jest-circus": "24",
     "ts-jest": "24"
   }
 }

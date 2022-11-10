@@ -1,56 +1,94 @@
 /* Individual Review Styling */
 
-.review-number-label-span{
+.review-number-label-span {
   display: inline-flex;
   width: 56px;
 }
 
-.noLeftRightSpacing{
+.noLeftRightSpacing {
   padding-left: 0;
   padding-right: 0;
   margin-left: 0;
   margin-right: 0;
-  display:block;
+  display: block;
 }
 
-.review-container{
-  background: #FFFFFF;
-  border: 0.625px solid #D0E5F5;
+.review-container-style {
+  background: #ffffff;
+  border: 0.625px solid #d0e5f5;
+}
+
+.review-container-style-pending {
+  background: #f9f9f9;
+  border: 1px dashed #979797;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #979797;
+}
+
+.review-title-style {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #000000;
+}
+
+.review-title-style-pending {
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #545454;
+}
+
+.review-container {
   box-sizing: border-box;
   border-radius: 10px;
   margin-bottom: 48px;
+  padding-top: 20px;
   /* margin-right: 25px; */
 }
 
 @media screen and (max-width: 992px) {
-  .review-container{
+  .review-container {
     min-width: 327px;
-    background: #FFFFFF;
-    border: 0.625px solid #D0E5F5;
+    background: #ffffff;
+    border: 0.625px solid #d0e5f5;
     box-sizing: border-box;
     border-radius: 10px;
     margin-bottom: 24px;
   }
-  .review-number-text, .review-number-text-preview{
+  .review-number-text,
+  .review-number-text-preview {
     padding-right: 4vw;
     padding-left: 2vw;
     font-weight: normal;
   }
 
-  .review-text-label{
+  .review-text-label {
     padding-left: 3vw;
   }
-  .review-professor-text{
+  .review-professor-text {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 14px;
     font-weight: var(--semi-bold-weight);
     font-style: normal;
     line-height: 18px;
     display: inline;
-    color: #0076FF;
+    color: #0076ff;
   }
 
-  .covidTag{
+  .covidTag {
     background-color: #ffec5e;
     border-radius: 5px;
     width: 95%;
@@ -66,8 +104,8 @@
     padding: 8px 27px 21px 28px;
   }
 
-  .review-labels-container{
-    background: #F4F9FE;
+  .review-labels-container {
+    background: #f4f9fe;
     text-align: center;
     font-family: Source Sans Pro;
     font-style: normal;
@@ -77,7 +115,7 @@
     text-align: center;
   }
 
-  .review-professor-label{
+  .review-professor-label {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 14px;
     font-weight: var(--semi-bold-weight);
@@ -85,17 +123,18 @@
     line-height: 18px;
     margin: 5px 0 6px 0;
     display: inline;
-    color: #A2A1A1;
+    color: #a2a1a1;
   }
 }
 
 @media screen and (min-width: 992px) {
-  .review-number-text, .review-number-text-preview{
+  .review-number-text,
+  .review-number-text-preview {
     font-weight: bold;
     padding-left: 2vw;
   }
 
-  .covidTag{
+  .covidTag {
     background-color: #ffec5e;
     border-radius: 5px;
     width: 70%;
@@ -111,11 +150,11 @@
     padding: 8px 50px 21px 30px;
   }
 
-  .review-labels-container{
+  .review-labels-container {
     min-width: 85px;
   }
 
-  .review-professor-text{
+  .review-professor-text {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 14px;
     font-weight: var(--semi-bold-weight);
@@ -124,7 +163,7 @@
     display: inline;
   }
 
-  .review-professor-label{
+  .review-professor-label {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 14px;
     font-weight: var(--semi-bold-weight);
@@ -133,6 +172,35 @@
     margin: 5px 0 6px 0;
     display: inline;
   }
+}
+
+.grade-major-container {
+  display: flex;
+  gap: 100px;
+  margin-bottom: 16px;
+}
+
+.grade-major-label {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: 18px;
+  display: inline;
+}
+
+.grade-major-text {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: 18px;
+  display: inline;
+}
+
+.majors-element {
+  text-align: right;
+  display: inline;
 }
 
 .review-report {
@@ -145,15 +213,15 @@
   color: #4990e2;
 }
 
-.review-body-right-col{
+.review-body-right-col {
   padding: 0px 0 0 5%;
 }
 
-.review-number-labels-container{
-  padding:0px;
+.review-number-labels-container {
+  padding: 0px;
 }
 
-.review-number-label{
+.review-number-label {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--regular-weight);
@@ -161,8 +229,8 @@
   font-stretch: normal;
 }
 
-.review-professor-container{
-  margin-bottom:8px;
+.review-professor-container {
+  margin-bottom: 8px;
 }
 
 .review-text {
@@ -176,23 +244,36 @@
   padding-bottom: 15px;
 }
 
+.review-text-pending {
+  text-align: left;
+  padding-bottom: 15px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 19px;
+
+  color: #979797;
+}
+
 .review-date {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--regular-weight);
-  color: #9B9B9B;
+  color: #9b9b9b;
   padding-top: 10px;
   padding-left: 18px;
   display: inline;
-
 }
 
-.review-upvote, .review-voted{
+.review-upvote,
+.review-voted {
   float: right;
   color: #4990e2;
 }
 
-.upvote-text{
+.upvote-text {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: var(--regular-weight);
@@ -201,11 +282,11 @@
   align-items: center;
   text-align: right;
   margin-left: 5px;
-  color: #807B7B;
+  color: #807b7b;
 }
 
-.review-voted .upvote-text{
-  color: #0076FF;
+.review-voted .upvote-text {
+  color: #0076ff;
 }
 
 /* Preview Review Styling */
@@ -215,16 +296,15 @@
   padding: 35px 30px 28px 31px;
 }
 
-.review-number-labels-container{
-  padding:0px;
+.review-number-labels-container {
+  padding: 0px;
 }
 
-
-.review-body-right-col-preview{
+.review-body-right-col-preview {
   padding: 0px 0 0 12%;
 }
 
-.review-number-label-preview{
+.review-number-label-preview {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
   font-weight: var(--regular-weight);
@@ -233,11 +313,11 @@
   line-height: 27px;
 }
 
-.review-professor-container{
-  margin-bottom:8px;
+.review-professor-container {
+  margin-bottom: 8px;
 }
 
-.review-professor-label-preview{
+.review-professor-label-preview {
   border-radius: 5px;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14px;
@@ -264,22 +344,21 @@
   margin-left: 5px;
 }
 
-.upvote-text{
-  display:inline;
+.upvote-text {
+  display: inline;
 }
 
-.btn-lg{
-  padding:2px;
-  font-size:12px;
-  padding-left:65%;
+.btn-lg {
+  padding: 2px;
+  font-size: 12px;
+  padding-left: 65%;
 }
 
-
-.glyphicon{
-  display:inline;
+.glyphicon {
+  display: inline;
 }
 
-.showMoreText{
+.showMoreText {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 15px;
   font-weight: var(--semi-bold-weight);
@@ -287,10 +366,10 @@
   font-stretch: normal;
   line-height: normal;
 
-  color: #0076FF;
+  color: #0076ff;
 }
 
-button{
-  background-color:#FFFFFF;
-  border:none;
+button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
 }

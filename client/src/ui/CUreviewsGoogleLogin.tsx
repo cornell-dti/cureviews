@@ -2,7 +2,7 @@
 // The existing code is problematic...
 
 import React, { Component } from 'react';
-import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 import { Session } from '../session-store';
 
 /*
@@ -18,7 +18,7 @@ import { Session } from '../session-store';
 type Props = {
   readonly executeLogin: boolean;
   readonly waitTime: number;
-  readonly redirectFrom: string;
+  readonly redirectFrom?: string;
 };
 
 export default class CUreviewsGoogleLogin extends Component<Props, { lastVerification: number }> {
@@ -31,7 +31,9 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
 
     //Save redirect page
     //Will be either "admin" or "course"
-    this.saveRedirectToSession(this.props.redirectFrom);
+    if (this.props.redirectFrom) {
+      this.saveRedirectToSession(this.props.redirectFrom);
+    }
   }
 
   //Using meteor session to save the redirct page to Session
@@ -44,26 +46,9 @@ export default class CUreviewsGoogleLogin extends Component<Props, { lastVerific
     return 1;
   };
 
-  //This callback function is only called when Google Log-In uses a pop-up.  We now use a redirect
-  // instead.  Therefore this callback is never used/called but I'll leave here for furture reference.
-  // Previously called by adding: onSuccess={this.responseGoogle.bind(this)}
-  // as a prop passed into <GoogleLogin> component below.
-  responseGoogle = (response: GoogleLoginResponse) => {
-    const token = response.tokenId;
-    if (token) {
-      // @ts-ignore
-      if (this.saveToken(token) === 1) {
-        console.log(Session.get("token"));
-        // console.log("Succesfully saved token to session");
-      } else {
-        console.log("Error saving token");
-      }
-      this.setState({ lastVerification: new Date().getTime() });
-    }
-  }
-
   getRedirectURI = () => {
     if (window.location.host.includes("localhost")) {
+
       return "http://" + window.location.host + "/auth/"
     }
     return "https://" + window.location.host + "/auth/"

@@ -1,7 +1,27 @@
 import express from "express";
 import { validationResult, ValidationChain } from "express-validator";
-import { totalReviews, howManyReviewsEachClass, howManyEachClass, topSubjects, getReviewsOverTimeTop15 } from "./endpoints/AdminChart";
-import { getReviewsByCourseId, getCourseById, insertReview, insertUser, getCourseByInfo, incrementLike, decrementLike } from "./endpoints/Review";
+import {
+  totalReviews,
+  howManyReviewsEachClass,
+  howManyEachClass,
+  topSubjects,
+  getReviewsOverTimeTop15,
+} from "./endpoints/AdminChart";
+import {
+  getReviewsByCourseId,
+  getCourseById,
+  insertReview,
+  insertUser,
+  getCourseByInfo,
+  updateLiked,
+  userHasLiked,
+} from "./endpoints/Review";
+import {
+  countReviewsByStudentId,
+  getTotalLikesByStudentId,
+  getReviewsByStudentId,
+  getStudentEmailByToken,
+} from "./endpoints/Profile";
 import { tokenIsAdmin } from "./endpoints/Auth";
 import { getCoursesByProfessor, getCoursesByMajor, getClassesByQuery, getSubjectsByQuery, getProfessorsByQuery } from "./endpoints/Search";
 import { fetchReviewableClasses, reportReview, makeReviewVisible, undoReportReview, removeReview, getRaffleWinner } from "./endpoints/AdminActions";
@@ -28,7 +48,7 @@ export function configure(app: express.Application) {
   methods.use(express.json());
   app.use(express.json());
   // needed to get client IP apparently
-  app.set('trust proxy', true);
+  app.set("trust proxy", true);
 
   register(app, "getClassesByQuery", getClassesByQuery);
   register(app, "getReviewsByCourseId", getReviewsByCourseId);
@@ -51,12 +71,20 @@ export function configure(app: express.Application) {
   register(app, "howManyEachClass", howManyEachClass);
   register(app, "topSubjects", topSubjects);
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
-  register(app, "incrementLike", incrementLike);
-  register(app, "decrementLike", decrementLike);
+  register(app, "updateLiked", updateLiked);
+  register(app, "userHasLiked", userHasLiked);
+  register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
+  register(app, "getReviewsByStudentId", getReviewsByStudentId);
+  register(app, "countReviewsByStudentId", countReviewsByStudentId);
+  register(app, "getStudentEmailByToken", getStudentEmailByToken);
   register(app, "getRaffleWinner", getRaffleWinner);
 }
 
-function register<T>(app: express.Application, name: string, endpoint: Endpoint<T>) {
+function register<T>(
+  app: express.Application,
+  name: string,
+  endpoint: Endpoint<T>,
+) {
   const { callback, guard } = endpoint;
   app.post(`/v2/${name}`, guard, async (req, res) => {
     const errors = validationResult(req);

@@ -158,10 +158,8 @@ export async function fetchAddCourses(endpoint: string, semester: string): Promi
       const profs: string[] = await Promise.all(professors.map(async (p) => {
         // This has to be an atomic upset. Otherwise, this causes some race condition badness
         const professorIfExists = await Professors.findOneAndUpdate({ fullName: `${p.firstName} ${p.lastName}` },
-          { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } }, {
-            upsert: true,
-            new: true,
-          });
+          { $setOnInsert: { fullName: `${p.firstName} ${p.lastName}`, _id: shortid.generate(), major: "None" /* TODO: change? */ } },
+          { upsert: true, new: true });
 
         return professorIfExists.fullName;
       })).catch((err) => {
@@ -356,7 +354,7 @@ export async function updateProfessors(semesters: any) {
   console.log('In updateProfessors method');
   for (const semester in semesters) {
     // get all classes in this semester
-    console.log(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`);
+    // console.log(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`);
     try {
       await axios.get(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`, { timeout: 30000 });
     } catch (error) {
@@ -373,9 +371,9 @@ export async function updateProfessors(semesters: any) {
     } else {
       const response = result.data;
       // console.log(response);
-      const sub = response.data.subjects; // array of the subjects
-      for (const course in sub) { // for every subject
-        const parent = sub[course];
+      const { subjects } = response.data; // array of the subjects
+      for (const department in subjects) { // for every subject
+        const parent = subjects[department];
         // console.log("https://classes.cornell.edu/api/2.0/search/classes.json?roster=" + semesters[semester] + "&subject="+ parent.value)
         try {
           await axios.get(`https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`, { timeout: 30000 });
@@ -412,7 +410,7 @@ export async function updateProfessors(semesters: any) {
                 const { classSections } = courses[course].enrollGroups[0]; // This returns an array
                 for (const section in classSections) {
                   if (classSections[section].ssrComponent == 'LEC'
-                                      || classSections[section].ssrComponent == 'SEM') {
+                    || classSections[section].ssrComponent == 'SEM') {
                     // Checks to see if class has scheduled meetings before checking them
                     if (classSections[section].meetings.length > 0) {
                       const professors = classSections[section].meetings[0].instructors;
@@ -440,14 +438,14 @@ export async function updateProfessors(semesters: any) {
                     }
                   }
                 }
-                Classes.update({ _id: matchedCourse._id }, { $set: { classProfessors: oldProfessors } });
+                await Classes.update({ _id: matchedCourse._id }, { $set: { classProfessors: oldProfessors } }).exec();
               }
             } catch (error) {
               console.log('Error in updateProfessors: 5');
               console.log(`Error on course ${courses[course].subject} ${courses[course].catalogNbr}`);
               console.log(error);
 
-              return 0;
+              return 1;
             }
           }
         }
@@ -455,7 +453,7 @@ export async function updateProfessors(semesters: any) {
     }
   }
   console.log('Finished updateProfessors');
-  return 1;
+  return 0;
 }
 
 export async function resetProfessorArray(semesters: any) {

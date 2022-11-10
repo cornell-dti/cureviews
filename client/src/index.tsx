@@ -3,14 +3,22 @@ import "./index.css";
 
 import React from "react";
 import { render } from "react-dom";
+import Modal from "react-modal";
 
 import Login from "./ui/Login";
-import ClassView from "./ui/ClassView.jsx";
+import ClassView from "./ui/ClassViewNew";
 import App from "./ui/App";
 import AuthRedirect from "./ui/AuthRedirect";
+import Profile from "./ui/Profile";
 
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Results } from "./ui/Results";
+
+import NotFound from "./ui/NotFound";
+import Admin from "./ui/Admin";
+import { randomPicture } from "./util/profile_picture";
+
+Modal.setAppElement("#render-target");
 
 /*
 Generates appliation component sent to the client side entry point (main.html)
@@ -20,25 +28,37 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
+
+const profilePicture = randomPicture();
+
 render(
   <BrowserRouter>
-    <div className="container-fluid full-height noLeftRightPadding">
-      <Route name="app" exact path="/" component={App} />
-      <Route name="admin" exact path="/admin" component={Login} />
-      <Route
-        name="permalink"
-        exact
-        path="/course/:subject/:number"
-        component={ClassView}
-      />
-      <Route name="auth" exact path="/auth" component={AuthRedirect} />
-      <Route
-        name="permalink"
-        exact
-        path="/results/:type/:input"
-        component={Results}
-      />
-    </div>
-  </BrowserRouter>,
-  document.getElementById("render-target")
+    <div className="container-fluid full-height">
+      <Switch>
+        <Route name="app" exact path="/" component={() => <App imgSrc={profilePicture} />} />
+        <Route name="admin" exact path="/admin" component={Admin} />
+        <Route
+          name="permalink"
+          exact
+          path="/course/:subject/:number"
+          component={ClassView}
+        />
+        <Route name="auth" exact path="/auth" component={AuthRedirect} />
+        <Route name="login" exact path="/login" component={Login} />
+        <Route
+          name="permalink"
+          exact
+          path="/results/:type/:input"
+          component={Results}
+        />
+        <Route
+          name="profile"
+          exact path="/profile"
+          component={() => <Profile imgSrc={profilePicture} />}
+        />
+        <Route component={NotFound} />
+      </Switch >
+    </div >
+  </BrowserRouter >,
+  document.getElementById("render-target"),
 );

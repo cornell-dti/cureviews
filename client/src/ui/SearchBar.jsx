@@ -7,6 +7,7 @@ import "./css/SearchBar.css";
 import { Redirect } from 'react-router';
 import axios from "axios";
 import { Session } from '../session-store';
+import ProfileDropdown from './ProfileDropdown';
 
 
 /*
@@ -39,6 +40,10 @@ const initState = {
 
 export default class SearchBar extends Component {
 
+  static DEBOUNCE_TIME = 200;
+  controller;
+  searchTimeout;
+
   constructor(props) {
     super(props);
 
@@ -68,58 +73,105 @@ export default class SearchBar extends Component {
     }
     this.setState({ query: query });
 
-    Session.setPersistent({"last-search": query});
+    Session.setPersistent({ "last-search": query });
+  }
+
+  /**
+   * Compares classes based on score, then class number, then alphabetically by
+   * subject.
+   * @param {Class} a
+   * @param {Class} b
+   * @returns -1, 0, or 1
+   */
+  sortCourses(a, b) {
+    const sortByAlphabet = (a, b) => {
+      const aSub = a.classSub.toLowerCase();
+      const bSub = b.classSub.toLowerCase();
+      if (aSub < bSub) {
+        return -1;
+      } else if (aSub > bSub) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+
+    return b.score - a.score || a.classNum - b.classNum || sortByAlphabet(a, b);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.query.toLowerCase() !== "" && (this.state.query.toLowerCase() !== prevState.query.toLowerCase() || this.props !== prevProps)) {
-      axios.post(`/v2/getClassesByQuery`, { query: this.state.query }).then(response => {
-        const queryCourseList = response.data.result;
-        if (queryCourseList.length !== 0) {
-          // Save the Class object that matches the request
-          this.setState({
-            allCourses: queryCourseList
-          });
-        }
-        else {
-          this.setState({
-            allCourses: []
-          });
-        }
-      }
-      )
-        .catch(e => console.log("Getting courses failed!"));
+    if (
+      this.state.query.toLowerCase() !== "" &&
+      (this.state.query.toLowerCase() !== prevState.query.toLowerCase() ||
+        this.props !== prevProps)
+    ) {
+      if (this.controller) this.controller.abort();
+      this.controller = new AbortController();
+      clearTimeout(this.searchTimeout);
 
-      axios.post(`/v2/getSubjectsByQuery`, { query: this.state.query }).then(response => {
-        const subjectList = response.data.result;
-        if (subjectList && subjectList.length !== 0) {
-          // Save the list of Subject objects that matches the request
-          this.setState({
-            allSubjects: subjectList
-          });
-        }
-        else {
-          this.setState({
-            allSubjects: []
-          });
-        }
-      }).catch(e => console.log("Getting subjects failed!"));
+      this.searchTimeout = setTimeout(() => {
+        axios
+          .post(
+            `/v2/getClassesByQuery`,
+            { query: this.state.query },
+            { signal: this.controller.signal }
+          )
+          .then((response) => {
+            const queryCourseList = response.data.result;
+            if (queryCourseList.length !== 0) {
+              this.setState({
+                allCourses: queryCourseList.sort(this.sortCourses),
+              });
+            } else {
+              this.setState({
+                allCourses: [],
+              });
+            }
+          })
+          .catch((e) => console.log("Getting courses failed!"));
 
-      axios.post(`/v2/getProfessorsByQuery`, { query: this.state.query }).then(response => {
-        const professorList = response.data.result;
-        if (professorList && professorList.length !== 0) {
-          // Save the list of Subject objects that matches the request
-          this.setState({
-            allProfessors: professorList
-          });
-        }
-        else {
-          this.setState({
-            allProfessors: []
-          });
-        }
-      }).catch(e => console.log("Getting professors failed!"));
+        axios
+          .post(
+            `/v2/getSubjectsByQuery`,
+            { query: this.state.query },
+            { signal: this.controller.signal }
+          )
+          .then((response) => {
+            const subjectList = response.data.result;
+            if (subjectList && subjectList.length !== 0) {
+              // Save the list of Subject objects that matches the request
+              this.setState({
+                allSubjects: subjectList,
+              });
+            } else {
+              this.setState({
+                allSubjects: [],
+              });
+            }
+          })
+          .catch((e) => console.log("Getting subjects failed!"));
 
+        axios
+          .post(
+            `/v2/getProfessorsByQuery`,
+            { query: this.state.query },
+            { signal: this.controller.signal }
+          )
+          .then((response) => {
+            const professorList = response.data.result;
+            if (professorList && professorList.length !== 0) {
+              // Save the list of Subject objects that matches the request
+              this.setState({
+                allProfessors: professorList,
+              });
+            } else {
+              this.setState({
+                allProfessors: [],
+              });
+            }
+          })
+          .catch((e) => console.log("Getting professors failed!"));
+      }, this.DEBOUNCE_TIME)
     }
   }
 
@@ -279,8 +331,9 @@ export default class SearchBar extends Component {
     const text = window.innerWidth >= 840 ? "Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”" : "Search any keyword"
     return (
       <div className={"row " + (this.props.contrastingResultsBackground ? "contrasting-result-background" : "")}>
-        <div className={"col-lg-12 col-md-12 col-sm-12 col-xs-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
+        <div className={"col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 searchbar " + (this.props.isInNavbar ? "searchbar-in-navbar" : "")}>
           <input className="search-text" onKeyUp={this.handleKeyPress} defaultValue={this.props.isInNavbar ? (this.props.userInput ? this.props.userInput : "") : ""} placeholder={this.props.isInNavbar ? "" : text} autoComplete="off" />
+          {this.props.isInNavbar && this.props.isLoggedIn ? <ProfileDropdown imgSrc={this.props.imgSrc} signOut={this.props.signOut} /> : ""}
 
           <ul className="output" style={this.state.query !== "" ? {} : { display: 'none' }} onKeyPress={this.handleKeyPress} onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave}>
             {this.renderResults()}

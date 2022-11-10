@@ -1,0 +1,92 @@
+@import "../../index.css";
+
+.ratingInputLabel {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  font-weight: var(--regular-weight);
+}
+
+.ratingInput {
+  display: flex;
+  flex-direction: row;
+}
+
+.ratingUnit {
+  flex: 1;
+  width: 0;
+  text-align: center;
+  padding-right: 8px;
+}
+
+.ratingUnit:last-child {
+  padding-right: 0;
+}
+
+.ratingButton {
+  padding: 0;
+  width: 100%;
+}
+
+.ratingButtonPill {
+  height: 8px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ececec;
+}
+
+.ratingButtonPillSelected {
+  background-color: #0076ff;
+}
+
+/*
+Red: rgba(225, 117, 108, 1), #FF756C
+Yellow: rgba(248, 204, 48, 1), #F8CC30
+Green: rgba(83, 178, 39, 1), #53B227
+*/
+
+.ratingButtonPillSelectedRed {
+  background-color: #FF756C;
+}
+
+.ratingButtonPillSelectedYellow {
+  background-color: #F8CC30;
+}
+
+.ratingButtonPillSelectedGreen {
+  background-color: #53B227;
+}
+
+/*
+For hovering, use colors that are 50% opacity of normal colors
+
+Red: rgba(225, 117, 108, 0.5), #e1756c80
+Yellow: rgba(248, 204, 48, 0.5), #f8cc3080
+Green: rgba(83, 178, 39, 0.5), #53b22780
+*/
+
+.ratingButtonPillHover {
+  background-color: #b7d8ff;
+}
+
+.ratingButtonPillHoverRed {
+  background-color: #e1756c80;
+}
+
+.ratingButtonPillHoverYellow {
+  background-color: #f8cc3080;
+}
+
+.ratingButtonPillHoverGreen {
+  background-color: #53b22780; 
+}
+
+.ratingMinMaxLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  color: #979797;
+  font-weight: var(--regular-weight) !important;
+}
