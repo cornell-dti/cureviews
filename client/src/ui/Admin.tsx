@@ -7,6 +7,7 @@ import { useAuthMandatoryLogin } from '../auth/auth_utils';
 import { Redirect } from 'react-router-dom';
 
 import "./css/Admin.css";
+import RaffleWinner from './RaffleWinner';
 
 export default function Admin() {
 
@@ -258,6 +259,8 @@ export default function Admin() {
                             <div hidden={!(loadingInit === 2)} className="width-90">
                                 <p>Database initialaization is complete!</p>
                             </div>
+
+                            <RaffleWinner adminToken={token} />
 
                             <br />
 
