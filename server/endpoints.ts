@@ -28,7 +28,7 @@ import {
   getCoursesByMajor,
   getClassesByQuery,
   getSubjectsByQuery,
-  getProfessorsByQuery
+  getProfessorsByQuery,
 } from "./endpoints/Search";
 import {
   fetchReviewableClasses,
@@ -36,7 +36,7 @@ import {
   makeReviewVisible,
   undoReportReview,
   removeReview,
-  getRaffleWinner
+  getRaffleWinner,
 } from "./endpoints/AdminActions";
 
 export interface Context {
