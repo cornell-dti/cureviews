@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./css/Results.css"; // css files
 import Navbar from './Navbar';
 import ResultsDisplay from './ResultsDisplay.jsx';
+import SuggestedCourses from './SuggestedCourses.jsx';
 import PropTypes from "prop-types";
 import axios from 'axios';
 
@@ -108,7 +109,7 @@ export class Results extends Component {
         <div className="row">
           <Navbar userInput={userInput} />
         </div>
-        <ResultsDisplay courses={this.state.courseList}
+        <SuggestedCourses courses={this.state.courseList}
           history={this.props.history}
           userInput={userInput}
           loading={this.state.loading} type={this.props.match.params.type} />
