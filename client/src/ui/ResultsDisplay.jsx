@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./css/ResultsDisplay.css"; // css files
-import FilteredResult from "./FilteredResult.tsx";
+import SuggestedCourses from "./SuggestedCourses";
 import PreviewCard from "./PreviewCard.jsx";
 import Loading from "react-loading-animation";
 import FilterPopup from "./FilterPopup";
@@ -238,7 +238,7 @@ export default class ResultsDisplay extends Component {
           }
         }}
       >
-        <FilteredResult
+        <SuggestedCourses
           key={index}
           index={index}
           selected={index === this.state.active_card}
