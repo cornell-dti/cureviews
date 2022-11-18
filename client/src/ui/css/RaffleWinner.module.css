@@ -1,0 +1,16 @@
+.raffleContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    max-width: 400px;
+}
+
+.raffleDatepicker {}
+
+.raffleButton {
+    width: 400px;
+}
+
+.raffleWinner {
+    width: 400px;
+}
