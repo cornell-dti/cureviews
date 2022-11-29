@@ -7,8 +7,6 @@ import Navbar from "./Navbar";
 import styles from "./css/ProfileMobile.module.css";
 
 
-
-
 export default function ProfileMobile(imgSrc: any) {
     const [hide, setHide] = useState(false);
     const [reviews, setReviews] = useState<ReviewType[]>([]);
@@ -72,6 +70,21 @@ export default function ProfileMobile(imgSrc: any) {
         return (
             <div className={`row ${styles.fullScreen}`}>
                 <Navbar userInput="" />
+
+                {/* Header Section */}
+                <div className="header">
+                    <h2>My Dashboard</h2>
+                </div>
+
+                {/* Stats Section */}
+                <div className="stats">
+
+                </div>
+
+                {/* My Reviews */}
+                <div className="myReviews">
+
+                </div>
             </div>
         );
     } else if (isAuthenticating) {
@@ -79,6 +92,4 @@ export default function ProfileMobile(imgSrc: any) {
     } else {
         return <Redirect to="/" />;
     }
-
-
 }
