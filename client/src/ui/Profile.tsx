@@ -38,7 +38,6 @@ export default function Profile(imgSrc: any) {
       .then((response) => {
         const res = response.data.result;
         if (res.code === 200) {
-          console.log(res.message);
           setVerifiedEmail(res.message);
         }
 

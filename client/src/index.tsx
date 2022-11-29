@@ -17,7 +17,6 @@ import NotFound from "./ui/NotFound";
 import Admin from "./ui/Admin";
 import { randomPicture } from "./util/profile_picture";
 import ProfileContainer from "./ui/ProfileContainer";
-import Profile from "./ui/Profile";
 
 Modal.setAppElement("#render-target");
 
@@ -55,7 +54,7 @@ render(
         <Route
           name="profile"
           exact path="/profile"
-          component={() => <Profile imgSrc={profilePicture} />}
+          component={() => <ProfileContainer imgSrc={profilePicture} />}
         />
         <Route component={NotFound} />
       </Switch >
