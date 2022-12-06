@@ -5,6 +5,8 @@ import { useAuthMandatoryLogin } from "../auth/auth_utils";
 import { Redirect } from "react-router";
 import Navbar from "./Navbar";
 import styles from "./css/ProfileMobile.module.css";
+import ProfileDropdownNavBar from "./ProfileDropdownNavBar";
+import { randomPicture } from "../util/profile_picture";
 
 
 export default function ProfileMobile(imgSrc: any) {
@@ -21,6 +23,8 @@ export default function ProfileMobile(imgSrc: any) {
 
     const [isLoggedIn, token, isAuthenticating, signOut] =
         useAuthMandatoryLogin("profile");
+
+    const profilePicture = randomPicture();
 
     async function getVerifiedEmail() {
         await axios
@@ -69,20 +73,27 @@ export default function ProfileMobile(imgSrc: any) {
     if (isLoggedIn) {
         return (
             <div className={`row ${styles.fullScreen}`}>
-                <Navbar userInput="" />
+                <div className={`${styles.navBar}`}>
+                    <Navbar userInput="" />
+                </div>
 
                 {/* Header Section */}
-                <div className="header">
+                <div className={`${styles.header}`}>
                     <h2>My Dashboard</h2>
+                    <ProfileDropdownNavBar
+                        imgSrc={`${String(profilePicture)}`}
+                        isLoggedIn={token}
+                        signOut={signOut}
+                    />
                 </div>
 
                 {/* Stats Section */}
-                <div className="stats">
+                <div className={`${styles.stats}`}>
 
                 </div>
 
                 {/* My Reviews */}
-                <div className="myReviews">
+                <div className={`${styles.myReviews}`}>
 
                 </div>
             </div>

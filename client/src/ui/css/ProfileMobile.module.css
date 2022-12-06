@@ -2,3 +2,16 @@
     height: 100%;
     overflow: auto;
 }
+
+.navBar {
+    max-height: 120px;
+    width: 100%;
+}
+
+.header {
+    width: 100%;
+}
+
+.stats {}
+
+.myReviews {}
