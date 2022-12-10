@@ -400,6 +400,9 @@ export default class ResultsDisplay extends Component {
               <div className="results-classes-list">
                 <ul>{this.renderResults()}</ul>
               </div>
+              <div className="button">
+                <ul>{this.renderResults()}</ul>
+              </div>
             </div>
             <div className="d-none d-lg-block col preview">
               <PreviewCard course={this.state.card_course} />
