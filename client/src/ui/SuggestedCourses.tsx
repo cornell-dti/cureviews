@@ -17,20 +17,6 @@ type State = {
   sortBy: string;
 };
 
-/*
-  Filtered Result Component.
-
-  Takes each result and creates a view of the result with its s
-
-  Props:  course- the class to be displayed
-          previewHandler: if this class is clicked, this function will update
-                          the selected class to display a PreviewCard
-                          in the ResultsDisplay component to be itself
-          selected: bool, if true, the border of this class is outlined blue to indicate being clicked
-          index: number, the position of this class in the list of results
-          sortBy: string, the metric to display on this component
-*/
-
 export default class SuggestedCourses extends Component<Props, State> {
   constructor(props: Props) {
     super(props);

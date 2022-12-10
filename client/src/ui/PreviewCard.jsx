@@ -6,6 +6,7 @@ import Gauge from "./Gauge.tsx";
 import Review from "./Review";
 import { lastOfferedSems } from "common/CourseCard";
 
+
 /*
   Preview Card component.
 
@@ -223,6 +224,8 @@ export default class PreviewCard extends Component {
             </div>
           </div>
         )}
+
+                
 
         <div className="row top-review-text noLeftRightSpacing">
           <div className="col-lg-12 col-md-12 col-sm-12 remove-left-padding">
