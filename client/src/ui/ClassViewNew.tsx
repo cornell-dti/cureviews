@@ -30,7 +30,7 @@ export default function ClassView() {
   const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-  const [isLoggedIn, token, signIn] = useAuthOptionalLogin();
+  const [isLoggedIn, token, netId, signIn] = useAuthOptionalLogin();
 
   /**
    * Arrow functions for sorting reviews
@@ -105,7 +105,7 @@ export default function ClassView() {
         if (response.data.result.resCode === 1) {
           setIsReviewModalOpen(false);
           toast.success(
-            "Thanks for reviewing! New reviews are updated every 24 hours."
+            "Thanks for reviewing! New reviews are updated every 24 hours.",
           );
         } else {
           toast.error("An error occurred, please try again.");
@@ -153,7 +153,7 @@ export default function ClassView() {
       const responseCode = response.data.result.resCode;
       if (responseCode === 1) {
         setCourseReviews(
-          courseReviews?.filter((element) => element._id !== reviewId)
+          courseReviews?.filter((element) => element._id !== reviewId),
         );
       }
     } catch (e) {
@@ -264,8 +264,9 @@ export default function ClassView() {
 
         <div className={`row ${styles.content}`}>
           <div
-            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${isPastScrollThreshold && styles.courseInfoColumnShadow
-              }`}
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
+              isPastScrollThreshold && styles.courseInfoColumnShadow
+            }`}
           >
             <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
             <p className={styles.courseSubtitle}>
@@ -276,8 +277,9 @@ export default function ClassView() {
                 lastOfferedSems(selectedClass)}
             </p>
             <div
-              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${styles.ratingMobileBox
-                }`}
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                styles.ratingMobileBox
+              }`}
             >
               <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
               <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
@@ -294,8 +296,9 @@ export default function ClassView() {
           </div>
           <div className={`col ${styles.courseReviewColumn}`}>
             <div
-              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${styles.gaugeContainer
-                }`}
+              className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
+                styles.gaugeContainer
+              }`}
             >
               <div className={styles.gauge}>
                 <Gauge
@@ -321,8 +324,9 @@ export default function ClassView() {
             </div>
             {/* leave a review button, only shown on smaller screens */}
             <button
-              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${styles.startReviewButton
-                }`}
+              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
+                styles.startReviewButton
+              }`}
               onClick={() => onLeaveReview()}
             >
               Leave a review
@@ -353,8 +357,9 @@ export default function ClassView() {
                 isProfile={false}
               />
               <div
-                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${styles.fixedButtonContainer
-                  }`}
+                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                  styles.fixedButtonContainer
+                }`}
               >
                 <button
                   className={`btn ${styles.startReviewButton}`}

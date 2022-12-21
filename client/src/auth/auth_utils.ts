@@ -1,91 +1,135 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Session } from '../session-store';
+import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { Session } from "../session-store";
+import axios from "axios";
 
 export const setAuthToken = (token: string) => {
-    Session.setPersistent({ "token": token });
-    if (Session.get("token") !== token) {
-        console.log("Error saving token to session")
-        return false;
-    }
-    return true;
-}
+  Session.setPersistent({ token: token });
+  if (Session.get("token") !== token) {
+    console.log("Error saving token to session");
+    return false;
+  }
+  return true;
+};
 
 export const getAuthToken = () => {
-    const token = Session.get("token");
-    if (!token || token === "") {
-        return null;
-    }
-    const exp = JSON.parse(atob(token.split(".")[1])).exp;
-    if (token && token !== "" && exp > Math.floor(Date.now() / 1000)) {
-        return token;
-    }
-    else return null;
-}
+  const token = Session.get("token");
+  if (!token || token === "") {
+    return null;
+  }
+  const exp = JSON.parse(atob(token.split(".")[1])).exp;
+  if (token && token !== "" && exp > Math.floor(Date.now() / 1000)) {
+    return token;
+  } else return null;
+};
 
-export function useAuthMandatoryLogin(redirectFrom: string): [boolean, string | null, boolean, () => void] {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [token, setToken] = useState(null);
-    const [isAuthenticating, setIsAuthenticating] = useState(true);
-    const history = useHistory();
+export function useAuthMandatoryLogin(
+  redirectFrom: string,
+): [boolean, string | null, string, boolean, () => void] {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [netId, setNetId] = useState("");
+  const history = useHistory();
 
-    const signOut = () => {
-        setToken(null);
-        Session.set("token", null);
-        history.push("/");
-    }
+  const signOut = () => {
+    setToken(null);
+    Session.set("token", null);
+    history.push("/");
+  };
 
-    useEffect(() => {
-        const signIn = (redirectFrom: string) => {
-            Session.setPersistent({ "redirectFrom": redirectFrom });
-            history.push("/login");
-        }
-
-        const token = getAuthToken();
-
-        if (!token || token === "") {
-            signIn(redirectFrom)
-        }
-
-        setToken(token);
-        setIsAuthenticating(false);
-        setIsLoggedIn(true);
-    }, [redirectFrom, history]);
-
-    return [isLoggedIn, token, isAuthenticating, signOut];
-}
-
-export function useAuthOptionalLogin(): [boolean, string | null, (redirectFrom: string) => void, (redirectTo?: string) => void] {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [token, setToken] = useState(null);
-    const history = useHistory();
-    const location = useLocation();
-
-    useEffect(() => {
-        const token = getAuthToken();
-
-        if (token && token !== "") {
-            setToken(token);
-            setIsLoggedIn(true);
-        }
-    }, []);
-
+  useEffect(() => {
     const signIn = (redirectFrom: string) => {
-        Session.setPersistent({ "redirectFrom": redirectFrom });
-        history.push("/login");
+      Session.setPersistent({ redirectFrom: redirectFrom });
+      history.push("/login");
+    };
+
+    const token = getAuthToken();
+
+    if (!token || token === "") {
+      signIn(redirectFrom);
     }
 
-    const signOut = (redirectTo?: string) => {
-        setIsLoggedIn(false);
-        setToken(null);
-        Session.set("token", null);
-        if (redirectTo) {
-            history.push(redirectTo);
+    axios
+      .post("/v2/getStudentEmailByToken", {
+        token: token,
+      })
+      .then((response) => {
+        const res = response.data.result;
+        var verifiedEmail = "";
+
+        if (res.code === 200) {
+          console.log(res.message);
+          verifiedEmail = res.message;
         }
-        else {
-            window.location.reload();
-        }
+
+        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
+      })
+      .catch((e) => console.log(e.response));
+
+    setToken(token);
+    setIsAuthenticating(false);
+    setIsLoggedIn(true);
+  }, [redirectFrom, history]);
+
+  return [isLoggedIn, token, netId, isAuthenticating, signOut];
+}
+
+export function useAuthOptionalLogin(): [
+  boolean,
+  string | null,
+  string,
+  (redirectFrom: string) => void,
+  (redirectTo?: string) => void,
+] {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
+  const [netId, setNetId] = useState("");
+
+  const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = getAuthToken();
+
+    if (token && token !== "") {
+      setToken(token);
+      setIsLoggedIn(true);
     }
 
-    return [isLoggedIn, token, signIn, signOut];
+    axios
+      .post("/v2/getStudentEmailByToken", {
+        token: token,
+      })
+      .then((response) => {
+        const res = response.data.result;
+        var verifiedEmail = "";
+
+        if (res.code === 200) {
+          console.log(res.message);
+          verifiedEmail = res.message;
+        }
+
+        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
+      })
+      .catch((e) => console.log(e.response));
+  }, []);
+
+  const signIn = (redirectFrom: string) => {
+    Session.setPersistent({ redirectFrom: redirectFrom });
+    history.push("/login");
+  };
+
+  const signOut = (redirectTo?: string) => {
+    setIsLoggedIn(false);
+    setToken(null);
+    Session.set("token", null);
+    if (redirectTo) {
+      history.push(redirectTo);
+    } else {
+      window.location.reload();
+    }
+  };
+
+  return [isLoggedIn, token, netId, signIn, signOut];
 }

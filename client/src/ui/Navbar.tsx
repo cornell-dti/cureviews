@@ -25,11 +25,10 @@ type NavbarProps = {
 };
 
 export default function Navbar({ userInput }: NavbarProps) {
-
-  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin();
   const location = useLocation();
 
-  const profilePicture = randomPicture(token ? token : "");
+  const profilePicture = randomPicture(netId);
 
   function displayButton() {
     const token = Session.get("token");

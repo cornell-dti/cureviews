@@ -16,7 +16,6 @@ import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
 import Admin from "./ui/Admin";
-import { randomPicture } from "./util/profile_picture";
 
 Modal.setAppElement("#render-target");
 
@@ -28,7 +27,6 @@ A router is generated using the BrowserRouter library. This determines which
 application component the user should see based on the URL they enter.
 
 */
-
 
 render(
   <BrowserRouter>
@@ -52,12 +50,13 @@ render(
         />
         <Route
           name="profile"
-          exact path="/profile"
-          component={() => <Profile/>}
+          exact
+          path="/profile"
+          component={() => <Profile />}
         />
         <Route component={NotFound} />
-      </Switch >
-    </div >
-  </BrowserRouter >,
+      </Switch>
+    </div>
+  </BrowserRouter>,
   document.getElementById("render-target"),
 );

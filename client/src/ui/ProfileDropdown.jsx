@@ -6,7 +6,7 @@ export default function ProfileDropdown(props) {
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
   const toggling = () => setOpen(!open);
-  const profilePicture = randomPicture(props.token ? props.token : "");
+  const profilePicture = randomPicture(props.netId);
 
   useEffect(() => {
     const pageClickEvent = (e) => {
