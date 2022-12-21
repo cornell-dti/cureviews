@@ -2,7 +2,7 @@ import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
 import { Context, Endpoint } from "../endpoints";
-import { Reviews, ReviewDocument, Classes } from "../dbDefs";
+import { Reviews, ReviewDocument, Classes, Students } from "../dbDefs";
 import { updateProfessors, findAllSemesters, resetProfessorArray } from "../dbInit";
 import { getCourseById, verifyToken } from "./utils";
 import { ReviewRequest } from "./Review";
@@ -17,6 +17,11 @@ interface AdminReviewRequest {
 // The type for a request with an admin action for updating professors info
 interface AdminProfessorsRequest {
   token: string;
+}
+
+interface AdminRaffleWinnerRequest {
+  token: string;
+  startDate: string;
 }
 
 // This updates the metrics for an individual class given its Mongo-generated id.
@@ -216,6 +221,32 @@ export const fetchReviewableClasses: Endpoint<AdminProfessorsRequest> = {
       // eslint-disable-next-line no-console
       console.log(error);
       return { resCode: 0 };
+    }
+  },
+};
+
+export const getRaffleWinner: Endpoint<AdminRaffleWinnerRequest> = {
+  guard: [body("token").notEmpty().isAscii(), body("startDate").notEmpty()],
+  callback: async (ctx: Context, request: AdminRaffleWinnerRequest) => {
+    try {
+      const startDate = new Date(request.startDate);
+      const winner = await Reviews.aggregate([
+        { $match: { date: { $gte: startDate } } },
+        { $sample: { size: 1 } },
+      ]);
+
+      if (winner.length <= 0) {
+        return { resCode: 0, netId: "No Reviews to Choose From" };
+      }
+
+      const studentId = winner[0].user;
+      const user = await Students.findOne({ _id: studentId });
+      const { netId } = user;
+
+      return { resCode: 0, netId };
+    } catch (error) {
+      console.log(error);
+      return { resCode: 1 };
     }
   },
 };

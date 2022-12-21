@@ -7,6 +7,7 @@ import { useAuthMandatoryLogin } from "../auth/auth_utils";
 import { Redirect } from "react-router-dom";
 
 import "./css/Admin.css";
+import RaffleWinner from "./RaffleWinner";
 
 export default function Admin() {
   const [unapprovedReviews, setUnapprovedReviews] = useState<Review[]>([]);
