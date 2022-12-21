@@ -319,6 +319,8 @@ export default function Admin() {
                 <p>Database initialaization is complete!</p>
               </div>
 
+              <RaffleWinner adminToken={token} />
+
               <br />
 
               <div className="card">
