@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import moment from 'moment';
+import React, { Component } from "react";
+import axios from "axios";
+import moment from "moment";
 import "./css/AdminReview.css";
 
 type Props = {
@@ -49,18 +49,22 @@ export default class UpdateReview extends Component<Props, State> {
       longName: "",
     };
 
-    axios.post(`/v2/getCourseById`, { courseId: props.info.class }).then(response => {
-      const course = response.data.result
-      if (course) {
-        this.setState({
-          shortName: course.classSub.toUpperCase() + " " + course.classNum,
-          longName: course.classTitle
-        });
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(`Unable to find course by id = ${props.info.class}`);
-      }
-    });
+    axios
+      .post(`/v2/getCourseById`, {
+        courseId: props.info.class,
+      })
+      .then((response) => {
+        const course = response.data.result;
+        if (course) {
+          this.setState({
+            shortName: course.classSub.toUpperCase() + " " + course.classNum,
+            longName: course.classTitle,
+          });
+        } else {
+          // eslint-disable-next-line no-console
+          console.log(`Unable to find course by id = ${props.info.class}`);
+        }
+      });
   }
 
   // Decide which buttons to show, and what action the buttons take,
@@ -69,19 +73,46 @@ export default class UpdateReview extends Component<Props, State> {
     const reported = review.reported;
     if (reported === 1) {
       return (
-        <div className='text-right'>
-          <button type="button" className="btn btn-success " onClick={() => this.props.unReportHandler(review)}> Restore Review</button>
-          <button type="button" className="btn btn-danger space-review-buttons" onClick={() => this.props.removeHandler(review, false)}> Remove Review</button>
+        <div className="text-right">
+          <button
+            type="button"
+            className="btn btn-success "
+            onClick={() => this.props.unReportHandler(review)}
+          >
+            {" "}
+            Restore Review
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger space-review-buttons"
+            onClick={() => this.props.removeHandler(review, false)}
+          >
+            {" "}
+            Remove Review
+          </button>
         </div>
-      )
-    }
-    else {
+      );
+    } else {
       return (
-        <div className='text-right'>
-          <button type="button" className="btn btn-success" onClick={() => this.props.approveHandler(review)}> Confirm Review</button>
-          <button type="button" className="btn btn-danger space-review-buttons" onClick={() => this.props.removeHandler(review, true)}> Remove Review</button>
+        <div className="text-right">
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={() => this.props.approveHandler(review)}
+          >
+            {" "}
+            Confirm Review
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger space-review-buttons"
+            onClick={() => this.props.removeHandler(review, true)}
+          >
+            {" "}
+            Remove Review
+          </button>
         </div>
-      )
+      );
     }
   }
 
@@ -104,10 +135,14 @@ export default class UpdateReview extends Component<Props, State> {
                   <div className="card-body text-center">{review.rating}</div>
                 </div>
                 <div className="card">
-                  <div className="card-body text-center">{review.difficulty}</div>
+                  <div className="card-body text-center">
+                    {review.difficulty}
+                  </div>
                 </div>
                 <div className="card">
-                  <div className="card-body text-center">{review.professors}</div>
+                  <div className="card-body text-center">
+                    {review.professors}
+                  </div>
                 </div>
               </div>
               <div className="col-md-3 col-sm-6 col-6">
@@ -115,19 +150,14 @@ export default class UpdateReview extends Component<Props, State> {
                 <div className="card-body"> Difficulty</div>
                 <div className="card-body"> Professor(s)</div>
               </div>
-              <div className="col-md-6 col-sm-12 col-12">
-                {review.text}
-              </div>
+              <div className="col-md-6 col-sm-12 col-12">{review.text}</div>
             </div>
             <div className="row">
-              <div className="offset-md-7">
-                {this.renderButtons(review)}
-              </div>
+              <div className="offset-md-7">{this.renderButtons(review)}</div>
             </div>
           </div>
         </div>
       </li>
     );
   }
-
 }

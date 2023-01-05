@@ -47,12 +47,9 @@ export default function Profile(imgSrc: any) {
       .catch((e) => console.log(e.response));
   }
   async function getReviewsTotal() {
-    const response = await axios.post(
-      "/v2/countReviewsByStudentId",
-      {
-        netId,
-      },
-    );
+    const response = await axios.post("/v2/countReviewsByStudentId", {
+      netId,
+    });
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -61,12 +58,9 @@ export default function Profile(imgSrc: any) {
   }
 
   async function getReviewsHelpful() {
-    const response = await axios.post(
-      "/v2/getTotalLikesByStudentId",
-      {
-        netId,
-      },
-    );
+    const response = await axios.post("/v2/getTotalLikesByStudentId", {
+      netId,
+    });
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -80,26 +74,26 @@ export default function Profile(imgSrc: any) {
   const sortByLikes = (a: ReviewType, b: ReviewType) =>
     (b.likes || 0) - (a.likes || 0);
   const sortByDate = (a: ReviewType, b: ReviewType) =>
-    (b.date instanceof Date && a.date instanceof Date) ? b.date.getTime() - a.date.getTime() : -1;
+    b.date instanceof Date && a.date instanceof Date
+      ? b.date.getTime() - a.date.getTime()
+      : -1;
 
   useEffect(() => {
-    axios
-      .post(`/v2/getReviewsByStudentId`, { netId })
-      .then((response) => {
-        const reviews = response.data.result.message;
-        const pendingReviews = reviews.filter(function (review: ReviewType) {
-          return review.visible === 0;
-        });
-        const pastReviews = reviews.filter(function (review: ReviewType) {
-          return review.visible === 1;
-        });
-
-        reviews?.sort(sortByLikes);
-        setReviews(reviews);
-        setPendingReviews(pendingReviews);
-        setPastReviews(pastReviews);
-        setLoading(false);
+    axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
+      const reviews = response.data.result.message;
+      const pendingReviews = reviews.filter(function (review: ReviewType) {
+        return review.visible === 0;
       });
+      const pastReviews = reviews.filter(function (review: ReviewType) {
+        return review.visible === 1;
+      });
+
+      reviews?.sort(sortByLikes);
+      setReviews(reviews);
+      setPendingReviews(pendingReviews);
+      setPastReviews(pastReviews);
+      setLoading(false);
+    });
   }, [netId]);
 
   useEffect(() => {

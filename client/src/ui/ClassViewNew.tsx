@@ -14,6 +14,7 @@ import { Session } from "../session-store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthOptionalLogin } from "../auth/auth_utils";
+import { MdOutlineRateReview } from "react-icons/md";
 
 enum PageStatus {
   Loading,
@@ -43,7 +44,7 @@ export default function ClassView() {
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
-    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 28);
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 300);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -55,25 +56,19 @@ export default function ClassView() {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(
-          `/v2/getCourseByInfo`,
-          {
-            number,
-            subject: subject.toLowerCase(), // TODO: fix backend to handle this
-          },
-        );
+        const response = await axios.post(`/v2/getCourseByInfo`, {
+          number,
+          subject: subject.toLowerCase(), // TODO: fix backend to handle this
+        });
 
         const course = response.data.result;
         if (course) {
           setSelectedClass(course);
 
           // after getting valid course info, fetch reviews
-          const reviewsResponse = await axios.post(
-            "/v2/getReviewsByCourseId",
-            {
-              courseId: course._id,
-            },
-          );
+          const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
+            courseId: course._id,
+          });
           const reviews = reviewsResponse.data.result;
           // convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
@@ -101,14 +96,11 @@ export default function ClassView() {
      */
     async function submitReview(review: NewReview, classId: string) {
       try {
-        const response = await axios.post(
-          "/v2/insertReview",
-          {
-            token: token,
-            review: review,
-            classId: classId,
-          },
-        );
+        const response = await axios.post("/v2/insertReview", {
+          token: token,
+          review: review,
+          classId: classId,
+        });
 
         clearSessionReview();
         if (response.data.result.resCode === 1) {
@@ -240,8 +232,6 @@ export default function ClassView() {
           draggable
           pauseOnHover
         />
-
-        {/* review modal for mobile reviews */}
         <Modal
           isOpen={isReviewModalOpen}
           className={styles.reviewModal}
@@ -295,14 +285,13 @@ export default function ClassView() {
               <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
             </div>
             <button
-              className={`btn ${
-                styles.startReviewButton
-              }`}
+              className={`btn ${styles.startReviewButton}`}
               onClick={() => onLeaveReview()}
             >
               Leave a review
             </button>
           </div>
+
           <div className={`col ${styles.courseReviewColumn}`}>
             <div
               className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
@@ -358,7 +347,21 @@ export default function ClassView() {
               isPreview={false}
               isProfile={false}
             />
+
             <div
+              className={`${!isPastScrollThreshold && "d-none"} ${
+                styles.fixedButtonContainer
+              }`}
+            >
+              <button
+                className={`btn ${styles.startReviewButton}`}
+                onClick={() => onLeaveReview()}
+              >
+                <MdOutlineRateReview size={25} />
+              </button>
+            </div>
+
+            {/* <div
               className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
                 styles.fixedButtonContainer
               }`}
@@ -369,7 +372,7 @@ export default function ClassView() {
               >
                 Leave a review
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

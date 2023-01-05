@@ -12,11 +12,10 @@
   background-color: #f4f9fe;
 }
 
-.reviewContent{
+.reviewContent {
   padding-right: 10%;
   padding-left: 10%;
   background-color: #f4f9fe;
-
 }
 
 .authModal {
@@ -174,8 +173,7 @@
 
 .fixedButtonContainer {
   position: fixed;
-  bottom: 0;
-  left: 0;
+  bottom: 2%;
   right: 0;
   margin: 0 30px;
   z-index: 100;
