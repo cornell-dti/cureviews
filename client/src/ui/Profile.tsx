@@ -32,7 +32,7 @@ export default function Profile(imgSrc: any) {
 
   async function getVerifiedEmail() {
     await axios
-      .post("/v2/getStudentEmailByToken", {
+      .post("http://localhost:8080/v2/getStudentEmailByToken", {
         token: token,
       })
       .then((response) => {
@@ -47,9 +47,12 @@ export default function Profile(imgSrc: any) {
       .catch((e) => console.log(e.response));
   }
   async function getReviewsTotal() {
-    const response = await axios.post("/v2/countReviewsByStudentId", {
-      netId,
-    });
+    const response = await axios.post(
+      "http://localhost:8080/v2/countReviewsByStudentId",
+      {
+        netId,
+      },
+    );
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -58,9 +61,12 @@ export default function Profile(imgSrc: any) {
   }
 
   async function getReviewsHelpful() {
-    const response = await axios.post("/v2/getTotalLikesByStudentId", {
-      netId,
-    });
+    const response = await axios.post(
+      "http://localhost:8080/v2/getTotalLikesByStudentId",
+      {
+        netId,
+      },
+    );
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -79,21 +85,23 @@ export default function Profile(imgSrc: any) {
       : -1;
 
   useEffect(() => {
-    axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
-      const reviews = response.data.result.message;
-      const pendingReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 0;
-      });
-      const pastReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 1;
-      });
+    axios
+      .post(`http://localhost:8080/v2/getReviewsByStudentId`, { netId })
+      .then((response) => {
+        const reviews = response.data.result.message;
+        const pendingReviews = reviews.filter(function (review: ReviewType) {
+          return review.visible === 0;
+        });
+        const pastReviews = reviews.filter(function (review: ReviewType) {
+          return review.visible === 1;
+        });
 
-      reviews?.sort(sortByLikes);
-      setReviews(reviews);
-      setPendingReviews(pendingReviews);
-      setPastReviews(pastReviews);
-      setLoading(false);
-    });
+        reviews?.sort(sortByLikes);
+        setReviews(reviews);
+        setPendingReviews(pendingReviews);
+        setPastReviews(pastReviews);
+        setLoading(false);
+      });
   }, [netId]);
 
   useEffect(() => {

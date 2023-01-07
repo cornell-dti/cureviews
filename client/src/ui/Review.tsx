@@ -84,7 +84,7 @@ export default function Review({
     }
 
     axios
-      .post("/v2/updateLiked", {
+      .post("http://localhost:8080/v2/updateLiked", {
         id: _review._id,
         token: getAuthToken(),
       })
@@ -98,9 +98,12 @@ export default function Review({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/v2/getCourseById`, {
-        courseId: _review.class,
-      });
+      const response = await axios.post(
+        `http://localhost:8080/v2/getCourseById`,
+        {
+          courseId: _review.class,
+        },
+      );
       const course = response.data.result;
 
       setCourseTitle(course.classTitle);
@@ -113,10 +116,13 @@ export default function Review({
 
   useEffect(() => {
     async function updateLiked() {
-      const response = await axios.post("/v2/userHasLiked", {
-        id: _review._id,
-        token: getAuthToken(),
-      });
+      const response = await axios.post(
+        "http://localhost:8080/v2/userHasLiked",
+        {
+          id: _review._id,
+          token: getAuthToken(),
+        },
+      );
 
       setLiked(response.data.result.hasLiked);
     }

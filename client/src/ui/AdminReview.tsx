@@ -50,7 +50,7 @@ export default class UpdateReview extends Component<Props, State> {
     };
 
     axios
-      .post(`/v2/getCourseById`, {
+      .post(`http://localhost:8080/v2/getCourseById`, {
         courseId: props.info.class,
       })
       .then((response) => {
