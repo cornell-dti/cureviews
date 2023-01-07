@@ -266,7 +266,7 @@ export default function ClassView() {
           </div>
         </Modal>
 
-        <div className="row d-none d-lg-block">
+        <div className="row d-lg-block">
           <Navbar userInput={input} />
         </div>
 

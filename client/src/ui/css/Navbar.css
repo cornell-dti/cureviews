@@ -5,12 +5,12 @@
   }
 
   .logo-container {
-    display: none;
+    width: 100%;
   }
 
   .navbar-searchbar-container {
     margin-left: 21px;
-    margin-right: 29px;
+    margin-right: 70px;
   }
 }
 

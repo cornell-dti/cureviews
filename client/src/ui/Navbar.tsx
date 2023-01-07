@@ -25,7 +25,6 @@ type NavbarProps = {
 };
 
 export default function Navbar({ userInput }: NavbarProps) {
-
   const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
   const location = useLocation();
 
