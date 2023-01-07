@@ -26,7 +26,7 @@ export default function Admin() {
 
   useEffect(() => {
     async function confirmAdmin() {
-      const res = await axios.post(`http://localhost:8080/v2/tokenIsAdmin`, {
+      const res = await axios.post(`/v2/tokenIsAdmin`, {
         token: token,
       });
 
@@ -45,7 +45,7 @@ export default function Admin() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8080/v2/fetchReviewableClasses", { token: token })
+      .post("/v2/fetchReviewableClasses", { token: token })
       .then((response) => {
         const result = response.data.result;
         if (result.resCode !== 0) {
@@ -69,7 +69,7 @@ export default function Admin() {
   // and changes the review with this id to visible.
   function approveReview(review: Review) {
     axios
-      .post("http://localhost:8080/v2/makeReviewVisible", {
+      .post("/v2/makeReviewVisible", {
         review: review,
         token: token,
       })
@@ -89,7 +89,7 @@ export default function Admin() {
   // and deletes the review with this id.
   function removeReview(review: Review, isUnapproved: boolean) {
     axios
-      .post("http://localhost:8080/v2/removeReview", {
+      .post("/v2/removeReview", {
         review: review,
         token: token,
       })
@@ -121,7 +121,7 @@ export default function Admin() {
   // and changes the reported flag for this review to false.
   function unReportReview(review: Review) {
     axios
-      .post("http://localhost:8080/v2/undoReportReview", {
+      .post("/v2/undoReportReview", {
         review: review,
         token: token,
       })
@@ -163,18 +163,16 @@ export default function Admin() {
     setDisableInit(true);
     setLoadingProfs(1);
 
-    axios
-      .post("http://localhost:8080/v2/setProfessors", { token: token })
-      .then((response) => {
-        const result = response.data.result.resCode;
-        if (result === 0) {
-          console.log("Updated the professors");
-          setDisableInit(false);
-          setLoadingProfs(2);
-        } else {
-          console.log("Error at setProfessors");
-        }
-      });
+    axios.post("/v2/setProfessors", { token: token }).then((response) => {
+      const result = response.data.result.resCode;
+      if (result === 0) {
+        console.log("Updated the professors");
+        setDisableInit(false);
+        setLoadingProfs(2);
+      } else {
+        console.log("Error at setProfessors");
+      }
+    });
   }
 
   function resetProfessors() {
@@ -182,18 +180,16 @@ export default function Admin() {
     setDisableInit(true);
     setResettingProfs(1);
 
-    axios
-      .post("http://localhost:8080/v2/resetProfessors", { token: token })
-      .then((response) => {
-        const result = response.data.result.resCode;
-        if (result === 1) {
-          console.log("Reset all the professors to empty arrays");
-          setDisableInit(false);
-          setResettingProfs(2);
-        } else {
-          console.log("Error at resetProfessors");
-        }
-      });
+    axios.post("/v2/resetProfessors", { token: token }).then((response) => {
+      const result = response.data.result.resCode;
+      if (result === 1) {
+        console.log("Reset all the professors to empty arrays");
+        setDisableInit(false);
+        setResettingProfs(2);
+      } else {
+        console.log("Error at resetProfessors");
+      }
+    });
   }
 
   // handle the first click to the "Initialize Database" button. Show an alert
