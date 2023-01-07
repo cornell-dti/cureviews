@@ -55,7 +55,7 @@
   color: #ffffff;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 992px) {
   .profileMenuCard {
     width: 210px;
     height: 130px;
