@@ -29,23 +29,25 @@
 }
 
 .modalOverlay {
+  top: 0;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   position: fixed;
   z-index: 200;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #f4f9fe;
 }
 
 .reviewModal {
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
   background-color: #ffffff;
-  padding: 20px; */
+  padding: 20px;
+  border-radius: 20px;
+  filter: drop-shadow(0 1px 6px rgba(168, 211, 245, 0.5));
+  overflow: auto;
 }
 
 .authModal {
@@ -56,28 +58,6 @@
   bottom: 0;
   background-color: #ffffff;
   padding: 20px;
-}
-
-.reviewModalForm {
-  margin-top: 20px;
-}
-
-@media (min-width: 768px) {
-  .authModal {
-    margin: auto;
-    height: 500px;
-    width: 480px;
-    border-radius: 10px;
-  }
-
-  .reviewModal {
-    /* margin: auto;
-    height: fit-content;
-    max-height: 90%;
-    width: 500px;
-    border-radius: 10px;
-    overflow: auto; */
-  }
 }
 
 .courseInfoColumn {
@@ -241,9 +221,13 @@
     margin: auto;
     height: fit-content;
     max-height: 90%;
-    width: 900px;
+    width: 90%;
     border-radius: 10px;
     overflow: auto;
+  }
+
+  .modalOverlay {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   .classView {
@@ -267,16 +251,6 @@
 }
 
 @media (min-width: 992px) {
-  .modalOverlay {
-    position: fixed;
-    z-index: 200;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
   .courseInfoColumn {
     background-color: transparent;
     padding: 50px 70px 0 50px;
@@ -301,12 +275,6 @@
   }
 
   .reviewModal {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ffffff;
-    padding: 20px;
+    width: 70%;
   }
 }

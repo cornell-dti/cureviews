@@ -72,7 +72,7 @@ export default function ReviewForm({
   return (
     <>
       <div className={`row ${styles.reviewForm}`}>
-        <div className={`col-xl-6 col-lg-6 col-sm-auto ${styles.formColumn}`} >
+        <div className={`col-xl-6 col-lg-6 col-sm-6 ${styles.formColumn}`}>
           <h2 className={`${styles.reviewHeader}`}>Leave a Review</h2>
           <label
             className={styles.selectProfessorLabel}
@@ -183,7 +183,7 @@ export default function ReviewForm({
             />
           </div>
         </div>
-        <div className={`col-xl-6 col-lg-6 col-sm-auto ${styles.commentColumn}`}>
+        <div className={`col-xl-6 col-lg-6 col-sm-6 ${styles.commentColumn}`}>
           {isReviewCommentVisible && (
             <div className={styles.review}>
               <label className={styles.reviewComment}>

@@ -257,7 +257,7 @@ export default function ClassView() {
           >
             <span aria-hidden="true">&times;</span>
           </button>
-          <div className={styles.reviewModalForm}>
+          <div>
             <ReviewForm
               professors={selectedClass.classProfessors}
               onSubmitReview={onSubmitReview}

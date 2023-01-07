@@ -1,6 +1,6 @@
 @import "../../index.css";
 
-.reviewForm{
+.reviewForm {
   padding: 10px;
 }
 
@@ -38,7 +38,7 @@
 
 .reviewText:focus {
   outline: none !important;
-  border: 3px solid #65ACFF;
+  border: 3px solid #65acff;
 }
 
 .review {
@@ -58,11 +58,11 @@
   margin: 10px;
 }
 
-.formColumn{
+.formColumn {
   padding-right: 25px;
 }
 
-.commentColumn{
+.commentColumn {
   padding-left: 25px;
 }
 
@@ -82,4 +82,11 @@
   font-size: 14px;
   color: #000000;
   font-weight: var(--regular-weight);
+}
+
+@media (max-width: 768px) {
+  .reviewForm {
+    height: 100%;
+    width: 100%;
+  }
 }
