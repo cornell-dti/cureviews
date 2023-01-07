@@ -147,6 +147,7 @@
   right: 0;
   margin: 0 30px;
   z-index: 100;
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.5));
 }
 
 .courseReviewColumn {

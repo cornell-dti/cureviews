@@ -44,7 +44,7 @@ export default function ClassView() {
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
-    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 300);
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 200);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
