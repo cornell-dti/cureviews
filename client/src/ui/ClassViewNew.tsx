@@ -14,6 +14,7 @@ import { Session } from "../session-store";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthOptionalLogin } from "../auth/auth_utils";
+import { MdOutlineRateReview } from "react-icons/md";
 
 enum PageStatus {
   Loading,
@@ -43,7 +44,7 @@ export default function ClassView() {
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
-    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 28);
+    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 200);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -231,8 +232,6 @@ export default function ClassView() {
           draggable
           pauseOnHover
         />
-
-        {/* review modal for mobile reviews */}
         <Modal
           isOpen={isReviewModalOpen}
           className={styles.reviewModal}
@@ -249,7 +248,7 @@ export default function ClassView() {
           >
             <span aria-hidden="true">&times;</span>
           </button>
-          <div className={styles.reviewModalForm}>
+          <div>
             <ReviewForm
               professors={selectedClass.classProfessors}
               onSubmitReview={onSubmitReview}
@@ -258,7 +257,7 @@ export default function ClassView() {
           </div>
         </Modal>
 
-        <div className="row d-none d-lg-block">
+        <div className="row d-lg-block">
           <Navbar userInput={input} />
         </div>
 
@@ -285,15 +284,14 @@ export default function ClassView() {
               <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
               <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
             </div>
-            {/* review form, only shown on larger screens */}
-            <div className={`d-lg-block d-none ${styles.reviewFormContainer}`}>
-              <ReviewForm
-                professors={selectedClass.classProfessors}
-                onSubmitReview={onSubmitReview}
-                actionButtonLabel="Submit a review"
-              />
-            </div>
+            <button
+              className={`btn ${styles.startReviewButton}`}
+              onClick={() => onLeaveReview()}
+            >
+              Leave a review
+            </button>
           </div>
+
           <div className={`col ${styles.courseReviewColumn}`}>
             <div
               className={`${isPastScrollThreshold && "d-none"} d-lg-flex ${
@@ -322,53 +320,59 @@ export default function ClassView() {
                 />
               </div>
             </div>
-            {/* leave a review button, only shown on smaller screens */}
-            <button
-              className={`btn d-lg-none ${isPastScrollThreshold && "d-none"} ${
-                styles.startReviewButton
-              }`}
-              onClick={() => onLeaveReview()}
+          </div>
+        </div>
+
+        <div className={`row ${styles.reviewContent}`}>
+          <h2 className={styles.pastReviews}>
+            Past Reviews ({courseReviews?.length})
+          </h2>
+          <div className={styles.reviewsHeader}>
+            <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+              Sort By:
+            </label>
+            <select
+              onChange={sortReviewsBy}
+              className={styles.sortBySelect}
+              id="sort-reviews-by"
             >
-              Leave a review
-            </button>
-            <div className={styles.reviewsHeader}>
-              <h2 className={styles.pastReviews}>
-                Past Reviews ({courseReviews?.length})
-              </h2>
-              <div>
-                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-                  Sort By:
-                </label>
-                <select
-                  onChange={sortReviewsBy}
-                  className={styles.sortBySelect}
-                  id="sort-reviews-by"
-                >
-                  <option value="helpful">Most Helpful</option>
-                  <option value="recent">Recent</option>
-                </select>
-              </div>
-            </div>
-            <div className={styles.courseReviews}>
-              <CourseReviews
-                reviews={courseReviews}
-                onReportReview={reportReview}
-                isPreview={false}
-                isProfile={false}
-              />
-              <div
-                className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
-                  styles.fixedButtonContainer
-                }`}
+              <option value="helpful">Most Helpful</option>
+              <option value="recent">Recent</option>
+            </select>
+          </div>
+          <div className={styles.courseReviews}>
+            <CourseReviews
+              reviews={courseReviews}
+              onReportReview={reportReview}
+              isPreview={false}
+              isProfile={false}
+            />
+
+            <div
+              className={`${!isPastScrollThreshold && "d-none"} ${
+                styles.fixedButtonContainer
+              }`}
+            >
+              <button
+                className={`btn ${styles.startReviewButton}`}
+                onClick={() => onLeaveReview()}
               >
-                <button
-                  className={`btn ${styles.startReviewButton}`}
-                  onClick={() => onLeaveReview()}
-                >
-                  Leave a review
-                </button>
-              </div>
+                <MdOutlineRateReview size={25} />
+              </button>
             </div>
+
+            {/* <div
+              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
+                styles.fixedButtonContainer
+              }`}
+            >
+              <button
+                className={`btn ${styles.startReviewButton}`}
+                onClick={() => onLeaveReview()}
+              >
+                Leave a review
+              </button>
+            </div> */}
           </div>
         </div>
       </div>

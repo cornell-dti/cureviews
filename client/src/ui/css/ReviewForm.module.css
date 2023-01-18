@@ -1,5 +1,9 @@
 @import "../../index.css";
 
+.reviewForm {
+  padding: 10px;
+}
+
 .reviewHeader {
   margin-top: 0;
   font-family: "Source Sans Pro", sans-serif;
@@ -28,6 +32,19 @@
   font-weight: var(--regular-weight);
 }
 
+.reviewText {
+  height: 250px;
+}
+
+.reviewText:focus {
+  outline: none !important;
+  border: 3px solid #65acff;
+}
+
+.review {
+  margin-top: 50px;
+}
+
 .errorText {
   color: #ff0000;
   margin-top: 4px;
@@ -38,6 +55,15 @@
   color: #ffffff !important;
   width: 100%;
   border-radius: 10px;
+  margin: 10px;
+}
+
+.formColumn {
+  padding-right: 25px;
+}
+
+.commentColumn {
+  padding-left: 25px;
 }
 
 .actionButton:hover {
@@ -56,4 +82,11 @@
   font-size: 14px;
   color: #000000;
   font-weight: var(--regular-weight);
+}
+
+@media (max-width: 768px) {
+  .reviewForm {
+    height: 100%;
+    width: 100%;
+  }
 }
