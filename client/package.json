@@ -22,7 +22,7 @@
     "react-loading-animation": "^1.4.0",
     "react-modal": "^3.14.4",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^5.0.1",
     "react-select": "^3.1.0",
     "react-show-more-text": "^1.4.0",
     "react-summary-gauge-2": "^1.0.4",
