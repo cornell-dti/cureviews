@@ -32,7 +32,7 @@ export default function Review({
   isPreview,
   isProfile,
 }: ReviewProps) {
-  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin();
   const location = useLocation();
 
   const [_review, setReview] = useState<ReviewType>(review);

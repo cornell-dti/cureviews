@@ -31,7 +31,7 @@ export default function ClassView() {
   const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-  const [isLoggedIn, token, signIn] = useAuthOptionalLogin();
+  const [isLoggedIn, token, netId, signIn] = useAuthOptionalLogin();
 
   /**
    * Arrow functions for sorting reviews

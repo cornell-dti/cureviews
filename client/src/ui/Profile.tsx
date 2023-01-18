@@ -13,39 +13,23 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import { Redirect } from "react-router-dom";
 import { useAuthMandatoryLogin } from "../auth/auth_utils";
+import { randomPicture } from "../util/profile_picture";
 
-export default function Profile(imgSrc: any) {
+export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [hide, setHide] = useState(false);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [pastReviews, setPastReviews] = useState<ReviewType[]>([]);
 
-  const [reviewsTotal, setReviewsTotal] = useState("");
-  const [reviewsHelpful, setReviewsHelpful] = useState("");
-  const [verifiedEmail, setVerifiedEmail] = useState("");
+  const [reviewsTotal, setReviewsTotal] = useState("0");
+  const [reviewsHelpful, setReviewsHelpful] = useState("0");
 
-  const [netId, setNetId] = useState("");
-
-  const [isLoggedIn, token, isAuthenticating, signOut] =
+  const [isLoggedIn, token, netId, isAuthenticating, signOut] =
     useAuthMandatoryLogin("profile");
 
-  async function getVerifiedEmail() {
-    await axios
-      .post("/v2/getStudentEmailByToken", {
-        token: token,
-      })
-      .then((response) => {
-        const res = response.data.result;
-        if (res.code === 200) {
-          console.log(res.message);
-          setVerifiedEmail(res.message);
-        }
+  const profilePicture = randomPicture(netId);
 
-        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf("@")));
-      })
-      .catch((e) => console.log(e.response));
-  }
   async function getReviewsTotal() {
     const response = await axios.post("/v2/countReviewsByStudentId", {
       netId,
@@ -120,7 +104,6 @@ export default function Profile(imgSrc: any) {
     setReviews(currentReviews);
   }
 
-  getVerifiedEmail();
   getReviewsTotal();
   getReviewsHelpful();
 
@@ -134,7 +117,7 @@ export default function Profile(imgSrc: any) {
             <div className={styles.profileInfo}>
               <img
                 className={styles.profileImage}
-                src={`${String(imgSrc.imgSrc)}`}
+                src={`${String(profilePicture)}`}
                 alt="user"
               />
               <div className={styles.profileVerifiedEmail}>

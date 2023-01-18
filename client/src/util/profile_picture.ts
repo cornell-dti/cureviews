@@ -11,6 +11,16 @@ const profilePictures = [
     "/profile_bear/profile_bear_yellow.svg",
 ];
 
-export function randomPicture() {
-    return profilePictures[Math.floor(Math.random() * profilePictures.length)];
+function hashCode(netId: string){
+    var hash = 0;
+    for (var i = 0; i < netId.length; i++) {
+        var code = netId.charCodeAt(i);
+        hash = ((hash<<5)-hash)+code;
+        hash = hash & hash;
+    }
+    return hash;
+}
+
+export function randomPicture(netId : string) {
+    return profilePictures[hashCode(netId)%profilePictures.length];
 }
