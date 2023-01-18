@@ -10,11 +10,11 @@ import { useLocation } from "react-router-dom";
 // use review.visible for pending
 
 type ReviewProps = {
-  review: ReviewType,
-  reportHandler: (review: ReviewType) => void,
-  isPreview: boolean,
-  isProfile: boolean,
-}
+  review: ReviewType;
+  reportHandler: (review: ReviewType) => void;
+  isPreview: boolean;
+  isProfile: boolean;
+};
 
 /*
   Review Component.
@@ -30,10 +30,9 @@ export default function Review({
   review,
   reportHandler,
   isPreview,
-  isProfile
+  isProfile,
 }: ReviewProps) {
-
-  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin();
   const location = useLocation();
 
   const [_review, setReview] = useState<ReviewType>(review);
@@ -45,8 +44,12 @@ export default function Review({
   const [courseSub, setCourseSub] = useState<string>("");
   const [courseNum, setCourseNum] = useState<string>("");
 
-  const review_container_style = _review.visible ? styles.reviewContainerStyle : styles.reviewContainerStylePending;
-  const ratings_container_color = _review.visible ? styles.ratingsContainerColor : "";
+  const review_container_style = _review.visible
+    ? styles.reviewContainerStyle
+    : styles.reviewContainerStylePending;
+  const ratings_container_color = _review.visible
+    ? styles.ratingsContainerColor
+    : "";
 
   function getDateString() {
     if (!_review.date) return "";
@@ -63,12 +66,11 @@ export default function Review({
     if (!expanded) {
       let newHeight =
         height +
-        ((_review.text.length % 500) / 20) *
-        (isPreview ? 4.25 : 10.25);
+        ((_review.text.length % 500) / 20) * (isPreview ? 4.25 : 10.25);
       setExpanded(!expanded);
       setHeight(newHeight);
     } else {
-      setExpanded(!expanded)
+      setExpanded(!expanded);
       setHeight(isPreview ? 206 : 196);
     }
   }
@@ -81,12 +83,14 @@ export default function Review({
       signIn("path:" + location.pathname);
     }
 
-    axios.post("/v2/updateLiked", {
-      id: _review._id,
-      token: getAuthToken()
-    }).then((response) => {
-      setReview(response.data.result.review);
-    });
+    axios
+      .post("/v2/updateLiked", {
+        id: _review._id,
+        token: getAuthToken(),
+      })
+      .then((response) => {
+        setReview(response.data.result.review);
+      });
   }
 
   /*
@@ -94,7 +98,9 @@ export default function Review({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/v2/getCourseById`, { courseId: _review.class });
+      const response = await axios.post(`/v2/getCourseById`, {
+        courseId: _review.class,
+      });
       const course = response.data.result;
 
       setCourseTitle(course.classTitle);
@@ -122,24 +128,23 @@ export default function Review({
     var profString = "Professor: ";
     if (_review.professors && _review.professors.length > 0)
       profString += _review.professors.join(", ");
-    else profString += "N/A"
+    else profString += "N/A";
 
     if (isProfile) {
       return (
         <>
-          <h5 className={styles.courseTitle}>
-            {courseTitle}
-          </h5>
+          <h5 className={styles.courseTitle}>{courseTitle}</h5>
           <p className={styles.courseCodeAndProf}>
-            {courseSub?.toUpperCase() + " " + courseNum?.toUpperCase() + " | " + profString}
+            {courseSub?.toUpperCase() +
+              " " +
+              courseNum?.toUpperCase() +
+              " | " +
+              profString}
           </p>
         </>
-      )
-    }
-    else {
-      return (
-        <p className={styles.professors}>{profString}</p>
-      )
+      );
+    } else {
+      return <p className={styles.professors}>{profString}</p>;
     }
   }
 
@@ -164,9 +169,7 @@ export default function Review({
         {/* Ratings section. */}
         <div className="col-md-3 col-lg-4 col-xl-3">
           <div
-            className={
-              styles.ratingsContainer + " " + ratings_container_color
-            }
+            className={styles.ratingsContainer + " " + ratings_container_color}
           >
             <div className={styles.ratingElem}>
               <span>Overall</span>
@@ -198,7 +201,9 @@ export default function Review({
             <div className="grade-major-container">
               <div>
                 <span className="grade-major-label">Grade: </span>
-                {_review.grade && _review.grade.length !== 0 && /^([^0-9]*)$/.test(_review.grade) ? (
+                {_review.grade &&
+                _review.grade.length !== 0 &&
+                /^([^0-9]*)$/.test(_review.grade) ? (
                   <span className="grade-major-text">{_review.grade}</span>
                 ) : (
                   <span className="grade-major-text">N/A</span>
@@ -275,5 +280,4 @@ export default function Review({
       </div>
     </div>
   );
-
 }

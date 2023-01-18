@@ -16,7 +16,6 @@ import { Results } from "./ui/Results";
 
 import NotFound from "./ui/NotFound";
 import Admin from "./ui/Admin";
-import { randomPicture } from "./util/profile_picture";
 
 Modal.setAppElement("#render-target");
 
@@ -29,13 +28,11 @@ application component the user should see based on the URL they enter.
 
 */
 
-const profilePicture = randomPicture();
-
 render(
   <BrowserRouter>
     <div className="container-fluid full-height">
       <Switch>
-        <Route name="app" exact path="/" component={() => <App imgSrc={profilePicture} />} />
+        <Route name="app" exact path="/" component={() => <App />} />
         <Route name="admin" exact path="/admin" component={Admin} />
         <Route
           name="permalink"
@@ -53,12 +50,13 @@ render(
         />
         <Route
           name="profile"
-          exact path="/profile"
-          component={() => <Profile imgSrc={profilePicture} />}
+          exact
+          path="/profile"
+          component={() => <Profile />}
         />
         <Route component={NotFound} />
-      </Switch >
-    </div >
-  </BrowserRouter >,
+      </Switch>
+    </div>
+  </BrowserRouter>,
   document.getElementById("render-target"),
 );

@@ -12,7 +12,7 @@ import { useAuthOptionalLogin } from "../auth/auth_utils";
   classes and recent reviews components.
 */
 export default function App(imgSrc: any): JSX.Element {
-  const [isLoggedIn, token, signIn, signOut] = useAuthOptionalLogin();
+  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin();
 
   const sunset_start_times = [
     17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
@@ -49,14 +49,16 @@ export default function App(imgSrc: any): JSX.Element {
   }
 
   function displayButton() {
-    if (token) {
-      return <ProfileDropdown imgSrc={`${String(imgSrc.imgSrc)}`} isLoggedIn={token} signOut={signOut} />;
+    if (netId) {
+      return <ProfileDropdown netId={netId} signOut={signOut} />;
     } else {
       return (
         <button
           type="button"
           className="btn btn-light sign-in-button"
-          onClick={() => { signIn("home") }}
+          onClick={() => {
+            signIn("home");
+          }}
         >
           Sign In
         </button>
