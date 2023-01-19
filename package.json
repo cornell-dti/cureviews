@@ -10,9 +10,9 @@
     "lint": "eslint . --ext js --ext jsx --ext ts --ext tsx"
   },
   "engines": {
-    "node": "16.x",
-    "npm": "7.x",
-    "yarn": "1.x"
+    "node": "16.x.x",
+    "npm": "7.x.x",
+    "yarn": "1.x.x"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.31.0",
