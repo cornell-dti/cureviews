@@ -52,9 +52,6 @@
       "last 1 safari version"
     ]
   },
-  "engines": {
-    "node": "16.13.1"
-  },
   "devDependencies": {
     "@types/bootstrap": "^3",
     "@types/jest": "^25.1.4",
