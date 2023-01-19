@@ -9,6 +9,11 @@
     "heroku-postbuild": "yarn workspaces run build",
     "lint": "eslint . --ext js --ext jsx --ext ts --ext tsx"
   },
+  "engines": {
+    "node": "16.x",
+    "npm": "7.x",
+    "yarn": "1.x"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
