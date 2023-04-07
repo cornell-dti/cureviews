@@ -31,12 +31,9 @@ export default function Profile() {
   const profilePicture = randomPicture(netId);
 
   async function getReviewsTotal() {
-    const response = await axios.post(
-      "http://localhost:8080/v2/countReviewsByStudentId",
-      {
-        netId,
-      },
-    );
+    const response = await axios.post("/v2/countReviewsByStudentId", {
+      netId,
+    });
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -45,12 +42,9 @@ export default function Profile() {
   }
 
   async function getReviewsHelpful() {
-    const response = await axios.post(
-      "http://localhost:8080/v2/getTotalLikesByStudentId",
-      {
-        netId,
-      },
-    );
+    const response = await axios.post("/v2/getTotalLikesByStudentId", {
+      netId,
+    });
 
     const res = response.data.result;
     if (res.code === 200) {
@@ -69,23 +63,21 @@ export default function Profile() {
       : -1;
 
   useEffect(() => {
-    axios
-      .post(`http://localhost:8080/v2/getReviewsByStudentId`, { netId })
-      .then((response) => {
-        const reviews = response.data.result.message;
-        const pendingReviews = reviews.filter(function (review: ReviewType) {
-          return review.visible === 0;
-        });
-        const pastReviews = reviews.filter(function (review: ReviewType) {
-          return review.visible === 1;
-        });
-
-        reviews?.sort(sortByLikes);
-        setReviews(reviews);
-        setPendingReviews(pendingReviews);
-        setPastReviews(pastReviews);
-        setLoading(false);
+    axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
+      const reviews = response.data.result.message;
+      const pendingReviews = reviews.filter(function (review: ReviewType) {
+        return review.visible === 0;
       });
+      const pastReviews = reviews.filter(function (review: ReviewType) {
+        return review.visible === 1;
+      });
+
+      reviews?.sort(sortByLikes);
+      setReviews(reviews);
+      setPendingReviews(pendingReviews);
+      setPastReviews(pastReviews);
+      setLoading(false);
+    });
   }, [netId]);
 
   useEffect(() => {

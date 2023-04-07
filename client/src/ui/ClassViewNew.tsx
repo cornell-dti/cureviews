@@ -56,25 +56,19 @@ export default function ClassView() {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(
-          `http://localhost:8080/v2/getCourseByInfo`,
-          {
-            number,
-            subject: subject.toLowerCase(), // TODO: fix backend to handle this
-          },
-        );
+        const response = await axios.post(`/v2/getCourseByInfo`, {
+          number,
+          subject: subject.toLowerCase(), // TODO: fix backend to handle this
+        });
 
         const course = response.data.result;
         if (course) {
           setSelectedClass(course);
 
           // after getting valid course info, fetch reviews
-          const reviewsResponse = await axios.post(
-            "http://localhost:8080/v2/getReviewsByCourseId",
-            {
-              courseId: course._id,
-            },
-          );
+          const reviewsResponse = await axios.post("/v2/getReviewsByCourseId", {
+            courseId: course._id,
+          });
           const reviews = reviewsResponse.data.result;
           // convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
@@ -102,14 +96,11 @@ export default function ClassView() {
      */
     async function submitReview(review: NewReview, classId: string) {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/v2/insertReview",
-          {
-            token: token,
-            review: review,
-            classId: classId,
-          },
-        );
+        const response = await axios.post("/v2/insertReview", {
+          token: token,
+          review: review,
+          classId: classId,
+        });
 
         clearSessionReview();
         if (response.data.result.resCode === 1) {
