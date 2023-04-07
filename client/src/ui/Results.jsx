@@ -27,7 +27,7 @@ export class Results extends Component {
 
   updateResults() {
     if (this.props.match.params.type === "major") {
-      axios.post("/v2/getCoursesByMajor", { query: this.props.match.params.input.toLowerCase() })
+      axios.post("http://localhost:8080/v2/getCoursesByMajor", { query: this.props.match.params.input.toLowerCase() })
         .then((response) => {
           const courseList = response.data.result;
           if (!courseList.error && courseList.length > 0) {
@@ -44,7 +44,7 @@ export class Results extends Component {
           }
         });
     } else if (this.props.match.params.type === "professor") {
-      axios.post("/v2/getCoursesByProfessor", { query: this.props.match.params.input.toLowerCase() })
+      axios.post("http://localhost:8080/v2/getCoursesByProfessor", { query: this.props.match.params.input.toLowerCase() })
         .then((response) => {
           const courseList = response.data.result;
           if (!courseList.error && courseList.length > 0) {
@@ -66,7 +66,7 @@ export class Results extends Component {
       if (userQuery && userQuery.split(" ").length === 1) {
         userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(" ");
       }
-      axios.post(`/v2/getClassesByQuery`, { query: userQuery }).then(response => {
+      axios.post(`http://localhost:8080/v2/getClassesByQuery`, { query: userQuery }).then(response => {
         const queryCourseList = response.data.result;
         if (queryCourseList.length !== 0) {
           // Save the Class object that matches the request

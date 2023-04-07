@@ -37,6 +37,8 @@ import {
   undoReportReview,
   removeReview,
   getRaffleWinner,
+  resetProfessors,
+  setProfessors,
 } from "./endpoints/AdminActions";
 
 export interface Context {
@@ -91,6 +93,8 @@ export function configure(app: express.Application) {
   register(app, "countReviewsByStudentId", countReviewsByStudentId);
   register(app, "getStudentEmailByToken", getStudentEmailByToken);
   register(app, "getRaffleWinner", getRaffleWinner);
+  register(app, "resetProfessors", resetProfessors);
+  register(app, "setProfessors", setProfessors);
 }
 
 function register<T>(

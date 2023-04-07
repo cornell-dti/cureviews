@@ -51,7 +51,7 @@ export function useAuthMandatoryLogin(
     }
 
     axios
-      .post("/v2/getStudentEmailByToken", {
+      .post("http://localhost:8080/v2/getStudentEmailByToken", {
         token: token,
       })
       .then((response) => {
@@ -98,7 +98,7 @@ export function useAuthOptionalLogin(): [
     }
 
     axios
-      .post("/v2/getStudentEmailByToken", {
+      .post("http://localhost:8080/v2/getStudentEmailByToken", {
         token: token,
       })
       .then((response) => {
