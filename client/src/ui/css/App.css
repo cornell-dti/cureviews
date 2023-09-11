@@ -1,13 +1,5 @@
 .homepage-text {
-  /* height: 14px; */
-  /* padding-top: 6%; */
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
   color: #0076ff;
-  margin-bottom: 25px;
 }
 
 @media (min-width: 992px) {
@@ -160,8 +152,10 @@
 
 .dti-logo {
   position: absolute;
-  bottom: 10px;
-  right: 30px;
+  bottom: 20px;
+  right: 20px;
+  height: auto;
+  width: 200px;
 }
 
 /* Needed so that background is flush against bottom */
@@ -170,15 +164,10 @@
   background-color: #f4f9fe;
 }
 
-/* I believe this is only used in recentreview.jsx so will remove soon TODO */
-.container {
-  background-color: rgba(255, 255, 255, 0);
-}
-
 .sign-in-button {
   position: absolute;
-  right: 80px;
-  top: 50px;
+  right: 30px;
+  top: 40px;
 
   width: 137px;
   height: 39px;
