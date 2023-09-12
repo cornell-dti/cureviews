@@ -58,8 +58,8 @@ const courseSort = (query) => (a, b) => {
   const bCourseStr = `${b.classSub} ${b.classNum}`;
   const queryLen = query.length;
   return (
-    editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen))
-    - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen))
+    editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen)) -
+    editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen))
   );
 };
 
@@ -71,14 +71,15 @@ export const isSubShorthand = async (sub: string) => {
 };
 
 // helper to format search within a subject
-const searchWithinSubject = (sub: string, remainder: string) => Classes.find(
-  {
-    classSub: sub,
-    classFull: { $regex: `.*${remainder}.*`, $options: "-i" },
-  },
-  {},
-  { sort: { classFull: 1 }, limit: 200, reactive: false },
-).exec();
+const searchWithinSubject = (sub: string, remainder: string) =>
+  Classes.find(
+    {
+      classSub: sub,
+      classFull: { $regex: `.*${remainder}.*`, $options: "-i" },
+    },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
+  ).exec();
 
 export const regexClassesSearch = async (searchString) => {
   try {
