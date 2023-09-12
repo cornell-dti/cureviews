@@ -7,6 +7,7 @@ import { DefaultDict } from "./AdminChart";
 /**
  * Helper function for [topSubjects]
  */
+// eslint-disable-next-line import/prefer-default-export
 export const topSubjectsCB = async (_ctx: Context, request: Token) => {
   const userIsAdmin = await verifyToken(request.token);
   if (!userIsAdmin) {
