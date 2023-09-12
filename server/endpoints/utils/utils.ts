@@ -1,5 +1,5 @@
 import { ValidationChain, body } from "express-validator";
-import { InsertUserRequest, CourseIdQuery } from "../review/routes";
+import { InsertUserRequest, CourseIdQuery } from "../review/types";
 import { Classes, Students } from "../../db/dbDefs";
 import { getUserByNetId, getVerificationTicket } from "../auth/routes";
 

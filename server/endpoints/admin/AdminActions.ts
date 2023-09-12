@@ -9,7 +9,7 @@ import {
   resetProfessorArray,
 } from "../../db/dbInit";
 import { getCourseById, verifyToken } from "../utils/utils";
-import { ReviewRequest } from "../review/routes";
+import { ReviewRequest } from "../review/types";
 import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./types";
 
 // This updates the metrics for an individual class given its Mongo-generated id.
