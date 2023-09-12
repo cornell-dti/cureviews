@@ -9,8 +9,8 @@ import {
   Subjects,
   Professors,
   Reviews,
-} from "../../db/dbDefs";
-import { configure } from "../../endpoints";
+} from "../db/dbDefs";
+import { configure } from "../endpoints";
 
 export const testingPort = 8080;
 
