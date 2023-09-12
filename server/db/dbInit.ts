@@ -101,9 +101,7 @@ export function isInstructorEqual(
  * There are guaranteed to be no duplicates!
  */
 export function extractProfessors(clas: ScrapingClass): ScrapingInstructor[] {
-  const raw = clas.enrollGroups.map((e) =>
-    e.classSections.map((s) => s.meetings.map((m) => m.instructors)),
-  );
+  const raw = clas.enrollGroups.map((e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)));
   // flatmap does not work :(
   const f1: ScrapingInstructor[][][] = [];
   raw.forEach((r) => f1.push(...r));
@@ -257,10 +255,9 @@ export async function fetchAddCourses(
             );
 
             // Compute the new set of semesters for this class
-            const classSems =
-              classIfExists.classSems.indexOf(semester) == -1
-                ? classIfExists.classSems.concat([semester])
-                : classIfExists.classSems;
+            const classSems = classIfExists.classSems.indexOf(semester) === -1
+              ? classIfExists.classSems.concat([semester])
+              : classIfExists.classSems;
 
             // Compute the new set of professors for this class
             const classProfessors = classIfExists.classProfessors
@@ -523,13 +520,12 @@ export async function updateProfessors(semesters: any) {
                 const { classSections } = courses[course].enrollGroups[0]; // This returns an array
                 for (const section in classSections) {
                   if (
-                    classSections[section].ssrComponent === "LEC" ||
-                    classSections[section].ssrComponent === "SEM"
+                    classSections[section].ssrComponent === "LEC"
+                    || classSections[section].ssrComponent === "SEM"
                   ) {
                     // Checks to see if class has scheduled meetings before checking them
                     if (classSections[section].meetings.length > 0) {
-                      const professors =
-                        classSections[section].meetings[0].instructors;
+                      const professors = classSections[section].meetings[0].instructors;
                       // Checks to see if class has instructors before checking them
                       // Example of class without professors is:
                       // ASRC 3113 in FA16
@@ -743,8 +739,7 @@ export async function addCrossList() {
           // console.log((courses[course].subject).toLowerCase() + " "  + courses[course].catalogNbr);
           // console.log(check);
           if (check.length > 0) {
-            const crossList =
-              courses[course].enrollGroups[0].simpleCombinations;
+            const crossList = courses[course].enrollGroups[0].simpleCombinations;
             if (crossList.length > 0) {
               const crossListIDs: string[] = await Promise.all(
                 crossList.map(async (crossListedCourse: any) => {
