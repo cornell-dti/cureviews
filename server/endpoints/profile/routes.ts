@@ -3,7 +3,7 @@ import { Context, Endpoint } from "../../endpoints";
 import { ReviewDocument, Reviews, Students } from "../../db/dbDefs";
 import { ProfileRequest, NetIdQuery } from "./types";
 
-import { getVerificationTicket } from "../auth/Auth";
+import { getVerificationTicket } from "../auth/routes";
 
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],

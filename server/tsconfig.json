@@ -18,9 +18,9 @@
         "endpoints.ts",
         "endpoints/admin/AdminActions.ts",
         "endpoints/admin/AdminChart.ts",
-        "endpoints/auth/Auth.ts",
-        "endpoints/review/Review.ts",
-        "endpoints/search/Search.ts",
+        "endpoints/auth/routes.ts",
+        "endpoints/review/routes.ts",
+        "endpoints/search/routes.ts",
         "endpoints/utils/utils.ts"
     ]
 }

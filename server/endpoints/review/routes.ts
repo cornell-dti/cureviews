@@ -7,7 +7,7 @@ import {
   insertUser as insertUserCallback,
   JSONNonempty,
 } from "../utils/utils";
-import { getVerificationTicket } from "../auth/Auth";
+import { getVerificationTicket } from "../auth/routes";
 import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
 
 import shortid = require("shortid");

@@ -15,21 +15,21 @@ import {
   getCourseByInfo,
   updateLiked,
   userHasLiked,
-} from "./endpoints/review/Review";
+} from "./endpoints/review/routes";
 import {
   countReviewsByStudentId,
   getTotalLikesByStudentId,
   getReviewsByStudentId,
   getStudentEmailByToken,
-} from "./endpoints/profile/Profile";
-import { tokenIsAdmin } from "./endpoints/auth/Auth";
+} from "./endpoints/profile/routes";
+import { tokenIsAdmin } from "./endpoints/auth/routes";
 import {
   getCoursesByProfessor,
   getCoursesByMajor,
   getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
-} from "./endpoints/search/Search";
+} from "./endpoints/search/routes";
 import {
   fetchReviewableClasses,
   reportReview,
