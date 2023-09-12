@@ -1,10 +1,12 @@
 import { body } from "express-validator";
-import { OAuth2Client } from 'google-auth-library';
-import { Context, Endpoint } from "../endpoints";
-import { Students } from "../dbDefs";
-import { verifyToken } from "./utils";
+import { OAuth2Client } from "google-auth-library";
+import { Context, Endpoint } from "../../endpoints";
+import { Students } from "../../db/dbDefs";
+import { verifyToken } from "../utils/utils";
 
-const client = new OAuth2Client("836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com");
+const client = new OAuth2Client(
+  "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",
+);
 
 // The type for a search query
 interface AdminRequest {
@@ -12,14 +14,14 @@ interface AdminRequest {
 }
 
 /**
-   * Returns true if [netid] matches the netid in the email of the JSON
-   * web token. False otherwise.
-   * This method authenticates the user token through the Google API.
-   * @param token: google auth token
-   * @param netid: netid to verify
-   * @requires that you have a handleVerifyError, like as follows:
-   * verify(token, function(){//do whatever}).catch(function(error){
-   */
+ * Returns true if [netid] matches the netid in the email of the JSON
+ * web token. False otherwise.
+ * This method authenticates the user token through the Google API.
+ * @param token: google auth token
+ * @param netid: netid to verify
+ * @requires that you have a handleVerifyError, like as follows:
+ * verify(token, function(){//do whatever}).catch(function(error){
+ */
 export const getVerificationTicket = async (token?: string) => {
   try {
     if (token === null) {
@@ -29,7 +31,8 @@ export const getVerificationTicket = async (token?: string) => {
     }
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",
+      audience:
+        "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",
     });
     return ticket.getPayload();
   } catch (error) {
@@ -63,5 +66,6 @@ export const getUserByNetId = async (netId: string) => {
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyToken(adminRequest.token),
+  callback: async (ctx: Context, adminRequest: AdminRequest) =>
+    await verifyToken(adminRequest.token),
 };

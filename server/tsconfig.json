@@ -12,15 +12,15 @@
         "outDir": "dist"
     },
     "files": [
-        "dbInit.ts",
-        "dbDefs.ts",
+        "db/dbInit.ts",
+        "db/dbDefs.ts",
         "server.ts",
         "endpoints.ts",
-        "endpoints/AdminActions.ts",
-        "endpoints/AdminChart.ts",
-        "endpoints/Auth.ts",
-        "endpoints/Review.ts",
-        "endpoints/Search.ts",
-        "endpoints/utils.ts"
+        "endpoints/admin/AdminActions.ts",
+        "endpoints/admin/AdminChart.ts",
+        "endpoints/auth/Auth.ts",
+        "endpoints/review/Review.ts",
+        "endpoints/search/Search.ts",
+        "endpoints/utils/utils.ts"
     ]
 }

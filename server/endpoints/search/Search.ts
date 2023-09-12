@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
-import { Context, Endpoint } from "../endpoints";
-import { Classes, Subjects, Professors } from "../dbDefs";
+import { Context, Endpoint } from "../../endpoints";
+import { Classes, Subjects, Professors } from "../../db/dbDefs";
 
 // The type for a search query
 interface Search {
@@ -38,9 +38,13 @@ export const editDistance = (a, b) => {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
         matrix[i][j] = matrix[i - 1][j - 1];
       } else {
-        matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, // substitution
-          Math.min(matrix[i][j - 1] + 1, // insertion
-            matrix[i - 1][j] + 1)); // deletion
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          Math.min(
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1,
+          ),
+        ); // deletion
       }
     }
   }
@@ -53,8 +57,10 @@ const courseSort = (query) => (a, b) => {
   const aCourseStr = `${a.classSub} ${a.classNum}`;
   const bCourseStr = `${b.classSub} ${b.classNum}`;
   const queryLen = query.length;
-  return editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen))
-    - editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen));
+  return (
+    editDistance(query.toLowerCase(), aCourseStr.slice(0, queryLen)) -
+    editDistance(query.toLowerCase(), bCourseStr.slice(0, queryLen))
+  );
 };
 
 // Helper to check if a string is a subject code
@@ -65,34 +71,44 @@ export const isSubShorthand = async (sub: string) => {
 };
 
 // helper to format search within a subject
-const searchWithinSubject = (sub: string, remainder: string) => Classes.find(
-  { classSub: sub, classFull: { $regex: `.*${remainder}.*`, $options: '-i' } },
-  {},
-  { sort: { classFull: 1 }, limit: 200, reactive: false },
-).exec();
+const searchWithinSubject = (sub: string, remainder: string) =>
+  Classes.find(
+    {
+      classSub: sub,
+      classFull: { $regex: `.*${remainder}.*`, $options: "-i" },
+    },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
+  ).exec();
 
 export const regexClassesSearch = async (searchString) => {
   try {
-    if (searchString !== undefined && searchString !== '') {
+    if (searchString !== undefined && searchString !== "") {
       // check if first digit is a number. Catches searchs like "1100"
       // if so, search only through the course numbers and return classes ordered by full name
       const indexFirstDigit = searchString.search(/\d/);
       if (indexFirstDigit === 0) {
         // console.log("only numbers")
         return Classes.find(
-          { classNum: { $regex: `.*${searchString}.*`, $options: '-i' } },
+          { classNum: { $regex: `.*${searchString}.*`, $options: "-i" } },
           {},
           { sort: { classFull: 1 }, limit: 200, reactive: false },
-        ).exec().then((classes) => classes.sort(courseSort(searchString)));
+        )
+          .exec()
+          .then((classes) => classes.sort(courseSort(searchString)));
       }
 
       // check if searchString is a subject, if so return only classes with this subject. Catches searches like "CS"
       if (await isSubShorthand(searchString)) {
-        return Classes.find({ classSub: searchString }, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
+        return Classes.find(
+          { classSub: searchString },
+          {},
+          { sort: { classFull: 1 }, limit: 200, reactive: false },
+        ).exec();
       }
       // check if text before space is subject, if so search only classes with this subject.
       // Speeds up searches like "CS 1110"
-      const indexFirstSpace = searchString.search(' ');
+      const indexFirstSpace = searchString.search(" ");
       if (indexFirstSpace !== -1) {
         const strBeforeSpace = searchString.substring(0, indexFirstSpace);
         const strAfterSpace = searchString.substring(indexFirstSpace + 1);
@@ -117,12 +133,17 @@ export const regexClassesSearch = async (searchString) => {
       // last resort, search everything
       // console.log("nothing matches");
       return Classes.find(
-        { classFull: { $regex: `.*${searchString}.*`, $options: '-i' } },
-        {}, { sort: { classFull: 1 }, limit: 200, reactive: false },
+        { classFull: { $regex: `.*${searchString}.*`, $options: "-i" } },
+        {},
+        { sort: { classFull: 1 }, limit: 200, reactive: false },
       ).exec();
     }
     // console.log("no search");
-    return Classes.find({}, {}, { sort: { classFull: 1 }, limit: 200, reactive: false }).exec();
+    return Classes.find(
+      {},
+      {},
+      { sort: { classFull: 1 }, limit: 200, reactive: false },
+    ).exec();
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log("Error: at 'getClassesByQuery' method");
@@ -167,7 +188,11 @@ export const getSubjectsByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii()],
   callback: async (ctx: Context, search: Search) => {
     try {
-      return await Subjects.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      return await Subjects.find(
+        { $text: { $search: search.query } },
+        { score: { $meta: "textScore" } },
+        { sort: { score: { $meta: "textScore" } } },
+      ).exec();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getSubjectsByQuery' endpoint");
@@ -185,7 +210,11 @@ export const getProfessorsByQuery: Endpoint<Search> = {
   guard: [body("query").notEmpty().isAscii()],
   callback: async (ctx: Context, search: Search) => {
     try {
-      return await Professors.find({ $text: { $search: search.query } }, { score: { $meta: "textScore" } }, { sort: { score: { $meta: "textScore" } } }).exec();
+      return await Professors.find(
+        { $text: { $search: search.query } },
+        { score: { $meta: "textScore" } },
+        { sort: { score: { $meta: "textScore" } } },
+      ).exec();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getProfessorsByQuery' endpoint");
@@ -223,8 +252,10 @@ export const getCoursesByProfessor: Endpoint<Search> = {
       let courses = [];
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if (regex.test(search.query)) {
-        const professorRegex = search.query.replace('+', '.*.');
-        courses = await Classes.find({ classProfessors: { $regex: professorRegex, $options: "i" } }).exec();
+        const professorRegex = search.query.replace("+", ".*.");
+        courses = await Classes.find({
+          classProfessors: { $regex: professorRegex, $options: "i" },
+        }).exec();
       }
       return courses;
     } catch (error) {

@@ -1,8 +1,8 @@
 import { body } from "express-validator";
-import { Context, Endpoint } from "../endpoints";
-import { ReviewDocument, Reviews, Students } from "../dbDefs";
+import { Context, Endpoint } from "../../endpoints";
+import { ReviewDocument, Reviews, Students } from "../../db/dbDefs";
 
-import { getVerificationTicket } from "./Auth";
+import { getVerificationTicket } from "../auth/Auth";
 
 // The type of a query with a studentId
 export interface NetIdQuery {
