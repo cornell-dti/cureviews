@@ -66,6 +66,5 @@ export const getUserByNetId = async (netId: string) => {
  */
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, adminRequest: AdminRequest) =>
-    await verifyToken(adminRequest.token),
+  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyToken(adminRequest.token),
 };

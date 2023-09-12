@@ -54,16 +54,14 @@ export const sanitizeReview = (doc: ReviewDocument) => {
  * @param lst the list of reviews to sanitize. Possibly a singleton list.
  * @returns a copy of the reviews, but with the user id field removed.
  */
-export const sanitizeReviews = (lst: ReviewDocument[]) =>
-  lst.map((doc) => sanitizeReview(doc));
+export const sanitizeReviews = (lst: ReviewDocument[]) => lst.map((doc) => sanitizeReview(doc));
 
 /**
  * Get a course with this course_id from the Classes collection
  */
 export const getCourseById: Endpoint<CourseIdQuery> = {
   guard: [body("courseId").notEmpty().isAscii()],
-  callback: async (ctx: Context, arg: CourseIdQuery) =>
-    await getCourseByIdCallback(arg),
+  callback: async (ctx: Context, arg: CourseIdQuery) => await getCourseByIdCallback(arg),
 };
 
 /*
@@ -128,8 +126,7 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
  */
 export const insertUser: Endpoint<InsertUserRequest> = {
   guard: [body("googleObject").notEmpty()],
-  callback: async (ctx: Context, arg: InsertUserRequest) =>
-    await insertUserCallback(arg),
+  callback: async (ctx: Context, arg: InsertUserRequest) => await insertUserCallback(arg),
 };
 
 /**
@@ -255,8 +252,8 @@ export const updateLiked: Endpoint<ReviewRequest> = {
 
         // removing like
         if (
-          student.likedReviews !== undefined &&
-          student.likedReviews.includes(review.id)
+          student.likedReviews !== undefined
+          && student.likedReviews.includes(review.id)
         ) {
           await Students.updateOne(
             { netId },

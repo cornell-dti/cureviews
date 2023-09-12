@@ -26,137 +26,136 @@ interface GetReviewsOverTimeTop15Request {
  * ...
  * }
  */
-export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
-  {
-    guard: [body("token").notEmpty().isAscii()],
-    callback: async (ctx: Context, request: GetReviewsOverTimeTop15Request) => {
-      const { token, step, range } = request;
-      try {
-        const userIsAdmin = await verifyToken(token);
-        if (userIsAdmin) {
-          const top15 = await topSubjectsCB(ctx, { token });
-          // contains cs, math, gov etc...
-          const retArr = [];
-          await Promise.all(
-            top15.map(async (classs) => {
-              const [subject] = await Subjects.find(
-                {
-                  subFull: classs[0],
-                },
-                {
-                  subShort: 1,
-                },
-              ).exec(); // EX: computer science--> cs
-              const subshort = subject.subShort;
-              retArr.push(subshort);
-            }),
-          );
-          const arrHM = []; // [ {"cs": {date1: totalNum}, math: {date1, totalNum} },
-          // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
-          for (let i = 0; i < range * 30; i += step) {
-            // "data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
-            // run on reviews. gets all classes and num of reviewa for each class, in x day
-            const pipeline = [
+export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> = {
+  guard: [body("token").notEmpty().isAscii()],
+  callback: async (ctx: Context, request: GetReviewsOverTimeTop15Request) => {
+    const { token, step, range } = request;
+    try {
+      const userIsAdmin = await verifyToken(token);
+      if (userIsAdmin) {
+        const top15 = await topSubjectsCB(ctx, { token });
+        // contains cs, math, gov etc...
+        const retArr = [];
+        await Promise.all(
+          top15.map(async (classs) => {
+            const [subject] = await Subjects.find(
               {
-                $match: {
-                  date: {
-                    $lte: new Date(
-                      new Date().setDate(new Date().getDate() - i),
-                    ),
-                  },
-                },
+                subFull: classs[0],
               },
               {
-                $group: {
-                  _id: "$class",
-                  total: {
-                    $sum: 1,
-                  },
+                subShort: 1,
+              },
+            ).exec(); // EX: computer science--> cs
+            const subshort = subject.subShort;
+            retArr.push(subshort);
+          }),
+        );
+        const arrHM = []; // [ {"cs": {date1: totalNum}, math: {date1, totalNum} },
+        // {"cs": {date2: totalNum}, math: {date2, totalNum} } ]
+        for (let i = 0; i < range * 30; i += step) {
+          // "data": -->this{"2017-01-01": 3, "2017-01-02": 4, ...}
+          // run on reviews. gets all classes and num of reviewa for each class, in x day
+          const pipeline = [
+            {
+              $match: {
+                date: {
+                  $lte: new Date(
+                    new Date().setDate(new Date().getDate() - i),
+                  ),
                 },
               },
-            ];
-            const hashMap = { total: null }; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
-            // eslint-disable-next-line no-await-in-loop
-            const results = await Reviews.aggregate<{
+            },
+            {
+              $group: {
+                _id: "$class",
+                total: {
+                  $sum: 1,
+                },
+              },
+            },
+          ];
+          const hashMap = { total: null }; // Object {"cs": {date1: totalNum, date2: totalNum, ...}, math: {date1, totalNum} }
+          // eslint-disable-next-line no-await-in-loop
+          const results = await Reviews.aggregate<{
               _id: string;
               total: number;
             }>(pipeline);
             // eslint-disable-next-line no-await-in-loop
-            await Promise.all(
-              results.map(async (data) => {
-                // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
-                const res = await Classes.find(
-                  {
-                    _id: data._id,
-                  },
-                  {
-                    classSub: 1,
-                  },
-                ).exec();
+          await Promise.all(
+            results.map(async (data) => {
+              // { "_id" : "KyeJxLouwDvgY8iEu", "total" : 1 } //all in same date
+              const res = await Classes.find(
+                {
+                  _id: data._id,
+                },
+                {
+                  classSub: 1,
+                },
+              ).exec();
 
-                const sub = res[0]; // finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
-                // date of this review minus the hrs mins sec
-                const timeStringYMD = new Date(
-                  new Date().setDate(new Date().getDate() - i),
-                )
-                  .toISOString()
-                  .split("T")[0];
-                if (retArr.includes(sub.classSub)) {
-                  // if thos review is one of the top 15 we want.
-                  if (hashMap[sub.classSub] == null) {
-                    // if not in hm then add
-                    hashMap[sub.classSub] = {
-                      [timeStringYMD]: data.total,
-                    };
-                  } else {
-                    // increment totalnum
-                    hashMap[sub.classSub] = {
-                      [timeStringYMD]:
-                        hashMap[sub.classSub][timeStringYMD] + data.total,
-                    };
-                  }
-                }
-                if (hashMap.total == null) {
-                  hashMap.total = {
+              const sub = res[0]; // finds the class corresponding to "KyeJxLouwDvgY8iEu" ex: cs 2112
+              // date of this review minus the hrs mins sec
+              const timeStringYMD = new Date(
+                new Date().setDate(new Date().getDate() - i),
+              )
+                .toISOString()
+                .split("T")[0];
+              if (retArr.includes(sub.classSub)) {
+                // if thos review is one of the top 15 we want.
+                if (hashMap[sub.classSub] == null) {
+                  // if not in hm then add
+                  hashMap[sub.classSub] = {
                     [timeStringYMD]: data.total,
                   };
                 } else {
-                  hashMap.total = {
-                    [timeStringYMD]: hashMap.total[timeStringYMD] + data.total,
+                  // increment totalnum
+                  hashMap[sub.classSub] = {
+                    [timeStringYMD]:
+                        hashMap[sub.classSub][timeStringYMD] + data.total,
                   };
                 }
-              }),
-            );
-            arrHM.push(hashMap);
-          }
-
-          const hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
-
-          // enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
-          if (arrHM.length > 0) {
-            const entry = arrHM[0];
-            const keys = Object.keys(entry);
-
-            // "cs"
-            keys.forEach((key) => {
-              const t = arrHM.map((a) => a[key]); // for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
-              hm2[key] = t;
-            });
-          }
-          return hm2;
+              }
+              if (hashMap.total == null) {
+                hashMap.total = {
+                  [timeStringYMD]: data.total,
+                };
+              } else {
+                hashMap.total = {
+                  [timeStringYMD]: hashMap.total[timeStringYMD] + data.total,
+                };
+              }
+            }),
+          );
+          arrHM.push(hashMap);
         }
 
-        // user is not admin
-        return null;
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log("Error: at 'getReviewsOverTimeTop15' method");
-        // eslint-disable-next-line no-console
-        console.log(error);
-        return null;
+        const hm2 = {}; // {cs: [{date1:totalNum}, {date2: totalNum}, ...], math: [{date1:total}, {date2: total}, ...], ... }
+
+        // enrty:{"cs": {date1: totalNum}, math: {date1, totalNum} }
+        if (arrHM.length > 0) {
+          const entry = arrHM[0];
+          const keys = Object.keys(entry);
+
+          // "cs"
+          keys.forEach((key) => {
+            const t = arrHM.map((a) => a[key]); // for a key EX:"cs": [{date1:totalNum},{date2:totalNum}]
+            hm2[key] = t;
+          });
+        }
+        return hm2;
       }
-    },
-  };
+
+      // user is not admin
+      return null;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log("Error: at 'getReviewsOverTimeTop15' method");
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return null;
+    }
+  },
+};
 
 /**
  * Helper function for [topSubjects]
@@ -212,9 +211,7 @@ const topSubjectsCB = async (_ctx: Context, request: Token) => {
     );
     let subjectsAndReviewCountArray = Array.from(subjectsMap);
     // Sorts array by number of reviews each topic has
-    subjectsAndReviewCountArray = subjectsAndReviewCountArray.sort((a, b) =>
-      a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0,
-    );
+    subjectsAndReviewCountArray = subjectsAndReviewCountArray.sort((a, b) => (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0));
 
     // Returns the top 15 most reviewed classes
     return subjectsAndReviewCountArray.slice(0, 15);
@@ -352,8 +349,8 @@ export class DefaultDict<T> {
     const val = this[key];
 
     if (
-      Object.prototype.hasOwnProperty.call(this, key) &&
-      typeof val !== "function"
+      Object.prototype.hasOwnProperty.call(this, key)
+      && typeof val !== "function"
     ) {
       return val;
     }

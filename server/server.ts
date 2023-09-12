@@ -16,9 +16,7 @@ app.use(express.static(path.join(__dirname, "../../client/build")));
 
 function setup() {
   const port = process.env.PORT || 8080;
-  app.get("*", (_, response) =>
-    response.sendFile(path.join(__dirname, "../../client/build/index.html")),
-  );
+  app.get("*", (_, response) => response.sendFile(path.join(__dirname, "../../client/build/index.html")));
   configure(app);
 
   // eslint-disable-next-line no-console
