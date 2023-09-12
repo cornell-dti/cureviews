@@ -2,7 +2,7 @@ import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
 import { Context, Endpoint } from "../../endpoints";
-import { Reviews, ReviewDocument, Classes, Students } from "../../db/dbDefs";
+import { Reviews, Classes, Students } from "../../db/dbDefs";
 import {
   updateProfessors,
   findAllSemesters,
@@ -10,22 +10,7 @@ import {
 } from "../../db/dbInit";
 import { getCourseById, verifyToken } from "../utils/utils";
 import { ReviewRequest } from "../review/Review";
-
-// The type for a request with an admin action for a review
-interface AdminReviewRequest {
-  review: ReviewDocument;
-  token: string;
-}
-
-// The type for a request with an admin action for updating professors info
-interface AdminProfessorsRequest {
-  token: string;
-}
-
-interface AdminRaffleWinnerRequest {
-  token: string;
-  startDate: string;
-}
+import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./types";
 
 // This updates the metrics for an individual class given its Mongo-generated id.
 // Returns 1 if successful, 0 otherwise.

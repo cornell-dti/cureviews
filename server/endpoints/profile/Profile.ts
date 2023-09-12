@@ -1,17 +1,9 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../../endpoints";
 import { ReviewDocument, Reviews, Students } from "../../db/dbDefs";
+import { ProfileRequest, NetIdQuery } from "./types";
 
 import { getVerificationTicket } from "../auth/Auth";
-
-// The type of a query with a studentId
-export interface NetIdQuery {
-  netId: string;
-}
-
-export interface ProfileRequest {
-  token: string;
-}
 
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],

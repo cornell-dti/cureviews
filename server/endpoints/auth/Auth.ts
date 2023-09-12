@@ -1,17 +1,11 @@
 import { body } from "express-validator";
-import { OAuth2Client } from "google-auth-library";
 import { Context, Endpoint } from "../../endpoints";
 import { Students } from "../../db/dbDefs";
 import { verifyToken } from "../utils/utils";
+import { AdminRequest } from "./types";
+import { verifyTicket } from "./functions";
 
-const client = new OAuth2Client(
-  "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",
-);
-
-// The type for a search query
-interface AdminRequest {
-  token: string;
-}
+const audience = "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com";
 
 /**
  * Returns true if [netid] matches the netid in the email of the JSON
@@ -29,12 +23,8 @@ export const getVerificationTicket = async (token?: string) => {
       console.log("Token was undefined in getVerificationTicket");
       return null;
     }
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience:
-        "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com",
-    });
-    return ticket.getPayload();
+
+    return verifyTicket(token, audience);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log("Error: at 'getVerificationTicket' method");

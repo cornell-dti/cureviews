@@ -1,6 +1,5 @@
 import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
-import { Review } from "common";
 import { Context, Endpoint } from "../../endpoints";
 import { Classes, ReviewDocument, Reviews, Students } from "../../db/dbDefs";
 import {
@@ -9,36 +8,9 @@ import {
   JSONNonempty,
 } from "../utils/utils";
 import { getVerificationTicket } from "../auth/Auth";
+import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
 
 import shortid = require("shortid");
-
-// The type of a query with a courseId
-export interface CourseIdQuery {
-  courseId: string;
-}
-
-interface InsertReviewRequest {
-  token: string;
-  review: Review;
-  classId: string;
-}
-
-export interface InsertUserRequest {
-  // TODO: one day, there may be types for this object. Today is not that day.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  googleObject: any;
-}
-
-// The type of a query with a course number and subject
-interface ClassByInfoQuery {
-  subject: string;
-  number: string;
-}
-
-export interface ReviewRequest {
-  id: string;
-  token: string;
-}
 
 export const sanitizeReview = (doc: ReviewDocument) => {
   const copy = doc;
