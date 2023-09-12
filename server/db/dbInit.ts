@@ -266,7 +266,7 @@ export async function fetchAddCourses(
 
             // Add any new professors to the class
             profs.forEach((inst) => {
-              if (classProfessors.filter((i) => i == inst).length === 0) {
+              if (classProfessors.filter((i) => i === inst).length === 0) {
                 classProfessors.push(inst);
               }
             });
