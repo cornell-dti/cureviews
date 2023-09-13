@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import SearchBar from '../../../ui/SearchBar'
 import ProfileDropdown from '../../../ui/ProfileDropdown'
-import '../home.css'
+
 import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 import DTITextLogo from '../../../assets/img/dti-text-logo.png'
 import DTIWhiteLogo from '../../../assets/img/dti-text-white-logo.png'
 
-/*
-  App Component. Uppermost View component in the component tree,
-  the first element of the HTML body tag grabbed by main.html.
+import '../home.css'
 
-  Renders the application homepage with a navbar and searchbar, popular
+/**
+  Home Page. 
+  
+  Uppermost View component in the component tree, the first element of the HTML body tag grabbed by index.html.
+
+  @returns the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
+
+  @param imgSrc for search bar
+  
 */
 export const Home = (imgSrc: any) => {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
