@@ -1,23 +1,24 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./index.css";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './index.css'
 
-import React from "react";
-import { render } from "react-dom";
-import Modal from "react-modal";
+import React from 'react'
+import { render } from 'react-dom'
+import Modal from 'react-modal'
 
-import Login from "./ui/Login";
-import ClassView from "./ui/ClassViewNew";
-import App from "./ui/App";
-import AuthRedirect from "./ui/AuthRedirect";
-import Profile from "./ui/Profile";
+import Login from './ui/Login'
+import ClassView from './ui/ClassViewNew'
+import AuthRedirect from './ui/AuthRedirect'
+import Profile from './ui/Profile'
 
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Results } from "./ui/Results";
+import { Home } from './modules/Home'
 
-import NotFound from "./ui/NotFound";
-import Admin from "./ui/Admin";
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Results } from './ui/Results'
 
-Modal.setAppElement("#render-target");
+import NotFound from './ui/NotFound'
+import Admin from './ui/Admin'
+
+Modal.setAppElement('#render-target')
 
 /*
 Generates appliation component sent to the client side entry point (main.html)
@@ -32,7 +33,7 @@ render(
   <BrowserRouter>
     <div className="container-fluid full-height">
       <Switch>
-        <Route name="app" exact path="/" component={() => <App />} />
+        <Route name="app" exact path="/" component={() => <Home />} />
         <Route name="admin" exact path="/admin" component={Admin} />
         <Route
           name="permalink"
@@ -58,5 +59,5 @@ render(
       </Switch>
     </div>
   </BrowserRouter>,
-  document.getElementById("render-target"),
-);
+  document.getElementById('render-target')
+)
