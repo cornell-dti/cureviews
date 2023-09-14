@@ -6,24 +6,47 @@
   - [Contents](#contents)
   - [About](#about)
   - [Getting Started](#getting-started)
-  - [Dependencies & Libraries](#dependencies--libraries)
+  - [Dependencies \& Libraries](#dependencies--libraries)
   - [Screenshots](#screenshots)
   - [Contributors](#contributors)
+    - [Fall 2023](#fall-2023)
+    - [2022 - 2023](#2022---2023)
+    - [2021 - 2022](#2021---2022)
+    - [2021-2020](#2021-2020)
     - [2019-2020](#2019-2020)
     - [2018-2019](#2018-2019)
     - [2017-2018](#2017-2018)
 
 ## About
 
-A web app for Cornell students to read and write reviews for Cornell classes, allowing a common platform for students to get advice and suggestions for picking classes. In other words, a "rate my Cornell classes".
+A web app for Cornell students to read and write reviews for Cornell classes, allowing a common platform for students to get advice and suggestions for picking classes. In other words, a _rate my classes_, but for Cornell University.
 
 ## Getting Started
 
-Create an .env file in the `server/` folder with content:
+1. `git clone` the repo
+2. Add the MongoDB connection inside `server/.env`:
+
+   ```bash
+      MONGODB_URL=see-notion-page
+   ```
+
+   This is the staging database. Only Leads have access to production.
+
+3. Now that you have the database configured, make sure you have [Yarn](https://classic.yarnpkg.com/) installed.
+4. Start the local environments.
 
 ```bash
-MONGODB_URL=[SECRET_URL_ASK_TEAM_MEMBER_FOR_IT]
+# at root of directory:
+yarn # installs dependencies
+yarn workspace server start # start server
+yarn workspace client start # start client
 ```
+
+You can access the app at [http://localhost:3000].
+
+If you need features which use admin access, you need to create an entry in the `students` collection which has you flagged as an admin user. We should have done this when you joined the team.
+
+_Last updated **09/13/2023**_.
 
 **You will probably use the address of the staging server.** If, for some reason you want to have a local db (E.g. you're making some changes to the db structure, and don't want to accidently trash the staging db), the following works:
 
@@ -70,20 +93,6 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 </p>
 </details>
 
-Now that you have the database configured, make sure you have [Yarn](https://classic.yarnpkg.com/) installed.
-
-```bash
-yarn
-yarn workspace server start # start server
-yarn workspace client start # start client
-```
-
-You can access the app at [http://localhost:3000].
-
-If you need features which use admin access, you need to create an entry in the `students` collection which has you flagged as an admin user. We should have done this when you joined the team.
-
-_Last updated **05/07/2020**_.
-
 ## Dependencies & Libraries
 
 - **[Node.js](https://nodejs.org/en/about/)** v10 - **Node.js provides the basis for our server. It handles external connects and gives us access to an vast array of useful packages via Node Package Manager (NPM)**
@@ -93,9 +102,18 @@ _Last updated **05/07/2020**_.
 
 ## Screenshots
 
-_Screenshots coming soon_
+![Homepage](./.github/homepage-ss.png)
+![Course Review](./.github/review-page-ss.png)
+![Leave a Review](./.github/make-review-ss.png)
 
 ## Contributors
+
+### Fall 2023
+
+- **TBD** - Product Manager
+- **TBD** - Associate Product Manager
+- **Will Zhang** - Technical Product Manager
+-
 
 ### 2022 - 2023
 
@@ -117,8 +135,6 @@ _Screenshots coming soon_
 - **Ankit Lakkapragada** - Developer
 - **Maywa Padungrat** - Product Designer
 - **Larrisa Chen** - Product Designer
-
-
 
 ### 2021-2020
 
@@ -162,5 +178,5 @@ _Screenshots coming soon_
 - **Jesse Mansoor** - Designer
 - **Jessica Prague** - Designer
 
-We are a team within **Cornell Design & Tech Initiative**. For more information, see our website [here](https://cornelldti.org/).
-<img src="https://raw.githubusercontent.com/cornell-dti/design/master/Branding/Wordmark/Dark%20Text/Transparent/Wordmark-Dark%20Text-Transparent%403x.png">
+We are a team within **Cornell Digital Tech Innovation**. For more information, see our website [here](https://cornelldti.org/).
+<img src="./client/src/assets/img/dti-text-white-logo.png">
