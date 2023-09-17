@@ -114,6 +114,7 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **TBD** - Associate Product Manager
 - **Will Zhang** - Technical Product Manager
 - **Michelle Li** - Developer Advisor
+- **Samuel Yeboah** - Developer
 
 ### 2022 - 2023
 
