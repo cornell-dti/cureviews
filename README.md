@@ -113,7 +113,7 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **TBD** - Product Manager
 - **TBD** - Associate Product Manager
 - **Will Zhang** - Technical Product Manager
--
+- **Michelle Li** - Developer Advisor
 
 ### 2022 - 2023
 
