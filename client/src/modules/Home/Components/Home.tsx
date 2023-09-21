@@ -89,9 +89,7 @@ export const Home = (imgSrc: any) => {
   return (
     <div className="row">
       <div
-        className={
-          'full-height background-common background-gradient_' + time + season
-        }
+        className={`full-height background-common background-gradient_${time}${season}`}
       >
         <NavButton />
 
