@@ -1,0 +1,93 @@
+/* desktop*/
+@media (min-width: 992px) {
+  .result-card {
+    margin: 32px 0;
+  }
+
+  .result-card-clicked {
+    border: solid 2px #4a90e2;
+  }
+}
+
+@media (max-width: 992px) {
+  .result-card {
+    margin: 16px 0;
+  }
+
+  .mdown-8 {
+    margin-bottom: 8px;
+  }
+
+  .result-card-sort-by-value {
+    margin: 0 0 0px;
+  }
+
+  .overall-rating-border {
+    display: inline-flex;
+    border: 1px solid #b7d8ff;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-left: 9px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: #f4f9fe;
+  }
+
+  .out-of-five {
+    padding-right: 16px;
+  }
+
+  .result-card-clicked {
+    border: 2.49858px solid #0076ff;
+  }
+}
+
+.result-card {
+  border-radius: 10px;
+  padding: 15px 24px 0px 24px;
+  background-color: white;
+  list-style-type: none;
+}
+
+.result-card-title {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #0076ff;
+  margin-bottom: 7px;
+}
+
+.result-card-subtitle {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  font-weight: var(--regular-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #777777;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+.result-card-rating-text p {
+  display: inline-block;
+}
+
+.margin-btm-0 {
+  margin-bottom: 0px;
+}
+
+.result-card-rating-text {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  font-weight: var(--semi-bold-weight);
+  font-style: normal;
+  line-height: normal;
+  color: #000000;
+  padding-bottom: 20px;
+}
+
+.result-card-sort-by-value {
+  padding: 0 0 0 14px;
+}
