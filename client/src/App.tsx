@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import React from 'react'
 
-// import Admin from './ui/Admin'
 
 /* Importing Pages */
 import { Home } from './modules/Home'

@@ -37,6 +37,16 @@ export default function RatingInput({
     [maxRating]
   )
 
+  const getColor = (index: number) => {
+    if (0 <= index && index < 3) {
+      return isOverall ? 'Red' : 'Green'
+    } else if (3 <= index && index < 4) {
+      return 'Yellow'
+    } else {
+      return isOverall ? 'Green' : 'Red'
+    }
+  }
+
   useEffect(() => {
     setHoverIndex(value - 1)
     setColor(getColor(value))
@@ -49,16 +59,6 @@ export default function RatingInput({
 
     if (key === 'ArrowRight' && hoverIndex < maxRating - 1) {
       buttonRefs[hoverIndex + 1].current.focus()
-    }
-  }
-
-  function getColor(index: number) {
-    if (0 <= index && index < 3) {
-      return isOverall ? 'Red' : 'Green'
-    } else if (3 <= index && index < 4) {
-      return 'Yellow'
-    } else {
-      return isOverall ? 'Green' : 'Red'
     }
   }
 

@@ -123,7 +123,7 @@ export default function ReviewCard({
     }
 
     if (isLoggedIn) updateLiked()
-  }, [_review])
+  }, [_review, isLoggedIn])
 
   function TitleAndProfessor() {
     var profString = 'Professor: '
