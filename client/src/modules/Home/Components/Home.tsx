@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import SearchBar from '../../../ui/SearchBar'
-import ProfileDropdown from '../../../ui/ProfileDropdown'
+
+import { SearchBar } from '../../SearchBar'
+import ProfileDropdown from '../../Globals/ProfileDropdown'
 
 import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 
