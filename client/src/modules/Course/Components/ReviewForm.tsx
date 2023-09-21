@@ -4,7 +4,7 @@ import Select from 'react-select'
 import RatingInput from './RatingInput'
 
 import styles from '../Styles/ReviewForm.module.css'
-import { majors } from 'client/src/ui/majors'
+import majors from '../../Globals/majors'
 
 type ReviewFormProps = {
   actionButtonLabel: string
@@ -227,7 +227,7 @@ const ReviewForm = ({
           )}
 
           <button
-            className={`btn ${styles.actionButton}`}
+            className={`${styles.actionButton}`}
             onClick={() => {
               if (isInputValid()) {
                 onSubmitReview({
