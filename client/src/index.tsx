@@ -1,15 +1,17 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { hydrate } from 'react-dom'
 
 import App from './App'
 import './index.css'
 
 /** 
-Generates appliation component sent to the client side entry point (index.html)
+ * SSR 
+ *
+ * Generates appliation component sent to the client side entry point (index.html)
 as an HTML object with id "render-target".
-
 */
-render(
+
+hydrate(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
