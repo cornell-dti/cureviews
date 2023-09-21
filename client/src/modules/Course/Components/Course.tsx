@@ -259,7 +259,7 @@ export const Course = () => {
             <ReviewForm
               professors={selectedClass.classProfessors}
               onSubmitReview={onSubmitReview}
-              actionButtonLabel="Submit review"
+              actionButtonLabel="Submit Review"
             />
           </div>
         </Modal>
