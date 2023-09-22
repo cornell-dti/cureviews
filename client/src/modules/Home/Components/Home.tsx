@@ -66,7 +66,8 @@ export const Home = (imgSrc: any) => {
     if (time === 'night') {
       setDTILogo(DTIWhiteLogo)
     }
-  }, [time])
+    console.log(`background-gradient_${time}${season}`)
+  }, [time, season])
 
   /** Displays "sign in" or profile bear picture */
   const NavButton = () => {
@@ -76,7 +77,7 @@ export const Home = (imgSrc: any) => {
     return (
       <button
         type="button"
-        className="btn btn-light sign-in-button"
+        className="sign-in-button"
         onClick={() => {
           signIn('home')
         }}

@@ -52,7 +52,7 @@
 }
 
 .background-gradient_afternoonsummer {
-  background-image: url('../../assets/Home/bg_afternoon_summer.svg'),
+  background-image: url('/bg_afternoon_summer.svg'),
     linear-gradient(
       180deg,
       rgba(123, 179, 244, 0.7) 0%,
@@ -61,7 +61,7 @@
 }
 
 .background-gradient_sunsetsummer {
-  background-image: url('../../assets/Home/bg_sunset_summer.svg'),
+  background-image: url('/bg_sunset_summer.svg'),
     linear-gradient(
       201.93deg,
       rgba(91, 154, 226, 0.7) 19.17%,
@@ -71,12 +71,12 @@
 }
 
 .background-gradient_nightsummer {
-  background-image: url('../../assets/Home/bg_night_summer.svg'),
+  background-image: url('/bg_night_summer.svg'),
     linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
 .background-gradient_afternoonfall {
-  background-image: url('../../assets/Home/bg_afternoon_fall.svg'),
+  background-image: url('/bg_afternoon_fall.svg'),
     linear-gradient(
       180deg,
       rgba(255, 255, 255, 0) 0%,
@@ -85,7 +85,7 @@
 }
 
 .background-gradient_sunsetfall {
-  background-image: url('../../assets/Home/bg_sunset_fall.svg'),
+  background-image: url('/bg_sunset_fall.svg'),
     linear-gradient(
       201.93deg,
       rgba(0, 93, 189, 0.7) 19.17%,
@@ -95,12 +95,12 @@
 }
 
 .background-gradient_nightfall {
-  background-image: url('../../assets/Home/bg_night_fall.svg'),
+  background-image: url('/bg_night_fall.svg'),
     linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
 .background-gradient_afternoonwinter {
-  background-image: url('../../assets/Home/bg_afternoon_winter.svg'),
+  background-image: url('/bg_afternoon_winter.svg'),
     linear-gradient(
       180deg,
       rgba(138, 185, 239, 0.7) 12.85%,
@@ -109,7 +109,7 @@
 }
 
 .background-gradient_sunsetwinter {
-  background-image: url('../../assets/Home/bg_sunset_winter.svg'),
+  background-image: url('/bg_sunset_winter.svg'),
     linear-gradient(
       201.93deg,
       rgba(2, 32, 66, 0.7) 14.7%,
@@ -121,12 +121,12 @@
 }
 
 .background-gradient_nightwinter {
-  background-image: url('../../assets/Home/bg_night_winter.svg'),
+  background-image: url('/bg_night_winter.svg'),
     linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
 .background-gradient_afternoonspring {
-  background-image: url('../../assets/Home/bg_afternoon_spring.svg'),
+  background-image: url('/bg_afternoon_spring.svg'),
     linear-gradient(
       180deg,
       rgba(51, 145, 254, 0.7) 7.5%,
@@ -135,7 +135,7 @@
 }
 
 .background-gradient_sunsetspring {
-  background-image: url('../../assets/Home/bg_sunset_spring.svg'),
+  background-image: url('/bg_sunset_spring.svg'),
     linear-gradient(
       201.93deg,
       rgba(164, 193, 209, 0.7) 19.17%,
@@ -146,7 +146,7 @@
 }
 
 .background-gradient_nightspring {
-  background-image: url('../../assets/Home/bg_night_spring.svg'),
+  background-image: url('/bg_night_spring.svg'),
     linear-gradient(302.67deg, #0c2c69 49.07%, #144199 97.23%);
 }
 
