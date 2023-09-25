@@ -147,8 +147,6 @@ export default class Stats extends Component<Props, State> {
   render() {
     return (
       <div>
-        {/* <Accordian data={this.state.howManyEachClass} title="Number of Courses in each Dept" col1="Dept" col2="Num of courses" />
-        <Accordian data={this.state.howManyReviewsEachClass} title="Number of Reviews in each Class" col1="Class" col2="Num of Reviews" /> */}
         <div>
           <button className="btn btn-primary" onClick={this.downloadCSVFile}>
             Download CSV For ReviewsPerClass
