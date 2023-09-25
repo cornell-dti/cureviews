@@ -1,0 +1,13 @@
+.pushDown {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.fullInput {
+  display: inline;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}

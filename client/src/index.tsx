@@ -1,63 +1,19 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React from 'react'
+import { hydrate } from 'react-dom'
+
+import App from './App'
 import './index.css'
 
-import React from 'react'
-import { render } from 'react-dom'
-import Modal from 'react-modal'
-
-import Login from './ui/Login'
-import ClassView from './ui/ClassViewNew'
-import AuthRedirect from './ui/AuthRedirect'
-import Profile from './ui/Profile'
-
-import { Home } from './modules/Home'
-
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { Results } from './ui/Results'
-
-import NotFound from './ui/NotFound'
-import Admin from './ui/Admin'
-
-Modal.setAppElement('#render-target')
-
-/*
-Generates appliation component sent to the client side entry point (main.html)
+/** 
+ * SSR 
+ *
+ * Generates appliation component sent to the client side entry point (index.html)
 as an HTML object with id "render-target".
-
-A router is generated using the BrowserRouter library. This determines which
-application component the user should see based on the URL they enter.
-
 */
 
-render(
-  <BrowserRouter>
-    <div className="container-fluid full-height">
-      <Switch>
-        <Route name="app" exact path="/" component={() => <Home />} />
-        <Route name="admin" exact path="/admin" component={Admin} />
-        <Route
-          name="permalink"
-          exact
-          path="/course/:subject/:number"
-          component={ClassView}
-        />
-        <Route name="auth" exact path="/auth" component={AuthRedirect} />
-        <Route name="login" exact path="/login" component={Login} />
-        <Route
-          name="permalink"
-          exact
-          path="/results/:type/:input"
-          component={Results}
-        />
-        <Route
-          name="profile"
-          exact
-          path="/profile"
-          component={() => <Profile />}
-        />
-        <Route component={NotFound} />
-      </Switch>
-    </div>
-  </BrowserRouter>,
+hydrate(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById('render-target')
 )

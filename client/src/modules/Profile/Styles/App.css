@@ -166,7 +166,7 @@
 
 .sign-in-button {
   position: absolute;
-  right: 15px;
+  right: 30px;
   top: 40px;
 
   width: 137px;
@@ -175,6 +175,7 @@
   background: #ffffff;
   border-radius: 10px;
 
+  font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
