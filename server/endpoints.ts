@@ -6,7 +6,7 @@ import {
   howManyEachClass,
   topSubjects,
   getReviewsOverTimeTop15,
-} from "./endpoints/AdminChart";
+} from "./endpoints/admin/AdminChart";
 import {
   getReviewsByCourseId,
   getCourseById,
@@ -15,21 +15,21 @@ import {
   getCourseByInfo,
   updateLiked,
   userHasLiked,
-} from "./endpoints/Review";
+} from "./endpoints/review/routes";
 import {
   countReviewsByStudentId,
   getTotalLikesByStudentId,
   getReviewsByStudentId,
   getStudentEmailByToken,
-} from "./endpoints/Profile";
-import { tokenIsAdmin } from "./endpoints/Auth";
+} from "./endpoints/profile/routes";
+import { tokenIsAdmin } from "./endpoints/auth/routes";
 import {
   getCoursesByProfessor,
   getCoursesByMajor,
   getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
-} from "./endpoints/Search";
+} from "./endpoints/search/routes";
 import {
   fetchReviewableClasses,
   reportReview,
@@ -37,7 +37,7 @@ import {
   undoReportReview,
   removeReview,
   getRaffleWinner,
-} from "./endpoints/AdminActions";
+} from "./endpoints/admin/AdminActions";
 
 export interface Context {
   ip: string;

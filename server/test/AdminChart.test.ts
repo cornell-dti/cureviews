@@ -1,12 +1,11 @@
-import axios from 'axios';
-import { TokenPayload } from 'google-auth-library';
+import axios from "axios";
+import { TokenPayload } from "google-auth-library";
 
-import { Class, Review, Student, Subject } from 'common';
-import * as Auth from "./Auth";
-import TestingServer, { testingPort } from './TestServer';
+import { Class, Review, Student, Subject } from "common";
+import * as Auth from "../endpoints/auth/routes";
+import TestingServer, { testingPort } from "./TestServer";
 
 const testServer = new TestingServer(testingPort);
-
 
 export const testClasses: Class[] = [
   {
@@ -16,13 +15,39 @@ export const testClasses: Class[] = [
     classTitle: "Object-Oriented Programming and Data Structures",
     classPrereq: [],
     classFull: "cs 2110 object-oriented programming and data structures",
-    classSems: ["FA14", "SP15", "SU15", "FA15", "SP16", "SU16", "FA16", "SP17",
-      "SU17", "FA17", "SP18", "FA18", "SU18", "SP19", "FA19", "SU19"],
+    classSems: [
+      "FA14",
+      "SP15",
+      "SU15",
+      "FA15",
+      "SP16",
+      "SU16",
+      "FA16",
+      "SP17",
+      "SU17",
+      "FA17",
+      "SP18",
+      "FA18",
+      "SU18",
+      "SP19",
+      "FA19",
+      "SU19",
+    ],
     crossList: ["q75SxmqkTFEfaJwZ3"],
-    classProfessors: ["David Gries", "Douglas James", "Siddhartha Chaudhuri",
-      "Graeme Bailey", "John Foster", "Ross Tate", "Michael George",
-      "Eleanor Birrell", "Adrian Sampson", "Natacha Crooks", "Anne Bracy",
-      "Michael Clarkson"],
+    classProfessors: [
+      "David Gries",
+      "Douglas James",
+      "Siddhartha Chaudhuri",
+      "Graeme Bailey",
+      "John Foster",
+      "Ross Tate",
+      "Michael George",
+      "Eleanor Birrell",
+      "Adrian Sampson",
+      "Natacha Crooks",
+      "Anne Bracy",
+      "Michael Clarkson",
+    ],
     classDifficulty: 2.9,
     classRating: null,
     classWorkload: 3,
@@ -34,8 +59,24 @@ export const testClasses: Class[] = [
     classTitle: "Honors Object-Oriented Programming and Data Structures",
     classPrereq: [],
     classFull: "cs 2112 Honors object-oriented programming and data structures",
-    classSems: ["FA14", "SP15", "SU15", "FA15", "SP16", "SU16", "FA16", "SP17",
-      "SU17", "FA17", "SP18", "FA18", "SU18", "SP19", "FA19", "SU19"],
+    classSems: [
+      "FA14",
+      "SP15",
+      "SU15",
+      "FA15",
+      "SP16",
+      "SU16",
+      "FA16",
+      "SP17",
+      "SU17",
+      "FA17",
+      "SP18",
+      "FA18",
+      "SU18",
+      "SP19",
+      "FA19",
+      "SU19",
+    ],
     crossList: [],
     classProfessors: ["Andrew Myers"],
     classDifficulty: 5.0,
@@ -49,8 +90,24 @@ export const testClasses: Class[] = [
     classTitle: "Intro to real analysis",
     classPrereq: [],
     classFull: "math 3110 Intro to real analysis",
-    classSems: ["FA14", "SP15", "SU15", "FA15", "SP16", "SU16", "FA16", "SP17",
-      "SU17", "FA17", "SP18", "FA18", "SU18", "SP19", "FA19", "SU19"],
+    classSems: [
+      "FA14",
+      "SP15",
+      "SU15",
+      "FA15",
+      "SP16",
+      "SU16",
+      "FA16",
+      "SP17",
+      "SU17",
+      "FA17",
+      "SP18",
+      "FA18",
+      "SU18",
+      "SP19",
+      "FA19",
+      "SU19",
+    ],
     crossList: [],
     classProfessors: ["Saloff-Coste"],
     classDifficulty: 3.9,
@@ -121,7 +178,7 @@ const testSubjects: Subject[] = [
 ];
 
 const validTokenPayload: TokenPayload = {
-  email: 'dti1@cornell.edu',
+  email: "dti1@cornell.edu",
   iss: undefined,
   sub: undefined,
   iat: undefined,
@@ -144,11 +201,18 @@ const testStudents: Student[] = [
   },
 ];
 
-const mockVerificationTicket = jest.spyOn(Auth, 'getVerificationTicket')
+const mockVerificationTicket = jest
+  .spyOn(Auth, "getVerificationTicket")
   .mockImplementation(async (token: string) => validTokenPayload);
 
 beforeAll(async () => {
-  await testServer.setUpDB(testReviews, testStudents, testClasses, undefined, testSubjects);
+  await testServer.setUpDB(
+    testReviews,
+    testStudents,
+    testClasses,
+    undefined,
+    testSubjects,
+  );
 });
 
 afterAll(async () => {
@@ -156,39 +220,64 @@ afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe('tests', () => {
+describe("tests", () => {
   it("topSubjects", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/topSubjects`, { token: "token" });
-    const match = [['Computer Science', 3], ['Mathematics', 1]];
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/topSubjects`,
+      { token: "token" },
+    );
+    const match = [
+      ["Computer Science", 3],
+      ["Mathematics", 1],
+    ];
 
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
     });
   });
 
-  it('totalReviews', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/totalReviews`, { token: "token" });
+  it("totalReviews", async () => {
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/totalReviews`,
+      { token: "token" },
+    );
     expect(res.data.result).toBe(testReviews.length);
   });
 
   it("howManyReviewsEachClass", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/howManyReviewsEachClass`, { token: "token" });
-    const match = [{ _id: 'cs 2110', total: 2 }, { _id: "cs 2112", total: 1 }, { _id: "math 3110", total: 1 }];
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/howManyReviewsEachClass`,
+      { token: "token" },
+    );
+    const match = [
+      { _id: "cs 2110", total: 2 },
+      { _id: "cs 2112", total: 1 },
+      { _id: "math 3110", total: 1 },
+    ];
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
     });
   });
 
   it("howManyEachClass", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/howManyEachClass`, { token: "token" });
-    const match = [{ _id: 'cs', total: 2 }, { _id: "math", total: 1 }];
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/howManyEachClass`,
+      { token: "token" },
+    );
+    const match = [
+      { _id: "cs", total: 2 },
+      { _id: "math", total: 1 },
+    ];
     match.forEach((obj) => {
       expect(res.data.result).toContainEqual(obj);
     });
   });
 
   it("getReviewsOverTimeTop15", async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/getReviewsOverTimeTop15`, { token: "token", step: 12, range: 12 });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/v2/getReviewsOverTimeTop15`,
+      { token: "token", step: 12, range: 12 },
+    );
 
     expect(res.data.result.math.length).toBeGreaterThan(0);
     expect(res.data.result.cs.length).toBeGreaterThan(0);

@@ -4,7 +4,11 @@ import axios from "axios";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { Subjects, Classes, Professors } from "./dbDefs";
-import { fetchSubjects, fetchClassesForSubject, fetchAddCourses } from "./dbInit";
+import {
+  fetchSubjects,
+  fetchClassesForSubject,
+  fetchAddCourses,
+} from "./dbInit";
 
 let testServer: MongoMemoryServer;
 let serverCloseHandle;
@@ -17,8 +21,11 @@ beforeAll(async () => {
   // get mongoose all set up
   testServer = new MongoMemoryServer();
   const mongoUri = await testServer.getUri();
-  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-  mongoose.set('useFindAndModify', false);
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  mongoose.set("useFindAndModify", false);
 
   await new Subjects({
     _id: "some id",
@@ -62,8 +69,16 @@ beforeAll(async () => {
       status: "success",
       data: {
         subjects: [
-          { descr: "Study of Fungi", descrformal: "The Study of Fungi", value: "gork" },
-          { descr: "Study of Space", descrformal: "The Study of Where No One has Gone Before", value: "fedn" },
+          {
+            descr: "Study of Fungi",
+            descrformal: "The Study of Fungi",
+            value: "gork",
+          },
+          {
+            descr: "Study of Space",
+            descrformal: "The Study of Where No One has Gone Before",
+            value: "fedn",
+          },
         ],
       },
     });
@@ -88,18 +103,45 @@ beforeAll(async () => {
             catalogNbr: "1110",
             titleLong: "Introduction to Angry Fungi",
             randoJunk: "Making sure this scauses no issues",
-            enrollGroups: [{ classSections: [{ ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }] }] }] }],
+            enrollGroups: [
+              {
+                classSections: [
+                  {
+                    ssrComponent: "LEC",
+                    meetings: [
+                      {
+                        instructors: [
+                          { firstName: "Prof.", lastName: "Thraka" },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
           {
             junk: "nada",
             subject: "gork",
             catalogNbr: "2110",
             titleLong: "Advanced Study of Angry Fungi",
-            enrollGroups: [{
-              classSections: [
-                { ssrComponent: "LEC", meetings: [{ instructors: [{ firstName: "Prof.", lastName: "Thraka" }, { firstName: "Prof.", lastName: "Urgok" }] }] },
-              ],
-            }],
+            enrollGroups: [
+              {
+                classSections: [
+                  {
+                    ssrComponent: "LEC",
+                    meetings: [
+                      {
+                        instructors: [
+                          { firstName: "Prof.", lastName: "Thraka" },
+                          { firstName: "Prof.", lastName: "Urgok" },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -113,10 +155,14 @@ afterAll(async () => {
   serverCloseHandle.close();
 });
 
-describe('tests', () => {
+describe("tests", () => {
   it("dbInit-db-works", async () => {
-    expect((await Subjects.findOne({ subShort: "gork" })).subShort).toBe("gork");
-    expect((await Classes.findOne({ classSub: "gork", classNum: "1110" })).classSub).toBe("gork");
+    expect((await Subjects.findOne({ subShort: "gork" })).subShort).toBe(
+      "gork",
+    );
+    expect(
+      (await Classes.findOne({ classSub: "gork", classNum: "1110" })).classSub,
+    ).toBe("gork");
   });
 
   // Does the internal testing endpoint exist?
@@ -141,7 +187,10 @@ describe('tests', () => {
 
   // Does fetching the classes collection work as expected?
   it("fetching-classes-by-subject-works", async () => {
-    const response = await fetchClassesForSubject(testingEndpoint, "FA20", { descrformal: "The Study of AngryFungi", value: "gork" });
+    const response = await fetchClassesForSubject(testingEndpoint, "FA20", {
+      descrformal: "The Study of AngryFungi",
+      value: "gork",
+    });
     expect(response.length).toBe(2);
     expect(response[0].subject).toBe("gork");
     expect(response[0].catalogNbr).toBe("1110");
@@ -149,7 +198,10 @@ describe('tests', () => {
     expect(response[1].titleLong).toBe("Advanced Study of Angry Fungi");
 
     // No fedn classes, only gork classes!
-    const nil = await fetchClassesForSubject(testingEndpoint, "FA20", { descrformal: "The Study of Where No One has Gone Before", value: "fedn" });
+    const nil = await fetchClassesForSubject(testingEndpoint, "FA20", {
+      descrformal: "The Study of Where No One has Gone Before",
+      value: "fedn",
+    });
     expect(nil).toBeNull();
   });
 
@@ -158,24 +210,35 @@ describe('tests', () => {
     expect(worked).toBe(true);
 
     // did it add the fedn subject?
-    expect((await Subjects.findOne({ subShort: "fedn" }).exec()).subFull).toBe("The Study of Where No One has Gone Before");
+    expect((await Subjects.findOne({ subShort: "fedn" }).exec()).subFull).toBe(
+      "The Study of Where No One has Gone Before",
+    );
 
     // did it update the semesters on gork 1110?
     // notice the .lean(), which changes some of the internals of what mongo returns
-    const class1 = await Classes.findOne({ classSub: "gork", classNum: "1110" }).lean().exec();
+    const class1 = await Classes.findOne({ classSub: "gork", classNum: "1110" })
+      .lean()
+      .exec();
     expect(class1.classSems).toStrictEqual(["FA19", "FA20"]);
 
     // did it add the gork 2110 Class?
-    const class2 = await Classes.findOne({ classSub: "gork", classNum: "2110" }).exec();
+    const class2 = await Classes.findOne({
+      classSub: "gork",
+      classNum: "2110",
+    }).exec();
     expect(class2.classTitle).toBe("Advanced Study of Angry Fungi");
 
     // Did it update the classes for the first professor
-    const prof1 = await Professors.findOne({ fullName: "Prof. Thraka" }).lean().exec();
+    const prof1 = await Professors.findOne({ fullName: "Prof. Thraka" })
+      .lean()
+      .exec();
     expect(prof1.courses).toContain(class1._id);
     expect(prof1.courses).toContain(class2._id);
 
     // Did it add the second professor with the right class id?
-    const prof2 = await Professors.findOne({ fullName: "Prof. Urgok" }).lean().exec();
+    const prof2 = await Professors.findOne({ fullName: "Prof. Urgok" })
+      .lean()
+      .exec();
     expect(prof2.courses).toStrictEqual([class2._id]);
   });
 });

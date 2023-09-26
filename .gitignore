@@ -10,7 +10,6 @@ mongodb-binaries/
 .git
 .vscode
 .env
-db
 .meteor
 mongo/
 *error.log
