@@ -282,7 +282,7 @@ export const Course = () => {
                 ', ' +
                 lastOfferedSems(selectedClass)}
             </p>
-            <div
+            {/* <div
               className={`d-lg-none ${!isPastScrollThreshold && 'd-none'} ${
                 styles.ratingMobileBox
               }`}
@@ -290,7 +290,7 @@ export const Course = () => {
               <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
               <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
               <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
-            </div>
+            </div> */}
             <button
               className={`${styles.startReviewButton}`}
               onClick={() => onLeaveReview()}
@@ -300,11 +300,12 @@ export const Course = () => {
           </div>
 
           <div className={`col ${styles.courseReviewColumn}`}>
-            <div
+            {/* <div
               className={`${isPastScrollThreshold && 'd-none'} d-lg-flex ${
                 styles.gaugeContainer
               }`}
-            >
+            > */}
+            <div className={` d-lg-flex ${styles.gaugeContainer}`}>
               <div className={styles.gauge}>
                 <Gauge
                   rating={selectedClass!.classRating}
