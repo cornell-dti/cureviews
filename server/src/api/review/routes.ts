@@ -96,7 +96,14 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
  */
 export const insertUser: Endpoint<InsertUserRequest> = {
   guard: [body("googleObject").notEmpty()],
-  callback: async (ctx: Context, arg: InsertUserRequest) => await insertUserCallback(arg),
+  callback: async (ctx: Context, arg: InsertUserRequest) => {
+    const result = await insertUserCallback(arg);
+    if (result === 1) {
+      return { code: 200, message: "User successfully added!" };
+    }
+
+    return { code: 500, message: "An error occurred while trying to insert a new user" };
+  },
 };
 
 /**
@@ -140,8 +147,8 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
         const related = await Reviews.find({ class: classId });
         if (related.find((v) => v.text === review.text)) {
           return {
-            resCode: 1,
-            error:
+            code: 400,
+            message:
               "Review is a duplicate of an already existing review for this class!",
           };
         }

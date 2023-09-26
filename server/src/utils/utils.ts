@@ -1,5 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
-import { getUserByNetId } from "../dao/Student";
+import { getUserByNetId } from "../dao/Students";
 
 /**
  * Returns true if [netid] matches the netid in the email of the JSON

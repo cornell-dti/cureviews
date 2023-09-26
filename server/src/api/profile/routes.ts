@@ -1,10 +1,9 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../../endpoints";
-import { ReviewDocument, Reviews } from "../../../db/dbDefs";
 import { ProfileRequest, NetIdQuery } from "./types";
 import { getVerificationTicket } from "../../utils/utils";
-import { getUserByNetId } from "../../dao/Student";
-import { getReviewById } from "../../dao/Reviews";
+import { getUserByNetId, getStudentReviewIds } from "../../dao/Students";
+import { getNonNullReviews } from "../../dao/Reviews";
 
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],
@@ -39,15 +38,12 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      const student = await getUserByNetId(netId);
-      if (student === null || student === undefined) {
+      const studentDoc = await getUserByNetId(netId);
+      if (studentDoc === null) {
         return { code: 404, message: "Unable to find student with netId: ", netId };
       }
-      if (student.reviews == null) {
-        return { code: 500, message: "No reviews object were associated." };
-      }
-
-      return { code: 200, message: student.reviews.length };
+      const reviews = await getStudentReviewIds(studentDoc);
+      return { code: 200, message: reviews.length };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'countReviewsByStudentId' method");
@@ -68,26 +64,19 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     let totalLikes = 0;
     try {
       const studentDoc = await getUserByNetId(netId);
-      if (studentDoc === null || studentDoc === undefined) {
+      if (studentDoc === null) {
         return {
           code: 404,
           message: "Unable to find student with netId: ",
           netId,
         };
       }
-      const reviewIds = studentDoc.reviews;
-      if (reviewIds == null) {
-        return { code: 500, message: "No reviews object were associated." };
-      }
-      const results = await Promise.all(
-        reviewIds.map(async (reviewId) => await getReviewById(reviewId)),
-      );
-      const reviews: ReviewDocument[] = results.filter((review) => review !== null);
+
+      const reviewIds = await getStudentReviewIds(studentDoc);
+      const reviews = await getNonNullReviews(reviewIds);
       reviews.forEach((review) => {
-        if ("likes" in review) {
-          if (review.likes !== undefined) {
-            totalLikes += review.likes;
-          }
+        if (review.likes !== undefined) {
+          totalLikes += review.likes;
         }
       });
 
@@ -111,23 +100,15 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
     const { netId } = request;
     try {
       const studentDoc = await getUserByNetId(netId);
-      if (studentDoc === null || studentDoc === undefined) {
+      if (studentDoc === null) {
         return {
           code: 404,
           message: "Unable to find student with netId: ",
           netId,
         };
       }
-      const reviewIds = studentDoc.reviews;
-      if (reviewIds === null) {
-        return { code: 200, message: [] };
-      }
-      const results = await Promise.all(
-        reviewIds.map(
-          async (reviewId) => await getReviewById(reviewId),
-        ),
-      );
-      const reviews: ReviewDocument[] = results.filter((review) => review !== null && review !== undefined);
+      const reviewIds = await getStudentReviewIds(studentDoc);
+      const reviews = await getNonNullReviews(reviewIds);
       return { code: 200, message: reviews };
     } catch (error) {
       // eslint-disable-next-line no-console

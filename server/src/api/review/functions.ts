@@ -1,8 +1,8 @@
 import { ValidationChain, body } from "express-validator";
 import shortid from "shortid";
 import { InsertUserRequest } from "./types";
-import { getUserByNetId } from "../../dao/Student";
-import { Students } from "../../../db/dbDefs";
+import { getUserByNetId, saveUser } from "../../dao/Students";
+
 /**
  * Creates a ValidationChain[] where the json object denoted by [jsonFieldName]
  * has non-empty fields listed in [fields].
@@ -31,7 +31,7 @@ export const insertUser = async (request: InsertUserRequest) => {
         googleObject.email.replace("@cornell.edu", ""),
       );
       if (user === null) {
-        const newUser = new Students({
+        const newUser = {
           _id: shortid.generate(),
           // Check to see if Google returns first and last name
           // If not, insert empty string to database
@@ -41,9 +41,9 @@ export const insertUser = async (request: InsertUserRequest) => {
           affiliation: null,
           token: null,
           privilege: "regular",
-        });
+        };
 
-        await newUser.save();
+        await saveUser(newUser);
       }
       return 1;
     }
