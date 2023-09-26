@@ -29,7 +29,7 @@ body {
   padding: 0;
   margin: 0;
   font-size: 14px;
-  line-height: 1;
+  /* line-height: 1.2; */
 }
 
 /* HTML5 display-role reset for older browsers */
