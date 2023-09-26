@@ -2,8 +2,8 @@ import { body } from "express-validator";
 import { Context, Endpoint } from "../../endpoints";
 import { ProfileRequest, NetIdQuery } from "./types";
 import { getVerificationTicket } from "../../utils/utils";
-import { getUserByNetId, getStudentReviewIds } from "../../dao/Students";
-import { getNonNullReviews } from "../../dao/Reviews";
+import { getUserByNetId, getStudentReviewIds } from "../../data/Students";
+import { getNonNullReviews } from "../../data/Reviews";
 
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],

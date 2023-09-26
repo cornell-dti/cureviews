@@ -5,7 +5,7 @@ import { Context, Endpoint } from "../../endpoints";
 import { Classes, ReviewDocument, Reviews, Students } from "../../../db/dbDefs";
 import {
   getVerificationTicket } from "../../utils/utils";
-import { getCourseById as getCourseByIdCallback } from "../../dao/Classes";
+import { getCourseById as getCourseByIdCallback } from "../../data/Classes";
 import { insertUser as insertUserCallback, JSONNonempty } from "./functions";
 
 import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
