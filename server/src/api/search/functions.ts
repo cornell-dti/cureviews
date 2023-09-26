@@ -1,4 +1,4 @@
-import { Classes, Subjects } from "../../db/dbDefs";
+import { Classes, Subjects } from "../../../db/dbDefs";
 
 /*
  * These utility methods are taken from methods.ts

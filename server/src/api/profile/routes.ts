@@ -1,9 +1,10 @@
 import { body } from "express-validator";
-import { Context, Endpoint } from "../../endpoints";
-import { ReviewDocument, Reviews, Students } from "../../db/dbDefs";
+import { Context, Endpoint } from "../../../endpoints";
+import { ReviewDocument, Reviews } from "../../../db/dbDefs";
 import { ProfileRequest, NetIdQuery } from "./types";
-
-import { getVerificationTicket } from "../auth/routes";
+import { getVerificationTicket } from "../../utils/utils";
+import { getUserByNetId } from "../../dao/Student";
+import { getReviewById } from "../../dao/Reviews";
 
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],
@@ -12,6 +13,9 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
 
     try {
       const ticket = await getVerificationTicket(token);
+      if (ticket === undefined || ticket === null) {
+        return { code: 404, message: "Unable to verify token" };
+      }
       if (ticket.hd === "cornell.edu") {
         return { code: 200, message: ticket.email };
       }
@@ -35,7 +39,10 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      const student = await Students.findOne({ netId });
+      const student = await getUserByNetId(netId);
+      if (student === null || student === undefined) {
+        return { code: 404, message: "Unable to find student with netId: ", netId };
+      }
       if (student.reviews == null) {
         return { code: 500, message: "No reviews object were associated." };
       }
@@ -60,17 +67,27 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
     const { netId } = request;
     let totalLikes = 0;
     try {
-      const studentDoc = await Students.findOne({ netId });
+      const studentDoc = await getUserByNetId(netId);
+      if (studentDoc === null || studentDoc === undefined) {
+        return {
+          code: 404,
+          message: "Unable to find student with netId: ",
+          netId,
+        };
+      }
       const reviewIds = studentDoc.reviews;
-      let reviews: ReviewDocument[] = await Promise.all(
-        reviewIds.map(
-          async (reviewId) => await Reviews.findOne({ _id: reviewId }),
-        ),
+      if (reviewIds == null) {
+        return { code: 500, message: "No reviews object were associated." };
+      }
+      const results = await Promise.all(
+        reviewIds.map(async (reviewId) => await getReviewById(reviewId)),
       );
-      reviews = reviews.filter((review) => review !== null);
+      const reviews: ReviewDocument[] = results.filter((review) => review !== null);
       reviews.forEach((review) => {
         if ("likes" in review) {
-          totalLikes += review.likes;
+          if (review.likes !== undefined) {
+            totalLikes += review.likes;
+          }
         }
       });
 
@@ -93,17 +110,24 @@ export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
   callback: async (ctx: Context, request: NetIdQuery) => {
     const { netId } = request;
     try {
-      const studentDoc = await Students.findOne({ netId });
+      const studentDoc = await getUserByNetId(netId);
+      if (studentDoc === null || studentDoc === undefined) {
+        return {
+          code: 404,
+          message: "Unable to find student with netId: ",
+          netId,
+        };
+      }
       const reviewIds = studentDoc.reviews;
       if (reviewIds === null) {
         return { code: 200, message: [] };
       }
-      let reviews: ReviewDocument[] = await Promise.all(
+      const results = await Promise.all(
         reviewIds.map(
-          async (reviewId) => await Reviews.findOne({ _id: reviewId }),
+          async (reviewId) => await getReviewById(reviewId),
         ),
       );
-      reviews = reviews.filter((review) => review !== null);
+      const reviews: ReviewDocument[] = results.filter((review) => review !== null && review !== undefined);
       return { code: 200, message: reviews };
     } catch (error) {
       // eslint-disable-next-line no-console

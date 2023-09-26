@@ -1,14 +1,15 @@
 import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
-import { Context, Endpoint } from "../../endpoints";
-import { Reviews, Classes, Students } from "../../db/dbDefs";
+import { Context, Endpoint } from "../../../endpoints";
+import { Reviews, Classes, Students } from "../../../db/dbDefs";
 import {
   updateProfessors,
   findAllSemesters,
   resetProfessorArray,
-} from "../../db/dbInit";
-import { getCourseById, verifyToken } from "../utils/utils";
+} from "../../../db/dbInit";
+import { verifyToken } from "../../utils/utils";
+import { getCourseById } from "../../dao/Classes";
 import { ReviewRequest } from "../review/types";
 import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./types";
 
@@ -16,7 +17,7 @@ import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } 
 // Returns 1 if successful, 0 otherwise.
 export const updateCourseMetrics = async (courseId) => {
   try {
-    const course = await getCourseById({ courseId });
+    const course = await getCourseById(courseId);
     if (course) {
       const crossListOR = getCrossListOR(course);
       const reviews = await Reviews.find(

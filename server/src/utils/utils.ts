@@ -1,11 +1,5 @@
-import { body } from "express-validator";
-import { Context, Endpoint } from "../../endpoints";
-import { Students } from "../../db/dbDefs";
-import { verifyToken } from "../utils/utils";
-import { AdminRequest } from "./types";
-import { verifyTicket } from "./functions";
-
-const audience = "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com";
+import { OAuth2Client } from "google-auth-library";
+import { getUserByNetId } from "../dao/Student";
 
 /**
  * Returns true if [netid] matches the netid in the email of the JSON
@@ -18,13 +12,20 @@ const audience = "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleuserc
  */
 export const getVerificationTicket = async (token?: string) => {
   try {
-    if (token === null) {
+    if (token === undefined) {
       // eslint-disable-next-line no-console
       console.log("Token was undefined in getVerificationTicket");
       return null;
     }
 
-    return verifyTicket(token, audience);
+    const audience = "836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com";
+    const client = new OAuth2Client(audience);
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience,
+    });
+
+    return ticket.getPayload();
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log("Error: at 'getVerificationTicket' method");
@@ -34,27 +35,26 @@ export const getVerificationTicket = async (token?: string) => {
   }
 };
 
-// Get a user with this netId from the Users collection in the local database
-export const getUserByNetId = async (netId: string) => {
+export const verifyToken = async (token: string) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(netId)) {
-      return await Students.findOne({ netId }).exec();
+    if (regex.test(token)) {
+      const ticket = await getVerificationTicket(token);
+      if (ticket && ticket.email) {
+        const user = await getUserByNetId(
+          ticket.email.replace("@cornell.edu", ""),
+        );
+        if (user) {
+          return user.privilege === "admin";
+        }
+      }
     }
-    return null;
+    return false;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log("Error: at 'getUserByNetId' method");
+    console.log("Error: at 'verifyToken' method");
     // eslint-disable-next-line no-console
     console.log(error);
-    return null;
+    return false;
   }
-};
-
-/*
- * Check if a token is for an admin
- */
-export const tokenIsAdmin: Endpoint<AdminRequest> = {
-  guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyToken(adminRequest.token),
 };

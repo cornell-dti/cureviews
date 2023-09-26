@@ -1,4 +1,4 @@
-import { ReviewDocument } from "../../db/dbDefs";
+import { ReviewDocument } from "../../../db/dbDefs";
 
 export interface Token {
   token: string;

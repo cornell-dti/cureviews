@@ -1,16 +1,14 @@
 import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
-import { Context, Endpoint } from "../../endpoints";
-import { Classes, ReviewDocument, Reviews, Students } from "../../db/dbDefs";
+import shortid from "shortid";
+import { Context, Endpoint } from "../../../endpoints";
+import { Classes, ReviewDocument, Reviews, Students } from "../../../db/dbDefs";
 import {
-  getCourseById as getCourseByIdCallback,
-  insertUser as insertUserCallback,
-  JSONNonempty,
-} from "../utils/utils";
-import { getVerificationTicket } from "../auth/routes";
-import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
+  getVerificationTicket } from "../../utils/utils";
+import { getCourseById as getCourseByIdCallback } from "../../dao/Classes";
+import { insertUser as insertUserCallback, JSONNonempty } from "./functions";
 
-import shortid = require("shortid");
+import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
 
 export const sanitizeReview = (doc: ReviewDocument) => {
   const copy = doc;
@@ -33,7 +31,7 @@ export const sanitizeReviews = (lst: ReviewDocument[]) => lst.map((doc) => sanit
  */
 export const getCourseById: Endpoint<CourseIdQuery> = {
   guard: [body("courseId").notEmpty().isAscii()],
-  callback: async (ctx: Context, arg: CourseIdQuery) => await getCourseByIdCallback(arg),
+  callback: async (ctx: Context, arg: CourseIdQuery) => await getCourseByIdCallback(arg.courseId),
 };
 
 /*
@@ -68,7 +66,7 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
   guard: [body("courseId").notEmpty().isAscii()],
   callback: async (ctx: Context, courseId: CourseIdQuery) => {
     try {
-      const course = await getCourseByIdCallback(courseId);
+      const course = await getCourseByIdCallback(courseId.courseId);
       if (course) {
         const crossListOR = getCrossListOR(course);
         const reviews = await Reviews.find(

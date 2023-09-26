@@ -53,6 +53,7 @@ const StudentSchema = new Schema<StudentDocument>({
   reviews: { type: [String] }, // the reviews that this user has posted.
   likedReviews: { type: [String] },
 });
+
 export const Students = mongoose.model<StudentDocument>(
   "students",
   StudentSchema,
@@ -72,6 +73,7 @@ const SubjectSchema = new Schema<SubjectDocument>({
   subShort: { type: String }, // subject, like "PHIL" or "CS"
   subFull: { type: String }, // subject full name, like 'Computer Science'
 });
+
 export const Subjects = mongoose.model<SubjectDocument>(
   "subjects",
   SubjectSchema,
