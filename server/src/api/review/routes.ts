@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import shortid from "shortid";
-import { Context, Endpoint } from "../../../endpoints";
+import { Context, Endpoint } from "../../endpoints";
 import { Classes, ReviewDocument, Reviews, Students } from "../../../db/dbDefs";
 import {
   getVerificationTicket } from "../../utils/utils";

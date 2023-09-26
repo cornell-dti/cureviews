@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { Context, Endpoint } from "../../../endpoints";
+import { Context, Endpoint } from "../../endpoints";
 import { verifyToken } from "../../utils/utils";
 import { AdminRequest } from "./types";
 

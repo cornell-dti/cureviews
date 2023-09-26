@@ -6,7 +6,7 @@ import {
   howManyEachClass,
   topSubjects,
   getReviewsOverTimeTop15,
-} from "./src/api/admin/AdminChart";
+} from "./api/admin/AdminChart";
 import {
   getReviewsByCourseId,
   getCourseById,
@@ -15,21 +15,21 @@ import {
   getCourseByInfo,
   updateLiked,
   userHasLiked,
-} from "./src/api/review/routes";
+} from "./api/review/routes";
 import {
   countReviewsByStudentId,
   getTotalLikesByStudentId,
   getReviewsByStudentId,
   getStudentEmailByToken,
-} from "./src/api/profile/routes";
-import { tokenIsAdmin } from "./src/api/auth/routes";
+} from "./api/profile/routes";
+import { tokenIsAdmin } from "./api/auth/routes";
 import {
   getCoursesByProfessor,
   getCoursesByMajor,
   getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
-} from "./src/api/search/routes";
+} from "./api/search/routes";
 import {
   fetchReviewableClasses,
   reportReview,
@@ -37,7 +37,7 @@ import {
   undoReportReview,
   removeReview,
   getRaffleWinner,
-} from "./src/api/admin/AdminActions";
+} from "./api/admin/AdminActions";
 
 export interface Context {
   ip: string;

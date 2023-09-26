@@ -1,5 +1,5 @@
 import { verifyToken } from "../../utils/utils";
-import { Context } from "../../../endpoints";
+import { Context } from "../../endpoints";
 import { Token } from "./types";
 import { Reviews, Classes, Subjects } from "../../../db/dbDefs";
 import { DefaultDict } from "./AdminChart";

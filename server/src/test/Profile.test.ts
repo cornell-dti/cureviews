@@ -5,7 +5,7 @@ import axios from "axios";
 import { TokenPayload } from "google-auth-library";
 
 import { Review, Student, Class, Subject, Professor } from "common";
-import * as Auth from "../endpoints/auth/routes";
+import * as Auth from "../api/auth/routes";
 
 import TestingServer, { testingPort } from "./TestServer";
 

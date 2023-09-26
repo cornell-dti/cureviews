@@ -3,9 +3,9 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import express from "express";
 import axios from "axios";
 
-import { configure } from "../endpoints";
-import { Classes, Reviews } from "../db/dbDefs";
-import * as Utils from "../endpoints/utils/utils";
+import { configure } from "../../endpoints";
+import { Classes, Reviews } from "../../db/dbDefs";
+import * as Utils from "../utils/utils";
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;

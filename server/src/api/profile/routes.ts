@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { Context, Endpoint } from "../../../endpoints";
+import { Context, Endpoint } from "../../endpoints";
 import { ReviewDocument, Reviews } from "../../../db/dbDefs";
 import { ProfileRequest, NetIdQuery } from "./types";
 import { getVerificationTicket } from "../../utils/utils";

@@ -14,8 +14,8 @@
     "files": [
         "db/dbInit.ts",
         "db/dbDefs.ts",
-        "server.ts",
-        "endpoints.ts",
+        "src/server.ts",
+        "src/endpoints.ts",
         "src/api/admin/AdminActions.ts",
         "src/api/admin/AdminChart.ts",
         "src/api/auth/routes.ts",

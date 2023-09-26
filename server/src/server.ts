@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import cors from "cors";
 import dotenv from "dotenv";
-import { fetchAddCourses } from "./db/dbInit";
+import { fetchAddCourses } from "../db/dbInit";
 import { configure } from "./endpoints";
 
 dotenv.config();

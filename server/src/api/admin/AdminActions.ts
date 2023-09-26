@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
-import { Context, Endpoint } from "../../../endpoints";
+import { Context, Endpoint } from "../../endpoints";
 import { Reviews, Classes, Students } from "../../../db/dbDefs";
 import {
   updateProfessors,
