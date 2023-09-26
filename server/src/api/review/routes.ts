@@ -2,29 +2,22 @@ import { body } from "express-validator";
 import { getCrossListOR } from "common/CourseCard";
 import shortid from "shortid";
 import { Context, Endpoint } from "../../endpoints";
-import { Classes, ReviewDocument, Reviews, Students } from "../../../db/dbDefs";
+import { Reviews, Students } from "../../../db/dbDefs";
 import {
   getVerificationTicket } from "../../utils/utils";
-import { getCourseById as getCourseByIdCallback } from "../../data/Classes";
+import {
+  getCourseById as getCourseByIdCallback,
+  getClassByInfo,
+} from "../../data/Classes";
 import { insertUser as insertUserCallback, JSONNonempty } from "./functions";
-
+import {
+  getReviewById,
+  updateReviewLiked,
+  sanitizeReview,
+  getReviewsByCourse,
+} from "../../data/Reviews";
 import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
 
-export const sanitizeReview = (doc: ReviewDocument) => {
-  const copy = doc;
-  copy.user = "";
-  copy.likedBy = [];
-  return copy;
-};
-
-/**
- * Santize the reviews, so that we don't leak information about who posted what.
- * Even if the user id is leaked, however, that still gives no way of getting back to the netID.
- * Still, better safe than sorry.
- * @param lst the list of reviews to sanitize. Possibly a singleton list.
- * @returns a copy of the reviews, but with the user id field removed.
- */
-export const sanitizeReviews = (lst: ReviewDocument[]) => lst.map((doc) => sanitizeReview(doc));
 
 /**
  * Get a course with this course_id from the Classes collection
@@ -45,16 +38,13 @@ export const getCourseByInfo: Endpoint<ClassByInfoQuery> = {
   ],
   callback: async (ctx: Context, query: ClassByInfoQuery) => {
     try {
-      return await Classes.findOne({
-        classSub: query.subject,
-        classNum: query.number,
-      }).exec();
+      return await getClassByInfo(query.subject, query.number);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getCourseByInfo' endpoint");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { error: "Internal Server Error" };
+      return { code: 500, message: "Internal Server Error" };
     }
   },
 };
@@ -69,21 +59,18 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
       const course = await getCourseByIdCallback(courseId.courseId);
       if (course) {
         const crossListOR = getCrossListOR(course);
-        const reviews = await Reviews.find(
-          { visible: 1, reported: 0, $or: crossListOR },
-          {},
-          { sort: { date: -1 }, limit: 700 },
-        ).exec();
-        return sanitizeReviews(reviews);
+        const reviews = await getReviewsByCourse(crossListOR);
+
+        return { code: 200, message: reviews };
       }
 
-      return { error: "Malformed Query" };
+      return { code: 400, message: "Malformed Query" };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getReviewsByCourseId' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { error: "Internal Server Error" };
+      return { code: 500, message: "Internal Server Error" };
     }
   },
 };
@@ -216,7 +203,7 @@ export const updateLiked: Endpoint<ReviewRequest> = {
   callback: async (ctx: Context, request: ReviewRequest) => {
     const { token } = request;
     try {
-      let review = await Reviews.findOne({ _id: request.id }).exec();
+      let review = await getReviewById(request.id);
 
       const ticket = await getVerificationTicket(token);
 
@@ -238,18 +225,10 @@ export const updateLiked: Endpoint<ReviewRequest> = {
           );
 
           if (review.likes === undefined) {
-            await Reviews.updateOne(
-              { _id: request.id },
-              { $set: { likes: 0 } },
-              { $pull: { likedBy: student.netId } },
-            ).exec();
+            await updateReviewLiked(request.id, 0, student.netId);
           } else {
             // bound the rating at 0
-            await Reviews.updateOne(
-              { _id: request.id },
-              { $set: { likes: Math.max(0, review.likes - 1) } },
-              { $pull: { likedBy: student.netId } },
-            ).exec();
+            await updateReviewLiked(request.id, review.likes - 1, student.netId);
           }
         } else {
           // adding like

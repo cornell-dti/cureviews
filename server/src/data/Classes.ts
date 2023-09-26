@@ -17,3 +17,10 @@ export const getCourseById = async (courseId: string) => {
     return { error: "Internal Server Error" };
   }
 };
+
+export const getClassByInfo = async (subject, number) => {
+  await Classes.findOne({
+    classSub: subject,
+    classNum: number,
+  }).exec();
+};
