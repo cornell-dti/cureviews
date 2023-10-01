@@ -36,6 +36,9 @@ const Profile = () => {
 
   const profilePicture = randomPicture(netId)
 
+  /**
+   * Retrieves the total reviews that a student has made
+   */
   async function getReviewsTotal() {
     const response = await axios.post('/v2/countReviewsByStudentId', {
       netId,
@@ -47,6 +50,9 @@ const Profile = () => {
     }
   }
 
+  /**
+   * Retrieves the number of reviews that the student has made that have been upvoted
+   */
   async function getReviewsHelpful() {
     const response = await axios.post('/v2/getTotalLikesByStudentId', {
       netId,
@@ -117,18 +123,16 @@ const Profile = () => {
     return (
       <div className={`row ${styles.fullScreen}`}>
         <Navbar userInput="" />
-        <div className={`col-3 ${styles.profileLeft}`}>
+        <div className={styles.profileLeft}>
           <div className={styles.profileContainer}>
-            <div className={styles.profileTitle}>Profile</div>
+            <div className={styles.profileTitle}>My Dashboard</div>
             <div className={styles.profileInfo}>
               <img
                 className={styles.profileImage}
                 src={`${String(profilePicture)}`}
                 alt="user"
               />
-              <div className={styles.profileVerifiedEmail}>
-                Verified as: {netId}@cornell.edu
-              </div>
+              <div className={styles.profileVerifiedNetid}>{netId}</div>
               <div className={styles.profileUserStatisticsText}>
                 User Statistics
               </div>
@@ -138,6 +142,7 @@ const Profile = () => {
                   value={reviewsTotal}
                   image="/total_reviews_icon.svg"
                 />
+                <div className={styles.divider}></div>
                 <ProfileCard
                   title="People found your reviews helpful"
                   value={reviewsHelpful}

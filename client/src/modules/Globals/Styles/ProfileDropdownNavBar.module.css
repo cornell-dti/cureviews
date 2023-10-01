@@ -53,6 +53,12 @@
   color: #ffffff;
 }
 
+@media (min-width: 320px) and (max-width: 480px) {
+  .profileMenuContainer {
+    display: none;
+  }
+}
+
 @media (max-width: 992px) {
   .profileMenuCard {
     width: 210px;
