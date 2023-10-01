@@ -116,6 +116,8 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **Michelle Li** - Developer Advisor
 - **Harrison Chin** - Developer
 - **Samuel Yeboah** - Developer
+- **Helen Lei** - Developer
+- **Andrea Thia** - Designer
 
 ### 2022 - 2023
 
