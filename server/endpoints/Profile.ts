@@ -9,10 +9,14 @@ export interface NetIdQuery {
   netId: string;
 }
 
+// The type of a query with a token
 export interface ProfileRequest {
   token: string;
 }
 
+/**
+ * [getStudentEmailByToken] returns a student email if the given token is valid
+ */
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: ProfileRequest) => {
@@ -36,7 +40,7 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
 };
 
 /**
- * Counts the number of reviews made by a given student id.
+ * [countReviewsByStudentId] returns the number of reviews made by a given student id.
  */
 export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
   guard: [body("netId").notEmpty().isAscii()],
