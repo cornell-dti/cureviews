@@ -110,7 +110,7 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 
 ### Fall 2023
 
-- **TBD** - Product Manager
+- **Jonathan Kim** - Product Manager
 - **TBD** - Associate Product Manager
 - **Will Zhang** - Technical Product Manager
 - **Michelle Li** - Developer Advisor
