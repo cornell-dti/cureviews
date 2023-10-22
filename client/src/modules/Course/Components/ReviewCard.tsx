@@ -53,6 +53,8 @@ export default function ReviewCard({
     ? styles.ratingsContainerColor
     : ''
 
+  const windowWidth: number = window.innerWidth
+
   function getDateString() {
     if (!_review.date) return ''
 
@@ -173,19 +175,25 @@ export default function ReviewCard({
             className={styles.ratingsContainer + ' ' + ratings_container_color}
           >
             <div className={styles.ratingElem}>
-              <span>Overall</span>
+              <span>Overall{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.rating ? _review.rating : '-'}
               </span>
+              {windowWidth <= 480 ? (
+                <div className={styles.divider}></div>
+              ) : null}
             </div>
             <div className={styles.ratingElem}>
-              <span>Difficulty</span>
+              <span>Difficulty{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.difficulty ? _review.difficulty : '-'}
               </span>
+              {windowWidth <= 480 ? (
+                <div className={styles.divider}></div>
+              ) : null}
             </div>
             <div className={styles.ratingElem}>
-              <span>Workload</span>
+              <span>Workload{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.workload ? _review.workload : '-'}
               </span>
@@ -199,7 +207,7 @@ export default function ReviewCard({
             {/* Title And Professor */}
             <TitleAndProfessor></TitleAndProfessor>
 
-            <div className="grade-major-container">
+            <div className={styles.gradeMajorContainer}>
               <div>
                 <span className="grade-major-label">Grade: </span>
                 {_review.grade &&
@@ -247,7 +255,7 @@ export default function ReviewCard({
 
               {/* Like Button */}
               {!isPreview && (
-                <div className="col">
+                <div className={styles.helpful}>
                   <button
                     className={
                       liked === true ? 'review-voted' : 'review-upvote'
@@ -259,6 +267,7 @@ export default function ReviewCard({
                     <img
                       src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
                       alt={liked ? 'Liked' : 'Not Liked Yet'}
+                      className={styles.handClap}
                     />
                     <p className={styles.upvoteText}>
                       Helpful ({_review.likes ? _review.likes : 0})

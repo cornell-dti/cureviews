@@ -67,12 +67,12 @@
   border-width: 0 1px 1px 1px;
 }
 
-@media (min-width: 390px) and (max-width: 480px) {
+@media (max-width: 480px) {
   .searchbar {
     background-color: transparent;
     display: inline-block;
     padding: 0;
-    position: relative;
+    position: absolute;
     outline: 0;
     background: #ffffff;
     box-sizing: border-box;
@@ -83,11 +83,10 @@
   .searchbar-in-navbar {
     border: 1.24929px solid #ececec;
     box-shadow: none;
-    width: 20rem;
   }
 
   .search-text {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'SF Pro', sans-serif;
     font-size: 18px;
     font-weight: var(--regular-weight);
     letter-spacing: 0.01em;
@@ -113,8 +112,8 @@
     background: transparent;
     cursor: pointer;
     max-height: 300px;
-    overflow-y: hidden;
-    position: relative;
+    overflow: auto;
+    position: absolute;
     width: 100%;
     z-index: 1001;
     border-radius: 0 0 10px 10px;
