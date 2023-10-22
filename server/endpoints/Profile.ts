@@ -15,7 +15,15 @@ export interface ProfileRequest {
 }
 
 /**
- * [getStudentEmailByToken] returns a student email if the given token is valid
+ * Returns true if [token] matches the email if the given token is valid and 
+ * false otherwise
+ * This method authenticates the user token through the Google API.
+ * 
+ * @param token: google authentication token that is checked to see if it is not
+ * empty and an ASCII value
+ * @requires that you have a handleVerifyError, like as follows:
+ * verify(token, function(){//do whatever}).catch(function(error)){}
+ * @returns: Endpoint with type ProfileRequest
  */
 export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
   guard: [body("token").notEmpty().isAscii()],
@@ -40,7 +48,11 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
 };
 
 /**
- * [countReviewsByStudentId] returns the number of reviews made by a given student id.
+ * Returns the number of reviews that match a given netId and null if there are none
+ * This method counts the total number of reviews left by a student.
+ * 
+ * @param netId: netId that is checked to see if it is not empty and an ASCII value
+ * @returns: Endpoint with type NetIdQuery
  */
 export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
   guard: [body("netId").notEmpty().isAscii()],
@@ -64,7 +76,12 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
 };
 
 /**
- * [getTotalLikesByStudentId] returns the total number of likes a student has gotten on their reviews
+ * Returns the number of likes that match the reviewIds associated with a given 
+ * netId and error if there are none
+ * This method counts the total number of likes received by a student.
+ * 
+ * @param netId: netId that is checked to see if it is not empty and an ASCII value
+ * @returns: Endpoint with type NetIdQuery
  */
 export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
   guard: [body("netId").notEmpty().isAscii()],
@@ -98,7 +115,12 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
 };
 
 /**
- * [getReviewsByStudentId] returns a list of review objects that are created by the given student's netID
+ * Returns the reviews that match the reviewIds associated with a given netId and
+ * error if there are none
+ * This method gets all of the reviews created by a student.
+ * 
+ * @param netId: netId that is checked to see if it is not empty and an ASCII value
+ * @returns: Endpoint with type NetIdQuery
  */
 export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
   guard: [body("netId").notEmpty().isAscii()],
