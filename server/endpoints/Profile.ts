@@ -45,7 +45,8 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
 };
 
 /**
- * Returns the number of reviews that match a given netId and null if there are none
+ * Returns the number of reviews that match a given netId or a message if there
+ * are no none
  * This method counts the total number of reviews left by a student.
  * @param netId: netId that is checked to see if it is not empty and an ASCII value
  * @returns: Endpoint with type NetIdQuery
@@ -73,7 +74,7 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
 
 /**
  * Returns the number of likes that match the reviewIds associated with a given
- * netId and error if there are none
+ * netId or throws an error if the netId doesn't exist
  * This method calculates the total number of likes a student has received on all their reviews.
  * @param netId: netId that is checked to see if it is not empty and an ASCII value
  * @returns: Endpoint with type NetIdQuery
@@ -110,8 +111,8 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
 };
 
 /**
- * Returns the reviews that match the reviewIds associated with a given netId and
- * error if there are none
+ * Returns the reviews that match the reviewIds associated with a given netId or
+ * throws an error if the netId doesn't exist
  * This method gets all of the reviews created by a student.
  * @param netId: netId that is checked to see if it is not empty and an ASCII value
  * @returns: Endpoint with type NetIdQuery
