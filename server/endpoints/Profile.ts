@@ -74,7 +74,7 @@ export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
 /**
  * Returns the number of likes that match the reviewIds associated with a given
  * netId and error if there are none
- * This method counts the total number of likes received by a student.
+ * This method calculates the total number of likes a student has received on all their reviews.
  * @param netId: netId that is checked to see if it is not empty and an ASCII value
  * @returns: Endpoint with type NetIdQuery
  */
