@@ -16,7 +16,6 @@ export interface ProfileRequest {
 /**
  * Returns true if [token] matches the email if the given token is valid and false otherwise
  * This method authenticates the user token through the Google API.
- * 
  * @param token: google authentication token that is checked to see if it is not
  * empty and an ASCII value
  * @requires that you have a handleVerifyError, like as follows:
@@ -48,7 +47,6 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
 /**
  * Returns the number of reviews that match a given netId and null if there are none
  * This method counts the total number of reviews left by a student.
- * 
  * @param netId: netId that is checked to see if it is not empty and an ASCII value
  * @returns: Endpoint with type NetIdQuery
  */
@@ -115,7 +113,6 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
  * Returns the reviews that match the reviewIds associated with a given netId and
  * error if there are none
  * This method gets all of the reviews created by a student.
- * 
  * @param netId: netId that is checked to see if it is not empty and an ASCII value
  * @returns: Endpoint with type NetIdQuery
  */
