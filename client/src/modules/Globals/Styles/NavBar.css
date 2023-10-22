@@ -65,7 +65,7 @@
   padding-right: 30px;
 }
 
-@media (min-width: 390px) and (max-width: 480px) {
+@media (max-width: 480px) {
   .custom-navbar {
     width: 100%;
     padding-top: 40px;

@@ -52,7 +52,7 @@
   margin-left: 10%;
 }
 
-@media (min-width: 390px) and (max-width: 480px) {
+@media (max-width: 480px) {
   .profileCardContainer {
     background: transparent;
     margin-right: 4rem;

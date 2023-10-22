@@ -44,21 +44,10 @@
   flex-wrap: wrap;
 }
 
-@media screen and (max-width: 768px) {
-  .ratingsContainerColor {
-    background: #f4f9fe;
-  }
-
-  .ratingsContainer {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
 .ratingElem {
   width: 100px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  margin-right: 0;
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -67,18 +56,6 @@
   float: right;
 
   font-weight: 600;
-}
-
-@media screen and (min-width: 768px) {
-  .contentContainer {
-    padding-right: 30px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .contentContainer {
-    margin-top: 20px;
-  }
 }
 
 .contentContainer {
@@ -125,6 +102,29 @@
   color: #807b7b;
 }
 
+@media screen and (max-width: 768px) {
+  .ratingsContainerColor {
+    background: #f4f9fe;
+  }
+
+  .ratingsContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .contentContainer {
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contentContainer {
+    margin-top: 20px;
+  }
+}
+
 @media screen and (max-width: 992px) {
   .covidTag {
     background-color: #ffec5e;
@@ -148,5 +148,104 @@
     border-width: 3px;
     border-style: solid;
     padding: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviewContainer {
+    box-sizing: border-box;
+    border-radius: 10px;
+
+    margin-bottom: 22px;
+    padding: 2rem;
+
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .flagContainer {
+    position: relative;
+    width: 5%;
+    top: -10vh;
+    right: -75vw;
+    overflow: none;
+  }
+
+  .reviewContainerStyle {
+    background: #ffffff;
+    border: 0.625px solid #b7d8ff;
+
+    /* text */
+    color: #000000;
+  }
+
+  .reviewContainerStylePending {
+    background: #f9f9f9;
+    border: 1px dashed #979797;
+
+    color: #979797;
+  }
+
+  .ratingsContainer {
+    position: relative;
+    background-color: #ffffff;
+    top: 6vh;
+  }
+
+  .ratingsContainerColor {
+    background: #ffffff;
+  }
+
+  .ratingElem {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .divider {
+    display: inline;
+    content: '';
+    border-left: 1px solid #a2a1a1;
+    height: 15px;
+    position: relative;
+    left: 0.5rem;
+  }
+
+  .ratingNum {
+    float: none;
+    margin-left: 0.2rem;
+  }
+
+  .contentContainer {
+    position: relative;
+    top: -10vh;
+    left: -1.1vh;
+  }
+
+  .gradeMajorContainer {
+    display: none;
+  }
+
+  .reviewText {
+    position: relative;
+    top: 3vh;
+  }
+
+  .date {
+    position: relative;
+    top: 12vh;
+  }
+
+  button {
+    position: relative;
+    top: 12vh;
+    display: flex;
+  }
+
+  .handClap {
+    margin-right: 2px;
+    margin-top: 2px;
   }
 }
