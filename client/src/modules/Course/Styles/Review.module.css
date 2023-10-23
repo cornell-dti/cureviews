@@ -204,6 +204,10 @@
     margin-left: 0;
   }
 
+  .ratingElemColor {
+    color: #4d8dd8;
+  }
+
   .divider {
     display: inline;
     content: '';
@@ -211,6 +215,10 @@
     height: 15px;
     position: relative;
     left: 0.5rem;
+  }
+
+  .acceptedReviewDividerColor {
+    border-left: 1px solid #4d8dd8;
   }
 
   .ratingNum {
@@ -247,5 +255,9 @@
   .handClap {
     margin-right: 2px;
     margin-top: 2px;
+  }
+
+  .courseTitle {
+    color: #0076ff;
   }
 }
