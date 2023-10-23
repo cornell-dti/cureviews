@@ -174,25 +174,55 @@ export default function ReviewCard({
           <div
             className={styles.ratingsContainer + ' ' + ratings_container_color}
           >
-            <div className={styles.ratingElem}>
+            <div
+              className={
+                review.visible
+                  ? styles.ratingElem + ' ' + styles.ratingElemColor
+                  : styles.ratingElem
+              }
+            >
               <span>Overall{windowWidth <= 480 ? ':' : ''}</span>
-              <span className={styles.ratingNum}>
+              <span className={styles.ratingNum + ' ' + styles.ratingElemColor}>
                 {_review.rating ? _review.rating : '-'}
               </span>
               {windowWidth <= 480 ? (
-                <div className={styles.divider}></div>
+                <div
+                  className={
+                    review.visible
+                      ? styles.divider + ' ' + styles.acceptedReviewDividerColor
+                      : styles.divider
+                  }
+                ></div>
               ) : null}
             </div>
-            <div className={styles.ratingElem}>
+            <div
+              className={
+                review.visible
+                  ? styles.ratingElem + ' ' + styles.ratingElemColor
+                  : styles.ratingElem
+              }
+            >
               <span>Difficulty{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.difficulty ? _review.difficulty : '-'}
               </span>
               {windowWidth <= 480 ? (
-                <div className={styles.divider}></div>
+                <div
+                  className={
+                    review.visible
+                      ? styles.divider + ' ' + styles.acceptedReviewDividerColor
+                      : styles.divider
+                  }
+                ></div>
               ) : null}
             </div>
-            <div className={styles.ratingElem}>
+            <div
+              className={
+                review.visible
+                  ? styles.ratingElem + ' ' + styles.ratingElemColor
+                  : styles.ratingElem
+              }
+            >
               <span>Workload{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.workload ? _review.workload : '-'}
