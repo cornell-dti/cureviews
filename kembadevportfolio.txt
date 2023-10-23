@@ -1,3 +1,14 @@
-Here is the doc for CU Reviews work i've done!
+So far still working on the Recommendations for CUReviews
 
-https://docs.google.com/document/d/1snZBskOsJLq_XGkDtY6di1gjXqK5jqmLI-EQQ3k22C0/edit
+As of right now, loaded all courses from FA23 into clusters
+Totaling 49 total clusters 
+
+Currently we have some outliers in the clusters, so some clusters may only have a few classes in them. 
+In order to fix this issue im looking to merge cluster that dont meet the length requirement, for each thing inside the cluster, we find another cluster that they are most similar too, and that is its new home.
+
+Current Goal:
+Make each cluster be of 50 classes at the lowest 
+
+
+Additional Google docs for the design docs for the system 
+https://docs.google.com/document/d/1j3EWao56qGPDSXOMQO0rVS16LL2GbVhQ4sFxA36vde0/edit
