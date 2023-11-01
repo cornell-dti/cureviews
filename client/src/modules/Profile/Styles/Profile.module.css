@@ -336,13 +336,18 @@
   color: #a2a1a1;
 }
 
-@media (max-width: 480px) {
-  .fullScreen {
-    display: flex;
-    flex-direction: row;
-    /* overflow: auto; */
+@media (min-width: 481px) and (max-width: 1000px) {
+  .profileLeft {
+    width: 100%;
   }
 
+  .profileContainer {
+    width: 85%;
+    height: 80%;
+  }
+}
+
+@media (max-width: 480px) {
   .profileLeft {
     display: flex;
     margin-top: 0px;

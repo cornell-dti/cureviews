@@ -102,9 +102,32 @@
   color: #807b7b;
 }
 
+@media (min-width: 768px) and (max-width: 1000px) {
+  .reviewContainer {
+    width: 100%;
+  }
+
+  .ratingsContainer {
+    width: 95%;
+    position: relative;
+    background-color: #ffffff;
+    top: 4vh;
+    left: 6vw;
+  }
+
+  .ratingsContainerColor {
+    background: #ffffff;
+  }
+
+  .ratingNum {
+    float: none;
+    margin-left: 0.2rem;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
-    background: #f4f9fe;
+    background: #ffffff;
   }
 
   .ratingsContainer {
@@ -121,7 +144,45 @@
 
 @media screen and (max-width: 768px) {
   .contentContainer {
-    margin-top: 20px;
+    position: relative;
+    top: -7vh;
+  }
+
+  .reviewContainer {
+    width: 100%;
+  }
+
+  .ratingsContainer {
+    width: 95%;
+    position: relative;
+    background-color: #ffffff;
+    top: 7vh;
+    left: 1.2vw;
+  }
+
+  .ratingNum {
+    float: none;
+    margin-left: 0.2rem;
+  }
+
+  .gradeMajorContainer {
+    position: relative;
+    top: 3vh;
+  }
+
+  .reviewText {
+    position: relative;
+    top: 3vh;
+  }
+
+  .date {
+    position: relative;
+    top: 8vh;
+  }
+
+  .helpful {
+    position: relative;
+    top: 7vh;
   }
 }
 
@@ -169,7 +230,7 @@
   .flagContainer {
     position: relative;
     width: 5%;
-    top: -10vh;
+    top: -12vh;
     right: -75vw;
     overflow: none;
   }
@@ -193,6 +254,7 @@
     position: relative;
     background-color: #ffffff;
     top: 6vh;
+    left: -0.2vw;
   }
 
   .ratingsContainerColor {
