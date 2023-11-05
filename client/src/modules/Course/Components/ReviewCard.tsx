@@ -4,6 +4,8 @@ import axios from 'axios'
 import ShowMoreText from 'react-show-more-text'
 
 import { Review as ReviewType } from 'common'
+import Tag from './Tag'
+import tag_names from '../../Globals/tag_names'
 
 import styles from '../Styles/Review.module.css'
 
@@ -238,6 +240,12 @@ export default function ReviewCard({
                 {_review.text}
               </ShowMoreText>
             </p>
+
+            <div className={styles.tagContainer}>
+              {tag_names.map((tag) => (
+                <Tag tagName={tag} />
+              ))}
+            </div>
 
             {/* Date, Like Button*/}
             <div className="row">
