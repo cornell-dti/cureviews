@@ -48,7 +48,7 @@ export default function ReviewCard({
     : styles.reviewContainerStylePending
   const ratings_container_color = _review.visible
     ? styles.ratingsContainerColor
-    : ''
+    : styles.pendingRatingsContainerColor
   const rating_elem_style = _review.visible
     ? styles.ratingElem + ' ' + styles.ratingElemColor
     : styles.ratingElem
