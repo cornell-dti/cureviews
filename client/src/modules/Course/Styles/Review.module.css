@@ -44,9 +44,21 @@
   flex-wrap: wrap;
 }
 
+.ratingsContainerColor {
+  background: #ffffff;
+}
+
+.pendingRatingsContainerColor {
+  background-color: #f9f9f9;
+}
+
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
     background: #f4f9fe;
+  }
+
+  .pendingRatingsContainerColor {
+    background: #f9f9f9;
   }
 
   .ratingsContainer {
@@ -130,6 +142,10 @@
     background: #ffffff;
   }
 
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
+  }
+
   .ratingNum {
     float: none;
     margin-left: 0.2rem;
@@ -139,6 +155,10 @@
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
     background: #ffffff;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
   }
 
   .ratingsContainer {
@@ -169,6 +189,10 @@
     background-color: #ffffff;
     top: 7vh;
     left: 1.2vw;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
   }
 
   .ratingNum {
@@ -263,13 +287,17 @@
 
   .ratingsContainer {
     position: relative;
-    background: #f9f9f9;
+    background: #ffffff;
     top: 6vh;
     left: -0.2vw;
   }
 
   .ratingsContainerColor {
     background: #ffffff;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
   }
 
   .ratingElemColor {
