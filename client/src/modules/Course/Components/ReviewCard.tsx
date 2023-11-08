@@ -6,7 +6,6 @@ import ShowMoreText from 'react-show-more-text'
 import { Review as ReviewType } from 'common'
 import Tag from './Tag'
 import tag_names from '../../Globals/tag_names'
-
 import styles from '../Styles/Review.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
@@ -15,7 +14,6 @@ import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 type ReviewProps = {
   review: ReviewType
-  reportHandler: (review: ReviewType) => void
   isPreview: boolean
   isProfile: boolean
 }
@@ -32,7 +30,6 @@ type ReviewProps = {
 */
 export default function ReviewCard({
   review,
-  reportHandler,
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
@@ -54,6 +51,9 @@ export default function ReviewCard({
   const ratings_container_color = _review.visible
     ? styles.ratingsContainerColor
     : ''
+  const rating_elem_style = _review.visible
+    ? styles.ratingElem + ' ' + styles.ratingElemColor
+    : styles.ratingElem
 
   const windowWidth: number = window.innerWidth
 
@@ -138,7 +138,13 @@ export default function ReviewCard({
     if (isProfile) {
       return (
         <>
-          <h5 className={styles.courseTitle}>{courseTitle}</h5>
+          <h5
+            className={
+              _review.visible ? styles.courseTitle : styles.pendingCourseTitle
+            }
+          >
+            {courseTitle}
+          </h5>
           <p className={styles.courseCodeAndProf}>
             {courseSub?.toUpperCase() +
               ' ' +
@@ -157,14 +163,13 @@ export default function ReviewCard({
     <div className={styles.reviewContainer + ' ' + review_container_style}>
       {/* Flag */}
       {!isPreview && (
-        <div className={styles.flagContainer}>
+        <div className={styles.pencilContainer}>
           <button
             onClick={() => {
-              reportHandler(_review)
-              alert('This post has been reported and will be reviewed.')
+              alert('Editing is currently not available, stay tuned!')
             }}
           >
-            <img src="/report-flag.svg" alt="Report Review"></img>
+            <img src="/pencil.svg" alt="Edit Review"></img>
           </button>
         </div>
       )}
@@ -176,15 +181,9 @@ export default function ReviewCard({
           <div
             className={styles.ratingsContainer + ' ' + ratings_container_color}
           >
-            <div
-              className={
-                review.visible
-                  ? styles.ratingElem + ' ' + styles.ratingElemColor
-                  : styles.ratingElem
-              }
-            >
+            <div className={rating_elem_style}>
               <span>Overall{windowWidth <= 480 ? ':' : ''}</span>
-              <span className={styles.ratingNum + ' ' + styles.ratingElemColor}>
+              <span className={styles.ratingNum}>
                 {_review.rating ? _review.rating : '-'}
               </span>
               {windowWidth <= 480 ? (
@@ -197,13 +196,7 @@ export default function ReviewCard({
                 ></div>
               ) : null}
             </div>
-            <div
-              className={
-                review.visible
-                  ? styles.ratingElem + ' ' + styles.ratingElemColor
-                  : styles.ratingElem
-              }
-            >
+            <div className={rating_elem_style}>
               <span>Difficulty{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.difficulty ? _review.difficulty : '-'}
@@ -218,13 +211,7 @@ export default function ReviewCard({
                 ></div>
               ) : null}
             </div>
-            <div
-              className={
-                review.visible
-                  ? styles.ratingElem + ' ' + styles.ratingElemColor
-                  : styles.ratingElem
-              }
-            >
+            <div className={rating_elem_style}>
               <span>Workload{windowWidth <= 480 ? ':' : ''}</span>
               <span className={styles.ratingNum}>
                 {_review.workload ? _review.workload : '-'}

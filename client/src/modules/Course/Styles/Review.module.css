@@ -28,7 +28,7 @@
   color: #979797;
 }
 
-.flagContainer {
+.pencilContainer {
   width: 100%;
   color: #9b9b9b;
   text-align: right;
@@ -42,6 +42,17 @@
 .tagContainer {
   display: flex;
   flex-wrap: wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .ratingsContainerColor {
+    background: #f4f9fe;
+  }
+
+  .ratingsContainer {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .ratingElem {
@@ -142,7 +153,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .contentContainer {
     position: relative;
     top: -7vh;
@@ -227,7 +238,7 @@
     line-height: 18px;
   }
 
-  .flagContainer {
+  .pencilContainer {
     position: relative;
     width: 5%;
     top: -12vh;
@@ -252,7 +263,7 @@
 
   .ratingsContainer {
     position: relative;
-    background-color: #ffffff;
+    background: #f9f9f9;
     top: 6vh;
     left: -0.2vw;
   }
@@ -261,13 +272,12 @@
     background: #ffffff;
   }
 
-  .ratingElem {
-    margin-right: 0;
-    margin-left: 0;
-  }
-
   .ratingElemColor {
     color: #4d8dd8;
+  }
+
+  .pendingRatingElemColor {
+    color: #807b7b;
   }
 
   .divider {
@@ -306,12 +316,18 @@
   .date {
     position: relative;
     top: 12vh;
+    width: 50%;
   }
 
   button {
     position: relative;
     top: 12vh;
     display: flex;
+  }
+
+  .helpful {
+    position: relative;
+    top: -0.2vh;
   }
 
   .handClap {
@@ -321,5 +337,9 @@
 
   .courseTitle {
     color: #0076ff;
+  }
+
+  .pendingCourseTitle {
+    color: #807b7b;
   }
 }
