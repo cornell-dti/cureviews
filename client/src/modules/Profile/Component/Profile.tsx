@@ -210,7 +210,7 @@ const Profile = () => {
                     </p>
                   </div>
                 </div>
-                <div className={hide === false ? styles.pendingReviews : ''}>
+                <div className={hide === false ? styles.reviewCard : ''}>
                   {hide === false ? (
                     <CourseReviews
                       reviews={pendingReviews}
@@ -228,7 +228,7 @@ const Profile = () => {
                     </p>
                   </div>
                 </div>
-                <div className={styles.pastReviews}>
+                <div className={styles.reviewCard}>
                   <CourseReviews
                     reviews={pastReviews}
                     isPreview={false}
@@ -239,7 +239,7 @@ const Profile = () => {
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
               <>
-                <div className={styles.myReviews}>
+                <div className={styles.reviewCard}>
                   <CourseReviews
                     reviews={reviews}
                     isPreview={false}
