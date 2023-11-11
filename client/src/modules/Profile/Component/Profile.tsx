@@ -7,8 +7,10 @@ import { Review as ReviewType } from 'common'
 
 import Navbar from '../../Globals/Navbar'
 
-import ProfileCard from './ProfileCard'
 import CourseReviews from '../../Course/Components/CourseReviews'
+import { UserInfo } from './UserInfo'
+import { NoReviews } from './NoReviews'
+import { PendingReviews } from './PendingReviews'
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 import { randomPicture } from '../../Globals/profile_picture'
@@ -20,6 +22,7 @@ import '../Styles/App.css'
 import '../Styles/Form.css'
 import '../Styles/ResultsDisplay.css'
 import styles from '../Styles/Profile.module.css'
+import { PastReviews } from './PastReviews'
 
 const Profile = () => {
   const [loading, setLoading] = useState(true)
@@ -123,38 +126,13 @@ const Profile = () => {
     return (
       <div className={`row ${styles.fullScreen}`}>
         <Navbar userInput="" />
-        <div className={styles.profileLeft}>
-          <div className={styles.profileContainer}>
-            <div className={styles.profileTitle}>My Dashboard</div>
-            <div className={styles.profileInfo}>
-              <img
-                className={styles.profileImage}
-                src={`${String(profilePicture)}`}
-                alt="user"
-              />
-              <div className={styles.profileVerifiedNetid}>{netId}</div>
-              <div className={styles.profileUserStatisticsText}>
-                User Statistics
-              </div>
-              <div className={styles.profileUserStatistics}>
-                <ProfileCard
-                  title="Reviews Total"
-                  value={reviewsTotal}
-                  image="/total_reviews_icon.svg"
-                />
-                <div className={styles.divider}></div>
-                <ProfileCard
-                  title="People found your reviews helpful"
-                  value={reviewsHelpful}
-                  image="/helpful_review_icon.svg"
-                ></ProfileCard>
-              </div>
-              <button className={styles.profileSignOutButton} onClick={signOut}>
-                <p className={styles.profileSignOutText}>Sign Out</p>
-              </button>
-            </div>
-          </div>
-        </div>
+        <UserInfo
+          profilePicture={profilePicture}
+          reviewsHelpful={reviewsHelpful}
+          reviewsTotal={reviewsTotal}
+          netId={netId}
+          signOut={signOut}
+        />
         <div className={`col ${styles.profileRight}`}>
           <div className={styles.profileReviewsContainer}>
             <div className={styles.reviewsHeader}>
@@ -175,78 +153,19 @@ const Profile = () => {
                 </select>
               </div>
             </div>
-            {reviews.length === 0 && (
-              <div className={styles.noReviewsContainer}>
-                <div className={styles.noReviewsTitle}>
-                  Oops! Seems like you haven’t written any reviews yet.
-                </div>
-                <div className={styles.noReviewsSubtitle}>
-                  Add an anonymous review and get notified when a your review is
-                  approved.
-                </div>
-                <div className={styles.noReviewsImage}>
-                  <img
-                    src="/noReviews.svg"
-                    alt="No Reviews"
-                    height="100%"
-                  ></img>
-                </div>
-              </div>
-            )}
+            {reviews.length === 0 && <NoReviews />}
             {reviews.length > 0 && pendingReviews.length > 0 && (
               <>
-                <div className="row">
-                  <div className={`col ${styles.pendingHeader}`}>
-                    <p className={styles.pendingHeaderText}>
-                      Pending ({pendingReviews?.length})
-                    </p>
-                  </div>
-                  <div className={`col ${styles.hidePending}`}>
-                    <p
-                      onClick={() => setHide(!hide)}
-                      className={styles.hidePendingText}
-                    >
-                      Hide
-                    </p>
-                  </div>
-                </div>
-                <div className={hide === false ? styles.reviewCard : ''}>
-                  {hide === false ? (
-                    <CourseReviews
-                      reviews={pendingReviews}
-                      isPreview={false}
-                      isProfile={true}
-                    />
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-                <div className="row">
-                  <div className={`col ${styles.pastHeader}`}>
-                    <p className={styles.pastHeaderText}>
-                      Past Reviews ({pastReviews?.length})
-                    </p>
-                  </div>
-                </div>
-                <div className={styles.reviewCard}>
-                  <CourseReviews
-                    reviews={pastReviews}
-                    isPreview={false}
-                    isProfile={true}
-                  />
-                </div>
+                <PendingReviews
+                  hide={hide}
+                  setHide={setHide}
+                  pendingReviews={pendingReviews}
+                />
+                <PastReviews pastReviews={pastReviews} />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
-              <>
-                <div className={styles.reviewCard}>
-                  <CourseReviews
-                    reviews={reviews}
-                    isPreview={false}
-                    isProfile={true}
-                  />
-                </div>
-              </>
+              <PastReviews pastReviews={pastReviews} />
             )}
           </div>
         </div>

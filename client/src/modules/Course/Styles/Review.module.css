@@ -265,8 +265,8 @@
   .pencilContainer {
     position: relative;
     width: 5%;
-    top: -12vh;
-    right: -75vw;
+    top: -14vh;
+    right: -80vw;
     overflow: none;
   }
 
@@ -338,7 +338,7 @@
 
   .reviewText {
     position: relative;
-    top: 3vh;
+    top: 4vh;
   }
 
   .date {
