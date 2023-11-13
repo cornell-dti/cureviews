@@ -21,7 +21,6 @@ type Props = {
   active: boolean
   enter: number
   mouse: number
-  handler: Function
   key?: string
 }
 
