@@ -11,15 +11,15 @@ import DTIWhiteLogo from '../../../assets/img/dti-text-white-logo.png'
 import '../home.css'
 
 /**
-  Home Page. 
-  
+  Home Page.
+
   Uppermost View component in the component tree, the first element of the HTML body tag grabbed by index.html.
 
   @returns the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 
   @param imgSrc for search bar
-  
+
 */
 export const Home = (imgSrc: any) => {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
@@ -113,6 +113,7 @@ export const Home = (imgSrc: any) => {
               imgSrc={`${String(imgSrc.imgSrc)}`}
               signOut={signOut}
               isLoggedIn={isLoggedIn}
+              isInNavbar={false}
             />
           </div>
         </div>
