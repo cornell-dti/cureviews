@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-
-import ProfileDropdown from '../../Globals/ProfileDropdown'
 
 import { Redirect } from 'react-router'
 import axios from 'axios'
 import { Session } from '../../../session-store'
 
-import '../Styles/SearchBar.css'
+import styles from '../Styles/SearchBar.module.css'
 import Course from './Course'
 import SubjectResult from './SubjectResult'
 import ProfessorResult from './ProfessorResult'
 import { Class, Subject, Professor } from 'common'
+import ProfileDropdown from '../../Globals/ProfileDropdown'
 
 type SearchBarProps = {
   isInNavbar: boolean
@@ -30,7 +28,6 @@ export const SearchBar = ({
   signOut,
   isLoggedIn,
 }: SearchBarProps) => {
-  const [dropdown, setDropdown] = useState<boolean>(true)
   const [index, setIndex] = useState<number>(0)
   const [enter, setEnter] = useState<0 | 1>(0)
   const [mouse, setMouse] = useState<0 | 1>(0)
@@ -45,11 +42,11 @@ export const SearchBar = ({
     if (query.toLowerCase() !== '') {
       setTimeout(() => {
         axios
-          .post(`/v2/getClassesByQuery`, { query: query })
+          .post(`/api/getClassesByQuery`, { query: query })
           .then((response) => {
             const queryCourseList = response.data.result
             if (queryCourseList.length !== 0) {
-              setCourses(queryCourseList.sort(sortCourses))
+              setCourses(queryCourseList)
             } else {
               setCourses([])
             }
@@ -57,7 +54,7 @@ export const SearchBar = ({
           .catch((e) => console.log('Getting courses failed!'))
 
         axios
-          .post(`/v2/getSubjectsByQuery`, { query: query })
+          .post(`/api/getSubjectsByQuery`, { query: query })
           .then((response) => {
             const subjectList = response.data.result
             if (subjectList && subjectList.length !== 0) {
@@ -84,29 +81,6 @@ export const SearchBar = ({
       }, DEBOUNCE_TIME)
     }
   }, [query])
-
-  /**
-   * Compares classes based on score, then class number, then alphabetically by
-   * subject.
-   * @param {Class} a
-   * @param {Class} b
-   * @returns -1, 0, or 1
-   */
-  const sortCourses = (a: Class, b: Class) => {
-    const sortByAlphabet = (a: Class, b: Class) => {
-      const aSub = a.classSub.toLowerCase()
-      const bSub = b.classSub.toLowerCase()
-      if (aSub < bSub) {
-        return -1
-      } else if (aSub > bSub) {
-        return 1
-      } else {
-        return 0
-      }
-    }
-
-    return sortByAlphabet(a, b) //|| b.score - a.score || a.classNum - b.classNum ||
-  }
 
   const text =
     window.innerWidth >= 840
@@ -182,7 +156,6 @@ export const SearchBar = ({
   }
 
   const setInitState = () => {
-    setDropdown(true)
     setIndex(0)
     setEnter(0)
     setMouse(0)
@@ -220,13 +193,15 @@ export const SearchBar = ({
           }
           href={`/results/keyword/${query.split(' ').join('+')}`}
         >
-          <p className="result-text">{'Search: "' + query + '"'}</p>
+          <p className={`${styles.resultText}`}>{'Search: "' + query + '"'}</p>
         </a>
       )
 
       results.push(exact_search)
 
-      let subjectList = subjects.slice(0, 3).map((subject, i) => (
+      let subjectList: JSX.Element[] = []
+
+      subjectList = subjects.slice(0, 3).map((subject, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <SubjectResult
           key={subject._id}
@@ -249,8 +224,10 @@ export const SearchBar = ({
 
       results.push(subjectList)
 
+      let professorList: JSX.Element[] = []
+
       // Generate list of matching professors and add to results list
-      let professorList = professors.slice(0, 3).map((professor, i) => (
+      professorList = professors.slice(0, 3).map((professor, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <ProfessorResult
           key={professor._id}
@@ -271,29 +248,30 @@ export const SearchBar = ({
 
       results.push(professorList)
 
-      results.push(
-        courses.slice(0, 5).map((course, i) => (
-          //create a new class "button" that will set the selected class to this class when it is clicked.
-          <Course
-            key={course._id}
-            info={course}
-            query={query}
-            active={
-              index ===
-              i +
-                subjectList.length +
-                professorList.length +
-                1 /* plus because of exact search, professors, subjects */
-            }
-            enter={enter}
-            mouse={mouse}
-          />
-          //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
-          //the index matching with the course
-          //the prop "enter" will pass through the value of the enter state
-          //the prop "mouse" will pass through the value of the mouse state
-        ))
-      )
+      let coursesList: JSX.Element[] = []
+
+      coursesList = courses.slice(0, 5).map((course, i) => (
+        //create a new class "button" that will set the selected class to this class when it is clicked.
+        <Course
+          key={course._id}
+          info={course}
+          query={query}
+          active={
+            index ===
+            i +
+              subjectList.length +
+              professorList.length +
+              1 /* plus because of exact search, professors, subjects */
+          }
+          enter={enter}
+          mouse={mouse}
+        />
+        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+        //the index matching with the course
+        //the prop "enter" will pass through the value of the enter state
+        //the prop "mouse" will pass through the value of the mouse state
+      ))
+      results.push(coursesList)
 
       return results
     } else {
@@ -303,19 +281,18 @@ export const SearchBar = ({
 
   return (
     <div
-      className={
-        'row ' +
-        (contrastingResultsBackground ? 'contrasting-result-background' : '')
-      }
+      className={`${
+        contrastingResultsBackground ? styles.contrastingResultsBackground : ''
+      }`}
     >
       <div
         className={
-          'col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 searchbar ' +
-          (isInNavbar ? 'searchbar-in-navbar' : '')
+          `col-xl-12 col-lg-12 col-md-12 col-sm-12 ${styles.searchbar} ` +
+          `${isInNavbar ? styles.searchbarInNavbar : ''}`
         }
       >
         <input
-          className="search-text"
+          className={`${styles.searchText}`}
           onKeyUp={handleKeyPress}
           defaultValue={isInNavbar ? (userInput ? userInput : '') : ''}
           placeholder={isInNavbar ? '' : text}
@@ -328,7 +305,7 @@ export const SearchBar = ({
         )}
 
         <ul
-          className="output"
+          className={`${styles.output}`}
           style={query !== '' ? {} : { display: 'none' }}
           onKeyPress={handleKeyPress}
           onMouseEnter={() => setMouse(1)}
