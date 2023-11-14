@@ -12,6 +12,16 @@
     margin-left: 21px;
     margin-right: 150px;
   }
+
+  .navbar-searchbar-container-wider {
+    width: 100%;
+    margin-right: 12%;
+  }
+
+  .navbar-searchbar-container-not {
+    width: 100%;
+    margin-right: 28%;
+  }
 }
 
 @media screen and (min-width: 992px) {
@@ -21,6 +31,16 @@
 
   .navbar-searchbar-container {
     margin-right: 220px;
+  }
+
+  .navbar-searchbar-container-wider {
+    width: 100%;
+    margin-right: 15%;
+  }
+
+  .navbar-searchbar-container-not {
+    width: 100%;
+    margin-right: 15%;
   }
 }
 

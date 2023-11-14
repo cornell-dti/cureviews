@@ -228,8 +228,7 @@
   color: #9fcbff !important;
 }
 
-.react-major-select__control--is-focused
-  .react-major-select__dropdown-indicator {
+.react-major-select__control--is-focused .react-major-select__dropdown-indicator {
   color: #0076ff !important;
 }
 
