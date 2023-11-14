@@ -5,11 +5,11 @@
     height: 42px;
   }
 
-  .searchbar-in-navbar {
+  .searchbarInNavbar {
     height: 42px;
   }
 
-  .search-text {
+  .searchText {
     padding-left: 45px;
   }
 }
@@ -19,11 +19,11 @@
     height: 40px;
   }
 
-  .searchbar-in-navbar {
+  .searchbarInNavbar {
     height: 52px;
   }
 
-  .search-text {
+  .searchText {
     padding-left: 40px;
   }
 }
@@ -40,12 +40,12 @@
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
 }
 
-.searchbar-in-navbar {
+.searchbarInNavbar {
   border: 1.24929px solid #ececec;
   box-shadow: none;
 }
 
-.search-text {
+.searchText {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
@@ -68,7 +68,7 @@
   z-index: 1002;
 }
 
-.search-text::placeholder {
+.searchText::placeholder {
   color: #c9c9c9;
   font-weight: var(--regular-weight);
 }
@@ -78,18 +78,16 @@
   cursor: pointer;
   max-height: 300px;
   overflow-y: auto;
-  position: absolute;
   width: 100%;
   z-index: 1001;
   border-radius: 0 0 10px 10px;
-  margin-top: -5px;
 }
 
 /* Selects all 'output' class objects that are decendents
-    of 'contrasting-result-background' class .
+    of 'contrastingResultBackground' class .
     Used to add background contrasting color to searchbar
     search results */
-.contrasting-result-background .output {
+.contrastingResultBackground .output {
   border-style: solid;
   border-color: #6ba7ec;
   border-width: 0 1px 1px 1px;
