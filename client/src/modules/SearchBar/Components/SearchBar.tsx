@@ -84,11 +84,6 @@ export const SearchBar = ({
     }
   }, [query])
 
-  const text =
-    window.innerWidth >= 840
-      ? 'Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”'
-      : 'Search any keyword'
-
   const setNewSearchState = () => {
     setSelected(false)
     setMouse(0)
@@ -297,7 +292,13 @@ export const SearchBar = ({
           className={`${styles.searchText}`}
           onKeyUp={handleKeyPress}
           defaultValue={isInNavbar ? (userInput ? userInput : '') : ''}
-          placeholder={isInNavbar ? '' : text}
+          placeholder={
+            isInNavbar
+              ? ''
+              : window.innerWidth >= 840
+              ? 'Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”'
+              : 'Search any keyword'
+          }
           autoComplete="off"
         />
         {isInNavbar && isLoggedIn ? (
