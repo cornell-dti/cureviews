@@ -25,7 +25,6 @@ const CourseReviews = ({
         <ReviewCard
           key={review._id}
           review={review}
-          reportHandler={reportReview}
           isPreview={isPreview}
           isProfile={isProfile}
         />

@@ -8,6 +8,14 @@ type ProfileCardProps = {
   image: any
 }
 
+/**
+  Profile Component.
+
+  Simple styling component that renders a student's review statistics
+  on their profile:
+    - Total reviews made
+    - Total upvotes on reviews made
+*/
 const ProfileCard = ({ title, value, image }: ProfileCardProps) => {
   return (
     <div className={styles.profileCardContainer}>

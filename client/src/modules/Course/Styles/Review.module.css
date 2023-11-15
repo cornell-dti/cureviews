@@ -28,7 +28,7 @@
   color: #979797;
 }
 
-.flagContainer {
+.pencilContainer {
   width: 100%;
   color: #9b9b9b;
   text-align: right;
@@ -39,9 +39,21 @@
   line-height: 18px;
 }
 
+.ratingsContainerColor {
+  background: #ffffff;
+}
+
+.pendingRatingsContainerColor {
+  background-color: #f9f9f9;
+}
+
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
     background: #f4f9fe;
+  }
+
+  .pendingRatingsContainerColor {
+    background: #f9f9f9;
   }
 
   .ratingsContainer {
@@ -52,8 +64,8 @@
 
 .ratingElem {
   width: 100px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  margin-right: 0;
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -62,18 +74,6 @@
   float: right;
 
   font-weight: 600;
-}
-
-@media screen and (min-width: 768px) {
-  .contentContainer {
-    padding-right: 30px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .contentContainer {
-    margin-top: 20px;
-  }
 }
 
 .contentContainer {
@@ -120,6 +120,102 @@
   color: #807b7b;
 }
 
+@media (min-width: 768px) and (max-width: 1000px) {
+  .reviewContainer {
+    width: 100%;
+  }
+
+  .ratingsContainer {
+    width: 95%;
+    position: relative;
+    background-color: #ffffff;
+    top: 4vh;
+    left: 6vw;
+  }
+
+  .ratingsContainerColor {
+    background: #ffffff;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
+  }
+
+  .ratingNum {
+    float: none;
+    margin-left: 0.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ratingsContainerColor {
+    background: #ffffff;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
+  }
+
+  .ratingsContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .contentContainer {
+    padding-right: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    position: relative;
+    top: -7vh;
+  }
+
+  .reviewContainer {
+    width: 100%;
+  }
+
+  .ratingsContainer {
+    width: 95%;
+    position: relative;
+    background-color: #ffffff;
+    top: 7vh;
+    left: 1.2vw;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
+  }
+
+  .ratingNum {
+    float: none;
+    margin-left: 0.2rem;
+  }
+
+  .gradeMajorContainer {
+    position: relative;
+    top: 3vh;
+  }
+
+  .reviewText {
+    position: relative;
+    top: 3vh;
+  }
+
+  .date {
+    position: relative;
+    top: 8vh;
+  }
+
+  .helpful {
+    position: relative;
+    top: 7vh;
+  }
+}
+
 @media screen and (max-width: 992px) {
   .covidTag {
     background-color: #ffec5e;
@@ -143,5 +239,130 @@
     border-width: 3px;
     border-style: solid;
     padding: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviewContainer {
+    box-sizing: border-box;
+    border-radius: 10px;
+
+    margin-bottom: 22px;
+    padding: 2rem;
+
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .pencilContainer {
+    position: relative;
+    width: 5%;
+    top: -14vh;
+    right: -80vw;
+    overflow: none;
+  }
+
+  .reviewContainerStyle {
+    background: #ffffff;
+    border: 0.625px solid #b7d8ff;
+
+    /* text */
+    color: #000000;
+  }
+
+  .reviewContainerStylePending {
+    background: #f9f9f9;
+    border: 1px dashed #979797;
+
+    color: #979797;
+  }
+
+  .ratingsContainer {
+    position: relative;
+    background: #ffffff;
+    top: 6vh;
+    left: -0.2vw;
+  }
+
+  .ratingsContainerColor {
+    background: #ffffff;
+  }
+
+  .pendingRatingsContainerColor {
+    background-color: #f9f9f9;
+  }
+
+  .ratingElemColor {
+    color: #4d8dd8;
+  }
+
+  .pendingRatingElemColor {
+    color: #807b7b;
+  }
+
+  .divider {
+    display: inline;
+    content: '';
+    border-left: 1px solid #a2a1a1;
+    height: 15px;
+    position: relative;
+    left: 0.5rem;
+  }
+
+  .acceptedReviewDividerColor {
+    border-left: 1px solid #4d8dd8;
+  }
+
+  .ratingNum {
+    float: none;
+    margin-left: 0.2rem;
+  }
+
+  .contentContainer {
+    position: relative;
+    top: -10vh;
+    left: -1.1vh;
+  }
+
+  .gradeMajorContainer {
+    display: none;
+  }
+
+  .reviewText {
+    position: relative;
+    top: 4vh;
+  }
+
+  .date {
+    position: relative;
+    top: 12vh;
+    width: 50%;
+  }
+
+  button {
+    position: relative;
+    top: 12vh;
+    display: flex;
+  }
+
+  .helpful {
+    position: relative;
+    top: -0.2vh;
+  }
+
+  .handClap {
+    margin-right: 2px;
+    margin-top: 2px;
+  }
+
+  .courseTitle {
+    color: #0076ff;
+  }
+
+  .pendingCourseTitle {
+    color: #807b7b;
   }
 }
