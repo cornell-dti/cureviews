@@ -73,7 +73,7 @@ export default function Navbar({ userInput }: NavbarProps) {
           />
         </a>
       </div>
-      <div className={`col navbar-searchbar-container${isLoggedIn ? "-wider" : "-not"}`}>
+      <div className={`col navbar-searchbar-container${isLoggedIn ? "-profile" : ""}`}>
         <SearchBar
           userInput={userInput}
           contrastingResultsBackground={true}

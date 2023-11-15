@@ -53,25 +53,7 @@
   }
 
   .sign-in-button {
-    position: absolute;
-    right: 30px;
-    top: 40px;
-
     width: 100px;
-    height: 39px;
-
-    background: #ffffff;
-    border-radius: 10px;
-
-    font-family: Source Sans Pro;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 23px;
-    text-align: center;
-    letter-spacing: -0.22px;
-
-    color: #000000;
   }
 }
 
