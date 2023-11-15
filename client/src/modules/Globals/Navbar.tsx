@@ -68,12 +68,12 @@ export default function Navbar({ userInput }: NavbarProps) {
         <a className="" href="/">
           <img
             src="/logo.svg"
-            className="img-fluid scale-logo-navbar"
+            className="scale-logo-navbar"
             alt="CU Reviews Logo"
           />
         </a>
       </div>
-      <div className="col navbar-searchbar-container">
+      <div className={`col navbar-searchbar-container${isLoggedIn ? "-wider" : "-not"}`}>
         <SearchBar
           userInput={userInput}
           contrastingResultsBackground={true}
