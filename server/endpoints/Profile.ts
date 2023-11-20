@@ -112,7 +112,7 @@ export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
 /**
  * This method gets all of the reviews created by a student and returns them or
  * throws an error if the netId doesn't exist.
- * @param netId: netId that is checked to see if it is not empty and an ASCII 
+ * @param netId: netId that is checked to see if it is not empty and an ASCII
  * value
  * @returns: Endpoint with type NetIdQuery
  */
