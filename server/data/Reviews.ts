@@ -1,4 +1,4 @@
-import { ReviewDocument, Reviews } from "../../db/dbDefs";
+import { ReviewDocument, Reviews } from "../db/dbDefs";
 
 export const getReviewById = async (reviewId: string) => {
   try {

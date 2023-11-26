@@ -1,4 +1,4 @@
-import { Classes } from "../../db/dbDefs";
+import { Classes } from "../db/dbDefs";
 
 // eslint-disable-next-line import/prefer-default-export
 export const getCourseById = async (courseId: string) => {

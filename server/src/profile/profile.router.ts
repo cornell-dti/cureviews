@@ -1,8 +1,8 @@
 import express from 'express';
 import { ProfileRequest, NetIdQuery } from './profile.dto';
 import { getUserEmail } from '../auth/auth.controller';
-import { getUserByNetId, getStudentReviewIds } from '../data/Students';
-import { getNonNullReviews } from '../data/Reviews';
+import { getUserByNetId, getStudentReviewIds } from '../../data/Students';
+import { getNonNullReviews } from '../../data/Reviews';
 
 const router = express.Router();
 

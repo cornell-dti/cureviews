@@ -1,5 +1,5 @@
 import { OAuth2Client } from 'google-auth-library';
-import { getUserByNetId } from '../data/Students';
+import { getUserByNetId } from '../../data/Students';
 import { googleAudience } from '../utils/const';
 
 /**

@@ -1,4 +1,4 @@
-import { Students } from "../../db/dbDefs";
+import { Students } from "../db/dbDefs";
 
 // Get a user with this netId from the Users collection in the local database
 export const getUserByNetId = async (netId: string) => {

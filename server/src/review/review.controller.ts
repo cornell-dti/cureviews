@@ -1,7 +1,7 @@
 import { ValidationChain, body } from 'express-validator';
 import shortid from 'shortid';
 import { InsertUserRequest } from './review.dto';
-import { getUserByNetId, saveUser } from '../data/Students';
+import { getUserByNetId, saveUser } from '../../data/Students';
 
 /**
  * Creates a ValidationChain[] where the json object denoted by [jsonFieldName]

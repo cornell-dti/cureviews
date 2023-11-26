@@ -9,7 +9,7 @@ import {
   resetProfessorArray,
 } from "../../db/dbInit";
 import { verifyAdminToken } from "../auth/auth.controller";
-import { getCourseById } from "../data/Classes";
+import { getCourseById } from "../../data/Classes";
 import { ReviewRequest } from "../review/review.dto";
 import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./admin.dto";
 

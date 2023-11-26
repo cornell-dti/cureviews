@@ -7,7 +7,7 @@ import { getVerificationTicket } from '../auth/auth.controller';
 import {
   getCourseById as getCourseByIdCallback,
   getClassByInfo,
-} from '../data/Classes';
+} from '../../data/Classes';
 import {
   insertUser as insertUserCallback,
 } from './review.controller';
@@ -16,7 +16,7 @@ import {
   updateReviewLiked,
   sanitizeReview,
   getReviewsByCourse,
-} from '../data/Reviews';
+} from '../../data/Reviews';
 import {
   CourseIdQuery,
   InsertReviewRequest,
