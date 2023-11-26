@@ -1,7 +1,7 @@
-import { verifyAdminToken } from "../../utils/utils";
-import { Context } from "../../endpoints";
+import { verifyAdminToken } from "../auth/auth.controller";
+import { Context } from "../endpoints";
 import { Token } from "./admin.dto";
-import { Reviews, Classes, Subjects } from "../../../db/dbDefs";
+import { Reviews, Classes, Subjects } from "../../db/dbDefs";
 import { DefaultDict } from "./AdminChart";
 
 /**
