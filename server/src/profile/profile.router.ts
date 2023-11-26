@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 import { Context, Endpoint } from "../endpoints";
 import { ProfileRequest, NetIdQuery } from "./profile.dto";
-import { getVerificationTicket } from "../auth/auth.controller";
+import { getUserEmail } from "../auth/auth.controller";
 import { getUserByNetId, getStudentReviewIds } from "../data/Students";
 import { getNonNullReviews } from "../data/Reviews";
 
@@ -11,15 +11,13 @@ export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
     const { token } = request;
 
     try {
-      const ticket = await getVerificationTicket(token);
-      if (ticket === undefined || ticket === null) {
-        return { code: 404, message: "Unable to verify token" };
-      }
-      if (ticket.hd === "cornell.edu") {
-        return { code: 200, message: ticket.email };
+      const email = await getUserEmail(token);
+
+      if (!email) {
+        return { code: 404, message: `Email not found: {email}` };
       }
 
-      return { code: 500, message: "Invalid email" };
+      return { code: 200, message: email };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getStudentEmailByToken' method");

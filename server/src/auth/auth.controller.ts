@@ -35,20 +35,60 @@ export const getVerificationTicket = async (token?: string) => {
   }
 };
 
+export const getUserEmail = async (token: string) => {
+  try {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+    if (!regex.test(token)) {
+      return null;
+    }
+
+    const ticket = await getVerificationTicket(token);
+    if (!(ticket && ticket.email)) {
+      return null;
+    }
+
+    if (ticket.hd === 'cornell.edu') {
+      return ticket.email;
+    }
+
+    return null;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getUserEmail' method", err);
+    return null;
+  }
+};
+
+export const getUserNetId = async (token: string) => {
+  const email = await getUserEmail(token);
+
+  try {
+    const netId = email.replace('@cornell.edu', '');
+    return netId;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getUserNetId' method", error);
+    return null;
+  }
+};
+
 export const verifyAdminToken = async (token: string) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-    if (regex.test(token)) {
-      const ticket = await getVerificationTicket(token);
-      if (ticket && ticket.email) {
-        const user = await getUserByNetId(
-          ticket.email.replace('@cornell.edu', ''),
-        );
-        if (user) {
-          return user.privilege === 'admin';
-        }
-      }
+    if (!regex.test(token)) {
+      return false;
     }
+
+    const ticket = await getVerificationTicket(token);
+    if (!(ticket && ticket.email)) {
+      return false;
+    }
+
+    const user = await getUserByNetId(ticket.email.replace('@cornell.edu', ''));
+    if (user) {
+      return user.privilege === 'admin';
+    }
+
     return false;
   } catch (error) {
     // eslint-disable-next-line no-console
