@@ -78,10 +78,6 @@ export function configure(app: express.Application) {
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
   register(app, "updateLiked", updateLiked);
   register(app, "userHasLiked", userHasLiked);
-  register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
-  register(app, "getReviewsByStudentId", getReviewsByStudentId);
-  register(app, "countReviewsByStudentId", countReviewsByStudentId);
-  register(app, "getStudentEmailByToken", getStudentEmailByToken);
   register(app, "getRaffleWinner", getRaffleWinner);
 }
 
