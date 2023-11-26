@@ -17,13 +17,6 @@ import {
   userHasLiked,
 } from "./review/review.router";
 import {
-  countReviewsByStudentId,
-  getTotalLikesByStudentId,
-  getReviewsByStudentId,
-  getStudentEmailByToken,
-} from "./profile/profile.router";
-import { tokenIsAdmin } from "./auth/auth.router";
-import {
   getCoursesByProfessor,
   getCoursesByMajor,
   getClassesByQuery,
@@ -66,7 +59,6 @@ export function configure(app: express.Application) {
   register(app, "getClassesByQuery", getClassesByQuery);
   register(app, "getReviewsByCourseId", getReviewsByCourseId);
   register(app, "getCourseById", getCourseById);
-  register(app, "tokenIsAdmin", tokenIsAdmin);
   register(app, "getSubjectsByQuery", getSubjectsByQuery);
   register(app, "getCoursesByMajor", getCoursesByMajor);
   register(app, "getProfessorsByQuery", getProfessorsByQuery);

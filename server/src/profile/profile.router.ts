@@ -1,119 +1,120 @@
-import { body } from "express-validator";
-import { Context, Endpoint } from "../endpoints";
-import { ProfileRequest, NetIdQuery } from "./profile.dto";
-import { getUserEmail } from "../auth/auth.controller";
-import { getUserByNetId, getStudentReviewIds } from "../data/Students";
-import { getNonNullReviews } from "../data/Reviews";
+import express from 'express';
+import { body } from 'express-validator';
+import { Context, Endpoint } from '../endpoints';
+import { ProfileRequest, NetIdQuery } from './profile.dto';
+import { getUserEmail } from '../auth/auth.controller';
+import { getUserByNetId, getStudentReviewIds } from '../data/Students';
+import { getNonNullReviews } from '../data/Reviews';
 
-export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
-  guard: [body("token").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: ProfileRequest) => {
-    const { token } = request;
+const router = express.Router();
 
-    try {
-      const email = await getUserEmail(token);
+router.post('/getStudentEmailByToken', async (req, res) => {
+  const { token } = req.body as ProfileRequest;
+  try {
+    const email = await getUserEmail(token);
 
-      if (!email) {
-        return { code: 404, message: `Email not found: {email}` };
-      }
-
-      return { code: 200, message: email };
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'getStudentEmailByToken' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return { code: 500, message: error.message };
+    if (!email) {
+      res.status(400).json({ message: `Email not found: ${email}` });
     }
-  },
-};
+
+    res.status(200).json({ message: email });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getStudentEmailByToken' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * Counts the number of reviews made by a given student id.
  */
-export const countReviewsByStudentId: Endpoint<NetIdQuery> = {
-  guard: [body("netId").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: NetIdQuery) => {
-    const { netId } = request;
-    try {
-      const studentDoc = await getUserByNetId(netId);
-      if (studentDoc === null) {
-        return { code: 404, message: "Unable to find student with netId: ", netId };
-      }
-      const reviews = await getStudentReviewIds(studentDoc);
-      return { code: 200, message: reviews.length };
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'countReviewsByStudentId' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return { code: 500, message: error.message };
+router.post('/countReviewsByStudentId', async (req, res) => {
+  const { netId } = req.body as NetIdQuery;
+  try {
+    const studentDoc = await getUserByNetId(netId);
+    if (studentDoc === null) {
+      res.status(404).json({
+        message: `Unable to find student with netId: ${netId}`,
+      });
     }
-  },
-};
+
+    const reviews = await getStudentReviewIds(studentDoc);
+    return res.status(200).json({ message: reviews.length });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'countReviewsByStudentId' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * [getTotalLikesByStudentId] returns the total number of likes a student has gotten on their reviews
  */
-export const getTotalLikesByStudentId: Endpoint<NetIdQuery> = {
-  guard: [body("netId").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: NetIdQuery) => {
-    const { netId } = request;
-    let totalLikes = 0;
-    try {
-      const studentDoc = await getUserByNetId(netId);
-      if (studentDoc === null) {
-        return {
-          code: 404,
-          message: "Unable to find student with netId: ",
-          netId,
-        };
-      }
-
-      const reviewIds = await getStudentReviewIds(studentDoc);
-      const reviews = await getNonNullReviews(reviewIds);
-      reviews.forEach((review) => {
-        if (review.likes !== undefined) {
-          totalLikes += review.likes;
-        }
+router.post('/getTotalLikesByStudentId', async (req, res) => {
+  const { netId } = req.body as NetIdQuery;
+  let totalLikes = 0;
+  try {
+    const studentDoc = await getUserByNetId(netId);
+    if (studentDoc === null) {
+      res.status(404).json({
+        message: `Unable to find student with netId: ${netId}`,
       });
-
-      return { code: 200, message: totalLikes };
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'getTotalLikesByStudentId' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return { code: 500, message: error.message };
     }
-  },
-};
+
+    const reviewIds = await getStudentReviewIds(studentDoc);
+    const reviews = await getNonNullReviews(reviewIds);
+    reviews.forEach((review) => {
+      if (review.likes !== undefined) {
+        totalLikes += review.likes;
+      }
+    });
+
+    res
+      .status(200)
+      .json({
+        message: `Successfully retrieved total like by student with netid: ${netId}`,
+        data: totalLikes,
+      });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getTotalLikesByStudentId' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * [getReviewsByStudentId] returns a list of review objects that are created by the given student's netID
  */
-export const getReviewsByStudentId: Endpoint<NetIdQuery> = {
-  guard: [body("netId").notEmpty().isAscii()],
-  callback: async (ctx: Context, request: NetIdQuery) => {
-    const { netId } = request;
-    try {
-      const studentDoc = await getUserByNetId(netId);
-      if (studentDoc === null) {
-        return {
-          code: 404,
-          message: "Unable to find student with netId: ",
-          netId,
-        };
-      }
-      const reviewIds = await getStudentReviewIds(studentDoc);
-      const reviews = await getNonNullReviews(reviewIds);
-      return { code: 200, message: reviews };
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log("Error: at 'getReviewsByStudentId' method");
-      // eslint-disable-next-line no-console
-      console.log(error);
-      return { code: 500, message: error.message };
+router.post('/getReviewsbyStudentId', async (req, res) => {
+  const { netId } = req.body as NetIdQuery;
+  try {
+    const studentDoc = await getUserByNetId(netId);
+    if (studentDoc === null) {
+      res.status(404).json({
+        message: `Unable to find student with netId: ${netId}`,
+      });
     }
-  },
-};
+    const reviewIds = await getStudentReviewIds(studentDoc);
+    const reviews = await getNonNullReviews(reviewIds);
+    res
+      .status(200)
+      .json({
+        message: `Successfully retrieved reviews from student with id ${netId}`,
+        data: reviews,
+      });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getReviewsByStudentId' method");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+export default router;
