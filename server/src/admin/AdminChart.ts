@@ -1,10 +1,10 @@
 /* eslint-disable spaced-comment */
 import { body } from "express-validator";
-import { verifyToken } from "../../utils/utils";
-import { Context, Endpoint } from "../../endpoints";
-import { Reviews, Classes, Subjects } from "../../../db/dbDefs";
-import { GetReviewsOverTimeTop15Request, Token } from "./types";
-import { topSubjectsCB } from "./functions";
+import { verifyToken } from "../auth/auth.controller";
+import { Context, Endpoint } from "../endpoints";
+import { Reviews, Classes, Subjects } from "../../db/dbDefs";
+import { GetReviewsOverTimeTop15Request, Token } from "./admin.dto";
+import { topSubjectsCB } from "./admin.controller";
 
 /**
  * Returns an key value object where key is a dept and value is an array of

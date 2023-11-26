@@ -16,11 +16,11 @@
         "db/dbDefs.ts",
         "src/server.ts",
         "src/endpoints.ts",
-        "src/api/admin/AdminActions.ts",
-        "src/api/admin/AdminChart.ts",
-        "src/api/auth/routes.ts",
-        "src/api/review/routes.ts",
-        "src/api/search/routes.ts",
+        "src/admin/AdminActions.ts",
+        "src/admin/AdminChart.ts",
+        "src/auth/auth.router.ts",
+        "src/review/review.router.ts",
+        "src/search/search.router.ts",
         "src/utils/utils.ts"
     ]
 }

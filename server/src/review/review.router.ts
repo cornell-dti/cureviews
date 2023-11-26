@@ -1,29 +1,40 @@
-import { body } from "express-validator";
-import { getCrossListOR } from "common/CourseCard";
-import shortid from "shortid";
-import { Context, Endpoint } from "../../endpoints";
-import { Reviews, Students } from "../../../db/dbDefs";
-import {
-  getVerificationTicket } from "../../utils/utils";
+import express from 'express';
+
+import { body } from 'express-validator';
+import { getCrossListOR } from 'common/CourseCard';
+import shortid from 'shortid';
+import { Context, Endpoint } from '../endpoints';
+import { Reviews, Students } from '../../db/dbDefs';
+import { getVerificationTicket } from '../auth/auth.controller';
 import {
   getCourseById as getCourseByIdCallback,
   getClassByInfo,
-} from "../../data/Classes";
-import { insertUser as insertUserCallback, JSONNonempty } from "./functions";
+} from '../data/Classes';
+import {
+  insertUser as insertUserCallback,
+  JSONNonempty,
+} from './review.controller';
 import {
   getReviewById,
   updateReviewLiked,
   sanitizeReview,
   getReviewsByCourse,
-} from "../../data/Reviews";
-import { CourseIdQuery, InsertReviewRequest, InsertUserRequest, ClassByInfoQuery, ReviewRequest } from "./types";
+} from '../data/Reviews';
+import {
+  CourseIdQuery,
+  InsertReviewRequest,
+  InsertUserRequest,
+  ClassByInfoQuery,
+  ReviewRequest,
+} from './review.dto';
 
+const router = express.Router();
 
 /**
  * Get a course with this course_id from the Classes collection
  */
 export const getCourseById: Endpoint<CourseIdQuery> = {
-  guard: [body("courseId").notEmpty().isAscii()],
+  guard: [body('courseId').notEmpty().isAscii()],
   callback: async (ctx: Context, arg: CourseIdQuery) => await getCourseByIdCallback(arg.courseId),
 };
 
@@ -33,8 +44,8 @@ export const getCourseById: Endpoint<CourseIdQuery> = {
  */
 export const getCourseByInfo: Endpoint<ClassByInfoQuery> = {
   guard: [
-    body("number").notEmpty().isNumeric(),
-    body("subject").notEmpty().isAscii(),
+    body('number').notEmpty().isNumeric(),
+    body('subject').notEmpty().isAscii(),
   ],
   callback: async (ctx: Context, query: ClassByInfoQuery) => {
     try {
@@ -44,7 +55,7 @@ export const getCourseByInfo: Endpoint<ClassByInfoQuery> = {
       console.log("Error: at 'getCourseByInfo' endpoint");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { code: 500, message: "Internal Server Error" };
+      return { code: 500, message: 'Internal Server Error' };
     }
   },
 };
@@ -53,7 +64,7 @@ export const getCourseByInfo: Endpoint<ClassByInfoQuery> = {
  * Get list of review objects for given class from class _id
  */
 export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
-  guard: [body("courseId").notEmpty().isAscii()],
+  guard: [body('courseId').notEmpty().isAscii()],
   callback: async (ctx: Context, courseId: CourseIdQuery) => {
     try {
       const course = await getCourseByIdCallback(courseId.courseId);
@@ -64,13 +75,13 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
         return { code: 200, message: reviews };
       }
 
-      return { code: 400, message: "Malformed Query" };
+      return { code: 400, message: 'Malformed Query' };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getReviewsByCourseId' method");
       // eslint-disable-next-line no-console
       console.log(error);
-      return { code: 500, message: "Internal Server Error" };
+      return { code: 500, message: 'Internal Server Error' };
     }
   },
 };
@@ -82,14 +93,17 @@ export const getReviewsByCourseId: Endpoint<CourseIdQuery> = {
  * Returns 0 if there was an error
  */
 export const insertUser: Endpoint<InsertUserRequest> = {
-  guard: [body("googleObject").notEmpty()],
+  guard: [body('googleObject').notEmpty()],
   callback: async (ctx: Context, arg: InsertUserRequest) => {
     const result = await insertUserCallback(arg);
     if (result === 1) {
-      return { code: 200, message: "User successfully added!" };
+      return { code: 200, message: 'User successfully added!' };
     }
 
-    return { code: 500, message: "An error occurred while trying to insert a new user" };
+    return {
+      code: 500,
+      message: 'An error occurred while trying to insert a new user',
+    };
   },
 };
 
@@ -101,16 +115,16 @@ export const insertUser: Endpoint<InsertUserRequest> = {
  */
 export const insertReview: Endpoint<InsertReviewRequest> = {
   guard: [
-    body("token").notEmpty().isAscii(),
-    body("classId").notEmpty().isAscii(),
+    body('token').notEmpty().isAscii(),
+    body('classId').notEmpty().isAscii(),
   ].concat(
-    JSONNonempty("review", [
-      "text",
-      "difficulty",
-      "rating",
-      "workload",
-      "professors",
-      "isCovid",
+    JSONNonempty('review', [
+      'text',
+      'difficulty',
+      'rating',
+      'workload',
+      'professors',
+      'isCovid',
     ]),
   ),
   callback: async (ctx: Context, request: InsertReviewRequest) => {
@@ -121,14 +135,14 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
 
       const ticket = await getVerificationTicket(token);
 
-      if (!ticket) return { resCode: 1, error: "Missing verification ticket" };
+      if (!ticket) return { resCode: 1, error: 'Missing verification ticket' };
 
-      if (ticket.hd === "cornell.edu") {
+      if (ticket.hd === 'cornell.edu') {
         // insert the user into the collection if not already present
 
         await insertUserCallback({ googleObject: ticket });
 
-        const netId = ticket.email.replace("@cornell.edu", "");
+        const netId = ticket.email.replace('@cornell.edu', '');
         const student = await Students.findOne({ netId });
 
         const related = await Reviews.find({ class: classId });
@@ -136,7 +150,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
           return {
             code: 400,
             message:
-              "Review is a duplicate of an already existing review for this class!",
+              'Review is a duplicate of an already existing review for this class!',
           };
         }
 
@@ -170,18 +184,18 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             { $set: { reviews: newReviews } },
           ).exec();
 
-          return { resCode: 1, errMsg: "" };
+          return { resCode: 1, errMsg: '' };
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(error);
-          return { resCode: 1, error: "Unexpected error when adding review" };
+          return { resCode: 1, error: 'Unexpected error when adding review' };
         }
       } else {
         // eslint-disable-next-line no-console
-        console.log("Error: non-Cornell email attempted to insert review");
+        console.log('Error: non-Cornell email attempted to insert review');
         return {
           resCode: 1,
-          error: "Error: non-Cornell email attempted to insert review",
+          error: 'Error: non-Cornell email attempted to insert review',
         };
       }
     } catch (error) {
@@ -199,7 +213,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
  * removes the like, and if the student has not, adds a like.
  */
 export const updateLiked: Endpoint<ReviewRequest> = {
-  guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
+  guard: [body('id').notEmpty().isAscii(), body('token').notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
     const { token } = request;
     try {
@@ -207,11 +221,11 @@ export const updateLiked: Endpoint<ReviewRequest> = {
 
       const ticket = await getVerificationTicket(token);
 
-      if (!ticket) return { resCode: 1, error: "Missing verification ticket" };
+      if (!ticket) return { resCode: 1, error: 'Missing verification ticket' };
 
-      if (ticket.hd === "cornell.edu") {
+      if (ticket.hd === 'cornell.edu') {
         await insertUserCallback({ googleObject: ticket });
-        const netId = ticket.email.replace("@cornell.edu", "");
+        const netId = ticket.email.replace('@cornell.edu', '');
         const student = await Students.findOne({ netId });
 
         // removing like
@@ -228,7 +242,11 @@ export const updateLiked: Endpoint<ReviewRequest> = {
             await updateReviewLiked(request.id, 0, student.netId);
           } else {
             // bound the rating at 0
-            await updateReviewLiked(request.id, review.likes - 1, student.netId);
+            await updateReviewLiked(
+              request.id,
+              review.likes - 1,
+              student.netId,
+            );
           }
         } else {
           // adding like
@@ -259,7 +277,7 @@ export const updateLiked: Endpoint<ReviewRequest> = {
       }
       return {
         resCode: 1,
-        error: "Error: non-Cornell email attempted to insert review",
+        error: 'Error: non-Cornell email attempted to insert review',
       };
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -272,24 +290,24 @@ export const updateLiked: Endpoint<ReviewRequest> = {
 };
 
 export const userHasLiked: Endpoint<ReviewRequest> = {
-  guard: [body("id").notEmpty().isAscii(), body("token").notEmpty().isAscii()],
+  guard: [body('id').notEmpty().isAscii(), body('token').notEmpty().isAscii()],
   callback: async (ctx: Context, request: ReviewRequest) => {
     const { token } = request;
     try {
       const review = await Reviews.findOne({ _id: request.id }).exec();
       const ticket = await getVerificationTicket(token);
 
-      if (!ticket) return { resCode: 1, error: "Missing verification ticket" };
+      if (!ticket) return { resCode: 1, error: 'Missing verification ticket' };
 
-      if (ticket.hd !== "cornell.edu") {
+      if (ticket.hd !== 'cornell.edu') {
         return {
           resCode: 1,
-          error: "Error: non-Cornell email attempted to insert review",
+          error: 'Error: non-Cornell email attempted to insert review',
         };
       }
 
       await insertUserCallback({ googleObject: ticket });
-      const netId = ticket.email.replace("@cornell.edu", "");
+      const netId = ticket.email.replace('@cornell.edu', '');
       const student = await Students.findOne({ netId });
 
       if (student.likedReviews && student.likedReviews.includes(review.id)) {

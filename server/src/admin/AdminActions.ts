@@ -1,17 +1,17 @@
 import { body } from "express-validator";
 
 import { getCrossListOR, getMetricValues } from "common/CourseCard";
-import { Context, Endpoint } from "../../endpoints";
-import { Reviews, Classes, Students } from "../../../db/dbDefs";
+import { Context, Endpoint } from "../endpoints";
+import { Reviews, Classes, Students } from "../../db/dbDefs";
 import {
   updateProfessors,
   findAllSemesters,
   resetProfessorArray,
-} from "../../../db/dbInit";
-import { verifyToken } from "../../utils/utils";
-import { getCourseById } from "../../data/Classes";
-import { ReviewRequest } from "../review/types";
-import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./types";
+} from "../../db/dbInit";
+import { verifyToken } from "../auth/auth.controller";
+import { getCourseById } from "../data/Classes";
+import { ReviewRequest } from "../review/review.dto";
+import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./admin.dto";
 
 // This updates the metrics for an individual class given its Mongo-generated id.
 // Returns 1 if successful, 0 otherwise.

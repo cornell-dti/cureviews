@@ -1,9 +1,9 @@
 import { body } from "express-validator";
 
-import { Context, Endpoint } from "../../endpoints";
-import { Classes, Subjects, Professors } from "../../../db/dbDefs";
-import { Search } from "./types";
-import { courseSort, regexClassesSearch } from "./functions";
+import { Context, Endpoint } from "../endpoints";
+import { Classes, Subjects, Professors } from "../../db/dbDefs";
+import { Search } from "./search.dto";
+import { courseSort, regexClassesSearch } from "./search.controller";
 
 /*
  * Query for classes using a query
