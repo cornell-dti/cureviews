@@ -8,15 +8,6 @@ import {
   getReviewsOverTimeTop15,
 } from "./admin/AdminChart";
 import {
-  getReviewsByCourseId,
-  getCourseById,
-  insertReview,
-  insertUser,
-  getCourseByInfo,
-  updateLiked,
-  userHasLiked,
-} from "./review/review.router";
-import {
   fetchReviewableClasses,
   reportReview,
   makeReviewVisible,
@@ -49,23 +40,16 @@ export function configure(app: express.Application) {
   // needed to get client IP apparently
   app.set("trust proxy", true);
 
-  register(app, "getReviewsByCourseId", getReviewsByCourseId);
-  register(app, "getCourseById", getCourseById);
-  register(app, "insertReview", insertReview);
-  register(app, "insertUser", insertUser);
   register(app, "makeReviewVisible", makeReviewVisible);
   register(app, "fetchReviewableClasses", fetchReviewableClasses);
   register(app, "undoReportReview", undoReportReview);
   register(app, "reportReview", reportReview);
   register(app, "removeReview", removeReview);
-  register(app, "getCourseByInfo", getCourseByInfo);
   register(app, "totalReviews", totalReviews);
   register(app, "howManyReviewsEachClass", howManyReviewsEachClass);
   register(app, "howManyEachClass", howManyEachClass);
   register(app, "topSubjects", topSubjects);
   register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
-  register(app, "updateLiked", updateLiked);
-  register(app, "userHasLiked", userHasLiked);
   register(app, "getRaffleWinner", getRaffleWinner);
 }
 

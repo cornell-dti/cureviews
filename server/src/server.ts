@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import auth from "./auth/auth.router";
 import profile from "./profile/profile.router";
 import search from "./search/search.router";
+import review from "./review/review.router";
 
 import mongoose from "./utils/mongoose";
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use("/api/auth", auth);
 app.use('/api/profile', profile);
 app.use('/api/search', search);
+app.use('/api/review', review);
 
 function setup() {
   const port = process.env.PORT || 8080;
