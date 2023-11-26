@@ -17,12 +17,6 @@ import {
   userHasLiked,
 } from "./review/review.router";
 import {
-  getCoursesByProfessor,
-  getCoursesByMajor,
-  getSubjectsByQuery,
-  getProfessorsByQuery,
-} from "./search/search.router";
-import {
   fetchReviewableClasses,
   reportReview,
   makeReviewVisible,
@@ -57,10 +51,6 @@ export function configure(app: express.Application) {
 
   register(app, "getReviewsByCourseId", getReviewsByCourseId);
   register(app, "getCourseById", getCourseById);
-  register(app, "getSubjectsByQuery", getSubjectsByQuery);
-  register(app, "getCoursesByMajor", getCoursesByMajor);
-  register(app, "getProfessorsByQuery", getProfessorsByQuery);
-  register(app, "getCoursesByProfessor", getCoursesByProfessor);
   register(app, "insertReview", insertReview);
   register(app, "insertUser", insertUser);
   register(app, "makeReviewVisible", makeReviewVisible);
