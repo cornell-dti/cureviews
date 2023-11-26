@@ -6,6 +6,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import auth from "./auth/auth.router";
+import profile from "./profile/profile.router";
+import search from "./search/search.router";
 
 import mongoose from "./utils/mongoose";
 
@@ -16,6 +18,8 @@ app.use(sslRedirect(["development", "production"]));
 app.use(cors());
 
 app.use("/api/auth", auth);
+app.use('/api/profile', profile);
+app.use('/api/search', search);
 
 function setup() {
   const port = process.env.PORT || 8080;
