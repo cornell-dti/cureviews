@@ -13,7 +13,7 @@ router.post('/isAdmin', async (req, res) => {
     const verify = await verifyAdminToken(adminRequest.token);
 
     if (verify === false) {
-      res.status(400).json({ error: `Unable to verify token: ${adminRequest.token} as an admin.` });
+      return res.status(400).json({ error: `Unable to verify token: ${adminRequest.token} as an admin.` });
     }
 
     res.status(200).json({ message: `Token: ${adminRequest.token} was successfully verified as an admin user.` });

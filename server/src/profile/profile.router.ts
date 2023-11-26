@@ -12,7 +12,7 @@ router.post('/getStudentEmailByToken', async (req, res) => {
     const email = await getUserEmail(token);
 
     if (!email) {
-      res.status(400).json({ message: `Email not found: ${email}` });
+      return res.status(400).json({ message: `Email not found: ${email}` });
     }
 
     res.status(200).json({ message: email });
@@ -33,7 +33,7 @@ router.post('/countReviewsByStudentId', async (req, res) => {
   try {
     const studentDoc = await getUserByNetId(netId);
     if (studentDoc === null) {
-      res.status(404).json({
+      return res.status(404).json({
         message: `Unable to find student with netId: ${netId}`,
       });
     }
@@ -58,7 +58,7 @@ router.post('/getTotalLikesByStudentId', async (req, res) => {
   try {
     const studentDoc = await getUserByNetId(netId);
     if (studentDoc === null) {
-      res.status(404).json({
+      return res.status(404).json({
         message: `Unable to find student with netId: ${netId}`,
       });
     }
@@ -94,7 +94,7 @@ router.post('/getReviewsbyStudentId', async (req, res) => {
   try {
     const studentDoc = await getUserByNetId(netId);
     if (studentDoc === null) {
-      res.status(404).json({
+      return res.status(404).json({
         message: `Unable to find student with netId: ${netId}`,
       });
     }

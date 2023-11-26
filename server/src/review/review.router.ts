@@ -34,7 +34,7 @@ router.post('/getCourseById', async (req, res) => {
   const { courseId } = req.body as CourseIdQuery;
   try {
     const course = await getCourseByIdCallback(courseId);
-    res.status(200).json({
+    return res.status(200).json({
       message: `Successfully retrieved course by id ${courseId}`,
       data: course,
     });
@@ -53,7 +53,7 @@ router.post('/getCourseByInfo', async (req, res) => {
   const { number, subject } = req.body as ClassByInfoQuery;
   try {
     const course = await getClassByInfo(subject, number);
-    res.status(200).json({
+    return res.status(200).json({
       message: `Successfully retrieved course by info number: ${number} and subject: ${subject}`,
       data: course,
     });
@@ -62,7 +62,7 @@ router.post('/getCourseByInfo', async (req, res) => {
     console.log("Error: at 'getCourseByInfo' endpoint");
     // eslint-disable-next-line no-console
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
