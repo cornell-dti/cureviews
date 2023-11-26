@@ -77,7 +77,7 @@ router.post('/getReviewsByCourseId', async (req, res) => {
       const crossListOR = getCrossListOR(course);
       const reviews = await getReviewsByCourse(crossListOR);
 
-      res.status(200).json({
+      return res.status(200).json({
         message: `Successfully retrieved reviews by course id: ${courseId}`,
         data: reviews,
       });
@@ -104,7 +104,7 @@ router.post('/insertUser', async (req, res) => {
   const insertUserRequest = req.body as InsertUserRequest;
   const result = await insertUserCallback(insertUserRequest);
   if (result === 1) {
-    res.status(200).json({ message: 'User successfully added!' });
+    return res.status(200).json({ message: 'User successfully added!' });
   }
 
   res.status(500).json({
@@ -131,7 +131,7 @@ router.post('/insertReview', async (req, res) => {
 
       const insertUser = await insertUserCallback({ googleObject: ticket });
       if (insertUser === 0) {
-        res.status(500).json({
+        return res.status(500).json({
           error: 'There was an error inserting the user into the database.',
         });
       }
@@ -140,7 +140,7 @@ router.post('/insertReview', async (req, res) => {
 
       const related = await Reviews.find({ class: classId });
       if (related.find((v) => v.text === review.text)) {
-        res.status(400).json({
+        return res.status(400).json({
           message:
             'Review is a duplicate of an already existing review for this class!',
         });
@@ -176,7 +176,7 @@ router.post('/insertReview', async (req, res) => {
           { $set: { reviews: newReviews } },
         ).exec();
 
-        res
+        return res
           .status(200)
           .json({
             message: `Successfully inserted review with id ${fullReview._id} into database`,
@@ -184,7 +184,7 @@ router.post('/insertReview', async (req, res) => {
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
-        res.status(500).json({ error: 'Unexpected error when adding review' });
+        return res.status(500).json({ error: 'Unexpected error when adding review' });
       }
     } else {
       // eslint-disable-next-line no-console
@@ -218,7 +218,7 @@ router.post("/updateLiked", async (req, res) => {
     if (ticket.hd === 'cornell.edu') {
       const insertUser = await insertUserCallback({ googleObject: ticket });
       if (insertUser === 0) {
-        res.status(500).json({ error: "There was an error inserting new user." });
+        return res.status(500).json({ error: "There was an error inserting new user." });
       }
 
       const netId = ticket.email.replace('@cornell.edu', '');
@@ -265,7 +265,7 @@ router.post("/updateLiked", async (req, res) => {
 
       review = await Reviews.findOne({ _id: id }).exec();
 
-      res.status(200).json({
+      return res.status(200).json({
         message: `Successfully updated review with id ${id}`,
         data: sanitizeReview(review),
       });
@@ -291,14 +291,14 @@ router.post("/userHasLiked", async (req, res) => {
     if (!ticket) res.status(400).json({ error: 'Missing verification ticket' });
 
     if (ticket.hd !== 'cornell.edu') {
-      res.status(400).json({
+      return res.status(400).json({
         error: 'Error: non-Cornell email attempted to insert review',
       });
     }
 
     const insertUser = await insertUserCallback({ googleObject: ticket });
     if (insertUser === 0) {
-      res.status(500).json({ error: "Error occurred while attempting to create new user." });
+      return res.status(500).json({ error: "Error occurred while attempting to create new user." });
     }
 
     const netId = ticket.email.replace('@cornell.edu', '');
@@ -309,7 +309,7 @@ router.post("/userHasLiked", async (req, res) => {
       hasLiked = true;
     }
 
-    res
+    return res
       .status(200)
       .json({
         message: `Retrieved whether student with netId: ${netId} has liked review with id ${id}`,
