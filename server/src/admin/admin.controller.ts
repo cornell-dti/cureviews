@@ -1,4 +1,4 @@
-import { verifyToken } from "../../utils/utils";
+import { verifyAdminToken } from "../../utils/utils";
 import { Context } from "../../endpoints";
 import { Token } from "./admin.dto";
 import { Reviews, Classes, Subjects } from "../../../db/dbDefs";
@@ -9,7 +9,7 @@ import { DefaultDict } from "./AdminChart";
  */
 // eslint-disable-next-line import/prefer-default-export
 export const topSubjectsCB = async (_ctx: Context, request: Token) => {
-  const userIsAdmin = await verifyToken(request.token);
+  const userIsAdmin = await verifyAdminToken(request.token);
   if (!userIsAdmin) {
     return null;
   }

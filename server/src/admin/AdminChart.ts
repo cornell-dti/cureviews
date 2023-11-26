@@ -1,6 +1,6 @@
 /* eslint-disable spaced-comment */
 import { body } from "express-validator";
-import { verifyToken } from "../auth/auth.controller";
+import { verifyAdminToken } from "../auth/auth.controller";
 import { Context, Endpoint } from "../endpoints";
 import { Reviews, Classes, Subjects } from "../../db/dbDefs";
 import { GetReviewsOverTimeTop15Request, Token } from "./admin.dto";
@@ -23,7 +23,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
   callback: async (ctx: Context, request: GetReviewsOverTimeTop15Request) => {
     const { token, step, range } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyAdminToken(token);
       if (userIsAdmin) {
         const top15 = await topSubjectsCB(ctx, { token });
         // contains cs, math, gov etc...
@@ -166,7 +166,7 @@ export const howManyEachClass: Endpoint<Token> = {
   callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyAdminToken(token);
       if (userIsAdmin) {
         const pipeline = [
           {
@@ -200,7 +200,7 @@ export const totalReviews: Endpoint<Token> = {
   callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyAdminToken(token);
       if (userIsAdmin) {
         return Reviews.find({}).count();
       }
@@ -224,7 +224,7 @@ export const howManyReviewsEachClass: Endpoint<Token> = {
   callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyAdminToken(token);
       if (userIsAdmin) {
         const pipeline = [
           {

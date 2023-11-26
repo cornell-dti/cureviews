@@ -8,7 +8,7 @@ import {
   findAllSemesters,
   resetProfessorArray,
 } from "../../db/dbInit";
-import { verifyToken } from "../auth/auth.controller";
+import { verifyAdminToken } from "../auth/auth.controller";
 import { getCourseById } from "../data/Classes";
 import { ReviewRequest } from "../review/review.dto";
 import { AdminReviewRequest, AdminProfessorsRequest, AdminRaffleWinnerRequest } from "./admin.dto";
@@ -69,7 +69,7 @@ export const makeReviewVisible: Endpoint<AdminReviewRequest> = {
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
       // check: make sure review id is valid and non-malicious
-      const userIsAdmin = await verifyToken(adminReviewRequest.token);
+      const userIsAdmin = await verifyAdminToken(adminReviewRequest.token);
       const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
       if (regex.test(adminReviewRequest.review._id) && userIsAdmin) {
         await Reviews.updateOne(
@@ -103,7 +103,7 @@ export const undoReportReview: Endpoint<AdminReviewRequest> = {
   ],
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
-      const userIsAdmin = await verifyToken(adminReviewRequest.token);
+      const userIsAdmin = await verifyAdminToken(adminReviewRequest.token);
       if (userIsAdmin) {
         await Reviews.updateOne(
           { _id: adminReviewRequest.review._id },
@@ -134,7 +134,7 @@ export const removeReview: Endpoint<AdminReviewRequest> = {
   ],
   callback: async (ctx: Context, adminReviewRequest: AdminReviewRequest) => {
     try {
-      const userIsAdmin = await verifyToken(adminReviewRequest.token);
+      const userIsAdmin = await verifyAdminToken(adminReviewRequest.token);
       if (userIsAdmin) {
         await Reviews.remove({ _id: adminReviewRequest.review._id });
         const res = await updateCourseMetrics(adminReviewRequest.review.class);
@@ -161,7 +161,7 @@ export const setProfessors: Endpoint<AdminProfessorsRequest> = {
     adminProfessorsRequest: AdminProfessorsRequest,
   ) => {
     try {
-      const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
+      const userIsAdmin = await verifyAdminToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
         const semesters = await findAllSemesters();
         const val = await updateProfessors(semesters);
@@ -192,7 +192,7 @@ export const resetProfessors: Endpoint<AdminProfessorsRequest> = {
     adminProfessorsRequest: AdminProfessorsRequest,
   ) => {
     try {
-      const userIsAdmin = await verifyToken(adminProfessorsRequest.token);
+      const userIsAdmin = await verifyAdminToken(adminProfessorsRequest.token);
       if (userIsAdmin) {
         const semesters = findAllSemesters();
         const val = resetProfessorArray(semesters);
@@ -237,7 +237,7 @@ export const fetchReviewableClasses: Endpoint<AdminProfessorsRequest> = {
   guard: [body("token").notEmpty().isAscii()],
   callback: async (ctx: Context, request: AdminProfessorsRequest) => {
     try {
-      const userIsAdmin = await verifyToken(request.token);
+      const userIsAdmin = await verifyAdminToken(request.token);
       if (userIsAdmin) {
         return Reviews.find(
           { visible: 0 },

@@ -10,7 +10,7 @@ import * as Utils from "../auth/auth.controller";
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 const mockVerification = jest
-  .spyOn(Utils, "verifyToken")
+  .spyOn(Utils, "verifyAdminToken")
   .mockImplementation(async (token?: string) => true);
 
 const testingPort = 47728;

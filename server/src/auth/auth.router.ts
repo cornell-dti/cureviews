@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 import { Context, Endpoint } from '../endpoints';
-import { verifyToken } from './auth.controller';
+import { verifyAdminToken } from './auth.controller';
 import { AdminRequest } from './auth.dto';
 
 /*
@@ -9,5 +9,5 @@ import { AdminRequest } from './auth.dto';
 // eslint-disable-next-line import/prefer-default-export
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body('token').notEmpty().isAscii()],
-  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyToken(adminRequest.token),
+  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyAdminToken(adminRequest.token),
 };

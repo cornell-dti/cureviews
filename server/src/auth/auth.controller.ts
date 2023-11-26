@@ -35,7 +35,7 @@ export const getVerificationTicket = async (token?: string) => {
   }
 };
 
-export const verifyToken = async (token: string) => {
+export const verifyAdminToken = async (token: string) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(token)) {
@@ -52,7 +52,7 @@ export const verifyToken = async (token: string) => {
     return false;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log("Error: at 'verifyToken' method");
+    console.log("Error: at 'verifyAdminToken' method");
     // eslint-disable-next-line no-console
     console.log(error);
     return false;
