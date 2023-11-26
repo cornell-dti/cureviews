@@ -1,13 +1,15 @@
-import { body } from 'express-validator';
-import { Context, Endpoint } from '../endpoints';
+import express from 'express';
 import { verifyAdminToken } from './auth.controller';
 import { AdminRequest } from './auth.dto';
+
+const router = express.Router();
 
 /*
  * Check if a token is for an admin
  */
-// eslint-disable-next-line import/prefer-default-export
-export const tokenIsAdmin: Endpoint<AdminRequest> = {
-  guard: [body('token').notEmpty().isAscii()],
-  callback: async (ctx: Context, adminRequest: AdminRequest) => await verifyAdminToken(adminRequest.token),
-};
+router.post('/isAdmin', async (req, res) => {
+  const adminRequest = req.body as AdminRequest;
+  await verifyAdminToken(adminRequest.token);
+});
+
+export default router;

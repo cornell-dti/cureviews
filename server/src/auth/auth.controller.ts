@@ -1,5 +1,6 @@
 import { OAuth2Client } from 'google-auth-library';
 import { getUserByNetId } from '../data/Students';
+import { googleAudience } from '../utils/const';
 
 /**
  * Returns true if [netid] matches the netid in the email of the JSON
@@ -18,8 +19,9 @@ export const getVerificationTicket = async (token?: string) => {
       return null;
     }
 
-    const audience = '836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com';
+    const audience = googleAudience;
     const client = new OAuth2Client(audience);
+
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience,
