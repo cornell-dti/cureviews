@@ -1,6 +1,4 @@
 import express from 'express';
-import { body } from 'express-validator';
-import { Context, Endpoint } from '../endpoints';
 import { ProfileRequest, NetIdQuery } from './profile.dto';
 import { getUserEmail } from '../auth/auth.controller';
 import { getUserByNetId, getStudentReviewIds } from '../data/Students';
