@@ -11,6 +11,7 @@ import search from "./search/search.router";
 import review from "./review/review.router";
 
 import mongoose from "./utils/mongoose";
+import { configure } from "./endpoints";
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,9 @@ app.use("/api/auth", auth);
 app.use('/api/profile', profile);
 app.use('/api/search', search);
 app.use('/api/review', review);
+
+// deprecate configure soon
+configure(app);
 
 function setup() {
   const port = process.env.PORT || 8080;
