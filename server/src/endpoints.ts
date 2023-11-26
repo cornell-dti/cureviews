@@ -19,7 +19,6 @@ import {
 import {
   getCoursesByProfessor,
   getCoursesByMajor,
-  getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
 } from "./search/search.router";
@@ -56,7 +55,6 @@ export function configure(app: express.Application) {
   // needed to get client IP apparently
   app.set("trust proxy", true);
 
-  register(app, "getClassesByQuery", getClassesByQuery);
   register(app, "getReviewsByCourseId", getReviewsByCourseId);
   register(app, "getCourseById", getCourseById);
   register(app, "getSubjectsByQuery", getSubjectsByQuery);

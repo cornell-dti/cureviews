@@ -1,4 +1,4 @@
 // The type for a search query
-export interface Search {
+export interface SearchQuery {
   query: string;
 }
