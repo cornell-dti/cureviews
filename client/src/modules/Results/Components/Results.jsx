@@ -71,21 +71,29 @@ export class Results extends Component {
       axios
         .post(`/v2/getClassesByQuery`, { query: userQuery })
         .then((response) => {
-          const queryCourseList = response.data.result
-          if (queryCourseList.length !== 0) {
-            // Save the Class object that matches the request
-            this.setState({
-              courseList: queryCourseList,
-              loading: false,
-            })
-          } else {
-            this.setState({
-              courseList: [],
-              loading: false,
-            })
+          if (response.status === 200) {
+            const queryCourseList = response.data.result
+            if (queryCourseList.length !== 0) {
+              // Save the Class object that matches the request
+              this.setState({
+                courseList: queryCourseList,
+                loading: false,
+              })
+            } else {
+              this.setState({
+                courseList: [],
+                loading: false,
+              })
+            }
           }
         })
-        .catch((e) => console.log('Getting courses failed!'))
+        .catch((e) => {
+          this.setState({
+            courseList: [],
+            loading: false,
+          })
+          console.log('Getting courses failed!')
+        })
     }
   }
 

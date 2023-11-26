@@ -17,18 +17,17 @@ router.post('/getClassesByQuery', async (req, res) => {
       { sort: { score: { $meta: 'textScore' } } },
     ).exec();
     if (classes && classes.length > 0) {
-      res.status(200).json({
+      return res.status(200).json({
         message: `Successfully retrieved classes with query ${query}`,
         data: classes.sort(courseSort(query)),
       });
     }
 
-    const regexClasses = await regexClassesSearch(query);
+    // const regexClasses = await regexClassesSearch(query);
     res
-      .status(200)
+      .status(400)
       .json({
-        message: `Successfully retrieved classes with query ${query} using regex`,
-        data: regexClasses,
+        error: `Error retrieved classes with query ${query} using regex`,
       });
   } catch (error) {
     // eslint-disable-next-line no-console

@@ -231,26 +231,28 @@ export default class ResultsDisplay extends Component {
       ? this.state.filteredItems
       : this.state.courseList
 
-    return items.map((result, index) => (
-      <div
-        onClick={() => {
-          if (this.computeHeight() < 992) {
-            this.props.history.push(
-              `/course/${result?.classSub?.toUpperCase()}/${result?.classNum}`
-            )
-          }
-        }}
-      >
-        <FilteredResult
-          key={index}
-          index={index}
-          selected={index === this.state.active_card}
-          course={result}
-          previewHandler={this.previewHandler}
-          sortBy={this.state.selected}
-        />
-      </div>
-    ))
+    if (items.error === undefined | null) {
+      return items.map((result, index) => (
+        <div
+          onClick={() => {
+            if (this.computeHeight() < 992) {
+              this.props.history.push(
+                `/course/${result?.classSub?.toUpperCase()}/${result?.classNum}`
+              )
+            }
+          }}
+        >
+          <FilteredResult
+            key={index}
+            index={index}
+            selected={index === this.state.active_card}
+            course={result}
+            previewHandler={this.previewHandler}
+            sortBy={this.state.selected}
+          />
+        </div>
+      ))
+    }
   }
 
   renderCheckboxes(group) {
