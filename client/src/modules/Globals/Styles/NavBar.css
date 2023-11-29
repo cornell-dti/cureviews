@@ -10,7 +10,12 @@
 
   .navbar-searchbar-container {
     margin-left: 21px;
-    margin-right: 70px;
+    margin-right: 150px;
+  }
+
+  .navbar-searchbar-container-profile {
+    width: 100%;
+    margin-right: 12%;
   }
 }
 
@@ -21,6 +26,11 @@
 
   .navbar-searchbar-container {
     margin-right: 220px;
+  }
+
+  .navbar-searchbar-container-profile {
+    width: 100%;
+    margin-right: 15%;
   }
 }
 
@@ -63,6 +73,7 @@
   margin-top: 12px;
   text-align: right;
   padding-right: 30px;
+
 }
 
 @media (max-width: 480px) {
@@ -94,3 +105,4 @@
     width: 100vw;
   }
 }
+
