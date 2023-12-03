@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable import/prefer-default-export */
 import axios from "axios";
 import { TokenPayload } from "google-auth-library";
