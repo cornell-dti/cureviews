@@ -50,6 +50,7 @@ export interface Review {
   isCovid?: boolean;
   grade?: string;
   major?: string[];
+  tags?: string[];
 }
 
 export interface Professor {
