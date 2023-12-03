@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Select from 'react-select'
 
 import RatingInput from './RatingInput'
+import tag_names from '../../Globals/tag_names'
 
 import styles from '../Styles/ReviewForm.module.css'
 import majors from '../../Globals/majors'
@@ -23,11 +24,24 @@ type NewReview = {
   isCovid: boolean
   grade: string
   major: string[]
+  tags: string[]
+}
+
+type ButtonState = {
+  [key: string]: boolean
 }
 
 /**
  * This component contains the form UI, state, and validation to write a new
  * review.
+ * @props
+ * actionButtonLabel: text that describes what the button on the form does
+ * onSubmitReview: if the review is submitted, this function will save this
+ *                 review to later be approved for display by moderators
+ * value:
+ * isReviewCommentVisible: boolean value to determine if the review comment
+ *                         will be displayed
+ * professors: a string array that stores the professors that taught this class
  */
 const ReviewForm = ({
   actionButtonLabel,
@@ -53,6 +67,16 @@ const ReviewForm = ({
   const [selectedMajors, setMajorSelected] = useState<string[]>(
     value?.major || []
   )
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [clicked, setClicked] = useState<ButtonState>({
+    'Participation Matters': false,
+    'Homework Heavy': false,
+    'Group Projects': false,
+    'Fun Lectures': false,
+    'Test Heavy': false,
+    'OH is Your Best Friend': false,
+    'Get Ready to Read': false,
+  })
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || []
@@ -71,34 +95,85 @@ const ReviewForm = ({
     return isReviewTextValid && isSelectedProfessorsValid
   }
 
+  const handleTagClick = (tag: string) => {
+    setClicked((prevClicked) => ({
+      ...prevClicked,
+      [tag]: !prevClicked[tag],
+    }))
+
+    setSelectedTags((prevSelectedTags) => {
+      if (prevSelectedTags.includes(tag)) {
+        // If tag is already selected, remove it
+        return prevSelectedTags.filter((t) => t !== tag)
+      } else {
+        // If tag is not selected, add it
+        return [...prevSelectedTags, tag]
+      }
+    })
+  }
+
   return (
     <>
       <div className={`row ${styles.reviewForm}`}>
         <div className={`col-xl-6 col-lg-6 col-sm-6 ${styles.formColumn}`}>
           <h2 className={`${styles.reviewHeader}`}>Leave a Review</h2>
-          <label
-            className={styles.selectProfessorLabel}
-            htmlFor="select-professor"
-          >
-            Professor
-          </label>
-          <Select
-            value={toSelectOptions(selectedProfessors)}
-            onChange={(professors: any) => {
-              setIsSelectedProfessorsInvalid(false)
-              setSelectedProfessors(
-                professors?.map(({ value, label }: any) => value)
-              )
-            }}
-            isMulti
-            options={toSelectOptions([...(professors || []), 'Not Listed'])}
-            placeholder="Select professors"
-          />
-          {isSelectedProfessorsInvalid && (
-            <div className={styles.errorText}>
-              Please select your professors.
-            </div>
-          )}
+          <div className={styles.inputs}>
+            <label
+              className={styles.selectProfessorLabel}
+              htmlFor="select-professor"
+            >
+              Professor
+            </label>
+            <Select
+              value={toSelectOptions(selectedProfessors)}
+              onChange={(professors: any) => {
+                setIsSelectedProfessorsInvalid(false)
+                setSelectedProfessors(
+                  professors?.map(({ value, label }: any) => value)
+                )
+              }}
+              isMulti
+              options={toSelectOptions([...(professors || []), 'Not Listed'])}
+              placeholder="Select professors"
+            />
+            {isSelectedProfessorsInvalid && (
+              <div className={styles.errorText}>
+                Please select your professors.
+              </div>
+            )}
+          </div>
+
+          <div className={styles.inputs}>
+            <label
+              className={styles.selectProfessorLabel}
+              htmlFor="select-professor"
+            >
+              Grade Received (optional)
+            </label>
+            <Select
+              value={{ value: selectedGrade, label: selectedGrade }}
+              onChange={(grade: any) => {
+                setGradeSelected(grade.value)
+              }}
+              isSingle
+              options={toSelectOptions([
+                'A+',
+                'A',
+                'A-',
+                'B+',
+                'B',
+                'B-',
+                'C+',
+                'C',
+                'C-',
+                'D+',
+                'D',
+                'D-',
+                'F',
+              ])}
+              placeholder="Select Grade"
+            />
+          </div>
 
           <div className={styles.ratingInput}>
             <RatingInput
@@ -136,60 +211,11 @@ const ReviewForm = ({
               isOverall={false}
             />
           </div>
-          <div>
-            <label
-              className={styles.selectProfessorLabel}
-              htmlFor="select-professor"
-            >
-              Grade Received (optional)
-            </label>
-            <Select
-              value={{ value: selectedGrade, label: selectedGrade }}
-              onChange={(grade: any) => {
-                setGradeSelected(grade.value)
-              }}
-              isSingle
-              options={toSelectOptions([
-                'A+',
-                'A',
-                'A-',
-                'B+',
-                'B',
-                'B-',
-                'C+',
-                'C',
-                'C-',
-                'D+',
-                'D',
-                'D-',
-                'F',
-              ])}
-              placeholder="Select Grade"
-            />
-          </div>
-          <div>
-            <label
-              className={styles.selectProfessorLabel}
-              htmlFor="select-professor"
-            >
-              What's your major? (optional)
-            </label>
-            <Select
-              value={toSelectOptions(selectedMajors)}
-              onChange={(majors: any) => {
-                setMajorSelected(majors?.map(({ value, label }: any) => value))
-              }}
-              isMulti
-              options={toSelectOptions(majors)}
-              placeholder="Select Major(s)"
-            />
-          </div>
         </div>
         <div className={`col-xl-6 col-lg-6 col-sm-6 ${styles.commentColumn}`}>
           {isReviewCommentVisible && (
             <div className={styles.review}>
               <label className={styles.reviewComment}>
-                <span>Review comment</span>
                 <textarea
                   className={styles.reviewText}
                   value={reviewText}
@@ -211,6 +237,23 @@ const ReviewForm = ({
                   illegal characters.
                 </div>
               )}
+
+              <div className={styles.tagsContainer}>
+                <label htmlFor="select-tags">Select Tags (optional)</label>
+                <div className={styles.tagButtonContainer}>
+                  {tag_names.map((tag) => (
+                    <button
+                      key={tag}
+                      className={
+                        clicked[tag] ? styles.selectedBtn : styles.tagButton
+                      }
+                      onClick={() => handleTagClick(tag)}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               <label className={styles.covidCheckboxLabel}>
                 <input
@@ -239,6 +282,7 @@ const ReviewForm = ({
                   isCovid,
                   grade: selectedGrade,
                   major: selectedMajors,
+                  tags: selectedTags,
                 })
               }
             }}

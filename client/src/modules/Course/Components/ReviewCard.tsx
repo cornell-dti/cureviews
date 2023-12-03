@@ -4,6 +4,9 @@ import axios from 'axios'
 import ShowMoreText from 'react-show-more-text'
 
 import { Review as ReviewType } from 'common'
+
+import Tag from './Tag'
+import tag_names from '../../Globals/tag_names'
 import styles from '../Styles/Review.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
@@ -21,7 +24,7 @@ type ReviewProps = {
 
   Simple styling component that renders a single review (an li element)
   to show in a ClassView. These reivews will include:
-  - how long ago the reivew was added
+  - how long ago the review was added
   - all review content
   - report button
   - like button
@@ -263,6 +266,12 @@ export default function ReviewCard({
                 {_review.text}
               </ShowMoreText>
             </p>
+
+            <div className={styles.tagContainer}>
+              {_review.tags?.map((tag) => (
+                <Tag tagName={tag} />
+              ))}
+            </div>
 
             {/* Date, Like Button*/}
             <div className="row">

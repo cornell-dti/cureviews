@@ -19,8 +19,9 @@
   font-weight: var(--regular-weight);
 }
 
-.ratingInput {
-  margin-top: 4px;
+.ratingInput,
+.inputs {
+  margin-top: 30px;
 }
 
 .reviewComment {
@@ -42,7 +43,7 @@
 }
 
 .review {
-  margin-top: 50px;
+  margin-top: 85px;
 }
 
 .errorText {
@@ -84,6 +85,48 @@
   font-size: 14px;
   color: #000000;
   font-weight: var(--regular-weight);
+}
+
+.tagsContainer {
+  margin-top: 2rem;
+}
+
+.tagButtonContainer {
+  float: right;
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 2rem;
+}
+
+.tagButton {
+  background-color: #ececec;
+  color: #979797;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: center;
+  height: 25px;
+  font-size: 12px;
+}
+
+.selectedBtn {
+  background-color: #0076ff;
+  color: #fff;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: center;
+  height: 25px;
+  font-size: 12px;
 }
 
 @media (max-width: 768px) {
