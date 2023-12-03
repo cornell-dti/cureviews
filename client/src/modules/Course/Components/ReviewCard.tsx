@@ -23,7 +23,7 @@ type ReviewProps = {
 
   Simple styling component that renders a single review (an li element)
   to show in a ClassView. These reivews will include:
-  - how long ago the reivew was added
+  - how long ago the review was added
   - all review content
   - report button
   - like button
@@ -267,7 +267,7 @@ export default function ReviewCard({
             </p>
 
             <div className={styles.tagContainer}>
-              {tag_names.map((tag) => (
+              {_review.tags?.map((tag) => (
                 <Tag tagName={tag} />
               ))}
             </div>

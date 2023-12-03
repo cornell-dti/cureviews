@@ -24,6 +24,7 @@ type NewReview = {
   isCovid: boolean
   grade: string
   major: string[]
+  tags: string[]
 }
 
 type ButtonState = {
@@ -66,8 +67,16 @@ const ReviewForm = ({
   const [selectedMajors, setMajorSelected] = useState<string[]>(
     value?.major || []
   )
-  const [selectedTags, setSelectedTags] = useState<string[]>(tag_names)
-  const [clicked, setClicked] = useState<ButtonState>({})
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [clicked, setClicked] = useState<ButtonState>({
+    'Participation Matters': false,
+    'Homework Heavy': false,
+    'Group Projects': false,
+    'Fun Lectures': false,
+    'Test Heavy': false,
+    'OH is Your Best Friend': false,
+    'Get Ready to Read': false,
+  })
 
   function toSelectOptions(professors: string[] | undefined) {
     return professors?.map((prof) => ({ value: prof, label: prof })) || []
@@ -92,9 +101,15 @@ const ReviewForm = ({
       [tag]: !prevClicked[tag],
     }))
 
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags([...selectedTags, tag])
-    }
+    setSelectedTags((prevSelectedTags) => {
+      if (prevSelectedTags.includes(tag)) {
+        // If tag is already selected, remove it
+        return prevSelectedTags.filter((t) => t !== tag)
+      } else {
+        // If tag is not selected, add it
+        return [...prevSelectedTags, tag]
+      }
+    })
   }
 
   return (
@@ -267,6 +282,7 @@ const ReviewForm = ({
                   isCovid,
                   grade: selectedGrade,
                   major: selectedMajors,
+                  tags: selectedTags,
                 })
               }
             }}

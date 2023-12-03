@@ -52,6 +52,11 @@
   background-color: #f9f9f9;
 }
 
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
     background: #f4f9fe;

@@ -15,6 +15,14 @@ type GaugeState = {
   rating: number | string
 }
 
+/**
+ * This component contains the UI for the rating gauges displayed for a course
+ * @props
+ * rating: text that describes what the button on the form does
+ * label: text that describe what is being rating
+ * isOverall: boolean value to determine if this gauge is displaying the overall
+ * rating of the course (matters b/c there are different colors per category)
+ */
 export default function Gauge({ rating, label, isOverall }: GaugeProps) {
   const [gaugeState, setGaugeState] = useState<GaugeState>({
     color: '#000',
