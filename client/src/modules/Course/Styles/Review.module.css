@@ -39,22 +39,12 @@
   line-height: 18px;
 }
 
-.tagContainer {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .ratingsContainerColor {
   background: #ffffff;
 }
 
 .pendingRatingsContainerColor {
   background-color: #f9f9f9;
-}
-
-.tagContainer {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 @media screen and (max-width: 768px) {

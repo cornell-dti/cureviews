@@ -4,6 +4,7 @@ import axios from 'axios'
 import ShowMoreText from 'react-show-more-text'
 
 import { Review as ReviewType } from 'common'
+
 import Tag from './Tag'
 import tag_names from '../../Globals/tag_names'
 import styles from '../Styles/Review.module.css'
