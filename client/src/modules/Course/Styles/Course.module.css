@@ -60,6 +60,19 @@
   overflow: auto;
 }
 
+.warningModal {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  filter: drop-shadow(0 1px 6px rgba(168, 211, 245, 0.5));
+  overflow: auto;
+}
+
 .authModal {
   position: absolute;
   top: 0;
@@ -229,6 +242,15 @@
     height: fit-content;
     max-height: 90%;
     width: 90%;
+    border-radius: 10px;
+    overflow: auto;
+  }
+
+  .warningModal {
+    margin: auto;
+    height: fit-content;
+    max-height: 90%;
+    width: 50%;
     border-radius: 10px;
     overflow: auto;
   }
