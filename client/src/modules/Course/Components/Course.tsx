@@ -15,6 +15,7 @@ import { lastOfferedSems } from 'common/CourseCard'
 import Gauge from './Gauge'
 import CourseReviews from './CourseReviews'
 import ReviewForm, { NewReview } from './ReviewForm'
+import AnonymousWarning from './AnonymousWarning'
 
 import { Class, Review } from 'common'
 import { Session } from '../../../session-store'
@@ -37,6 +38,7 @@ export const Course = () => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
   const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false)
 
   const [isLoggedIn, token, netId, signIn] = useAuthOptionalLogin()
 
@@ -189,7 +191,10 @@ export const Course = () => {
     Session.setPersistent({ review_num: selectedClass?.classNum })
     Session.setPersistent({ courseId: selectedClass?._id })
 
-    signIn('course')
+    setIsWarningModalOpen(true)
+    setIsReviewModalOpen(false)
+
+    // signIn('course')
   }
 
   /**
@@ -264,15 +269,36 @@ export const Course = () => {
           </div>
         </Modal>
 
+        <Modal
+          isOpen={isWarningModalOpen}
+          className={styles.warningModal}
+          overlayClassName={styles.modalOverlay}
+        >
+          <button
+            type="button"
+            className="close pull-left"
+            aria-label="Close"
+            onClick={() => {
+              setIsWarningModalOpen(false)
+              clearSessionReview()
+            }}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div>
+            <AnonymousWarning
+            />
+          </div>
+        </Modal>
+
         <div className="row d-lg-block">
           <Navbar userInput={input} />
         </div>
 
         <div className={`row ${styles.content}`}>
           <div
-            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
-              isPastScrollThreshold && styles.courseInfoColumnShadow
-            }`}
+            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${isPastScrollThreshold && styles.courseInfoColumnShadow
+              }`}
           >
             <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
             <p className={styles.courseSubtitle}>
@@ -357,9 +383,8 @@ export const Course = () => {
             />
 
             <div
-              className={`${!isPastScrollThreshold && 'd-none'} ${
-                styles.fixedButtonContainer
-              }`}
+              className={`${!isPastScrollThreshold && 'd-none'} ${styles.fixedButtonContainer
+                }`}
             >
               <button
                 className={`btn ${styles.startReviewButton}`}

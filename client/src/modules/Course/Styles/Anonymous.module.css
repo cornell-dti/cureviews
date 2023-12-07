@@ -1,0 +1,69 @@
+.warningContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: white;
+  padding: 50px;
+  border-radius: 8px;
+}
+
+.anonymousLogo {
+  max-width: 25%;
+  max-height: 25%;
+  margin: auto;
+}
+
+.message {
+  text-align: center;
+  margin-top: 30px;
+
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: normal;
+  text-align: center;
+
+  color: #000000;
+}
+
+.line2 {
+  font-weight: 600;
+}
+
+.button {
+  background-color: #0076ff;
+  color: #ffffff;
+  width: 50%;
+  border-radius: 10px;
+  margin-top: 30px;
+  padding: 11px 10px;
+  text-align: center;
+  font-family: Source Sans Pro;
+  font-size: 18px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.rememberMeCheckboxLabel {
+  margin-top: 15px;
+  margin-bottom: 6px;
+}
+
+.rememberMeCheckboxLabelText {
+  margin-left: 10px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  color: #A1A1A1;
+  font-weight: var(--regular-weight);
+}
+
+.pastReviewsMessage {
+  margin-left: 15px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  color: #A1A1A1;
+  font-weight: var(--regular-weight);
+}
