@@ -66,9 +66,6 @@ export default function Navbar({ userInput }: NavbarProps) {
           userInput={userInput}
           contrastingResultsBackground={true}
           isInNavbar={true}
-          imgSrc={netId}
-          signOut={signOut}
-          isLoggedIn={isLoggedIn}
         />
       </div>
       {displayButton()}

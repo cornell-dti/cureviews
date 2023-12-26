@@ -36,7 +36,7 @@ const Profile = () => {
   const [isLoggedIn, token, netId, isAuthenticating, signOut] =
     useAuthMandatoryLogin('profile')
 
-  const profilePicture = randomPicture(netId)
+  const profilePicture: string = randomPicture(netId)
 
   /**
    * Retrieves the total reviews that a student has made

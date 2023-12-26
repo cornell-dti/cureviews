@@ -9,24 +9,17 @@ import Course from './Course'
 import SubjectResult from './SubjectResult'
 import ProfessorResult from './ProfessorResult'
 import { Class, Subject, Professor } from 'common'
-import ProfileDropdown from '../../Globals/ProfileDropdown'
 
 type SearchBarProps = {
   isInNavbar: boolean
   contrastingResultsBackground?: boolean
   userInput?: string
-  imgSrc: string
-  signOut: Function
-  isLoggedIn: boolean
 }
 
 export const SearchBar = ({
   isInNavbar,
   contrastingResultsBackground,
   userInput,
-  imgSrc,
-  signOut,
-  isLoggedIn,
 }: SearchBarProps) => {
   const [index, setIndex] = useState<number>(0)
   const [enter, setEnter] = useState<0 | 1>(0)
@@ -299,11 +292,6 @@ export const SearchBar = ({
           }
           autoComplete="off"
         />
-        {isInNavbar && isLoggedIn ? (
-          <ProfileDropdown imgSrc={imgSrc} signOut={signOut} />
-        ) : (
-          ''
-        )}
 
         <ul
           className={`${styles.output}`}

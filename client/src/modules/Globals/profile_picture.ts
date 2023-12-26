@@ -11,6 +11,7 @@ const profilePictures = [
 
 function hashCode(netId: string) {
   var hash = 0
+  console.log(netId)
   for (var i = 0; i < netId.length; i++) {
     var code = netId.charCodeAt(i)
     hash = (hash << 5) - hash + code
