@@ -247,7 +247,6 @@ export const SearchBar = ({
 
       let coursesList: JSX.Element[] = []
 
-      console.log(courses)
       coursesList = courses.slice(0, 5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course
