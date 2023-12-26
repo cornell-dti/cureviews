@@ -152,17 +152,6 @@ export const SearchBar = ({
     Session.setPersistent({ 'last-search': query })
   }
 
-  const setInitState = () => {
-    setIndex(0)
-    setEnter(0)
-    setMouse(0)
-    setSelected(false)
-    setQuery('')
-    setCourses([])
-    setSubjects([])
-    setProfessors([])
-  }
-
   const renderResults = () => {
     if (query !== '' && !selected) {
       let results = []
