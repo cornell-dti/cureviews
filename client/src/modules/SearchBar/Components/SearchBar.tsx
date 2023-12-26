@@ -44,7 +44,10 @@ export const SearchBar = ({
               setCourses([])
             }
           })
-          .catch((e) => console.log('Getting courses failed!'))
+          .catch((e) => {
+            setCourses([])
+            console.log('Getting courses failed!')
+          })
 
         axios
           .post(`/api/getSubjectsByQuery`, { query: query })
@@ -57,7 +60,10 @@ export const SearchBar = ({
               setSubjects([])
             }
           })
-          .catch((e) => console.log('Getting subjects failed!'))
+          .catch((e) => {
+            setSubjects([])
+            console.log('Getting subjects failed!')
+          })
 
         axios
           .post(`/api/getProfessorsByQuery`, { query: query })
@@ -70,7 +76,10 @@ export const SearchBar = ({
               setProfessors([])
             }
           })
-          .catch((e) => console.log('Getting professors failed!'))
+          .catch((e) => {
+            setProfessors([])
+            console.log('Getting professors failed!')
+          })
       }, DEBOUNCE_TIME)
     }
   }, [query])
@@ -238,6 +247,7 @@ export const SearchBar = ({
 
       let coursesList: JSX.Element[] = []
 
+      console.log(courses)
       coursesList = courses.slice(0, 5).map((course, i) => (
         //create a new class "button" that will set the selected class to this class when it is clicked.
         <Course
