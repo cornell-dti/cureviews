@@ -170,8 +170,6 @@ export const SearchBar = ({
       // Used for "enter" key on 'Search: "query" ' button for exact search
       // Sends user to /results/keyword/query+query
       if (index === 0 && enter === 1) {
-        setInitState()
-
         return (
           <Redirect
             push
@@ -185,7 +183,7 @@ export const SearchBar = ({
           key={'search'}
           className={
             index === 0 && mouse !== 1
-              ? 'active-class'
+              ? 'active-class resultbutton top-resultbutton'
               : 'resultbutton top-resultbutton'
           }
           href={`/results/keyword/${query.split(' ').join('+')}`}
@@ -213,11 +211,6 @@ export const SearchBar = ({
         //the prop "enter" will pass through the value of the enter state
         //the prop "mouse" will pass through the value of the mouse state
       ))
-
-      // Resets searchbar if user hit "enter" on a major in dropdown
-      if (enter === 1) {
-        setInitState()
-      }
 
       results.push(subjectList)
 
