@@ -2,7 +2,7 @@ import axios from 'axios';
 import { TokenPayload } from 'google-auth-library';
 
 import { Class, Review, Student, Subject } from 'common';
-import * as Auth from './Auth';
+import * as Auth from '../endpoints/Auth';
 import TestingServer, { testingPort } from './TestServer';
 
 const testServer = new TestingServer(testingPort);

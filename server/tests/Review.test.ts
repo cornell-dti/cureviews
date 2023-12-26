@@ -4,7 +4,7 @@ import { TokenPayload } from 'google-auth-library';
 
 import { Review } from 'common';
 import { Reviews, Students } from '../dbDefs';
-import * as Auth from './Auth';
+import * as Auth from '../endpoints/Auth';
 import TestingServer from './TestServer';
 
 const testingPort = 8080;

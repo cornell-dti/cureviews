@@ -1,9 +1,9 @@
-import { ValidationChain, body } from "express-validator";
-import { InsertUserRequest, CourseIdQuery } from "./Review";
-import { Classes, Students } from "../dbDefs";
-import { getUserByNetId, getVerificationTicket } from "./Auth";
+import { ValidationChain, body } from 'express-validator';
+import { InsertUserRequest, CourseIdQuery } from '../Review';
+import { Classes, Students } from '../../dbDefs';
+import { getUserByNetId, getVerificationTicket } from '../Auth';
 
-import shortid = require("shortid");
+import shortid = require('shortid');
 
 // eslint-disable-next-line import/prefer-default-export
 export const getCourseById = async (courseId: CourseIdQuery) => {
@@ -13,13 +13,13 @@ export const getCourseById = async (courseId: CourseIdQuery) => {
     if (regex.test(courseId.courseId)) {
       return await Classes.findOne({ _id: courseId.courseId }).exec();
     }
-    return { error: "Malformed Query" };
+    return { error: 'Malformed Query' };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log("Error: at 'getCourseById' method");
     // eslint-disable-next-line no-console
     console.log(error);
-    return { error: "Internal Server Error" };
+    return { error: 'Internal Server Error' };
   }
 };
 
@@ -33,21 +33,21 @@ export const insertUser = async (request: InsertUserRequest) => {
   const { googleObject } = request;
   try {
     // Check user object has all required fields
-    if (googleObject.email.replace("@cornell.edu", "") !== null) {
+    if (googleObject.email.replace('@cornell.edu', '') !== null) {
       const user = await getUserByNetId(
-        googleObject.email.replace("@cornell.edu", ""),
+        googleObject.email.replace('@cornell.edu', ''),
       );
       if (user === null) {
         const newUser = new Students({
           _id: shortid.generate(),
           // Check to see if Google returns first and last name
           // If not, insert empty string to database
-          firstName: googleObject.given_name ? googleObject.given_name : "",
-          lastName: googleObject.family_name ? googleObject.family_name : "",
-          netId: googleObject.email.replace("@cornell.edu", ""),
+          firstName: googleObject.given_name ? googleObject.given_name : '',
+          lastName: googleObject.family_name ? googleObject.family_name : '',
+          netId: googleObject.email.replace('@cornell.edu', ''),
           affiliation: null,
           token: null,
-          privilege: "regular",
+          privilege: 'regular',
         });
 
         await newUser.save();
@@ -56,7 +56,7 @@ export const insertUser = async (request: InsertUserRequest) => {
     }
 
     // eslint-disable-next-line no-console
-    console.log("Error: Some user values are null in insertUser");
+    console.log('Error: Some user values are null in insertUser');
     return 0;
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -86,10 +86,10 @@ export const verifyToken = async (token: string) => {
       const ticket = await getVerificationTicket(token);
       if (ticket && ticket.email) {
         const user = await getUserByNetId(
-          ticket.email.replace("@cornell.edu", ""),
+          ticket.email.replace('@cornell.edu', ''),
         );
         if (user) {
-          return user.privilege === "admin";
+          return user.privilege === 'admin';
         }
       }
     }

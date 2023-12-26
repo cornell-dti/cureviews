@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { configure } from '../endpoints';
 import { Classes, Reviews } from '../dbDefs';
-import * as Utils from './utils';
+import * as Utils from '../endpoints/utils';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
