@@ -1,29 +1,31 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import express from "express";
+import express from 'express';
 import axios from 'axios';
 
-import { configure } from "../endpoints";
-import { Classes, Reviews } from "../dbDefs";
-import * as Utils from "./utils";
+import { configure } from '../endpoints';
+import { Classes, Reviews } from '../dbDefs';
+import * as Utils from './utils';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
-const mockVerification = jest.spyOn(Utils, 'verifyToken').mockImplementation(async (token?: string) => true);
+const mockVerification = jest
+  .spyOn(Utils, 'verifyToken')
+  .mockImplementation(async (token?: string) => true);
 
 const testingPort = 47728;
 
-const sampleReviewId = "sampleReview";
-const reviewToUndoReportId = "reviewToUndoReport";
+const sampleReviewId = 'sampleReview';
+const reviewToUndoReportId = 'reviewToUndoReport';
 
 const newCourse1 = new Classes({
-  _id: "fakeCourseId",
-  classSub: "COOL",
-  classNum: "1337",
-  classTitle: "Beach Engineering",
-  classFull: "COOL 1337: Beach Engineering",
-  classSems: ["FA19"],
-  classProfessors: ["Paul George"],
+  _id: 'fakeCourseId',
+  classSub: 'COOL',
+  classNum: '1337',
+  classTitle: 'Beach Engineering',
+  classFull: 'COOL 1337: Beach Engineering',
+  classSems: ['FA19'],
+  classProfessors: ['Paul George'],
   classRating: 0,
   classWorkload: 0,
   classDifficulty: 0,
@@ -49,12 +51,14 @@ const reviewToUndoReport = new Reviews({
   workload: 5,
 });
 
-
 beforeAll(async () => {
   // get mongoose all set up
   mongoServer = new MongoMemoryServer();
   const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   // Set up a mock version of the v2 endpoints to test against
   const app = express();
   serverCloseHandle = app.listen(testingPort);
@@ -76,14 +80,20 @@ afterAll(async () => {
 
 describe('tests', () => {
   it('fetchReviewableClasses-works', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/fetchReviewableClasses`, { token: "non-empty" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/api/fetchReviewableClasses`,
+      { token: 'non-empty' },
+    );
     const ids = res.data.result.map((e) => e._id);
     expect(ids.includes(reviewToUndoReportId)).toBeTruthy();
     expect(ids.includes(sampleReviewId)).toBeTruthy();
   });
 
   it('makeReviewVisible-works', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/makeReviewVisible`, { review: sampleReview, token: "non-empty" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/api/makeReviewVisible`,
+      { review: sampleReview, token: 'non-empty' },
+    );
     expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findOne({ _id: newCourse1._id }).exec();
     expect(course.classDifficulty).toEqual(sampleReview.difficulty);
@@ -92,7 +102,10 @@ describe('tests', () => {
   });
 
   it('undoReportReview-works', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/undoReportReview`, { review: reviewToUndoReport, token: "non empty" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/api/undoReportReview`,
+      { review: reviewToUndoReport, token: 'non empty' },
+    );
     expect(res.data.result.resCode).toEqual(1);
     const reviewFromDb = await Reviews.findById(reviewToUndoReport._id).exec();
     expect(reviewFromDb.visible).toEqual(1);
@@ -100,7 +113,10 @@ describe('tests', () => {
   });
 
   it('removeReview-works', async () => {
-    const res = await axios.post(`http://localhost:${testingPort}/v2/removeReview`, { review: sampleReview, token: "non-empty" });
+    const res = await axios.post(
+      `http://localhost:${testingPort}/api/removeReview`,
+      { review: sampleReview, token: 'non-empty' },
+    );
     expect(res.data.result.resCode).toEqual(1);
     const course = await Classes.findById(newCourse1._id);
     expect(course.classDifficulty).toEqual(null);

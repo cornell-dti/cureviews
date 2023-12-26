@@ -33,7 +33,7 @@ export const Admin = () => {
 
   useEffect(() => {
     async function confirmAdmin() {
-      const res = await axios.post(`/v2/tokenIsAdmin`, {
+      const res = await axios.post(`/api/tokenIsAdmin`, {
         token: token,
       })
 
@@ -52,7 +52,7 @@ export const Admin = () => {
 
   useEffect(() => {
     axios
-      .post('/v2/fetchReviewableClasses', { token: token })
+      .post('/api/fetchReviewableClasses', { token: token })
       .then((response) => {
         const result = response.data.result
         if (result.resCode !== 0) {
@@ -76,7 +76,7 @@ export const Admin = () => {
   // and changes the review with this id to visible.
   function approveReview(review: Review) {
     axios
-      .post('/v2/makeReviewVisible', {
+      .post('/api/makeReviewVisible', {
         review: review,
         token: token,
       })
@@ -96,7 +96,7 @@ export const Admin = () => {
   // and deletes the review with this id.
   function removeReview(review: Review, isUnapproved: boolean) {
     axios
-      .post('/v2/removeReview', {
+      .post('/api/removeReview', {
         review: review,
         token: token,
       })
@@ -128,7 +128,7 @@ export const Admin = () => {
   // and changes the reported flag for this review to false.
   function unReportReview(review: Review) {
     axios
-      .post('/v2/undoReportReview', {
+      .post('/api/undoReportReview', {
         review: review,
         token: token,
       })
@@ -170,7 +170,7 @@ export const Admin = () => {
     setDisableInit(true)
     setLoadingProfs(1)
 
-    axios.post('/v2/setProfessors', { token: token }).then((response) => {
+    axios.post('/api/setProfessors', { token: token }).then((response) => {
       const result = response.data.result.resCode
       if (result === 0) {
         console.log('Updated the professors')
@@ -187,7 +187,7 @@ export const Admin = () => {
     setDisableInit(true)
     setResettingProfs(1)
 
-    axios.post('/v2/resetProfessors', { token: token }).then((response) => {
+    axios.post('/api/resetProfessors', { token: token }).then((response) => {
       const result = response.data.result.resCode
       if (result === 1) {
         console.log('Reset all the professors to empty arrays')

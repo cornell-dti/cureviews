@@ -87,7 +87,7 @@ export default function ReviewCard({
     }
 
     axios
-      .post('/v2/updateLiked', {
+      .post('/api/updateLiked', {
         id: _review._id,
         token: getAuthToken(),
       })
@@ -101,7 +101,7 @@ export default function ReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/v2/getCourseById`, {
+      const response = await axios.post(`/api/getCourseById`, {
         courseId: _review.class,
       })
       const course = response.data.result
@@ -116,7 +116,7 @@ export default function ReviewCard({
 
   useEffect(() => {
     async function updateLiked() {
-      const response = await axios.post('/v2/userHasLiked', {
+      const response = await axios.post('/api/userHasLiked', {
         id: _review._id,
         token: getAuthToken(),
       })

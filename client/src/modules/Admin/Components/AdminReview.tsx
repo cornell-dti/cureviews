@@ -51,7 +51,7 @@ export default class UpdateReview extends Component<Props, State> {
     }
 
     axios
-      .post(`/v2/getCourseById`, {
+      .post(`/api/getCourseById`, {
         courseId: props.info.class,
       })
       .then((response) => {

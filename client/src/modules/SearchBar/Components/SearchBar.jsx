@@ -111,7 +111,7 @@ export class SearchBar extends Component {
       this.searchTimeout = setTimeout(() => {
         axios
           .post(
-            `/v2/getClassesByQuery`,
+            `/api/getClassesByQuery`,
             { query: this.state.query },
             { signal: this.controller.signal }
           )
@@ -131,7 +131,7 @@ export class SearchBar extends Component {
 
         axios
           .post(
-            `/v2/getSubjectsByQuery`,
+            `/api/getSubjectsByQuery`,
             { query: this.state.query },
             { signal: this.controller.signal }
           )
@@ -152,7 +152,7 @@ export class SearchBar extends Component {
 
         axios
           .post(
-            `/v2/getProfessorsByQuery`,
+            `/api/getProfessorsByQuery`,
             { query: this.state.query },
             { signal: this.controller.signal }
           )

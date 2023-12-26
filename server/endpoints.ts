@@ -1,12 +1,12 @@
-import express from "express";
-import { validationResult, ValidationChain } from "express-validator";
+import express from 'express';
+import { validationResult, ValidationChain } from 'express-validator';
 import {
   totalReviews,
   howManyReviewsEachClass,
   howManyEachClass,
   topSubjects,
   getReviewsOverTimeTop15,
-} from "./endpoints/AdminChart";
+} from './endpoints/AdminChart';
 import {
   getReviewsByCourseId,
   getCourseById,
@@ -15,21 +15,21 @@ import {
   getCourseByInfo,
   updateLiked,
   userHasLiked,
-} from "./endpoints/Review";
+} from './endpoints/Review';
 import {
   countReviewsByStudentId,
   getTotalLikesByStudentId,
   getReviewsByStudentId,
   getStudentEmailByToken,
-} from "./endpoints/Profile";
-import { tokenIsAdmin } from "./endpoints/Auth";
+} from './endpoints/Profile';
+import { tokenIsAdmin } from './endpoints/Auth';
 import {
   getCoursesByProfessor,
   getCoursesByMajor,
   getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
-} from "./endpoints/Search";
+} from './endpoints/Search';
 import {
   fetchReviewableClasses,
   reportReview,
@@ -37,7 +37,7 @@ import {
   undoReportReview,
   removeReview,
   getRaffleWinner,
-} from "./endpoints/AdminActions";
+} from './endpoints/AdminActions';
 
 export interface Context {
   ip: string;
@@ -61,36 +61,36 @@ export function configure(app: express.Application) {
   methods.use(express.json());
   app.use(express.json());
   // needed to get client IP apparently
-  app.set("trust proxy", true);
+  app.set('trust proxy', true);
 
-  register(app, "getClassesByQuery", getClassesByQuery);
-  register(app, "getReviewsByCourseId", getReviewsByCourseId);
-  register(app, "getCourseById", getCourseById);
-  register(app, "tokenIsAdmin", tokenIsAdmin);
-  register(app, "getSubjectsByQuery", getSubjectsByQuery);
-  register(app, "getCoursesByMajor", getCoursesByMajor);
-  register(app, "getProfessorsByQuery", getProfessorsByQuery);
-  register(app, "getCoursesByProfessor", getCoursesByProfessor);
-  register(app, "insertReview", insertReview);
-  register(app, "insertUser", insertUser);
-  register(app, "makeReviewVisible", makeReviewVisible);
-  register(app, "fetchReviewableClasses", fetchReviewableClasses);
-  register(app, "undoReportReview", undoReportReview);
-  register(app, "reportReview", reportReview);
-  register(app, "removeReview", removeReview);
-  register(app, "getCourseByInfo", getCourseByInfo);
-  register(app, "totalReviews", totalReviews);
-  register(app, "howManyReviewsEachClass", howManyReviewsEachClass);
-  register(app, "howManyEachClass", howManyEachClass);
-  register(app, "topSubjects", topSubjects);
-  register(app, "getReviewsOverTimeTop15", getReviewsOverTimeTop15);
-  register(app, "updateLiked", updateLiked);
-  register(app, "userHasLiked", userHasLiked);
-  register(app, "getTotalLikesByStudentId", getTotalLikesByStudentId);
-  register(app, "getReviewsByStudentId", getReviewsByStudentId);
-  register(app, "countReviewsByStudentId", countReviewsByStudentId);
-  register(app, "getStudentEmailByToken", getStudentEmailByToken);
-  register(app, "getRaffleWinner", getRaffleWinner);
+  register(app, 'getClassesByQuery', getClassesByQuery);
+  register(app, 'getReviewsByCourseId', getReviewsByCourseId);
+  register(app, 'getCourseById', getCourseById);
+  register(app, 'tokenIsAdmin', tokenIsAdmin);
+  register(app, 'getSubjectsByQuery', getSubjectsByQuery);
+  register(app, 'getCoursesByMajor', getCoursesByMajor);
+  register(app, 'getProfessorsByQuery', getProfessorsByQuery);
+  register(app, 'getCoursesByProfessor', getCoursesByProfessor);
+  register(app, 'insertReview', insertReview);
+  register(app, 'insertUser', insertUser);
+  register(app, 'makeReviewVisible', makeReviewVisible);
+  register(app, 'fetchReviewableClasses', fetchReviewableClasses);
+  register(app, 'undoReportReview', undoReportReview);
+  register(app, 'reportReview', reportReview);
+  register(app, 'removeReview', removeReview);
+  register(app, 'getCourseByInfo', getCourseByInfo);
+  register(app, 'totalReviews', totalReviews);
+  register(app, 'howManyReviewsEachClass', howManyReviewsEachClass);
+  register(app, 'howManyEachClass', howManyEachClass);
+  register(app, 'topSubjects', topSubjects);
+  register(app, 'getReviewsOverTimeTop15', getReviewsOverTimeTop15);
+  register(app, 'updateLiked', updateLiked);
+  register(app, 'userHasLiked', userHasLiked);
+  register(app, 'getTotalLikesByStudentId', getTotalLikesByStudentId);
+  register(app, 'getReviewsByStudentId', getReviewsByStudentId);
+  register(app, 'countReviewsByStudentId', countReviewsByStudentId);
+  register(app, 'getStudentEmailByToken', getStudentEmailByToken);
+  register(app, 'getRaffleWinner', getRaffleWinner);
 }
 
 function register<T>(
@@ -99,7 +99,7 @@ function register<T>(
   endpoint: Endpoint<T>,
 ) {
   const { callback, guard } = endpoint;
-  app.post(`/v2/${name}`, guard, async (req, res) => {
+  app.post(`/api/${name}`, guard, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });

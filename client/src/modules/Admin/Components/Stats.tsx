@@ -44,7 +44,7 @@ export default class Stats extends Component<Props, State> {
 
   getChartData() {
     axios
-      .post(`/v2/getReviewsOverTimeTop15`, {
+      .post(`/api/getReviewsOverTimeTop15`, {
         token: this.props.token,
         step: this.state.step,
         range: this.state.range,
@@ -78,7 +78,7 @@ export default class Stats extends Component<Props, State> {
 
   howManyReviewsEachClass() {
     axios
-      .post(`/v2/howManyReviewsEachClass`, {
+      .post(`/api/howManyReviewsEachClass`, {
         token: this.props.token,
       })
       .then((res) => {
@@ -101,7 +101,7 @@ export default class Stats extends Component<Props, State> {
 
   getHowManyEachClass() {
     axios
-      .post(`/v2/howManyEachClass`, {
+      .post(`/api/howManyEachClass`, {
         token: this.props.token,
       })
       .then((res) => {
@@ -116,7 +116,7 @@ export default class Stats extends Component<Props, State> {
 
   totalReviews() {
     axios
-      .post(`/v2/totalReviews`, {
+      .post(`/api/totalReviews`, {
         token: this.props.token,
       })
       .then((res) => {

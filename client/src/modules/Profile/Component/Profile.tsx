@@ -43,7 +43,7 @@ const Profile = () => {
    * Retrieves the total reviews that a student has made
    */
   async function getReviewsTotal() {
-    const response = await axios.post('/v2/countReviewsByStudentId', {
+    const response = await axios.post('/api/countReviewsByStudentId', {
       netId,
     })
 
@@ -57,7 +57,7 @@ const Profile = () => {
    * Retrieves the number of reviews that the student has made that have been upvoted
    */
   async function getReviewsHelpful() {
-    const response = await axios.post('/v2/getTotalLikesByStudentId', {
+    const response = await axios.post('/api/getTotalLikesByStudentId', {
       netId,
     })
 
@@ -78,7 +78,7 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
-    axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
+    axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
       const reviews = response.data.result.message
       const pendingReviews = reviews.filter(function (review: ReviewType) {
         return review.visible === 0

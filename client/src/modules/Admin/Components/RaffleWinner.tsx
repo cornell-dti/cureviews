@@ -15,7 +15,7 @@ export default function RaffleWinner({ adminToken }: RaffleWinnerProps) {
 
   const updateRaffleWinner = (startDate: Date) => {
     axios
-      .post('/v2/getRaffleWinner', {
+      .post('/api/getRaffleWinner', {
         token: adminToken,
         startDate: startDate,
       })

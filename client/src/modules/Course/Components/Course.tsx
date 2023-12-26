@@ -63,7 +63,7 @@ export const Course = () => {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(`/v2/getCourseByInfo`, {
+        const response = await axios.post(`/api/getCourseByInfo`, {
           number,
           subject: subject.toLowerCase(), // TODO: fix backend to handle this
         })
@@ -73,9 +73,12 @@ export const Course = () => {
           setSelectedClass(course)
 
           // after getting valid course info, fetch reviews
-          const reviewsResponse = await axios.post('/v2/getReviewsByCourseId', {
-            courseId: course._id,
-          })
+          const reviewsResponse = await axios.post(
+            '/api/getReviewsByCourseId',
+            {
+              courseId: course._id,
+            }
+          )
           const reviews = reviewsResponse.data.result
           // convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
@@ -103,7 +106,7 @@ export const Course = () => {
      */
     async function submitReview(review: NewReview, classId: string) {
       try {
-        const response = await axios.post('/v2/insertReview', {
+        const response = await axios.post('/api/insertReview', {
           token: token,
           review: review,
           classId: classId,
