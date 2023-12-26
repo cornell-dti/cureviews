@@ -185,7 +185,7 @@ export const SearchBar = ({
           key={'search'}
           className={
             index === 0 && mouse !== 1
-              ? 'active-class resultbutton top-resultbutton'
+              ? 'active-class'
               : 'resultbutton top-resultbutton'
           }
           href={`/results/keyword/${query.split(' ').join('+')}`}
@@ -284,7 +284,7 @@ export const SearchBar = ({
     >
       <div
         className={
-          `col-xl-12 col-lg-12 col-md-12 col-sm-12 ${styles.searchbar} ` +
+          `${styles.searchbar}` +
           `${isInNavbar ? styles.searchbarInNavbar : ''}`
         }
       >
