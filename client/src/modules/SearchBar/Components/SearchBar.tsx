@@ -183,7 +183,7 @@ export const SearchBar = ({
           key={'search'}
           className={
             index === 0 && mouse !== 1
-              ? 'active-class resultbutton top-resultbutton'
+              ? 'active-class resultbutton'
               : 'resultbutton top-resultbutton'
           }
           href={`/results/keyword/${query.split(' ').join('+')}`}
