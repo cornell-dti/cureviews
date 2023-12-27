@@ -9,8 +9,8 @@
     "outDir": "dist"
   },
   "files": [
-    "dbInit.ts",
-    "dbDefs.ts",
+    "db/dbInit.ts",
+    "db/dbDefs.ts",
     "server.ts",
     "endpoints.ts",
     "src/AdminActions.ts",

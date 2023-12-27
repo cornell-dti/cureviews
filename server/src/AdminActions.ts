@@ -2,12 +2,12 @@ import { body } from 'express-validator';
 
 import { getCrossListOR, getMetricValues } from 'common/CourseCard';
 import { Context, Endpoint } from '../endpoints';
-import { Reviews, ReviewDocument, Classes, Students } from '../dbDefs';
+import { Reviews, ReviewDocument, Classes, Students } from '../db/dbDefs';
 import {
   updateProfessors,
   findAllSemesters,
   resetProfessorArray,
-} from '../dbInit';
+} from '../db/dbInit';
 import { getCourseById, verifyToken } from './utils';
 import { ReviewRequest } from './Review';
 

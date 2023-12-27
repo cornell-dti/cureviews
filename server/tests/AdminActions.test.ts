@@ -4,8 +4,8 @@ import express from 'express';
 import axios from 'axios';
 
 import { configure } from '../endpoints';
-import { Classes, Reviews } from '../dbDefs';
-import * as Utils from '../endpoints/utils';
+import { Classes, Reviews } from '../db/dbDefs';
+import * as Utils from '../src/utils';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;

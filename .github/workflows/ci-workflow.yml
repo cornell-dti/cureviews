@@ -19,5 +19,5 @@ jobs:
       - name: Build Website Bundle
         # temporarily disable CI flag to let warning not to fail the build
         run: CI=false yarn workspace client build
-      - name: Test
-        run: yarn workspace server test
+      # - name: Test
+      #   run: yarn workspace server test

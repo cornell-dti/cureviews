@@ -2,7 +2,7 @@ import { body } from 'express-validator';
 import { getCrossListOR } from 'common/CourseCard';
 import { Review } from 'common';
 import { Context, Endpoint } from '../endpoints';
-import { Classes, ReviewDocument, Reviews, Students } from '../dbDefs';
+import { Classes, ReviewDocument, Reviews, Students } from '../db/dbDefs';
 import {
   getCourseById as getCourseByIdCallback,
   insertUser as insertUserCallback,
