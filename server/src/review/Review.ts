@@ -8,7 +8,7 @@ import {
   insertUser as insertUserCallback,
   JSONNonempty,
 } from '../utils';
-import { getVerificationTicket } from '../auth/Auth';
+import { getVerificationTicket } from '../auth/auth';
 
 import shortid = require('shortid');
 

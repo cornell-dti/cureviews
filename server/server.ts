@@ -6,6 +6,8 @@ import { configure } from './endpoints';
 
 import { setupDb } from './db/index';
 
+import authRouter from './src/auth/auth.router';
+
 const app = express();
 app.use(sslRedirect(['development', 'production']));
 app.use(cors());
@@ -18,7 +20,8 @@ function setup() {
     response.sendFile(path.join(__dirname, '../../client/build/index.html')),
   );
 
-  configure(app);
+  app.use('/api', authRouter);
+  // configure(app);
 
   // eslint-disable-next-line no-console
   app.listen(port, () => console.log(`Listening on port ${port}...`));

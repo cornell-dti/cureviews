@@ -21,15 +21,15 @@ import {
   getTotalLikesByStudentId,
   getReviewsByStudentId,
   getStudentEmailByToken,
-} from './src/profile/Profile';
-import { tokenIsAdmin } from './src/auth/Auth';
+} from './src/profile/profile';
+import { tokenIsAdmin } from './src/auth/auth';
 import {
   getCoursesByProfessor,
   getCoursesByMajor,
   getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
-} from './src/search/Search';
+} from './src/search/search';
 import {
   fetchReviewableClasses,
   reportReview,
@@ -37,7 +37,8 @@ import {
   undoReportReview,
   removeReview,
   getRaffleWinner,
-} from './src/admin/AdminActions';
+} from './src/admin/admin';
+import authRouter from './src/auth/auth.router';
 
 export interface Context {
   ip: string;
@@ -60,6 +61,7 @@ export function configure(app: express.Application) {
   app.use(express.json());
   // needed to get client IP apparently
   app.set('trust proxy', true);
+  app.use('/auth', authRouter);
 
   // register(app, 'getClassesByQuery', getClassesByQuery);
   // register(app, 'getReviewsByCourseId', getReviewsByCourseId);

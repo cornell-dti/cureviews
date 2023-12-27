@@ -4,14 +4,11 @@ import { Context, Endpoint } from '../../endpoints';
 import { Students } from '../../db/schema';
 import { verifyToken } from '../utils';
 
+import { AdminRequest } from './auth.types';
+
 const client = new OAuth2Client(
   '836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com',
 );
-
-// The type for a search query
-interface AdminRequest {
-  token: string;
-}
 
 /**
  * Returns true if [netid] matches the netid in the email of the JSON
