@@ -1,8 +1,8 @@
 /* eslint-disable spaced-comment */
 import { body } from 'express-validator';
-import { verifyToken } from './utils';
-import { Context, Endpoint } from '../endpoints';
-import { Reviews, Classes, Subjects } from '../db/dbDefs';
+import { verifyToken } from '../utils';
+import { Context, Endpoint } from '../../endpoints';
+import { Reviews, Classes, Subjects } from '../../db/dbDefs';
 
 export interface Token {
   token: string;

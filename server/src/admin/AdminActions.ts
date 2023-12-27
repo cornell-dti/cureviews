@@ -1,15 +1,15 @@
 import { body } from 'express-validator';
 
 import { getCrossListOR, getMetricValues } from 'common/CourseCard';
-import { Context, Endpoint } from '../endpoints';
-import { Reviews, ReviewDocument, Classes, Students } from '../db/dbDefs';
+import { Context, Endpoint } from '../../endpoints';
+import { Reviews, ReviewDocument, Classes, Students } from '../../db/dbDefs';
 import {
   updateProfessors,
   findAllSemesters,
   resetProfessorArray,
-} from '../db/dbInit';
-import { getCourseById, verifyToken } from './utils';
-import { ReviewRequest } from './Review';
+} from '../../db/dbInit';
+import { getCourseById, verifyToken } from '../utils';
+import { ReviewRequest } from '../review/Review';
 
 // The type for a request with an admin action for a review
 interface AdminReviewRequest {

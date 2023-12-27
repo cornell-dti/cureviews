@@ -1,8 +1,8 @@
 import { body } from 'express-validator';
 import { OAuth2Client } from 'google-auth-library';
-import { Context, Endpoint } from '../endpoints';
-import { Students } from '../db/dbDefs';
-import { verifyToken } from './utils';
+import { Context, Endpoint } from '../../endpoints';
+import { Students } from '../../db/dbDefs';
+import { verifyToken } from '../utils';
 
 const client = new OAuth2Client(
   '836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com',

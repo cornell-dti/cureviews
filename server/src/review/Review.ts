@@ -1,14 +1,14 @@
 import { body } from 'express-validator';
 import { getCrossListOR } from 'common/CourseCard';
 import { Review } from 'common';
-import { Context, Endpoint } from '../endpoints';
-import { Classes, ReviewDocument, Reviews, Students } from '../db/dbDefs';
+import { Context, Endpoint } from '../../endpoints';
+import { Classes, ReviewDocument, Reviews, Students } from '../../db/dbDefs';
 import {
   getCourseById as getCourseByIdCallback,
   insertUser as insertUserCallback,
   JSONNonempty,
-} from './utils';
-import { getVerificationTicket } from './Auth';
+} from '../utils';
+import { getVerificationTicket } from '../auth/Auth';
 
 import shortid = require('shortid');
 

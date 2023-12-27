@@ -13,11 +13,11 @@
     "db/dbDefs.ts",
     "server.ts",
     "endpoints.ts",
-    "src/AdminActions.ts",
-    "src/AdminChart.ts",
-    "src/Auth.ts",
-    "src/Review.ts",
-    "src/Search.ts",
+    "src/admin/AdminActions.ts",
+    "src/admin/AdminChart.ts",
+    "src/auth/Auth.ts",
+    "src/review/Review.ts",
+    "src/search/Search.ts",
     "src/utils/index.ts"
   ]
 }
