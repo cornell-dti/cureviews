@@ -1,6 +1,6 @@
 import axios from 'axios';
 import shortid from 'shortid';
-import { Classes, Subjects, Professors } from './dbDefs';
+import { Classes, Subjects, Professors } from '../db/schema';
 
 export const defaultEndpoint = 'https://classes.cornell.edu/api/2.0/';
 

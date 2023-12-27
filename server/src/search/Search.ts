@@ -1,7 +1,7 @@
 import { body } from 'express-validator';
 
 import { Context, Endpoint } from '../../endpoints';
-import { Classes, Subjects, Professors } from '../../db/dbDefs';
+import { Classes, Subjects, Professors } from '../../db/schema';
 
 // The type for a search query
 interface Search {

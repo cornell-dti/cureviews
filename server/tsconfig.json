@@ -9,14 +9,14 @@
     "outDir": "dist"
   },
   "files": [
-    "db/dbInit.ts",
-    "db/dbDefs.ts",
+    "scrapping/dbInit.ts",
+    "db/schema.ts",
     "server.ts",
     "endpoints.ts",
     "src/admin/AdminActions.ts",
     "src/admin/AdminChart.ts",
     "src/auth/Auth.ts",
-    "src/review/Review.ts",
+    "src/review/review.ts",
     "src/search/Search.ts",
     "src/utils/index.ts"
   ]

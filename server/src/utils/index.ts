@@ -1,6 +1,6 @@
 import { ValidationChain, body } from 'express-validator';
-import { InsertUserRequest, CourseIdQuery } from '../review/Review';
-import { Classes, Students } from '../../db/dbDefs';
+import { InsertUserRequest, CourseIdQuery } from '../review/review';
+import { Classes, Students } from '../../db/schema';
 import { getUserByNetId, getVerificationTicket } from '../auth/Auth';
 
 import shortid = require('shortid');
