@@ -10,8 +10,11 @@ courseRouter.post('/getCourseByInfo', async (req, res) => {
     const { number, subject }: CourseInfoDTO = req.body;
     const course = await findCourseByInfo(number, subject);
     return res.status(200).json({ result: course });
-  } catch (err) {}
-  res.json({ result: 'hello' });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
 });
 
 export default courseRouter;
