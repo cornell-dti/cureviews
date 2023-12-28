@@ -44,7 +44,8 @@ profileRouter.post('/getTotalLikesByStudentId', async (req, res) => {
     const profile: Profile = new Profile({ netId });
     const validNetId: string = profile.getNetId();
 
-    const totalLikes = await getTotalLikesByNetId(validNetId);
+    const totalLikes: number = await getTotalLikesByNetId(validNetId);
+
     return res.status(200).json({ message: totalLikes });
   } catch (error) {
     return res
