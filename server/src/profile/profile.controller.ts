@@ -15,6 +15,8 @@ export const getTotalLikesByNetId = async (netId: string) => {
       totalLikes += review.likes;
     }
   });
+
+  return totalLikes;
 };
 
 export const getStudentReviewDocs = async (netId: string) => {

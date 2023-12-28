@@ -1,13 +1,14 @@
 import express from 'express';
 import { Auth } from './auth';
 
+import { verifyToken } from './auth.controller';
+
 const authRouter = express.Router();
 
 authRouter.post('/getStudentEmailByToken', async (req, res) => {
   try {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
-
     const validToken: string = auth.getToken();
 
     const ticket = await auth.getVerificationTicket(validToken);
@@ -23,26 +24,14 @@ authRouter.post('/getStudentEmailByToken', async (req, res) => {
   }
 });
 
-// export const getStudentEmailByToken: Endpoint<ProfileRequest> = {
-//   guard: [body('token').notEmpty().isAscii()],
-//   callback: async (ctx: Context, request: ProfileRequest) => {
-//     const { token } = request;
+/*
+ * Check if a token is for an admin
+ */
+authRouter.post('/tokenIsAdmin', async (req, res) => {
+  const { token } = req.body;
+  const auth: Auth = new Auth({ token });
 
-//     try {
-//       const ticket = await getVerificationTicket(token);
-//       if (ticket.hd === 'cornell.edu') {
-//         return { code: 200, message: ticket.email };
-//       }
-
-//       return { code: 500, message: 'Invalid email' };
-//     } catch (error) {
-//       // eslint-disable-next-line no-console
-//       console.log("Error: at 'getStudentEmailByToken' method");
-//       // eslint-disable-next-line no-console
-//       console.log(error);
-//       return { code: 500, message: error.message };
-//     }
-//   },
-// };
+  await verifyToken(auth);
+});
 
 export default authRouter;

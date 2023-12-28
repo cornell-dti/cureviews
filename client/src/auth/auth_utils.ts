@@ -55,10 +55,10 @@ export function useAuthMandatoryLogin(
         token: token,
       })
       .then((response) => {
-        const res = response.data.message
+        const res = response.data
         let verifiedEmail = ''
 
-        if (res.code === 200) {
+        if (response.status === 200) {
           console.log(res.message)
           verifiedEmail = res.message
         }
@@ -101,15 +101,18 @@ export function useAuthOptionalLogin(): [
         token: token,
       })
       .then((response) => {
-        const res = response.data.result
+        const data = response.data
+        console.log(response)
         var verifiedEmail = ''
 
-        if (res.code === 200) {
-          console.log(res.message)
-          verifiedEmail = res.message
+        if (response.status === 200) {
+          console.log(data.message)
+          verifiedEmail = data.message
         }
 
-        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
+        console.log(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
+        const netId = verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@'))
+        setNetId(netId)
       })
       .catch((e) => console.log(e.response))
   }, [])
