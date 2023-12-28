@@ -9,7 +9,7 @@ import {
   resetProfessorArray,
 } from '../../scrapping/dbInit';
 import { getCourseById, verifyToken } from '../utils';
-import { ReviewRequest } from '../review/review';
+import { ReviewRequest } from '../review/review_original';
 
 // The type for a request with an admin action for a review
 interface AdminReviewRequest {

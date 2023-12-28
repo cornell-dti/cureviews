@@ -15,21 +15,14 @@ import {
   getCourseByInfo,
   updateLiked,
   userHasLiked,
-} from './src/review/review';
+} from './src/review/review_original';
 import {
   countReviewsByStudentId,
   getTotalLikesByStudentId,
   getReviewsByStudentId,
   getStudentEmailByToken,
-} from './src/profile/profile';
-import { tokenIsAdmin } from './src/auth/auth';
-import {
-  getCoursesByProfessor,
-  getCoursesByMajor,
-  getClassesByQuery,
-  getSubjectsByQuery,
-  getProfessorsByQuery,
-} from './src/search/search_original';
+} from './src/profile/profile_original';
+import { tokenIsAdmin } from './src/auth/auth_original';
 import {
   fetchReviewableClasses,
   reportReview,
