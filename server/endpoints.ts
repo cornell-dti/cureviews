@@ -54,7 +54,6 @@ export function configure(app: express.Application) {
   app.use(express.json());
   // needed to get client IP apparently
   app.set('trust proxy', true);
-  app.use('/auth', authRouter);
 
   // register(app, 'getClassesByQuery', getClassesByQuery);
   // register(app, 'getReviewsByCourseId', getReviewsByCourseId);

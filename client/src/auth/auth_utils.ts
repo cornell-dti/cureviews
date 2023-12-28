@@ -55,8 +55,8 @@ export function useAuthMandatoryLogin(
         token: token,
       })
       .then((response) => {
-        const res = response.data.result
-        var verifiedEmail = ''
+        const res = response.data.message
+        let verifiedEmail = ''
 
         if (res.code === 200) {
           console.log(res.message)
