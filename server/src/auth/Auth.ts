@@ -49,7 +49,10 @@ export class Auth {
 
   private validate() {
     const searchSchema = joi.object({
-      token: joi.string().required(),
+      token: joi
+        .string()
+        .regex(new RegExp(/^(?=.*[A-Z0-9])/i))
+        .required(),
     });
 
     const { error, value } = searchSchema.validate(this);
