@@ -16,12 +16,6 @@ import {
   updateLiked,
   userHasLiked,
 } from './src/review/review_original';
-import {
-  countReviewsByStudentId,
-  getTotalLikesByStudentId,
-  getReviewsByStudentId,
-  getStudentEmailByToken,
-} from './src/profile/profile_original';
 import { tokenIsAdmin } from './src/auth/auth_original';
 import {
   fetchReviewableClasses,
