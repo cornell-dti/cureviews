@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { Search } from './Search';
+import { Search } from './search';
 import {
   searchCourses,
   searchProfessors,
