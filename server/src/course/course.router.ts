@@ -1,9 +1,17 @@
 import express from 'express';
+import { CourseInfoDTO } from './course.dto';
+import { findCourseByInfo } from './course.data-access';
+import { findCourseSubject } from '../search/search.data-access';
 
-const reviewRouter = express.Router();
+const courseRouter = express.Router();
 
-reviewRouter.post('/', (req, res) => {
-  res.json({ message: 'hello' });
+courseRouter.post('/getCourseByInfo', async (req, res) => {
+  try {
+    const { number, subject }: CourseInfoDTO = req.body;
+    const course = await findCourseByInfo(number, subject);
+    return res.status(200).json({ result: course });
+  } catch (err) {}
+  res.json({ result: 'hello' });
 });
 
-export default reviewRouter;
+export default courseRouter;

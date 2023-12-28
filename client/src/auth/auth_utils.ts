@@ -59,8 +59,8 @@ export function useAuthMandatoryLogin(
         let verifiedEmail = ''
 
         if (response.status === 200) {
-          console.log(res.message)
-          verifiedEmail = res.message
+          console.log(res.result)
+          verifiedEmail = res.result
         }
 
         setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
@@ -106,8 +106,8 @@ export function useAuthOptionalLogin(): [
         var verifiedEmail = ''
 
         if (response.status === 200) {
-          console.log(data.message)
-          verifiedEmail = data.message
+          console.log(data.result)
+          verifiedEmail = data.result
         }
 
         console.log(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))

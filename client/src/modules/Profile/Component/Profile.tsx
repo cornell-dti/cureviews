@@ -49,7 +49,7 @@ const Profile = () => {
 
     const res = response.data
     if (response.status === 200) {
-      setReviewsTotal(res.message)
+      setReviewsTotal(res.result)
     }
   }
 
@@ -63,7 +63,7 @@ const Profile = () => {
 
     const res = response.data
     if (response.status === 200) {
-      setReviewsHelpful(res.message)
+      setReviewsHelpful(res.result)
     }
   }
 
@@ -79,7 +79,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
-      const reviews = response.data.message
+      const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
         return review.visible === 0
       })

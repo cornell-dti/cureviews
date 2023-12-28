@@ -13,14 +13,14 @@ authRouter.post('/getStudentEmailByToken', async (req, res) => {
 
     const ticket = await auth.getVerificationTicket(validToken);
     if (ticket.hd === 'cornell.edu') {
-      return res.status(200).json({ message: ticket.email });
+      return res.status(200).json({ result: ticket.email });
     }
 
     return res.status(400).json({ error: `Invalid email ${ticket.email}` });
   } catch (error) {
     return res
       .status(500)
-      .json({ error: `Internal Server Error: ${error.message}` });
+      .json({ error: `Internal Server Error: ${error.result}` });
   }
 });
 

@@ -26,11 +26,11 @@ profileRouter.post('/countReviewsByStudentId', async (req, res) => {
         .json({ error: 'No reviews objects were associated.' });
     }
 
-    return res.status(200).json({ message: studentReviewIds.length });
+    return res.status(200).json({ result: studentReviewIds.length });
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Internal Server Error: ${error.message}` });
+      .json({ error: `Internal Server Error: ${error.message}` });
   }
 });
 
@@ -46,11 +46,11 @@ profileRouter.post('/getTotalLikesByStudentId', async (req, res) => {
 
     const totalLikes: number = await getTotalLikesByNetId(validNetId);
 
-    return res.status(200).json({ message: totalLikes });
+    return res.status(200).json({ result: totalLikes });
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `Internal Server Error: ${error.message}` });
+      .json({ error: `Internal Server Error: ${error.message}` });
   }
 });
 
@@ -65,11 +65,11 @@ profileRouter.post('/getReviewsByStudentId', async (req, res) => {
     const validNetId: string = profile.getNetId();
     const reviews = await getStudentReviewDocs(validNetId);
 
-    return res.status(200).json({ message: reviews });
+    return res.status(200).json({ result: reviews });
   } catch (err) {
     return res
       .status(500)
-      .json({ message: `Internal Server Error: ${err.message}` });
+      .json({ error: `Internal Server Error: ${err.message}` });
   }
 });
 
