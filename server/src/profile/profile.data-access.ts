@@ -9,3 +9,9 @@ export const findReviewDoc = async (reviewId: string) => {
   const review = await Reviews.findOne({ _id: reviewId });
   return review;
 };
+
+export const insertNewStudent = async (studentDoc) => {
+  const newStudent = new Students(studentDoc);
+
+  await newStudent.save();
+};
