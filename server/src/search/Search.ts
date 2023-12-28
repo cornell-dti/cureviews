@@ -21,6 +21,18 @@ export class Search {
     this.query = query;
   }
 
+  getFirstDigit() {
+    return this.query.search(/\d/);
+  }
+
+  getFirstSpace() {
+    return this.query.search(' ');
+  }
+
+  async searchQuery(searchMethod) {
+    return await searchMethod(this.query);
+  }
+
   private validate() {
     const searchSchema = joi.object({
       query: joi.string().required(),

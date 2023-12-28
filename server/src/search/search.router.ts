@@ -1,14 +1,11 @@
 import express from 'express';
 
-import { Classes } from '../../db/schema';
-import { courseSort } from './search_original';
-
-import {
-  findCourses,
-  findProfessors,
-  findSubjects,
-} from './search.data-access';
 import { Search } from './Search';
+import {
+  searchCourses,
+  searchProfessors,
+  searchSubjects,
+} from './search.controller';
 
 const searchRouter = express.Router();
 
@@ -16,9 +13,8 @@ searchRouter.post('/getClassesByQuery', async (req, res) => {
   try {
     const { query } = req.body;
     const search = new Search({ query });
-    const validQuery = search.getQuery();
 
-    const courses = await findCourses(validQuery);
+    const courses = await searchCourses(search);
 
     res.status(200).json({
       message: `Success! Retrieved all courses by query: ${query}`,
@@ -36,9 +32,8 @@ searchRouter.post('/getSubjectsByQuery', async (req, res) => {
   try {
     const { query } = req.body;
     const search = new Search({ query });
-    const validQuery = search.getQuery();
 
-    const subjects = await findSubjects(validQuery);
+    const subjects = await searchSubjects(search);
 
     res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
@@ -53,9 +48,8 @@ searchRouter.post('/getProfessorsByQuery', async (req, res) => {
   try {
     const { query } = req.body;
     const search = new Search({ query });
-    const validQuery = search.getQuery();
 
-    const professors = await findProfessors(validQuery);
+    const professors = await searchProfessors(search);
 
     res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
