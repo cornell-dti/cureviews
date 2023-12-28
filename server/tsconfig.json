@@ -13,7 +13,7 @@
     "db/schema.ts",
     "server.ts",
     "endpoints.ts",
-    "src/admin/admin.ts",
+    "src/admin/AdminActions.ts",
     "src/admin/AdminChart.ts",
     "src/auth/auth.ts",
     "src/review/review.ts",

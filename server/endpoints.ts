@@ -29,7 +29,7 @@ import {
   getClassesByQuery,
   getSubjectsByQuery,
   getProfessorsByQuery,
-} from './src/search/search';
+} from './src/search/search_original';
 import {
   fetchReviewableClasses,
   reportReview,
@@ -37,7 +37,7 @@ import {
   undoReportReview,
   removeReview,
   getRaffleWinner,
-} from './src/admin/admin';
+} from './src/admin/AdminActions';
 import authRouter from './src/auth/auth.router';
 
 export interface Context {

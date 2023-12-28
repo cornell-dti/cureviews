@@ -10,7 +10,7 @@ import {
 } from '../utils';
 import { getVerificationTicket } from '../auth/auth';
 
-import shortid = require('shortid');
+import shortid from 'shortid';
 
 // The type of a query with a courseId
 export interface CourseIdQuery {
