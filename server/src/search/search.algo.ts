@@ -3,17 +3,13 @@
  * Thanks again Dray!
  */
 
-import { Search } from './Search';
-
-import { findCoursesByNum } from './search.data-access';
-
 // uses levenshtein algorithm to return the minimum edit distance between two strings.
 // It is exposed here for testing
 const editDistance = (a, b) => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
 
-  const matrix = [];
+  const matrix = [b.length][a.length];
 
   // increment along the first column of each row
   for (let i = 0; i <= b.length; i++) {
@@ -21,7 +17,7 @@ const editDistance = (a, b) => {
   }
 
   // increment each column in the first row
-  let j;
+  let j = 0;
   for (j = 0; j <= a.length; j++) {
     matrix[0][j] = j;
   }
