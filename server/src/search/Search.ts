@@ -23,9 +23,13 @@ export class Search {
 
   private validate() {
     const searchSchema = joi.object({
-      query: joi.string().alphanum().required(),
+      query: joi.string().required(),
     });
 
-    searchSchema.validate(this);
+    const { error, value } = searchSchema.validate(this);
+
+    if (error !== undefined) {
+      throw error;
+    }
   }
 }

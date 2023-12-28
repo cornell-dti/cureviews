@@ -3,15 +3,56 @@ import express from 'express';
 import { Classes } from '../../db/schema';
 import { courseSort } from './search_original';
 
-import { findCourse } from './search.data-access';
+import { findCourses, findSubjects } from './search.data-access';
+import { Search } from './Search';
 
 const searchRouter = express.Router();
 
 searchRouter.post('/getClassesByQuery', async (req, res) => {
-  const { query } = req.body;
-  const courses = await findCourse(query);
-  courses.sort(courseSort(query));
-  res.json({ message: 'hello' });
+  try {
+    const { query } = req.body;
+    const search = new Search({ query });
+    const validQuery = search.getQuery();
+
+    const courses = await findCourses(validQuery);
+    if (courses && courses.length > 0) {
+      return courses.sort(courseSort(validQuery));
+    }
+
+    res.status(200).json({
+      message: `Success! Retrieved all courses by query: ${query}`,
+      data: courses,
+    });
+  } catch (err) {
+    res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+/*
+//  * Searches the database on Subjects using the text index and returns matching subjects
+//  */
+searchRouter.post('/getSubjectsByQuery', async (req, res) => {
+  try {
+    const { query } = req.body;
+    const search = new Search({ query });
+    const validQuery = search.getQuery();
+
+    const courses = await findSubjects(validQuery);
+    if (courses && courses.length > 0) {
+      return courses.sort(courseSort(validQuery));
+    }
+
+    res.status(200).json({
+      message: `Success! Retrieved all courses by query: ${query}`,
+      data: courses,
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Error: at 'getSubjectsByQuery' endpoint");
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return { error: 'Internal Server Error' };
+  }
 });
 
 // /*

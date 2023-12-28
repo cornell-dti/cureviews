@@ -22,6 +22,7 @@ function setup() {
     response.sendFile(path.join(__dirname, '../../client/build/index.html')),
   );
 
+  app.use(express.json());
   app.use('/api', authRouter, searchRouter, profileRouter, reviewRouter);
 
   // eslint-disable-next-line no-console
