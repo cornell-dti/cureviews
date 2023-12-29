@@ -5,3 +5,8 @@ export interface InsertReviewDTO {
   courseId: string;
   review: Review;
 }
+
+export interface ReviewLikesDTO {
+  token: string;
+  id: string;
+}

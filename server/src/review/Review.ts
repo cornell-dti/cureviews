@@ -76,6 +76,9 @@ export class Review {
     copy.userId = '';
     return copy;
   }
+  getReviewId() {
+    return this.reviewId;
+  }
 
   getText() {
     return this.text;

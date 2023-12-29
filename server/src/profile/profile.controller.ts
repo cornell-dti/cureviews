@@ -1,4 +1,8 @@
-import { findReviewDoc, findStudent } from './profile.data-access';
+import {
+  findReviewDoc,
+  findStudent,
+  updateStudentReviews,
+} from './profile.data-access';
 
 export const getStudentReviewIds = async (netId: string) => {
   const student = await findStudent(netId);
@@ -32,4 +36,12 @@ export const getStudentReviewDocs = async (netId: string) => {
   );
 
   return reviews.filter((review) => review !== null);
+};
+
+export const addStudentReview = async (netId: string, reviewId: string) => {
+  const student = await findStudent(netId);
+  const reviews = student.reviews;
+
+  const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
+  await updateStudentReviews(netId, newReviews);
 };
