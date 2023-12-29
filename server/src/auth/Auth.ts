@@ -30,14 +30,14 @@ export class Auth {
    * @requires that you have a handleVerifyError, like as follows:
    * verify(token, function(){//do whatever}).catch(function(error){
    */
-  async getVerificationTicket(token?: string) {
+  async getVerificationTicket() {
     try {
-      if (token === null) {
+      if (this.token === null) {
         return null;
       }
 
       const ticket = await Auth.CLIENT.verifyIdToken({
-        idToken: token,
+        idToken: this.token,
         audience: Auth.AUDIENCE,
       });
 

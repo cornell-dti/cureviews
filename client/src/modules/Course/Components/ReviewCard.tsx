@@ -121,7 +121,7 @@ export default function ReviewCard({
         token: getAuthToken(),
       })
 
-      setLiked(response.data.result.hasLiked)
+      setLiked(response.data.hasLiked)
     }
 
     if (isLoggedIn) updateLiked()

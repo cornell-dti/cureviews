@@ -113,7 +113,8 @@ export const Course = () => {
         })
 
         clearSessionReview()
-        if (response.data.result.resCode === 1) {
+        console.log(response)
+        if (response.status === 200) {
           setIsReviewModalOpen(false)
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
@@ -161,8 +162,7 @@ export const Course = () => {
   async function reportReview(reviewId: string) {
     try {
       const response = await axios.post('reportReview', { id: reviewId })
-      const responseCode = response.data.result.resCode
-      if (responseCode === 1) {
+      if (response.status === 200) {
         setCourseReviews(
           courseReviews?.filter((element) => element._id !== reviewId)
         )

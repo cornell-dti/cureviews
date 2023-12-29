@@ -128,7 +128,7 @@ reviewRouter.post('/updateLiked', async (req, res) => {
         review: review,
       });
     } else {
-      return res.status(400).json({
+      return res.status(401).json({
         error: `Error: a non-Cornell email attempted to update likes on a review`,
       });
     }

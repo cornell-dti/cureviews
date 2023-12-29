@@ -9,9 +9,8 @@ authRouter.post('/getStudentEmailByToken', async (req, res) => {
   try {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
-    const validToken: string = auth.getToken();
 
-    const ticket = await auth.getVerificationTicket(validToken);
+    const ticket = await auth.getVerificationTicket();
     if (ticket.hd === 'cornell.edu') {
       return res.status(200).json({ result: ticket.email });
     }
