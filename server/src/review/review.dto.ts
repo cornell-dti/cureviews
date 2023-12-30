@@ -3,7 +3,18 @@ import { Review } from './review';
 export interface InsertReviewDTO {
   token: string;
   courseId: string;
-  review: Review;
+  review: ReviewRequestDTO;
+}
+
+interface ReviewRequestDTO {
+  rating: number;
+  difficulty: number;
+  workload: number;
+  professors: string[];
+  text: string;
+  isCovid: boolean;
+  grade: string;
+  major: string[];
 }
 
 export interface ReviewLikesDTO {

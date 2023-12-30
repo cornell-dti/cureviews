@@ -104,12 +104,12 @@ export const Course = () => {
     /**
      * Submit review and clear session storage
      */
-    async function submitReview(review: NewReview, classId: string) {
+    async function submitReview(review: NewReview, courseId: string) {
       try {
         const response = await axios.post('/api/insertReview', {
           token: token,
           review: review,
-          classId: classId,
+          courseId: courseId,
         })
 
         clearSessionReview()

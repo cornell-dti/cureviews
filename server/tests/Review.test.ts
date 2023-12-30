@@ -211,7 +211,7 @@ describe('tests', () => {
 
     const res = await axios.post(
       `http://localhost:${testingPort}/api/insertReview`,
-      { classId: cs2110Id, review: reviewToInsert, token: 'fakeTokenDti1' },
+      { courseId: cs2110Id, review: reviewToInsert, token: 'fakeTokenDti1' },
     );
     expect(res.data.result.resCode).toBe(1);
     const reviews = await Reviews.find({ text: reviewToInsert.text }).exec();

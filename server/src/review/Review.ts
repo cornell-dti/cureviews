@@ -15,7 +15,7 @@ type ReviewEntity = {
   isCovid: boolean;
   userId: string;
   grade: string;
-  major: string;
+  major: string[];
 };
 
 export class Review {
@@ -33,7 +33,7 @@ export class Review {
   private isCovid: boolean;
   private userId: string;
   private grade: string;
-  private major: string;
+  private major: string[];
 
   constructor({
     courseId,

@@ -20,7 +20,7 @@ export interface CourseIdQuery {
 interface InsertReviewRequest {
   token: string;
   review: Review;
-  classId: string;
+  courseId: string;
 }
 
 export interface InsertUserRequest {
@@ -141,7 +141,7 @@ export const insertUser: Endpoint<InsertUserRequest> = {
 export const insertReview: Endpoint<InsertReviewRequest> = {
   guard: [
     body('token').notEmpty().isAscii(),
-    body('classId').notEmpty().isAscii(),
+    body('courseId').notEmpty().isAscii(),
   ].concat(
     JSONNonempty('review', [
       'text',
@@ -155,7 +155,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
   callback: async (ctx: Context, request: InsertReviewRequest) => {
     try {
       const { token } = request;
-      const { classId } = request;
+      const { courseId } = request;
       const { review } = request;
 
       const ticket = await getVerificationTicket(token);
@@ -170,7 +170,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
         const netId = ticket.email.replace('@cornell.edu', '');
         const student = await Students.findOne({ netId });
 
-        const related = await Reviews.find({ class: classId });
+        const related = await Reviews.find({ class: courseId });
         if (related.find((v) => v.text === review.text)) {
           return {
             resCode: 1,
@@ -187,7 +187,7 @@ export const insertReview: Endpoint<InsertReviewRequest> = {
             difficulty: review.difficulty,
             rating: review.rating,
             workload: review.workload,
-            class: classId,
+            class: courseId,
             date: new Date(),
             visible: 0,
             reported: 0,

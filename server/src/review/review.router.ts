@@ -36,8 +36,10 @@ reviewRouter.post('/insertReview', async (req, res) => {
       const student = await findStudent(netId);
 
       const duplicates = await findReviewDuplicate(courseId);
+      console.log(review);
+      console.log(courseId);
 
-      if (duplicates.find((v) => v.text === review.getText())) {
+      if (duplicates.find((v) => v.text === review.text)) {
         res.status(400).json({
           error: 'Review is a duplicate of an already existing review',
         });
@@ -46,20 +48,20 @@ reviewRouter.post('/insertReview', async (req, res) => {
       try {
         const newReview: Review = new Review({
           reviewId: shortid.generate(),
-          text: review.getText(),
-          difficulty: review.getDifficulty(),
-          rating: review.getRating(),
-          workload: review.getWorkload(),
+          text: review.text,
+          difficulty: review.difficulty,
+          rating: review.rating,
+          workload: review.workload,
           courseId: courseId,
           date: new Date(),
           visible: 0,
           reported: 0,
-          professors: review.getProfessors(),
+          professors: review.professors,
           likes: 0,
-          isCovid: review.getIsCovid(),
+          isCovid: review.isCovid,
           userId: student._id,
-          grade: review.getGrade(),
-          major: review.getMajor(),
+          grade: review.grade,
+          major: review.major,
         });
 
         await insertReview(newReview);
@@ -70,6 +72,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
           result: newReview,
         });
       } catch (err) {
+        console.log(err);
         return res
           .status(500)
           .json({ error: `Internal Server Error: ${err.message}` });
