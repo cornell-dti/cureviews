@@ -8,16 +8,6 @@ import {
   getReviewsOverTimeTop15,
 } from './src/admin/AdminChart';
 import {
-  getReviewsByCourseId,
-  getCourseById,
-  insertReview,
-  insertUser,
-  getCourseByInfo,
-  updateLiked,
-  userHasLiked,
-} from './src/review/review_original';
-import { tokenIsAdmin } from './src/auth/auth_original';
-import {
   fetchReviewableClasses,
   reportReview,
   makeReviewVisible,
@@ -59,11 +49,11 @@ export function configure(app: express.Application) {
   // register(app, 'getCoursesByProfessor', getCoursesByProfessor);
   // register(app, 'insertReview', insertReview);
   // register(app, 'insertUser', insertUser);
-  // register(app, 'makeReviewVisible', makeReviewVisible);
-  // register(app, 'fetchReviewableClasses', fetchReviewableClasses);
-  // register(app, 'undoReportReview', undoReportReview);
-  // register(app, 'reportReview', reportReview);
-  // register(app, 'removeReview', removeReview);
+  register(app, 'makeReviewVisible', makeReviewVisible);
+  register(app, 'fetchReviewableClasses', fetchReviewableClasses);
+  register(app, 'undoReportReview', undoReportReview);
+  register(app, 'reportReview', reportReview);
+  register(app, 'removeReview', removeReview);
   // register(app, 'getCourseByInfo', getCourseByInfo);
   // register(app, 'totalReviews', totalReviews);
   // register(app, 'howManyReviewsEachClass', howManyReviewsEachClass);
@@ -76,7 +66,7 @@ export function configure(app: express.Application) {
   // register(app, 'getReviewsByStudentId', getReviewsByStudentId);
   // register(app, 'countReviewsByStudentId', countReviewsByStudentId);
   // register(app, 'getStudentEmailByToken', getStudentEmailByToken);
-  // register(app, 'getRaffleWinner', getRaffleWinner);
+  register(app, 'getRaffleWinner', getRaffleWinner);
 }
 
 function register<T>(

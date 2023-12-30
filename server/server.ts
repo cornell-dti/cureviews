@@ -11,6 +11,8 @@ import profileRouter from './src/profile/profile.router';
 import reviewRouter from './src/review/review.router';
 import courseRouter from './src/course/course.router';
 
+import { configure } from './endpoints';
+
 const app = express();
 app.use(sslRedirect(['development', 'production']));
 app.use(cors());
@@ -24,6 +26,7 @@ function setup() {
   );
 
   app.use(express.json());
+
   app.use(
     '/api',
     authRouter,
@@ -32,6 +35,8 @@ function setup() {
     reviewRouter,
     courseRouter,
   );
+
+  configure(app);
 
   // eslint-disable-next-line no-console
   app.listen(port, () => console.log(`Listening on port ${port}...`));
