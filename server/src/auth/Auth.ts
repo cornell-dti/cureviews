@@ -48,14 +48,14 @@ export class Auth {
   }
 
   private validate() {
-    const searchSchema = joi.object({
+    const tokenSchema = joi.object({
       token: joi
         .string()
         .regex(new RegExp(/^(?=.*[A-Z0-9])/i))
         .required(),
     });
 
-    const { error, value } = searchSchema.validate(this);
+    const { error, value } = tokenSchema.validate(this);
 
     if (error !== undefined) {
       throw error;
