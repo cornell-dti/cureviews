@@ -10,9 +10,9 @@ export const findReviewCrossListOR = async (crossListOR) => {
   return reviews;
 };
 
-export const findReviewDuplicate = async (courseId: string) => {
-  const duplicates = await Reviews.find({ class: courseId });
-  return duplicates;
+export const findClassReviews = async (courseId: string) => {
+  const reviews = await Reviews.find({ class: courseId });
+  return reviews;
 };
 
 export const insertReview = async (review) => {

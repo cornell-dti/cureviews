@@ -6,7 +6,7 @@ import { verifyToken } from '../auth/auth.controller';
 import { updateStudentLikedReviews } from '../profile/profile.data-access';
 import {
   findReview,
-  findReviewDuplicate,
+  findClassReviews,
   insertReview,
   updateReviewLikes,
 } from './review.data-access';
@@ -30,11 +30,9 @@ reviewRouter.post('/insertReview', async (req, res) => {
 
     const { netId, student } = verified;
 
-    const duplicates = await findReviewDuplicate(courseId);
-    console.log(review);
-    console.log(courseId);
+    const reviews = await findClassReviews(courseId);
 
-    if (duplicates.find((v) => v.text === review.text)) {
+    if (reviews.find((v) => v.text === review.text)) {
       res.status(400).json({
         error: 'Review is a duplicate of an already existing review',
       });
