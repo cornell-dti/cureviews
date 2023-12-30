@@ -65,15 +65,10 @@ reviewRouter.post('/insertReview', async (req, res) => {
         result: newReview,
       });
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .json({ error: `Internal Server Error: ${err.message}` });
+      return res.status(500).json({ error: `Internal Server Error: ${err}` });
     }
   } catch (err) {
-    return res
-      .status(500)
-      .json({ error: `Internal Server Error: ${err.message}` });
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
