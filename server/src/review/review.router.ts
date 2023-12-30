@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { InsertReviewDTO, ReviewLikesDTO } from './review.dto';
+import { InsertReviewDTO, ReviewLikesDTO, ReportReviewDTO } from './review.dto';
 import { Auth } from '../auth/auth';
 import { verifyToken } from '../auth/auth.controller';
 import { updateStudentLikedReviews } from '../profile/profile.data-access';
@@ -13,6 +13,7 @@ import {
 import shortid from 'shortid';
 import { Review } from './review';
 import { addStudentReview } from '../profile/profile.controller';
+import { reportReview } from './review.controller';
 
 const reviewRouter = express.Router();
 
@@ -142,6 +143,17 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
         hasLiked: false,
       });
     }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+reviewRouter.post('/reportReview', async (req, res) => {
+  try {
+    const { id }: ReportReviewDTO = req.body;
+    await reportReview(id);
   } catch (err) {
     return res
       .status(500)

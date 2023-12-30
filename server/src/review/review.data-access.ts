@@ -36,3 +36,14 @@ export const updateReviewLikes = async (
     { $pull: { likedBy: netId } },
   );
 };
+
+export const updateReviewVisibility = async (
+  reviewId: string,
+  reported: number,
+  visible: number,
+) => {
+  await Reviews.updateOne(
+    { _id: reviewId },
+    { $set: { visible: visible, reported: reported } },
+  );
+};

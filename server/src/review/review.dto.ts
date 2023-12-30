@@ -1,5 +1,3 @@
-import { Review } from './review';
-
 export interface InsertReviewDTO {
   token: string;
   courseId: string;
@@ -19,5 +17,9 @@ interface ReviewRequestDTO {
 
 export interface ReviewLikesDTO {
   token: string;
+  id: string;
+}
+
+export interface ReportReviewDTO {
   id: string;
 }
