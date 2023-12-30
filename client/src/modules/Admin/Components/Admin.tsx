@@ -55,7 +55,8 @@ export const Admin = () => {
       .post('/api/fetchReviewableClasses', { token: token })
       .then((response) => {
         const result = response.data.result
-        if (result.resCode !== 0) {
+        console.log(result)
+        if (response.status === 200) {
           setUnapprovedReviews(result)
         } else {
           console.log('Error at fetchReviewableClasses')

@@ -1,6 +1,6 @@
 import { TokenPayload } from 'google-auth-library';
 
-export interface InsertUserDTO {
+export interface GetUserDTO {
   token: TokenPayload;
 }
 

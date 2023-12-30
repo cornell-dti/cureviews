@@ -30,7 +30,9 @@ authRouter.post('/tokenIsAdmin', async (req, res) => {
   const { token } = req.body;
   const auth: Auth = new Auth({ token });
 
-  await verifyTokenAdmin(auth);
+  const isAdmin = await verifyTokenAdmin(auth);
+
+  res.status(200).json({ result: isAdmin });
 });
 
 export default authRouter;

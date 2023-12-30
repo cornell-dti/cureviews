@@ -38,35 +38,31 @@ reviewRouter.post('/insertReview', async (req, res) => {
       });
     }
 
-    try {
-      const newReview: Review = new Review({
-        _id: shortid.generate(),
-        text: review.text,
-        difficulty: review.difficulty,
-        rating: review.rating,
-        workload: review.workload,
-        class: courseId,
-        date: new Date(),
-        visible: 0,
-        reported: 0,
-        professors: review.professors,
-        likes: 0,
-        isCovid: review.isCovid,
-        user: student._id,
-        grade: review.grade,
-        major: review.major,
-      });
+    const newReview: Review = new Review({
+      _id: shortid.generate(),
+      text: review.text,
+      difficulty: review.difficulty,
+      rating: review.rating,
+      workload: review.workload,
+      class: courseId,
+      date: new Date(),
+      visible: 0,
+      reported: 0,
+      professors: review.professors,
+      likes: 0,
+      isCovid: review.isCovid,
+      user: student._id,
+      grade: review.grade,
+      major: review.major,
+    });
 
-      await insertReview(newReview);
-      await addStudentReview(netId, newReview.getReviewId());
+    await insertReview(newReview);
+    await addStudentReview(netId, newReview.getReviewId());
 
-      return res.status(200).json({
-        message: 'Successfully inserted new review!',
-        result: newReview,
-      });
-    } catch (err) {
-      return res.status(500).json({ error: `Internal Server Error: ${err}` });
-    }
+    return res.status(200).json({
+      message: 'Successfully inserted new review!',
+      result: newReview,
+    });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

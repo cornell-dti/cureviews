@@ -121,7 +121,10 @@ export class Review {
 
   private validate() {
     const searchSchema = joi.object({
-      _id: joi.string().required(),
+      _id: joi
+        .string()
+        .regex(new RegExp(/^(?=.*[A-Z0-9])/i))
+        .required(),
       text: joi.string().required(),
       difficulty: joi.number().required(),
       rating: joi.number().required(),

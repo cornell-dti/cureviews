@@ -39,9 +39,13 @@ export const getStudentReviewDocs = async (netId: string) => {
 };
 
 export const addStudentReview = async (netId: string, reviewId: string) => {
-  const student = await findStudent(netId);
-  const reviews = student.reviews;
+  try {
+    const student = await findStudent(netId);
+    const reviews = student.reviews;
 
-  const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
-  await updateStudentReviews(netId, newReviews);
+    const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
+    await updateStudentReviews(netId, newReviews);
+  } catch (err) {
+    throw err;
+  }
 };
