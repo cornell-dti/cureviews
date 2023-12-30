@@ -79,7 +79,7 @@ export const JSONNonempty = (jsonFieldName: string, fields: string[]) => {
   return ret;
 };
 
-export const verifyToken = async (token: string) => {
+export const verifyTokenAdmin = async (token: string) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
     if (regex.test(token)) {
@@ -96,7 +96,7 @@ export const verifyToken = async (token: string) => {
     return false;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log("Error: at 'verifyToken' method");
+    console.log("Error: at 'verifyTokenAdmin' method");
     // eslint-disable-next-line no-console
     console.log(error);
     return false;

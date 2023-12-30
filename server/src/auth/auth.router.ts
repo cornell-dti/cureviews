@@ -1,7 +1,7 @@
 import express from 'express';
 import { Auth } from './auth';
 
-import { verifyToken } from './auth.controller';
+import { verifyTokenAdmin } from './auth.controller';
 
 const authRouter = express.Router();
 
@@ -30,7 +30,7 @@ authRouter.post('/tokenIsAdmin', async (req, res) => {
   const { token } = req.body;
   const auth: Auth = new Auth({ token });
 
-  await verifyToken(auth);
+  await verifyTokenAdmin(auth);
 });
 
 export default authRouter;

@@ -2,7 +2,7 @@ import { body } from 'express-validator';
 import { OAuth2Client } from 'google-auth-library';
 import { Context, Endpoint } from '../../endpoints';
 import { Students } from '../../db/schema';
-import { verifyToken } from '../utils';
+import { verifyTokenAdmin } from '../utils';
 
 interface AdminRequest {
   token: string;
@@ -66,5 +66,5 @@ export const getUserByNetId = async (netId: string) => {
 export const tokenIsAdmin: Endpoint<AdminRequest> = {
   guard: [body('token').notEmpty().isAscii()],
   callback: async (ctx: Context, adminRequest: AdminRequest) =>
-    await verifyToken(adminRequest.token),
+    await verifyTokenAdmin(adminRequest.token),
 };

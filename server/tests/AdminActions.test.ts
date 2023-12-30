@@ -10,7 +10,7 @@ import * as Utils from '../src/utils';
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
 const mockVerification = jest
-  .spyOn(Utils, 'verifyToken')
+  .spyOn(Utils, 'verifyTokenAdmin')
   .mockImplementation(async (token?: string) => true);
 
 const testingPort = 47728;

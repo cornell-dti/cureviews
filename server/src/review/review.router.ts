@@ -2,11 +2,8 @@ import express from 'express';
 
 import { InsertReviewDTO, ReviewLikesDTO } from './review.dto';
 import { Auth } from '../auth/auth';
-import { insertUser } from '../auth/auth.controller';
-import {
-  findStudent,
-  updateStudentLikedReviews,
-} from '../profile/profile.data-access';
+import { verifyToken } from '../auth/auth.controller';
+import { updateStudentLikedReviews } from '../profile/profile.data-access';
 import {
   findReview,
   findReviewDuplicate,
@@ -23,64 +20,57 @@ reviewRouter.post('/insertReview', async (req, res) => {
   try {
     const { token, courseId, review }: InsertReviewDTO = req.body;
     const auth = new Auth({ token });
-    const ticket = await auth.getVerificationTicket();
+    const verified = await verifyToken(auth);
 
-    if (!ticket) {
-      return res.status(401).json({ error: 'Missing verification ticket' });
+    if (verified === null) {
+      return res
+        .status(401)
+        .json({ error: 'Missing or invalid verification ticket' });
     }
 
-    if (ticket.hd === 'cornell.edu') {
-      await insertUser({ token: ticket });
+    const { netId, student } = verified;
 
-      const netId = ticket.email.replace('@cornell.edu', '');
-      const student = await findStudent(netId);
+    const duplicates = await findReviewDuplicate(courseId);
+    console.log(review);
+    console.log(courseId);
 
-      const duplicates = await findReviewDuplicate(courseId);
-      console.log(review);
-      console.log(courseId);
-
-      if (duplicates.find((v) => v.text === review.text)) {
-        res.status(400).json({
-          error: 'Review is a duplicate of an already existing review',
-        });
-      }
-
-      try {
-        const newReview: Review = new Review({
-          _id: shortid.generate(),
-          text: review.text,
-          difficulty: review.difficulty,
-          rating: review.rating,
-          workload: review.workload,
-          class: courseId,
-          date: new Date(),
-          visible: 0,
-          reported: 0,
-          professors: review.professors,
-          likes: 0,
-          isCovid: review.isCovid,
-          user: student._id,
-          grade: review.grade,
-          major: review.major,
-        });
-
-        await insertReview(newReview);
-        await addStudentReview(netId, newReview.getReviewId());
-
-        return res.status(200).json({
-          message: 'Successfully inserted new review!',
-          result: newReview,
-        });
-      } catch (err) {
-        console.log(err);
-        return res
-          .status(500)
-          .json({ error: `Internal Server Error: ${err.message}` });
-      }
-    } else {
-      return res.status(400).json({
-        error: `Error: a non-Cornell email attempted to insert review`,
+    if (duplicates.find((v) => v.text === review.text)) {
+      res.status(400).json({
+        error: 'Review is a duplicate of an already existing review',
       });
+    }
+
+    try {
+      const newReview: Review = new Review({
+        _id: shortid.generate(),
+        text: review.text,
+        difficulty: review.difficulty,
+        rating: review.rating,
+        workload: review.workload,
+        class: courseId,
+        date: new Date(),
+        visible: 0,
+        reported: 0,
+        professors: review.professors,
+        likes: 0,
+        isCovid: review.isCovid,
+        user: student._id,
+        grade: review.grade,
+        major: review.major,
+      });
+
+      await insertReview(newReview);
+      await addStudentReview(netId, newReview.getReviewId());
+
+      return res.status(200).json({
+        message: 'Successfully inserted new review!',
+        result: newReview,
+      });
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .json({ error: `Internal Server Error: ${err.message}` });
     }
   } catch (err) {
     return res
@@ -93,48 +83,42 @@ reviewRouter.post('/updateLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesDTO = req.body;
     const auth = new Auth({ token });
-    const ticket = await auth.getVerificationTicket();
+    const verified = await verifyToken(auth);
 
-    if (!ticket) {
-      return res.status(401).json({ error: 'Missing verification ticket' });
+    if (verified === null) {
+      return res
+        .status(401)
+        .json({ error: 'Missing or invalid verification ticket' });
     }
 
-    if (ticket.hd === 'cornell.edu') {
-      await insertUser({ token: ticket });
+    const { netId, student } = verified;
 
-      const netId = ticket.email.replace('@cornell.edu', '');
-      const student = await findStudent(netId);
-      const review = await findReview(id);
+    const review = await findReview(id);
 
-      if (
-        student.likedReviews !== undefined &&
-        student.likedReviews.includes(review._id)
-      ) {
-        await updateStudentLikedReviews(netId, review._id);
+    if (
+      student.likedReviews !== undefined &&
+      student.likedReviews.includes(review._id)
+    ) {
+      await updateStudentLikedReviews(netId, review._id);
 
-        if (review.likes === undefined) {
-          await updateReviewLikes(id, 0, netId);
-        } else {
-          await updateReviewLikes(id, Math.max(0, review.likes - 1), netId);
-        }
+      if (review.likes === undefined) {
+        await updateReviewLikes(id, 0, netId);
       } else {
-        await updateStudentLikedReviews(netId, review._id);
-        if (review.likes === undefined) {
-          await updateReviewLikes(id, 1, netId);
-        } else {
-          await updateReviewLikes(id, review.likes + 1, netId);
-        }
+        await updateReviewLikes(id, Math.max(0, review.likes - 1), netId);
       }
-
-      return res.status(200).json({
-        message: 'Successfully updated like count on review!',
-        review: review,
-      });
     } else {
-      return res.status(401).json({
-        error: `Error: a non-Cornell email attempted to update likes on a review`,
-      });
+      await updateStudentLikedReviews(netId, review._id);
+      if (review.likes === undefined) {
+        await updateReviewLikes(id, 1, netId);
+      } else {
+        await updateReviewLikes(id, review.likes + 1, netId);
+      }
     }
+
+    return res.status(200).json({
+      message: 'Successfully updated like count on review!',
+      review: review,
+    });
   } catch (err) {
     return res
       .status(500)
@@ -146,22 +130,15 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesDTO = req.body;
     const auth = new Auth({ token });
-    const ticket = await auth.getVerificationTicket();
+    const verified = await verifyToken(auth);
 
-    if (!ticket) {
-      return res.status(401).json({ error: 'Missing verification ticket' });
+    if (verified === null) {
+      return res
+        .status(401)
+        .json({ error: 'Missing or invalid verification ticket' });
     }
 
-    if (ticket.hd !== 'cornell.edu') {
-      return res.status(400).json({
-        error: `Error: a non-Cornell email attempted to update likes on a review`,
-      });
-    }
-
-    await insertUser({ token: ticket });
-
-    const netId = ticket.email.replace('@cornell.edu', '');
-    const student = await findStudent(netId);
+    const { netId, student } = verified;
 
     const review = await findReview(id);
 

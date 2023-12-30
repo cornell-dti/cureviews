@@ -1,6 +1,6 @@
 /* eslint-disable spaced-comment */
 import { body } from 'express-validator';
-import { verifyToken } from '../utils';
+import { verifyTokenAdmin } from '../utils';
 import { Context, Endpoint } from '../../endpoints';
 import { Reviews, Classes, Subjects } from '../../db/schema';
 
@@ -32,7 +32,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
     callback: async (ctx: Context, request: GetReviewsOverTimeTop15Request) => {
       const { token, step, range } = request;
       try {
-        const userIsAdmin = await verifyToken(token);
+        const userIsAdmin = await verifyTokenAdmin(token);
         if (userIsAdmin) {
           const top15 = await topSubjectsCB(ctx, { token });
           // contains cs, math, gov etc...
@@ -162,7 +162,7 @@ export const getReviewsOverTimeTop15: Endpoint<GetReviewsOverTimeTop15Request> =
  * Helper function for [topSubjects]
  */
 const topSubjectsCB = async (_ctx: Context, request: Token) => {
-  const userIsAdmin = await verifyToken(request.token);
+  const userIsAdmin = await verifyTokenAdmin(request.token);
   if (!userIsAdmin) {
     return null;
   }
@@ -244,7 +244,7 @@ export const howManyEachClass: Endpoint<Token> = {
   callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyTokenAdmin(token);
       if (userIsAdmin) {
         const pipeline = [
           {
@@ -278,7 +278,7 @@ export const totalReviews: Endpoint<Token> = {
   callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyTokenAdmin(token);
       if (userIsAdmin) {
         return Reviews.find({}).count();
       }
@@ -302,7 +302,7 @@ export const howManyReviewsEachClass: Endpoint<Token> = {
   callback: async (_ctx: Context, request: Token) => {
     const { token } = request;
     try {
-      const userIsAdmin = await verifyToken(token);
+      const userIsAdmin = await verifyTokenAdmin(token);
       if (userIsAdmin) {
         const pipeline = [
           {

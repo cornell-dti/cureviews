@@ -27,6 +27,24 @@ export const insertUser = async (googleObject: InsertUserDTO) => {
 };
 
 export const verifyToken = async (auth: Auth) => {
+  const ticket = await auth.getVerificationTicket();
+
+  if (!ticket) {
+    return null;
+  }
+
+  if (ticket.hd === 'cornell.edu') {
+    await insertUser({ token: ticket });
+
+    const netId = ticket.email.replace('@cornell.edu', '');
+    const student = await findStudent(netId);
+    return { netId, student };
+  } else {
+    return null;
+  }
+};
+
+export const verifyTokenAdmin = async (auth: Auth) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
 
