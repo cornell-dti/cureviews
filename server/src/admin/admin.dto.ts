@@ -8,3 +8,7 @@ export interface AdminReviewRequestDTO {
 export interface AdminRequestDTO {
   token: string;
 }
+
+export interface RaffleWinnerDTO {
+  startDate: string;
+}

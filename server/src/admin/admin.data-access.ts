@@ -7,3 +7,10 @@ export const findAllPendingReviews = async () => {
     { sort: { date: -1 }, limit: 700 },
   ).exec();
 };
+
+export const findAllReviewsAfterDate = async (date: Date) => {
+  return await Reviews.aggregate([
+    { $match: { date: { $gte: date } } },
+    { $sample: { size: 1 } },
+  ]);
+};

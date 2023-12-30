@@ -1,7 +1,15 @@
 import express from 'express';
 import { Auth } from '../auth/auth';
-import { AdminReviewRequestDTO, AdminRequestDTO } from './admin.dto';
-import { getPendingReviews, setReviewVisible } from './admin.controller';
+import {
+  AdminReviewRequestDTO,
+  AdminRequestDTO,
+  RaffleWinnerDTO,
+} from './admin.dto';
+import {
+  getPendingReviews,
+  setReviewVisible,
+  getRaffleWinner,
+} from './admin.controller';
 
 const adminRouter = express.Router();
 
@@ -38,6 +46,27 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
     return res.status(200).json({
       message: 'Retrieved all pending reviews',
       result: pendingReviews,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/getRaffleWinner', async (req, res) => {
+  try {
+    const { startDate }: RaffleWinnerDTO = req.body;
+    const winner = await getRaffleWinner(startDate);
+
+    if (winner === null) {
+      return res.status(400).json({
+        error: `No raffle winner found.`,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved raffle winner',
+      result: winner,
     });
   } catch (err) {
     console.log(err);
