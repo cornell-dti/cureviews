@@ -79,9 +79,9 @@ afterAll(async () => {
 });
 
 describe('tests', () => {
-  it('fetchReviewableClasses-works', async () => {
+  it('fetchPendingReviews-works', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/fetchReviewableClasses`,
+      `http://localhost:${testingPort}/api/fetchPendingReviews`,
       { token: 'non-empty' },
     );
     const ids = res.data.result.map((e) => e._id);

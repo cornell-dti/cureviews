@@ -8,7 +8,7 @@ import {
   getReviewsOverTimeTop15,
 } from './src/admin/AdminChart';
 import {
-  fetchReviewableClasses,
+  fetchPendingReviews,
   reportReview,
   makeReviewVisible,
   undoReportReview,
@@ -49,8 +49,6 @@ export function configure(app: express.Application) {
   // register(app, 'getCoursesByProfessor', getCoursesByProfessor);
   // register(app, 'insertReview', insertReview);
   // register(app, 'insertUser', insertUser);
-  register(app, 'makeReviewVisible', makeReviewVisible);
-  register(app, 'fetchReviewableClasses', fetchReviewableClasses);
   register(app, 'undoReportReview', undoReportReview);
   register(app, 'reportReview', reportReview);
   register(app, 'removeReview', removeReview);

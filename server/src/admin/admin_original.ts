@@ -247,7 +247,7 @@ export const reportReview: Endpoint<ReviewRequest> = {
   },
 };
 
-export const fetchReviewableClasses: Endpoint<AdminProfessorsRequest> = {
+export const fetchPendingReviews: Endpoint<AdminProfessorsRequest> = {
   guard: [body('token').notEmpty().isAscii()],
   callback: async (ctx: Context, request: AdminProfessorsRequest) => {
     try {
@@ -262,7 +262,7 @@ export const fetchReviewableClasses: Endpoint<AdminProfessorsRequest> = {
       return { resCode: 0 };
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log("Error: at 'fetchReviewableClasses' method");
+      console.log("Error: at 'fetchPendingReviews' method");
       // eslint-disable-next-line no-console
       console.log(error);
       return { resCode: 0 };

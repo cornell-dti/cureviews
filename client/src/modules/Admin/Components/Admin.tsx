@@ -52,14 +52,14 @@ export const Admin = () => {
 
   useEffect(() => {
     axios
-      .post('/api/fetchReviewableClasses', { token: token })
+      .post('/api/fetchPendingReviews', { token: token })
       .then((response) => {
         const result = response.data.result
         console.log(result)
         if (response.status === 200) {
           setUnapprovedReviews(result)
         } else {
-          console.log('Error at fetchReviewableClasses')
+          console.log('Error at fetchPendingReviews')
         }
       })
   }, [token, isAuthenticating])

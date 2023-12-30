@@ -12,7 +12,7 @@ export const getCourseById = async ({ courseId }: CourseIdDTO) => {
   // check: make sure course id is valid and non-malicious
   const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
   if (regex.test(courseId)) {
-    return await findCourseById(courseId);
+    return findCourseById(courseId);
   }
 };
 

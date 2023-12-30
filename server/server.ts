@@ -10,6 +10,7 @@ import searchRouter from './src/search/search.router';
 import profileRouter from './src/profile/profile.router';
 import reviewRouter from './src/review/review.router';
 import courseRouter from './src/course/course.router';
+import adminRouter from './src/admin/admin.router';
 
 import { configure } from './endpoints';
 
@@ -34,9 +35,8 @@ function setup() {
     profileRouter,
     reviewRouter,
     courseRouter,
+    adminRouter,
   );
-
-  configure(app);
 
   // eslint-disable-next-line no-console
   app.listen(port, () => console.log(`Listening on port ${port}...`));

@@ -1,7 +1,7 @@
 import express from 'express';
 import { Auth } from '../auth/auth';
 import { AdminReviewRequestDTO, AdminRequestDTO } from './admin.dto';
-import { getReviewableReviews, setReviewVisible } from './admin.controller';
+import { getPendingReviews, setReviewVisible } from './admin.controller';
 
 const adminRouter = express.Router();
 
@@ -24,24 +24,23 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchReviewableClasses', async (req, res) => {
+adminRouter.post('/fetchPendingReviews', async (req, res) => {
   try {
     const { token }: AdminRequestDTO = req.body;
     const auth = new Auth({ token });
-    const reviewableReviews = await getReviewableReviews(auth);
-    if (reviewableReviews === null) {
+    const pendingReviews = await getPendingReviews(auth);
+    if (pendingReviews === null) {
       return res.status(400).json({
         error: `User is not an admin.`,
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: 'Retrieved all pending reviews',
-        result: reviewableReviews,
-      });
+    return res.status(200).json({
+      message: 'Retrieved all pending reviews',
+      result: pendingReviews,
+    });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
