@@ -47,19 +47,19 @@ reviewRouter.post('/insertReview', async (req, res) => {
 
       try {
         const newReview: Review = new Review({
-          reviewId: shortid.generate(),
+          _id: shortid.generate(),
           text: review.text,
           difficulty: review.difficulty,
           rating: review.rating,
           workload: review.workload,
-          courseId: courseId,
+          class: courseId,
           date: new Date(),
           visible: 0,
           reported: 0,
           professors: review.professors,
           likes: 0,
           isCovid: review.isCovid,
-          userId: student._id,
+          user: student._id,
           grade: review.grade,
           major: review.major,
         });

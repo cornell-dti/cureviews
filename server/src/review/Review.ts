@@ -1,8 +1,8 @@
 import joi from 'joi';
 
 type ReviewEntity = {
-  courseId: string;
-  reviewId: string;
+  class: string;
+  _id: string;
   text: string;
   difficulty: number;
   rating: number;
@@ -13,14 +13,14 @@ type ReviewEntity = {
   professors: string[];
   likes: number;
   isCovid: boolean;
-  userId: string;
+  user: string;
   grade: string;
   major: string[];
 };
 
 export class Review {
-  private courseId: string;
-  private reviewId: string;
+  private class: string;
+  private _id: string;
   private text: string;
   private difficulty: number;
   private rating: number;
@@ -31,13 +31,12 @@ export class Review {
   private professors: string[];
   private likes: number;
   private isCovid: boolean;
-  private userId: string;
+  private user: string;
   private grade: string;
   private major: string[];
 
   constructor({
-    courseId,
-    reviewId,
+    _id,
     text,
     difficulty,
     rating,
@@ -48,12 +47,12 @@ export class Review {
     professors,
     likes,
     isCovid,
-    userId,
+    user: userId,
     grade,
     major,
+    class: courseId,
   }: ReviewEntity) {
-    this.courseId = courseId;
-    this.reviewId = reviewId;
+    this._id = _id;
     this.text = text;
     this.difficulty = difficulty;
     this.rating = rating;
@@ -64,20 +63,21 @@ export class Review {
     this.professors = professors;
     this.likes = likes;
     this.isCovid = isCovid;
-    this.userId = userId;
+    this.user = userId;
     this.grade = grade;
     this.major = major;
+    this.class = courseId;
 
     this.validate();
   }
 
   sanitizeReview() {
     const copy = this;
-    copy.userId = '';
+    copy.user = '';
     return copy;
   }
   getReviewId() {
-    return this.reviewId;
+    return this._id;
   }
 
   getText() {
@@ -121,19 +121,19 @@ export class Review {
 
   private validate() {
     const searchSchema = joi.object({
-      reviewId: joi.string().required(),
+      _id: joi.string().required(),
       text: joi.string().required(),
       difficulty: joi.number().required(),
       rating: joi.number().required(),
       workload: joi.number().required(),
-      courseId: joi.string().required(),
+      class: joi.string().required(),
       date: joi.date().required(),
       visible: joi.required(),
       reported: joi.required(),
       professors: joi.required(),
       likes: joi.number().required(),
       isCovid: joi.boolean().required(),
-      userId: joi.boolean().required(),
+      user: joi.string().required(),
       grade: joi.optional(),
       major: joi.optional(),
     });
