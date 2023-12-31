@@ -64,7 +64,7 @@ export async function fetchAddClassesForSubject(
       const profs: string[] = await Promise.all(
         professors.map(async (p) => {
           // This has to be an atomic upset. Otherwise, this causes some race condition badness
-          const professorIfExists = await Professors.findOneAndUpdate(
+          const professorIfExistsInClass = await Professors.findOneAndUpdate(
             { fullName: `${p.firstName} ${p.lastName}` },
             {
               $setOnInsert: {
@@ -76,7 +76,7 @@ export async function fetchAddClassesForSubject(
             { upsert: true, new: true },
           );
 
-          return professorIfExists.fullName;
+          return professorIfExistsInClass.fullName;
         }),
       ).catch((err) => {
         console.log(err);
