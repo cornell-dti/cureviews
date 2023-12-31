@@ -10,10 +10,7 @@ import {
   setReviewVisible,
   getRaffleWinner,
 } from './admin.controller';
-import {
-  fetchAddSubjects,
-  fetchSubjects,
-} from '../../scripts/populate-subjects';
+import { fetchSubjects } from '../../scripts/populate-subjects';
 import { fetchAddClassesForSubject } from '../../scripts/populate-courses';
 const adminRouter = express.Router();
 
