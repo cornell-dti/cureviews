@@ -10,7 +10,11 @@ import {
   setReviewVisible,
   getRaffleWinner,
 } from './admin.controller';
-
+import {
+  fetchAddSubjects,
+  fetchSubjects,
+} from '../../scripts/populate-subjects';
+import { fetchAddClassesForSubject } from '../../scripts/populate-courses';
 const adminRouter = express.Router();
 
 adminRouter.post('/makeReviewVisible', async (req, res) => {
@@ -67,6 +71,38 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
     return res.status(200).json({
       message: 'Retrieved raffle winner',
       result: winner,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/testScripts', async (req, res) => {
+  try {
+    const subjects = await fetchSubjects(
+      'https://classes.cornell.edu/api/2.0/',
+      'SP23',
+    );
+
+    if (subjects) {
+      const result = subjects.map(async (subject) => {
+        await fetchAddClassesForSubject(
+          subject,
+          'https://classes.cornell.edu/api/2.0/',
+          'SP23',
+        );
+      });
+
+      if (result) {
+        return res.status(200).json({
+          result: true,
+        });
+      }
+    }
+
+    return res.status(200).json({
+      result: false,
     });
   } catch (err) {
     console.log(err);

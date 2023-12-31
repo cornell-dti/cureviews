@@ -7,7 +7,7 @@ import {
   updateProfessors,
   findAllSemesters,
   resetProfessorArray,
-} from '../../scrapping/dbInit';
+} from '../../scripts/dbInit';
 import { getCourseById, verifyTokenAdmin } from '../utils';
 import { ReviewRequest } from '../review/review_original';
 

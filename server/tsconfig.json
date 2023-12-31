@@ -9,7 +9,7 @@
     "outDir": "dist"
   },
   "files": [
-    "scrapping/dbInit.ts",
+    "scripts/dbInit.ts",
     "db/schema.ts",
     "server.ts",
     "endpoints.ts",
