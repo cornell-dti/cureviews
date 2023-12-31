@@ -13,19 +13,24 @@ export async function fetchClassesForSubject(
   semester: string,
   subject: ScrapingSubject,
 ): Promise<ScrapingClass[] | null> {
-  const result = await axios.get(
-    `${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`,
-    { timeout: 10000 },
-  );
-  if (result.status !== 200 || result.data.status !== 'success') {
-    console.log(
-      `Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`,
+  try {
+    const result = await axios.get(
+      `${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`,
+      { timeout: 10000 },
     );
+
+    if (result.status !== 200 || result.data.status !== 'success') {
+      console.log(
+        `Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`,
+      );
+      return null;
+    }
+
+    const classes = result.data.data.classes;
+    return classes;
+  } catch (err) {
     return null;
   }
-
-  const classes = result.data.data.classes;
-  return classes;
 }
 
 export async function fetchAddClassesForSubject(

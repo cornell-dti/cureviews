@@ -11,19 +11,24 @@ export async function fetchSubjects(
   endpoint: string,
   semester: string,
 ): Promise<ScrapingSubject[] | null> {
-  const result = await axios.get(
-    `${endpoint}config/subjects.json?roster=${semester}`,
-    { timeout: 10000 },
-  );
-  if (result.status !== 200 || result.data.status !== 'success') {
-    console.log(
-      `Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`,
+  try {
+    const result = await axios.get(
+      `${endpoint}config/subjects.json?roster=${semester}`,
+      { timeout: 10000 },
     );
+
+    if (result.status !== 200 || result.data.status !== 'success') {
+      console.log(
+        `Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`,
+      );
+      return null;
+    }
+
+    const subjects = result.data.data.subjects;
+    return subjects;
+  } catch (err) {
     return null;
   }
-
-  const subjects = result.data.data.subjects;
-  return subjects;
 }
 
 export async function fetchAddSubjects(

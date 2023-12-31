@@ -90,7 +90,7 @@ adminRouter.post('/testScripts', async (req, res) => {
         await fetchAddClassesForSubject(
           subject,
           'https://classes.cornell.edu/api/2.0/',
-          'SP23',
+          'FA23',
         );
       });
 
