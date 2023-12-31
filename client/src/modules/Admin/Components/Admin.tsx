@@ -152,7 +152,18 @@ export const Admin = () => {
   // course API for new classes and updates classes existing in the database.
   // sShould run once a semester, when new classes are added to the roster.
   function addNewSem() {
-    console.log('Deprecated functionality')
+    axios
+      .post('/api/addNewSemester', {
+        semester: 'FA23',
+      })
+      .then((response) => {
+        const result = response.data.result
+        if (result === true) {
+          console.log('New Semester Added')
+        } else {
+          console.log('Unable to add new semester!')
+        }
+      })
   }
 
   // Call when user selects "Initialize Database" button. Scrapes the Cornell

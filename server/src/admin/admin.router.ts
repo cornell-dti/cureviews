@@ -75,11 +75,12 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
   }
 });
 
-adminRouter.post('/testScripts', async (req, res) => {
+adminRouter.post('/addNewSemester', async (req, res) => {
+  const { semester } = req.body;
   try {
     const subjects = await fetchSubjects(
       'https://classes.cornell.edu/api/2.0/',
-      'SP23',
+      semester,
     );
 
     if (subjects) {
@@ -87,7 +88,7 @@ adminRouter.post('/testScripts', async (req, res) => {
         await fetchAddClassesForSubject(
           subject,
           'https://classes.cornell.edu/api/2.0/',
-          'FA23',
+          semester,
         );
       });
 
