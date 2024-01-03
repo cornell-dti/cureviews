@@ -12,6 +12,8 @@ import {
 } from './admin.controller';
 import { fetchSubjects } from '../../scripts/populate-subjects';
 import { fetchAddClassesForSubject } from '../../scripts/populate-courses';
+import { verifyTokenAdmin } from '../auth/auth.controller';
+import { updateReviewVisibility } from '../review/review.data-access';
 const adminRouter = express.Router();
 
 adminRouter.post('/makeReviewVisible', async (req, res) => {
@@ -76,7 +78,7 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
 });
 
 adminRouter.post('/addNewSemester', async (req, res) => {
-  const { semester } = req.body;
+  const { semester }: { semester: string } = req.body;
   try {
     const subjects = await fetchSubjects(
       'https://classes.cornell.edu/api/2.0/',
@@ -105,7 +107,28 @@ adminRouter.post('/addNewSemester', async (req, res) => {
       result: false,
     });
   } catch (err) {
-    console.log(err);
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/undoReportReview', async (req, res) => {
+  const { review, token }: AdminReviewRequestDTO = req.body;
+  try {
+    const auth = new Auth({ token });
+    const isAdmin = await verifyTokenAdmin(auth);
+    if (isAdmin) {
+      await updateReviewVisibility(review.getReviewId(), 0, 1);
+      return res.status(200).json({
+        message: `Undo reported review with review id ${review.getReviewId()}`,
+      });
+    }
+
+    return res
+      .status(401)
+      .json({
+        error: 'User does not have an authorized token (not an admin)!',
+      });
+  } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
