@@ -38,6 +38,7 @@ export async function fetchAddClassesForSubject(
   endpoint: string,
   semester: string,
 ) {
+  console.log(`ADDING COURSES FOR SUBJECT ${subject.value}`);
   const classes: ScrapingClass[] | null = await fetchClassesForSubject(
     endpoint,
     semester,
@@ -53,7 +54,7 @@ export async function fetchAddClassesForSubject(
   return await Promise.all(
     classes.map(async (course) => {
       const classExists = await Classes.findOne({
-        classSub: course.subject.toLowerCase(),
+        classSub: course.subject.toUpperCase(),
         classNum: course.catalogNbr,
       }).exec();
 
@@ -64,7 +65,7 @@ export async function fetchAddClassesForSubject(
       const profs: string[] = await Promise.all(
         professors.map(async (p) => {
           // This has to be an atomic upset. Otherwise, this causes some race condition badness
-          const professorIfExistsInClass = await Professors.findOneAndUpdate(
+          const courseProfessors = await Professors.findOneAndUpdate(
             { fullName: `${p.firstName} ${p.lastName}` },
             {
               $setOnInsert: {
@@ -76,22 +77,34 @@ export async function fetchAddClassesForSubject(
             { upsert: true, new: true },
           );
 
-          return professorIfExistsInClass.fullName;
+          return courseProfessors.fullName;
         }),
       ).catch((err) => {
         console.log(err);
         return [];
       });
 
+      console.log(
+        `Extracted professors from course ${course.subject.toUpperCase()}${
+          course.catalogNbr
+        }....`,
+      );
+
       if (!classExists) {
+        console.log(
+          `Course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } does not exist, adding to database...`,
+        );
+
         const newClass = {
           _id: shortid.generate(),
-          classSub: course.subject.toLowerCase(),
+          classSub: course.subject.toUpperCase(),
           classNum: course.catalogNbr,
-          classTitle: course.titleLong,
-          classFull: `${course.subject.toLowerCase()} ${course.catalogNbr} ${
-            course.titleLong
-          }`,
+          classTitle: course.catalogNbr,
+          classFull: `${course.subject.toUpperCase()} ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } ${course.catalogNbr}`,
           classSems: [semester],
           classProfessors: profs,
           classRating: null,
@@ -104,6 +117,12 @@ export async function fetchAddClassesForSubject(
           return false;
         });
 
+        console.log(
+          `Saved new course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } to database...`,
+        );
+
         profs.forEach(async (p) => {
           await Professors.findOneAndUpdate(
             { fullName: p },
@@ -111,16 +130,33 @@ export async function fetchAddClassesForSubject(
           );
         });
 
+        console.log(
+          `Adding course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } to professors' courses...`,
+        );
+
         if (!saveNewClass) {
+          console.log(
+            `Saving new course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            } failed!`,
+          );
           return false;
         }
       } else {
         const classSems =
-          classExists?.classSems?.indexOf(semester) === -1
+          classExists.classSems?.indexOf(semester) === -1
             ? classExists.classSems.concat([semester])
-            : classExists?.classSems;
+            : classExists.classSems;
 
-        const classProfessors = classExists?.classProfessors
+        console.log(
+          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          }...`,
+        );
+
+        const classProfessors = classExists.classProfessors
           ? classExists.classProfessors
           : [];
 
@@ -129,6 +165,12 @@ export async function fetchAddClassesForSubject(
             classProfessors.push(p);
           }
         });
+
+        console.log(
+          `Added professors to course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          }...`,
+        );
 
         const updateClassInfo = await Classes.findOneAndUpdate(
           { _id: classExists._id },
@@ -140,6 +182,10 @@ export async function fetchAddClassesForSubject(
             return false;
           });
 
+        console.log(
+          `Updated course information with recent semester and professors...`,
+        );
+
         classProfessors.forEach(async (p) => {
           await Professors.findOneAndUpdate(
             { fullName: p },
@@ -147,15 +193,33 @@ export async function fetchAddClassesForSubject(
           ).catch((err) => console.log(err));
         });
 
+        console.log(
+          `Added course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } to professors' course list...`,
+        );
+
         if (!updateClassInfo) {
+          console.log(
+            `Failed to update course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            }!`,
+          );
           return false;
         }
 
+        console.log(
+          `Successfully updated course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          }!`,
+        );
         return true;
       }
     }),
   ).catch((err) => {
-    console.log(err);
+    console.log(
+      `An error occurred while added new courses for subject ${subject}: ${err}`,
+    );
     return false;
   });
 }

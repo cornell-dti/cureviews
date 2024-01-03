@@ -84,13 +84,15 @@ adminRouter.post('/addNewSemester', async (req, res) => {
     );
 
     if (subjects) {
-      const result = subjects.map(async (subject) => {
-        await fetchAddClassesForSubject(
-          subject,
-          'https://classes.cornell.edu/api/2.0/',
-          semester,
-        );
-      });
+      const result = await Promise.all(
+        subjects.map(async (subject) => {
+          await fetchAddClassesForSubject(
+            subject,
+            'https://classes.cornell.edu/api/2.0/',
+            semester,
+          );
+        }),
+      );
 
       if (result) {
         return res.status(200).json({
