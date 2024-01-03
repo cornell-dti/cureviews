@@ -13,6 +13,8 @@ import {
 } from './admin.controller';
 import { fetchSubjects } from '../../scripts/populate-subjects';
 import { fetchAddClassesForSubject } from '../../scripts/populate-courses';
+import { findAllSemesters } from '../../scripts/utils';
+import { resetProfessors } from '../../scripts/populate-professors';
 
 const adminRouter = express.Router();
 
@@ -165,6 +167,19 @@ adminRouter.post('/resetProfessors', async (req, res) => {
   const { token }: AdminRequestDTO = req.body;
   try {
     const auth = new Auth({ token });
+    const semesters = await findAllSemesters();
+    const val = await resetProfessors(
+      'https://classes.cornell.edu/api/2.0/',
+      semesters,
+    );
+
+    if (val) {
+      return res.status(200).json({ message: 'Professors reset!' });
+    }
+
+    return res
+      .status(400)
+      .json({ error: 'Professors were unable to be reset!' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

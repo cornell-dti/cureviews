@@ -1,4 +1,8 @@
-import { ScrapingInstructor, ScrapingClass } from './types';
+import { ScrapingInstructor, ScrapingClass, ScrapingSubject } from './types';
+import axios from 'axios';
+import { fetchSubjects } from './populate-subjects';
+import { fetchClassesForSubject } from './populate-courses';
+import { Classes } from '../db/schema';
 
 export function isInstructorEqual(
   a: ScrapingInstructor,
@@ -9,7 +13,7 @@ export function isInstructorEqual(
 
 /*
  * Extract an array of professors from the terribly deeply nested gunk that the api returns
- * There are guaranteed to be no duplicates!
+ * There are guaranaxios!
  */
 export function extractProfessors(course: ScrapingClass): ScrapingInstructor[] {
   const raw = course.enrollGroups.map((e) =>
@@ -34,4 +38,59 @@ export function extractProfessors(course: ScrapingClass): ScrapingInstructor[] {
   });
 
   return nonDuplicates;
+}
+
+export async function resetProfessors(endpoint: string, semesters: string[]) {
+  console.log('Resetting professors...');
+  try {
+    await Promise.all(
+      semesters.map(async (sem) => {
+        const subjects = await fetchSubjects(endpoint, sem);
+        console.log(`Retrieved all subjects...`);
+        if (subjects) {
+          await Promise.all(
+            subjects.map(async (sub) => {
+              const courses = await fetchClassesForSubject(endpoint, sem, sub);
+
+              if (courses) {
+                await Promise.all(
+                  courses.map(async (course) => {
+                    try {
+                      const matchedCourse = await Classes.findOne({
+                        classSub: course.subject.toLowerCase(),
+                        classNum: course.catalogNbr,
+                      }).exec();
+
+                      if (matchedCourse) {
+                        await Classes.update(
+                          { _id: matchedCourse._id },
+                          { $set: { classProfessors: [] } },
+                        ).exec();
+                      }
+
+                      console.log(
+                        `Reset professors for course ${course.subject}${course.catalogNbr}...`,
+                      );
+                    } catch (err) {
+                      console.log(err);
+                      return false;
+                    }
+                  }),
+                );
+              } else {
+                return false;
+              }
+            }),
+          );
+        } else {
+          return false;
+        }
+      }),
+    );
+
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 }

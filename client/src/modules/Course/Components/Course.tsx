@@ -70,6 +70,7 @@ export const Course = () => {
 
         const course = response.data.result
         if (course) {
+          console.log(course)
           setSelectedClass(course)
 
           // after getting valid course info, fetch reviews

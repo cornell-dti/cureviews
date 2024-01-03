@@ -182,8 +182,7 @@ export const Admin = () => {
     setLoadingProfs(1)
 
     axios.post('/api/setProfessors', { token: token }).then((response) => {
-      const result = response.data.result.resCode
-      if (result === 0) {
+      if (response.status === 200) {
         console.log('Updated the professors')
         setDisableInit(false)
         setLoadingProfs(2)
@@ -199,8 +198,7 @@ export const Admin = () => {
     setResettingProfs(1)
 
     axios.post('/api/resetProfessors', { token: token }).then((response) => {
-      const result = response.data.result.resCode
-      if (result === 1) {
+      if (response.status === 200) {
         console.log('Reset all the professors to empty arrays')
         setDisableInit(false)
         setResettingProfs(2)
