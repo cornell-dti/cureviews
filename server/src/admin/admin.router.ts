@@ -133,7 +133,7 @@ adminRouter.post('/undoReportReview', async (req, res) => {
 
 adminRouter.post('/removeReview', async (req, res) => {
   const { review, token }: AdminReviewRequestDTO = req.body;
-  console.log(token);
+
   try {
     const auth = new Auth({ token });
     const result = await removePendingReview(review._id, auth);
@@ -147,6 +147,24 @@ adminRouter.post('/removeReview', async (req, res) => {
     return res.status(401).json({
       error: 'User does not have an authorized token (not an admin)!',
     });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/setProfessors', async (req, res) => {
+  const { token }: AdminRequestDTO = req.body;
+  try {
+    const auth = new Auth({ token });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/resetProfessors', async (req, res) => {
+  const { token }: AdminRequestDTO = req.body;
+  try {
+    const auth = new Auth({ token });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
