@@ -44,22 +44,24 @@ export async function resetProfessors(endpoint: string, semesters: string[]) {
   console.log('Resetting professors...');
   try {
     await Promise.all(
-      semesters.map(async (sem) => {
+      await semesters.map(async (sem) => {
         const subjects = await fetchSubjects(endpoint, sem);
         console.log(`Retrieved all subjects...`);
         if (subjects) {
           await Promise.all(
-            subjects.map(async (sub) => {
+            await subjects.map(async (sub) => {
               const courses = await fetchClassesForSubject(endpoint, sem, sub);
 
               if (courses) {
                 await Promise.all(
-                  courses.map(async (course) => {
+                  await courses.map(async (course) => {
                     try {
                       const matchedCourse = await Classes.findOne({
                         classSub: course.subject.toLowerCase(),
                         classNum: course.catalogNbr,
                       }).exec();
+
+                      console.log(matchedCourse);
 
                       if (matchedCourse) {
                         await Classes.update(
