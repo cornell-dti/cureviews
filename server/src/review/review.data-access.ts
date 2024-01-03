@@ -47,3 +47,7 @@ export const updateReviewVisibility = async (
     { $set: { visible: visible, reported: reported } },
   );
 };
+
+export const removeReview = async (reviewId: string) => {
+  await Reviews.remove({ _id: reviewId });
+};

@@ -2,7 +2,11 @@ import { Review } from '../review/review';
 
 export interface AdminReviewRequestDTO {
   token: string;
-  review: Review;
+  review: AdminReviewDTO;
+}
+
+interface AdminReviewDTO {
+  _id: string;
 }
 
 export interface AdminRequestDTO {

@@ -102,8 +102,7 @@ export const Admin = () => {
         token: token,
       })
       .then((response) => {
-        const result = response.data.result.resCode
-        if (result === 1) {
+        if (response.status === 200) {
           console.log('Review removed')
           if (isUnapproved) {
             const updatedUnapprovedReviews = removeReviewFromList(

@@ -4,14 +4,32 @@ import {
   findAllPendingReviews,
   findAllReviewsAfterDate,
 } from './admin.data-access';
-import { updateReviewVisibility } from '../review/review.data-access';
+import {
+  updateReviewVisibility,
+  removeReview,
+} from '../review/review.data-access';
 import { verifyTokenAdmin } from '../auth/auth.controller';
 import { findStudent } from '../profile/profile.data-access';
 
-export const setReviewVisible = async (review: Review, auth: Auth) => {
+export const setReviewVisibility = async (
+  reviewId: string,
+  auth: Auth,
+  visibility: number,
+  reported: number,
+) => {
   const userIsAdmin = await verifyTokenAdmin(auth);
   if (userIsAdmin) {
-    await updateReviewVisibility(review.getReviewId(), 0, 0);
+    await updateReviewVisibility(reviewId, reported, visibility);
+    return true;
+  }
+
+  return false;
+};
+
+export const removePendingReview = async (reviewId: string, auth: Auth) => {
+  const userIsAdmin = await verifyTokenAdmin(auth);
+  if (userIsAdmin) {
+    await removeReview(reviewId);
     return true;
   }
 
@@ -34,6 +52,10 @@ export const getRaffleWinner = async (startDate: string) => {
     return null;
   }
 
-  const { netId } = await findStudent(reviews[0].user);
-  return netId;
+  const student = await findStudent(reviews[0].user);
+  if (!student) {
+    return null;
+  }
+
+  return student.netId;
 };
