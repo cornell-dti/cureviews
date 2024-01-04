@@ -48,42 +48,38 @@ export async function resetProfessors(endpoint: string, semesters: string[]) {
         const subjects = await fetchSubjects(endpoint, sem);
         console.log(`Retrieved all subjects...`);
         if (subjects) {
-          await Promise.all(
-            await subjects.map(async (sub) => {
-              const courses = await fetchClassesForSubject(endpoint, sem, sub);
+          await subjects.map(async (sub) => {
+            const courses = await fetchClassesForSubject(endpoint, sem, sub);
 
-              if (courses) {
-                await Promise.all(
-                  await courses.map(async (course) => {
-                    try {
-                      const matchedCourse = await Classes.findOne({
-                        classSub: course.subject.toLowerCase(),
-                        classNum: course.catalogNbr,
-                      }).exec();
+            if (courses) {
+              await courses.map(async (course) => {
+                try {
+                  const matchedCourse = await Classes.findOne({
+                    classSub: course.subject.toLowerCase(),
+                    classNum: course.catalogNbr,
+                  }).exec();
 
-                      console.log(matchedCourse);
+                  console.log(matchedCourse);
 
-                      if (matchedCourse) {
-                        await Classes.update(
-                          { _id: matchedCourse._id },
-                          { $set: { classProfessors: [] } },
-                        ).exec();
-                      }
+                  if (matchedCourse) {
+                    await Classes.update(
+                      { _id: matchedCourse._id },
+                      { $set: { classProfessors: [] } },
+                    ).exec();
+                  }
 
-                      console.log(
-                        `Reset professors for course ${course.subject}${course.catalogNbr}...`,
-                      );
-                    } catch (err) {
-                      console.log(err);
-                      return false;
-                    }
-                  }),
-                );
-              } else {
-                return false;
-              }
-            }),
-          );
+                  console.log(
+                    `Reset professors for course ${course.subject}${course.catalogNbr}...`,
+                  );
+                } catch (err) {
+                  console.log(err);
+                  return false;
+                }
+              });
+            } else {
+              return false;
+            }
+          });
         } else {
           return false;
         }
