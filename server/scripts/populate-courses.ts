@@ -36,6 +36,9 @@ export async function fetchClassesForSubject(
 
 export async function addNewSemester(endpoint: string, semester: string) {
   const subjects = await fetchSubjects(endpoint, semester);
+  if (!subjects) {
+    return false;
+  }
 
   const v1 = await Promise.all(
     subjects.map(async (subject) => {
@@ -142,6 +145,9 @@ export async function addNewSemester(endpoint: string, semester: string) {
                 return null;
               });
 
+            if (!res) {
+              return false;
+            }
             // update professors with new class information
             profs.forEach(async (inst) => {
               await Professors.findOneAndUpdate(
