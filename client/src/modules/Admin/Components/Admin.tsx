@@ -82,8 +82,7 @@ export const Admin = () => {
         token: token,
       })
       .then((response) => {
-        const result = response.data.result
-        if (result.resCode === 1) {
+        if (response.status === 200) {
           const updatedUnapprovedReviews = removeReviewFromList(
             review,
             unapprovedReviews
@@ -133,8 +132,7 @@ export const Admin = () => {
         token: token,
       })
       .then((response) => {
-        const result = response.data.result.resCode
-        if (result === 1) {
+        if (response.status === 200) {
           console.log('Review unreported')
           const updatedReportedReviews = removeReviewFromList(
             review,

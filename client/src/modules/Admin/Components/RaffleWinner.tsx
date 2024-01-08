@@ -21,7 +21,7 @@ export default function RaffleWinner({ adminToken }: RaffleWinnerProps) {
       })
       .then((response) => {
         const result = response.data.result
-        if (result.resCode === 0) {
+        if (response.status === 200) {
           setRaffleWinner(result.netId)
         } else {
           console.log('Error at getRaffleWinner')

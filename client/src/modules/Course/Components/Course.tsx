@@ -162,7 +162,7 @@ export const Course = () => {
    */
   async function reportReview(reviewId: string) {
     try {
-      const response = await axios.post('reportReview', { id: reviewId })
+      const response = await axios.post('/api/reportReview', { id: reviewId })
       if (response.status === 200) {
         setCourseReviews(
           courseReviews?.filter((element) => element._id !== reviewId)

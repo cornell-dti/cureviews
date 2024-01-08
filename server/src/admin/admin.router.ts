@@ -11,12 +11,7 @@ import {
   getRaffleWinner,
   removePendingReview,
 } from './admin.controller';
-import { fetchSubjects } from '../../scripts/populate-subjects';
-import {
-  addAllCourses,
-  addNewSemester,
-  fetchAddClassesForSubject,
-} from '../../scripts/populate-courses';
+import { addAllCourses, addNewSemester } from '../../scripts/populate-courses';
 import { findAllSemesters } from '../../scripts/utils';
 import {
   resetProfessors,
@@ -29,7 +24,7 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
-    const reviewVisible = await setReviewVisibility(review._id, auth, 0, 0);
+    const reviewVisible = await setReviewVisibility(review._id, auth, 1, 0);
     if (reviewVisible) {
       return res.status(200).json({
         message: `Review with id: ${review._id} is now visible!`,
@@ -89,35 +84,6 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
 adminRouter.post('/addNewSemester', async (req, res) => {
   const { semester }: { semester: string } = req.body;
   try {
-    // const subjects = await fetchSubjects(
-    //   'https://classes.cornell.edu/api/2.0/',
-    //   semester,
-    // );
-
-    // if (subjects) {
-    //   const result = await Promise.all(
-    //     subjects.map(async (subject) => {
-    //       const subjectResult = await fetchAddClassesForSubject(
-    //         subject,
-    //         'https://classes.cornell.edu/api/2.0/',
-    //         semester,
-    //       );
-
-    //       return subjectResult;
-    //     }),
-    //   );
-
-    //   if (result.includes(false)) {
-    //     return res.status(400).json({
-    //       error: 'Something went wrong when trying to add a new semester.',
-    //     });
-    //   } else {
-    //     return res.status(200).json({
-    //       result: true,
-    //     });
-    //   }
-    // }
-
     const result = await addNewSemester(
       'https://classes.cornell.edu/api/2.0/',
       semester,
@@ -139,7 +105,7 @@ adminRouter.post('/undoReportReview', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await setReviewVisibility(review._id, auth, 0, 1);
+    const result = await setReviewVisibility(review._id, auth, 1, 0);
 
     if (result) {
       return res.status(200).json({

@@ -4,6 +4,7 @@ import axios from 'axios'
 import ShowMoreText from 'react-show-more-text'
 
 import { Review as ReviewType } from 'common'
+
 import styles from '../Styles/Review.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
@@ -12,6 +13,7 @@ import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 type ReviewProps = {
   review: ReviewType
+  reportHandler: (review: ReviewType) => void
   isPreview: boolean
   isProfile: boolean
 }
@@ -28,6 +30,7 @@ type ReviewProps = {
 */
 export default function ReviewCard({
   review,
+  reportHandler,
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
@@ -48,12 +51,7 @@ export default function ReviewCard({
     : styles.reviewContainerStylePending
   const ratings_container_color = _review.visible
     ? styles.ratingsContainerColor
-    : styles.pendingRatingsContainerColor
-  const rating_elem_style = _review.visible
-    ? styles.ratingElem + ' ' + styles.ratingElemColor
-    : styles.ratingElem
-
-  const windowWidth: number = window.innerWidth
+    : ''
 
   function getDateString() {
     if (!_review.date) return ''
@@ -87,7 +85,7 @@ export default function ReviewCard({
     }
 
     axios
-      .post('/api/updateLiked', {
+      .post('/v2/updateLiked', {
         id: _review._id,
         token: getAuthToken(),
       })
@@ -101,7 +99,7 @@ export default function ReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/api/getCourseById`, {
+      const response = await axios.post(`/v2/getCourseById`, {
         courseId: _review.class,
       })
       const course = response.data.result
@@ -116,12 +114,12 @@ export default function ReviewCard({
 
   useEffect(() => {
     async function updateLiked() {
-      const response = await axios.post('/api/userHasLiked', {
+      const response = await axios.post('/v2/userHasLiked', {
         id: _review._id,
         token: getAuthToken(),
       })
 
-      setLiked(response.data.hasLiked)
+      setLiked(response.data.result.hasLiked)
     }
 
     if (isLoggedIn) updateLiked()
@@ -136,13 +134,7 @@ export default function ReviewCard({
     if (isProfile) {
       return (
         <>
-          <h5
-            className={
-              _review.visible ? styles.courseTitle : styles.pendingCourseTitle
-            }
-          >
-            {courseTitle}
-          </h5>
+          <h5 className={styles.courseTitle}>{courseTitle}</h5>
           <p className={styles.courseCodeAndProf}>
             {courseSub?.toUpperCase() +
               ' ' +
@@ -161,13 +153,14 @@ export default function ReviewCard({
     <div className={styles.reviewContainer + ' ' + review_container_style}>
       {/* Flag */}
       {!isPreview && (
-        <div className={styles.pencilContainer}>
+        <div className={styles.flagContainer}>
           <button
             onClick={() => {
-              alert('Editing is currently not available, stay tuned!')
+              reportHandler(_review)
+              alert('This post has been reported and will be reviewed.')
             }}
           >
-            <img src="/pencil.svg" alt="Edit Review"></img>
+            <img src="/report-flag.svg" alt="Report Review"></img>
           </button>
         </div>
       )}
@@ -179,38 +172,20 @@ export default function ReviewCard({
           <div
             className={styles.ratingsContainer + ' ' + ratings_container_color}
           >
-            <div className={rating_elem_style}>
-              <span>Overall{windowWidth <= 480 ? ':' : ''}</span>
+            <div className={styles.ratingElem}>
+              <span>Overall</span>
               <span className={styles.ratingNum}>
                 {_review.rating ? _review.rating : '-'}
               </span>
-              {windowWidth <= 480 ? (
-                <div
-                  className={
-                    review.visible
-                      ? styles.divider + ' ' + styles.acceptedReviewDividerColor
-                      : styles.divider
-                  }
-                ></div>
-              ) : null}
             </div>
-            <div className={rating_elem_style}>
-              <span>Difficulty{windowWidth <= 480 ? ':' : ''}</span>
+            <div className={styles.ratingElem}>
+              <span>Difficulty</span>
               <span className={styles.ratingNum}>
                 {_review.difficulty ? _review.difficulty : '-'}
               </span>
-              {windowWidth <= 480 ? (
-                <div
-                  className={
-                    review.visible
-                      ? styles.divider + ' ' + styles.acceptedReviewDividerColor
-                      : styles.divider
-                  }
-                ></div>
-              ) : null}
             </div>
-            <div className={rating_elem_style}>
-              <span>Workload{windowWidth <= 480 ? ':' : ''}</span>
+            <div className={styles.ratingElem}>
+              <span>Workload</span>
               <span className={styles.ratingNum}>
                 {_review.workload ? _review.workload : '-'}
               </span>
@@ -224,7 +199,7 @@ export default function ReviewCard({
             {/* Title And Professor */}
             <TitleAndProfessor></TitleAndProfessor>
 
-            <div className={styles.gradeMajorContainer}>
+            <div className="grade-major-container">
               <div>
                 <span className="grade-major-label">Grade: </span>
                 {_review.grade &&
@@ -272,7 +247,7 @@ export default function ReviewCard({
 
               {/* Like Button */}
               {!isPreview && (
-                <div className={styles.helpful}>
+                <div className="col">
                   <button
                     className={
                       liked === true ? 'review-voted' : 'review-upvote'
@@ -284,7 +259,6 @@ export default function ReviewCard({
                     <img
                       src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
                       alt={liked ? 'Liked' : 'Not Liked Yet'}
-                      className={styles.handClap}
                     />
                     <p className={styles.upvoteText}>
                       Helpful ({_review.likes ? _review.likes : 0})
