@@ -8,16 +8,5 @@
     "downlevelIteration": true,
     "outDir": "dist"
   },
-  "files": [
-    "scripts/dbInit.ts",
-    "db/schema.ts",
-    "server.ts",
-    "endpoints.ts",
-    "src/admin/admin_original.ts",
-    "src/admin/AdminChart.ts",
-    "src/auth/auth.ts",
-    "src/review/review.ts",
-    "src/search/search.ts",
-    "src/utils/index.ts"
-  ]
+  "include": ["./src/**/*"]
 }

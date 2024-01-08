@@ -12,8 +12,6 @@ import reviewRouter from './src/review/review.router';
 import courseRouter from './src/course/course.router';
 import adminRouter from './src/admin/admin.router';
 
-import { configure } from './endpoints';
-
 const app = express();
 app.use(sslRedirect(['development', 'production']));
 app.use(cors());

@@ -1,10 +1,10 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import express from "express";
+import express from 'express';
 import { Student, Class, Professor, Review, Subject } from 'common';
-import * as http from "http";
-import { Classes, Students, Subjects, Professors, Reviews } from "../dbDefs";
-import { configure } from "../endpoints";
+import * as http from 'http';
+import { Classes, Students, Subjects, Professors, Reviews } from '../db/schema';
+import { configure } from '../endpoints';
 
 export const testingPort = 8080;
 
@@ -24,37 +24,43 @@ export default class TestingServer {
     configure(app);
   }
 
-  setUpDB = async (reviews: Review[] = [], students: Student[] = [],
-    classes: Class[] = [], professors: Professor[] = [], subjects: Subject[] = []) => {
+  setUpDB = async (
+    reviews: Review[] = [],
+    students: Student[] = [],
+    classes: Class[] = [],
+    professors: Professor[] = [],
+    subjects: Subject[] = [],
+  ) => {
     // setup db
     const mongoUri = await this.mongoServer.getUri();
-    await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-    await mongoose.connection.collections.classes.createIndex({ classFull: "text" });
-    await mongoose.connection.collections.subjects.createIndex({ subShort: "text" });
-    await mongoose.connection.collections.professors.createIndex({ fullName: "text" });
+    await mongoose.connection.collections.classes.createIndex({
+      classFull: 'text',
+    });
+    await mongoose.connection.collections.subjects.createIndex({
+      subShort: 'text',
+    });
+    await mongoose.connection.collections.professors.createIndex({
+      fullName: 'text',
+    });
 
     // add classes, reviews, etc... to db collections
-    await Promise.all(
-      reviews.map(async (c) => await (new Reviews(c).save())),
-    );
+    await Promise.all(reviews.map(async (c) => await new Reviews(c).save()));
+
+    await Promise.all(classes.map(async (c) => await new Classes(c).save()));
+
+    await Promise.all(students.map(async (c) => await new Students(c).save()));
+
+    await Promise.all(subjects.map(async (c) => await new Subjects(c).save()));
 
     await Promise.all(
-      classes.map(async (c) => await (new Classes(c).save())),
+      professors.map(async (c) => await new Professors(c).save()),
     );
-
-    await Promise.all(
-      students.map(async (c) => await (new Students(c).save())),
-    );
-
-    await Promise.all(
-      subjects.map(async (c) => await (new Subjects(c).save())),
-    );
-
-    await Promise.all(
-      professors.map(async (c) => await (new Professors(c).save())),
-    );
-  }
+  };
 
   shutdownTestingServer = async () => {
     await mongoose.disconnect();
@@ -64,5 +70,5 @@ export default class TestingServer {
     if (this.serverCloseHandle !== undefined) {
       this.serverCloseHandle.close();
     }
-  }
+  };
 }

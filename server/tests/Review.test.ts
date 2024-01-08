@@ -3,8 +3,7 @@ import axios from 'axios';
 import { TokenPayload } from 'google-auth-library';
 
 import { Review } from 'common';
-import { Reviews, Students } from '../db/dbDefs';
-import * as Auth from '../src/Auth';
+import { Reviews, Students } from '../db/schema';
 import TestingServer from './TestServer';
 
 const testingPort = 8080;
