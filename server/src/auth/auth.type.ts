@@ -1,10 +1,10 @@
 import { TokenPayload } from 'google-auth-library';
 
-export interface GetUserDTO {
+export interface GetUserType {
   token: TokenPayload;
 }
 
-export interface InsertStudentDTO {
+export interface InsertStudentType {
   _id: string;
   firstName: string;
   lastName: string;

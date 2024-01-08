@@ -1,6 +1,10 @@
 import express from 'express';
 
-import { InsertReviewDTO, ReviewLikesDTO, ReportReviewDTO } from './review.dto';
+import {
+  InsertReviewType,
+  ReviewLikesType,
+  ReportReviewType,
+} from './review.type';
 import { Auth } from '../auth/auth';
 import { verifyToken } from '../auth/auth.controller';
 import { updateStudentLikedReviews } from '../profile/profile.data-access';
@@ -19,7 +23,7 @@ const reviewRouter = express.Router();
 
 reviewRouter.post('/insertReview', async (req, res) => {
   try {
-    const { token, courseId, review }: InsertReviewDTO = req.body;
+    const { token, courseId, review }: InsertReviewType = req.body;
     const auth = new Auth({ token });
     const verified = await verifyToken(auth);
 
@@ -71,7 +75,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
 
 reviewRouter.post('/updateLiked', async (req, res) => {
   try {
-    const { token, id }: ReviewLikesDTO = req.body;
+    const { token, id }: ReviewLikesType = req.body;
     const auth = new Auth({ token });
     const verified = await verifyToken(auth);
 
@@ -118,7 +122,7 @@ reviewRouter.post('/updateLiked', async (req, res) => {
 
 reviewRouter.post('/userHasLiked', async (req, res) => {
   try {
-    const { token, id }: ReviewLikesDTO = req.body;
+    const { token, id }: ReviewLikesType = req.body;
     const auth = new Auth({ token });
     const verified = await verifyToken(auth);
 
@@ -152,7 +156,7 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
 
 reviewRouter.post('/reportReview', async (req, res) => {
   try {
-    const { id }: ReportReviewDTO = req.body;
+    const { id }: ReportReviewType = req.body;
     await reportReview(id);
   } catch (err) {
     return res

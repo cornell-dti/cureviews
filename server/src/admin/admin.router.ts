@@ -1,10 +1,10 @@
 import express from 'express';
 import { Auth } from '../auth/auth';
 import {
-  AdminReviewRequestDTO,
-  AdminRequestDTO,
-  RaffleWinnerDTO,
-} from './admin.dto';
+  AdminReviewRequestType,
+  AdminRequestType,
+  RaffleWinnerType,
+} from './admin.type';
 import {
   getPendingReviews,
   setReviewVisibility,
@@ -27,7 +27,7 @@ const adminRouter = express.Router();
 
 adminRouter.post('/makeReviewVisible', async (req, res) => {
   try {
-    const { token, review }: AdminReviewRequestDTO = req.body;
+    const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
     const reviewVisible = await setReviewVisibility(review._id, auth, 0, 0);
     if (reviewVisible) {
@@ -46,7 +46,7 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
 
 adminRouter.post('/fetchPendingReviews', async (req, res) => {
   try {
-    const { token }: AdminRequestDTO = req.body;
+    const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
     const pendingReviews = await getPendingReviews(auth);
     if (pendingReviews === null) {
@@ -67,7 +67,7 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
 
 adminRouter.post('/getRaffleWinner', async (req, res) => {
   try {
-    const { startDate }: RaffleWinnerDTO = req.body;
+    const { startDate }: RaffleWinnerType = req.body;
     const winner = await getRaffleWinner(startDate);
 
     if (winner === null) {
@@ -136,7 +136,7 @@ adminRouter.post('/addNewSemester', async (req, res) => {
 });
 
 adminRouter.post('/undoReportReview', async (req, res) => {
-  const { review, token }: AdminReviewRequestDTO = req.body;
+  const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
     const result = await setReviewVisibility(review._id, auth, 0, 1);
@@ -156,7 +156,7 @@ adminRouter.post('/undoReportReview', async (req, res) => {
 });
 
 adminRouter.post('/removeReview', async (req, res) => {
-  const { review, token }: AdminReviewRequestDTO = req.body;
+  const { review, token }: AdminReviewRequestType = req.body;
 
   try {
     const auth = new Auth({ token });
@@ -177,7 +177,7 @@ adminRouter.post('/removeReview', async (req, res) => {
 });
 
 adminRouter.post('/setProfessors', async (req, res) => {
-  const { token }: AdminRequestDTO = req.body;
+  const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
     const semesters = await findAllSemesters();
@@ -194,7 +194,7 @@ adminRouter.post('/setProfessors', async (req, res) => {
 });
 
 adminRouter.post('/resetProfessors', async (req, res) => {
-  const { token }: AdminRequestDTO = req.body;
+  const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
     const semesters = await findAllSemesters();
@@ -217,7 +217,7 @@ adminRouter.post('/resetProfessors', async (req, res) => {
 });
 
 adminRouter.post('/dbInit', async (req, res) => {
-  const { token }: AdminRequestDTO = req.body;
+  const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
     const semesters = await findAllSemesters();

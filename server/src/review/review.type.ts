@@ -1,10 +1,10 @@
-export interface InsertReviewDTO {
+export interface InsertReviewType {
   token: string;
   courseId: string;
-  review: ReviewRequestDTO;
+  review: ReviewRequestType;
 }
 
-interface ReviewRequestDTO {
+interface ReviewRequestType {
   rating: number;
   difficulty: number;
   workload: number;
@@ -15,11 +15,11 @@ interface ReviewRequestDTO {
   major: string[];
 }
 
-export interface ReviewLikesDTO {
+export interface ReviewLikesType {
   token: string;
   id: string;
 }
 
-export interface ReportReviewDTO {
+export interface ReportReviewType {
   id: string;
 }

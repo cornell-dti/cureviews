@@ -1,16 +1,16 @@
 import { Auth } from './auth';
 import { findStudent, insertNewStudent } from '../profile/profile.data-access';
-import { GetUserDTO, InsertStudentDTO } from './auth.dto';
+import { GetUserType, InsertStudentType } from './auth.type';
 import shortid from 'shortid';
 
-export const insertUser = async (googleObject: GetUserDTO) => {
+export const insertUser = async (googleObject: GetUserType) => {
   const { token } = googleObject;
   try {
     if (token.email.replace('@cornell.edu', '') !== null) {
       const user = await findStudent(token.email.replace('@cornell.edu', ''));
 
       if (user === null) {
-        const newStudent: InsertStudentDTO = {
+        const newStudent: InsertStudentType = {
           _id: shortid.generate(),
           firstName: token.given_name ? token.given_name : '',
           lastName: token.family_name ? token.family_name : '',
