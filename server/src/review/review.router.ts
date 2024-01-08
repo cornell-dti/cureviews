@@ -37,6 +37,12 @@ reviewRouter.post('/insertReview', async (req, res) => {
 
     const reviews = await findClassReviews(courseId);
 
+    if (!student) {
+      return res.status(401).json({
+        error: `Could not create new review because user is unauthenticated. Please login to continue...`,
+      });
+    }
+
     if (reviews.find((v) => v.text === review.text)) {
       res.status(400).json({
         error: 'Review is a duplicate of an already existing review',
@@ -89,6 +95,19 @@ reviewRouter.post('/updateLiked', async (req, res) => {
 
     const review = await findReview(id);
 
+    if (!student) {
+      return res.status(401).json({
+        error:
+          'Unauthorized to create a review. Please ensure user is logged in.',
+      });
+    }
+
+    if (!review) {
+      return res.status(404).json({
+        error: `Could not find review with review: ${review}`,
+      });
+    }
+
     if (
       student.likedReviews !== undefined &&
       student.likedReviews.includes(review._id)
@@ -135,6 +154,18 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
     const { netId, student } = verified;
 
     const review = await findReview(id);
+
+    if (!student) {
+      return res
+        .status(401)
+        .json({ error: 'User is unauthorized please login' });
+    }
+
+    if (!review) {
+      return res
+        .status(404)
+        .json({ error: `Could not find review: ${review}` });
+    }
 
     if (student.likedReviews && student.likedReviews.includes(review.id)) {
       return res.status(200).json({
