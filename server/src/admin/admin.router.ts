@@ -12,9 +12,16 @@ import {
   removePendingReview,
 } from './admin.controller';
 import { fetchSubjects } from '../../scripts/populate-subjects';
-import { fetchAddClassesForSubject } from '../../scripts/populate-courses';
+import {
+  addAllCourses,
+  addNewSemester,
+  fetchAddClassesForSubject,
+} from '../../scripts/populate-courses';
 import { findAllSemesters } from '../../scripts/utils';
-import { resetProfessors } from '../../scripts/populate-professors';
+import {
+  resetProfessors,
+  addAllProfessors,
+} from '../../scripts/populate-professors';
 
 const adminRouter = express.Router();
 
@@ -82,30 +89,45 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
 adminRouter.post('/addNewSemester', async (req, res) => {
   const { semester }: { semester: string } = req.body;
   try {
-    const subjects = await fetchSubjects(
+    // const subjects = await fetchSubjects(
+    //   'https://classes.cornell.edu/api/2.0/',
+    //   semester,
+    // );
+
+    // if (subjects) {
+    //   const result = await Promise.all(
+    //     subjects.map(async (subject) => {
+    //       const subjectResult = await fetchAddClassesForSubject(
+    //         subject,
+    //         'https://classes.cornell.edu/api/2.0/',
+    //         semester,
+    //       );
+
+    //       return subjectResult;
+    //     }),
+    //   );
+
+    //   if (result.includes(false)) {
+    //     return res.status(400).json({
+    //       error: 'Something went wrong when trying to add a new semester.',
+    //     });
+    //   } else {
+    //     return res.status(200).json({
+    //       result: true,
+    //     });
+    //   }
+    // }
+
+    const result = await addNewSemester(
       'https://classes.cornell.edu/api/2.0/',
       semester,
     );
 
-    if (subjects) {
-      const result = await Promise.all(
-        subjects.map(async (subject) => {
-          await fetchAddClassesForSubject(
-            subject,
-            'https://classes.cornell.edu/api/2.0/',
-            semester,
-          );
-        }),
-      );
-
-      if (result) {
-        return res.status(200).json({
-          result: true,
-        });
-      }
+    if (result) {
+      return res.status(200).json({ result: true });
     }
 
-    return res.status(200).json({
+    return res.status(400).json({
       result: false,
     });
   } catch (err) {
@@ -158,6 +180,14 @@ adminRouter.post('/setProfessors', async (req, res) => {
   const { token }: AdminRequestDTO = req.body;
   try {
     const auth = new Auth({ token });
+    const semesters = await findAllSemesters();
+    const result = await addAllProfessors(semesters);
+
+    if (result) {
+      return res.status(200).json({ result: true });
+    }
+
+    return res.status(400).json({ result: false });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
@@ -168,18 +198,43 @@ adminRouter.post('/resetProfessors', async (req, res) => {
   try {
     const auth = new Auth({ token });
     const semesters = await findAllSemesters();
-    const val = await resetProfessors(
+    // const result = await addAllCourses(semesters);
+    const result = await resetProfessors(
       'https://classes.cornell.edu/api/2.0/',
       semesters,
     );
 
-    if (val) {
+    if (result) {
       return res.status(200).json({ message: 'Professors reset!' });
     }
 
     return res
       .status(400)
       .json({ error: 'Professors were unable to be reset!' });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/dbInit', async (req, res) => {
+  const { token }: AdminRequestDTO = req.body;
+  try {
+    const auth = new Auth({ token });
+    const semesters = await findAllSemesters();
+    const coursesResult = await addAllCourses(semesters);
+    const professorsResult = await addAllProfessors(semesters);
+
+    if (coursesResult && professorsResult) {
+      return res
+        .status(200)
+        .json({ message: 'Successfully added all courses and professors!' });
+    }
+
+    if (!coursesResult) {
+      return res.status(400).json({ error: 'Error adding all courses!' });
+    }
+
+    return res.status(400).json({ error: 'Error adding all professors' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
