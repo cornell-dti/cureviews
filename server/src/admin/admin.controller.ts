@@ -1,4 +1,3 @@
-import { Auth } from '../auth/auth';
 import {
   findAllPendingReviews,
   findAllReviewsAfterDate,
@@ -12,7 +11,7 @@ import { findStudent } from '../profile/profile.data-access';
 import {
   AdminPendingReviewType,
   AdminReviewVisibilityType,
-  RaffleWinnerType,
+  RaffleWinnerRequestType,
 } from './admin.type';
 import { VerifyAuthType } from '../auth/auth.type';
 
@@ -53,7 +52,9 @@ export const getPendingReviews = async ({ auth }: VerifyAuthType) => {
   return null;
 };
 
-export const getRaffleWinner = async ({ startDate }: RaffleWinnerType) => {
+export const getRaffleWinner = async ({
+  startDate,
+}: RaffleWinnerRequestType) => {
   const date = new Date(startDate);
   const reviews = await findAllReviewsAfterDate(date);
   if (reviews.length <= 0) {

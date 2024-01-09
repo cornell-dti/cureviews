@@ -3,7 +3,7 @@ import { Auth } from '../auth/auth';
 import {
   AdminReviewRequestType,
   AdminRequestType,
-  RaffleWinnerType,
+  RaffleWinnerRequestType,
 } from './admin.type';
 import {
   getPendingReviews,
@@ -68,7 +68,7 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
 
 adminRouter.post('/getRaffleWinner', async (req, res) => {
   try {
-    const { startDate }: RaffleWinnerType = req.body;
+    const { startDate }: RaffleWinnerRequestType = req.body;
     const winner = await getRaffleWinner({ startDate });
 
     if (winner === null) {

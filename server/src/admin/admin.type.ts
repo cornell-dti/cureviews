@@ -13,7 +13,7 @@ export interface AdminRequestType {
   token: string;
 }
 
-export interface RaffleWinnerType {
+export interface RaffleWinnerRequestType {
   startDate: string;
 }
 
