@@ -11,10 +11,17 @@ import {
   updateReviewLikes,
   updateReviewVisibility,
 } from './review.data-access';
-import { InsertReviewType, ReviewLikesType } from './review.type';
+import {
+  InsertReviewType,
+  ReportReviewRequestType,
+  ReviewLikesType,
+} from './review.type';
 import shortid from 'shortid';
 
-export const checkStudentHasLiked = async ({ auth, reviewId }) => {
+export const checkStudentHasLiked = async ({
+  auth,
+  reviewId,
+}: ReviewLikesType) => {
   const verified = await verifyToken({ auth });
 
   if (verified === null) {
@@ -90,7 +97,7 @@ export const updateStudentLiked = async ({
   return review;
 };
 
-export const reportReview = async (id: string) => {
+export const reportReview = async ({ id }: ReportReviewRequestType) => {
   try {
     await updateReviewVisibility(id, 1, 0);
     return true;

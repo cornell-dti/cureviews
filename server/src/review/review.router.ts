@@ -93,7 +93,7 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
 reviewRouter.post('/reportReview', async (req, res) => {
   try {
     const { id }: ReportReviewRequestType = req.body;
-    const result = await reportReview(id);
+    const result = await reportReview({ id });
     if (!result) {
       return res
         .status(400)
