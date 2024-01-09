@@ -1,4 +1,3 @@
-import { Search } from './search';
 import {
   findCourseSubject,
   findCourses,

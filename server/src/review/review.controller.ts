@@ -1,16 +1,102 @@
 import { verifyToken } from '../auth/auth.controller';
-import { addStudentReview } from '../profile/profile.controller';
+import {
+  addStudentReview,
+  setStudentLikedReviews,
+} from '../profile/profile.controller';
 import { Review } from './review';
 import {
   findClassReviews,
+  findReview,
   insertReview,
+  updateReviewLikes,
   updateReviewVisibility,
 } from './review.data-access';
-import { InsertReviewType } from './review.type';
+import { InsertReviewType, ReviewLikesType } from './review.type';
 import shortid from 'shortid';
 
+export const checkStudentHasLiked = async ({ auth, reviewId }) => {
+  const verified = await verifyToken({ auth });
+
+  if (verified === null) {
+    return null;
+  }
+
+  const { netId, student } = verified;
+
+  const review = await findReview(reviewId);
+
+  if (!student) {
+    return null;
+  }
+
+  if (!review) {
+    return null;
+  }
+
+  if (student.likedReviews && student.likedReviews.includes(review.id)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const updateStudentLiked = async ({
+  auth,
+  reviewId,
+}: ReviewLikesType) => {
+  const verified = await verifyToken({ auth });
+
+  if (verified === null) {
+    return null;
+  }
+
+  const { netId, student } = verified;
+
+  const review = await findReview(reviewId);
+
+  if (!student) {
+    return null;
+  }
+
+  if (!review) {
+    return null;
+  }
+
+  if (
+    student.likedReviews !== undefined &&
+    student.likedReviews.includes(review._id)
+  ) {
+    const result = await setStudentLikedReviews({
+      netId,
+      reviewId: review._id,
+    });
+    if (!result) {
+      return null;
+    }
+    if (review.likes === undefined) {
+      await updateReviewLikes(reviewId, 0, netId);
+    } else {
+      await updateReviewLikes(reviewId, Math.max(0, review.likes - 1), netId);
+    }
+  } else {
+    await setStudentLikedReviews({ netId, reviewId: review._id });
+    if (review.likes === undefined) {
+      await updateReviewLikes(reviewId, 1, netId);
+    } else {
+      await updateReviewLikes(reviewId, review.likes + 1, netId);
+    }
+  }
+
+  return review;
+};
+
 export const reportReview = async (id: string) => {
-  await updateReviewVisibility(id, 1, 0);
+  try {
+    await updateReviewVisibility(id, 1, 0);
+    return true;
+  } catch (err) {
+    return false;
+  }
 };
 
 export const insertNewReview = async ({

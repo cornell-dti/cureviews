@@ -6,10 +6,12 @@ import {
   ReportReviewRequestType,
 } from './review.type';
 import { Auth } from '../auth/auth';
-import { verifyToken } from '../auth/auth.controller';
-import { findReview, updateReviewLikes } from './review.data-access';
-import { setStudentLikedReviews } from '../profile/profile.controller';
-import { insertNewReview, reportReview } from './review.controller';
+import {
+  checkStudentHasLiked,
+  insertNewReview,
+  reportReview,
+  updateStudentLiked,
+} from './review.controller';
 
 const reviewRouter = express.Router();
 
@@ -39,61 +41,17 @@ reviewRouter.post('/updateLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });
-    const verified = await verifyToken({ auth });
+    const result = await updateStudentLiked({ auth, reviewId: id });
 
-    if (verified === null) {
+    if (!result) {
       return res
-        .status(401)
-        .json({ error: 'Missing or invalid verification ticket' });
-    }
-
-    const { netId, student } = verified;
-
-    const review = await findReview(id);
-
-    if (!student) {
-      return res.status(401).json({
-        error:
-          'Unauthorized to create a review. Please ensure user is logged in.',
-      });
-    }
-
-    if (!review) {
-      return res.status(404).json({
-        error: `Could not find review with review: ${review}`,
-      });
-    }
-
-    if (
-      student.likedReviews !== undefined &&
-      student.likedReviews.includes(review._id)
-    ) {
-      const result = await setStudentLikedReviews({
-        netId,
-        reviewId: review._id,
-      });
-      if (!result) {
-        return res.status(400).json({
-          error: `An error occurred while adding review to student with net id: ${netId} likes.`,
-        });
-      }
-      if (review.likes === undefined) {
-        await updateReviewLikes(id, 0, netId);
-      } else {
-        await updateReviewLikes(id, Math.max(0, review.likes - 1), netId);
-      }
-    } else {
-      await setStudentLikedReviews({ netId, reviewId: review._id });
-      if (review.likes === undefined) {
-        await updateReviewLikes(id, 1, netId);
-      } else {
-        await updateReviewLikes(id, review.likes + 1, netId);
-      }
+        .status(400)
+        .json({ error: `Error in updating liked review with id: ${id}` });
     }
 
     return res.status(200).json({
       message: 'Successfully updated like count on review!',
-      review: review,
+      review: result,
     });
   } catch (err) {
     return res
@@ -106,41 +64,25 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });
-    const verified = await verifyToken({ auth });
+    const result = checkStudentHasLiked({ auth, reviewId: id });
 
-    if (verified === null) {
+    if (result === null) {
       return res
         .status(401)
-        .json({ error: 'Missing or invalid verification ticket' });
+        .json({ error: `Unauthorized user is not signed in.` });
     }
 
-    const { netId, student } = verified;
-
-    const review = await findReview(id);
-
-    if (!student) {
-      return res
-        .status(401)
-        .json({ error: 'User is unauthorized please login' });
-    }
-
-    if (!review) {
-      return res
-        .status(404)
-        .json({ error: `Could not find review: ${review}` });
-    }
-
-    if (student.likedReviews && student.likedReviews.includes(review.id)) {
+    if (!result) {
       return res.status(200).json({
-        message: 'User has liked review!',
-        hasLiked: true,
-      });
-    } else {
-      return res.status(200).json({
-        message: 'User has not liked review!',
+        message: `User has not liked review with id: ${id}`,
         hasLiked: false,
       });
     }
+
+    return res.status(200).json({
+      message: `User has liked review with id: ${id}`,
+      hasLiked: true,
+    });
   } catch (err) {
     return res
       .status(500)
@@ -151,7 +93,13 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
 reviewRouter.post('/reportReview', async (req, res) => {
   try {
     const { id }: ReportReviewRequestType = req.body;
-    await reportReview(id);
+    const result = await reportReview(id);
+    if (!result) {
+      return res
+        .status(400)
+        .json({ error: `Review with id: ${id} unable to be reported.` });
+    }
+
     return res
       .status(200)
       .json({ message: `Review with id: ${id} successfully reported.` });

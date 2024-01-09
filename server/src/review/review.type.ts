@@ -31,3 +31,8 @@ export interface InsertReviewType {
   courseId: string;
   review: ReviewRequestType;
 }
+
+export interface ReviewLikesType {
+  auth: Auth;
+  reviewId: string;
+}
