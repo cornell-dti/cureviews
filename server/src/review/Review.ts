@@ -80,45 +80,6 @@ export class Review {
     return this._id;
   }
 
-  getText() {
-    return this.text;
-  }
-  getDifficulty() {
-    return this.difficulty;
-  }
-
-  getWorkload() {
-    return this.workload;
-  }
-
-  getProfessors() {
-    return this.professors;
-  }
-
-  getIsCovid() {
-    return this.isCovid;
-  }
-
-  getGrade() {
-    if (!this.grade) {
-      return null;
-    }
-
-    return this.grade;
-  }
-
-  getMajor() {
-    if (!this.major) {
-      return null;
-    }
-
-    return this.major;
-  }
-
-  getRating() {
-    return this.rating;
-  }
-
   private validate() {
     const searchSchema = joi.object({
       _id: joi

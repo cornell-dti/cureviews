@@ -148,6 +148,7 @@ export const insertNewReview = async ({
       major: review.major,
     });
 
+    newReview.sanitizeReview();
     await insertReview(newReview);
     await addStudentReview({ netId, reviewId: newReview.getReviewId() });
 
