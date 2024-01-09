@@ -2,8 +2,13 @@ import {
   findReviewDoc,
   findStudent,
   updateStudentReviews,
+  updateStudentLikedReviews,
 } from './profile.data-access';
-import { ProfileInfoType, ProfileReviewType } from './profile.type';
+import {
+  ProfileInfoType,
+  ProfileLikeReviewType,
+  ProfileReviewType,
+} from './profile.type';
 
 export const getStudentReviewIds = async ({ netId }: ProfileInfoType) => {
   const student = await findStudent(netId);
@@ -60,6 +65,19 @@ export const addStudentReview = async ({
 
     const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
     await updateStudentReviews(netId, newReviews);
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+};
+
+export const setStudentLikedReviews = async ({
+  netId,
+  reviewId,
+}: ProfileLikeReviewType) => {
+  try {
+    await updateStudentLikedReviews(netId, reviewId);
   } catch (err) {
     return false;
   }

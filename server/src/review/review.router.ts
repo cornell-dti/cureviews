@@ -7,7 +7,6 @@ import {
 } from './review.type';
 import { Auth } from '../auth/auth';
 import { verifyToken } from '../auth/auth.controller';
-import { updateStudentLikedReviews } from '../profile/profile.data-access';
 import {
   findReview,
   findClassReviews,
@@ -16,7 +15,10 @@ import {
 } from './review.data-access';
 import shortid from 'shortid';
 import { Review } from './review';
-import { addStudentReview } from '../profile/profile.controller';
+import {
+  addStudentReview,
+  setStudentLikedReviews,
+} from '../profile/profile.controller';
 import { reportReview } from './review.controller';
 
 const reviewRouter = express.Router();
@@ -112,15 +114,22 @@ reviewRouter.post('/updateLiked', async (req, res) => {
       student.likedReviews !== undefined &&
       student.likedReviews.includes(review._id)
     ) {
-      await updateStudentLikedReviews(netId, review._id);
-
+      const result = await setStudentLikedReviews({
+        netId,
+        reviewId: review._id,
+      });
+      if (!result) {
+        return res.status(400).json({
+          error: `An error occurred while adding review to student with net id: ${netId} likes.`,
+        });
+      }
       if (review.likes === undefined) {
         await updateReviewLikes(id, 0, netId);
       } else {
         await updateReviewLikes(id, Math.max(0, review.likes - 1), netId);
       }
     } else {
-      await updateStudentLikedReviews(netId, review._id);
+      await setStudentLikedReviews({ netId, reviewId: review._id });
       if (review.likes === undefined) {
         await updateReviewLikes(id, 1, netId);
       } else {
@@ -189,6 +198,9 @@ reviewRouter.post('/reportReview', async (req, res) => {
   try {
     const { id }: ReportReviewType = req.body;
     await reportReview(id);
+    return res
+      .status(200)
+      .json({ message: `Review with id: ${id} successfully reported.` });
   } catch (err) {
     return res
       .status(500)
