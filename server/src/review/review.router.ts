@@ -68,7 +68,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
     });
 
     await insertReview(newReview);
-    await addStudentReview(netId, newReview.getReviewId());
+    await addStudentReview({ netId, reviewId: newReview.getReviewId() });
 
     return res.status(200).json({
       message: 'Successfully inserted new review!',

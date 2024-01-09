@@ -19,7 +19,7 @@ profileRouter.post('/countReviewsByStudentId', async (req, res) => {
     const profile: Profile = new Profile({ netId });
     const validNetId: string = profile.getNetId();
 
-    const studentReviewIds = await getStudentReviewDocs(validNetId);
+    const studentReviewIds = await getStudentReviewDocs({ netId: validNetId });
     if (studentReviewIds === null) {
       return res
         .status(404)
@@ -44,7 +44,9 @@ profileRouter.post('/getTotalLikesByStudentId', async (req, res) => {
     const profile: Profile = new Profile({ netId });
     const validNetId: string = profile.getNetId();
 
-    const totalLikes: number = await getTotalLikesByNetId(validNetId);
+    const totalLikes: number = await getTotalLikesByNetId({
+      netId: validNetId,
+    });
 
     return res.status(200).json({ result: totalLikes });
   } catch (error) {
@@ -63,7 +65,7 @@ profileRouter.post('/getReviewsByStudentId', async (req, res) => {
     const profile: Profile = new Profile({ netId });
 
     const validNetId: string = profile.getNetId();
-    const reviews = await getStudentReviewDocs(validNetId);
+    const reviews = await getStudentReviewDocs({ netId: validNetId });
 
     return res.status(200).json({ result: reviews });
   } catch (err) {
