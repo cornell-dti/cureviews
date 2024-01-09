@@ -8,5 +8,5 @@
     "downlevelIteration": true,
     "outDir": "dist"
   },
-  "include": ["./src/**/*"]
+  "exclude": ["./tests/**/*"]
 }

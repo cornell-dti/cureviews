@@ -1,5 +1,4 @@
 import { Auth } from '../auth/auth';
-import { Review } from '../review/review';
 import {
   findAllPendingReviews,
   findAllReviewsAfterDate,
