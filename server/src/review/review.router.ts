@@ -1,9 +1,10 @@
 import express from 'express';
 
 import {
+  InsertReviewRequestType,
+  ReviewLikesRequestType,
+  ReportReviewRequestType,
   InsertReviewType,
-  ReviewLikesType,
-  ReportReviewType,
 } from './review.type';
 import { Auth } from '../auth/auth';
 import { verifyToken } from '../auth/auth.controller';
@@ -19,62 +20,26 @@ import {
   addStudentReview,
   setStudentLikedReviews,
 } from '../profile/profile.controller';
-import { reportReview } from './review.controller';
+import { insertNewReview, reportReview } from './review.controller';
 
 const reviewRouter = express.Router();
 
 reviewRouter.post('/insertReview', async (req, res) => {
   try {
-    const { token, courseId, review }: InsertReviewType = req.body;
+    const { token, courseId, review }: InsertReviewRequestType = req.body;
     const auth = new Auth({ token });
-    const verified = await verifyToken({ auth });
 
-    if (verified === null) {
-      return res
-        .status(401)
-        .json({ error: 'Missing or invalid verification ticket' });
-    }
+    const result = await insertNewReview({ auth, courseId, review });
 
-    const { netId, student } = verified;
-
-    const reviews = await findClassReviews(courseId);
-
-    if (!student) {
-      return res.status(401).json({
-        error: `Could not create new review because user is unauthenticated. Please login to continue...`,
-      });
-    }
-
-    if (reviews.find((v) => v.text === review.text)) {
+    if (!result) {
       res.status(400).json({
-        error: 'Review is a duplicate of an already existing review',
+        error: `Unable to insert new review, please make sure user is authenticated and review is valid.`,
       });
     }
-
-    const newReview: Review = new Review({
-      _id: shortid.generate(),
-      text: review.text,
-      difficulty: review.difficulty,
-      rating: review.rating,
-      workload: review.workload,
-      class: courseId,
-      date: new Date(),
-      visible: 0,
-      reported: 0,
-      professors: review.professors,
-      likes: 0,
-      isCovid: review.isCovid,
-      user: student._id,
-      grade: review.grade,
-      major: review.major,
-    });
-
-    await insertReview(newReview);
-    await addStudentReview({ netId, reviewId: newReview.getReviewId() });
 
     return res.status(200).json({
       message: 'Successfully inserted new review!',
-      result: newReview,
+      result: result,
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
@@ -83,7 +48,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
 
 reviewRouter.post('/updateLiked', async (req, res) => {
   try {
-    const { token, id }: ReviewLikesType = req.body;
+    const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });
     const verified = await verifyToken({ auth });
 
@@ -150,7 +115,7 @@ reviewRouter.post('/updateLiked', async (req, res) => {
 
 reviewRouter.post('/userHasLiked', async (req, res) => {
   try {
-    const { token, id }: ReviewLikesType = req.body;
+    const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });
     const verified = await verifyToken({ auth });
 
@@ -196,7 +161,7 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
 
 reviewRouter.post('/reportReview', async (req, res) => {
   try {
-    const { id }: ReportReviewType = req.body;
+    const { id }: ReportReviewRequestType = req.body;
     await reportReview(id);
     return res
       .status(200)

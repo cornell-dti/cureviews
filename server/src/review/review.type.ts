@@ -1,4 +1,6 @@
-export interface InsertReviewType {
+import { Auth } from '../auth/auth';
+
+export interface InsertReviewRequestType {
   token: string;
   courseId: string;
   review: ReviewRequestType;
@@ -15,11 +17,17 @@ interface ReviewRequestType {
   major: string[];
 }
 
-export interface ReviewLikesType {
+export interface ReviewLikesRequestType {
   token: string;
   id: string;
 }
 
-export interface ReportReviewType {
+export interface ReportReviewRequestType {
   id: string;
+}
+
+export interface InsertReviewType {
+  auth: Auth;
+  courseId: string;
+  review: ReviewRequestType;
 }
