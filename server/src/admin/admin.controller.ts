@@ -1,19 +1,19 @@
 import {
   findAllPendingReviews,
   findAllReviewsAfterDate,
-} from './admin.data-access';
-import {
-  updateReviewVisibility,
   removeReview,
-} from '../review/review.data-access';
-import { findStudent } from '../profile/profile.data-access';
+  updateReviewVisibility,
+} from './admin.data-access';
 import {
   AdminAddSemesterType,
   AdminPendingReviewType,
   AdminReviewVisibilityType,
   RaffleWinnerRequestType,
+  ReportReviewRequestType,
+  VerifyAdminType,
 } from './admin.type';
-import { VerifyAuthType } from '../auth/auth.type';
+
+import { findStudent } from '../utils/index';
 
 import { findAllSemesters } from '../../scripts/utils';
 import {
@@ -23,7 +23,16 @@ import {
 import { addAllCourses, addNewSemester } from '../../scripts/populate-courses';
 import { COURSE_API_BASE_URL } from '../utils/constants';
 
-export const verifyTokenAdmin = async ({ auth }: VerifyAuthType) => {
+export const reportReview = async ({ id }: ReportReviewRequestType) => {
+  try {
+    await updateReviewVisibility(id, 1, 0);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const verifyTokenAdmin = async ({ auth }: VerifyAdminType) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
 
@@ -73,7 +82,7 @@ export const removePendingReview = async ({
   return false;
 };
 
-export const getPendingReviews = async ({ auth }: VerifyAuthType) => {
+export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     return findAllPendingReviews();
@@ -99,7 +108,7 @@ export const getRaffleWinner = async ({
   return student.netId;
 };
 
-export const updateAllProfessors = async ({ auth }: VerifyAuthType) => {
+export const updateAllProfessors = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -110,7 +119,7 @@ export const updateAllProfessors = async ({ auth }: VerifyAuthType) => {
   return result;
 };
 
-export const resetAllProfessors = async ({ auth }: VerifyAuthType) => {
+export const resetAllProfessors = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -122,7 +131,7 @@ export const resetAllProfessors = async ({ auth }: VerifyAuthType) => {
   return result;
 };
 
-export const addAllCoursesAndProfessors = async ({ auth }: VerifyAuthType) => {
+export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;

@@ -22,10 +22,6 @@ export interface ReviewLikesRequestType {
   id: string;
 }
 
-export interface ReportReviewRequestType {
-  id: string;
-}
-
 export interface InsertReviewType {
   auth: Auth;
   courseId: string;

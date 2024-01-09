@@ -20,8 +20,8 @@ export default class TestingServer {
     this.mongoServer = new MongoMemoryServer();
     // setup express
     const app = express();
-    this.serverCloseHandle = app.listen(port);
     configure(app);
+    this.serverCloseHandle = app.listen(port);
   }
 
   setUpDB = async (

@@ -1,5 +1,9 @@
 import { Auth } from '../auth/auth';
 
+export interface ReportReviewRequestType {
+  id: string;
+}
+
 export interface AdminReviewRequestType {
   token: string;
   review: AdminReviewType;
@@ -11,6 +15,10 @@ interface AdminReviewType {
 
 export interface AdminRequestType {
   token: string;
+}
+
+export interface VerifyAdminType {
+  auth: Auth;
 }
 
 export interface RaffleWinnerRequestType {

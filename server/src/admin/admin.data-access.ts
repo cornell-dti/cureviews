@@ -14,3 +14,18 @@ export const findAllReviewsAfterDate = async (date: Date) => {
     { $sample: { size: 1 } },
   ]);
 };
+
+export const removeReview = async (reviewId: string) => {
+  await Reviews.remove({ _id: reviewId });
+};
+
+export const updateReviewVisibility = async (
+  reviewId: string,
+  reported: number,
+  visible: number,
+) => {
+  await Reviews.updateOne(
+    { _id: reviewId },
+    { $set: { visible: visible, reported: reported } },
+  );
+};

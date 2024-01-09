@@ -1,4 +1,4 @@
-import { findStudent, insertNewStudent } from '../profile/profile.data-access';
+import { insertNewStudent } from '../auth/auth.data-access';
 import {
   GetUserType,
   InsertStudentType,
@@ -6,6 +6,8 @@ import {
   VerifyAuthType,
 } from './auth.type';
 import shortid from 'shortid';
+
+import { findStudent } from '../utils/index';
 
 export const insertUser = async ({ token }: GetUserType) => {
   try {

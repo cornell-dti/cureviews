@@ -1,6 +1,5 @@
 import {
   findReviewDoc,
-  findStudent,
   updateStudentReviews,
   updateStudentLikedReviews,
 } from './profile.data-access';
@@ -9,6 +8,8 @@ import {
   ProfileLikeReviewType,
   ProfileReviewType,
 } from './profile.type';
+
+import { findStudent } from '../utils/index';
 
 export const getStudentReviewIds = async ({
   netId,

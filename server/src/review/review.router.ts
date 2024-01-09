@@ -1,15 +1,10 @@
 import express from 'express';
 
-import {
-  InsertReviewRequestType,
-  ReviewLikesRequestType,
-  ReportReviewRequestType,
-} from './review.type';
+import { InsertReviewRequestType, ReviewLikesRequestType } from './review.type';
 import { Auth } from '../auth/auth';
 import {
   checkStudentHasLiked,
   insertNewReview,
-  reportReview,
   updateStudentLiked,
 } from './review.controller';
 
@@ -83,26 +78,6 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
       message: `User has liked review with id: ${id}`,
       hasLiked: true,
     });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ error: `Internal Server Error: ${err.message}` });
-  }
-});
-
-reviewRouter.post('/reportReview', async (req, res) => {
-  try {
-    const { id }: ReportReviewRequestType = req.body;
-    const result = await reportReview({ id });
-    if (!result) {
-      return res
-        .status(400)
-        .json({ error: `Review with id: ${id} unable to be reported.` });
-    }
-
-    return res
-      .status(200)
-      .json({ message: `Review with id: ${id} successfully reported.` });
   } catch (err) {
     return res
       .status(500)

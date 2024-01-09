@@ -1,3 +1,10 @@
+import { Students } from '../../db/schema';
+
+export const findStudent = async (netId: string) => {
+  const student = await Students.findOne({ netId }).exec();
+  return student;
+};
+
 // import { ValidationChain, body } from 'express-validator';
 // import { InsertUserRequest, CourseIdQuery } from '../review/review_original';
 // import { Classes, Students } from '../../db/schema';

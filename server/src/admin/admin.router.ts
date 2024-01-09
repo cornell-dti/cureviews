@@ -5,6 +5,7 @@ import {
   AdminRequestType,
   RaffleWinnerRequestType,
   AdminAddSemesterRequestType,
+  ReportReviewRequestType,
 } from './admin.type';
 import {
   getPendingReviews,
@@ -16,9 +17,30 @@ import {
   addAllCoursesAndProfessors,
   addNewSemesterCoursesAndProfessors,
   verifyTokenAdmin,
+  reportReview,
 } from './admin.controller';
 
 const adminRouter = express.Router();
+
+adminRouter.post('/reportReview', async (req, res) => {
+  try {
+    const { id }: ReportReviewRequestType = req.body;
+    const result = await reportReview({ id });
+    if (!result) {
+      return res
+        .status(400)
+        .json({ error: `Review with id: ${id} unable to be reported.` });
+    }
+
+    return res
+      .status(200)
+      .json({ message: `Review with id: ${id} successfully reported.` });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
 
 /*
  * Check if a token is for an admin

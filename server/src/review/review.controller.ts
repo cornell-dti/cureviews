@@ -9,13 +9,8 @@ import {
   findReview,
   insertReview,
   updateReviewLikes,
-  updateReviewVisibility,
 } from './review.data-access';
-import {
-  InsertReviewType,
-  ReportReviewRequestType,
-  ReviewLikesType,
-} from './review.type';
+import { InsertReviewType, ReviewLikesType } from './review.type';
 import shortid from 'shortid';
 
 export const checkStudentHasLiked = async ({
@@ -95,15 +90,6 @@ export const updateStudentLiked = async ({
   }
 
   return review;
-};
-
-export const reportReview = async ({ id }: ReportReviewRequestType) => {
-  try {
-    await updateReviewVisibility(id, 1, 0);
-    return true;
-  } catch (err) {
-    return false;
-  }
 };
 
 export const insertNewReview = async ({
