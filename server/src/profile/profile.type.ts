@@ -1,4 +1,4 @@
-export interface ProfileInfoType {
+export interface ProfileInfoRequestType {
   netId: string;
 }
 

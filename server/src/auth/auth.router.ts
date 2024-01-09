@@ -1,11 +1,12 @@
 import express from 'express';
 import { Auth } from './auth';
+import { VerifyAuthRequestType } from './auth.type';
 
 const authRouter = express.Router();
 
 authRouter.post('/getStudentEmailByToken', async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token }: VerifyAuthRequestType = req.body;
     const auth: Auth = new Auth({ token });
 
     const ticket = await auth.getVerificationTicket();

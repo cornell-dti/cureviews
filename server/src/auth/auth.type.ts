@@ -10,7 +10,11 @@ export interface VerifyAuthType {
   auth: Auth;
 }
 
-export interface ProfileInfoType {
+export interface VerifyAuthRequestType {
+  token: string;
+}
+
+export interface ProfileInfoRequestType {
   netId: string;
   student: StudentDocument;
 }

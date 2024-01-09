@@ -6,15 +6,16 @@ import {
   searchProfessors,
   searchSubjects,
 } from './search.controller';
+import { SearchQueryRequestType } from './search.type';
 
 const searchRouter = express.Router();
 
 searchRouter.post('/getClassesByQuery', async (req, res) => {
   try {
-    const { query } = req.body;
+    const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const courses = await searchCourses(search);
+    const courses = await searchCourses({ search });
 
     res.status(200).json({
       message: `Success! Retrieved all courses by query: ${query}`,
@@ -30,10 +31,10 @@ searchRouter.post('/getClassesByQuery', async (req, res) => {
 //  */
 searchRouter.post('/getSubjectsByQuery', async (req, res) => {
   try {
-    const { query } = req.body;
+    const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const subjects = await searchSubjects(search);
+    const subjects = await searchSubjects({ search });
 
     res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
@@ -46,10 +47,10 @@ searchRouter.post('/getSubjectsByQuery', async (req, res) => {
 
 searchRouter.post('/getProfessorsByQuery', async (req, res) => {
   try {
-    const { query } = req.body;
+    const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const professors = await searchProfessors(search);
+    const professors = await searchProfessors({ search });
 
     res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,

@@ -5,18 +5,22 @@ import {
   updateStudentLikedReviews,
 } from './profile.data-access';
 import {
-  ProfileInfoType,
+  ProfileInfoRequestType,
   ProfileLikeReviewType,
   ProfileReviewType,
 } from './profile.type';
 
-export const getStudentReviewIds = async ({ netId }: ProfileInfoType) => {
+export const getStudentReviewIds = async ({
+  netId,
+}: ProfileInfoRequestType) => {
   const student = await findStudent(netId);
   if (!student) return null;
   return student.reviews;
 };
 
-export const getTotalLikesByNetId = async ({ netId }: ProfileInfoType) => {
+export const getTotalLikesByNetId = async ({
+  netId,
+}: ProfileInfoRequestType) => {
   let totalLikes = 0;
   let reviewDocs = await getStudentReviewDocs({ netId });
 
@@ -31,7 +35,9 @@ export const getTotalLikesByNetId = async ({ netId }: ProfileInfoType) => {
   return totalLikes;
 };
 
-export const getStudentReviewDocs = async ({ netId }: ProfileInfoType) => {
+export const getStudentReviewDocs = async ({
+  netId,
+}: ProfileInfoRequestType) => {
   const student = await findStudent(netId);
 
   if (!student) {

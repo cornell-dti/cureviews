@@ -6,6 +6,7 @@ import {
   getStudentReviewDocs,
   getTotalLikesByNetId,
 } from './profile.controller';
+import { ProfileInfoRequestType } from './profile.type';
 
 const profileRouter = express.Router();
 
@@ -15,7 +16,7 @@ const profileRouter = express.Router();
 
 profileRouter.post('/countReviewsByStudentId', async (req, res) => {
   try {
-    const { netId } = req.body;
+    const { netId }: ProfileInfoRequestType = req.body;
     const profile: Profile = new Profile({ netId });
     const validNetId: string = profile.getNetId();
 
@@ -40,7 +41,7 @@ profileRouter.post('/countReviewsByStudentId', async (req, res) => {
 
 profileRouter.post('/getTotalLikesByStudentId', async (req, res) => {
   try {
-    const { netId } = req.body;
+    const { netId }: ProfileInfoRequestType = req.body;
     const profile: Profile = new Profile({ netId });
     const validNetId: string = profile.getNetId();
 
@@ -61,7 +62,7 @@ profileRouter.post('/getTotalLikesByStudentId', async (req, res) => {
  */
 profileRouter.post('/getReviewsByStudentId', async (req, res) => {
   try {
-    const { netId } = req.body;
+    const { netId }: ProfileInfoRequestType = req.body;
     const profile: Profile = new Profile({ netId });
 
     const validNetId: string = profile.getNetId();

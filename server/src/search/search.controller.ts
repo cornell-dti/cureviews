@@ -8,8 +8,9 @@ import {
   findCourseWithinSubject,
   findAllCourses,
 } from './search.data-access';
+import { SearchQueryType } from './search.type';
 
-const regexCourseSearch = async (search: Search) => {
+const regexCourseSearch = async ({ search }: SearchQueryType) => {
   const query = search.getQuery();
   const indexFirstDigit = search.getFirstDigit();
 
@@ -55,21 +56,21 @@ const regexCourseSearch = async (search: Search) => {
   return findAllCourses();
 };
 
-export const searchCourses = async (search: Search) => {
+export const searchCourses = async ({ search }: SearchQueryType) => {
   const courses = await search.searchQuery(findCourses);
   if (courses && courses.length > 0) {
     return courses;
   }
 
-  return await regexCourseSearch(search);
+  return await regexCourseSearch({ search });
 };
 
-export const searchSubjects = async (search: Search) => {
+export const searchSubjects = async ({ search }: SearchQueryType) => {
   const subjects = await search.searchQuery(findSubjects);
   return subjects;
 };
 
-export const searchProfessors = async (search: Search) => {
+export const searchProfessors = async ({ search }: SearchQueryType) => {
   const professors = await search.searchQuery(findProfessors);
   return professors;
 };

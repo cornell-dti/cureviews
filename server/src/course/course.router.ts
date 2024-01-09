@@ -1,5 +1,5 @@
 import express from 'express';
-import { CourseIdType, CourseInfoType } from './course.type';
+import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
 import {
   getCourseById,
   getCourseByInfo,
@@ -10,7 +10,7 @@ const courseRouter = express.Router();
 
 courseRouter.post('/getCourseByInfo', async (req, res) => {
   try {
-    const { number, subject }: CourseInfoType = req.body;
+    const { number, subject }: CourseInfoRequestType = req.body;
     const course = await getCourseByInfo({ number, subject });
     return res.status(200).json({ result: course });
   } catch (err) {
@@ -22,7 +22,7 @@ courseRouter.post('/getCourseByInfo', async (req, res) => {
 
 courseRouter.post('/getCourseById', async (req, res) => {
   try {
-    const { courseId }: CourseIdType = req.body;
+    const { courseId }: CourseIdRequestType = req.body;
     const course = await getCourseById({ courseId });
     return res.status(200).json({ result: course });
   } catch (err) {
@@ -34,7 +34,7 @@ courseRouter.post('/getCourseById', async (req, res) => {
 
 courseRouter.post('/getReviewsByCourseId', async (req, res) => {
   try {
-    const { courseId }: CourseIdType = req.body;
+    const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsCrossListOR({ courseId });
     return res.status(200).json({ result: reviews });
   } catch (err) {

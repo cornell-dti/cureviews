@@ -1,14 +1,17 @@
 import { findCourseById, findCourseByInfo } from './course.data-access';
-import { CourseIdType, CourseInfoType } from './course.type';
+import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
 import { findReviewCrossListOR } from '../review/review.data-access';
 import { getCrossListOR } from '../../../common/CourseCard.js';
 
-export const getCourseByInfo = async ({ number, subject }: CourseInfoType) => {
+export const getCourseByInfo = async ({
+  number,
+  subject,
+}: CourseInfoRequestType) => {
   const course = await findCourseByInfo(number, subject);
   return course;
 };
 
-export const getCourseById = async ({ courseId }: CourseIdType) => {
+export const getCourseById = async ({ courseId }: CourseIdRequestType) => {
   // check: make sure course id is valid and non-malicious
   const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
   if (regex.test(courseId)) {
@@ -18,7 +21,9 @@ export const getCourseById = async ({ courseId }: CourseIdType) => {
   return null;
 };
 
-export const getReviewsCrossListOR = async ({ courseId }: CourseIdType) => {
+export const getReviewsCrossListOR = async ({
+  courseId,
+}: CourseIdRequestType) => {
   const course = await getCourseById({ courseId });
 
   if (course) {

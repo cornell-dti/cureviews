@@ -2,7 +2,7 @@ import { findStudent, insertNewStudent } from '../profile/profile.data-access';
 import {
   GetUserType,
   InsertStudentType,
-  ProfileInfoType,
+  ProfileInfoRequestType,
   VerifyAuthType,
 } from './auth.type';
 import shortid from 'shortid';
@@ -57,7 +57,7 @@ export const verifyToken = async ({ auth }: VerifyAuthType) => {
 
     const netId = ticket.email.replace('@cornell.edu', '');
     const student = await findStudent(netId);
-    return { netId, student } as ProfileInfoType;
+    return { netId, student } as ProfileInfoRequestType;
   } else {
     return null;
   }
