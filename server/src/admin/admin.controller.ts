@@ -21,6 +21,7 @@ import {
   resetProfessors,
 } from '../../scripts/populate-professors';
 import { addAllCourses, addNewSemester } from '../../scripts/populate-courses';
+import { COURSE_API_BASE_URL } from '../utils/constants';
 
 export const verifyTokenAdmin = async ({ auth }: VerifyAuthType) => {
   try {
@@ -116,10 +117,7 @@ export const resetAllProfessors = async ({ auth }: VerifyAuthType) => {
   }
 
   const semesters = await findAllSemesters();
-  const result = await resetProfessors(
-    'https://classes.cornell.edu/api/2.0/',
-    semesters,
-  );
+  const result = await resetProfessors(COURSE_API_BASE_URL, semesters);
 
   return result;
 };
@@ -150,9 +148,6 @@ export const addNewSemesterCoursesAndProfessors = async ({
     return null;
   }
 
-  const result = await addNewSemester(
-    'https://classes.cornell.edu/api/2.0/',
-    semester,
-  );
+  const result = await addNewSemester(COURSE_API_BASE_URL, semester);
   return result;
 };

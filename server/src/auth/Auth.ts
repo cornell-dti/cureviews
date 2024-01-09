@@ -1,5 +1,6 @@
 import joi from 'joi';
 import { OAuth2Client } from 'google-auth-library';
+import { GOOGLE_AUTH_AUDIENCE } from '../utils/constants';
 
 type AuthEntity = {
   token: string;
@@ -7,8 +8,7 @@ type AuthEntity = {
 
 export class Auth {
   private token: string;
-  private static AUDIENCE =
-    '836283700372-msku5vqaolmgvh3q1nvcqm3d6cgiu0v1.apps.googleusercontent.com';
+  private static AUDIENCE = GOOGLE_AUTH_AUDIENCE;
   private static CLIENT = new OAuth2Client(Auth.AUDIENCE);
 
   constructor({ token }: AuthEntity) {
