@@ -1,3 +1,4 @@
+import { courseSort } from './search.algo';
 import {
   findCourseSubject,
   findCourses,
@@ -58,10 +59,11 @@ const regexCourseSearch = async ({ search }: SearchQueryType) => {
 export const searchCourses = async ({ search }: SearchQueryType) => {
   const courses = await search.searchQuery(findCourses);
   if (courses && courses.length > 0) {
-    return courses;
+    return courses.sort(courseSort(search.getQuery()));
   }
 
-  return await regexCourseSearch({ search });
+  const regexCourses = await regexCourseSearch({ search });
+  return regexCourses.sort(courseSort(search.getQuery()));
 };
 
 export const searchSubjects = async ({ search }: SearchQueryType) => {
