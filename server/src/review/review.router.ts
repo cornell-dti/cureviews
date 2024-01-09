@@ -25,7 +25,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
   try {
     const { token, courseId, review }: InsertReviewType = req.body;
     const auth = new Auth({ token });
-    const verified = await verifyToken(auth);
+    const verified = await verifyToken({ auth });
 
     if (verified === null) {
       return res
@@ -83,7 +83,7 @@ reviewRouter.post('/updateLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesType = req.body;
     const auth = new Auth({ token });
-    const verified = await verifyToken(auth);
+    const verified = await verifyToken({ auth });
 
     if (verified === null) {
       return res
@@ -143,7 +143,7 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesType = req.body;
     const auth = new Auth({ token });
-    const verified = await verifyToken(auth);
+    const verified = await verifyToken({ auth });
 
     if (verified === null) {
       return res

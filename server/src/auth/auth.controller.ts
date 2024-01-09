@@ -1,10 +1,14 @@
 import { Auth } from './auth';
 import { findStudent, insertNewStudent } from '../profile/profile.data-access';
-import { GetUserType, InsertStudentType, VerifyAuthType } from './auth.type';
+import {
+  GetUserType,
+  InsertStudentType,
+  ProfileInfoType,
+  VerifyAuthType,
+} from './auth.type';
 import shortid from 'shortid';
 
-export const insertUser = async (googleObject: GetUserType) => {
-  const { token } = googleObject;
+export const insertUser = async ({ token }: GetUserType) => {
   try {
     if (!token.email) {
       return false;
@@ -54,7 +58,7 @@ export const verifyToken = async ({ auth }: VerifyAuthType) => {
 
     const netId = ticket.email.replace('@cornell.edu', '');
     const student = await findStudent(netId);
-    return { netId, student };
+    return { netId, student } as ProfileInfoType;
   } else {
     return null;
   }
