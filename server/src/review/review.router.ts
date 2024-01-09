@@ -4,22 +4,11 @@ import {
   InsertReviewRequestType,
   ReviewLikesRequestType,
   ReportReviewRequestType,
-  InsertReviewType,
 } from './review.type';
 import { Auth } from '../auth/auth';
 import { verifyToken } from '../auth/auth.controller';
-import {
-  findReview,
-  findClassReviews,
-  insertReview,
-  updateReviewLikes,
-} from './review.data-access';
-import shortid from 'shortid';
-import { Review } from './review';
-import {
-  addStudentReview,
-  setStudentLikedReviews,
-} from '../profile/profile.controller';
+import { findReview, updateReviewLikes } from './review.data-access';
+import { setStudentLikedReviews } from '../profile/profile.controller';
 import { insertNewReview, reportReview } from './review.controller';
 
 const reviewRouter = express.Router();
