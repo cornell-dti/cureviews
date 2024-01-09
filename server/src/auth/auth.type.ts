@@ -1,7 +1,12 @@
 import { TokenPayload } from 'google-auth-library';
+import { Auth } from './auth';
 
 export interface GetUserType {
   token: TokenPayload;
+}
+
+export interface VerifyAuthType {
+  auth: Auth;
 }
 
 export interface InsertStudentType {

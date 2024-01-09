@@ -9,14 +9,20 @@ import {
 } from '../review/review.data-access';
 import { verifyTokenAdmin } from '../auth/auth.controller';
 import { findStudent } from '../profile/profile.data-access';
+import {
+  AdminPendingReviewType,
+  AdminReviewVisibilityType,
+  RaffleWinnerType,
+} from './admin.type';
+import { VerifyAuthType } from '../auth/auth.type';
 
-export const setReviewVisibility = async (
-  reviewId: string,
-  auth: Auth,
-  visibility: number,
-  reported: number,
-) => {
-  const userIsAdmin = await verifyTokenAdmin(auth);
+export const setReviewVisibility = async ({
+  reviewId,
+  auth,
+  visibility,
+  reported,
+}: AdminReviewVisibilityType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     await updateReviewVisibility(reviewId, reported, visibility);
     return true;
@@ -25,8 +31,11 @@ export const setReviewVisibility = async (
   return false;
 };
 
-export const removePendingReview = async (reviewId: string, auth: Auth) => {
-  const userIsAdmin = await verifyTokenAdmin(auth);
+export const removePendingReview = async ({
+  reviewId,
+  auth,
+}: AdminPendingReviewType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     await removeReview(reviewId);
     return true;
@@ -35,8 +44,8 @@ export const removePendingReview = async (reviewId: string, auth: Auth) => {
   return false;
 };
 
-export const getPendingReviews = async (auth: Auth) => {
-  const userIsAdmin = await verifyTokenAdmin(auth);
+export const getPendingReviews = async ({ auth }: VerifyAuthType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     return findAllPendingReviews();
   }
@@ -44,7 +53,7 @@ export const getPendingReviews = async (auth: Auth) => {
   return null;
 };
 
-export const getRaffleWinner = async (startDate: string) => {
+export const getRaffleWinner = async ({ startDate }: RaffleWinnerType) => {
   const date = new Date(startDate);
   const reviews = await findAllReviewsAfterDate(date);
   if (reviews.length <= 0) {

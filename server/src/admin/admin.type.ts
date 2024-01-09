@@ -1,3 +1,5 @@
+import { Auth } from '../auth/auth';
+
 export interface AdminReviewRequestType {
   token: string;
   review: AdminReviewType;
@@ -13,4 +15,16 @@ export interface AdminRequestType {
 
 export interface RaffleWinnerType {
   startDate: string;
+}
+
+export interface AdminReviewVisibilityType {
+  reviewId: string;
+  auth: Auth;
+  visibility: number;
+  reported: number;
+}
+
+export interface AdminPendingReviewType {
+  reviewId: string;
+  auth: Auth;
 }

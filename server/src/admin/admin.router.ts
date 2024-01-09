@@ -24,7 +24,13 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
-    const reviewVisible = await setReviewVisibility(review._id, auth, 1, 0);
+    const reviewVisible = await setReviewVisibility({
+      reviewId: review._id,
+      auth,
+      visibility: 1,
+      reported: 0,
+    });
+
     if (reviewVisible) {
       return res.status(200).json({
         message: `Review with id: ${review._id} is now visible!`,
@@ -43,7 +49,7 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
-    const pendingReviews = await getPendingReviews(auth);
+    const pendingReviews = await getPendingReviews({ auth });
     if (pendingReviews === null) {
       return res.status(400).json({
         error: `User is not an admin.`,
@@ -63,7 +69,7 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
 adminRouter.post('/getRaffleWinner', async (req, res) => {
   try {
     const { startDate }: RaffleWinnerType = req.body;
-    const winner = await getRaffleWinner(startDate);
+    const winner = await getRaffleWinner({ startDate });
 
     if (winner === null) {
       return res.status(400).json({
@@ -105,7 +111,12 @@ adminRouter.post('/undoReportReview', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await setReviewVisibility(review._id, auth, 1, 0);
+    const result = await setReviewVisibility({
+      reviewId: review._id,
+      auth,
+      visibility: 1,
+      reported: 0,
+    });
 
     if (result) {
       return res.status(200).json({
@@ -126,7 +137,7 @@ adminRouter.post('/removeReview', async (req, res) => {
 
   try {
     const auth = new Auth({ token });
-    const result = await removePendingReview(review._id, auth);
+    const result = await removePendingReview({ reviewId: review._id, auth });
 
     if (result) {
       return res.status(200).json({

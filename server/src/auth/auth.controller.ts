@@ -1,11 +1,15 @@
 import { Auth } from './auth';
 import { findStudent, insertNewStudent } from '../profile/profile.data-access';
-import { GetUserType, InsertStudentType } from './auth.type';
+import { GetUserType, InsertStudentType, VerifyAuthType } from './auth.type';
 import shortid from 'shortid';
 
 export const insertUser = async (googleObject: GetUserType) => {
   const { token } = googleObject;
   try {
+    if (!token.email) {
+      return false;
+    }
+
     if (token.email.replace('@cornell.edu', '') !== null) {
       const user = await findStudent(token.email.replace('@cornell.edu', ''));
 
@@ -15,18 +19,22 @@ export const insertUser = async (googleObject: GetUserType) => {
           firstName: token.given_name ? token.given_name : '',
           lastName: token.family_name ? token.family_name : '',
           netId: token.email.replace('@cornell.edu', ''),
-          affiliation: null,
-          token: null,
+          affiliation: '',
+          token: '',
           privilege: 'regular',
         };
 
-        insertNewStudent(newStudent);
+        await insertNewStudent(newStudent);
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    return false;
+  }
+
+  return true;
 };
 
-export const verifyToken = async (auth: Auth) => {
+export const verifyToken = async ({ auth }: VerifyAuthType) => {
   const ticket = await auth.getVerificationTicket();
 
   if (!ticket) {
@@ -34,7 +42,15 @@ export const verifyToken = async (auth: Auth) => {
   }
 
   if (ticket.hd === 'cornell.edu') {
-    await insertUser({ token: ticket });
+    const result = await insertUser({ token: ticket });
+
+    if (!result) {
+      return null;
+    }
+
+    if (!ticket.email) {
+      return null;
+    }
 
     const netId = ticket.email.replace('@cornell.edu', '');
     const student = await findStudent(netId);
@@ -44,7 +60,7 @@ export const verifyToken = async (auth: Auth) => {
   }
 };
 
-export const verifyTokenAdmin = async (auth: Auth) => {
+export const verifyTokenAdmin = async ({ auth }: VerifyAuthType) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
 

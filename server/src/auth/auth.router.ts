@@ -11,6 +11,12 @@ authRouter.post('/getStudentEmailByToken', async (req, res) => {
     const auth: Auth = new Auth({ token });
 
     const ticket = await auth.getVerificationTicket();
+    if (!ticket) {
+      return res
+        .status(401)
+        .json({ error: 'Invalid token, user unauthorized.' });
+    }
+
     if (ticket.hd === 'cornell.edu') {
       return res.status(200).json({ result: ticket.email });
     }
@@ -29,7 +35,7 @@ authRouter.post('/tokenIsAdmin', async (req, res) => {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
 
-    const isAdmin = await verifyTokenAdmin(auth);
+    const isAdmin = await verifyTokenAdmin({ auth });
 
     res.status(200).json({ result: isAdmin });
   } catch (err) {
