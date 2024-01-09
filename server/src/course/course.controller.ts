@@ -14,14 +14,18 @@ export const getCourseById = async ({ courseId }: CourseIdType) => {
   if (regex.test(courseId)) {
     return findCourseById(courseId);
   }
+
+  return null;
 };
 
-export const getReviewsCrossListOR = async (courseId: CourseIdType) => {
-  const course = await getCourseById(courseId);
+export const getReviewsCrossListOR = async ({ courseId }: CourseIdType) => {
+  const course = await getCourseById({ courseId });
 
   if (course) {
     const crossListOR = getCrossListOR(course);
     const reviews = await findReviewCrossListOR(crossListOR);
     return reviews;
   }
+
+  return null;
 };

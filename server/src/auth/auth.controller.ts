@@ -1,4 +1,3 @@
-import { Auth } from './auth';
 import { findStudent, insertNewStudent } from '../profile/profile.data-access';
 import {
   GetUserType,
