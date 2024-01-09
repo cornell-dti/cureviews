@@ -4,27 +4,43 @@ import {
   AdminReviewRequestType,
   AdminRequestType,
   RaffleWinnerRequestType,
+  AdminAddSemesterRequestType,
 } from './admin.type';
 import {
   getPendingReviews,
-  setReviewVisibility,
+  editReviewVisibility,
   getRaffleWinner,
   removePendingReview,
+  updateAllProfessors,
+  resetAllProfessors,
+  addAllCoursesAndProfessors,
+  addNewSemesterCoursesAndProfessors,
+  verifyTokenAdmin,
 } from './admin.controller';
-import { addAllCourses, addNewSemester } from '../../scripts/populate-courses';
-import { findAllSemesters } from '../../scripts/utils';
-import {
-  resetProfessors,
-  addAllProfessors,
-} from '../../scripts/populate-professors';
 
 const adminRouter = express.Router();
+
+/*
+ * Check if a token is for an admin
+ */
+adminRouter.post('/tokenIsAdmin', async (req, res) => {
+  try {
+    const { token } = req.body;
+    const auth: Auth = new Auth({ token });
+
+    const isAdmin = await verifyTokenAdmin({ auth });
+
+    res.status(200).json({ result: isAdmin });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
 
 adminRouter.post('/makeReviewVisible', async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
-    const reviewVisible = await setReviewVisibility({
+    const reviewVisible = await editReviewVisibility({
       reviewId: review._id,
       auth,
       visibility: 1,
@@ -88,12 +104,16 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
 });
 
 adminRouter.post('/addNewSemester', async (req, res) => {
-  const { semester }: { semester: string } = req.body;
+  const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
-    const result = await addNewSemester(
-      'https://classes.cornell.edu/api/2.0/',
-      semester,
-    );
+    const auth = new Auth({ token });
+    const result = await addNewSemesterCoursesAndProfessors({ auth, semester });
+
+    if (result === null) {
+      return res.status(401).json({
+        error: `User is authenticated and unauthorized as admin, please sign in.`,
+      });
+    }
 
     if (result) {
       return res.status(200).json({ result: true });
@@ -111,7 +131,7 @@ adminRouter.post('/undoReportReview', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await setReviewVisibility({
+    const result = await editReviewVisibility({
       reviewId: review._id,
       auth,
       visibility: 1,
@@ -157,8 +177,7 @@ adminRouter.post('/setProfessors', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const semesters = await findAllSemesters();
-    const result = await addAllProfessors(semesters);
+    const result = await updateAllProfessors({ auth });
 
     if (result) {
       return res.status(200).json({ result: true });
@@ -174,12 +193,7 @@ adminRouter.post('/resetProfessors', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const semesters = await findAllSemesters();
-    // const result = await addAllCourses(semesters);
-    const result = await resetProfessors(
-      'https://classes.cornell.edu/api/2.0/',
-      semesters,
-    );
+    const result = await resetAllProfessors({ auth });
 
     if (result) {
       return res.status(200).json({ message: 'Professors reset!' });
@@ -197,21 +211,17 @@ adminRouter.post('/dbInit', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const semesters = await findAllSemesters();
-    const coursesResult = await addAllCourses(semesters);
-    const professorsResult = await addAllProfessors(semesters);
+    const result = addAllCoursesAndProfessors({ auth });
 
-    if (coursesResult && professorsResult) {
-      return res
-        .status(200)
-        .json({ message: 'Successfully added all courses and professors!' });
+    if (result) {
+      return res.status(200).json({
+        message: `Successfully added all courses and professors from all semesters`,
+      });
     }
 
-    if (!coursesResult) {
-      return res.status(400).json({ error: 'Error adding all courses!' });
-    }
-
-    return res.status(400).json({ error: 'Error adding all professors' });
+    return res
+      .status(400)
+      .json({ error: 'Error adding all professors and all courses' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

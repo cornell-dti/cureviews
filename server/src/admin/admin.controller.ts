@@ -6,16 +6,45 @@ import {
   updateReviewVisibility,
   removeReview,
 } from '../review/review.data-access';
-import { verifyTokenAdmin } from '../auth/auth.controller';
 import { findStudent } from '../profile/profile.data-access';
 import {
+  AdminAddSemesterType,
   AdminPendingReviewType,
   AdminReviewVisibilityType,
   RaffleWinnerRequestType,
 } from './admin.type';
 import { VerifyAuthType } from '../auth/auth.type';
 
-export const setReviewVisibility = async ({
+import { findAllSemesters } from '../../scripts/utils';
+import {
+  addAllProfessors,
+  resetProfessors,
+} from '../../scripts/populate-professors';
+import { addAllCourses, addNewSemester } from '../../scripts/populate-courses';
+
+export const verifyTokenAdmin = async ({ auth }: VerifyAuthType) => {
+  try {
+    const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+
+    if (regex.test(auth.getToken())) {
+      const ticket = await auth.getVerificationTicket();
+      if (ticket && ticket.email) {
+        const user = await findStudent(
+          ticket.email.replace('@cornell.edu', ''),
+        );
+        if (user) {
+          return user.privilege === 'admin';
+        }
+      }
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const editReviewVisibility = async ({
   reviewId,
   auth,
   visibility,
@@ -67,4 +96,63 @@ export const getRaffleWinner = async ({
   }
 
   return student.netId;
+};
+
+export const updateAllProfessors = async ({ auth }: VerifyAuthType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const semesters = await findAllSemesters();
+  const result = await addAllProfessors(semesters);
+  return result;
+};
+
+export const resetAllProfessors = async ({ auth }: VerifyAuthType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const semesters = await findAllSemesters();
+  const result = await resetProfessors(
+    'https://classes.cornell.edu/api/2.0/',
+    semesters,
+  );
+
+  return result;
+};
+
+export const addAllCoursesAndProfessors = async ({ auth }: VerifyAuthType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const semesters = await findAllSemesters();
+  const coursesResult = await addAllCourses(semesters);
+  const professorsResult = await addAllProfessors(semesters);
+
+  if (coursesResult && professorsResult) {
+    return true;
+  }
+
+  return false;
+};
+
+export const addNewSemesterCoursesAndProfessors = async ({
+  auth,
+  semester,
+}: AdminAddSemesterType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const result = await addNewSemester(
+    'https://classes.cornell.edu/api/2.0/',
+    semester,
+  );
+  return result;
 };

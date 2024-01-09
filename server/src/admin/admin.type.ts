@@ -28,3 +28,13 @@ export interface AdminPendingReviewType {
   reviewId: string;
   auth: Auth;
 }
+
+export interface AdminAddSemesterRequestType {
+  token: string;
+  semester: string;
+}
+
+export interface AdminAddSemesterType {
+  auth: Auth;
+  semester: string;
+}

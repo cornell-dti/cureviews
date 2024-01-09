@@ -438,7 +438,7 @@ export async function addAllCourses(semesters: any) {
     );
     if (result.status !== 200) {
       console.log('Error in addAllCourses: 1');
-      return 0;
+      return false;
     }
     const response = result.data;
     // console.log(response);
@@ -467,7 +467,7 @@ export async function addAllCourses(semesters: any) {
           );
           if (result2.status !== 200) {
             console.log('Error in addAllCourses: 2');
-            return 0;
+            return false;
           }
           const response2 = result2.data;
           const courses = response2.data.classes;
@@ -513,15 +513,15 @@ export async function addAllCourses(semesters: any) {
               }
             } catch (error) {
               console.log('Error in addAllCourses: 3');
-              return 0;
+              return false;
             }
           }
         } catch (err) {
-          return 0;
+          return false;
         }
       }),
     );
   });
   console.log('Finished addAllCourses');
-  return 1;
+  return true;
 }
