@@ -1,13 +1,10 @@
 import { Classes, Subjects, Professors } from '../../db/schema';
 
-export const findAllCourses = async () => {
-  return Classes.find(
-    { score: { $meta: 'textScore' } },
-    {
-      sort: { score: { $meta: 'textScore' } },
-      limit: 200,
-      reactive: false,
-    },
+export const findAllCourses = async (query: string) => {
+  return await Classes.find(
+    { classFull: { $regex: `.*${query}.*`, $options: '-i' } },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
   ).exec();
 };
 
@@ -21,10 +18,11 @@ export const findCourses = async (query: string) => {
 
 export const findCoursesByNum = async (query: string) => {
   const courses = await Classes.find(
-    { classNum: { $regex: `.*${query}.*`, $options: 'i' } },
-    { score: { $meta: 'textScore' } },
-    { sort: { score: { $meta: 'textScore' } }, limit: 200, reactive: false },
-  ).exec();
+    { classNum: { $regex: `.*${query}.*`, $options: '-i' } },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
+  );
+
   return courses;
 };
 
@@ -35,18 +33,18 @@ export const findCourseWithinSubject = async (
   return await Classes.find(
     {
       classSub: subject,
-      classFull: { $regex: `.*${query}.*`, $options: 'i' },
+      classFull: { $regex: `.*${query}.*`, $options: '-i' },
     },
-    { score: { $meta: 'textScore' } },
-    { sort: { score: { $meta: 'textScore' } }, limit: 200, reactive: false },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
   ).exec();
 };
 
 export const findCourseSubject = async (query: string) => {
   return await Classes.find(
     { classSub: query },
-    { score: { $meta: 'textScore' } },
-    { sort: { score: { $meta: 'textScore' } }, limit: 200, reactive: false },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
   ).exec();
 };
 

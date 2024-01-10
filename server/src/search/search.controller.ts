@@ -58,7 +58,7 @@ const regexCourseSearch = async ({ search }: SearchQueryType) => {
     }
   }
 
-  return findAllCourses();
+  return findAllCourses(query);
 };
 
 export const searchCourses = async ({ search }: SearchQueryType) => {

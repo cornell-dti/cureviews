@@ -15,14 +15,18 @@ searchRouter.post('/getClassesByQuery', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const courses = await searchCourses({ search });
+    const courses = await searchCourses({ search }).catch((err) => {
+      return res.status(500).json({ error: `Internal Server Error: ${err}` });
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: `Success! Retrieved all courses by query: ${query}`,
       result: courses,
     });
   } catch (err) {
-    res.status(500).json({ error: `Internal Server Error: ${err}` });
+    return res
+      .status(400)
+      .json({ error: `Search query must contain ASCII characters.` });
   }
 });
 
@@ -34,14 +38,18 @@ searchRouter.post('/getSubjectsByQuery', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const subjects = await searchSubjects({ search });
+    const subjects = await searchSubjects({ search }).catch((err) => {
+      return res.status(500).json({ error: `Internal Server Error: ${err}` });
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
       result: subjects,
     });
   } catch (err) {
-    res.status(500).json({ error: `Internal Server Error: ${err}` });
+    return res
+      .status(400)
+      .json({ error: `Search query must contain ASCII characters.` });
   }
 });
 
@@ -50,14 +58,18 @@ searchRouter.post('/getProfessorsByQuery', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const professors = await searchProfessors({ search });
+    const professors = await searchProfessors({ search }).catch((err) => {
+      return res.status(500).json({ error: `Internal Server Error: ${err}` });
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
       result: professors,
     });
   } catch (err) {
-    res.status(500).json({ error: `Internal Server Error: ${err}` });
+    return res
+      .status(400)
+      .json({ error: `Search query must contain ASCII characters.` });
   }
 });
 

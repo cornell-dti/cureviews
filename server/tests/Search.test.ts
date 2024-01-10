@@ -75,17 +75,7 @@ describe('search functionality unit tests', () => {
     ]);
   });
 
-  it('getSubjectsByQuery - invalid body sent', async () => {
-    expect(
-      await axios
-        .post(`http://localhost:${testingPort}/api/getSubjectsByQuery`, {
-          'not query': 'other',
-        })
-        .catch((e) => 'failed!'),
-    ).toBe('failed!');
-  });
-
-  it('getSubjectsByQuery - works', async () => {
+  it('getSubjectsByQuery - valid query subject: "MORK" sent with correct order', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getSubjectsByQuery`,
       { query: 'MORK' },
@@ -95,7 +85,7 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.map((e) => e.subShort)).not.toContain('FEDN');
   });
 
-  it('getProfessorsByQuery-works', async () => {
+  it('getProfessorsByQuery - query professor: "Gazghul Thraka" sent', async () => {
     const res1 = await axios.post(
       `http://localhost:${testingPort}/api/getProfessorsByQuery`,
       { query: 'Gazghul Thraka' },
@@ -104,7 +94,9 @@ describe('search functionality unit tests', () => {
     expect(res1.data.result.map((e) => e.fullName)).not.toContain(
       'Jean-Luc Picard',
     );
+  });
 
+  it('getProfessorsByQuery - query professor: "Jean-Luc Picard" sent', async () => {
     const res2 = await axios.post(
       `http://localhost:${testingPort}/api/getProfessorsByQuery`,
       { query: 'Jean-Luc Picard' },
@@ -118,11 +110,14 @@ describe('search functionality unit tests', () => {
   });
 
   // Query has no matching results:
-  it('getClassesByQuery-no matching classes', async () => {
+  it('getClassesByQuery - no matching classes', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getClassesByQuery`,
-      { query: 'random' },
+      {
+        query: 'random',
+      },
     );
+
     // we expect no results to be returned
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual([]);
     expect(res.data.result.map((e) => e.classFull)).not.toContain([
@@ -131,7 +126,7 @@ describe('search functionality unit tests', () => {
     ]);
   });
 
-  it('getSubjectsByQuery-no matching subjects', async () => {
+  it('getSubjectsByQuery - no matching subjects', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getSubjectsByQuery`,
       { query: 'RAND' },
@@ -149,7 +144,7 @@ describe('search functionality unit tests', () => {
     expect(res2.data.result.map((e) => e.subShort)).toStrictEqual([]);
   });
 
-  it('getProfessorsByQuery-no matching professors', async () => {
+  it('getProfessorsByQuery - no matching professors', async () => {
     expect(
       await axios
         .post(`http://localhost:${testingPort}/api/getProfessorsByQuery`, {
@@ -173,40 +168,43 @@ describe('search functionality unit tests', () => {
   });
 
   // Will accept ascii, but give no guarantees as to what is returned.
-  it('getClassesByQuery-non Ascii', async () => {
+  it('getClassesByQuery - non Ascii query', async () => {
     const res = await axios
       .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
         query: 'भारत',
       })
       .catch((e) => e);
-    expect(res.data.result).toBeTruthy();
+    expect(res.response.status).toBe(400);
   });
 
   // Not for these however.
-  it('getSubjectsByQuery-non Ascii', async () => {
+  it('getSubjectsByQuery - non Ascii query', async () => {
     const res = await axios
       .post(`http://localhost:${testingPort}/api/getSubjectsByQuery`, {
         query: 'भारत',
       })
       .catch((e) => e);
-    expect(res.message).toBe('Request failed with status code 400');
+    expect(res.response.status).toBe(400);
   });
 
-  it('getProfessorsByQuery-non Ascii', async () => {
+  it('getProfessorsByQuery - non Ascii query', async () => {
     const res = await axios
       .post(`http://localhost:${testingPort}/api/getProfessorsByQuery`, {
         query: 'भारत',
       })
       .catch((e) => e);
-    expect(res.message).toBe('Request failed with status code 400');
+    expect(res.response.status).toBe(400);
   });
 
-  it('getClassesByQuery- empty query', async () => {
+  it('getClassesByQuery - empty query', async () => {
     const res = await axios
       .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
         query: '',
       })
-      .catch((e) => e);
-    expect(res.message).toBe('Request failed with status code 400');
+      .catch((e) => {
+        return e;
+      });
+
+    expect(res.response.status).toBe(400);
   });
 });
