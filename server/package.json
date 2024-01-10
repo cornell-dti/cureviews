@@ -24,6 +24,12 @@
       "\\.(ts|tsx)$": "ts-jest"
     }
   },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "latest",
+      "arch": "x64"
+    }
+  },
   "dependencies": {
     "@types/cors": "^2.8.6",
     "@types/shortid": "^0.0.29",

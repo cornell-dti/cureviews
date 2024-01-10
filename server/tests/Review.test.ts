@@ -1,100 +1,25 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
-import { TokenPayload } from 'google-auth-library';
 
-import { Review } from 'common';
 import { Reviews, Students } from '../db/schema';
 import TestingServer from './TestServer';
+import { testClasses } from './mocks/MockClasses';
+import { validTokenPayload } from './mocks/MockAuth';
+import { testReviews } from './mocks/MockReviews';
+
+import { Auth } from '../src/auth/auth';
+import { Review } from 'common';
 
 const testingPort = 8080;
 const testServer = new TestingServer(testingPort);
-// inital classes that are present at start of all tests.
-const testClasses = [
-  {
-    _id: 'oH37S3mJ4eAsktypy',
-    classSub: 'cs',
-    classNum: '2110',
-    classTitle: 'Object-Oriented Programming and Data Structures',
-    classPrereq: [],
-    classFull: 'cs 2110 object-oriented programming and data structures',
-    classSems: [
-      'FA14',
-      'SP15',
-      'SU15',
-      'FA15',
-      'SP16',
-      'SU16',
-      'FA16',
-      'SP17',
-      'SU17',
-      'FA17',
-      'SP18',
-      'FA18',
-      'SU18',
-      'SP19',
-      'FA19',
-      'SU19',
-    ],
-    crossList: ['q75SxmqkTFEfaJwZ3'],
-    classProfessors: [
-      'David Gries',
-      'Douglas James',
-      'Siddhartha Chaudhuri',
-      'Graeme Bailey',
-      'John Foster',
-      'Ross Tate',
-      'Michael George',
-      'Eleanor Birrell',
-      'Adrian Sampson',
-      'Natacha Crooks',
-      'Anne Bracy',
-      'Michael Clarkson',
-    ],
-    classDifficulty: 2.9,
-    classRating: null,
-    classWorkload: 3,
-  },
-];
 
-// inital reviews that are present at start of all tests.
-
-const testReviews: Review[] = [
-  {
-    _id: '4Y8k7DnX3PLNdwRPr',
-    text: 'review text for cs 2110',
-    user: 'User1234',
-    difficulty: 1,
-    class: 'oH37S3mJ4eAsktypy',
-    visible: 1,
-    reported: 0,
-    likes: 2,
-    likedBy: ['user1234', 'user0'],
-  },
-  {
-    _id: '4Y8k7DnX3PLNdwRPq',
-    text: 'review text for cs 2110 number 2',
-    user: 'User1234',
-    difficulty: 1,
-    class: 'oH37S3mJ4eAsktypy',
-    visible: 1,
-    reported: 0,
-    likedBy: [],
-  },
-];
-
-const validTokenPayload: TokenPayload = {
-  email: 'dti1@cornell.edu',
-  iss: undefined,
-  sub: undefined,
-  iat: undefined,
-  aud: undefined,
-  exp: undefined,
-  hd: 'cornell.edu',
-};
+const auth = new Auth({ token: '' });
 
 const mockVerificationTicket = jest
-  .spyOn(Auth, 'getVerificationTicket')
-  .mockImplementation(async (token?: string) => validTokenPayload);
+  .spyOn(auth, 'getVerificationTicket')
+  .mockImplementation(async () => {
+    return validTokenPayload;
+  });
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -131,7 +56,7 @@ describe('tests', () => {
       `http://localhost:${testingPort}/api/getReviewsByCourseId`,
       { courseId: 'ert' },
     );
-    expect(res.data.result).toEqual({ error: 'Malformed Query' });
+    expect(res.status).toEqual(404);
   });
 
   it('getCourseById - getting cs2110', async () => {
@@ -219,9 +144,9 @@ describe('tests', () => {
     const dtiUser = await Students.findOne({ netId: 'dti1' });
     const review = reviews[0];
     // Was the user logged correctly as the creator of the review?
-    expect(review.user).toBe(dtiUser._id);
+    expect(review.user).toBe(dtiUser?._id);
     // Has the review been added to the creator?
-    expect(dtiUser.reviews).toContain(review._id);
+    expect(dtiUser?.reviews).toContain(review._id);
   });
 
   it('like/dislike - increment and decrement', async () => {
@@ -230,15 +155,18 @@ describe('tests', () => {
       { id: '4Y8k7DnX3PLNdwRPr', token: 'fakeTokenDti1' },
     );
 
-    expect(res1.data.result.resCode).toBe(0);
-    expect((await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' })).likes).toBe(3);
+    expect(res1.status).toBe(200);
+    const reviewLiked = await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' });
+    expect(reviewLiked?.likes).toBe(3);
 
     const res2 = await axios.post(
       `http://localhost:${testingPort}/api/updateLiked`,
       { id: '4Y8k7DnX3PLNdwRPr', token: 'fakeTokenDti1' },
     );
-    expect(res2.data.result.resCode).toBe(0);
-    expect((await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' })).likes).toBe(2);
+
+    const reviewDisliked = await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' });
+    expect(res2.status).toBe(200);
+    expect(reviewDisliked?.likes).toBe(2);
   });
 
   it('insert User', async () => {

@@ -4,14 +4,15 @@ import express from 'express';
 import axios from 'axios';
 
 import { configure } from '../endpoints';
-import { Classes, Reviews } from '../db/dbDefs';
-import * as Utils from '../src/utils';
+import { Classes, Reviews } from '../db/schema';
+import * as Utils from '../src/admin/admin.controller';
 
 let mongoServer: MongoMemoryServer;
 let serverCloseHandle;
+
 const mockVerification = jest
   .spyOn(Utils, 'verifyTokenAdmin')
-  .mockImplementation(async (token?: string) => true);
+  .mockImplementation(async ({ auth }) => true);
 
 const testingPort = 47728;
 

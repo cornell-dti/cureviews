@@ -1,90 +1,17 @@
 import axios from 'axios';
-import { Student, Class, Subject, Professor } from 'common';
+
 import TestingServer, { testingPort } from './TestServer';
+import { testClasses } from './mocks/MockClasses';
+import { testProfessors } from './mocks/MockProfessors';
+import { testStudents } from './mocks/MockStudents';
+import { testSubjects } from './mocks/MockSubjects';
+import { testReviews } from './mocks/MockReviews';
 
 const testServer = new TestingServer(testingPort);
 
 beforeAll(async () => {
-  const testStudents: Student[] = [
-    {
-      _id: 'Irrelevant',
-      firstName: 'John',
-      lastName: 'Smith',
-      netId: 'js0',
-      affiliation: '',
-      token: '',
-      privilege: 'regular',
-      reviews: [],
-      likedReviews: [],
-    },
-  ];
-
-  const testClasses: Class[] = [
-    {
-      _id: 'newCourse1',
-      classSub: 'MORK',
-      classNum: '1110',
-      classTitle: 'Introduction to Testing',
-      classFull: 'MORK 1110: Introduction to Testing',
-      classSems: ['FA19'],
-      classProfessors: ['Gazghul Thraka'],
-      classRating: 1,
-      classWorkload: 2,
-      classDifficulty: 3,
-      classPrereq: [],
-      crossList: [],
-    },
-    {
-      _id: 'newCourse2',
-      classSub: 'MORK',
-      classNum: '2110',
-      classTitle: 'Intermediate Testing',
-      classFull: 'MORK 2110: Intermediate Testing',
-      classSems: ['SP20'],
-      classPrereq: ['newCourse1'], // the class above
-      classProfessors: ['Gazghul Thraka'],
-      classRating: 3,
-      classWorkload: 4,
-      classDifficulty: 5,
-      crossList: [],
-    },
-  ];
-
-  const testSubjects: Subject[] = [
-    {
-      _id: 'newSubject1',
-      subShort: 'MORK',
-      subFull: 'Study of Angry Fungi',
-    },
-    {
-      _id: 'angry subject',
-      subShort: 'MAD',
-      subFull: 'The Study of Anger Issues',
-    },
-    {
-      _id: 'federation subject',
-      subShort: 'FEDN',
-      subFull: 'The Study of Where No Man has Gone Before!',
-    },
-  ];
-
-  const testProfessors: Professor[] = [
-    {
-      _id: 'prof_1',
-      fullName: 'Gazghul Thraka',
-      courses: ['newCourse1', 'newCourse2'],
-      major: 'MORK',
-    },
-    {
-      _id: 'prof_2',
-      fullName: 'Jean-Luc Picard',
-      courses: [],
-      major: 'FEDN',
-    },
-  ];
-
   await testServer.setUpDB(
-    undefined,
+    testReviews,
     testStudents,
     testClasses,
     testProfessors,
@@ -96,22 +23,22 @@ afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe('tests', () => {
+describe('search functionality unit tests', () => {
   it('getClassesByQuery-works', async () => {
     expect(
       await axios
         .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
-          'not query': 'other',
+          'other query': 'other',
         })
         .catch((e) => 'failed!'),
     ).toBe('failed!');
 
-    const res1 = await axios.post(
+    const res = await axios.post(
       `http://localhost:${testingPort}/api/getClassesByQuery`,
       { query: 'MORK 1' },
     );
     // we expect it to be MORK 1110 first, and then MORK 2110
-    expect(res1.data.result.map((e) => e.classFull)).toStrictEqual([
+    expect(res.data.result.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
       'MORK 2110: Intermediate Testing',
     ]);
