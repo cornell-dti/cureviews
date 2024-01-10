@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import TestingServer, { testingPort } from './TestServer';
-import { testClasses } from './mocks/MockClasses';
-import { testProfessors } from './mocks/MockProfessors';
-import { testStudents } from './mocks/MockStudents';
-import { testSubjects } from './mocks/MockSubjects';
-import { testReviews } from './mocks/MockReviews';
-
-const testServer = new TestingServer(testingPort);
+import {
+  testClasses,
+  testProfessors,
+  testStudents,
+  testSubjects,
+  testReviews,
+} from './mocks/InitMockDb';
+import { testServer, testingPort } from './mocks/MockServer';
 
 beforeAll(async () => {
   await testServer.setUpDB(
@@ -24,19 +24,26 @@ afterAll(async () => {
 });
 
 describe('search functionality unit tests', () => {
-  it('getClassesByQuery-works', async () => {
+  it('getClassesByQuery - invalid body is sent', async () => {
     expect(
       await axios
         .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
           'other query': 'other',
         })
-        .catch((e) => 'failed!'),
+        .catch((e) => {
+          return 'failed!';
+        }),
     ).toBe('failed!');
+  });
 
+  it('getClassesByQuery - valid query "MORK 1" sent with correct order of classes', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getClassesByQuery`,
-      { query: 'MORK 1' },
+      {
+        query: 'MORK 1',
+      },
     );
+
     // we expect it to be MORK 1110 first, and then MORK 2110
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
@@ -44,34 +51,21 @@ describe('search functionality unit tests', () => {
     ]);
   });
 
-  it('getClassesByQuery-works "MORK1" ', async () => {
-    expect(
-      await axios
-        .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
-          'not query': 'other',
-        })
-        .catch((e) => 'failed!'),
-    ).toBe('failed!');
-
+  it('getClassesByQuery - valid query: "MORK1" sent with correct order of classes', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getClassesByQuery`,
-      { query: 'MORK1' },
+      {
+        query: 'MORK1',
+      },
     );
+
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
       'MORK 2110: Intermediate Testing',
     ]);
   });
 
-  it('getClassesByQuery-works "MORK 1110" ', async () => {
-    expect(
-      await axios
-        .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
-          'not query': 'other',
-        })
-        .catch((e) => 'failed!'),
-    ).toBe('failed!');
-
+  it('getClassesByQuery - valid query: "MORK 1110" sent with correct order of classes', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getClassesByQuery`,
       { query: 'MORK1110' },
@@ -81,7 +75,7 @@ describe('search functionality unit tests', () => {
     ]);
   });
 
-  it('getSubjectsByQuery-works', async () => {
+  it('getSubjectsByQuery - invalid body sent', async () => {
     expect(
       await axios
         .post(`http://localhost:${testingPort}/api/getSubjectsByQuery`, {
@@ -89,7 +83,9 @@ describe('search functionality unit tests', () => {
         })
         .catch((e) => 'failed!'),
     ).toBe('failed!');
+  });
 
+  it('getSubjectsByQuery - works', async () => {
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getSubjectsByQuery`,
       { query: 'MORK' },
@@ -100,14 +96,6 @@ describe('search functionality unit tests', () => {
   });
 
   it('getProfessorsByQuery-works', async () => {
-    expect(
-      await axios
-        .post(`http://localhost:${testingPort}/api/getProfessorsByQuery`, {
-          'not query': 'other',
-        })
-        .catch((e) => 'failed!'),
-    ).toBe('failed!');
-
     const res1 = await axios.post(
       `http://localhost:${testingPort}/api/getProfessorsByQuery`,
       { query: 'Gazghul Thraka' },
@@ -131,14 +119,6 @@ describe('search functionality unit tests', () => {
 
   // Query has no matching results:
   it('getClassesByQuery-no matching classes', async () => {
-    expect(
-      await axios
-        .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
-          'not query': 'other',
-        })
-        .catch((e) => 'failed!'),
-    ).toBe('failed!');
-
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getClassesByQuery`,
       { query: 'random' },
@@ -152,14 +132,6 @@ describe('search functionality unit tests', () => {
   });
 
   it('getSubjectsByQuery-no matching subjects', async () => {
-    expect(
-      await axios
-        .post(`http://localhost:${testingPort}/api/getSubjectsByQuery`, {
-          'not query': 'other',
-        })
-        .catch((e) => 'failed!'),
-    ).toBe('failed!');
-
     const res = await axios.post(
       `http://localhost:${testingPort}/api/getSubjectsByQuery`,
       { query: 'RAND' },

@@ -24,7 +24,7 @@ const regexCourseSearch = async ({ search }: SearchQueryType) => {
 
   // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
   const courseSubject = await findCourseSubject(query);
-  if (courseSubject) {
+  if (courseSubject.length > 0) {
     return courseSubject;
   }
 
@@ -36,7 +36,12 @@ const regexCourseSearch = async ({ search }: SearchQueryType) => {
     const strAfterSpace = query.substring(indexFirstSpace + 1);
     const subject = await findCourseSubject(strBeforeSpace);
     if (subject) {
-      return await findCourseWithinSubject(strBeforeSpace, strAfterSpace);
+      const coursesWithinSubject = await findCourseWithinSubject(
+        strBeforeSpace,
+        strAfterSpace,
+      );
+      console.log(coursesWithinSubject);
+      return coursesWithinSubject;
     }
   }
 

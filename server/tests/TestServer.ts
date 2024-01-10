@@ -6,8 +6,6 @@ import * as http from 'http';
 import { Classes, Students, Subjects, Professors, Reviews } from '../db/schema';
 import { configure } from '../endpoints';
 
-export const testingPort = 8080;
-
 /**
  * This class sets up the express endpoint and mongo memory server for testing.
  */
@@ -20,6 +18,7 @@ export default class TestingServer {
     this.mongoServer = new MongoMemoryServer();
     // setup express
     const app = express();
+    app.use(express.json());
     configure(app);
     this.serverCloseHandle = app.listen(port);
   }
