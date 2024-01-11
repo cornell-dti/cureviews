@@ -83,9 +83,12 @@ export async function addNewSemester(endpoint: string, semester: string) {
     subjects.map(async (subject) => {
       const classes = await fetchClassesForSubject(endpoint, semester, subject);
 
+      console.log(subject.value);
+      console.log(classes);
+
       // skip if something went wrong fetching classes
       // it could be that there are not classes here (in tests, corresponds to FEDN)
-      if (!classes) {
+      if (classes === null) {
         return true;
       }
 
@@ -248,6 +251,8 @@ export async function fetchAddClassesForSubject(
     semester,
     subject,
   );
+
+  console.log(classes);
 
   // skip if something went wrong fetching classes
   // it could be that there are not classes here (in tests, corresponds to FEDN)

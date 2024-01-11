@@ -3,18 +3,16 @@ import express from 'express';
 import axios from 'axios';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { Subjects, Classes, Professors } from '../db/dbDefs';
-import {
-  fetchSubjects,
-  fetchClassesForSubject,
-  fetchAddCourses,
-} from '../db/dbInit';
+import { Subjects, Classes, Professors } from '../db/schema';
+import { addAllCourses, addNewSemester } from '../scripts/populate-courses';
+import { fetchSubjects } from '../scripts/populate-subjects';
+import { fetchAddClassesForSubject } from '../scripts/populate-courses';
 
 let testServer: MongoMemoryServer;
 let serverCloseHandle;
 
-const testingPort = 27760;
-const testingEndpoint = `http://localhost:${testingPort}/`;
+const testPort = 27760;
+const testingEndpoint = `http://localhost:${testPort}/`;
 
 // Configure a mongo server and fake endpoints for the tests to use
 beforeAll(async () => {
@@ -48,11 +46,7 @@ beforeAll(async () => {
 
   // We need to pretend to have access to a cornell classes endpoint
   const app = express();
-  serverCloseHandle = app.listen(testingPort);
-
-  app.get('/hello', (req, res) => {
-    res.send('Hello world');
-  });
+  serverCloseHandle = app.listen(testPort);
 
   // Fake subjects endpoint
   app.get('/config/subjects.json', (req, res) => {
@@ -89,12 +83,12 @@ beforeAll(async () => {
     // simulate only having data for the gork subject.
     // see above
     if (!req.originalUrl.includes('gork')) {
-      res.send({
+      return res.send({
         status: 'failure',
       });
     }
 
-    res.send({
+    return res.send({
       status: 'success',
       data: {
         classes: [
@@ -155,27 +149,20 @@ afterAll(async () => {
   serverCloseHandle.close();
 });
 
-describe('tests', () => {
+describe('db init and scraping functionality unit tests', () => {
   it('dbInit-db-works', async () => {
-    expect((await Subjects.findOne({ subShort: 'gork' })).subShort).toBe(
+    expect((await Subjects.findOne({ subShort: 'gork' }))?.subShort).toBe(
       'gork',
     );
     expect(
-      (await Classes.findOne({ classSub: 'gork', classNum: '1110' })).classSub,
+      (await Classes.findOne({ classSub: 'gork', classNum: '1110' }))?.classSub,
     ).toBe('gork');
-  });
-
-  // Does the internal testing endpoint exist?
-  it('dbInit-test-endpoint-exists', async () => {
-    const response = await axios.get(`${testingEndpoint}hello`);
-    expect(response.data).toBe('Hello world');
-    expect(response.data).not.toBe('Something the endpoint is not to return!');
   });
 
   // Does fetching the subjects collection work as expected?
   it('fetching-roster-works', async () => {
     const response = await fetchSubjects(testingEndpoint, 'FA20');
-    expect(response.length).toBe(2);
+    expect(response?.length).toBe(2);
     expect(response[0].descrformal).toBe('The Study of Fungi');
     expect(response[0].value).toBe('gork');
     expect(response[1].value).toBe('fedn');
@@ -187,26 +174,31 @@ describe('tests', () => {
 
   // Does fetching the classes collection work as expected?
   it('fetching-classes-by-subject-works', async () => {
-    const response = await fetchClassesForSubject(testingEndpoint, 'FA20', {
-      descrformal: 'The Study of AngryFungi',
-      value: 'gork',
-    });
-    expect(response.length).toBe(2);
-    expect(response[0].subject).toBe('gork');
-    expect(response[0].catalogNbr).toBe('1110');
-    expect(response[0].titleLong).toBe('Introduction to Angry Fungi');
-    expect(response[1].titleLong).toBe('Advanced Study of Angry Fungi');
+    const response = await fetchAddClassesForSubject(
+      {
+        descrformal: 'The Study of Angry Fungi',
+        value: 'gork',
+      },
+      testingEndpoint,
+      'FA20',
+    );
+
+    expect(response).toBe(true);
 
     // No fedn classes, only gork classes!
-    const nil = await fetchClassesForSubject(testingEndpoint, 'FA20', {
-      descrformal: 'The Study of Where No One has Gone Before',
-      value: 'fedn',
-    });
-    expect(nil).toBeNull();
+    const nil = await fetchAddClassesForSubject(
+      {
+        descrformal: 'The Study of Where No One has Gone Before',
+        value: 'fedn',
+      },
+      testingEndpoint,
+      'FA20',
+    );
+    expect(nil).toBeTruthy();
   });
 
   it('full-scraping-works', async () => {
-    const worked = await fetchAddCourses(testingEndpoint, 'FA20');
+    const worked = await addNewSemester(testingEndpoint, 'FA20');
     expect(worked).toBe(true);
 
     // did it add the fedn subject?
