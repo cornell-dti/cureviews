@@ -5,6 +5,7 @@ import {
   searchCourses,
   searchProfessors,
   searchSubjects,
+  searchCoursesBySubject,
 } from './search.controller';
 import { SearchQueryRequestType } from './search.type';
 
@@ -65,6 +66,46 @@ searchRouter.post('/getProfessorsByQuery', async (req, res) => {
     return res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
       result: professors,
+    });
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ error: `Search query must contain ASCII characters.` });
+  }
+});
+
+searchRouter.post('/getCoursesByMajor', async (req, res) => {
+  try {
+    const { query }: SearchQueryRequestType = req.body;
+    const search = new Search({ query });
+
+    const courses = await searchCoursesBySubject({ search }).catch((err) => {
+      return res.status(500).json({ error: `Internal Server Error: ${err}` });
+    });
+
+    return res.status(200).json({
+      message: `Success! Retrieved all courses by query: ${query}`,
+      result: courses,
+    });
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ error: `Search query must contain ASCII characters.` });
+  }
+});
+
+searchRouter.post('/getCoursesByProfessor', async (req, res) => {
+  try {
+    const { query }: SearchQueryRequestType = req.body;
+    const search = new Search({ query });
+
+    const courses = await searchCoursesBySubject({ search }).catch((err) => {
+      return res.status(500).json({ error: `Internal Server Error: ${err}` });
+    });
+
+    return res.status(200).json({
+      message: `Success! Retrieved all courses by query: ${query}`,
+      result: courses,
     });
   } catch (err) {
     return res

@@ -39,7 +39,10 @@ export class Search {
 
   private validate() {
     const searchSchema = joi.object({
-      query: joi.string().required(),
+      query: joi
+        .string()
+        .regex(new RegExp(/^(?=.*[A-Z0-9])/i))
+        .required(),
     });
 
     const { error, value } = searchSchema.validate(this);

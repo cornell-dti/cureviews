@@ -48,6 +48,12 @@ export const findCourseSubject = async (query: string) => {
   ).exec();
 };
 
+export const findCourseProfessor = async (query: string) => {
+  return Classes.find({
+    classProfessors: { $regex: query.replace('+', '.*.'), $options: 'i' },
+  }).exec();
+};
+
 export const findSubjects = async (query: string) => {
   return await Subjects.find(
     { $text: { $search: query } },
