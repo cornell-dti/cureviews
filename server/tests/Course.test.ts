@@ -26,7 +26,11 @@ describe('course functionality unit tests', () => {
       { courseId: 'oH37S3mJ4eAsktypy' },
     );
 
-    const reviews = await Reviews.find({ class: 'oH37S3mJ4eAsktypy' });
+    const reviews = await Reviews.find({
+      class: 'oH37S3mJ4eAsktypy',
+      reported: 0,
+      visible: 1,
+    });
     expect(res.data.result.length).toBe(reviews.length);
 
     const classOfReviews = reviews.map((r) => r.class);
@@ -115,13 +119,20 @@ describe('course functionality unit tests', () => {
         return e;
       });
 
-    const reviews = await Reviews.find({ class: 'oH37S3mJ4eAsktypy' });
+    const reviews = await Reviews.find({
+      class: 'oH37S3mJ4eAsktypy',
+      reported: 0,
+      visible: 1,
+    });
+
     expect(res.data.result.length).toBe(reviews.length);
 
-    const classOfReviews = testReviews.map((r) => r.user);
+    const classOfReviews = reviews.map((r) => r.user);
     expect(res.data.result.map((r) => r.user).sort()).not.toEqual(
       classOfReviews.sort(),
     );
-    expect(res.data.result.map((r) => r.user).sort()).toEqual(['', '']);
+    expect(res.data.result.map((r) => r.user).sort()).toEqual(
+      classOfReviews.map((r) => ''),
+    );
   });
 });
