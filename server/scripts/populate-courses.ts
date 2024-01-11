@@ -83,9 +83,6 @@ export async function addNewSemester(endpoint: string, semester: string) {
     subjects.map(async (subject) => {
       const classes = await fetchClassesForSubject(endpoint, semester, subject);
 
-      console.log(subject.value);
-      console.log(classes);
-
       // skip if something went wrong fetching classes
       // it could be that there are not classes here (in tests, corresponds to FEDN)
       if (classes === null) {
@@ -128,42 +125,45 @@ export async function addNewSemester(endpoint: string, semester: string) {
           // The class does not exist yet, so we add it
           if (!classIfExists) {
             console.log(`Adding new class ${cl.subject} ${cl.catalogNbr}`);
-            const res = await new Classes({
-              _id: shortid.generate(),
-              classSub: cl.subject.toLowerCase(),
-              classNum: cl.catalogNbr,
-              classTitle: cl.titleLong,
-              classFull: `${cl.subject.toLowerCase()} ${cl.catalogNbr} ${
-                cl.titleLong
-              }`,
-              classSems: [semester],
-              classProfessors: profs,
-              classRating: null,
-              classWorkload: null,
-              classDifficulty: null,
-            })
-              .save()
-              .catch((err) => {
-                console.log(err);
-                return null;
+            const regex = new RegExp('^[0-9]+$');
+            if (!regex.test(cl.titleLong)) {
+              const res = await new Classes({
+                _id: shortid.generate(),
+                classSub: cl.subject.toLowerCase(),
+                classNum: cl.catalogNbr,
+                classTitle: cl.titleLong,
+                classFull: `${cl.subject.toLowerCase()} ${cl.catalogNbr} ${
+                  cl.titleLong
+                }`,
+                classSems: [semester],
+                classProfessors: profs,
+                classRating: null,
+                classWorkload: null,
+                classDifficulty: null,
+              })
+                .save()
+                .catch((err) => {
+                  console.log(err);
+                  return null;
+                });
+
+              if (!res) {
+                return false;
+              }
+              // update professors with new class information
+              profs.forEach(async (inst) => {
+                await Professors.findOneAndUpdate(
+                  { fullName: inst },
+                  { $addToSet: { courses: res._id } },
+                ).catch((err) => console.log(err));
               });
 
-            if (!res) {
-              return false;
-            }
-            // update professors with new class information
-            profs.forEach(async (inst) => {
-              await Professors.findOneAndUpdate(
-                { fullName: inst },
-                { $addToSet: { courses: res._id } },
-              ).catch((err) => console.log(err));
-            });
-
-            if (!res) {
-              console.log(
-                `Unable to insert class ${cl.subject} ${cl.catalogNbr}!`,
-              );
-              throw new Error();
+              if (!res) {
+                console.log(
+                  `Unable to insert class ${cl.subject} ${cl.catalogNbr}!`,
+                );
+                throw new Error();
+              }
             }
           } else {
             // The class does exist, so we update semester information
@@ -306,50 +306,55 @@ export async function fetchAddClassesForSubject(
           } does not exist, adding to database...`,
         );
 
-        const newClass = {
-          _id: shortid.generate(),
-          classSub: course.subject.toUpperCase(),
-          classNum: course.catalogNbr,
-          classTitle: course.catalogNbr,
-          classFull: `${course.subject.toUpperCase()} ${course.subject.toUpperCase()}${
-            course.catalogNbr
-          } ${course.catalogNbr}`,
-          classSems: [semester],
-          classProfessors: profs,
-          classRating: null,
-          classWorkload: null,
-          classDifficulty: null,
-        };
-
-        const saveNewClass = await new Classes(newClass).save().catch((err) => {
-          console.log(err);
-        });
-
-        console.log(
-          `Saved new course ${course.subject.toUpperCase()}${
-            course.catalogNbr
-          } to database...`,
-        );
-
-        profs.forEach(async (p) => {
-          await Professors.findOneAndUpdate(
-            { fullName: p },
-            { $addToSet: { courses: newClass._id } },
-          );
-        });
-
-        console.log(
-          `Adding course ${course.subject.toUpperCase()}${
-            course.catalogNbr
-          } to professors' courses...`,
-        );
-
-        if (!saveNewClass) {
-          console.log(
-            `Saving new course ${course.subject.toUpperCase()}${
+        const regex = new RegExp('^[0-9]+$');
+        if (!regex.test(course.titleLong)) {
+          const newClass = {
+            _id: shortid.generate(),
+            classSub: course.subject.toUpperCase(),
+            classNum: course.catalogNbr,
+            classTitle: course.catalogNbr,
+            classFull: `${course.subject.toUpperCase()} ${course.subject.toUpperCase()}${
               course.catalogNbr
-            } failed!`,
+            } ${course.catalogNbr}`,
+            classSems: [semester],
+            classProfessors: profs,
+            classRating: null,
+            classWorkload: null,
+            classDifficulty: null,
+          };
+
+          const saveNewClass = await new Classes(newClass)
+            .save()
+            .catch((err) => {
+              console.log(err);
+            });
+
+          console.log(
+            `Saved new course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            } to database...`,
           );
+
+          profs.forEach(async (p) => {
+            await Professors.findOneAndUpdate(
+              { fullName: p },
+              { $addToSet: { courses: newClass._id } },
+            );
+          });
+
+          console.log(
+            `Adding course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            } to professors' courses...`,
+          );
+
+          if (!saveNewClass) {
+            console.log(
+              `Saving new course ${course.subject.toUpperCase()}${
+                course.catalogNbr
+              } failed!`,
+            );
+          }
         }
       } else {
         const classSems =
@@ -493,17 +498,20 @@ export async function addAllCourses(semesters: any) {
                   `new class: ${courses[course].subject} ${courses[course].catalogNbr},${semesters[semester]}`,
                 );
                 // insert new class with empty prereqs and reviews
-                await new Classes({
-                  _id: shortid.generate(),
-                  classSub: courses[course].subject.toLowerCase(),
-                  classNum: courses[course].catalogNbr,
-                  classTitle: courses[course].titleLong,
-                  classPrereq: [],
-                  classFull: `${courses[course].subject.toLowerCase()} ${
-                    courses[course].catalogNbr
-                  } ${courses[course].titleLong.toLowerCase()}`,
-                  classSems: [semesters[semester]],
-                }).save();
+                const regex = new RegExp('^[0-9]+$');
+                if (!regex.test(courses[course].titleLong)) {
+                  await new Classes({
+                    _id: shortid.generate(),
+                    classSub: courses[course].subject.toLowerCase(),
+                    classNum: courses[course].catalogNbr,
+                    classTitle: courses[course].titleLong,
+                    classPrereq: [],
+                    classFull: `${courses[course].subject.toLowerCase()} ${
+                      courses[course].catalogNbr
+                    } ${courses[course].titleLong.toLowerCase()}`,
+                    classSems: [semesters[semester]],
+                  }).save();
+                }
               } else {
                 const matchedCourse = check[0]; // only 1 should exist
                 const oldSems = matchedCourse.classSems;
