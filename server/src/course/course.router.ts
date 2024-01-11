@@ -12,6 +12,13 @@ courseRouter.post('/getCourseByInfo', async (req, res) => {
   try {
     const { number, subject }: CourseInfoRequestType = req.body;
     const course = await getCourseByInfo({ number, subject });
+
+    if (!course) {
+      return res.status(404).json({
+        error: `Course could not be found with subject: ${subject} and number: ${number}`,
+      });
+    }
+
     return res.status(200).json({ result: course });
   } catch (err) {
     return res
@@ -36,6 +43,13 @@ courseRouter.post('/getReviewsByCourseId', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsCrossListOR({ courseId });
+
+    if (!reviews) {
+      return res.status(404).json({
+        error: `Reviews could not be found for course id: ${courseId}`,
+      });
+    }
+
     return res.status(200).json({ result: reviews });
   } catch (err) {
     return res
