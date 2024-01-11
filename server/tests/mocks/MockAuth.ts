@@ -24,7 +24,6 @@ export const mockVerificationTicket = jest
   .spyOn(Auth.prototype, 'getVerificationTicket')
   .mockImplementation(async () => {
     if (Auth.prototype.getToken() === 'fakeTokenDti1') {
-      console.log('hello');
       return validTokenPayload;
     }
     return invalidTokenPayload;

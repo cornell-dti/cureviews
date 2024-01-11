@@ -72,8 +72,6 @@ describe('tests', () => {
   });
 
   it('getTotalLikesByStudentId - counting the number of likes of a student that does not have any likes', async () => {
-    console.log(await Students.findOne({ netId: 'dhs234' }));
-
     const res = await axios.post(
       `http://localhost:${testPort}/api/getTotalLikesByStudentId`,
       {
