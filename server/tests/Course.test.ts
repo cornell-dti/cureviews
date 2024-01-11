@@ -6,8 +6,8 @@ import { validTokenPayload } from './mocks/MockAuth';
 
 import { Auth } from '../src/auth/auth';
 
-const testingPort = 8080;
-const testServer = new TestingServer(testingPort);
+const testPort = 8080;
+const testServer = new TestingServer(testPort);
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -27,7 +27,7 @@ afterAll(async () => {
 describe('course functionality unit tests', () => {
   it('getReviewsByCourseId - getting review of class that exists (cs 2110)', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getReviewsByCourseId`,
+      `http://localhost:${testPort}/api/getReviewsByCourseId`,
       { courseId: 'oH37S3mJ4eAsktypy' },
     );
     expect(res.data.result.length).toBe(testReviews.length);
@@ -40,7 +40,7 @@ describe('course functionality unit tests', () => {
 
   it('getReviewsByCourseId - getting review for a class that does not exist', async () => {
     const res = await axios
-      .post(`http://localhost:${testingPort}/api/getReviewsByCourseId`, {
+      .post(`http://localhost:${testPort}/api/getReviewsByCourseId`, {
         courseId: 'ert',
       })
       .catch((e) => e);
@@ -49,7 +49,7 @@ describe('course functionality unit tests', () => {
 
   it('getCourseById - getting cs2110', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getCourseById`,
+      `http://localhost:${testPort}/api/getCourseById`,
       { courseId: 'oH37S3mJ4eAsktypy' },
     );
 
@@ -62,7 +62,7 @@ describe('course functionality unit tests', () => {
 
   it('getCourseById - class does not exist', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getCourseById`,
+      `http://localhost:${testPort}/api/getCourseById`,
       { courseId: 'blah' },
     );
     expect(res.data.result).toBe(null);
@@ -70,7 +70,7 @@ describe('course functionality unit tests', () => {
 
   it('getCourseByInfo - getting cs2110', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getCourseByInfo`,
+      `http://localhost:${testPort}/api/getCourseByInfo`,
       { subject: 'cs', number: '2110' },
     );
     expect(res.data.result._id).toBe('oH37S3mJ4eAsktypy');
@@ -82,7 +82,7 @@ describe('course functionality unit tests', () => {
   it('getCourseByInfo - demonstrate regex irrelevance', async () => {
     // Will not accept non-numeric:
     const res1 = await axios
-      .post(`http://localhost:${testingPort}/api/getCourseByInfo`, {
+      .post(`http://localhost:${testPort}/api/getCourseByInfo`, {
         subject: 'Vainamoinen',
         number: 'ab2187c',
       })
@@ -91,7 +91,7 @@ describe('course functionality unit tests', () => {
 
     // Will not accept non-ascii:
     const res2 = await axios
-      .post(`http://localhost:${testingPort}/api/getCourseByInfo`, {
+      .post(`http://localhost:${testPort}/api/getCourseByInfo`, {
         subject: '向岛维纳默宁',
         number: '1234',
       })
@@ -100,11 +100,29 @@ describe('course functionality unit tests', () => {
 
     // Both also does not work:
     const res3 = await axios
-      .post(`http://localhost:${testingPort}/api/getCourseByInfo`, {
+      .post(`http://localhost:${testPort}/api/getCourseByInfo`, {
         subject: '向岛维纳默宁',
         number: 'ab2187c',
       })
       .catch((e) => e);
     expect(res3.response.status).toBe(404);
+  });
+
+  it("getReviewsByCourseId - user id's not being leaked by querying reviews", async () => {
+    const res = await axios
+      .post(`http://localhost:${testPort}/api/getReviewsByCourseId`, {
+        courseId: 'oH37S3mJ4eAsktypy',
+      })
+      .catch((e) => {
+        console.log(e);
+        return e;
+      });
+    expect(res.data.result.length).toBe(testReviews.length);
+
+    const classOfReviews = testReviews.map((r) => r.user);
+    expect(res.data.result.map((r) => r.user).sort()).not.toEqual(
+      classOfReviews.sort(),
+    );
+    expect(res.data.result.map((r) => r.user).sort()).toEqual(['', '']);
   });
 });
