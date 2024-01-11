@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Classes, Reviews } from '../db/schema';
+import { Reviews } from '../db/schema';
 import { testServer, testPort } from './mocks/MockServer';
 import * as AdminAuth from '../src/admin/admin.controller';
 import { testClasses, testReviews } from './mocks/InitMockDb';
