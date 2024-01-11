@@ -3,9 +3,9 @@
 
 // import { Class, Review, Student, Subject } from 'common';
 // import * as Auth from '../src/Auth';
-// import TestingServer, { testingPort } from './TestServer';
+// import TestingServer, { testPort } from './TestServer';
 
-// const testServer = new TestingServer(testingPort);
+// const testServer = new TestingServer(testPort);
 
 // export const testClasses: Class[] = [
 //   {
@@ -223,7 +223,7 @@
 // describe('tests', () => {
 //   it('topSubjects', async () => {
 //     const res = await axios.post(
-//       `http://localhost:${testingPort}/api/topSubjects`,
+//       `http://localhost:${testPort}/api/topSubjects`,
 //       { token: 'token' },
 //     );
 //     const match = [
@@ -238,7 +238,7 @@
 
 //   it('totalReviews', async () => {
 //     const res = await axios.post(
-//       `http://localhost:${testingPort}/api/totalReviews`,
+//       `http://localhost:${testPort}/api/totalReviews`,
 //       { token: 'token' },
 //     );
 //     expect(res.data.result).toBe(testReviews.length);
@@ -246,7 +246,7 @@
 
 //   it('howManyReviewsEachClass', async () => {
 //     const res = await axios.post(
-//       `http://localhost:${testingPort}/api/howManyReviewsEachClass`,
+//       `http://localhost:${testPort}/api/howManyReviewsEachClass`,
 //       { token: 'token' },
 //     );
 //     const match = [
@@ -261,7 +261,7 @@
 
 //   it('howManyEachClass', async () => {
 //     const res = await axios.post(
-//       `http://localhost:${testingPort}/api/howManyEachClass`,
+//       `http://localhost:${testPort}/api/howManyEachClass`,
 //       { token: 'token' },
 //     );
 //     const match = [
@@ -275,7 +275,7 @@
 
 //   it('getReviewsOverTimeTop15', async () => {
 //     const res = await axios.post(
-//       `http://localhost:${testingPort}/api/getReviewsOverTimeTop15`,
+//       `http://localhost:${testPort}/api/getReviewsOverTimeTop15`,
 //       { token: 'token', step: 12, range: 12 },
 //     );
 
