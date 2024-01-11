@@ -30,6 +30,17 @@ export const testStudents: Student[] = [
     reviews: [],
     likedReviews: [],
   },
+  {
+    _id: 'Irrelevant2',
+    firstName: 'Dan Thomas',
+    lastName: 'Ivy',
+    netId: 'dti1',
+    affiliation: '',
+    token: 'fakeTokenDti1',
+    privilege: 'admin',
+    reviews: [],
+    likedReviews: [],
+  },
 ];
 
 export const testReviews: Review[] = [
@@ -74,7 +85,7 @@ export const testProfessors: Professor[] = [
 export const testClasses: Class[] = [
   {
     _id: 'oH37S3mJ4eAsktypy',
-    classSub: 'CS',
+    classSub: 'cs',
     classNum: '2110',
     classTitle: 'Object-Oriented Programming and Data Structures',
     classPrereq: [],

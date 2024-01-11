@@ -2,7 +2,7 @@ import { TokenPayload } from 'google-auth-library';
 import { Auth } from './auth';
 import { StudentDocument } from '../../db/schema';
 
-export interface GetUserType {
+export interface TokenPayloadType {
   token: TokenPayload;
 }
 
@@ -10,7 +10,7 @@ export interface VerifyAuthType {
   auth: Auth;
 }
 
-export interface VerifyAuthRequestType {
+export interface AuthRequestType {
   token: string;
 }
 

@@ -1,6 +1,6 @@
 import { insertNewStudent } from '../auth/auth.data-access';
 import {
-  GetUserType,
+  TokenPayloadType,
   InsertStudentType,
   VerifyAuthType,
   VerifyStudentType,
@@ -9,7 +9,7 @@ import shortid from 'shortid';
 
 import { findStudent } from '../utils/index';
 
-export const insertUser = async ({ token }: GetUserType) => {
+export const insertUser = async ({ token }: TokenPayloadType) => {
   try {
     if (!token.email) {
       return false;
