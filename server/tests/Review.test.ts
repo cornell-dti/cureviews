@@ -4,10 +4,7 @@ import axios from 'axios';
 import { Reviews, Students } from '../db/schema';
 import { testClasses, testReviews, testStudents } from './mocks/InitMockDb';
 import { testServer, testPort } from './mocks/MockServer';
-import {
-  mockVerificationTicket,
-  getValidTokenMock,
-} from './mocks/MockAuthFunctions';
+import { mockVerificationTicket, getValidTokenMock } from './mocks/MockAuth';
 import { Review } from 'common';
 
 beforeAll(async () => {
@@ -53,8 +50,8 @@ describe('review functionality unit tests', () => {
     expect(res.status).toBe(200);
 
     const review = await Reviews.findOne({ text: reviewToInsert.text }).exec();
-
     const dtiUser = await Students.findOne({ netId: 'dti1' });
+
     // Was the user logged correctly as the creator of the review?
     expect(review?.user).toBe(dtiUser?._id);
     // Has the review been added to the creator?

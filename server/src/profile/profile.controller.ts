@@ -1,7 +1,7 @@
 import {
-  findReviewDoc,
   updateStudentReviews,
   updateStudentLikedReviews,
+  findReviewDocsByNetId,
 } from './profile.data-access';
 import {
   ProfileInfoRequestType,
@@ -25,10 +25,12 @@ export const getTotalLikesByNetId = async ({
   let totalLikes = 0;
   let reviewDocs = await getStudentReviewDocs({ netId });
 
-  reviewDocs.forEach((review) => {
-    if (review === null) return totalLikes;
+  if (!reviewDocs) {
+    return null;
+  }
 
-    if ('likes' in review) {
+  reviewDocs.forEach((review) => {
+    if (review !== null) {
       totalLikes += review.likes ? review.likes : 0;
     }
   });
@@ -42,18 +44,10 @@ export const getStudentReviewDocs = async ({
   const student = await findStudent(netId);
 
   if (!student) {
-    return [null];
+    return null;
   }
 
-  const studentReviewIds = student.reviews;
-
-  if (!studentReviewIds) {
-    return [];
-  }
-
-  let reviews = await Promise.all(
-    studentReviewIds.map(async (reviewId) => await findReviewDoc(reviewId)),
-  );
+  const reviews = await findReviewDocsByNetId(netId);
 
   return reviews.filter((review) => review !== null);
 };

@@ -21,7 +21,8 @@ profileRouter.post('/countReviewsByStudentId', async (req, res) => {
     const validNetId: string = profile.getNetId();
 
     const studentReviewIds = await getStudentReviewDocs({ netId: validNetId });
-    if (studentReviewIds === null) {
+
+    if (studentReviewIds === null || studentReviewIds.length === 0) {
       return res
         .status(404)
         .json({ error: 'No reviews objects were associated.' });
@@ -48,6 +49,12 @@ profileRouter.post('/getTotalLikesByStudentId', async (req, res) => {
     const totalLikes: number = await getTotalLikesByNetId({
       netId: validNetId,
     });
+
+    if (totalLikes === null) {
+      return res
+        .status(404)
+        .json({ error: `Invalid netId, student does not exist.` });
+    }
 
     return res.status(200).json({ result: totalLikes });
   } catch (error) {

@@ -1,8 +1,8 @@
 import { Reviews, Students } from '../../db/schema';
 
-export const findReviewDoc = async (reviewId: string) => {
-  const review = await Reviews.findOne({ _id: reviewId }).exec();
-  return review;
+export const findReviewDocsByNetId = async (netId: string) => {
+  const reviews = await Reviews.find({ user: netId }).exec();
+  return reviews;
 };
 
 export const updateStudentReviews = async (
