@@ -152,6 +152,7 @@ export const Admin = () => {
     axios
       .post('/api/addNewSemester', {
         semester: 'FA23',
+        token: token,
       })
       .then((response) => {
         const result = response.data.result

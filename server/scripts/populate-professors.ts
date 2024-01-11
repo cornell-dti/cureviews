@@ -1,4 +1,4 @@
-import { ScrapingInstructor, ScrapingClass, ScrapingSubject } from './types';
+import { ScrapingInstructor, ScrapingClass } from './types';
 import axios from 'axios';
 import { fetchSubjects } from './populate-subjects';
 import { fetchClassesForSubject } from './populate-courses';
