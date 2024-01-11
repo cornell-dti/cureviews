@@ -1,10 +1,9 @@
 // Set up fake endpoints to query
 import express from 'express';
-import axios from 'axios';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { Subjects, Classes, Professors } from '../db/schema';
-import { addAllCourses, addNewSemester } from '../scripts/populate-courses';
+import { addNewSemester } from '../scripts/populate-courses';
 import { fetchSubjects } from '../scripts/populate-subjects';
 import { fetchAddClassesForSubject } from '../scripts/populate-courses';
 
