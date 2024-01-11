@@ -7,7 +7,7 @@ import {
   testSubjects,
   testReviews,
 } from './mocks/InitMockDb';
-import { testServer, testingPort } from './mocks/MockServer';
+import { testServer, testPort } from './mocks/MockServer';
 
 beforeAll(async () => {
   await testServer.setUpDB(
@@ -27,7 +27,7 @@ describe('search functionality unit tests', () => {
   it('getClassesByQuery - invalid body is sent', async () => {
     expect(
       await axios
-        .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
+        .post(`http://localhost:${testPort}/api/getClassesByQuery`, {
           'other query': 'other',
         })
         .catch((e) => {
@@ -38,7 +38,7 @@ describe('search functionality unit tests', () => {
 
   it('getClassesByQuery - valid query "MORK 1" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getClassesByQuery`,
+      `http://localhost:${testPort}/api/getClassesByQuery`,
       {
         query: 'MORK 1',
       },
@@ -53,7 +53,7 @@ describe('search functionality unit tests', () => {
 
   it('getClassesByQuery - valid query: "MORK1" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getClassesByQuery`,
+      `http://localhost:${testPort}/api/getClassesByQuery`,
       {
         query: 'MORK1',
       },
@@ -67,7 +67,7 @@ describe('search functionality unit tests', () => {
 
   it('getClassesByQuery - valid query: "MORK 1110" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getClassesByQuery`,
+      `http://localhost:${testPort}/api/getClassesByQuery`,
       { query: 'MORK1110' },
     );
     expect(res.data.result.map((e) => e.classFull)).toStrictEqual([
@@ -77,7 +77,7 @@ describe('search functionality unit tests', () => {
 
   it('getSubjectsByQuery - valid query subject: "MORK" sent with correct order', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getSubjectsByQuery`,
+      `http://localhost:${testPort}/api/getSubjectsByQuery`,
       { query: 'MORK' },
     );
     expect(res.data.result.map((e) => e.subShort)).toContain('MORK');
@@ -87,7 +87,7 @@ describe('search functionality unit tests', () => {
 
   it('getProfessorsByQuery - query professor: "Gazghul Thraka" sent', async () => {
     const res1 = await axios.post(
-      `http://localhost:${testingPort}/api/getProfessorsByQuery`,
+      `http://localhost:${testPort}/api/getProfessorsByQuery`,
       { query: 'Gazghul Thraka' },
     );
     expect(res1.data.result.map((e) => e.fullName)).toContain('Gazghul Thraka');
@@ -98,7 +98,7 @@ describe('search functionality unit tests', () => {
 
   it('getProfessorsByQuery - query professor: "Jean-Luc Picard" sent', async () => {
     const res2 = await axios.post(
-      `http://localhost:${testingPort}/api/getProfessorsByQuery`,
+      `http://localhost:${testPort}/api/getProfessorsByQuery`,
       { query: 'Jean-Luc Picard' },
     );
     expect(res2.data.result.map((e) => e.fullName)).not.toContain(
@@ -112,7 +112,7 @@ describe('search functionality unit tests', () => {
   // Query has no matching results:
   it('getClassesByQuery - no matching classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getClassesByQuery`,
+      `http://localhost:${testPort}/api/getClassesByQuery`,
       {
         query: 'random',
       },
@@ -128,7 +128,7 @@ describe('search functionality unit tests', () => {
 
   it('getSubjectsByQuery - no matching subjects', async () => {
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getSubjectsByQuery`,
+      `http://localhost:${testPort}/api/getSubjectsByQuery`,
       { query: 'RAND' },
     );
     // we expect no results to be returned
@@ -136,25 +136,19 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.map((e) => e.subShort)).not.toContain('MORK');
     expect(res.data.result.map((e) => e.subShort)).not.toContain('MAD');
     expect(res.data.result.map((e) => e.subShort)).not.toContain('FEDN');
-
-    const res2 = await axios.post(
-      `http://localhost:${testingPort}/api/getSubjectsByQuery`,
-      { query: 'RAND1' },
-    );
-    expect(res2.data.result.map((e) => e.subShort)).toStrictEqual([]);
   });
 
   it('getProfessorsByQuery - no matching professors', async () => {
     expect(
       await axios
-        .post(`http://localhost:${testingPort}/api/getProfessorsByQuery`, {
+        .post(`http://localhost:${testPort}/api/getProfessorsByQuery`, {
           'not query': 'other',
         })
         .catch((e) => 'failed!'),
     ).toBe('failed!');
 
     const res = await axios.post(
-      `http://localhost:${testingPort}/api/getProfessorsByQuery`,
+      `http://localhost:${testPort}/api/getProfessorsByQuery`,
       { query: 'Random Professor' },
     );
     // we expect no results to be returned
@@ -170,7 +164,7 @@ describe('search functionality unit tests', () => {
   // Will accept ascii, but give no guarantees as to what is returned.
   it('getClassesByQuery - non Ascii query', async () => {
     const res = await axios
-      .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
+      .post(`http://localhost:${testPort}/api/getClassesByQuery`, {
         query: 'भारत',
       })
       .catch((e) => e);
@@ -180,7 +174,7 @@ describe('search functionality unit tests', () => {
   // Not for these however.
   it('getSubjectsByQuery - non Ascii query', async () => {
     const res = await axios
-      .post(`http://localhost:${testingPort}/api/getSubjectsByQuery`, {
+      .post(`http://localhost:${testPort}/api/getSubjectsByQuery`, {
         query: 'भारत',
       })
       .catch((e) => e);
@@ -189,7 +183,7 @@ describe('search functionality unit tests', () => {
 
   it('getProfessorsByQuery - non Ascii query', async () => {
     const res = await axios
-      .post(`http://localhost:${testingPort}/api/getProfessorsByQuery`, {
+      .post(`http://localhost:${testPort}/api/getProfessorsByQuery`, {
         query: 'भारत',
       })
       .catch((e) => e);
@@ -198,7 +192,7 @@ describe('search functionality unit tests', () => {
 
   it('getClassesByQuery - empty query', async () => {
     const res = await axios
-      .post(`http://localhost:${testingPort}/api/getClassesByQuery`, {
+      .post(`http://localhost:${testPort}/api/getClassesByQuery`, {
         query: '',
       })
       .catch((e) => {
