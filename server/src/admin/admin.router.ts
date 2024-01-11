@@ -62,17 +62,27 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
-    const reviewVisible = await editReviewVisibility({
-      reviewId: review._id,
-      auth,
-      visibility: 1,
-      reported: 0,
-    });
 
-    if (reviewVisible) {
-      return res.status(200).json({
-        message: `Review with id: ${review._id} is now visible!`,
+    if (review.reported !== 1) {
+      const reviewVisible = await editReviewVisibility({
+        reviewId: review._id,
+        auth,
+        visibility: 1,
+        reported: 0,
       });
+
+      if (reviewVisible) {
+        return res.status(200).json({
+          message: `Review with id: ${review._id} is now visible!`,
+        });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({
+          error:
+            'Review has been reported, to make review visible please undo the report.',
+        });
     }
 
     return res.status(400).json({

@@ -11,6 +11,7 @@ export interface AdminReviewRequestType {
 
 interface AdminReviewType {
   _id: string;
+  reported: number;
 }
 
 export interface AdminRequestType {
