@@ -14,10 +14,10 @@ jobs:
         run: yarn
       - name: Run Linter
         run: yarn lint
-      # - name: Build Server
-      #   run: yarn workspace server build
+      - name: Build Server
+        run: yarn workspace server build
       - name: Build Website Bundle
         # temporarily disable CI flag to let warning not to fail the build
         run: CI=false yarn workspace client build
-      # - name: Test
-      #   run: yarn workspace server test
+      - name: Test
+        run: yarn workspace server test
