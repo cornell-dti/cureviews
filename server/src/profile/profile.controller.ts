@@ -82,9 +82,10 @@ export const addStudentReview = async ({
 export const setStudentLikedReviews = async ({
   netId,
   reviewId,
+  liked,
 }: ProfileLikeReviewType) => {
   try {
-    await updateStudentLikedReviews(netId, reviewId);
+    await updateStudentLikedReviews(netId, reviewId, liked);
   } catch (err) {
     return false;
   }

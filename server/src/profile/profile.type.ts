@@ -10,4 +10,5 @@ export interface ProfileReviewType {
 export interface ProfileLikeReviewType {
   netId: string;
   reviewId: string;
+  liked: boolean;
 }

@@ -29,7 +29,13 @@ export const getReviewsCrossListOR = async ({
   if (course) {
     const crossListOR = getCrossListOR(course);
     const reviews = await findReviewCrossListOR(crossListOR);
-    return reviews;
+    const sanitizedReviews = reviews.map((review) => {
+      const copy = review;
+      copy.user = '';
+      return copy;
+    });
+
+    return sanitizedReviews;
   }
 
   return null;

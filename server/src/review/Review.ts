@@ -8,8 +8,8 @@ type ReviewEntity = {
   rating: number;
   workload: number;
   date: Date;
-  visible: 0 | 1;
-  reported: 0 | 1;
+  visible: number;
+  reported: number;
   professors: string[];
   likes: number;
   isCovid: boolean;
@@ -26,8 +26,8 @@ export class Review {
   private rating: number;
   private workload: number;
   private date: Date;
-  private visible: 0 | 1;
-  private reported: 0 | 1;
+  private visible: number;
+  private reported: number;
   private professors: string[];
   private likes: number;
   private isCovid: boolean;
@@ -71,11 +71,6 @@ export class Review {
     this.validate();
   }
 
-  sanitizeReview() {
-    const copy = this;
-    copy.user = '';
-    return copy;
-  }
   getReviewId() {
     return this._id;
   }

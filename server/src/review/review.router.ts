@@ -18,7 +18,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
     const result = await insertNewReview({ auth, courseId, review });
 
     if (!result) {
-      res.status(400).json({
+      return res.status(400).json({
         error: `Unable to insert new review, please make sure user is authenticated and review is valid.`,
       });
     }

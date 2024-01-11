@@ -71,17 +71,20 @@ export const updateStudentLiked = async ({
     const result = await setStudentLikedReviews({
       netId,
       reviewId: review._id,
+      liked: false,
     });
+
     if (!result) {
       return null;
     }
+
     if (review.likes === undefined) {
       await updateReviewLikes(reviewId, 0, netId);
     } else {
       await updateReviewLikes(reviewId, Math.max(0, review.likes - 1), netId);
     }
   } else {
-    await setStudentLikedReviews({ netId, reviewId: review._id });
+    await setStudentLikedReviews({ netId, reviewId: review._id, liked: true });
     if (review.likes === undefined) {
       await updateReviewLikes(reviewId, 1, netId);
     } else {
@@ -134,7 +137,6 @@ export const insertNewReview = async ({
       major: review.major,
     });
 
-    newReview.sanitizeReview();
     await insertReview(newReview);
     await addStudentReview({ netId, reviewId: newReview.getReviewId() });
 

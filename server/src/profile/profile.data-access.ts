@@ -15,9 +15,17 @@ export const updateStudentReviews = async (
 export const updateStudentLikedReviews = async (
   netId: string,
   reviewId: string,
+  liked: boolean,
 ) => {
-  await Students.updateOne(
-    { netId },
-    { $pull: { likedReviews: reviewId } },
-  ).exec();
+  if (liked) {
+    await Students.updateOne(
+      { netId },
+      { $push: { likedReviews: reviewId } },
+    ).exec();
+  } else {
+    await Students.updateOne(
+      { netId },
+      { $pull: { likedReviews: reviewId } },
+    ).exec();
+  }
 };

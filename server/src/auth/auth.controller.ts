@@ -2,8 +2,8 @@ import { insertNewStudent } from '../auth/auth.data-access';
 import {
   GetUserType,
   InsertStudentType,
-  ProfileInfoRequestType,
   VerifyAuthType,
+  VerifyStudentType,
 } from './auth.type';
 import shortid from 'shortid';
 
@@ -47,19 +47,19 @@ export const verifyToken = async ({ auth }: VerifyAuthType) => {
   }
 
   if (ticket.hd === 'cornell.edu') {
-    const result = await insertUser({ token: ticket });
-
-    if (!result) {
-      return null;
-    }
-
     if (!ticket.email) {
       return null;
+    } else {
+      const result = await insertUser({ token: ticket });
+
+      if (!result) {
+        return null;
+      }
     }
 
     const netId = ticket.email.replace('@cornell.edu', '');
     const student = await findStudent(netId);
-    return { netId, student } as ProfileInfoRequestType;
+    return { netId, student } as VerifyStudentType;
   } else {
     return null;
   }
