@@ -1,13 +1,8 @@
 import axios from 'axios';
 
-import TestingServer from './TestServer';
 import { testClasses, testReviews } from './mocks/InitMockDb';
-import { validTokenPayload } from './mocks/MockAuth';
-
-import { Auth } from '../src/auth/auth';
-
-const testPort = 8080;
-const testServer = new TestingServer(testPort);
+import { testPort, testServer } from './mocks/MockServer';
+import { Reviews } from '../db/schema';
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -30,9 +25,11 @@ describe('course functionality unit tests', () => {
       `http://localhost:${testPort}/api/getReviewsByCourseId`,
       { courseId: 'oH37S3mJ4eAsktypy' },
     );
-    expect(res.data.result.length).toBe(testReviews.length);
 
-    const classOfReviews = testReviews.map((r) => r.class);
+    const reviews = await Reviews.find({ class: 'oH37S3mJ4eAsktypy' });
+    expect(res.data.result.length).toBe(reviews.length);
+
+    const classOfReviews = reviews.map((r) => r.class);
     expect(res.data.result.map((r) => r.class).sort()).toEqual(
       classOfReviews.sort(),
     );
@@ -117,7 +114,9 @@ describe('course functionality unit tests', () => {
         console.log(e);
         return e;
       });
-    expect(res.data.result.length).toBe(testReviews.length);
+
+    const reviews = await Reviews.find({ class: 'oH37S3mJ4eAsktypy' });
+    expect(res.data.result.length).toBe(reviews.length);
 
     const classOfReviews = testReviews.map((r) => r.user);
     expect(res.data.result.map((r) => r.user).sort()).not.toEqual(

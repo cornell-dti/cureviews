@@ -3,7 +3,7 @@ import axios from 'axios';
 import { testPort, testServer } from './mocks/MockServer';
 import { testStudents } from './mocks/InitMockDb';
 import { Students } from '../db/schema';
-import { mockVerificationTicket } from './mocks/MockAuthFunctions';
+import { mockVerificationTicket } from './mocks/MockAuth';
 import { Auth } from '../src/auth/auth';
 
 beforeAll(async () => {
