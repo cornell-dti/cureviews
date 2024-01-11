@@ -1,57 +1,12 @@
 import axios from 'axios';
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 
-import { Student } from 'common';
-import * as Auth from '../src/Auth';
-import TestingServer, { testingPort } from './TestServer';
-
-const testServer = new TestingServer(testingPort);
-
-const invalidTokenPayload: TokenPayload = {
-  email: 'cv4620@cornell.edu',
-  iss: undefined,
-  sub: undefined,
-  iat: undefined,
-  aud: undefined,
-  exp: undefined,
-};
-
-const validTokenPayload: TokenPayload = {
-  email: 'dti1@cornell.edu',
-  iss: undefined,
-  sub: undefined,
-  iat: undefined,
-  aud: undefined,
-  exp: undefined,
-};
+import { testPort, testServer } from './mocks/MockServer';
+import { testStudents } from './mocks/InitMockDb';
+import { Students } from '../db/schema';
+import { mockVerificationTicket } from './mocks/MockAuthFunctions';
+import { Auth } from '../src/auth/auth';
 
 beforeAll(async () => {
-  const testStudents: Student[] = [
-    // non admin user
-    {
-      _id: 'Irrelevant',
-      firstName: 'Cornellius',
-      lastName: 'Vanderbilt',
-      netId: 'cv4620',
-      affiliation: null,
-      token: 'fakeTokencv4620',
-      privilege: 'regular',
-      reviews: [],
-      likedReviews: [],
-    },
-    // admin user
-    {
-      _id: 'Irrelevant2',
-      firstName: 'Dan Thomas',
-      lastName: 'Ivy',
-      netId: 'dti1',
-      affiliation: null,
-      token: 'fakeTokenDti1',
-      privilege: 'admin',
-      reviews: [],
-      likedReviews: [],
-    },
-  ];
   await testServer.setUpDB(
     undefined,
     testStudents,
@@ -63,30 +18,60 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testServer.shutdownTestingServer();
+  await mockVerificationTicket.mockRestore();
 });
 
-describe('tests', () => {
-  it('tokenIsAdmin-works', async () => {
-    const mockVerificationTicket = jest
-      .spyOn(Auth, 'getVerificationTicket')
-      .mockImplementation(async (token?: string) => {
-        if (token === 'fakeTokenDti1') {
-          return validTokenPayload;
-        }
-        return invalidTokenPayload;
+describe('auth functionality works', () => {
+  it('insertUser', async () => {
+    const getInvalidTokenMock = jest
+      .spyOn(Auth.prototype, 'getToken')
+      .mockImplementation(() => {
+        return 'fakeTokencv4620';
       });
 
+    const user1 = {
+      _id: 'Irrelevant',
+      firstName: 'Cornellius',
+      lastName: 'Vanderbilt',
+      netId: 'cv4620',
+      affiliation: null,
+      token: 'fakeTokencv4620',
+      privilege: 'regular',
+    };
+
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/insertUser`,
+      { token: user1.token },
+    );
+    expect(res.status).toBe(200);
+    expect(
+      (await Students.find({}).exec()).filter((s) => s.netId === 'cv4620')
+        .length,
+    ).toBe(1);
+
+    getInvalidTokenMock.mockRestore();
+  });
+
+  it('tokenIsAdmin-works', async () => {
     const failRes = await axios.post(
-      `http://localhost:${testingPort}/api/tokenIsAdmin`,
+      `http://localhost:${testPort}/api/tokenIsAdmin`,
       { token: 'fakeTokencv4620' },
     );
+
     expect(failRes.data.result).toEqual(false);
+
+    const getValidTokenMock = jest
+      .spyOn(Auth.prototype, 'getToken')
+      .mockImplementation(() => {
+        return 'fakeTokenDti1';
+      });
+
     const successRes = await axios.post(
-      `http://localhost:${testingPort}/api/tokenIsAdmin`,
+      `http://localhost:${testPort}/api/tokenIsAdmin`,
       { token: 'fakeTokenDti1' },
     );
-    expect(successRes.data.result).toEqual(true);
 
-    mockVerificationTicket.mockRestore();
+    expect(successRes.data.result).toEqual(true);
+    await getValidTokenMock.mockRestore();
   });
 });
