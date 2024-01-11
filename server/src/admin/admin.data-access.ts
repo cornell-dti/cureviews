@@ -16,7 +16,7 @@ export const findAllReviewsAfterDate = async (date: Date) => {
 };
 
 export const removeReview = async (reviewId: string) => {
-  await Reviews.remove({ _id: reviewId });
+  await Reviews.deleteOne({ _id: reviewId });
 };
 
 export const updateReviewVisibility = async (
