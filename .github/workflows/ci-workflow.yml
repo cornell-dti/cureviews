@@ -16,8 +16,6 @@ jobs:
         run: yarn lint
       - name: Build Server
         run: yarn workspace server build
-        env:
-          CI: false
       - name: Build Website Bundle
         # temporarily disable CI flag to let warning not to fail the build
         run: CI=false yarn workspace client build
