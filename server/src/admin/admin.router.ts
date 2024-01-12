@@ -1,13 +1,13 @@
-import express from 'express';
+import express from "express";
 
-import { Auth } from '../auth/auth';
+import { Auth } from "../auth/auth";
 import {
   AdminReviewRequestType,
   AdminRequestType,
   RaffleWinnerRequestType,
   AdminAddSemesterRequestType,
   ReportReviewRequestType,
-} from './admin.type';
+} from "./admin.type";
 import {
   getPendingReviews,
   editReviewVisibility,
@@ -19,11 +19,11 @@ import {
   addNewSemesterCoursesAndProfessors,
   verifyTokenAdmin,
   reportReview,
-} from './admin.controller';
+} from "./admin.controller";
 
 export const adminRouter = express.Router();
 
-adminRouter.post('/reportReview', async (req, res) => {
+adminRouter.post("/reportReview", async (req, res) => {
   try {
     const { id }: ReportReviewRequestType = req.body;
     const result = await reportReview({ id });
@@ -46,20 +46,20 @@ adminRouter.post('/reportReview', async (req, res) => {
 /*
  * Check if a token is for an admin
  */
-adminRouter.post('/tokenIsAdmin', async (req, res) => {
+adminRouter.post("/tokenIsAdmin", async (req, res) => {
   try {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
 
     const isAdmin = await verifyTokenAdmin({ auth });
 
-    res.status(200).json({ result: isAdmin });
+    return res.status(200).json({ result: isAdmin });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/makeReviewVisible', async (req, res) => {
+adminRouter.post("/makeReviewVisible", async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
@@ -80,7 +80,7 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
     } else {
       return res.status(400).json({
         error:
-          'Review has been reported, to make review visible please undo the report.',
+          "Review has been reported, to make review visible please undo the report.",
       });
     }
 
@@ -92,7 +92,7 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchPendingReviews', async (req, res) => {
+adminRouter.post("/fetchPendingReviews", async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -104,16 +104,15 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
     }
 
     return res.status(200).json({
-      message: 'Retrieved all pending reviews',
+      message: "Retrieved all pending reviews",
       result: pendingReviews,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/getRaffleWinner', async (req, res) => {
+adminRouter.post("/getRaffleWinner", async (req, res) => {
   try {
     const { startDate }: RaffleWinnerRequestType = req.body;
     const winner = await getRaffleWinner({ startDate });
@@ -125,16 +124,15 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
     }
 
     return res.status(200).json({
-      message: 'Retrieved raffle winner',
+      message: "Retrieved raffle winner",
       result: winner,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/addNewSemester', async (req, res) => {
+adminRouter.post("/addNewSemester", async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -158,7 +156,7 @@ adminRouter.post('/addNewSemester', async (req, res) => {
   }
 });
 
-adminRouter.post('/undoReportReview', async (req, res) => {
+adminRouter.post("/undoReportReview", async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -176,14 +174,14 @@ adminRouter.post('/undoReportReview', async (req, res) => {
     }
 
     return res.status(401).json({
-      error: 'User does not have an authorized token (not an admin)!',
+      error: "User does not have an authorized token (not an admin)!",
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/removeReview', async (req, res) => {
+adminRouter.post("/removeReview", async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
 
   try {
@@ -197,14 +195,14 @@ adminRouter.post('/removeReview', async (req, res) => {
     }
 
     return res.status(401).json({
-      error: 'User does not have an authorized token (not an admin)!',
+      error: "User does not have an authorized token (not an admin)!",
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/setProfessors', async (req, res) => {
+adminRouter.post("/setProfessors", async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -220,25 +218,25 @@ adminRouter.post('/setProfessors', async (req, res) => {
   }
 });
 
-adminRouter.post('/resetProfessors', async (req, res) => {
+adminRouter.post("/resetProfessors", async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
     const result = await resetAllProfessors({ auth });
 
     if (result) {
-      return res.status(200).json({ message: 'Professors reset!' });
+      return res.status(200).json({ message: "Professors reset!" });
     }
 
     return res
       .status(400)
-      .json({ error: 'Professors were unable to be reset!' });
+      .json({ error: "Professors were unable to be reset!" });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/dbInit', async (req, res) => {
+adminRouter.post("/dbInit", async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -252,7 +250,7 @@ adminRouter.post('/dbInit', async (req, res) => {
 
     return res
       .status(400)
-      .json({ error: 'Error adding all professors and all courses' });
+      .json({ error: "Error adding all professors and all courses" });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

@@ -1,17 +1,17 @@
-import { verifyToken } from '../auth/auth.controller';
+import shortid from "shortid";
+import { verifyToken } from "../auth/auth.controller";
 import {
   addStudentReview,
   setStudentLikedReviews,
-} from '../profile/profile.controller';
-import { Review } from './review';
+} from "../profile/profile.controller";
+import { Review } from "./review";
 import {
   findClassReviews,
   findReview,
   insertReview,
   updateReviewLikes,
-} from './review.data-access';
-import { InsertReviewType, ReviewLikesType } from './review.type';
-import shortid from 'shortid';
+} from "./review.data-access";
+import { InsertReviewType, ReviewLikesType } from "./review.type";
 
 export const checkStudentHasLiked = async ({
   auth,
@@ -23,7 +23,7 @@ export const checkStudentHasLiked = async ({
     return null;
   }
 
-  const { netId, student } = verified;
+  const { student } = verified;
 
   const review = await findReview(reviewId);
 
@@ -37,9 +37,8 @@ export const checkStudentHasLiked = async ({
 
   if (student.likedReviews && student.likedReviews.includes(review.id)) {
     return true;
-  } else {
-    return false;
   }
+  return false;
 };
 
 export const updateStudentLiked = async ({
@@ -65,8 +64,8 @@ export const updateStudentLiked = async ({
   }
 
   if (
-    student.likedReviews !== undefined &&
-    student.likedReviews.includes(review._id)
+    student.likedReviews !== undefined
+    && student.likedReviews.includes(review._id)
   ) {
     const result = await setStudentLikedReviews({
       netId,

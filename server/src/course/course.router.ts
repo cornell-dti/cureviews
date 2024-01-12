@@ -1,14 +1,14 @@
-import express from 'express';
-import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
+import express from "express";
+import { CourseIdRequestType, CourseInfoRequestType } from "./course.type";
 import {
   getCourseById,
   getCourseByInfo,
   getReviewsCrossListOR,
-} from './course.controller';
+} from "./course.controller";
 
 export const courseRouter = express.Router();
 
-courseRouter.post('/getCourseByInfo', async (req, res) => {
+courseRouter.post("/getCourseByInfo", async (req, res) => {
   try {
     const { number, subject }: CourseInfoRequestType = req.body;
     const course = await getCourseByInfo({ number, subject });
@@ -27,7 +27,7 @@ courseRouter.post('/getCourseByInfo', async (req, res) => {
   }
 });
 
-courseRouter.post('/getCourseById', async (req, res) => {
+courseRouter.post("/getCourseById", async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const course = await getCourseById({ courseId });
@@ -39,7 +39,7 @@ courseRouter.post('/getCourseById', async (req, res) => {
   }
 });
 
-courseRouter.post('/getReviewsByCourseId', async (req, res) => {
+courseRouter.post("/getReviewsByCourseId", async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsCrossListOR({ courseId });

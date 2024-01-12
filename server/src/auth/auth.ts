@@ -1,6 +1,6 @@
-import joi from 'joi';
-import { OAuth2Client } from 'google-auth-library';
-import { GOOGLE_AUTH_AUDIENCE } from '../utils/constants';
+import joi from "joi";
+import { OAuth2Client } from "google-auth-library";
+import { GOOGLE_AUTH_AUDIENCE } from "../utils/constants";
 
 type AuthEntity = {
   token: string;
@@ -8,7 +8,9 @@ type AuthEntity = {
 
 export class Auth {
   private token: string;
+
   private static AUDIENCE = GOOGLE_AUTH_AUDIENCE;
+
   private static CLIENT = new OAuth2Client(Auth.AUDIENCE);
 
   constructor({ token }: AuthEntity) {
@@ -55,7 +57,7 @@ export class Auth {
         .required(),
     });
 
-    const { error, value } = tokenSchema.validate(this);
+    const { error } = tokenSchema.validate(this);
 
     if (error !== undefined) {
       throw error;

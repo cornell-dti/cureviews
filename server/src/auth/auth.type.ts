@@ -1,6 +1,6 @@
-import { TokenPayload } from 'google-auth-library';
-import { Auth } from './auth';
-import { StudentDocument } from '../../db/schema';
+import { TokenPayload } from "google-auth-library";
+import { Auth } from "./auth";
+import { StudentDocument } from "../../db/schema";
 
 export interface TokenPayloadType {
   token: TokenPayload;

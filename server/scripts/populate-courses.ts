@@ -1,9 +1,10 @@
-import axios from 'axios';
-import { ScrapingSubject, ScrapingClass } from './types';
-import { Classes, Professors, Subjects } from '../db/schema';
-import shortid from 'shortid';
-import { extractProfessors } from './populate-professors';
-import { fetchSubjects } from './populate-subjects';
+/* eslint-disable no-console */
+import axios from "axios";
+import shortid from "shortid";
+import { ScrapingSubject, ScrapingClass } from "./types";
+import { Classes, Professors, Subjects } from "../db/schema";
+import { extractProfessors } from "./populate-professors";
+import { fetchSubjects } from "./populate-subjects";
 
 /*
  * Fetch all the classes for that semester/subject combination
@@ -20,14 +21,14 @@ export async function fetchClassesForSubject(
       { timeout: 10000 },
     );
 
-    if (result.status !== 200 || result.data.status !== 'success') {
+    if (result.status !== 200 || result.data.status !== "success") {
       console.log(
         `Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`,
       );
       return null;
     }
 
-    const classes = result.data.data.classes;
+    const { classes } = result.data.data;
     return classes;
   } catch (err) {
     return null;
@@ -71,7 +72,7 @@ export async function addNewSemester(endpoint: string, semester: string) {
   ).catch((err) => null);
 
   if (!v1) {
-    console.log('Something went wrong while updating subjects!');
+    console.log("Something went wrong while updating subjects!");
     return false;
   }
 
@@ -82,7 +83,7 @@ export async function addNewSemester(endpoint: string, semester: string) {
   // Update the Classes in the db
   await Promise.all(
     subjects.map(async (subject) => {
-      const classes = await fetchAddClassesForSubject(
+      const result = await fetchAddClassesForSubject(
         subject,
         endpoint,
         semester,
@@ -90,13 +91,13 @@ export async function addNewSemester(endpoint: string, semester: string) {
 
       // skip if something went wrong fetching classes
       // it could be that there are not classes here (in tests, corresponds to FEDN)
-      if (!classes) {
+      if (!result) {
         return true;
       }
+
+      return result;
     }),
-  ).catch((err) => {
-    return false;
-  });
+  ).catch((err) => false);
 
   return true;
 }
@@ -138,7 +139,7 @@ export async function fetchAddClassesForSubject(
               $setOnInsert: {
                 fullName: `${p.firstName} ${p.lastName}`,
                 _id: shortid.generate(),
-                major: 'None' /* TODO: change? */,
+                major: "None" /* TODO: change? */,
               },
             },
             { upsert: true, new: true },
@@ -164,7 +165,7 @@ export async function fetchAddClassesForSubject(
           } does not exist, adding to database...`,
         );
 
-        const regex = new RegExp('^[0-9]+$');
+        const regex = new RegExp("^[0-9]+$");
         if (!regex.test(course.titleLong)) {
           const newClass = {
             _id: shortid.generate(),
@@ -216,10 +217,9 @@ export async function fetchAddClassesForSubject(
         }
       } else {
         // Compute the new set of semesters for this class
-        const classSems =
-          classExists.classSems?.indexOf(semester) === -1
-            ? classExists.classSems.concat([semester])
-            : classExists.classSems;
+        const classSems = classExists.classSems?.indexOf(semester) === -1
+          ? classExists.classSems.concat([semester])
+          : classExists.classSems;
 
         console.log(
           `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${
@@ -303,8 +303,10 @@ export async function addAllCourses(endpoint: string, semesters: string[]) {
       if (!result) {
         return false;
       }
+
+      return result;
     }),
   );
-  console.log('Finished addAllCourses');
+  console.log("Finished addAllCourses");
   return true;
 }

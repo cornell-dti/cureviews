@@ -1,4 +1,3 @@
-import { ClassDocument } from '../../db/schema';
 import { courseSort } from './search.algo';
 import {
   findCourseSubject,
@@ -70,7 +69,6 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
     const courseSubject = await findCourseSubject(query);
     if (courseSubject.length > 0) {
       fullSearch = fullSearch.concat(courseSubject);
-      console.log(fullSearch);
     }
   }
 
@@ -96,6 +94,8 @@ export const searchCoursesByProfessor = async ({ search }: SearchQueryType) => {
     if (courses && courses.length > 0) {
       return courses.sort(courseSort(search.getQuery()));
     }
+
+    return [];
   } catch (e) {
     return null;
   }
@@ -107,6 +107,8 @@ export const searchCoursesBySubject = async ({ search }: SearchQueryType) => {
     if (courses && courses.length > 0) {
       return courses.sort(courseSort(search.getQuery()));
     }
+
+    return [];
   } catch (e) {
     return null;
   }

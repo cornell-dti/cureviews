@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Redirect, Route, RouteProps } from "react-router";
+import * as React from 'react'
+import { Redirect, Route, RouteProps } from 'react-router'
 
 export type ProtectedRouteProps = {
-  isAuthenticated: boolean;
-  authenticationPath: string;
-} & RouteProps;
+  isAuthenticated: boolean
+  authenticationPath: string
+} & RouteProps
 
 export default function ProtectedRoute({
   isAuthenticated,
@@ -12,8 +12,8 @@ export default function ProtectedRoute({
   ...routeProps
 }: ProtectedRouteProps) {
   if (isAuthenticated) {
-    return <Route {...routeProps} />;
+    return <Route {...routeProps} />
   } else {
-    return <Redirect to={{ pathname: authenticationPath }} />;
+    return <Redirect to={{ pathname: authenticationPath }} />
   }
 }

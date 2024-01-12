@@ -1,4 +1,4 @@
-import joi from 'joi';
+import joi from "joi";
 
 type CourseEntity = {
   courseId: string;
@@ -8,7 +8,9 @@ type CourseEntity = {
 
 export class Course {
   private courseId: string;
+
   private subject: string;
+
   private courseNumber: string;
 
   constructor({ courseId, subject, courseNumber }: CourseEntity) {
@@ -26,7 +28,7 @@ export class Course {
       courseNumber: joi.number().required(),
     });
 
-    const { error, value } = searchSchema.validate(this);
+    const { error } = searchSchema.validate(this);
 
     if (error !== undefined) {
       throw error;

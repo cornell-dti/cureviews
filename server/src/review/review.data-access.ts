@@ -1,5 +1,5 @@
-import { Reviews } from '../../db/schema';
-import { Review } from './review';
+import { Reviews } from "../../db/schema";
+import { Review } from "./review";
 
 export const findReviewCrossListOR = async (crossListOR) => {
   const reviews = await Reviews.find(
@@ -33,7 +33,7 @@ export const updateReviewLikes = async (
 ) => {
   await Reviews.updateOne(
     { _id: reviewId },
-    { $set: { likes: likes } },
+    { $set: { likes } },
     { $pull: { likedBy: netId } },
   );
 };

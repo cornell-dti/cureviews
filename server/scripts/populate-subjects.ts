@@ -1,7 +1,9 @@
-import { ScrapingSubject } from './types';
-import { Subjects } from '../db/schema';
-import axios from 'axios';
-import shortid from 'shortid';
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+import axios from "axios";
+import shortid from "shortid";
+import { ScrapingSubject } from "./types";
+import { Subjects } from "../db/schema";
 
 /*
  * Fetch the class roster for a semester.
@@ -17,14 +19,14 @@ export async function fetchSubjects(
       { timeout: 10000 },
     );
 
-    if (result.status !== 200 || result.data.status !== 'success') {
+    if (result.status !== 200 || result.data.status !== "success") {
       console.log(
         `Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`,
       );
       return null;
     }
 
-    const subjects = result.data.data.subjects;
+    const { subjects } = result.data.data;
     return subjects;
   } catch (err) {
     return null;

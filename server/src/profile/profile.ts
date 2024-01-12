@@ -1,4 +1,4 @@
-import joi from 'joi';
+import joi from "joi";
 
 type ProfileEntity = {
   netId: string;
@@ -22,7 +22,7 @@ export class Profile {
       netId: joi.string().alphanum().required(),
     });
 
-    const { error, value } = searchSchema.validate(this);
+    const { error } = searchSchema.validate(this);
 
     if (error !== undefined) {
       throw error;

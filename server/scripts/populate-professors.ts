@@ -1,5 +1,9 @@
-import { ScrapingInstructor, ScrapingClass } from './types';
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-await-in-loop */
 import axios from 'axios';
+import { ScrapingInstructor, ScrapingClass } from './types';
 import { fetchSubjects } from './populate-subjects';
 import { fetchClassesForSubject } from './populate-courses';
 import { Classes } from '../db/schema';
@@ -16,9 +20,7 @@ export function isInstructorEqual(
  * There are guaranaxios!
  */
 export function extractProfessors(course: ScrapingClass): ScrapingInstructor[] {
-  const raw = course.enrollGroups.map((e) =>
-    e.classSections.map((s) => s.meetings.map((m) => m.instructors)),
-  );
+  const raw = course.enrollGroups.map((e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)));
   // flatmap does not work :(
   const f1: ScrapingInstructor[][][] = [];
   raw.forEach((r) => f1.push(...r));
@@ -93,76 +95,72 @@ export async function addAllProfessors(semesters: string[]) {
           console.log('Error in updateProfessors: 4');
           console.log(result2.status);
           return false;
-        } else {
-          const response2 = result2.data;
-          const courses = response2.data.classes;
+        }
+        const response2 = result2.data;
+        const courses = response2.data.classes;
 
-          // add each class to the Classes collection if it doesnt exist already
-          for (const course in courses) {
-            try {
-              const matchedCourse = await Classes.findOne({
-                classSub: courses[course].subject.toLowerCase(),
-                classNum: courses[course].catalogNbr,
-              }).exec();
-              if (matchedCourse) {
-                console.log(courses[course].subject);
-                console.log(courses[course].catalogNbr);
-                console.log('This is the matchedCourse');
-                console.log(matchedCourse);
+        // add each class to the Classes collection if it doesnt exist already
+        for (const course in courses) {
+          try {
+            const matchedCourse = await Classes.findOne({
+              classSub: courses[course].subject.toLowerCase(),
+              classNum: courses[course].catalogNbr,
+            }).exec();
+            if (matchedCourse) {
+              console.log(courses[course].subject);
+              console.log(courses[course].catalogNbr);
+              console.log('This is the matchedCourse');
+              console.log(matchedCourse);
 
-                let oldProfessors = matchedCourse.classProfessors;
-                if (oldProfessors == undefined) {
-                  oldProfessors = [];
-                }
-                console.log('This is the length of old profs');
-                console.log(oldProfessors.length);
-                const { classSections } = courses[course].enrollGroups[0]; // This returns an array
-                for (const section in classSections) {
-                  if (
-                    classSections[section].ssrComponent == 'LEC' ||
-                    classSections[section].ssrComponent == 'SEM'
-                  ) {
-                    // Checks to see if class has scheduled meetings before checking them
-                    if (classSections[section].meetings.length > 0) {
-                      const professors =
-                        classSections[section].meetings[0].instructors;
-                      // Checks to see if class has instructors before checking them
-                      // Example of class without professors is:
-                      // ASRC 3113 in FA16
-                      // ASRC 3113 returns an empty array for professors
-                      if (professors.length > 0) {
-                        for (const professor in professors) {
-                          const { firstName } = professors[professor];
-                          const { lastName } = professors[professor];
-                          const fullName = `${firstName} ${lastName}`;
-                          if (!oldProfessors.includes(fullName)) {
-                            oldProfessors.push(fullName);
-                          }
+              let oldProfessors = matchedCourse.classProfessors;
+              if (oldProfessors === undefined) {
+                oldProfessors = [];
+              }
+              console.log('This is the length of old profs');
+              console.log(oldProfessors.length);
+              const { classSections } = courses[course].enrollGroups[0]; // This returns an array
+              for (const section in classSections) {
+                if (
+                  classSections[section].ssrComponent === 'LEC'
+                  || classSections[section].ssrComponent === 'SEM'
+                ) {
+                  // Checks to see if class has scheduled meetings before checking them
+                  if (classSections[section].meetings.length > 0) {
+                    const professors = classSections[section].meetings[0].instructors;
+                    // Checks to see if class has instructors before checking them
+                    // Example of class without professors is:
+                    // ASRC 3113 in FA16
+                    // ASRC 3113 returns an empty array for professors
+                    if (professors.length > 0) {
+                      for (const professor in professors) {
+                        const { firstName } = professors[professor];
+                        const { lastName } = professors[professor];
+                        const fullName = `${firstName} ${lastName}`;
+                        if (!oldProfessors.includes(fullName)) {
+                          oldProfessors.push(fullName);
                         }
-                      } else {
-                        console.log('This class does not have professors');
                       }
                     } else {
-                      console.log(
-                        'This class does not have meetings scheduled',
-                      );
+                      console.log('This class does not have professors');
                     }
+                  } else {
+                    console.log('This class does not have meetings scheduled');
                   }
                 }
-                await Classes.updateOne(
-                  { _id: matchedCourse._id },
-                  { $set: { classProfessors: oldProfessors } },
-                ).exec();
               }
-            } catch (error) {
-              console.log('Error in updateProfessors: 5');
-              console.log(
-                `Error on course ${courses[course].subject} ${courses[course].catalogNbr}`,
-              );
-              console.log(error);
-
-              return false;
+              await Classes.updateOne(
+                { _id: matchedCourse._id },
+                { $set: { classProfessors: oldProfessors } },
+              ).exec();
             }
+          } catch (error) {
+            console.log('Error in updateProfessors: 5');
+            console.log(
+              `Error on course ${courses[course].subject} ${courses[course].catalogNbr}`,
+            );
+            console.log(error);
+
+            return false;
           }
         }
       }

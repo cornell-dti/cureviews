@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import axios from 'axios';
+import axios from "axios";
 
-import { Reviews, Students } from '../db/schema';
-import { testClasses, testReviews, testStudents } from './mocks/InitMockDb';
-import { testServer, testPort } from './mocks/MockServer';
-import { mockVerificationTicket, getValidTokenMock } from './mocks/MockAuth';
-import { Review } from 'common';
+import { Review } from "common";
+import { Reviews, Students } from "../db/schema";
+import { testClasses, testReviews } from "./mocks/InitMockDb";
+import { testServer, testPort } from "./mocks/MockServer";
+import { mockVerificationTicket, getValidTokenMock } from "./mocks/MockAuth";
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -25,15 +25,15 @@ afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe('review functionality unit tests', () => {
-  it('insertReview - working functionality', async () => {
+describe("review functionality unit tests", () => {
+  it("insertReview - working functionality", async () => {
     const reviewToInsert: Review = {
-      _id: 'blah',
-      user: 'Irrelevant2',
+      _id: "blah",
+      user: "Irrelevant2",
       workload: 3,
-      professors: ['prof1'],
+      professors: ["prof1"],
       isCovid: false,
-      text: 'sample inserted review for cs 2110. dfghjd76',
+      text: "sample inserted review for cs 2110. dfghjd76",
       difficulty: 1,
       likedBy: [],
       rating: 4,
@@ -42,15 +42,15 @@ describe('review functionality unit tests', () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/insertReview`,
       {
-        courseId: 'oH37S3mJ4eAsktypy',
+        courseId: "oH37S3mJ4eAsktypy",
         review: reviewToInsert,
-        token: 'fakeTokenDti1',
+        token: "fakeTokenDti1",
       },
     );
     expect(res.status).toBe(200);
 
     const review = await Reviews.findOne({ text: reviewToInsert.text }).exec();
-    const dtiUser = await Students.findOne({ netId: 'dti1' });
+    const dtiUser = await Students.findOne({ netId: "dti1" });
 
     // Was the user logged correctly as the creator of the review?
     expect(review?.user).toBe(dtiUser?._id);
@@ -58,34 +58,34 @@ describe('review functionality unit tests', () => {
     expect(dtiUser?.reviews).toContain(review?._id);
   });
 
-  it('like/dislike - increment and decrement', async () => {
+  it("like/dislike - increment and decrement", async () => {
     const res1 = await axios.post(
       `http://localhost:${testPort}/api/updateLiked`,
-      { id: '4Y8k7DnX3PLNdwRPr', token: 'fakeTokenDti1' },
+      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
     );
 
     expect(res1.status).toBe(200);
-    const reviewLiked = await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' });
+    const reviewLiked = await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" });
     expect(reviewLiked?.likes).toBe(3);
 
     const res2 = await axios.post(
       `http://localhost:${testPort}/api/updateLiked`,
-      { id: '4Y8k7DnX3PLNdwRPr', token: 'fakeTokenDti1' },
+      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
     );
 
-    const reviewDisliked = await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' });
+    const reviewDisliked = await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" });
     expect(res2.status).toBe(200);
     expect(reviewDisliked?.likes).toBe(2);
   });
 
-  it('reportReview - works', async () => {
+  it("reportReview - works", async () => {
     const res1 = await axios.post(
       `http://localhost:${testPort}/api/reportReview`,
-      { id: '4Y8k7DnX3PLNdwRPr', token: 'fakeTokenDti1' },
+      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
     );
 
     expect(res1.status).toBe(200);
-    const reviewReported = await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' });
+    const reviewReported = await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" });
     expect(reviewReported?.visible).toBe(0);
     expect(reviewReported?.reported).toBe(1);
   });

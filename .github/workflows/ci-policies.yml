@@ -8,4 +8,4 @@ jobs:
       - uses: actions/checkout@master
       - uses: cornell-dti/big-diff-warning@master
         env:
-          BOT_TOKEN: '${{ secrets.BOT_TOKEN }}'
+          BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"

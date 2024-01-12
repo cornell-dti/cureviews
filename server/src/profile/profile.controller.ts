@@ -2,14 +2,14 @@ import {
   updateStudentReviews,
   updateStudentLikedReviews,
   findReviewDocsByNetId,
-} from './profile.data-access';
+} from "./profile.data-access";
 import {
   ProfileInfoRequestType,
   ProfileLikeReviewType,
   ProfileReviewType,
-} from './profile.type';
+} from "./profile.type";
 
-import { findStudent } from '../utils';
+import { findStudent } from "../utils";
 
 export const getStudentReviewIds = async ({
   netId,
@@ -23,7 +23,7 @@ export const getTotalLikesByNetId = async ({
   netId,
 }: ProfileInfoRequestType) => {
   let totalLikes = 0;
-  let reviewDocs = await getStudentReviewDocs({ netId });
+  const reviewDocs = await getStudentReviewDocs({ netId });
 
   if (!reviewDocs) {
     return null;
@@ -62,7 +62,7 @@ export const addStudentReview = async ({
       return false;
     }
 
-    const reviews = student.reviews;
+    const { reviews } = student;
 
     const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
     await updateStudentReviews(netId, newReviews);

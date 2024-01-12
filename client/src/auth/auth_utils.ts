@@ -80,7 +80,7 @@ export function useAuthOptionalLogin(): [
   string | null,
   string,
   (redirectFrom: string) => void,
-  (redirectTo?: string) => void
+  (redirectTo?: string) => void,
 ] {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState(null)

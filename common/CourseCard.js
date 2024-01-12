@@ -2,18 +2,17 @@
   Additonal functions used in the CourseCard component.
 */
 
-
 // helper function to convert semester abbreviations to a full word
 function semAbbriviationToWord(sem) {
   switch (sem) {
-    case 'SP':
-      return 'Spring';
-    case 'FA':
-      return 'Fall';
-    case 'SU':
-      return 'Summer';
-    case 'WI':
-      return 'Winter';
+    case "SP":
+      return "Spring";
+    case "FA":
+      return "Fall";
+    case "SU":
+      return "Summer";
+    case "WI":
+      return "Winter";
     default:
       return "";
   }
@@ -27,7 +26,7 @@ function lastOfferedSems(theClass) {
     offered.add(semAbbriviationToWord(sem.slice(0, -2)));
   });
   // Array.from(offered).join(' ');
-  return Array.from(offered).join(', ');
+  return Array.from(offered).join(", ");
 }
 
 function lastSem(sem) {
@@ -45,9 +44,11 @@ function getCrossListOR(course) {
     crossList = course.crossList;
     courseId = course._id;
   } else {
-    return [{
-      class: courseId,
-    }];
+    return [
+      {
+        class: courseId,
+      },
+    ];
   }
 
   // if there are crossListed Courses, merge the reviews
@@ -62,9 +63,11 @@ function getCrossListOR(course) {
     return crossListOR;
   }
 
-  return [{
-    class: courseId,
-  }];
+  return [
+    {
+      class: courseId,
+    },
+  ];
 }
 
 // collect aggregate information from allReviews, the list of all reviews
@@ -99,7 +102,6 @@ function getMetricValues(allReviews) {
       sumWork += Number(review.workload);
     }
   });
-
 
   if (countRating > 0) {
     newState.rating = sumRating / countRating;

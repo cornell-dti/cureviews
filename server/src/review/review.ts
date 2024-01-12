@@ -1,4 +1,4 @@
-import joi from 'joi';
+import joi from "joi";
 
 type ReviewEntity = {
   class: string;
@@ -20,19 +20,33 @@ type ReviewEntity = {
 
 export class Review {
   private class: string;
+
   private _id: string;
+
   private text: string;
+
   private difficulty: number;
+
   private rating: number;
+
   private workload: number;
+
   private date: Date;
+
   private visible: number;
+
   private reported: number;
+
   private professors: string[];
+
   private likes: number;
+
   private isCovid: boolean;
+
   private user: string;
+
   private grade: string;
+
   private major: string[];
 
   constructor({
@@ -97,7 +111,7 @@ export class Review {
       major: joi.optional(),
     });
 
-    const { error, value } = searchSchema.validate(this);
+    const { error } = searchSchema.validate(this);
 
     if (error !== undefined) {
       throw error;

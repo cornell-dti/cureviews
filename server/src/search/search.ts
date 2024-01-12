@@ -10,11 +10,7 @@ export class Search {
   constructor({ query }: SearchEntity) {
     this.query = query.replace(/(?=[^\s])\W/g, '');
 
-    try {
-      this.validate();
-    } catch (err) {
-      throw err;
-    }
+    this.validate();
   }
 
   getQuery() {
@@ -45,7 +41,7 @@ export class Search {
         .required(),
     });
 
-    const { error, value } = searchSchema.validate(this);
+    const { error } = searchSchema.validate(this);
 
     if (error !== undefined) {
       throw error;
