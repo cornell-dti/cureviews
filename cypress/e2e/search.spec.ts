@@ -1,0 +1,20 @@
+/* eslint-disable no-undef */
+/* eslint-disable implicit-arrow-linebreak */
+before('Visit site logged in', () => {
+  cy.visit('/');
+});
+
+describe('searching courses', () => {
+  it('course search - show correct result when typing "CS 2110" from homepage', () => {
+    cy.get('[data-cy="search-bar"]').click().type('CS 2110');
+    cy.wait(1000); // ensure the page has time to load
+
+    cy.get('[data-cy="search-output"]');
+    cy.get('[data-cy="course-result-cs-2110"]').click();
+    cy.wait(1000); // ensure the page has time to load
+    cy.url().should('contain', 'CS');
+    cy.url().should('contain', '2110');
+    cy.get('[data-cy="course-title-cs-2110"]').should('exist');
+    cy.get('[data-cy="course-reviews"]').should('exist');
+  });
+});

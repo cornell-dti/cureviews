@@ -378,6 +378,7 @@ export class SearchBar extends Component {
           }
         >
           <input
+            data-cy="search-bar"
             className="search-text"
             onKeyUp={this.handleKeyPress}
             defaultValue={
@@ -400,6 +401,7 @@ export class SearchBar extends Component {
           )}
 
           <ul
+            data-cy="search-output"
             className="output"
             style={this.state.query !== '' ? {} : { display: 'none' }}
             onKeyPress={this.handleKeyPress}

@@ -278,7 +278,14 @@ export const Course = () => {
               isPastScrollThreshold && styles.courseInfoColumnShadow
             }`}
           >
-            <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
+            <h1
+              className={styles.courseTitle}
+              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
+                selectedClass.classNum
+              }`}
+            >
+              {selectedClass.classTitle}
+            </h1>
             <p className={styles.courseSubtitle}>
               {selectedClass.classSub.toUpperCase() +
                 ' ' +
@@ -286,15 +293,6 @@ export const Course = () => {
                 ', ' +
                 lastOfferedSems(selectedClass)}
             </p>
-            {/* <div
-              className={`d-lg-none ${!isPastScrollThreshold && 'd-none'} ${
-                styles.ratingMobileBox
-              }`}
-            >
-              <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
-              <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
-              <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
-            </div> */}
             <button
               className={`${styles.startReviewButton}`}
               onClick={() => onLeaveReview()}
@@ -304,11 +302,6 @@ export const Course = () => {
           </div>
 
           <div className={`col ${styles.courseReviewColumn}`}>
-            {/* <div
-              className={`${isPastScrollThreshold && 'd-none'} d-lg-flex ${
-                styles.gaugeContainer
-              }`}
-            > */}
             <div className={` d-lg-flex ${styles.gaugeContainer}`}>
               <div className={styles.gauge}>
                 <Gauge
@@ -372,19 +365,6 @@ export const Course = () => {
                 <MdOutlineRateReview size={25} />
               </button>
             </div>
-
-            {/* <div
-              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
-                styles.fixedButtonContainer
-              }`}
-            >
-              <button
-                className={`btn ${styles.startReviewButton}`}
-                onClick={() => onLeaveReview()}
-              >
-                Leave a review
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
