@@ -4,17 +4,27 @@ import {
   removeReview,
   updateReviewVisibility,
   findStudentById,
+  updateCourseMetrics,
 } from './admin.data-access';
+
 import {
   AdminAddSemesterType,
   AdminPendingReviewType,
   AdminReviewVisibilityType,
   RaffleWinnerRequestType,
   ReportReviewRequestType,
+  UpdateCourseMetrics,
   VerifyAdminType,
 } from './admin.type';
 
-import { findStudent } from '../utils';
+import {
+  findStudent,
+  findReview,
+  findReviewCrossListOR,
+  getCrossListOR,
+  getCourseById,
+} from '../utils';
+import { COURSE_API_BASE_URL } from '../utils/constants';
 
 import { findAllSemesters } from '../../scripts/utils';
 import {
@@ -26,23 +36,11 @@ import {
   addCrossList,
   addNewSemester,
 } from '../../scripts/populate-courses';
-import { COURSE_API_BASE_URL } from '../utils/constants';
-import { getCourseById } from '../course/course.controller';
-import { Classes, Reviews } from '../../db/schema';
-import { crossListOR, getMetricValues } from '../../../common/CourseCard';
-import { findReview } from '../review/review.data-access';
 
 export const reportReview = async ({ id }: ReportReviewRequestType) => {
   try {
-    const review = await findReview(id);
-
-    if (review) {
-      await updateReviewVisibility(id, 1, 0);
-      const courseId = review.class;
-      return updateCourseMetrics(courseId);
-    }
-
-    return false;
+    await updateReviewVisibility(id, 1, 0);
+    return updateCourseMetricsFromReview(id);
   } catch (err) {
     return false;
   }
@@ -78,13 +76,8 @@ export const editReviewVisibility = async ({
 }: AdminReviewVisibilityType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    const review = await findReview(reviewId);
-    if (review) {
-      await updateReviewVisibility(reviewId, reported, visibility);
-      const courseId = review.class;
-      return updateCourseMetrics(courseId);
-    }
-    return false;
+    await updateReviewVisibility(reviewId, reported, visibility);
+    return updateCourseMetricsFromReview(reviewId);
   }
 
   return false;
@@ -96,13 +89,10 @@ export const removePendingReview = async ({
 }: AdminPendingReviewType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    const review = await findReview(reviewId);
-    if (review) {
-      await removeReview(reviewId);
-      const courseId = review.class;
-      return await updateCourseMetrics(courseId);
-    }
-    return false;
+    await updateReviewVisibility(reviewId, 0, 0);
+    const result = await updateCourseMetricsFromReview(reviewId);
+    await removeReview(reviewId);
+    return true && result;
   }
 
   return false;
@@ -158,50 +148,57 @@ export const resetAllProfessors = async ({ auth }: VerifyAdminType) => {
   return result;
 };
 
+const getMetricValues = (allReviews): UpdateCourseMetrics => {
+  // create summation variables for reviews
+  let sumRating = 0;
+  let sumDiff = 0;
+  let sumWork = 0;
+
+  // create size counting variables
+  let countRating = 0;
+  let countDiff = 0;
+  let countWork = 0;
+
+  allReviews.forEach((review) => {
+    sumDiff += review.difficulty ? review.difficulty : 0;
+    countDiff += review.difficulty ? 1 : 0;
+
+    sumRating += review.rating ? review.rating : 0;
+    countRating += review.rating ? 1 : 0;
+
+    sumWork += review.workload ? review.workload : 0;
+    countWork += review.workload ? 1 : 0;
+  });
+
+  const resultRating = countRating > 0 ? sumRating / countRating : null;
+  const resultWork = countWork > 0 ? sumWork / countWork : null;
+  const resultDiff = countDiff > 0 ? sumDiff / countDiff : null;
+
+  return { rating: resultRating, workload: resultWork, diff: resultDiff };
+};
+
 // This updates the metrics for an individual class given its Mongo-generated id.
-// Returns 1 if successful, 0 otherwise.
-export const updateCourseMetrics = async (courseId: string) => {
+export const updateCourseMetricsFromReview = async (reviewId: string) => {
   try {
-    const course = await getCourseById({ courseId });
+    const review = await findReview(reviewId);
+
+    if (!review) {
+      return false;
+    }
+
+    const course = await getCourseById({ courseId: review.class });
+
     if (course) {
-      const crossList = crossListOR(course);
-      const reviews = await Reviews.find(
-        { visible: 1, reported: 0, $or: crossList },
-        {},
-        { sort: { date: -1 }, limit: 700 },
-      ).exec();
-      const state = getMetricValues(reviews);
-      await Classes.updateOne(
-        { _id: courseId },
-        {
-          $set: {
-            // If no data is available, getMetricValues returns "-" for metric
-            classDifficulty:
-              state.diff !== '-' && !isNaN(Number(state.diff))
-                ? Number(state.diff)
-                : null,
-            classRating:
-              state.rating !== '-' && !isNaN(Number(state.rating))
-                ? Number(state.rating)
-                : null,
-            classWorkload:
-              state.workload !== '-' && !isNaN(Number(state.workload))
-                ? Number(state.workload)
-                : null,
-          },
-        },
-      );
+      const crossList = getCrossListOR(course);
+      const reviews = await findReviewCrossListOR(crossList);
+
+      const state: UpdateCourseMetrics = getMetricValues(reviews);
+      await updateCourseMetrics(review, state);
       return true;
     }
 
-    // eslint-disable-next-line no-console
-    console.log(`updateCourseMetrics unable to find id ${courseId}`);
     return false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log("Error: at 'updateCourseMetrics' method");
-    // eslint-disable-next-line no-console
-    console.log(error);
     return false;
   }
 };

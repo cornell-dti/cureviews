@@ -1,17 +1,18 @@
-import shortid from "shortid";
-import { verifyToken } from "../auth/auth.controller";
+/* eslint-disable operator-linebreak */
+import shortid from 'shortid';
+import { verifyToken } from '../auth/auth.controller';
 import {
   addStudentReview,
   setStudentLikedReviews,
-} from "../profile/profile.controller";
-import { Review } from "./review";
+} from '../profile/profile.controller';
+import { findReview } from '../utils';
+import { Review } from './review';
 import {
   findClassReviews,
-  findReview,
   insertReview,
   updateReviewLikes,
-} from "./review.data-access";
-import { InsertReviewType, ReviewLikesType } from "./review.type";
+} from './review.data-access';
+import { InsertReviewType, ReviewLikesType } from './review.type';
 
 export const checkStudentHasLiked = async ({
   auth,
@@ -64,8 +65,8 @@ export const updateStudentLiked = async ({
   }
 
   if (
-    student.likedReviews !== undefined
-    && student.likedReviews.includes(review._id)
+    student.likedReviews !== undefined &&
+    student.likedReviews.includes(review._id)
   ) {
     const result = await setStudentLikedReviews({
       netId,

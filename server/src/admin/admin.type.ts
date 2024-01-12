@@ -1,4 +1,10 @@
-import { Auth } from "../auth/auth";
+import { Auth } from '../auth/auth';
+
+export interface UpdateCourseMetrics {
+  rating: number;
+  workload: number;
+  diff: number;
+}
 
 export interface ReportReviewRequestType {
   id: string;
