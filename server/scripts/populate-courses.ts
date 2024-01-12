@@ -171,7 +171,7 @@ export const addNewSemester = async (endpoint: string, semester: string) => {
   return true;
 };
 
-const fetchAddClassesForSubject = async (
+export const fetchAddClassesForSubject = async (
   subject: ScrapingSubject,
   endpoint: string,
   semester: string,
