@@ -3,7 +3,7 @@ import express from 'express';
 import sslRedirect from 'heroku-ssl-redirect';
 import cors from 'cors';
 
-import { setupDb } from './db/index';
+import { setupDb } from './db';
 import { configure } from './endpoints';
 
 const app = express();
