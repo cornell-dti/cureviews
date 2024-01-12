@@ -1,5 +1,21 @@
+import { TokenPayload } from 'google-auth-library';
+
 import { StudentDocument } from '../../db/schema';
 import { Auth } from '../auth/auth';
+
+export interface InsertStudentType {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  netId: string;
+  affiliation: string;
+  token: string;
+  privilege: string;
+}
+
+export interface TokenPayloadType {
+  token: TokenPayload;
+}
 
 export interface VerifyStudentType {
   netId: string;

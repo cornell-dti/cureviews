@@ -1,6 +1,21 @@
 import { Reviews, Students } from '../../db/schema';
 import { Review } from './review';
 
+export const findReviewCrossListOR = async (crossListOR) => {
+  const reviews = await Reviews.find(
+    { visible: 1, reported: 0, $or: crossListOR },
+    {},
+    { sort: { date: -1 }, limit: 700 },
+  ).exec();
+
+  return reviews;
+};
+
+export const findReview = async (reviewId: string) => {
+  const review = await Reviews.findOne({ _id: reviewId }).exec();
+  return review;
+};
+
 export const updateStudentReviews = async (
   netId: string,
   newReviews: string[],
