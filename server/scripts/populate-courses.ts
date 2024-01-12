@@ -35,6 +35,7 @@ export async function fetchClassesForSubject(
 }
 
 export async function addNewSemester(endpoint: string, semester: string) {
+  console.log(semester);
   const subjects = await fetchSubjects(endpoint, semester);
   if (!subjects) {
     return false;
@@ -294,106 +295,16 @@ export async function fetchAddClassesForSubject(
   return true;
 }
 
-export async function addAllCourses(semesters: any) {
-  console.log(semesters);
-  Object.keys(semesters).forEach(async (semester) => {
-    // get all classes in this semester
-    console.log(
-      `Adding classes for the following semester: ${semesters[semester]}`,
-    );
-    const result = await axios.get(
-      `https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`,
-      { timeout: 30000 },
-    );
-    if (result.status !== 200) {
-      console.log('Error in addAllCourses: 1');
-      return false;
-    }
-    const response = result.data;
-    // console.log(response);
-    const sub = response.data.subjects;
-    await Promise.all(
-      Object.keys(sub).map(async (course) => {
-        try {
-          const parent = sub[course];
-          // if subject doesn't exist add to Subjects collection
-          const checkSub = await Subjects.find({
-            subShort: parent.value.toLowerCase(),
-          }).exec();
-          if (checkSub.length === 0) {
-            console.log(`new subject: ${parent.value}`);
-            await new Subjects({
-              _id: shortid.generate(),
-              subShort: parent.value.toLowerCase(),
-              subFull: parent.descr,
-            }).save();
-          }
+export async function addAllCourses(endpoint: string, semesters: string[]) {
+  await Promise.all(
+    semesters.map(async (semester) => {
+      const result = await addNewSemester(endpoint, semester);
 
-          // for each subject, get all classes in that subject for this semester
-          const result2 = await axios.get(
-            `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`,
-            { timeout: 30000 },
-          );
-          if (result2.status !== 200) {
-            console.log('Error in addAllCourses: 2');
-            return false;
-          }
-          const response2 = result2.data;
-          const courses = response2.data.classes;
-
-          // add each class to the Classes collection if it doesnt exist already
-          for (const course in courses) {
-            try {
-              console.log(
-                `${courses[course].subject} ${courses[course].catalogNbr}`,
-              );
-              const check = await Classes.find({
-                classSub: courses[course].subject.toLowerCase(),
-                classNum: courses[course].catalogNbr,
-              }).exec();
-              console.log(check);
-              if (check.length === 0) {
-                console.log(
-                  `new class: ${courses[course].subject} ${courses[course].catalogNbr},${semesters[semester]}`,
-                );
-                // insert new class with empty prereqs and reviews
-                const regex = new RegExp('^[0-9]+$');
-                if (!regex.test(courses[course].titleLong)) {
-                  await new Classes({
-                    _id: shortid.generate(),
-                    classSub: courses[course].subject.toLowerCase(),
-                    classNum: courses[course].catalogNbr,
-                    classTitle: courses[course].titleLong,
-                    classPrereq: [],
-                    classFull: `${courses[course].subject.toLowerCase()} ${
-                      courses[course].catalogNbr
-                    } ${courses[course].titleLong.toLowerCase()}`,
-                    classSems: [semesters[semester]],
-                  }).save();
-                }
-              } else {
-                const matchedCourse = check[0]; // only 1 should exist
-                const oldSems = matchedCourse.classSems;
-                if (oldSems && oldSems.indexOf(semesters[semester]) === -1) {
-                  // console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
-                  oldSems.push(semesters[semester]); // add this semester to the list
-                  Classes.updateOne(
-                    { _id: matchedCourse._id },
-                    { $set: { classSems: oldSems } },
-                  );
-                }
-              }
-            } catch (error) {
-              console.log('Error in addAllCourses: 3');
-              return false;
-            }
-          }
-        } catch (err) {
-          return false;
-        }
-      }),
-    );
-  });
+      if (!result) {
+        return false;
+      }
+    }),
+  );
   console.log('Finished addAllCourses');
   return true;
 }

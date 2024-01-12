@@ -116,6 +116,7 @@ export const updateAllProfessors = async ({ auth }: VerifyAdminType) => {
 
   const semesters = await findAllSemesters();
   const result = await addAllProfessors(semesters);
+
   return result;
 };
 
@@ -138,10 +139,9 @@ export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   }
 
   const semesters = await findAllSemesters();
-  const coursesResult = await addAllCourses(semesters);
-  const professorsResult = await addAllProfessors(semesters);
+  const result = await addAllCourses(COURSE_API_BASE_URL, semesters);
 
-  if (coursesResult && professorsResult) {
+  if (result) {
     return true;
   }
 
