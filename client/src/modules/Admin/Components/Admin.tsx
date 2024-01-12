@@ -112,7 +112,6 @@ export const Admin = () => {
             )
             setUnapprovedReviews(updatedUnapprovedReviews)
           } else {
-            console.log(reportedReviews)
             const updatedReportedReviews = removeReviewFromList(
               review,
               reportedReviews
@@ -299,6 +298,7 @@ export const Admin = () => {
                     Add New Semester
                   </button>
                   <Select
+                    isDisabled={disableNewSem}
                     value={{ value: addSemester, label: addSemester }}
                     onChange={(semester: any) => {
                       setAddSemester(semester.value)
