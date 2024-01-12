@@ -77,4 +77,16 @@ describe('review functionality unit tests', () => {
     expect(res2.status).toBe(200);
     expect(reviewDisliked?.likes).toBe(2);
   });
+
+  it('reportReview - works', async () => {
+    const res1 = await axios.post(
+      `http://localhost:${testPort}/api/reportReview`,
+      { id: '4Y8k7DnX3PLNdwRPr', token: 'fakeTokenDti1' },
+    );
+
+    expect(res1.status).toBe(200);
+    const reviewReported = await Reviews.findOne({ _id: '4Y8k7DnX3PLNdwRPr' });
+    expect(reviewReported?.visible).toBe(0);
+    expect(reviewReported?.reported).toBe(1);
+  });
 });
