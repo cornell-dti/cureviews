@@ -233,6 +233,9 @@ export default class ResultsDisplay extends Component {
 
     return items.map((result, index) => (
       <div
+        data-cy={`results-display-${result.classSub.toLowerCase()}-${
+          result.classNum
+        }`}
         onClick={() => {
           if (this.computeHeight() < 992) {
             this.props.history.push(

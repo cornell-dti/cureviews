@@ -110,7 +110,7 @@ export default class Course extends Component<Props> {
         href={`/course/${classInfo.classSub.toUpperCase()}/${
           classInfo.classNum
         }`}
-        data-cy={`course-result-${classInfo.classSub.toLowerCase()}-${
+        data-cy={`search-result-${classInfo.classSub.toLowerCase()}-${
           classInfo.classNum
         }`}
       >

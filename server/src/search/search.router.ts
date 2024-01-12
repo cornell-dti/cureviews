@@ -1,17 +1,18 @@
-import express from "express";
+import express from 'express';
 
-import { Search } from "./search";
+import { Search } from './search';
 import {
   searchCourses,
   searchProfessors,
   searchSubjects,
   searchCoursesBySubject,
-} from "./search.controller";
-import { SearchQueryRequestType } from "./search.type";
+  searchCoursesByProfessor,
+} from './search.controller';
+import { SearchQueryRequestType } from './search.type';
 
 export const searchRouter = express.Router();
 
-searchRouter.post("/getClassesByQuery", async (req, res) => {
+searchRouter.post('/getClassesByQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
@@ -36,7 +37,7 @@ searchRouter.post("/getClassesByQuery", async (req, res) => {
 /*
 //  * Searches the database on Subjects using the text index and returns matching subjects
 //  */
-searchRouter.post("/getSubjectsByQuery", async (req, res) => {
+searchRouter.post('/getSubjectsByQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
@@ -58,7 +59,7 @@ searchRouter.post("/getSubjectsByQuery", async (req, res) => {
   }
 });
 
-searchRouter.post("/getProfessorsByQuery", async (req, res) => {
+searchRouter.post('/getProfessorsByQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
@@ -80,7 +81,7 @@ searchRouter.post("/getProfessorsByQuery", async (req, res) => {
   }
 });
 
-searchRouter.post("/getCoursesByMajor", async (req, res) => {
+searchRouter.post('/getCoursesByMajor', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
@@ -102,12 +103,12 @@ searchRouter.post("/getCoursesByMajor", async (req, res) => {
   }
 });
 
-searchRouter.post("/getCoursesByProfessor", async (req, res) => {
+searchRouter.post('/getCoursesByProfessor', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
-    const search = new Search({ query });
-
-    const courses = await searchCoursesBySubject({ search });
+    const cleanQuery = query.replace('+', ' ');
+    const search = new Search({ query: cleanQuery });
+    const courses = await searchCoursesByProfessor({ search });
 
     if (!courses) {
       return res.status(500).json({ error: `Internal Server Error.` });
