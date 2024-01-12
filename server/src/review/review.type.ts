@@ -1,4 +1,13 @@
+import { StudentDocument } from '../../db/schema';
 import { Auth } from '../auth/auth';
+
+export interface VerifyStudentType {
+  netId: string;
+  student: StudentDocument;
+}
+export interface VerifyAuthType {
+  auth: Auth;
+}
 
 export interface AddStudentReviewType {
   reviewId: string;

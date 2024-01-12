@@ -1,11 +1,11 @@
-import express from "express";
-import { Auth } from "./auth";
-import { AuthRequestType } from "./auth.type";
-import { insertUser } from "./auth.controller";
+import express from 'express';
+import { Auth } from './auth';
+import { AuthRequestType } from './auth.type';
+import { insertUser } from '../utils';
 
 export const authRouter = express.Router();
 
-authRouter.post("/getStudentEmailByToken", async (req, res) => {
+authRouter.post('/getStudentEmailByToken', async (req, res) => {
   try {
     const { token }: AuthRequestType = req.body;
     const auth: Auth = new Auth({ token });
@@ -14,10 +14,10 @@ authRouter.post("/getStudentEmailByToken", async (req, res) => {
     if (!ticket) {
       return res
         .status(401)
-        .json({ error: "Invalid token, user unauthorized." });
+        .json({ error: 'Invalid token, user unauthorized.' });
     }
 
-    if (ticket.hd === "cornell.edu") {
+    if (ticket.hd === 'cornell.edu') {
       return res.status(200).json({ result: ticket.email });
     }
 
@@ -27,7 +27,7 @@ authRouter.post("/getStudentEmailByToken", async (req, res) => {
   }
 });
 
-authRouter.post("/insertUser", async (req, res) => {
+authRouter.post('/insertUser', async (req, res) => {
   try {
     const { token }: AuthRequestType = req.body;
     const auth = new Auth({ token });

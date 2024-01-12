@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 import shortid from 'shortid';
 
-import { findReview, findStudent, verifyToken } from '../utils';
+import { findReview, findStudent, insertUser } from '../utils';
 
 import { Review } from './review';
 import {
@@ -16,7 +16,33 @@ import {
   ReviewLikesType,
   SetStudentLikedReviewsType,
   AddStudentReviewType,
+  VerifyAuthType,
+  VerifyStudentType,
 } from './review.type';
+
+export const verifyToken = async ({ auth }: VerifyAuthType) => {
+  const ticket = await auth.getVerificationTicket();
+
+  if (!ticket) {
+    return null;
+  }
+
+  if (ticket.hd === 'cornell.edu') {
+    if (!ticket.email) {
+      return null;
+    }
+    const result = await insertUser({ token: ticket });
+
+    if (!result) {
+      return null;
+    }
+
+    const netId = ticket.email.replace('@cornell.edu', '');
+    const student = await findStudent(netId);
+    return { netId, student } as VerifyStudentType;
+  }
+  return null;
+};
 
 export const setStudentLikedReviews = async ({
   netId,
