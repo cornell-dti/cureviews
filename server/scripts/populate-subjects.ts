@@ -1,25 +1,25 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-import axios from "axios";
-import shortid from "shortid";
-import { ScrapingSubject } from "./types";
-import { Subjects } from "../db/schema";
+import axios from 'axios';
+import shortid from 'shortid';
+import { ScrapingSubject } from './types';
+import { Subjects } from '../db/schema';
 
 /*
  * Fetch the class roster for a semester.
  * Returns the class roster on success, or null if there was an error.
  */
-export async function fetchSubjects(
+const fetchSubjects = async (
   endpoint: string,
   semester: string,
-): Promise<ScrapingSubject[] | null> {
+): Promise<ScrapingSubject[] | null> => {
   try {
     const result = await axios.get(
       `${endpoint}config/subjects.json?roster=${semester}`,
       { timeout: 10000 },
     );
 
-    if (result.status !== 200 || result.data.status !== "success") {
+    if (result.status !== 200 || result.data.status !== 'success') {
       console.log(
         `Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`,
       );
@@ -31,12 +31,12 @@ export async function fetchSubjects(
   } catch (err) {
     return null;
   }
-}
+};
 
-export async function fetchAddSubjects(
+export const fetchAddSubjects = async (
   endpoint: string,
   semester: string,
-): Promise<boolean> {
+): Promise<boolean> => {
   const subjects = await fetchSubjects(endpoint, semester);
 
   if (subjects === null) {
@@ -69,4 +69,4 @@ export async function fetchAddSubjects(
   );
 
   return true;
-}
+};
