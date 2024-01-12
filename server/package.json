@@ -10,7 +10,7 @@
     "prestart": "yarn build",
     "start": "nodemon server.ts",
     "heroku-start": "node dist/server.js",
-    "test": "jest --forceExit --detectOpenHandles -i"
+    "test": "jest -i"
   },
   "jest": {
     "testEnvironment": "node",
@@ -22,12 +22,6 @@
     ],
     "transform": {
       "\\.(ts|tsx)$": "ts-jest"
-    }
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "version": "latest",
-      "arch": "x64"
     }
   },
   "dependencies": {
