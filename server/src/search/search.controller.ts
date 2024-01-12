@@ -25,6 +25,12 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       fullSearch = fullSearch.concat(initialSearch);
     }
 
+    const coursesByProfessor = await search.searchQuery(findCourseProfessor);
+    if (coursesByProfessor && coursesByProfessor.length > 0) {
+      fullSearch = fullSearch.concat(coursesByProfessor);
+    }
+
+
     const indexFirstSpace = search.getFirstSpace();
     if (indexFirstSpace !== -1) {
       const strBeforeSpace = query.substring(0, indexFirstSpace);
