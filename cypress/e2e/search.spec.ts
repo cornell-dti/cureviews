@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable implicit-arrow-linebreak */
-before('Visit site logged in', () => {
+before('visit site', () => {
   cy.visit('/');
 });
 
