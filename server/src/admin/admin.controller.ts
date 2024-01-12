@@ -13,7 +13,7 @@ import {
   VerifyAdminType,
 } from './admin.type';
 
-import { findStudent } from '../utils/index';
+import { findStudent } from '../utils';
 import { findStudentById } from './admin.data-access';
 
 import { findAllSemesters } from '../../scripts/utils';

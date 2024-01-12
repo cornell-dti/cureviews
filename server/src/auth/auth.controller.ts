@@ -7,7 +7,7 @@ import {
 } from './auth.type';
 import shortid from 'shortid';
 
-import { findStudent } from '../utils/index';
+import { findStudent } from '../utils';
 
 export const insertUser = async ({ token }: TokenPayloadType) => {
   try {

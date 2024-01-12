@@ -9,7 +9,7 @@ import {
   ProfileReviewType,
 } from './profile.type';
 
-import { findStudent } from '../utils/index';
+import { findStudent } from '../utils';
 
 export const getStudentReviewIds = async ({
   netId,
