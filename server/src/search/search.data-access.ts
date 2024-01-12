@@ -2,14 +2,14 @@ import { Classes, Subjects, Professors } from '../../db/schema';
 
 export const findAllCourses = async (query: string) => {
   return await Classes.find(
-    { classFull: { $regex: `.*${query}.*`, $options: '-i' } },
+    { classFull: { $regex: `.*${query}.*`, $options: 'i' } },
     {},
     { sort: { classFull: 1 }, limit: 200, reactive: false },
   ).exec();
 };
 
 export const findCourses = async (query: string) => {
-  return await Classes.find(
+  return await Classes.findOne(
     { $text: { $search: query } },
     { score: { $meta: 'textScore' } },
     { sort: { score: { $meta: 'textScore' } } },
@@ -18,7 +18,7 @@ export const findCourses = async (query: string) => {
 
 export const findCoursesByNum = async (query: string) => {
   const courses = await Classes.find(
-    { classNum: { $regex: `.*${query}.*`, $options: '-i' } },
+    { classNum: { $regex: `.*${query}.*`, $options: 'i' } },
     {},
     { sort: { classFull: 1 }, limit: 200, reactive: false },
   );
@@ -33,7 +33,7 @@ export const findCourseWithinSubject = async (
   return await Classes.find(
     {
       classSub: subject,
-      classFull: { $regex: `.*${query}.*`, $options: '-i' },
+      classFull: { $regex: `.*${query}.*`, $options: 'i' },
     },
     {},
     { sort: { classFull: 1 }, limit: 200, reactive: false },

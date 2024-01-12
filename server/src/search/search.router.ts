@@ -16,9 +16,11 @@ searchRouter.post('/getClassesByQuery', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const courses = await searchCourses({ search }).catch((err) => {
-      return res.status(500).json({ error: `Internal Server Error: ${err}` });
-    });
+    const courses = await searchCourses({ search });
+
+    if (!courses) {
+      return res.status(500).json({ error: `Internal Server Error.` });
+    }
 
     return res.status(200).json({
       message: `Success! Retrieved all courses by query: ${query}`,
@@ -39,9 +41,11 @@ searchRouter.post('/getSubjectsByQuery', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const subjects = await searchSubjects({ search }).catch((err) => {
-      return res.status(500).json({ error: `Internal Server Error: ${err}` });
-    });
+    const subjects = await searchSubjects({ search });
+
+    if (!subjects) {
+      return res.status(500).json({ error: `Internal Server Error.` });
+    }
 
     return res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
@@ -59,9 +63,11 @@ searchRouter.post('/getProfessorsByQuery', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const professors = await searchProfessors({ search }).catch((err) => {
-      return res.status(500).json({ error: `Internal Server Error: ${err}` });
-    });
+    const professors = await searchProfessors({ search });
+
+    if (!professors) {
+      return res.status(500).json({ error: `Internal Server Error.` });
+    }
 
     return res.status(200).json({
       message: `Success! Retrieved all subjects by query: ${query}`,
@@ -79,9 +85,11 @@ searchRouter.post('/getCoursesByMajor', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const courses = await searchCoursesBySubject({ search }).catch((err) => {
-      return res.status(500).json({ error: `Internal Server Error: ${err}` });
-    });
+    const courses = await searchCoursesBySubject({ search });
+
+    if (!courses) {
+      return res.status(500).json({ error: `Internal Server Error.` });
+    }
 
     return res.status(200).json({
       message: `Success! Retrieved all courses by query: ${query}`,
@@ -99,9 +107,11 @@ searchRouter.post('/getCoursesByProfessor', async (req, res) => {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
 
-    const courses = await searchCoursesBySubject({ search }).catch((err) => {
-      return res.status(500).json({ error: `Internal Server Error: ${err}` });
-    });
+    const courses = await searchCoursesBySubject({ search });
+
+    if (!courses) {
+      return res.status(500).json({ error: `Internal Server Error.` });
+    }
 
     return res.status(200).json({
       message: `Success! Retrieved all courses by query: ${query}`,
