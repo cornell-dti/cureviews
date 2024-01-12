@@ -80,7 +80,7 @@ export const addCrossList = async (semesters: string[]) => {
  * Fetch all the classes for that semester/subject combination
  * Returns a list of classes on success, or null if there was an error.
  */
-const fetchClassesForSubject = async (
+export const fetchClassesForSubject = async (
   endpoint: string,
   semester: string,
   subject: ScrapingSubject,

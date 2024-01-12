@@ -19,7 +19,7 @@ export function isInstructorEqual(
  * Extract an array of professors from the terribly deeply nested gunk that the api returns
  * There are guaranaxios!
  */
-export function extractProfessors(course: ScrapingClass): ScrapingInstructor[] {
+export const extractProfessors = (course: ScrapingClass): ScrapingInstructor[] => {
   const raw = course.enrollGroups.map((e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)));
   // flatmap does not work :(
   const f1: ScrapingInstructor[][][] = [];
@@ -40,9 +40,9 @@ export function extractProfessors(course: ScrapingClass): ScrapingInstructor[] {
   });
 
   return nonDuplicates;
-}
+};
 
-export async function addAllProfessors(semesters: string[]) {
+export const addAllProfessors = async (semesters: string[]) => {
   // You just want to go through all the classes in the Classes database and update the Professors field
   // Don't want to go through the semesters
   // Might want a helper function that returns that professors for you
@@ -169,9 +169,9 @@ export async function addAllProfessors(semesters: string[]) {
 
   console.log('Finished updateProfessors');
   return true;
-}
+};
 
-export async function resetProfessors(endpoint: string, semesters: string[]) {
+export const resetProfessors = async (endpoint: string, semesters: string[]) => {
   console.log('Resetting professors...');
   try {
     await Promise.all(
@@ -222,4 +222,4 @@ export async function resetProfessors(endpoint: string, semesters: string[]) {
     console.log(err);
     return false;
   }
-}
+};

@@ -9,7 +9,7 @@ import { Subjects } from '../db/schema';
  * Fetch the class roster for a semester.
  * Returns the class roster on success, or null if there was an error.
  */
-const fetchSubjects = async (
+export const fetchSubjects = async (
   endpoint: string,
   semester: string,
 ): Promise<ScrapingSubject[] | null> => {
