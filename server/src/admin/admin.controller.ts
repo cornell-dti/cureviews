@@ -3,7 +3,8 @@ import {
   findAllReviewsAfterDate,
   removeReview,
   updateReviewVisibility,
-  findStudentById } from "./admin.data-access";
+  findStudentById,
+} from './admin.data-access';
 import {
   AdminAddSemesterType,
   AdminPendingReviewType,
@@ -11,18 +12,21 @@ import {
   RaffleWinnerRequestType,
   ReportReviewRequestType,
   VerifyAdminType,
-} from "./admin.type";
+} from './admin.type';
 
-import { findStudent } from "../utils";
+import { findStudent } from '../utils';
 
-
-import { findAllSemesters } from "../../scripts/utils";
+import { findAllSemesters } from '../../scripts/utils';
 import {
   addAllProfessors,
   resetProfessors,
-} from "../../scripts/populate-professors";
-import { addAllCourses, addNewSemester } from "../../scripts/populate-courses";
-import { COURSE_API_BASE_URL } from "../utils/constants";
+} from '../../scripts/populate-professors';
+import {
+  addAllCourses,
+  addCrossList,
+  addNewSemester,
+} from '../../scripts/populate-courses';
+import { COURSE_API_BASE_URL } from '../utils/constants';
 
 export const reportReview = async ({ id }: ReportReviewRequestType) => {
   try {
@@ -41,10 +45,10 @@ export const verifyTokenAdmin = async ({ auth }: VerifyAdminType) => {
       const ticket = await auth.getVerificationTicket();
       if (ticket && ticket.email) {
         const user = await findStudent(
-          ticket.email.replace("@cornell.edu", ""),
+          ticket.email.replace('@cornell.edu', ''),
         );
         if (user) {
-          return user.privilege === "admin";
+          return user.privilege === 'admin';
         }
       }
     }
@@ -140,10 +144,11 @@ export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   }
 
   const semesters = await findAllSemesters();
-  const result = await addAllCourses(COURSE_API_BASE_URL, semesters);
+  const coursesResult = await addAllCourses(COURSE_API_BASE_URL, semesters);
+  const result = await addCrossList(semesters);
 
-  if (result) {
-    return true;
+  if (coursesResult) {
+    return result;
   }
 
   return false;

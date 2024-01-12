@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
 /* eslint-disable no-console */
 import axios from "axios";
 import shortid from "shortid";
@@ -5,6 +7,74 @@ import { ScrapingSubject, ScrapingClass } from "./types";
 import { Classes, Professors, Subjects } from "../db/schema";
 import { extractProfessors } from "./populate-professors";
 import { fetchSubjects } from "./populate-subjects";
+
+/* # Look through all courses in the local database, and identify those
+   # that are cross-listed (have multiple official names). Link these classes
+   # by adding their course_id to all crosslisted class's crosslist array.
+   #
+   # Called once during intialization, only after all courses have been added.
+*/
+export async function addCrossList(semesters: string[]) {
+  for (const semester in semesters) {
+    // get all classes in this semester
+    const result = await axios.get(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`, { timeout: 30000 });
+    if (result.status !== 200) {
+      console.log('Error in addCrossList: 1');
+      return false;
+    }
+    const response = result.data;
+    // console.log(response);
+    const sub = response.data.subjects;
+    for (const course in sub) {
+      const parent = sub[course];
+
+      // for each subject, get all classes in that subject for this semester
+      const result2 = await axios.get(`https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`, { timeout: 30000 });
+      if (result2.status !== 200) {
+        console.log('Error in addCrossList: 2');
+        return false;
+      }
+      const response2 = result2.data;
+      const courses = response2.data.classes;
+
+      for (const course in courses) {
+        try {
+          const check = await Classes.find({ classSub: courses[course].subject.toLowerCase(), classNum: courses[course].catalogNbr }).exec();
+          // console.log((courses[course].subject).toLowerCase() + " "  + courses[course].catalogNbr);
+          // console.log(check);
+          if (check.length > 0) {
+            const crossList = courses[course].enrollGroups[0].simpleCombinations;
+            if (crossList.length > 0) {
+              const crossListIDs: string[] = await Promise.all(crossList.map(async (crossListedCourse: ScrapingClass) => {
+                console.log(crossListedCourse);
+                const dbCourse = await Classes.find({ classSub: crossListedCourse.subject.toLowerCase(), classNum: crossListedCourse.catalogNbr }).exec();
+                // Added the following check because MUSIC 2340
+                // was crosslisted with AMST 2340, which was not in our db
+                // so was causing an error here when calling 'dbCourse[0]._id'
+                // AMST 2340 exists in FA17 but not FA18
+                if (dbCourse[0]) {
+                  return dbCourse[0]._id;
+                }
+
+                return 'null';
+              }).filter(course !== null));
+              console.log(`${courses[course].subject} ${courses[course].catalogNbr}`);
+              // console.log(crossListIDs);
+              const thisCourse = check[0];
+              Classes.update({ _id: thisCourse._id }, { $set: { crossList: crossListIDs } });
+            }
+          }
+        } catch (error) {
+          console.log('Error in addCrossList: 3');
+          console.log(error);
+          return false;
+        }
+      }
+    }
+  }
+  console.log('Finished addCrossList');
+  return true;
+}
 
 /*
  * Fetch all the classes for that semester/subject combination
