@@ -230,6 +230,7 @@ describe('db init and scraping functionality unit tests', () => {
     const prof2 = await Professors.findOne({ fullName: 'Prof. Urgok' })
       .lean()
       .exec();
+
     expect(prof2.courses).toStrictEqual([class2._id]);
   });
 });

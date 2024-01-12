@@ -77,12 +77,10 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
         });
       }
     } else {
-      return res
-        .status(400)
-        .json({
-          error:
-            'Review has been reported, to make review visible please undo the report.',
-        });
+      return res.status(400).json({
+        error:
+          'Review has been reported, to make review visible please undo the report.',
+      });
     }
 
     return res.status(400).json({
@@ -143,7 +141,7 @@ adminRouter.post('/addNewSemester', async (req, res) => {
 
     if (result === null) {
       return res.status(401).json({
-        error: `User is authenticated and unauthorized as admin, please sign in.`,
+        error: `User is unauthenticated and unauthorized as admin, please sign in.`,
       });
     }
 

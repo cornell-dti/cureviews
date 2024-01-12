@@ -79,164 +79,23 @@ export async function addNewSemester(endpoint: string, semester: string) {
   }
 
   // Update the Classes in the db
-  const v2 = await Promise.all(
+  await Promise.all(
     subjects.map(async (subject) => {
-      const classes = await fetchClassesForSubject(endpoint, semester, subject);
+      const classes = await fetchAddClassesForSubject(
+        subject,
+        endpoint,
+        semester,
+      );
 
       // skip if something went wrong fetching classes
       // it could be that there are not classes here (in tests, corresponds to FEDN)
-      if (classes === null) {
+      if (!classes) {
         return true;
       }
-
-      // Update or add all the classes to the collection
-      const v = await Promise.all(
-        classes.map(async (cl) => {
-          const classIfExists = await Classes.findOne({
-            classSub: cl.subject.toLowerCase(),
-            classNum: cl.catalogNbr,
-          }).exec();
-          const professors = extractProfessors(cl);
-
-          // figure out if the professor already exist in the collection, if not, add to the collection
-          // build a list of professor names to potentially add the the class
-          const profs: string[] = await Promise.all(
-            professors.map(async (p) => {
-              // This has to be an atomic upset. Otherwise, this causes some race condition badness
-              const professorIfExists = await Professors.findOneAndUpdate(
-                { fullName: `${p.firstName} ${p.lastName}` },
-                {
-                  $setOnInsert: {
-                    fullName: `${p.firstName} ${p.lastName}`,
-                    _id: shortid.generate(),
-                    major: 'None' /* TODO: change? */,
-                  },
-                },
-                { upsert: true, new: true },
-              );
-
-              return professorIfExists.fullName;
-            }),
-          ).catch((err) => {
-            console.log(err);
-            return [];
-          });
-
-          // The class does not exist yet, so we add it
-          if (!classIfExists) {
-            console.log(`Adding new class ${cl.subject} ${cl.catalogNbr}`);
-            const regex = new RegExp('^[0-9]+$');
-            if (!regex.test(cl.titleLong)) {
-              const res = await new Classes({
-                _id: shortid.generate(),
-                classSub: cl.subject.toLowerCase(),
-                classNum: cl.catalogNbr,
-                classTitle: cl.titleLong,
-                classFull: `${cl.subject.toLowerCase()} ${cl.catalogNbr} ${
-                  cl.titleLong
-                }`,
-                classSems: [semester],
-                classProfessors: profs,
-                classRating: null,
-                classWorkload: null,
-                classDifficulty: null,
-              })
-                .save()
-                .catch((err) => {
-                  console.log(err);
-                  return null;
-                });
-
-              if (!res) {
-                return false;
-              }
-              // update professors with new class information
-              profs.forEach(async (inst) => {
-                await Professors.findOneAndUpdate(
-                  { fullName: inst },
-                  { $addToSet: { courses: res._id } },
-                ).catch((err) => console.log(err));
-              });
-
-              if (!res) {
-                console.log(
-                  `Unable to insert class ${cl.subject} ${cl.catalogNbr}!`,
-                );
-                throw new Error();
-              }
-            }
-          } else {
-            // The class does exist, so we update semester information
-            console.log(
-              `Updating class information for ${classIfExists.classSub} ${classIfExists.classNum}`,
-            );
-
-            // Compute the new set of semesters for this class
-            const classSems =
-              classIfExists.classSems?.indexOf(semester) == -1
-                ? classIfExists.classSems.concat([semester])
-                : classIfExists.classSems;
-
-            // Compute the new set of professors for this class
-            const classProfessors = classIfExists.classProfessors
-              ? classIfExists.classProfessors
-              : [];
-
-            // Add any new professors to the class
-            profs.forEach((inst) => {
-              if (classProfessors.filter((i) => i == inst).length === 0) {
-                classProfessors.push(inst);
-              }
-            });
-
-            // update db with new semester information
-            const res = await Classes.findOneAndUpdate(
-              { _id: classIfExists._id },
-              { $set: { classSems, classProfessors } },
-            )
-              .exec()
-              .catch((err) => {
-                console.log(err);
-                return null;
-              });
-
-            // update professors with new class information
-            // Note the set update. We don't want to add duplicates here
-            classProfessors.forEach(async (inst) => {
-              await Professors.findOneAndUpdate(
-                { fullName: inst },
-                { $addToSet: { courses: classIfExists._id } },
-              ).catch((err) => console.log(err));
-            });
-
-            if (!res) {
-              console.log(
-                `Unable to update class information for ${cl.subject} ${cl.catalogNbr}!`,
-              );
-              throw new Error();
-            }
-          }
-
-          return true;
-        }),
-      ).catch((err) => {
-        console.log(err);
-        return null;
-      });
-
-      // something went wrong updating classes
-      if (!v) {
-        throw new Error();
-      }
-
-      return true;
     }),
-  ).catch((err) => null);
-
-  if (!v2) {
-    console.log('Something went wrong while updating classes');
+  ).catch((err) => {
     return false;
-  }
+  });
 
   return true;
 }
@@ -252,8 +111,6 @@ export async function fetchAddClassesForSubject(
     subject,
   );
 
-  console.log(classes);
-
   // skip if something went wrong fetching classes
   // it could be that there are not classes here (in tests, corresponds to FEDN)
   if (classes === null) {
@@ -263,7 +120,7 @@ export async function fetchAddClassesForSubject(
   await Promise.all(
     classes.map(async (course) => {
       const classExists = await Classes.findOne({
-        classSub: course.subject.toUpperCase(),
+        classSub: course.subject.toLowerCase(),
         classNum: course.catalogNbr,
       }).exec();
 
@@ -310,12 +167,12 @@ export async function fetchAddClassesForSubject(
         if (!regex.test(course.titleLong)) {
           const newClass = {
             _id: shortid.generate(),
-            classSub: course.subject.toUpperCase(),
+            classSub: course.subject.toLowerCase(),
             classNum: course.catalogNbr,
-            classTitle: course.catalogNbr,
-            classFull: `${course.subject.toUpperCase()} ${course.subject.toUpperCase()}${
-              course.catalogNbr
-            } ${course.catalogNbr}`,
+            classTitle: course.titleLong,
+            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${
+              course.titleLong
+            }`,
             classSems: [semester],
             classProfessors: profs,
             classRating: null,
@@ -357,6 +214,7 @@ export async function fetchAddClassesForSubject(
           }
         }
       } else {
+        // Compute the new set of semesters for this class
         const classSems =
           classExists.classSems?.indexOf(semester) === -1
             ? classExists.classSems.concat([semester])
@@ -368,12 +226,13 @@ export async function fetchAddClassesForSubject(
           }...`,
         );
 
+        // Compute the new set of professors for this class
         const classProfessors = classExists.classProfessors
           ? classExists.classProfessors
           : [];
 
         profs.forEach((p) => {
-          if (classProfessors.filter((i) => i == p).length === 0) {
+          if (classProfessors.filter((i) => i === p).length === 0) {
             classProfessors.push(p);
           }
         });
@@ -384,7 +243,7 @@ export async function fetchAddClassesForSubject(
           }...`,
         );
 
-        const updateClassInfo = await Classes.findOneAndUpdate(
+        const updateClassInfo = await Classes.updateOne(
           { _id: classExists._id },
           { $set: { classSems, classProfessors } },
         )
@@ -518,7 +377,7 @@ export async function addAllCourses(semesters: any) {
                 if (oldSems && oldSems.indexOf(semesters[semester]) === -1) {
                   // console.log("update class " + courses[course].subject + " " + courses[course].catalogNbr + "," + semesters[semester]);
                   oldSems.push(semesters[semester]); // add this semester to the list
-                  Classes.update(
+                  Classes.updateOne(
                     { _id: matchedCourse._id },
                     { $set: { classSems: oldSems } },
                   );
