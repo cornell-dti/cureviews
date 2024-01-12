@@ -14,7 +14,7 @@ import { fetchSubjects } from "./populate-subjects";
    #
    # Called once during intialization, only after all courses have been added.
 */
-export async function addCrossList(semesters: string[]) {
+export const addCrossList = async (semesters: string[]) => {
   for (const semester in semesters) {
     // get all classes in this semester
     const result = await axios.get(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`, { timeout: 30000 });
@@ -74,17 +74,17 @@ export async function addCrossList(semesters: string[]) {
   }
   console.log('Finished addCrossList');
   return true;
-}
+};
 
 /*
  * Fetch all the classes for that semester/subject combination
  * Returns a list of classes on success, or null if there was an error.
  */
-export async function fetchClassesForSubject(
+const fetchClassesForSubject = async (
   endpoint: string,
   semester: string,
   subject: ScrapingSubject,
-): Promise<ScrapingClass[] | null> {
+): Promise<ScrapingClass[] | null> => {
   try {
     const result = await axios.get(
       `${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`,
@@ -103,10 +103,9 @@ export async function fetchClassesForSubject(
   } catch (err) {
     return null;
   }
-}
+};
 
-export async function addNewSemester(endpoint: string, semester: string) {
-  console.log(semester);
+export const addNewSemester = async (endpoint: string, semester: string) => {
   const subjects = await fetchSubjects(endpoint, semester);
   if (!subjects) {
     return false;
@@ -170,13 +169,13 @@ export async function addNewSemester(endpoint: string, semester: string) {
   ).catch((err) => false);
 
   return true;
-}
+};
 
-export async function fetchAddClassesForSubject(
+const fetchAddClassesForSubject = async (
   subject: ScrapingSubject,
   endpoint: string,
   semester: string,
-) {
+) => {
   const classes: ScrapingClass[] | null = await fetchClassesForSubject(
     endpoint,
     semester,
@@ -363,9 +362,9 @@ export async function fetchAddClassesForSubject(
   });
 
   return true;
-}
+};
 
-export async function addAllCourses(endpoint: string, semesters: string[]) {
+export const addAllCourses = async (endpoint: string, semesters: string[]) => {
   await Promise.all(
     semesters.map(async (semester) => {
       const result = await addNewSemester(endpoint, semester);
@@ -379,4 +378,4 @@ export async function addAllCourses(endpoint: string, semesters: string[]) {
   );
   console.log("Finished addAllCourses");
   return true;
-}
+};

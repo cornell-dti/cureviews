@@ -26,16 +26,14 @@ import {
 } from '../utils';
 import { COURSE_API_BASE_URL } from '../utils/constants';
 
-import { findAllSemesters } from '../../scripts/utils';
 import {
+  findAllSemesters,
   addAllProfessors,
   resetProfessors,
-} from '../../scripts/populate-professors';
-import {
   addAllCourses,
   addCrossList,
   addNewSemester,
-} from '../../scripts/populate-courses';
+} from '../../scripts';
 
 export const reportReview = async ({ id }: ReportReviewRequestType) => {
   try {
