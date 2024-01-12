@@ -1,4 +1,5 @@
 import shortid from 'shortid';
+
 import { findStudent } from '../utils';
 import { insertNewStudent } from './auth.data-access';
 import { InsertStudentType, TokenPayloadType } from './auth.type';
