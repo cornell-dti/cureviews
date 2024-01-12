@@ -7,8 +7,7 @@
   ],
   "scripts": {
     "heroku-postbuild": "yarn workspaces run build",
-    "lint": "eslint . --ext js --ext jsx --ext ts --ext tsx",
-    "prettier": "prettier . --write"
+    "lint": "eslint . --ext js --ext jsx --ext ts --ext tsx"
   },
   "engines": {
     "node": "16.x",
@@ -27,7 +26,5 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0"
   },
-  "dependencies": {
-    "prettier": "^3.1.1"
-  }
+  "dependencies": {}
 }
