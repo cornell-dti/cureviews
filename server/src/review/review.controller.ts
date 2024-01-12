@@ -1,18 +1,57 @@
 /* eslint-disable operator-linebreak */
 import shortid from 'shortid';
-import { verifyToken } from '../auth/auth.controller';
-import {
-  addStudentReview,
-  setStudentLikedReviews,
-} from '../profile/profile.controller';
-import { findReview } from '../utils';
+
+import { findReview, findStudent, verifyToken } from '../utils';
+
 import { Review } from './review';
 import {
   findClassReviews,
   insertReview,
   updateReviewLikes,
+  updateStudentLikedReviews,
+  updateStudentReviews,
 } from './review.data-access';
-import { InsertReviewType, ReviewLikesType } from './review.type';
+import {
+  InsertReviewType,
+  ReviewLikesType,
+  ProfileLikeReviewType,
+  ProfileReviewType,
+} from './review.type';
+
+export const setStudentLikedReviews = async ({
+  netId,
+  reviewId,
+  liked,
+}: ProfileLikeReviewType) => {
+  try {
+    await updateStudentLikedReviews(netId, reviewId, liked);
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+};
+
+export const addStudentReview = async ({
+  netId,
+  reviewId,
+}: ProfileReviewType) => {
+  try {
+    const student = await findStudent(netId);
+    if (!student) {
+      return false;
+    }
+
+    const { reviews } = student;
+
+    const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
+    await updateStudentReviews(netId, newReviews);
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+};
 
 export const checkStudentHasLiked = async ({
   auth,

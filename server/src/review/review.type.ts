@@ -1,4 +1,15 @@
-import { Auth } from "../auth/auth";
+import { Auth } from '../auth/auth';
+
+export interface ProfileReviewType {
+  reviewId: string;
+  netId: string;
+}
+
+export interface ProfileLikeReviewType {
+  netId: string;
+  reviewId: string;
+  liked: boolean;
+}
 
 export interface InsertReviewRequestType {
   token: string;

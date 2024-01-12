@@ -1,6 +1,32 @@
 import { ClassDocument, Reviews, Students } from '../../db/schema';
+import { insertUser } from '../auth/auth.controller';
+import { VerifyAuthType, VerifyStudentType } from '../auth/auth.type';
 import { findCourseById } from '../course/course.data-access';
 import { CourseIdRequestType } from '../course/course.type';
+
+export const verifyToken = async ({ auth }: VerifyAuthType) => {
+  const ticket = await auth.getVerificationTicket();
+
+  if (!ticket) {
+    return null;
+  }
+
+  if (ticket.hd === 'cornell.edu') {
+    if (!ticket.email) {
+      return null;
+    }
+    const result = await insertUser({ token: ticket });
+
+    if (!result) {
+      return null;
+    }
+
+    const netId = ticket.email.replace('@cornell.edu', '');
+    const student = await findStudent(netId);
+    return { netId, student } as VerifyStudentType;
+  }
+  return null;
+};
 
 export const findStudent = async (netId: string) => {
   const student = await Students.findOne({ netId }).exec();
