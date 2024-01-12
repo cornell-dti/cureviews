@@ -14,6 +14,7 @@ import {
 } from './admin.type';
 
 import { findStudent } from '../utils/index';
+import { findStudentById } from './admin.data-access';
 
 import { findAllSemesters } from '../../scripts/utils';
 import {
@@ -100,7 +101,7 @@ export const getRaffleWinner = async ({
     return null;
   }
 
-  const student = await findStudent(reviews[0].user);
+  const student = await findStudentById(reviews[0].user);
   if (!student) {
     return null;
   }

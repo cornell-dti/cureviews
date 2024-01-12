@@ -22,7 +22,7 @@ export default function RaffleWinner({ adminToken }: RaffleWinnerProps) {
       .then((response) => {
         const result = response.data.result
         if (response.status === 200) {
-          setRaffleWinner(result.netId)
+          setRaffleWinner(result)
         } else {
           console.log('Error at getRaffleWinner')
         }

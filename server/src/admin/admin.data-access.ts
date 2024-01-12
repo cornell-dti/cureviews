@@ -1,4 +1,9 @@
-import { Reviews } from '../../db/schema';
+import { Reviews, Students } from '../../db/schema';
+
+export const findStudentById = async (id: string) => {
+  const student = await Students.findOne({ _id: id }).exec();
+  return student;
+};
 
 export const findAllPendingReviews = async () => {
   return await Reviews.find(
