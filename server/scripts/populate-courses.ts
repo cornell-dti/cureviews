@@ -247,9 +247,9 @@ export async function fetchAddClassesForSubject(
             }`,
             classSems: [semester],
             classProfessors: profs,
-            classRating: null,
-            classWorkload: null,
-            classDifficulty: null,
+            classRating: 0,
+            classWorkload: 0,
+            classDifficulty: 0,
           };
 
           const saveNewClass = await new Classes(newClass)

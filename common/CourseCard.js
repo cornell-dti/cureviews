@@ -5,16 +5,16 @@
 // helper function to convert semester abbreviations to a full word
 function semAbbriviationToWord(sem) {
   switch (sem) {
-    case "SP":
-      return "Spring";
-    case "FA":
-      return "Fall";
-    case "SU":
-      return "Summer";
-    case "WI":
-      return "Winter";
+    case 'SP':
+      return 'Spring';
+    case 'FA':
+      return 'Fall';
+    case 'SU':
+      return 'Summer';
+    case 'WI':
+      return 'Winter';
     default:
-      return "";
+      return '';
   }
 }
 
@@ -26,7 +26,7 @@ function lastOfferedSems(theClass) {
     offered.add(semAbbriviationToWord(sem.slice(0, -2)));
   });
   // Array.from(offered).join(' ');
-  return Array.from(offered).join(", ");
+  return Array.from(offered).join(', ');
 }
 
 function lastSem(sem) {
@@ -106,46 +106,46 @@ function getMetricValues(allReviews) {
   if (countRating > 0) {
     newState.rating = sumRating / countRating;
   } else {
-    newState.rating = "-";
+    newState.rating = '-';
   }
 
   if (countWork > 0) {
     newState.workload = sumWork / countWork;
   } else {
-    newState.workload = "-";
+    newState.workload = '-';
   }
 
   if (countDiff > 0) {
     newState.diff = sumDiff / countDiff;
   } else {
-    newState.diff = "-";
+    newState.diff = '-';
   }
 
   // Set gauge color for rating
   if (newState.rating <= 2) {
-    newState.ratingColor = "#E64458";
+    newState.ratingColor = '#E64458';
   } else if (newState.rating > 2 && newState.rating < 3.5) {
-    newState.ratingColor = "#f9cc30";
+    newState.ratingColor = '#f9cc30';
   } else {
-    newState.ratingColor = "#53B277";
+    newState.ratingColor = '#53B277';
   }
 
   // set gauge color for difficulty
   if (newState.diff <= 2) {
-    newState.diffColor = "#53B277";
+    newState.diffColor = '#53B277';
   } else if (newState.diff > 2 && newState.diff < 3.5) {
-    newState.diffColor = "#f9cc30";
+    newState.diffColor = '#f9cc30';
   } else {
-    newState.diffColor = "#E64458";
+    newState.diffColor = '#E64458';
   }
 
   // set gauge color for workload
   if (newState.workload <= 2) {
-    newState.workloadColor = "#53B277";
+    newState.workloadColor = '#53B277';
   } else if (newState.workload > 2 && newState.workload < 3.5) {
-    newState.workloadColor = "#f9cc30";
+    newState.workloadColor = '#f9cc30';
   } else {
-    newState.workloadColor = "#E64458";
+    newState.workloadColor = '#E64458';
   }
 
   return newState;
