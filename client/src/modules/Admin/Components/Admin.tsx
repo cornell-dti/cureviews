@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import Select from 'react-select'
 
 import axios from 'axios'
 
@@ -26,6 +27,7 @@ export const Admin = () => {
   const [loadingSemester, setLoadingSemester] = useState<number>(0)
   const [loadingProfs, setLoadingProfs] = useState<number>(0)
   const [resettingProfs, setResettingProfs] = useState<number>(0)
+  const [addSemester, setAddSemester] = useState('')
 
   const [isLoggedIn, token, isAuthenticating] = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
@@ -148,16 +150,24 @@ export const Admin = () => {
   // Call when user selects "Add New Semester" button. Runs code to check the
   // course API for new classes and updates classes existing in the database.
   // sShould run once a semester, when new classes are added to the roster.
-  function addNewSem() {
+  function addNewSem(semester: string) {
+    console.log('Adding new semester...')
+    setDisableNewSem(true)
+    setDisableInit(true)
+    setLoadingSemester(1)
+
     axios
       .post('/api/addNewSemester', {
-        semester: 'FA23',
+        semester,
         token: token,
       })
       .then((response) => {
         const result = response.data.result
         if (result === true) {
           console.log('New Semester Added')
+          setDisableNewSem(false)
+          setDisableInit(false)
+          setLoadingSemester(2)
         } else {
           console.log('Unable to add new semester!')
         }
@@ -172,7 +182,20 @@ export const Admin = () => {
   // NOTE: requries an initialize flag to ensure the function is only run on
   // a button click without this, it will run every time this component is created.
   function addAllCourses() {
-    console.log('Deprecated functionality')
+    console.log('Initializing database')
+
+    setDisableInit(true)
+    setLoadingInit(1)
+
+    axios.post('/api/dbInit', { token: token }).then((response) => {
+      if (response.status === 200) {
+        console.log('Reset all the professors to empty arrays')
+        setDisableInit(false)
+        setLoadingInit(2)
+      } else {
+        console.log('Error at resetProfessors')
+      }
+    })
   }
 
   function updateProfessors() {
@@ -251,6 +274,10 @@ export const Admin = () => {
     }
   }
 
+  function toSelectOptions(options: string[] | undefined) {
+    return options?.map((option) => ({ value: option, label: option })) || []
+  }
+
   function renderAdmin(token: string) {
     return (
       <div className="container-width whiteBg">
@@ -267,11 +294,35 @@ export const Admin = () => {
                     disabled={disableNewSem}
                     type="button"
                     className="btn btn-warning"
-                    onClick={() => addNewSem()}
+                    onClick={() => addNewSem(addSemester)}
                   >
                     Add New Semester
                   </button>
+                  <Select
+                    value={{ value: addSemester, label: addSemester }}
+                    onChange={(semester: any) => {
+                      setAddSemester(semester.value)
+                    }}
+                    isSingle
+                    options={toSelectOptions([
+                      'SP24',
+                      'FA24',
+                      'SP25',
+                      'FA25',
+                      'SP26',
+                      'FA26',
+                      'SP27',
+                      'FA27',
+                      'SP28',
+                      'FA28',
+                      'SP29',
+                      'FA29',
+                      'SP30',
+                    ])}
+                    placeholder="Select Semester"
+                  />
                 </div>
+
                 <div className="btn-group separate-buttons" role="group">
                   <button
                     type="button"
