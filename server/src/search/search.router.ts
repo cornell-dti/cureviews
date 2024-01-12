@@ -9,7 +9,7 @@ import {
 } from './search.controller';
 import { SearchQueryRequestType } from './search.type';
 
-const searchRouter = express.Router();
+export const searchRouter = express.Router();
 
 searchRouter.post('/getClassesByQuery', async (req, res) => {
   try {
@@ -113,5 +113,3 @@ searchRouter.post('/getCoursesByProfessor', async (req, res) => {
       .json({ error: `Search query must contain ASCII characters.` });
   }
 });
-
-export default searchRouter;

@@ -1,10 +1,10 @@
 import { Express } from 'express';
-import authRouter from './src/auth/auth.router';
-import searchRouter from './src/search/search.router';
-import profileRouter from './src/profile/profile.router';
-import reviewRouter from './src/review/review.router';
-import courseRouter from './src/course/course.router';
-import adminRouter from './src/admin/admin.router';
+import { authRouter } from './src/auth';
+import { searchRouter } from './src/search';
+import { profileRouter } from './src/profile';
+import { reviewRouter } from './src/review';
+import { courseRouter } from './src/course';
+import { adminRouter } from './src/admin';
 
 export const configure = (app: Express) => {
   app.use(

@@ -8,7 +8,7 @@ import {
 } from './profile.controller';
 import { ProfileInfoRequestType } from './profile.type';
 
-const profileRouter = express.Router();
+export const profileRouter = express.Router();
 
 /**
  * Counts the number of reviews made by a given student id.
@@ -82,5 +82,3 @@ profileRouter.post('/getReviewsByStudentId', async (req, res) => {
       .json({ error: `Internal Server Error: ${err.message}` });
   }
 });
-
-export default profileRouter;

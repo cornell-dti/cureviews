@@ -6,7 +6,7 @@ import {
   getReviewsCrossListOR,
 } from './course.controller';
 
-const courseRouter = express.Router();
+export const courseRouter = express.Router();
 
 courseRouter.post('/getCourseByInfo', async (req, res) => {
   try {
@@ -57,5 +57,3 @@ courseRouter.post('/getReviewsByCourseId', async (req, res) => {
       .json({ error: `Internal Server Error: ${err.message}` });
   }
 });
-
-export default courseRouter;

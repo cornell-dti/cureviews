@@ -8,7 +8,7 @@ import {
   updateStudentLiked,
 } from './review.controller';
 
-const reviewRouter = express.Router();
+export const reviewRouter = express.Router();
 
 reviewRouter.post('/insertReview', async (req, res) => {
   try {
@@ -84,5 +84,3 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
       .json({ error: `Internal Server Error: ${err.message}` });
   }
 });
-
-export default reviewRouter;

@@ -1,4 +1,5 @@
 import express from 'express';
+
 import { Auth } from '../auth/auth';
 import {
   AdminReviewRequestType,
@@ -20,7 +21,7 @@ import {
   reportReview,
 } from './admin.controller';
 
-const adminRouter = express.Router();
+export const adminRouter = express.Router();
 
 adminRouter.post('/reportReview', async (req, res) => {
   try {
@@ -256,5 +257,3 @@ adminRouter.post('/dbInit', async (req, res) => {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
-
-export default adminRouter;

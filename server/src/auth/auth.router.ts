@@ -3,7 +3,7 @@ import { Auth } from './auth';
 import { TokenPayloadType, AuthRequestType } from './auth.type';
 import { insertUser } from './auth.controller';
 
-const authRouter = express.Router();
+export const authRouter = express.Router();
 
 authRouter.post('/getStudentEmailByToken', async (req, res) => {
   try {
@@ -44,5 +44,3 @@ authRouter.post('/insertUser', async (req, res) => {
     return res.status(500).json({ error: `Internal Server Error: ${error}` });
   }
 });
-
-export default authRouter;
