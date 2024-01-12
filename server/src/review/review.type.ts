@@ -1,11 +1,11 @@
 import { Auth } from '../auth/auth';
 
-export interface ProfileReviewType {
+export interface AddStudentReviewType {
   reviewId: string;
   netId: string;
 }
 
-export interface ProfileLikeReviewType {
+export interface SetStudentLikedReviewsType {
   netId: string;
   reviewId: string;
   liked: boolean;

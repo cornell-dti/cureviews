@@ -14,15 +14,15 @@ import {
 import {
   InsertReviewType,
   ReviewLikesType,
-  ProfileLikeReviewType,
-  ProfileReviewType,
+  SetStudentLikedReviewsType,
+  AddStudentReviewType,
 } from './review.type';
 
 export const setStudentLikedReviews = async ({
   netId,
   reviewId,
   liked,
-}: ProfileLikeReviewType) => {
+}: SetStudentLikedReviewsType) => {
   try {
     await updateStudentLikedReviews(netId, reviewId, liked);
   } catch (err) {
@@ -35,7 +35,7 @@ export const setStudentLikedReviews = async ({
 export const addStudentReview = async ({
   netId,
   reviewId,
-}: ProfileReviewType) => {
+}: AddStudentReviewType) => {
   try {
     const student = await findStudent(netId);
     if (!student) {
