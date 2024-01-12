@@ -1,4 +1,5 @@
 import express from 'express';
+
 import { Auth } from './auth';
 import { AuthRequestType } from '../utils';
 

@@ -1,6 +1,7 @@
-import joi from "joi";
-import { OAuth2Client } from "google-auth-library";
-import { GOOGLE_AUTH_AUDIENCE } from "../utils/constants";
+import joi from 'joi';
+
+import { OAuth2Client } from 'google-auth-library';
+import { GOOGLE_AUTH_AUDIENCE } from '../utils/constants';
 
 type AuthEntity = {
   token: string;

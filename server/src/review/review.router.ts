@@ -6,10 +6,9 @@ import {
   checkStudentHasLiked,
   insertNewReview,
   updateStudentLiked,
-  insertUser,
 } from './review.controller';
 
-import { AuthRequestType } from '../utils';
+import { AuthRequestType, insertUser } from '../utils';
 
 export const reviewRouter = express.Router();
 
