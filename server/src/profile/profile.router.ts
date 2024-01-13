@@ -72,6 +72,7 @@ profileRouter.post('/getReviewsByStudentId', async (req, res) => {
 
     const validNetId: string = profile.getNetId();
     const reviews = await getStudentReviewDocs({ netId: validNetId });
+
     if (!reviews) {
       return res.status(200).json({ result: [] });
     }

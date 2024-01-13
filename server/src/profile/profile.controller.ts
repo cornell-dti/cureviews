@@ -1,4 +1,4 @@
-import { findReviewDocsByNetId } from './profile.data-access';
+import { findReviewDocsById } from './profile.data-access';
 import { ProfileInfoRequestType } from './profile.type';
 
 import { findStudent } from '../utils';
@@ -39,7 +39,6 @@ export const getStudentReviewDocs = async ({
     return null;
   }
 
-  const reviews = await findReviewDocsByNetId(netId);
-
+  const reviews = await findReviewDocsById(student._id);
   return reviews.filter((review) => review !== null);
 };
