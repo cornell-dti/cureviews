@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import axios from "axios";
+import axios from 'axios';
 
-import { testClasses, testReviews, testStudents } from "./mocks/InitMockDb";
-import { mockVerificationTicket } from "./mocks/MockAuth";
+import { testClasses, testReviews, testStudents } from './mocks/InitMockDb';
+import { mockVerificationTicket } from './mocks/MockAuth';
 
-import { testServer, testPort } from "./mocks/MockServer";
-import { Reviews, Students } from "../db/schema";
+import { testServer, testPort } from './mocks/MockServer';
+import { Reviews, Students } from '../db/schema';
 
 beforeAll(async () => {
   await testServer.setUpDB(
@@ -22,9 +22,9 @@ afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe("tests", () => {
-  it("countReviewsByStudentId - counting reviews made by a particular student with netid cv4620", async () => {
-    const netId = "cv4620";
+describe('tests', () => {
+  it('countReviewsByStudentId - counting reviews made by a particular student with netid cv4620', async () => {
+    const netId = 'cv4620';
     const res = await axios.post(
       `http://localhost:${testPort}/api/countReviewsByStudentId`,
       { netId },
@@ -38,20 +38,22 @@ describe("tests", () => {
     expect(res.status).toBe(200);
   });
 
-  it("countReviewsByStudentId - counting reviews made by a particular student with netid hu33", async () => {
-    const res = await axios
-      .post(`http://localhost:${testPort}/api/countReviewsByStudentId`, {
-        netId: "hu33",
-      })
-      .catch((e) => e);
+  it('countReviewsByStudentId - counting reviews made by a particular student with netid hu33', async () => {
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/countReviewsByStudentId`,
+      {
+        netId: 'hu33',
+      },
+    );
 
-    expect(res.response.status).toBe(404);
+    expect(res.status).toBe(200);
+    expect(res.data.result).toBe([]);
   });
 
-  it("getTotalLikesByStudentId - counting the number of likes a student got on their reviews", async () => {
+  it('getTotalLikesByStudentId - counting the number of likes a student got on their reviews', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/getTotalLikesByStudentId`,
-      { netId: "cv4620" },
+      { netId: 'cv4620' },
     );
 
     const testGetTotalLikes = 7;
@@ -60,20 +62,20 @@ describe("tests", () => {
     expect(res.status).toBe(200);
   });
 
-  it("getTotalLikesByStudentId - counting the number of likes of a student that does not exist", async () => {
+  it('getTotalLikesByStudentId - counting the number of likes of a student that does not exist', async () => {
     const res = await axios
       .post(`http://localhost:${testPort}/api/getTotalLikesByStudentId`, {
-        netId: "myl39",
+        netId: 'myl39',
       })
       .catch((e) => e);
     expect(res.response.status).toBe(404);
   });
 
-  it("getTotalLikesByStudentId - counting the number of likes of a student that does not have any likes", async () => {
+  it('getTotalLikesByStudentId - counting the number of likes of a student that does not have any likes', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/getTotalLikesByStudentId`,
       {
-        netId: "dhs234",
+        netId: 'dhs234',
       },
     );
 
@@ -81,8 +83,8 @@ describe("tests", () => {
     expect(res.data.result).toBe(0);
   });
 
-  it("getReviewsByStudentId - returning a review object list that a student wrote", async () => {
-    const netId = "cv4620";
+  it('getReviewsByStudentId - returning a review object list that a student wrote', async () => {
+    const netId = 'cv4620';
     const res = await axios.post(
       `http://localhost:${testPort}/api/getReviewsByStudentId`,
       { netId },
