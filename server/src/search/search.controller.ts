@@ -13,7 +13,7 @@ import { SearchQueryType } from './search.type';
 
 const fullCourseSearch = async ({ search }: SearchQueryType) => {
   const query = search.getQuery();
-  let fullSearch = [];
+  let fullSearch = new Set();
 
   if (query !== undefined && query !== '') {
     // check if text before space is subject, if so search only classes with this subject.
@@ -22,14 +22,13 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
     const initialSearch = await search.searchQuery(findCourses);
 
     if (initialSearch && initialSearch.length > 0) {
-      fullSearch = fullSearch.concat(initialSearch);
+      fullSearch = new Set([...fullSearch, ...initialSearch]);
     }
 
     const coursesByProfessor = await search.searchQuery(findCourseProfessor);
     if (coursesByProfessor && coursesByProfessor.length > 0) {
-      fullSearch = fullSearch.concat(coursesByProfessor);
+      fullSearch = new Set([...fullSearch, ...coursesByProfessor]);
     }
-
 
     const indexFirstSpace = search.getFirstSpace();
     if (indexFirstSpace !== -1) {
@@ -41,7 +40,8 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
           strBeforeSpace,
           strAfterSpace,
         );
-        fullSearch = fullSearch.concat(coursesWithinSubject);
+
+        fullSearch = new Set([...fullSearch, ...coursesWithinSubject]);
       }
     }
 
@@ -60,7 +60,8 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
           strBeforeDigit,
           strAfterDigit,
         );
-        fullSearch = fullSearch.concat(result);
+
+        fullSearch = new Set([...fullSearch, ...result]);
       }
     }
 
@@ -68,18 +69,14 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
     // if so, search only through the course numbers and return classes ordered by full name
     if (indexFirstDigit === 0) {
       const courses = await findCoursesByNum(query);
-      fullSearch = fullSearch.concat(courses);
+      fullSearch = new Set([...fullSearch, ...courses]);
     }
 
     // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
     const courseSubject = await findCourseSubject(query);
     if (courseSubject.length > 0) {
-      fullSearch = fullSearch.concat(courseSubject);
+      fullSearch = new Set([...fullSearch, ...courseSubject]);
     }
-  }
-
-  if (fullSearch.length === 0) {
-    fullSearch = fullSearch.concat(await findAllCourses(query));
   }
 
   return fullSearch;
@@ -88,7 +85,14 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
 export const searchCourses = async ({ search }: SearchQueryType) => {
   try {
     const fullSearch = await fullCourseSearch({ search });
-    return fullSearch.sort(courseSort(search.getQuery()));
+
+    if (fullSearch.size > 200 && fullSearch.size > 0) {
+      return Array.from(fullSearch)
+        .slice(0, 200)
+        .sort(courseSort(search.getQuery()));
+    }
+
+    return Array.from(fullSearch).sort(courseSort(search.getQuery()));
   } catch (e) {
     return null;
   }
