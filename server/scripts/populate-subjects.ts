@@ -5,9 +5,12 @@ import shortid from 'shortid';
 import { ScrapingSubject } from './types';
 import { Subjects } from '../db/schema';
 
-/*
- * Fetch the class roster for a semester.
- * Returns the class roster on success, or null if there was an error.
+/**
+ * Fetches all subjects in class roster for a given semester
+ *
+ * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
+ * @param {string} semester: course roster semester for (i.e FA23)
+ * @returns subject on sucess, null if there was an error
  */
 export const fetchSubjects = async (
   endpoint: string,
@@ -33,6 +36,14 @@ export const fetchSubjects = async (
   }
 };
 
+/**
+ * Adds all subjects retrieved from class roster for a given semester to the Subjects collection
+ * Updates existing Subject in collection with new semester
+ *
+ * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
+ * @param {string} semester: course roster semester for (i.e FA23)
+ * @returns subject on sucess, null if there was an error
+ */
 export const fetchAddSubjects = async (
   endpoint: string,
   semester: string,
