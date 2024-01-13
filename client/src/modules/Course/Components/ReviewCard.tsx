@@ -160,7 +160,7 @@ export default function ReviewCard({
               alert('This post has been reported and will be reviewed.')
             }}
           >
-            <img src="/report-flag.svg" alt="Report Review"></img>
+            <img src="/report-flag.svg" alt="report review button"></img>
           </button>
         </div>
       )}

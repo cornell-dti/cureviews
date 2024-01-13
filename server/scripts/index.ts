@@ -1,4 +1,5 @@
 export {
+  addAllCrossList,
   addCrossList,
   addNewSemester,
   addAllCourses,

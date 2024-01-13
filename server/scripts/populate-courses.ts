@@ -1,12 +1,14 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable prefer-template */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-console */
-import axios from "axios";
-import shortid from "shortid";
-import { ScrapingSubject, ScrapingClass } from "./types";
-import { Classes, Professors, Subjects } from "../db/schema";
-import { extractProfessors } from "./populate-professors";
-import { fetchSubjects } from "./populate-subjects";
+import axios from 'axios';
+import shortid from 'shortid';
+import { ScrapingSubject, ScrapingClass } from './types';
+import { Classes, Professors, Subjects } from '../db/schema';
+import { extractProfessors } from './populate-professors';
+import { fetchSubjects } from './populate-subjects';
 
 /* # Look through all courses in the local database, and identify those
    # that are cross-listed (have multiple official names). Link these classes
@@ -14,22 +16,41 @@ import { fetchSubjects } from "./populate-subjects";
    #
    # Called once during intialization, only after all courses have been added.
 */
-export const addCrossList = async (semesters: string[]) => {
+export const addAllCrossList = async (semesters: string[]) => {
   for (const semester in semesters) {
-    // get all classes in this semester
-    const result = await axios.get(`https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`, { timeout: 30000 });
+    const result = await addCrossList(semesters[semester]);
+
+    if (!result) {
+      return false;
+    }
+  }
+
+  console.log('Finished addCrossList');
+  return true;
+};
+
+export const addCrossList = async (semester: string) => {
+  try {
+    const result = await axios.get(
+      `https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semester}`,
+      { timeout: 30000 },
+    );
+
     if (result.status !== 200) {
       console.log('Error in addCrossList: 1');
       return false;
     }
+
     const response = result.data;
-    // console.log(response);
     const sub = response.data.subjects;
     for (const course in sub) {
       const parent = sub[course];
 
       // for each subject, get all classes in that subject for this semester
-      const result2 = await axios.get(`https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`, { timeout: 30000 });
+      const result2 = await axios.get(
+        `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${parent.value}`,
+        { timeout: 30000 },
+      );
       if (result2.status !== 200) {
         console.log('Error in addCrossList: 2');
         return false;
@@ -39,29 +60,50 @@ export const addCrossList = async (semesters: string[]) => {
 
       for (const course in courses) {
         try {
-          const check = await Classes.find({ classSub: courses[course].subject.toLowerCase(), classNum: courses[course].catalogNbr }).exec();
-          // console.log((courses[course].subject).toLowerCase() + " "  + courses[course].catalogNbr);
-          // console.log(check);
-          if (check.length > 0) {
-            const crossList = courses[course].enrollGroups[0].simpleCombinations;
-            if (crossList.length > 0) {
-              const crossListIDs: string[] = await Promise.all(crossList.map(async (crossListedCourse: ScrapingClass) => {
-                console.log(crossListedCourse);
-                const dbCourse = await Classes.find({ classSub: crossListedCourse.subject.toLowerCase(), classNum: crossListedCourse.catalogNbr }).exec();
-                // Added the following check because MUSIC 2340
-                // was crosslisted with AMST 2340, which was not in our db
-                // so was causing an error here when calling 'dbCourse[0]._id'
-                // AMST 2340 exists in FA17 but not FA18
-                if (dbCourse[0]) {
-                  return dbCourse[0]._id;
-                }
+          const check = await Classes.findOne({
+            classSub: courses[course].subject.toLowerCase(),
+            classNum: courses[course].catalogNbr,
+          }).exec();
+          console.log(
+            courses[course].subject.toLowerCase() +
+              // eslint-disable-next-line operator-linebreak
+              ' ' +
+              courses[course].catalogNbr,
+          );
+          console.log(check);
+          const crossList = courses[course].enrollGroups[0].simpleCombinations;
+          if (crossList.length > 0) {
+            const crossListIDs: string[] = await Promise.all(
+              crossList
+                .map(async (crossListedCourse: ScrapingClass) => {
+                  console.log(crossListedCourse);
+                  const dbCourse = await Classes.find({
+                    classSub: crossListedCourse.subject.toLowerCase(),
+                    classNum: crossListedCourse.catalogNbr,
+                  }).exec();
 
-                return 'null';
-              }).filter(course !== null));
-              console.log(`${courses[course].subject} ${courses[course].catalogNbr}`);
-              // console.log(crossListIDs);
-              const thisCourse = check[0];
-              Classes.update({ _id: thisCourse._id }, { $set: { crossList: crossListIDs } });
+                  // Added the following check because MUSIC 2340
+                  // was crosslisted with AMST 2340, which was not in our db
+                  // so was causing an error here when calling 'dbCourse[0]._id'
+                  // AMST 2340 exists in FA17 but not FA18
+                  if (dbCourse[0]) {
+                    return dbCourse[0]._id;
+                  }
+                  return null;
+                })
+                .filter((courseId) => courseId !== null),
+            );
+
+            console.log(
+              `${courses[course].subject} ${courses[course].catalogNbr}`,
+            );
+
+            console.log(crossListIDs);
+            if (!crossListIDs.includes(null)) {
+              await Classes.updateOne(
+                { _id: check._id },
+                { $set: { crossList: crossListIDs } },
+              );
             }
           }
         } catch (error) {
@@ -71,9 +113,11 @@ export const addCrossList = async (semesters: string[]) => {
         }
       }
     }
+
+    return true;
+  } catch (err) {
+    return false;
   }
-  console.log('Finished addCrossList');
-  return true;
 };
 
 /*
@@ -91,7 +135,7 @@ export const fetchClassesForSubject = async (
       { timeout: 10000 },
     );
 
-    if (result.status !== 200 || result.data.status !== "success") {
+    if (result.status !== 200 || result.data.status !== 'success') {
       console.log(
         `Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`,
       );
@@ -141,7 +185,7 @@ export const addNewSemester = async (endpoint: string, semester: string) => {
   ).catch((err) => null);
 
   if (!v1) {
-    console.log("Something went wrong while updating subjects!");
+    console.log('Something went wrong while updating subjects!');
     return false;
   }
 
@@ -208,7 +252,7 @@ export const fetchAddClassesForSubject = async (
               $setOnInsert: {
                 fullName: `${p.firstName} ${p.lastName}`,
                 _id: shortid.generate(),
-                major: "None" /* TODO: change? */,
+                major: 'None' /* TODO: change? */,
               },
             },
             { upsert: true, new: true },
@@ -234,7 +278,7 @@ export const fetchAddClassesForSubject = async (
           } does not exist, adding to database...`,
         );
 
-        const regex = new RegExp("^[0-9]+$");
+        const regex = new RegExp('^[0-9]+$');
         if (!regex.test(course.titleLong)) {
           const newClass = {
             _id: shortid.generate(),
@@ -286,9 +330,10 @@ export const fetchAddClassesForSubject = async (
         }
       } else {
         // Compute the new set of semesters for this class
-        const classSems = classExists.classSems?.indexOf(semester) === -1
-          ? classExists.classSems.concat([semester])
-          : classExists.classSems;
+        const classSems =
+          classExists.classSems?.indexOf(semester) === -1
+            ? classExists.classSems.concat([semester])
+            : classExists.classSems;
 
         console.log(
           `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${
@@ -376,6 +421,6 @@ export const addAllCourses = async (endpoint: string, semesters: string[]) => {
       return result;
     }),
   );
-  console.log("Finished addAllCourses");
+  console.log('Finished addAllCourses');
   return true;
 };

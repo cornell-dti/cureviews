@@ -29,6 +29,7 @@ import {
   addAllProfessors,
   resetProfessors,
   addAllCourses,
+  addAllCrossList,
   addCrossList,
   addNewSemester,
 } from '../../scripts';
@@ -205,14 +206,14 @@ export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   }
 
   const semesters = await findAllSemesters();
-  const coursesResult = await addAllCourses(COURSE_API_BASE_URL, semesters);
-  const result = await addCrossList(semesters);
+  // const coursesResult = await addAllCourses(COURSE_API_BASE_URL, semesters);
+  const result = await addAllCrossList(semesters);
 
-  if (coursesResult) {
-    return result;
-  }
+  // if (!coursesResult) {
+  //   return false;
+  // }
 
-  return false;
+  return result;
 };
 
 export const addNewSemesterCoursesAndProfessors = async ({
@@ -224,6 +225,12 @@ export const addNewSemesterCoursesAndProfessors = async ({
     return null;
   }
 
-  const result = await addNewSemester(COURSE_API_BASE_URL, semester);
+  const coursesResult = await addNewSemester(COURSE_API_BASE_URL, semester);
+
+  if (!coursesResult) {
+    return false;
+  }
+
+  const result = await addCrossList(semester);
   return result;
 };

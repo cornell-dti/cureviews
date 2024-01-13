@@ -145,7 +145,10 @@ adminRouter.post('/addNewSemester', async (req, res) => {
     }
 
     if (result) {
-      return res.status(200).json({ result: true });
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ result: true });
+      return res;
     }
 
     return res.status(400).json({
@@ -225,7 +228,10 @@ adminRouter.post('/resetProfessors', async (req, res) => {
     const result = await resetAllProfessors({ auth });
 
     if (result) {
-      return res.status(200).json({ message: 'Professors reset!' });
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ message: 'Professors reset!' });
+      return res;
     }
 
     return res
@@ -243,9 +249,12 @@ adminRouter.post('/dbInit', async (req, res) => {
     const result = addAllCoursesAndProfessors({ auth });
 
     if (result) {
-      return res.status(200).json({
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({
         message: `Successfully added all courses and professors from all semesters`,
       });
+      return res;
     }
 
     return res

@@ -188,11 +188,10 @@ export const Admin = () => {
 
     axios.post('/api/dbInit', { token: token }).then((response) => {
       if (response.status === 200) {
-        console.log('Reset all the professors to empty arrays')
         setDisableInit(false)
         setLoadingInit(2)
       } else {
-        console.log('Error at resetProfessors')
+        console.log('Error at dbInit')
       }
     })
   }
@@ -325,6 +324,7 @@ export const Admin = () => {
 
                 <div className="btn-group separate-buttons" role="group">
                   <button
+                    disabled={disableInit}
                     type="button"
                     className="btn btn-warning"
                     onClick={() => updateProfessors()}
@@ -334,6 +334,7 @@ export const Admin = () => {
                 </div>
                 <div className="btn-group separate-buttons" role="group">
                   <button
+                    disabled={disableInit}
                     type="button"
                     className="btn btn-warning"
                     onClick={() => resetProfessors()}
