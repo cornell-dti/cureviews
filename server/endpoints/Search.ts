@@ -90,7 +90,7 @@ export const regexClassesSearch = async (searchString) => {
       if (indexFirstDigit === 0) {
         // console.log("only numbers")
         return Classes.find(
-          { classNum: { $regex: `.*${searchString}.*`, $options: '-i' } },
+          { classNum: { $regex: `.*${searchString}.*`, $options: 'i' } },
           {},
           { sort: { classFull: 1 }, limit: 200, reactive: false },
         )
