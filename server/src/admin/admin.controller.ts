@@ -206,12 +206,12 @@ export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   }
 
   const semesters = await findAllSemesters();
-  // const coursesResult = await addAllCourses(COURSE_API_BASE_URL, semesters);
+  const coursesResult = await addAllCourses(COURSE_API_BASE_URL, semesters);
   const result = await addAllCrossList(semesters);
 
-  // if (!coursesResult) {
-  //   return false;
-  // }
+  if (!coursesResult) {
+    return false;
+  }
 
   return result;
 };
