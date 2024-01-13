@@ -31,7 +31,7 @@ describe('tests', () => {
     );
 
     const student = await Students.findOne({ netId });
-    const studentReviews = await Reviews.find({ user: netId });
+    const studentReviews = await Reviews.find({ user: student?._id });
 
     expect(studentReviews.length).toBe(student?.reviews.length);
     expect(res.data.result).toBe(student?.reviews.length);
@@ -90,7 +90,7 @@ describe('tests', () => {
       { netId },
     );
     const student = await Students.findOne({ netId });
-    const studentReviews = await Reviews.find({ user: netId });
+    const studentReviews = await Reviews.find({ user: student?._id });
 
     expect(studentReviews.length).toBe(student?.reviews.length);
     expect(res.data.result.length).toBe(student?.reviews.length);

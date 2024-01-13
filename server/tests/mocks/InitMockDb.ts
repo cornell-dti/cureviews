@@ -74,7 +74,7 @@ export const testReviews: Review[] = [
   {
     _id: '4Y8k7DnX3PLNdwRPr',
     text: 'review text for cs 2110',
-    user: 'cv4620',
+    user: 'bleh',
     difficulty: 1,
     class: 'oH37S3mJ4eAsktypy',
     visible: 0,
@@ -85,7 +85,7 @@ export const testReviews: Review[] = [
   {
     _id: '4Y8k7DnX3PLNdwRPq',
     text: 'review text for cs 2110 number 2',
-    user: 'cv4620',
+    user: 'bleh',
     difficulty: 1,
     class: 'oH37S3mJ4eAsktypy',
     visible: 1,
@@ -95,7 +95,7 @@ export const testReviews: Review[] = [
   {
     _id: '3yMwTbiyd4MZLPQJF',
     text: 'review text for cs 3110',
-    user: 'cv4620',
+    user: 'bleh',
     difficulty: 3,
     class: 'cJSmM8bnwm2QFnmAn',
     date: new Date(),
@@ -107,7 +107,7 @@ export const testReviews: Review[] = [
   {
     _id: '52x7j6tkXHxvrZizx',
     text: 'review text for cs 3110 - 2',
-    user: 'cv4620',
+    user: 'bleh',
     difficulty: 3,
     class: 'cJSmM8bnwm2QFnmAn',
     date: new Date(),
