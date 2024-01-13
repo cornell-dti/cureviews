@@ -8,27 +8,7 @@ import {
   updateStudentLiked,
 } from './review.controller';
 
-import { AuthRequestType, insertUser } from '../utils';
-
 export const reviewRouter = express.Router();
-
-reviewRouter.post('/insertUser', async (req, res) => {
-  try {
-    const { token }: AuthRequestType = req.body;
-    const auth = new Auth({ token });
-    const ticket = await auth.getVerificationTicket();
-
-    const result = await insertUser({ token: ticket });
-
-    if (result) {
-      return res.status(200).json({ result: true });
-    }
-
-    return res.status(400).json({ error: `Error in inserting new user.` });
-  } catch (error) {
-    return res.status(500).json({ error: `Internal Server Error: ${error}` });
-  }
-});
 
 reviewRouter.post('/insertReview', async (req, res) => {
   try {

@@ -78,6 +78,10 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
+    axios.post('/api/insertUser', { token })
+  }, [token])
+
+  useEffect(() => {
     axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
       const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
