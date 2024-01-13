@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
 /* eslint-disable guard-for-in */
@@ -15,12 +16,19 @@ export function isInstructorEqual(
   return a.firstName === b.firstName && a.lastName === b.lastName;
 }
 
-/*
- * Extract an array of professors from the terribly deeply nested gunk that the api returns
- * There are guaranaxios!
+/**
+ * Extracts the array of all unique professors from course object given by Course API
+ *
+ * @param {ScrapingClass} course: course object
+ * @returns list of unique professors
  */
-export const extractProfessors = (course: ScrapingClass): ScrapingInstructor[] => {
-  const raw = course.enrollGroups.map((e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)));
+export const extractProfessors = (
+  course: ScrapingClass,
+): ScrapingInstructor[] => {
+  const raw = course.enrollGroups.map(
+    (e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)),
+    // eslint-disable-next-line function-paren-newline
+  );
   // flatmap does not work :(
   const f1: ScrapingInstructor[][][] = [];
   raw.forEach((r) => f1.push(...r));
@@ -42,7 +50,15 @@ export const extractProfessors = (course: ScrapingClass): ScrapingInstructor[] =
   return nonDuplicates;
 };
 
-export const addAllProfessors = async (semesters: string[]) => {
+/**
+ * Updates all course professors in every course for every semester
+ *
+ * @param {string[]} semesters: list of all available course roster semesters
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllProfessors = async (
+  semesters: string[],
+): Promise<boolean> => {
   // You just want to go through all the classes in the Classes database and update the Professors field
   // Don't want to go through the semesters
   // Might want a helper function that returns that professors for you
@@ -121,12 +137,13 @@ export const addAllProfessors = async (semesters: string[]) => {
               const { classSections } = courses[course].enrollGroups[0]; // This returns an array
               for (const section in classSections) {
                 if (
-                  classSections[section].ssrComponent === 'LEC'
-                  || classSections[section].ssrComponent === 'SEM'
+                  classSections[section].ssrComponent === 'LEC' ||
+                  classSections[section].ssrComponent === 'SEM'
                 ) {
                   // Checks to see if class has scheduled meetings before checking them
                   if (classSections[section].meetings.length > 0) {
-                    const professors = classSections[section].meetings[0].instructors;
+                    const professors =
+                      classSections[section].meetings[0].instructors;
                     // Checks to see if class has instructors before checking them
                     // Example of class without professors is:
                     // ASRC 3113 in FA16
@@ -148,6 +165,7 @@ export const addAllProfessors = async (semesters: string[]) => {
                   }
                 }
               }
+
               await Classes.updateOne(
                 { _id: matchedCourse._id },
                 { $set: { classProfessors: oldProfessors } },
@@ -171,7 +189,16 @@ export const addAllProfessors = async (semesters: string[]) => {
   return true;
 };
 
-export const resetProfessors = async (endpoint: string, semesters: string[]) => {
+/**
+ * Resets all course professors in every course for every semester
+ *
+ * @param {string[]} semesters: list of all available course roster semesters
+ * @returns true if operation was successful, false otherwise
+ */
+export const resetProfessors = async (
+  endpoint: string,
+  semesters: string[],
+): Promise<boolean> => {
   console.log('Resetting professors...');
   try {
     await Promise.all(
