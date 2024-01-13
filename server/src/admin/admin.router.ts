@@ -16,7 +16,7 @@ import {
   updateAllProfessors,
   resetAllProfessors,
   addAllCoursesAndProfessors,
-  addNewSemesterCoursesAndProfessors,
+  addNewSem,
   verifyTokenAdmin,
   reportReview,
 } from './admin.controller';
@@ -136,7 +136,7 @@ adminRouter.post('/addNewSemester', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await addNewSemesterCoursesAndProfessors({ auth, semester });
+    const result = await addNewSem({ auth, semester });
 
     if (result === null) {
       return res.status(401).json({

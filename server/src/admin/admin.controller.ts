@@ -145,6 +145,12 @@ export const resetAllProfessors = async ({ auth }: VerifyAdminType) => {
   return result;
 };
 
+/**
+ * Helper function to get metrics associated with a course
+ *
+ * @param allReviews: all visible reviews for a course
+ * @returns {UpdateCourseMetrics} with all updated rating, difficulty, and workload metrics
+ */
 const getMetricValues = (allReviews): UpdateCourseMetrics => {
   // create summation variables for reviews
   let sumRating = 0;
@@ -174,7 +180,12 @@ const getMetricValues = (allReviews): UpdateCourseMetrics => {
   return { rating: resultRating, workload: resultWork, diff: resultDiff };
 };
 
-// This updates the metrics for an individual class given its Mongo-generated id.
+/**
+ * Updates metric for a particular class that the given reviewId is associated with
+ *
+ * @param {string} reviewId: Mongo-generated id of review
+ * @returns true if operation was successful, false otherwise
+ */
 export const updateCourseMetricsFromReview = async (reviewId: string) => {
   try {
     const review = await findReview(reviewId);
@@ -216,10 +227,7 @@ export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   return result;
 };
 
-export const addNewSemesterCoursesAndProfessors = async ({
-  auth,
-  semester,
-}: AdminAddSemesterType) => {
+export const addNewSem = async ({ auth, semester }: AdminAddSemesterType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
