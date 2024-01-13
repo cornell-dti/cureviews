@@ -48,24 +48,24 @@ export function useAuthMandatoryLogin(
 
     if (!token || token === '') {
       signIn(redirectFrom)
+    } else {
+      axios
+        .post('/api/getStudentEmailByToken', {
+          token: token,
+        })
+        .then((response) => {
+          const res = response.data
+          let verifiedEmail = ''
+
+          if (response.status === 200) {
+            console.log(res.result)
+            verifiedEmail = res.result
+          }
+
+          setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
+        })
+        .catch((e) => console.log(e.response))
     }
-
-    axios
-      .post('/api/getStudentEmailByToken', {
-        token: token,
-      })
-      .then((response) => {
-        const res = response.data
-        let verifiedEmail = ''
-
-        if (response.status === 200) {
-          console.log(res.result)
-          verifiedEmail = res.result
-        }
-
-        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
-      })
-      .catch((e) => console.log(e.response))
 
     setToken(token)
     setIsAuthenticating(false)
@@ -80,7 +80,7 @@ export function useAuthOptionalLogin(): [
   string | null,
   string,
   (redirectFrom: string) => void,
-  (redirectTo?: string) => void,
+  (redirectTo?: string) => void
 ] {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState(null)
@@ -92,29 +92,34 @@ export function useAuthOptionalLogin(): [
     const token = getAuthToken()
 
     if (token && token !== '') {
+      axios
+        .post('/api/getStudentEmailByToken', {
+          token: token,
+        })
+        .then((response) => {
+          const data = response.data
+          console.log(response)
+          var verifiedEmail = ''
+
+          if (response.status === 200) {
+            console.log(data.result)
+            verifiedEmail = data.result
+          }
+
+          console.log(
+            verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@'))
+          )
+          const netId = verifiedEmail.substring(
+            0,
+            verifiedEmail.lastIndexOf('@')
+          )
+          setNetId(netId)
+        })
+        .catch((e) => console.log(e.response))
+
       setToken(token)
       setIsLoggedIn(true)
     }
-
-    axios
-      .post('/api/getStudentEmailByToken', {
-        token: token,
-      })
-      .then((response) => {
-        const data = response.data
-        console.log(response)
-        var verifiedEmail = ''
-
-        if (response.status === 200) {
-          console.log(data.result)
-          verifiedEmail = data.result
-        }
-
-        console.log(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
-        const netId = verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@'))
-        setNetId(netId)
-      })
-      .catch((e) => console.log(e.response))
   }, [])
 
   const signIn = (redirectFrom: string) => {
