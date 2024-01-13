@@ -7,7 +7,6 @@ import { Review as ReviewType } from 'common'
 
 import Navbar from '../../Globals/Navbar'
 
-import CourseReviews from '../../Course/Components/CourseReviews'
 import { UserInfo } from './UserInfo'
 import { NoReviews } from './NoReviews'
 import { PendingReviews } from './PendingReviews'
@@ -78,7 +77,9 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
-    axios.post('/api/insertUser', { token })
+    if (token) {
+      axios.post('/api/insertUser', { token })
+    }
   }, [token])
 
   useEffect(() => {
