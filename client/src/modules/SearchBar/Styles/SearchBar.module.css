@@ -1,0 +1,110 @@
+@media screen and (max-width: 992px) {
+  .searchbar {
+    height: 42px;
+  }
+
+  .searchbarInNavbar {
+    height: 42px;
+  }
+
+  .searchText {
+    padding-left: 45px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .searchbar {
+    height: 40px;
+  }
+
+  .searchbarInNavbar {
+    height: 52px;
+  }
+
+  .searchText {
+    padding-left: 40px;
+  }
+}
+
+.searchbar {
+  width: 100%;
+  background-color: transparent;
+  display: inline-block;
+  padding: 0;
+  position: relative;
+  outline: 0;
+  background: #ffffff;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.searchbarInNavbar {
+  border: 1.24929px solid #ececec;
+  box-shadow: none;
+}
+
+.searchText {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight);
+  letter-spacing: 0.01em;
+  color: #000000;
+  background-color: white;
+  border-color: transparent;
+  border-radius: 10px;
+  cursor: text;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  background-image: url(/magnifying_glass.svg);
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 10px;
+  background-size: 17px;
+  outline: 0;
+  position: relative;
+  z-index: 1002;
+}
+
+.searchText::placeholder {
+  color: #c9c9c9;
+  font-weight: var(--regular-weight);
+}
+
+.output {
+  background: transparent;
+  cursor: pointer;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1001;
+  border-radius: 0 0 10px 10px;
+}
+
+.resultText {
+  display: inline-block;
+  text-overflow: ellipsis;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  font-weight: var(--regular-weight) !important;
+  line-height: normal;
+  letter-spacing: 0.001em;
+  color: #000000;
+  padding-top: 1.5px;
+  text-align: left;
+  cursor: pointer;
+  width: 86%; /* Made to fit in with the course/subject colored label, which is max width 12% */
+  display: flex;
+  margin: 0;
+}
+
+/* Selects all 'output' class objects that are decendents
+    of 'contrastingResultBackground' class .
+    Used to add background contrasting color to searchbar
+    search results */
+.contrastingResultBackground .output {
+  border-style: solid;
+  border-color: #6ba7ec;
+  border-width: 0 1px 1px 1px;
+}
