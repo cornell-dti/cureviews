@@ -10,13 +10,15 @@ import { Classes, Professors, Subjects } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
 
-/* # Look through all courses in the local database, and identify those
-   # that are cross-listed (have multiple official names). Link these classes
-   # by adding their course_id to all crosslisted class's crosslist array.
-   #
-   # Called once during intialization, only after all courses have been added.
-*/
-export const addAllCrossList = async (semesters: string[]) => {
+/**
+ * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
+ *
+ * @param {string[]} semesters: all available course roster semesters
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllCrossList = async (
+  semesters: string[],
+): Promise<boolean> => {
   for (const semester in semesters) {
     const result = await addCrossList(semesters[semester]);
 
@@ -29,7 +31,14 @@ export const addAllCrossList = async (semesters: string[]) => {
   return true;
 };
 
-export const addCrossList = async (semester: string) => {
+/**
+ * Retrieves all classes from Course API and identifies cross listed classes to add to crosslist array in Courses database.
+ * Called after adding all new courses and professors for a new semester.
+ *
+ * @param {string} semester: course roster semester for (i.e FA23)
+ * @returns true if operation was successful, false otherwise
+ */
+export const addCrossList = async (semester: string): Promise<boolean> => {
   try {
     const result = await axios.get(
       `https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semester}`,
@@ -77,7 +86,7 @@ export const addCrossList = async (semester: string) => {
               crossList
                 .map(async (crossListedCourse: ScrapingClass) => {
                   console.log(crossListedCourse);
-                  const dbCourse = await Classes.find({
+                  const dbCourse = await Classes.findOne({
                     classSub: crossListedCourse.subject.toLowerCase(),
                     classNum: crossListedCourse.catalogNbr,
                   }).exec();
@@ -120,9 +129,13 @@ export const addCrossList = async (semester: string) => {
   }
 };
 
-/*
- * Fetch all the classes for that semester/subject combination
- * Returns a list of classes on success, or null if there was an error.
+/**
+ * Fetch all the classes in Course API format for a particular subject/semester combination
+ *
+ * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
+ * @param {string} semester: course roster semester for (i.e FA23)
+ * @param {ScrapingSubject} subject: represents subject info from Course API
+ * @returns a list of classes on success or null if there was an error
  */
 export const fetchClassesForSubject = async (
   endpoint: string,
@@ -149,7 +162,17 @@ export const fetchClassesForSubject = async (
   }
 };
 
-export const addNewSemester = async (endpoint: string, semester: string) => {
+/**
+ * Adds all new subjects, courses, and updates professors for a particular semeester
+ *
+ * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
+ * @param {string} semester: course roster semester for (i.e FA23)
+ * @returns true if operation was successful, false otherwise
+ */
+export const addNewSemester = async (
+  endpoint: string,
+  semester: string,
+): Promise<boolean> => {
   const subjects = await fetchSubjects(endpoint, semester);
   if (!subjects) {
     return false;
@@ -215,11 +238,19 @@ export const addNewSemester = async (endpoint: string, semester: string) => {
   return true;
 };
 
+/**
+ * Adds all new classes for a given subject/semester combination and updates any existing classes with new professors from Course API.
+ *
+ * @param {ScrapingSubject} subject: represents subject info from Course API
+ * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
+ * @param {string} semester: course roster semester for (i.e FA23)
+ * @returns true if operation was successful, false otherwise
+ */
 export const fetchAddClassesForSubject = async (
   subject: ScrapingSubject,
   endpoint: string,
   semester: string,
-) => {
+): Promise<boolean> => {
   const classes: ScrapingClass[] | null = await fetchClassesForSubject(
     endpoint,
     semester,
@@ -409,7 +440,17 @@ export const fetchAddClassesForSubject = async (
   return true;
 };
 
-export const addAllCourses = async (endpoint: string, semesters: string[]) => {
+/**
+ * Adds all new classes and updates any existing classes with new professors for every semester available from Course API.
+ *
+ * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
+ * @param {string[]} semesters: course roster semester for (i.e FA23)
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllCourses = async (
+  endpoint: string,
+  semesters: string[],
+): Promise<boolean> => {
   await Promise.all(
     semesters.map(async (semester) => {
       const result = await addNewSemester(endpoint, semester);
