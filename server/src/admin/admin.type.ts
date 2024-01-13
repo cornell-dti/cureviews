@@ -1,9 +1,9 @@
 import { Auth } from '../auth/auth';
 
 export interface UpdateCourseMetrics {
-  rating: number;
-  workload: number;
-  diff: number;
+  rating: number | null;
+  workload: number | null;
+  diff: number | null;
 }
 
 export interface ReportReviewRequestType {

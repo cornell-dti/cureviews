@@ -1,7 +1,7 @@
 import {
   findAllPendingReviews,
   findAllReviewsAfterDate,
-  removeReview,
+  removeReviewById,
   updateReviewVisibility,
   findStudentById,
   updateCourseMetrics,
@@ -89,7 +89,7 @@ export const removePendingReview = async ({
   if (userIsAdmin) {
     await updateReviewVisibility(reviewId, 0, 0);
     const result = await updateCourseMetricsFromReview(reviewId);
-    await removeReview(reviewId);
+    await removeReviewById(reviewId);
     return result;
   }
 
@@ -115,8 +115,7 @@ export const getRaffleWinner = async ({
   }
 
   const randomInt = Math.floor(Math.random() * reviews.length);
-  console.log(randomInt);
-  console.log(reviews.length);
+
   const student = await findStudentById(reviews[randomInt].user);
   if (!student) {
     return null;
@@ -125,7 +124,7 @@ export const getRaffleWinner = async ({
   return student.netId;
 };
 
-export const updateAllProfessors = async ({ auth }: VerifyAdminType) => {
+export const updateAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -137,7 +136,7 @@ export const updateAllProfessors = async ({ auth }: VerifyAdminType) => {
   return result;
 };
 
-export const resetAllProfessors = async ({ auth }: VerifyAdminType) => {
+export const resetAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -214,7 +213,7 @@ export const updateCourseMetricsFromReview = async (reviewId: string) => {
   }
 };
 
-export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
+export const initAllDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -231,7 +230,7 @@ export const addAllCoursesAndProfessors = async ({ auth }: VerifyAdminType) => {
   return result;
 };
 
-export const addNewSem = async ({ auth, semester }: AdminAddSemesterType) => {
+export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;

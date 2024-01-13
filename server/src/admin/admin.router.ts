@@ -13,10 +13,10 @@ import {
   editReviewVisibility,
   getRaffleWinner,
   removePendingReview,
-  updateAllProfessors,
-  resetAllProfessors,
-  addAllCoursesAndProfessors,
-  addNewSem,
+  updateAllProfessorsDb,
+  resetAllProfessorsDb,
+  initAllDb,
+  addNewSemDb,
   verifyTokenAdmin,
   reportReview,
 } from './admin.controller';
@@ -132,11 +132,11 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
   }
 });
 
-adminRouter.post('/addNewSemester', async (req, res) => {
+adminRouter.post('/addNewSemDbester', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await addNewSem({ auth, semester });
+    const result = await addNewSemDb({ auth, semester });
 
     if (result === null) {
       return res.status(401).json({
@@ -211,7 +211,7 @@ adminRouter.post('/setProfessors', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await updateAllProfessors({ auth });
+    const result = await updateAllProfessorsDb({ auth });
 
     if (result) {
       return res.status(200).json({ result: true });
@@ -227,7 +227,7 @@ adminRouter.post('/resetProfessors', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await resetAllProfessors({ auth });
+    const result = await resetAllProfessorsDb({ auth });
 
     if (result) {
       res.status(200);
@@ -248,7 +248,7 @@ adminRouter.post('/dbInit', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = addAllCoursesAndProfessors({ auth });
+    const result = initAllDb({ auth });
 
     if (result) {
       res.status(200);

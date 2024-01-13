@@ -39,7 +39,8 @@ export const findAllPendingReviews = async () =>
 export const findAllReviewsAfterDate = async (date: Date) => {
   return Reviews.find({ date: { $gte: date } });
 };
-export const removeReview = async (reviewId: string) => {
+
+export const removeReviewById = async (reviewId: string) => {
   await Reviews.deleteOne({ _id: reviewId });
 };
 
