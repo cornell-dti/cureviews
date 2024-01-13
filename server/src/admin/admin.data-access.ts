@@ -35,12 +35,10 @@ export const findAllPendingReviews = async () =>
     { sort: { date: -1 }, limit: 700 },
   ).exec();
 
-export const findAllReviewsAfterDate = async (date: Date) =>
-  await Reviews.aggregate([
-    { $match: { date: { $gte: date } } },
-    { $sample: { size: 1 } },
-  ]);
-
+// eslint-disable-next-line arrow-body-style
+export const findAllReviewsAfterDate = async (date: Date) => {
+  return Reviews.find({ date: { $gte: date } });
+};
 export const removeReview = async (reviewId: string) => {
   await Reviews.deleteOne({ _id: reviewId });
 };

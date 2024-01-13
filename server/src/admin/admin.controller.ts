@@ -114,7 +114,10 @@ export const getRaffleWinner = async ({
     return null;
   }
 
-  const student = await findStudentById(reviews[0].user);
+  const randomInt = Math.floor(Math.random() * reviews.length);
+  console.log(randomInt);
+  console.log(reviews.length);
+  const student = await findStudentById(reviews[randomInt].user);
   if (!student) {
     return null;
   }
