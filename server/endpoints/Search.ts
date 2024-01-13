@@ -75,13 +75,12 @@ const searchWithinSubject = (sub: string, remainder: string) =>
   Classes.find(
     {
       classSub: sub,
-      classFull: { $regex: `.*${remainder}.*`, $options: '-i' },
+      classFull: { $regex: `.*${remainder}.*`, $options: 'i' },
     },
     {},
     { sort: { classFull: 1 }, limit: 200, reactive: false },
   ).exec();
 
-// deprecated
 export const regexClassesSearch = async (searchString) => {
   try {
     if (searchString !== undefined && searchString !== '') {
@@ -134,7 +133,7 @@ export const regexClassesSearch = async (searchString) => {
       // last resort, search everything
       // console.log("nothing matches");
       return Classes.find(
-        { classFull: { $regex: `.*${searchString}.*`, $options: '-i' } },
+        { classFull: { $regex: `.*${searchString}.*`, $options: 'i' } },
         {},
         { sort: { classFull: 1 }, limit: 200, reactive: false },
       ).exec();
@@ -172,8 +171,7 @@ export const getClassesByQuery: Endpoint<Search> = {
         return classes.sort(courseSort(query));
       }
 
-      return [];
-      // return await regexClassesSearch(query);
+      return await regexClassesSearch(query);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log("Error: at 'getClassesByQuery' endpoint");
