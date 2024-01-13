@@ -20,11 +20,11 @@ export const getCrossListOR = (course) => {
   // if there are crossListed Courses, merge the reviews
   if (crossList !== undefined && crossList.length > 0) {
     // format each courseid into an object to input to the find's '$or' search
-    const crossListOR = crossList
-      .map((cID) => ({
-        class: cID,
-      }))
-      .push({ class: courseId });
+    const crossListOR = crossList.map((cID) => ({
+      class: cID,
+    }));
+
+    crossListOR.push({ class: courseId });
 
     return crossListOR;
   }
