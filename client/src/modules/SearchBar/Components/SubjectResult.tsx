@@ -40,6 +40,7 @@ export default class SubjectResult extends Component<Props> {
       //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
       //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
       <a
+        data-cy={`search-result-${subjectInfo.subShort.toLowerCase()}`}
         className={
           this.props.active && this.props.mouse !== 1
             ? 'active-class resultbutton'

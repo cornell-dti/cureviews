@@ -340,7 +340,7 @@ export default class ResultsDisplay extends Component {
         )}
         {/* Case where results are returned (non-empty) */}
         {this.state.courseList.length !== 0 && this.props.loading !== true && (
-          <div className="results-column-container">
+          <div className="results-column-container" data-cy="results-display">
             <div className="d-none d-lg-block col-lg-2 col-md-2 col-sm-2 col-2 filter-container">
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
