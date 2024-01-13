@@ -3,32 +3,29 @@ import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
 
 import { findReviewCrossListOR } from '../utils';
 
-// Returns an array of objects of containing courseIds
-// of cross-listed classes
+/**
+ * Returns array of course ids that a given course is crosslisted with
+ *
+ * @param {string} reviewId: Mongo-generated id of review
+ * @returns true if operation was successful, false otherwise
+ */
 export const getCrossListOR = (course) => {
-  let crossList;
-  let courseId;
-  if (course !== undefined) {
-    // Why
-    crossList = course.crossList;
-    courseId = course._id;
-  } else {
-    return [
-      {
-        class: courseId,
-      },
-    ];
+  if (!course) {
+    return null;
   }
+
+  const { crossList } = course;
+  const courseId = course._id;
 
   // if there are crossListed Courses, merge the reviews
   if (crossList !== undefined && crossList.length > 0) {
     // format each courseid into an object to input to the find's '$or' search
-    const crossListOR = crossList.map((cID) => ({
-      class: cID,
-    }));
-    crossListOR.push({
-      class: courseId,
-    }); // make sure to add the original course to the list
+    const crossListOR = crossList
+      .map((cID) => ({
+        class: cID,
+      }))
+      .push({ class: courseId });
+
     return crossListOR;
   }
 
@@ -64,6 +61,11 @@ export const getReviewsCrossListOR = async ({
 
   if (course) {
     const crossListOR = getCrossListOR(course);
+
+    if (!crossListOR) {
+      return null;
+    }
+
     const reviews = await findReviewCrossListOR(crossListOR);
     const sanitizedReviews = reviews.map((review) => {
       const copy = review;
