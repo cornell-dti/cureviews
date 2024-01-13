@@ -6,7 +6,6 @@ import {
   findProfessors,
   findSubjects,
   findCourseWithinSubject,
-  findAllCourses,
   findCourseProfessor,
 } from './search.data-access';
 import { SearchQueryType } from './search.type';
