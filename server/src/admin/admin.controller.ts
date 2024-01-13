@@ -19,8 +19,7 @@ import {
 import {
   findStudent,
   findReview,
-  findReviewCrossListOR,
-  getCrossListOR,
+  getReviewsCrossListOR,
   getCourseById,
 } from '../utils';
 import { COURSE_API_BASE_URL } from '../utils/constants';
@@ -186,8 +185,7 @@ export const updateCourseMetricsFromReview = async (reviewId: string) => {
     const course = await getCourseById({ courseId: review.class });
 
     if (course) {
-      const crossList = getCrossListOR(course);
-      const reviews = await findReviewCrossListOR(crossList);
+      const reviews = await getReviewsCrossListOR({ courseId: course._id });
 
       const state: UpdateCourseMetrics = getMetricValues(reviews);
       await updateCourseMetrics(review, state);

@@ -5,5 +5,5 @@ export {
   findReview,
   findReviewCrossListOR,
 } from '../review/review.data-access';
-export { getCrossListOR } from '../course/course.controller';
+export { getReviewsCrossListOR } from '../course/course.controller';
 export { insertUser } from '../auth/auth.controller';
