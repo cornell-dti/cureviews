@@ -47,7 +47,7 @@ describe('tests', () => {
     );
 
     expect(res.status).toBe(200);
-    expect(res.data.result).toBe([]);
+    expect(res.data.result).toBe(0);
   });
 
   it('getTotalLikesByStudentId - counting the number of likes a student got on their reviews', async () => {
