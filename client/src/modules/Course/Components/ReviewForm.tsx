@@ -191,6 +191,7 @@ const ReviewForm = ({
               <label className={styles.reviewComment}>
                 <span>Review comment</span>
                 <textarea
+                  data-cy="review-comment-textarea"
                   className={styles.reviewText}
                   value={reviewText}
                   onChange={(event) => {
@@ -227,6 +228,7 @@ const ReviewForm = ({
           )}
 
           <button
+            data-cy="review-submit-button"
             className={`${styles.actionButton}`}
             onClick={() => {
               if (isInputValid()) {

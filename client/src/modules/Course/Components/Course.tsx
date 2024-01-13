@@ -294,6 +294,7 @@ export const Course = () => {
                 lastOfferedSems(selectedClass)}
             </p>
             <button
+              data-cy="leave-review-button"
               className={`${styles.startReviewButton}`}
               onClick={() => onLeaveReview()}
             >
