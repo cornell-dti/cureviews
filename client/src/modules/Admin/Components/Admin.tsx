@@ -57,9 +57,14 @@ export const Admin = () => {
       .post('/api/fetchPendingReviews', { token: token })
       .then((response) => {
         const result = response.data.result
-        console.log(result)
         if (response.status === 200) {
-          setUnapprovedReviews(result)
+          setUnapprovedReviews(
+            result.filter((review: Review) => review.reported === 0)
+          )
+          console.log(result)
+          setReportedReviews(
+            result.filter((review: Review) => review.reported === 1)
+          )
         } else {
           console.log('Error at fetchPendingReviews')
         }
@@ -116,12 +121,15 @@ export const Admin = () => {
               review,
               reportedReviews
             )
+
+            console.log('hello')
+            console.log(reportedReviews)
+
             setReportedReviews(updatedReportedReviews)
           }
-        } else {
-          console.log('Unable to remove review')
         }
       })
+      .catch((e) => console.log(`Unable to remove review ${e}`))
   }
 
   // Call when user asks to un-report a reported review. Accesses the Reviews database
@@ -422,7 +430,7 @@ export const Admin = () => {
                 </div>
                 <div className="card-body">
                   <ul>
-                    {unapprovedReviews.map((review: Review) => {
+                    {reportedReviews.map((review: Review) => {
                       //create a new class "button" that will set the selected class to this class when it is clicked.
                       if (review.reported === 1) {
                         return (

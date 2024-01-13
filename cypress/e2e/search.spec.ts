@@ -4,7 +4,7 @@ before('visit site', () => {
   cy.visit('/');
 });
 
-describe('searching courses', () => {
+describe('searching by query', () => {
   it('course search - show correct result when typing "CS 2110" from homepage and clicking', () => {
     cy.get('[data-cy="search-bar"]').click().type('CS 2110');
     cy.wait(1000); // ensure the page has time to load

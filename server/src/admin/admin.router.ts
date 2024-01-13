@@ -176,8 +176,9 @@ adminRouter.post('/undoReportReview', async (req, res) => {
       });
     }
 
-    return res.status(401).json({
-      error: 'User does not have an authorized token (not an admin)!',
+    return res.status(400).json({
+      error:
+        'User does not have an authorized token (not an admin) or review was not found!',
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
@@ -197,8 +198,9 @@ adminRouter.post('/removeReview', async (req, res) => {
       });
     }
 
-    return res.status(401).json({
-      error: 'User does not have an authorized token (not an admin)!',
+    return res.status(400).json({
+      error:
+        'User does not have an authorized token (not an admin) or review was not found!',
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

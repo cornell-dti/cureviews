@@ -85,11 +85,12 @@ export const removePendingReview = async ({
   auth,
 }: AdminPendingReviewType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
+
   if (userIsAdmin) {
     await updateReviewVisibility(reviewId, 0, 0);
     const result = await updateCourseMetricsFromReview(reviewId);
     await removeReview(reviewId);
-    return true && result;
+    return result;
   }
 
   return false;
