@@ -67,13 +67,12 @@
   .searchbar {
     background-color: transparent;
     display: inline-block;
-    padding: 0;
     position: absolute;
-    outline: 0;
     background: #ffffff;
     box-sizing: border-box;
     border-radius: 10px;
     box-shadow: none;
+    padding-left: 1em;
   }
 
   .searchbar-in-navbar {
