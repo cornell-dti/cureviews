@@ -10,6 +10,7 @@
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .searchbar-in-navbar {
@@ -50,11 +51,8 @@
   cursor: pointer;
   max-height: 300px;
   overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  z-index: 1001;
-  border-radius: 0 0 10px 10px;
-  margin-top: -5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /* Selects all 'output' class objects that are decendents
