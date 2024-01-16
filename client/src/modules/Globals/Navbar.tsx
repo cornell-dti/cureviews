@@ -2,7 +2,7 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { SearchBar } from '../SearchBar'
-import ProfileDropdown from '../Globals/ProfileDropdown'
+import ProfileDropdown from './ProfileDropdown'
 
 import { useAuthOptionalLogin } from '../../auth/auth_utils'
 import { Session } from '../../session-store'
@@ -41,7 +41,6 @@ export default function Navbar({ userInput }: NavbarProps) {
           }
           signOut()
         }}
-        location={location.pathname}
         signIn={signIn}
       />
     )

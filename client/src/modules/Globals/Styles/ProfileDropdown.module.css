@@ -15,52 +15,91 @@
   background-color: white;
   position: absolute;
   right: 0;
-  width: 10rem;
+  width: 10em;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  padding: 28px;
+  padding: 1.5em;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .profileMenuLink {
   display: block;
   color: black;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 10px;
+  font-size: 1rem;
 }
 
 .profileMenuLink:hover {
   color: #0076ff;
 }
 
-.profileMenuSignOutButton {
+.signInButton {
+  position: absolute;
+  right: 2em;
   text-align: center;
-  width: 100%;
-  background: #0076ff;
+  width: 9em;
+  background: #ffffff;
   border-radius: 10px;
-  margin-top: 15px;
+  margin-top: 0.5em;
 
-  padding: 5px;
+  padding: 0.5em;
 
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 23px;
+  font-size: 1rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  color: #ffffff;
+  color: black;
 }
 
-@media (max-width: 800px) {
+.profileMenuSignOutButton {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  background: #0076ff;
+  border-radius: 10px;
+
+  padding: 5px;
+
+  font-weight: 600;
+  font-size: 1rem;
+  color: #ffffff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .signOutButtonContainer {
+    position: relative;
+  }
+  .signInButton {
+    top: 3em;
+    margin: 0;
+    right: 1em;
+    font-size: 1rem;
+  }
+
   .profileMenuCard {
-    width: 210px;
-    height: 130px;
-    padding: 15px;
+    border-radius: 5px;
+    padding: 20px;
+    gap: 0;
+    padding-bottom: 40px;
   }
 
   .profileMenuSignOutButton {
-    margin-top: 15px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    padding: 13px;
   }
 }

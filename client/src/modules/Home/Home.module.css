@@ -17,12 +17,6 @@
 }
 
 @media (max-width: 992px) {
-  .signInButton {
-    position: absolute;
-    right: 1em !important;
-    font-size: 16px !important;
-  }
-
   .homepageText {
     font-size: 18px;
   }
