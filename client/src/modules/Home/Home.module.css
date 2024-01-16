@@ -1,0 +1,82 @@
+.homepageText {
+  color: #0076ff;
+}
+
+@media (min-width: 992px) {
+  .homepageText {
+    font-size: 24px;
+  }
+
+  .homepageTextPadding {
+    padding-left: 120px;
+  }
+
+  .scaleLogoHome {
+    margin: 120px 0px 0px 120px;
+  }
+}
+
+@media (max-width: 992px) {
+  .homepageText {
+    font-size: 18px;
+  }
+
+  .homepageTextPadding {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .scaleLogoHome {
+    margin: 120px 0px 0px 30px;
+  }
+}
+
+.scaleLogoHome {
+  height: 100px;
+  width: auto;
+}
+
+.backgroundCommon {
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+  max-height: 100%;
+  min-width: 100%;
+  justify-items: start;
+  position: fixed;
+  bottom: 0px;
+}
+
+.dtiLogo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  height: auto;
+  width: 200px;
+}
+
+/* Needed so that background is flush against bottom */
+.homeFullHeight {
+  height: 100%;
+  background-color: #f4f9fe;
+}
+
+.signInButton {
+  padding: 0.5em 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  right: 3em;
+  top: 2em;
+
+  background: #ffffff;
+  border-radius: 10px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+
+  color: #000000;
+}

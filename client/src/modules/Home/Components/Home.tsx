@@ -8,7 +8,7 @@ import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 import DTITextLogo from '../../../assets/img/dti-text-logo.png'
 import DTIWhiteLogo from '../../../assets/img/dti-text-white-logo.png'
 
-import '../home.css'
+import styles from '../Home.module.css'
 
 /**
   Home Page.
@@ -66,7 +66,6 @@ export const Home = (imgSrc: any) => {
     if (time === 'night') {
       setDTILogo(DTIWhiteLogo)
     }
-    console.log(`background-gradient_${time}${season}`)
   }, [time, season])
 
   /** Displays "sign in" or profile bear picture */
@@ -77,7 +76,7 @@ export const Home = (imgSrc: any) => {
     return (
       <button
         type="button"
-        className="sign-in-button"
+        className={`${styles.signInButton}`}
         onClick={() => {
           signIn('home')
         }}
@@ -90,21 +89,21 @@ export const Home = (imgSrc: any) => {
   return (
     <div className="row">
       <div
-        className={`full-height background-common background-gradient_${time}${season}`}
+        className={`${styles.homeFullHeight} ${styles.backgroundCommon} background-gradient_${time}${season}`}
       >
         <NavButton />
 
         <div className="row">
           <img
             src="/logo.svg"
-            className="scale-logo-homepage"
+            className={`${styles.scaleLogoHome}`}
             alt="CU Reviews Logo"
           />
         </div>
-        <div className="row homepage-text-padding">
+        <div className={`row ${styles.homepageTextPadding}`}>
           <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12">
             <div className="row">
-              <p className="homepage-text">
+              <p className={`${styles.homepageText}`}>
                 Search for Cornell courses, rate past classes, and share
                 feedback
               </p>
@@ -116,9 +115,7 @@ export const Home = (imgSrc: any) => {
             />
           </div>
         </div>
-        <div className="">
-          <img src={DTILogo} className="dti-logo" alt="DTI Logo" />
-        </div>
+        <img src={DTILogo} className={`${styles.dtiLogo}`} alt="DTI Logo" />
       </div>
     </div>
   )
