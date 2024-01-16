@@ -27,7 +27,7 @@ export default function ProfileDropdown(props) {
     }
   }, [open])
 
-  return (
+  return props.isLoggedIn ? (
     <div className={styles.profileMenuContainer}>
       <img
         src={profilePicture}
@@ -53,5 +53,15 @@ export default function ProfileDropdown(props) {
         <div></div>
       )}
     </div>
+  ) : (
+    <button
+      type="button"
+      className={`${styles.signInButton}`}
+      onClick={() => {
+        props.signIn('home')
+      }}
+    >
+      Sign In
+    </button>
   )
 }

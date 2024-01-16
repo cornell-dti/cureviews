@@ -70,24 +70,18 @@ export const Home = (imgSrc: any) => {
 
   /** Displays "sign in" or profile bear picture */
   const NavButton = () => {
-    if (isLoggedIn) {
-      return <ProfileDropdown netId={netId} signOut={signOut} />
-    }
     return (
-      <button
-        type="button"
-        className={`${styles.signInButton}`}
-        onClick={() => {
-          signIn('home')
-        }}
-      >
-        Sign In
-      </button>
+      <ProfileDropdown
+        isLoggedIn={isLoggedIn}
+        netId={netId}
+        signOut={signOut}
+        signIn={signIn}
+      />
     )
   }
 
   return (
-    <div className="row">
+    <div className="row ">
       <div
         className={`${styles.homeFullHeight} ${styles.backgroundCommon} background-gradient_${time}${season}`}
       >

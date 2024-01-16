@@ -2,8 +2,7 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { SearchBar } from '../SearchBar'
-import ProfileDropdownNavBar from './Components/ProfileDropNavBar'
-import { randomPicture } from './profile_picture'
+import ProfileDropdown from '../Globals/ProfileDropdown'
 
 import { useAuthOptionalLogin } from '../../auth/auth_utils'
 import { Session } from '../../session-store'
@@ -30,36 +29,22 @@ export default function Navbar({ userInput }: NavbarProps) {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
   const location = useLocation()
 
-  const profilePicture = randomPicture(netId)
-
   function displayButton() {
     const token = Session.get('token')
-    if (token) {
-      return (
-        <ProfileDropdownNavBar
-          imgSrc={`${String(profilePicture)}`}
-          isLoggedIn={token}
-          signOut={() => {
-            if (['/profile'].includes(location.pathname)) {
-              signOut('/')
-            }
-            signOut()
-          }}
-        />
-      )
-    } else {
-      return (
-        <button
-          type="button"
-          className="btn btn-light sign-in-button"
-          onClick={() => {
-            signIn('path:' + location.pathname)
-          }}
-        >
-          Sign In
-        </button>
-      )
-    }
+    return (
+      <ProfileDropdown
+        netId={`${netId}`}
+        isLoggedIn={token}
+        signOut={() => {
+          if (['/profile'].includes(location.pathname)) {
+            signOut('/')
+          }
+          signOut()
+        }}
+        location={location.pathname}
+        signIn={signIn}
+      />
+    )
   }
 
   return (
