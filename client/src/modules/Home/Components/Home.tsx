@@ -11,15 +11,15 @@ import DTIWhiteLogo from '../../../assets/img/dti-text-white-logo.png'
 import '../home.css'
 
 /**
-  Home Page. 
-  
+  Home Page.
+
   Uppermost View component in the component tree, the first element of the HTML body tag grabbed by index.html.
 
   @returns the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 
   @param imgSrc for search bar
-  
+
 */
 export const Home = (imgSrc: any) => {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
@@ -102,7 +102,7 @@ export const Home = (imgSrc: any) => {
           />
         </div>
         <div className="row homepage-text-padding">
-          <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+          <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12">
             <div className="row">
               <p className="homepage-text">
                 Search for Cornell courses, rate past classes, and share

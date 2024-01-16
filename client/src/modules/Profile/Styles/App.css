@@ -11,10 +11,6 @@
     padding-left: 120px;
   }
 
-  .scale-logo-homepage {
-    margin: 120px 0px 0px 120px;
-  }
-
   .sign-in-button {
     position: absolute;
     right: 30px;
@@ -48,18 +44,9 @@
     padding-right: 30px;
   }
 
-  .scale-logo-homepage {
-    margin: 120px 0px 0px 30px;
-  }
-
   .sign-in-button {
     width: 100px;
   }
-}
-
-.scale-logo-homepage {
-  height: 100px;
-  width: auto;
 }
 
 .homepage-text-padding {

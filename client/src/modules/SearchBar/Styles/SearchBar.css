@@ -3,9 +3,7 @@
 .searchbar {
   background-color: transparent;
   display: inline-block;
-  padding: 0;
   position: relative;
-  outline: 0;
   background: #ffffff;
   box-sizing: border-box;
   border-radius: 10px;
