@@ -334,17 +334,19 @@ export const Course = () => {
             Past Reviews ({courseReviews?.length})
           </h2>
           <div className={styles.reviewsHeader}>
-            <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-              Sort By:
-            </label>
-            <select
-              onChange={sortReviewsBy}
-              className={styles.sortBySelect}
-              id="sort-reviews-by"
-            >
-              <option value="helpful">Most Helpful</option>
-              <option value="recent">Recent</option>
-            </select>
+            <div className={styles.sortByContainer}>
+              <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+                Sort By:
+              </label>
+              <select
+                onChange={sortReviewsBy}
+                className={styles.sortBySelect}
+                id="sort-reviews-by"
+              >
+                <option value="helpful">Most Helpful</option>
+                <option value="recent">Recent</option>
+              </select>
+            </div>
           </div>
           <div className={styles.courseReviews}>
             <CourseReviews

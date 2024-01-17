@@ -166,9 +166,9 @@ export default function ReviewCard({
       )}
 
       {/* Main Section */}
-      <div className="row">
+      <div className={`${styles.reviewMainSectionContainer}`}>
         {/* Ratings section. */}
-        <div className="col-md-3 col-lg-4 col-xl-3">
+        <div className={styles.ratingsSection}>
           <div
             className={styles.ratingsContainer + ' ' + ratings_container_color}
           >

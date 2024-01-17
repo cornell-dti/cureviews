@@ -11,7 +11,6 @@
   flex-flow: row wrap;
   gap: 20px;
   background: white;
-  margin-bottom: 50px;
   padding: 0 3%;
 }
 
@@ -166,22 +165,24 @@
 
 .reviewsHeader {
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  color: #a1a1a1;
+  align-items: center;
+}
+
+.sortByContainer {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 .sortByLabel {
-  font-weight: var(--regular-weight);
-  font-size: 18px;
+  font-size: 1.25rem;
   text-decoration-line: underline;
   color: #807b7b;
+  display: flex;
 }
 
 .sortBySelect {
-  font-weight: var(--regular-weight);
-  margin-left: 10px;
-  font-size: 18px;
+  font-size: 1.25rem;
   border: none;
   background-color: transparent;
   color: #0076ff;
