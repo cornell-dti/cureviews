@@ -3,15 +3,15 @@
 .classView {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
 }
 
 .content {
   display: flex;
   flex-flow: row wrap;
   gap: 20px;
-  background: white;
   padding: 0 3%;
+  background-color: var(--clr-blue-100) !important;
 }
 
 @media only screen and (min-width: 1008px) {
@@ -24,7 +24,7 @@
 .reviewContent {
   padding-right: 10%;
   padding-left: 10%;
-  background-color: var(--clr-blue-100);
+  background-color: var(--clr-blue-100) !important;
 }
 
 .authModal {
