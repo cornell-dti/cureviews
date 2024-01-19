@@ -228,11 +228,11 @@
 
 @media screen and (max-width: 992px) {
   .covidTag {
-    background-color: #ffec5e;
+    background-color: var(--clr-yellow-100);
     border-radius: 5px;
     width: 95%;
     margin-left: 0.2%;
-    border-color: #ffd666;
+    border-color: var(--clr-yellow-200);
     border-width: 3px;
     border-style: solid;
     padding: 4px;
@@ -241,11 +241,11 @@
 
 @media screen and (min-width: 992px) {
   .covidTag {
-    background-color: #ffec5e;
+    background-color: var(--clr-yellow-100);
     border-radius: 5px;
     width: 70%;
     margin-left: 0.2%;
-    border-color: #ffd666;
+    border-color: var(--clr-yellow-200);
     border-width: 3px;
     border-style: solid;
     padding: 4px;
