@@ -153,15 +153,26 @@ export default function ReviewCard({
     <div className={styles.reviewContainer + ' ' + review_container_style}>
       {/* Flag */}
       {!isPreview && (
-        <div className={styles.flagContainer}>
-          <button
-            onClick={() => {
-              reportHandler(_review)
-              alert('This post has been reported and will be reviewed.')
-            }}
-          >
-            <img src="/report-flag.svg" alt="report review button"></img>
-          </button>
+        <div className={styles.buttonContainer}>
+          <div className={styles.flagContainer}>
+            <button
+              onClick={() => {
+                reportHandler(_review)
+                alert('This post has been reported and will be reviewed.')
+              }}
+            >
+              <img src="/report-flag.svg" alt="report review button"></img>
+            </button>
+          </div>
+          <div className={styles.pencilContainer}>
+            <button
+              onClick={() => {
+                alert('Editing is currently not available, stay tuned!')
+              }}
+            >
+              <img src="/pencil.svg" alt="edit review button"></img>
+            </button>
+          </div>
         </div>
       )}
 

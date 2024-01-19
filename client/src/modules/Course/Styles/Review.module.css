@@ -13,6 +13,11 @@
   line-height: 18px;
 }
 
+.buttonContainer {
+  display: flex;
+  padding: 0.5em 1em 0em;
+}
+
 .reviewMainSectionContainer {
   display: flex;
   justify-content: space-between;

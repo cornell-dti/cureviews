@@ -122,13 +122,13 @@
   width: 100%;
   background-color: var(--clr-white);
   height: 150px;
-  padding: 20px;
+
   display: flex;
   justify-content: space-between;
 }
 
 .gauge {
-  height: 100%;
+  min-height: 100%;
   padding: 0 0px 0 0;
 }
 
