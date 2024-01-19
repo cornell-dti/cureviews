@@ -7,9 +7,10 @@ import { Review } from './review';
 import {
   findClassReviews,
   insertReview,
-  updateReviewLikes,
+  updateReviewLikedBy,
   updateStudentLikedReviews,
   updateStudentReviews,
+  updateReviewLikes,
 } from './review.data-access';
 import {
   InsertReviewType,
@@ -143,31 +144,18 @@ export const updateStudentLiked = async ({
       return null;
     }
 
-    if (review.likes === undefined) {
-      await updateReviewLikes(reviewId, 0, student._id, false);
-    } else {
-      await updateReviewLikes(
-        reviewId,
-        Math.max(0, review.likedBy.length),
-        student._id,
-        false,
-      );
-    }
+    await updateReviewLikedBy(reviewId, student._id, false);
   } else {
     await setStudentLikedReviews({ netId, reviewId: review._id, liked: true });
-    if (review.likes === undefined) {
-      await updateReviewLikes(reviewId, 1, student._id, true);
-    } else {
-      await updateReviewLikes(
-        reviewId,
-        review.likedBy.length,
-        student._id,
-        true,
-      );
-    }
+
+    await updateReviewLikedBy(reviewId, student._id, true);
   }
 
-  return review;
+  const updatedReview = await findReview(reviewId);
+  const uniqueLikes = new Set(updatedReview.likedBy);
+  await updateReviewLikes(reviewId, uniqueLikes.size);
+
+  return await findReview(reviewId);
 };
 
 export const insertNewReview = async ({

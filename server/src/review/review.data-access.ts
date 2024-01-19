@@ -51,23 +51,18 @@ export const insertReview = async (review: Review) => {
   await newReview.save();
 };
 
-export const updateReviewLikes = async (
+export const updateReviewLikedBy = async (
   reviewId: string,
-  likes: number,
   id: string,
   liked: boolean,
 ) => {
   if (liked) {
-    await Reviews.updateOne(
-      { _id: reviewId },
-      { $set: { likes } },
-      { $push: { likedBy: id } },
-    );
+    await Reviews.updateOne({ _id: reviewId }, { $addToSet: { likedBy: id } });
   } else {
-    await Reviews.updateOne(
-      { _id: reviewId },
-      { $set: { likes } },
-      { $pull: { likedBy: id } },
-    );
+    await Reviews.updateOne({ _id: reviewId }, { $pull: { likedBy: id } });
   }
+};
+
+export const updateReviewLikes = async (reviewId: string, likes: number) => {
+  await Reviews.updateOne({ _id: reviewId }, { $set: { likes } });
 };
