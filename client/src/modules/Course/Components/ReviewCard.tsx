@@ -210,28 +210,28 @@ export default function ReviewCard({
             {/* Title And Professor */}
             <TitleAndProfessor></TitleAndProfessor>
 
-            <div className="grade-major-container">
+            <div className={styles.gradeMajorContainer}>
               <div>
-                <span className="grade-major-label">Grade: </span>
+                <span>Grade: </span>
                 {_review.grade &&
                 _review.grade.length !== 0 &&
                 /^([^0-9]*)$/.test(_review.grade) ? (
-                  <span className="grade-major-text">{_review.grade}</span>
+                  <span className={styles.gradeMajorText}>{_review.grade}</span>
                 ) : (
-                  <span className="grade-major-text">N/A</span>
+                  <span className={styles.gradeMajorText}>N/A</span>
                 )}
               </div>
               <div>
-                <span className="grade-major-label">Major(s): </span>
+                <span>Major(s): </span>
                 {_review.major && _review.major.length !== 0 ? (
                   _review.major.map((major, index) => (
-                    <span className="grade-major-text" key={index}>
+                    <span className={styles.gradeMajorText} key={index}>
                       {index > 0 ? ', ' : ''}
                       {major}
                     </span>
                   ))
                 ) : (
-                  <span className="grade-major-text">N/A</span>
+                  <span className={styles.gradeMajorText}>N/A</span>
                 )}
               </div>
             </div>

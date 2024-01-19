@@ -3,8 +3,8 @@
   --semi-bold-weight: 600;
   --bold-weight: 700;
 
-  --font-small-size: 0.875rem;
-  --font-p-size: 0.8rem;
+  --font-small-size: 0.8rem;
+  --font-p-size: 0.875rem;
   --font-sub-heading-size: 1.5rem;
   --font-heading-size: 2rem;
 
@@ -57,7 +57,9 @@ body {
 body {
   padding: 0;
   margin: 0;
-  font-size: 14px;
+  font-size: var(--font-p-size);
+  font-weight: var(--regular-weight);
+
   /* line-height: 1.2; */
 }
 
