@@ -99,7 +99,7 @@
   font-weight: 600;
   font-size: 24px;
   line-height: 30px;
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
   margin-bottom: 25px;
   text-align: left;
 }
@@ -198,7 +198,7 @@
   line-height: 0px;
   align-items: center;
   text-align: center;
-  background: var(--clr-blue-900);
+  background: var(--clr-blue-800);
   color: var(--clr-white);
   border-radius: 6.73729px;
   border-width: 0px;
@@ -209,7 +209,7 @@
   .form-postbutton {
     height: 46px;
 
-    background: var(--clr-blue-900);
+    background: var(--clr-blue-800);
     border-radius: 5.65207px;
   }
 }
@@ -268,11 +268,11 @@
 }
 
 .react-select__control--is-focused .react-select__dropdown-indicator {
-  color: var(--clr-blue-900) !important;
+  color: var(--clr-blue-800) !important;
 }
 
 .react-select__control--is-focused {
-  border-color: var(--clr-blue-900) !important;
+  border-color: var(--clr-blue-800) !important;
   box-shadow: none !important;
 }
 
@@ -547,7 +547,7 @@ input[type='range'] {
 }
 
 .activeBox {
-  background: var(--clr-blue-900) !important;
+  background: var(--clr-blue-800) !important;
 }
 
 @media (min-width: 992px) {
@@ -576,7 +576,7 @@ input[type='range'] {
 }
 
 .activeText {
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .activeText,

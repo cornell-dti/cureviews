@@ -38,7 +38,7 @@
   }
 
   .result-card-clicked {
-    border: 2.49858px solid var(--clr-blue-900);
+    border: 2.49858px solid var(--clr-blue-800);
   }
 }
 
@@ -55,7 +55,7 @@
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   line-height: normal;
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
   margin-bottom: 7px;
 }
 

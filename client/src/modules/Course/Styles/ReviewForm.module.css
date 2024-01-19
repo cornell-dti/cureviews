@@ -8,7 +8,7 @@
   margin-top: 0;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 24px;
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .selectProfessorLabel {
@@ -51,7 +51,7 @@
 }
 
 .actionButton {
-  background-color: var(--clr-blue-900);
+  background-color: var(--clr-blue-800);
   color: var(--clr-white) !important;
   width: 100%;
   border-radius: 10px;
@@ -69,7 +69,7 @@
 }
 
 .actionButton:hover {
-  background-color: #004ca3;
+  background-color: var(--clr-blue-900);
   color: var(--clr-white) !important;
 }
 

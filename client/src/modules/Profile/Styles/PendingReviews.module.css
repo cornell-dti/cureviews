@@ -36,7 +36,7 @@
   letter-spacing: -0.225605px;
   text-decoration-line: underline;
 
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 @media (max-width: 480px) {

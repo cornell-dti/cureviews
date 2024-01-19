@@ -107,7 +107,7 @@
   margin-top: 35px;
   text-align: center;
 
-  background: var(--clr-blue-900);
+  background: var(--clr-blue-800);
   border-radius: 10px;
 
   width: 267px;
@@ -204,7 +204,7 @@
   line-height: normal;
   display: inline;
   text-decoration-line: underline;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .sortBySelect {
@@ -218,14 +218,14 @@
   background-color: transparent !important;
   border: none;
 
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .sortByLabel {
   font-weight: var(--regular-weight);
   font-size: 18px;
   text-decoration-line: underline;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .noReviewsContainer {
@@ -307,7 +307,7 @@
   letter-spacing: -0.225605px;
   text-decoration-line: underline;
 
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .pastHeader {

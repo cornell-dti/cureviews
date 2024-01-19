@@ -127,7 +127,7 @@
   display: inline;
   align-items: center;
   text-align: right;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 @media (min-width: 768px) and (max-width: 1000px) {
@@ -310,7 +310,7 @@
   }
 
   .pendingRatingElemColor {
-    color: #807b7b;
+    color: var(--clr-gray-300);
   }
 
   .acceptedReviewDividerColor {
@@ -360,10 +360,10 @@
   }
 
   .courseTitle {
-    color: var(--clr-blue-900);
+    color: var(--clr-blue-800);
   }
 
   .pendingCourseTitle {
-    color: #807b7b;
+    color: var(--clr-gray-300);
   }
 }

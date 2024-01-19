@@ -100,7 +100,7 @@
   justify-content: space-between;
   /* margin: 20px 0; */
   background: var(--clr-blue-100);
-  border: 2px solid #b7d8ff;
+  border: 2px solid var(--clr-blue-200);
   border-radius: 5px;
   /* padding: 2px 10px; */
   font-weight: 600;
@@ -133,7 +133,7 @@
 }
 
 .startReviewButton {
-  background-color: var(--clr-blue-900);
+  background-color: var(--clr-blue-800);
   color: var(--clr-white);
   width: 100%;
   font-size: 18px;
@@ -143,7 +143,7 @@
 }
 
 .startReviewButton:hover {
-  background-color: #004ca3;
+  background-color: var(--clr-blue-900);
   color: var(--clr-white) !important;
 }
 
@@ -177,7 +177,7 @@
 .sortByLabel {
   font-size: 1.25rem;
   text-decoration-line: underline;
-  color: #807b7b;
+  color: var(--clr-gray-300);
   display: flex;
 }
 
@@ -185,7 +185,7 @@
   font-size: 1.25rem;
   border: none;
   background-color: transparent;
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .pastReviews {
@@ -193,7 +193,7 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
-  color: #807b7b;
+  color: var(--clr-gray-300);
   padding: 0 0 20px;
   margin: 0;
 }

@@ -24,7 +24,7 @@
 .filter-sub-title {
   font-style: normal;
   align-items: center;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .filter-checkbox-label {
@@ -144,7 +144,7 @@
 }
 
 .mobile-filter-button {
-  border: 1px solid var(--clr-blue-900);
+  border: 1px solid var(--clr-blue-800);
   background-color: Transparent;
   background-image: url('/filterIcon.svg');
   background-repeat: no-repeat;
@@ -163,7 +163,7 @@
   font-size: 18px;
   line-height: 19px;
   letter-spacing: -0.225605px;
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .mobile-filter-done-button {
@@ -178,7 +178,7 @@
   border: none;
   background: none;
   float: right;
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 .filter-popup {
@@ -217,7 +217,7 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
   font-weight: 300;
-  color: #807b7b !important;
+  color: var(--clr-gray-300) !important;
 }
 
 .react-major-select__indicator-separator {
@@ -230,11 +230,11 @@
 
 .react-major-select__control--is-focused
   .react-major-select__dropdown-indicator {
-  color: var(--clr-blue-900) !important;
+  color: var(--clr-blue-800) !important;
 }
 
 .react-major-select__control--is-focused {
-  border-color: var(--clr-blue-900) !important;
+  border-color: var(--clr-blue-800) !important;
   box-shadow: none !important;
 }
 
@@ -254,7 +254,7 @@
   border: none;
   outline: none;
   background-color: var(--clr-blue-100);
-  color: var(--clr-blue-900);
+  color: var(--clr-blue-800);
 }
 
 @media (max-width: 992px) {
@@ -271,7 +271,7 @@
   line-height: normal;
   text-decoration-line: underline;
   margin: 0;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .results-classes-list {
@@ -298,7 +298,7 @@
     font-weight: normal;
     font-size: 18px;
     line-height: 23px;
-    color: var(--clr-blue-900);
+    color: var(--clr-blue-800);
     padding-top: 54px;
     padding-left: 36px;
   }
@@ -330,7 +330,7 @@
   .review-bottom-button {
     width: 100%;
     height: 47px;
-    background: var(--clr-blue-900);
+    background: var(--clr-blue-800);
     border-radius: 10px;
 
     font-family: Source Sans Pro;

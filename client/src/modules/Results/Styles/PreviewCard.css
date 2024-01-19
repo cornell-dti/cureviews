@@ -9,7 +9,7 @@
   }
 
   .preview-class-link {
-    color: var(--clr-blue-900);
+    color: var(--clr-blue-800);
     font-size: 32px;
   }
 
@@ -178,7 +178,7 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .preview-empty-top-review {
@@ -201,7 +201,7 @@
   text-align: center;
   border-radius: 10px;
   width: 100%;
-  background: var(--clr-blue-900);
+  background: var(--clr-blue-800);
   padding: 10px;
   display: inline-grid;
   align-content: space-evenly;
