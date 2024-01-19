@@ -32,7 +32,7 @@
   height: 8px;
   width: 100%;
   border-radius: 10px;
-  background-color: #ececec;
+  background-color: var(--clr-gray-100);
 }
 
 .ratingButtonPillSelected {

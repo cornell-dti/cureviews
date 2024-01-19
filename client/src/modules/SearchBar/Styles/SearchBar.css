@@ -12,7 +12,7 @@
 }
 
 .searchbar-in-navbar {
-  border: 1.24929px solid #ececec;
+  border: 1.24929px solid var(--clr-gray-100);
   box-shadow: none;
 }
 
@@ -76,7 +76,7 @@
   }
 
   .searchbar-in-navbar {
-    border: 1.24929px solid #ececec;
+    border: 1.24929px solid var(--clr-gray-100);
     box-shadow: none;
   }
 
