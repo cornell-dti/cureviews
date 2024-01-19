@@ -30,7 +30,7 @@
     padding-left: 9px;
     padding-top: 4px;
     padding-bottom: 4px;
-    background: #f4f9fe;
+    background: var(--clr-blue-100);
   }
 
   .out-of-five {

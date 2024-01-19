@@ -253,7 +253,7 @@
   border-color: transparent;
   border: none;
   outline: none;
-  background-color: #f4f9fe;
+  background-color: var(--clr-blue-100);
   color: var(--clr-blue-900);
 }
 
@@ -312,7 +312,11 @@
   }
 
   .mobile-search-gradient {
-    background: linear-gradient(180deg, #f4f9fe 0%, var(--clr-white) 50%);
+    background: linear-gradient(
+      180deg,
+      var(--clr-blue-100) 0%,
+      var(--clr-white) 50%
+    );
   }
 
   .button-position-search-results {
@@ -408,7 +412,7 @@
 }
 
 ul {
-  background: #f4f9fe;
+  background: var(--clr-blue-100);
 }
 
 /* Class Preview Styling */

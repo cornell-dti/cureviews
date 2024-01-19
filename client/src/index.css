@@ -9,7 +9,11 @@
   --clr-gray-300: #979797;
   --clr-gray-500: #4a4a4a;
 
+  --clr-blue-100: #f4f9fe;
   --clr-blue-900: #0076ff;
+
+  --clr-yellow-100: #ffec5e;
+  --clr-yellow-200: #ffd666;
 
   --clr-red: red;
 }

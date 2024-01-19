@@ -60,7 +60,7 @@
   letter-spacing: -0.0819218px;
   text-align: center;
 
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 .profileUserStatisticsText {

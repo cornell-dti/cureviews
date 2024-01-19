@@ -57,7 +57,7 @@
 
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
-    background: #f4f9fe;
+    background: var(--clr-blue-100);
   }
 
   .pendingRatingsContainerColor {
@@ -102,7 +102,7 @@
 .courseCodeAndProf {
   font-size: 12px;
   line-height: 15px;
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 .professors {

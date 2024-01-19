@@ -74,7 +74,7 @@
   .rating-mobile-box {
     /* Background */
 
-    background: #f4f9fe;
+    background: var(--clr-blue-100);
     /* Light */
 
     border: 2px solid #b7d8ff;

@@ -17,7 +17,7 @@
 
   /* Gray */
 
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 @media (max-width: 480px) {

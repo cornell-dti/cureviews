@@ -24,7 +24,7 @@
 .reviewContent {
   padding-right: 10%;
   padding-left: 10%;
-  background-color: #f4f9fe;
+  background-color: var(--clr-blue-100);
 }
 
 .authModal {
@@ -91,7 +91,7 @@
   font-size: 18px;
   font-weight: var(--regular-weight);
   letter-spacing: -0.13px;
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
   margin: 16px 0 0 0;
 }
 
@@ -99,7 +99,7 @@
   display: none;
   justify-content: space-between;
   /* margin: 20px 0; */
-  background: #f4f9fe;
+  background: var(--clr-blue-100);
   border: 2px solid #b7d8ff;
   border-radius: 5px;
   /* padding: 2px 10px; */

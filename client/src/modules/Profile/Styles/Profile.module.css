@@ -81,7 +81,7 @@
   letter-spacing: -0.0819218px;
   text-align: center;
 
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 .profileUserStatisticsText {
@@ -287,7 +287,7 @@
 
   /* Gray */
 
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 .hidePending {
@@ -329,7 +329,7 @@
 
   /* Gray */
 
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 @media (min-width: 481px) and (max-width: 1000px) {
