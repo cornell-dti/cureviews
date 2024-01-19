@@ -59,7 +59,7 @@ reviewRouter.post('/userHasLiked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });
-    const result = checkStudentHasLiked({ auth, reviewId: id });
+    const result = await checkStudentHasLiked({ auth, reviewId: id });
 
     if (result === null) {
       return res

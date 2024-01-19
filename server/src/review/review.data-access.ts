@@ -54,11 +54,20 @@ export const insertReview = async (review: Review) => {
 export const updateReviewLikes = async (
   reviewId: string,
   likes: number,
-  netId: string,
+  id: string,
+  liked: boolean,
 ) => {
-  await Reviews.updateOne(
-    { _id: reviewId },
-    { $set: { likes } },
-    { $pull: { likedBy: netId } },
-  );
+  if (liked) {
+    await Reviews.updateOne(
+      { _id: reviewId },
+      { $set: { likes } },
+      { $push: { likedBy: id } },
+    );
+  } else {
+    await Reviews.updateOne(
+      { _id: reviewId },
+      { $set: { likes } },
+      { $pull: { likedBy: id } },
+    );
+  }
 };

@@ -85,12 +85,12 @@ export default function ReviewCard({
     }
 
     axios
-      .post('/v2/updateLiked', {
+      .post('/api/updateLiked', {
         id: _review._id,
         token: getAuthToken(),
       })
       .then((response) => {
-        setReview(response.data.result.review)
+        setReview(response.data.review)
       })
   }
 
@@ -99,7 +99,7 @@ export default function ReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/v2/getCourseById`, {
+      const response = await axios.post(`/api/getCourseById`, {
         courseId: _review.class,
       })
       const course = response.data.result
@@ -114,12 +114,13 @@ export default function ReviewCard({
 
   useEffect(() => {
     async function updateLiked() {
-      const response = await axios.post('/v2/userHasLiked', {
+      const response = await axios.post('/api/userHasLiked', {
         id: _review._id,
         token: getAuthToken(),
       })
 
-      setLiked(response.data.result.hasLiked)
+      console.log(response.data)
+      setLiked(response.data.hasLiked)
     }
 
     if (isLoggedIn) updateLiked()
@@ -260,6 +261,8 @@ export default function ReviewCard({
                       src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
                       alt={liked ? 'Liked' : 'Not Liked Yet'}
                     />
+                    {console.log(_review)}
+
                     <p className={styles.upvoteText}>
                       Helpful ({_review.likes ? _review.likes : 0})
                     </p>

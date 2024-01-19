@@ -144,16 +144,26 @@ export const updateStudentLiked = async ({
     }
 
     if (review.likes === undefined) {
-      await updateReviewLikes(reviewId, 0, netId);
+      await updateReviewLikes(reviewId, 0, student._id, false);
     } else {
-      await updateReviewLikes(reviewId, Math.max(0, review.likes - 1), netId);
+      await updateReviewLikes(
+        reviewId,
+        Math.max(0, review.likedBy.length),
+        student._id,
+        false,
+      );
     }
   } else {
     await setStudentLikedReviews({ netId, reviewId: review._id, liked: true });
     if (review.likes === undefined) {
-      await updateReviewLikes(reviewId, 1, netId);
+      await updateReviewLikes(reviewId, 1, student._id, true);
     } else {
-      await updateReviewLikes(reviewId, review.likes + 1, netId);
+      await updateReviewLikes(
+        reviewId,
+        review.likedBy.length,
+        student._id,
+        true,
+      );
     }
   }
 
