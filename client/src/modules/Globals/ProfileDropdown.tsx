@@ -22,7 +22,6 @@ export default function ProfileDropdown({
 
   useEffect(() => {
     const pageClickEvent = (e: { target: any }) => {
-      console.log(dropdownRef.current)
       if (dropdownRef.current !== null) {
         setOpen(!open)
       }

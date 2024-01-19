@@ -58,7 +58,6 @@ export function useAuthMandatoryLogin(
           let verifiedEmail = ''
 
           if (response.status === 200) {
-            console.log(res.result)
             verifiedEmail = res.result
           }
 
@@ -98,11 +97,9 @@ export function useAuthOptionalLogin(): [
         })
         .then((response) => {
           const data = response.data
-          console.log(response)
           var verifiedEmail = ''
 
           if (response.status === 200) {
-            console.log(data.result)
             verifiedEmail = data.result
           }
 

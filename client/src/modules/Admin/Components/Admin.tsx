@@ -61,7 +61,6 @@ export const Admin = () => {
           setUnapprovedReviews(
             result.filter((review: Review) => review.reported === 0)
           )
-          console.log(result)
           setReportedReviews(
             result.filter((review: Review) => review.reported === 1)
           )
@@ -121,9 +120,6 @@ export const Admin = () => {
               review,
               reportedReviews
             )
-
-            console.log('hello')
-            console.log(reportedReviews)
 
             setReportedReviews(updatedReportedReviews)
           }
