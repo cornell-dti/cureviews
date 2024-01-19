@@ -40,7 +40,7 @@
 }
 
 .search-text::placeholder {
-  color: #c9c9c9;
+  color: var(--clr-gray-200);
   font-weight: var(--regular-weight);
 }
 
@@ -59,7 +59,7 @@
     search results */
 .contrasting-result-background .output {
   border-style: solid;
-  border-color: #6ba7ec;
+  border-color: var(--clr-blue-300);
   border-width: 0 1px 1px 1px;
 }
 

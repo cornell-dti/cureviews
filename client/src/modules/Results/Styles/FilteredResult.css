@@ -65,7 +65,7 @@
   font-weight: var(--regular-weight);
   font-style: normal;
   line-height: normal;
-  color: #777777;
+  color: var(--clr-gray-300);
   margin-top: 0px;
   margin-bottom: 15px;
 }

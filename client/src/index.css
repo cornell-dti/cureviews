@@ -17,10 +17,13 @@
 
   --clr-yellow-100: #ffec5e;
   --clr-yellow-200: #ffd666;
+  --clr-yellow-300: #f3a953;
 
-  --clr-green: #a0d53f;
+  --clr-green-100: #92cf48;
+  --clr-green-200: #53b227;
 
-  --clr-red: red;
+  --clr-red-100: #ff756c;
+  --clr-red-200: red;
 }
 
 * {

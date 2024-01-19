@@ -149,7 +149,7 @@
 }
 
 .form-field-error {
-  color: var(--clr-red);
+  color: var(--clr-red-200);
 }
 
 .form-label {
@@ -361,11 +361,11 @@ textarea {
 }
 
 #sm1 {
-  background-color: var(--clr-green);
+  background-color: var(--clr-green-200);
 }
 
 #sm2 {
-  background-color: var(--clr-red);
+  background-color: var(--clr-red-200);
 }
 
 .sliderHolder {
@@ -378,8 +378,8 @@ input[type='range'] {
 
 .error,
 .error:focus {
-  border: 1px solid var(--clr-red) !important;
-  outline: 1px solid var(--clr-red);
+  border: 1px solid var(--clr-red-200) !important;
+  outline: 1px solid var(--clr-red-200);
 }
 
 .hidden {

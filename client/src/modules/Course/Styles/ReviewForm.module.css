@@ -46,7 +46,7 @@
 }
 
 .errorText {
-  color: var(--clr-red);
+  color: var(--clr-red-200);
   margin-top: 4px;
 }
 

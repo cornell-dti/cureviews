@@ -46,15 +46,15 @@ Green: rgba(83, 178, 39, 1), #53B227
 */
 
 .ratingButtonPillSelectedRed {
-  background-color: #ff756c;
+  background-color: var(--clr-red-100);
 }
 
 .ratingButtonPillSelectedYellow {
-  background-color: #f8cc30;
+  background-color: var(--clr-yellow-200);
 }
 
 .ratingButtonPillSelectedGreen {
-  background-color: #53b227;
+  background-color: var(--clr-green-200);
 }
 
 /*

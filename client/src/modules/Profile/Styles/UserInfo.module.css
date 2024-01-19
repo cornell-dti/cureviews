@@ -184,7 +184,7 @@
     left: -11.65rem;
     top: -0.5rem;
     font-size: 0.8rem;
-    color: #515151;
+    color: var(--clr-gray-500);
   }
 
   .profileUserStatisticsText {

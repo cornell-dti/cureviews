@@ -162,7 +162,7 @@
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  color: #a1a1a1;
+  color: var(--clr-gray-300);
 }
 
 .m-bot-0 {
