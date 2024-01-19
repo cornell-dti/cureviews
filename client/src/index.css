@@ -1,13 +1,19 @@
 :root {
   --regular-weight: 400;
   --semi-bold-weight: 600;
+  --bold-weight: 700;
+
+  --font-small-size: 0.875rem;
+  --font-p-size: 0.8rem;
+  --font-sub-heading-size: 1.5rem;
+  --font-heading-size: 2rem;
 
   --clr-black: #000000;
   --clr-white: #ffffff;
   --clr-gray-100: #f9f9f9;
   --clr-gray-200: #ececec;
   --clr-gray-300: #9fa0a1;
-  --clr-gray-500: #807b7b;
+  --clr-gray-500: #3a3a3a;
 
   --clr-blue-100: #f4f9fe;
   --clr-blue-200: #b7d8ff;
@@ -44,7 +50,7 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
   /* overflow: hidden; */
 }
 
@@ -129,6 +135,18 @@ ul {
 
 h1 {
   margin: 0;
+  font-size: var(--font-heading-size);
+  font-weight: var(--semi-bold-weight);
+}
+
+h2 {
+  font-size: var(--font-sub-heading-size);
+  font-weight: var(--semi-bold-weight);
+}
+
+h3 {
+  font-size: var(--font-heading-size);
+  font-weight: var(--regular-weight);
 }
 
 div.sm-spacing {

@@ -81,7 +81,7 @@
 }
 
 .courseTitle {
-  font-size: 32px;
+  font-size: var(--font-heading-size);
   font-weight: var(--semi-bold-weight);
   letter-spacing: -0.13px;
   color: var(--clr-black);
@@ -215,7 +215,7 @@
 
 @media (min-width: 768px) {
   .courseSubtitle {
-    font-size: 24px;
+    font-size: var(--font-sub-heading-size);
   }
 
   .authModal {
@@ -250,7 +250,7 @@
   }
 
   .pastReviews {
-    font-size: 24px;
+    font-size: var(--font-sub-heading-size);
     padding-top: 35px;
   }
 

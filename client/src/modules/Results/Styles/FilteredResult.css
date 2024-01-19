@@ -1,7 +1,7 @@
 /* desktop*/
 @media (min-width: 992px) {
   .result-card {
-    margin: 32px 0;
+    margin: var(--font-heading-size) 0;
   }
 
   .result-card-clicked {
@@ -44,7 +44,7 @@
 
 .result-card {
   border-radius: 10px;
-  padding: 15px 24px 0px 24px;
+  padding: 15px var(--font-sub-heading-size) 0px var(--font-sub-heading-size);
   background-color: white;
   list-style-type: none;
 }
@@ -61,7 +61,7 @@
 
 .result-card-subtitle {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 12px;
+  font-size: var(--font-small-size);
   font-weight: var(--regular-weight);
   font-style: normal;
   line-height: normal;
@@ -89,5 +89,5 @@
 }
 
 .result-card-sort-by-value {
-  padding: 0 0 0 14px;
+  padding: 0 0 0 var(--font-p-size);
 }

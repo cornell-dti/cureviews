@@ -33,7 +33,7 @@
 }
 
 .gaugeLabel {
-  font-size: 12px;
+  font-size: var(--font-small-size);
 }
 
 .gaugeCircleContainer {
@@ -52,11 +52,11 @@
   }
 
   .gaugeLabel {
-    font-size: 14px;
+    font-size: var(--font-p-size);
   }
 
   .gaugeCircleContainer {
-    padding-left: 24px;
+    padding-left: var(--font-sub-heading-size);
   }
 }
 

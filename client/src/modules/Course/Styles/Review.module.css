@@ -9,7 +9,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
+  font-size: var(--font-p-size);
   line-height: 18px;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .courseCodeAndProf {
-  font-size: 12px;
+  font-size: var(--font-small-size);
   line-height: 15px;
   color: var(--clr-gray-300);
 }
@@ -115,14 +115,14 @@
 }
 
 .date {
-  font-size: 12px;
+  font-size: var(--font-small-size);
   line-height: 15px;
 
   color: var(--clr-gray-300);
 }
 
 .upvoteText {
-  font-size: 12px;
+  font-size: var(--font-small-size);
   line-height: 15px;
   display: inline;
   align-items: center;
@@ -263,7 +263,7 @@
     font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: var(--font-p-size);
     line-height: 18px;
   }
 

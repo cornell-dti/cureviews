@@ -71,7 +71,7 @@
   font-weight: var(--semi-bold-weight);
   font-size: 18px;
   text-decoration: none;
-  margin-top: 12px;
+  margin-top: var(--font-small-size);
   text-align: right;
   padding-right: 30px;
 }

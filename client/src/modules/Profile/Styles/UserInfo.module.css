@@ -36,7 +36,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 32px;
+  font-size: var(--font-heading-size);
   line-height: 156%;
 
   letter-spacing: -0.128928px;
@@ -67,7 +67,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
 
   width: 286px;
   height: 53px;

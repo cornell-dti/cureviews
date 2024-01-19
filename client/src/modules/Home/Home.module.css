@@ -4,7 +4,7 @@
 
 @media (min-width: 992px) {
   .homepageText {
-    font-size: 24px;
+    font-size: var(--font-sub-heading-size);
   }
 
   .homepageTextPadding {

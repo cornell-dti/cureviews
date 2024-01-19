@@ -4,7 +4,7 @@
 .profileCardContainer {
   width: 267px;
   height: 89px;
-  left: 124px;
+  left: 1var (--font-sub-heading-size);
   top: 530px;
 
   background: var(--clr-gray-100);

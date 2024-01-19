@@ -7,14 +7,14 @@
 .reviewHeader {
   margin-top: 0;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
   color: var(--clr-blue-400);
 }
 
 .selectProfessorLabel {
   margin-top: 0px;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
+  font-size: var(--font-p-size);
   color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
@@ -27,7 +27,7 @@
   width: 100%;
   margin-top: 2px;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
+  font-size: var(--font-p-size);
   color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
@@ -81,7 +81,7 @@
 .covidCheckboxLabelText {
   margin-left: 10px;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
+  font-size: var(--font-p-size);
   color: var(--clr-black);
   font-weight: var(--regular-weight);
 }

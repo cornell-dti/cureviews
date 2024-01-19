@@ -57,7 +57,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 32px;
+  font-size: var(--font-heading-size);
   line-height: 156%;
 
   letter-spacing: -0.128928px;
@@ -88,7 +88,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
 
   width: 286px;
   height: 53px;
@@ -166,14 +166,14 @@
   padding-left: 0;
   background-color: var(--clr-white);
   height: 100%;
-  padding: 0 24px 35px;
+  padding: 0 var(--font-sub-heading-size) 35px;
 }
 
 .myReviewsText {
   font-family: SF Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 32px;
+  font-size: var(--font-heading-size);
   line-height: 50px;
   /* or 156% */
   letter-spacing: -0.128928px;
@@ -239,7 +239,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
   line-height: 30px;
   text-align: center;
 
@@ -248,7 +248,7 @@
 
 .noReviewsSubtitle {
   text-align: center;
-  margin-top: 24px;
+  margin-top: var(--font-sub-heading-size);
 
   font-family: Source Sans Pro;
   font-style: normal;
@@ -277,7 +277,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
   line-height: 11px;
   /* or 45% */
 
@@ -319,7 +319,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
   line-height: 11px;
   /* or 45% */
 
