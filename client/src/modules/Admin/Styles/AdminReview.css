@@ -14,13 +14,13 @@
 }
 
 .review-container-style {
-  background: #ffffff;
+  background: var(--clr-white);
   border: 0.625px solid #d0e5f5;
 }
 
 .review-container-style-pending {
-  background: #f9f9f9;
-  border: 1px dashed #979797;
+  background: var(--clr-gray-100);
+  border: 1px dashed var(--clr-gray-300);
 
   font-family: Source Sans Pro;
   font-style: normal;
@@ -28,27 +28,27 @@
   font-size: 15px;
   line-height: 19px;
 
-  color: #979797;
+  color: var(--clr-gray-300);
 }
 
 .review-title-style {
   font-family: Source Sans Pro;
   font-style: normal;
-  font-weight: 600;
+  font-weight: var(--semi-bold-weight);
   font-size: 18px;
   line-height: 23px;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .review-title-style-pending {
   font-family: Source Sans Pro;
   font-style: normal;
-  font-weight: 600;
+  font-weight: var(--semi-bold-weight);
   font-size: 18px;
   line-height: 23px;
 
-  color: #545454;
+  color: var(--clr-gray-500);
 }
 
 .review-container {
@@ -62,7 +62,7 @@
 @media screen and (max-width: 992px) {
   .review-container {
     min-width: 327px;
-    background: #ffffff;
+    background: var(--clr-white);
     border: 0.625px solid #d0e5f5;
     box-sizing: border-box;
     border-radius: 10px;
@@ -85,7 +85,7 @@
     font-style: normal;
     line-height: 18px;
     display: inline;
-    color: #0076ff;
+    color: var(--clr-blue-900);
   }
 
   .covidTag {
@@ -239,7 +239,7 @@
   font-weight: var(--regular-weight);
   font-style: normal;
   line-height: 19px;
-  color: #000000;
+  color: var(--clr-black);
   text-align: left;
   padding-bottom: 15px;
 }
@@ -286,7 +286,7 @@
 }
 
 .review-voted .upvote-text {
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 /* Preview Review Styling */
@@ -335,7 +335,7 @@
   font-weight: var(--regular-weight);
   font-style: normal;
   line-height: 19px;
-  color: #000000;
+  color: var(--clr-black);
   text-align: left;
   padding-bottom: 15px;
 }
@@ -366,7 +366,7 @@
   font-stretch: normal;
   line-height: normal;
 
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 button {

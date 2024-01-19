@@ -9,7 +9,7 @@
   }
 
   .preview-class-link {
-    color: #0076ff;
+    color: var(--clr-blue-900);
     font-size: 32px;
   }
 
@@ -97,7 +97,7 @@
     font-size: 32px;
     line-height: 32px;
     letter-spacing: -0.0819218px;
-    color: #000000;
+    color: var(--clr-black);
   }
 
   .preview-class-link-scroll {
@@ -107,7 +107,7 @@
     font-size: 22px;
     line-height: 32px;
     letter-spacing: -0.0819218px;
-    color: #000000;
+    color: var(--clr-black);
   }
 
   .preview-class-title {
@@ -201,7 +201,7 @@
   text-align: center;
   border-radius: 10px;
   width: 100%;
-  background: #0076ff;
+  background: var(--clr-blue-900);
   padding: 10px;
   display: inline-grid;
   align-content: space-evenly;
@@ -233,7 +233,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  fill: #000000 !important;
+  fill: var(--clr-black) !important;
 }
 
 .gaugeHolder svg text:last-of-type {
@@ -244,7 +244,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.01em;
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .gaugeHolder svg {

@@ -3,7 +3,7 @@
 .ratingInputLabel {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
-  color: #000000;
+  color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .ratingButtonPillSelected {
-  background-color: #0076ff;
+  background-color: var(--clr-blue-900);
 }
 
 /*

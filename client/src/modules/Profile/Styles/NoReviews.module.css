@@ -13,7 +13,7 @@
   line-height: 30px;
   text-align: center;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .noReviewsSubtitle {
@@ -27,7 +27,7 @@
   line-height: 23px;
   text-align: center;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .noReviewsImage {

@@ -4,7 +4,7 @@
   background-color: transparent;
   display: inline-block;
   position: relative;
-  background: #ffffff;
+  background: var(--clr-white);
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
@@ -21,7 +21,7 @@
   font-size: 18px;
   font-weight: var(--regular-weight);
   letter-spacing: 0.01em;
-  color: #000000;
+  color: var(--clr-black);
   background-color: none;
   border-color: transparent;
   border-radius: 10px;
@@ -68,7 +68,7 @@
     background-color: transparent;
     display: inline-block;
     position: absolute;
-    background: #ffffff;
+    background: var(--clr-white);
     box-sizing: border-box;
     border-radius: 10px;
     box-shadow: none;
@@ -85,7 +85,7 @@
     font-size: 18px;
     font-weight: var(--regular-weight);
     letter-spacing: 0.01em;
-    color: #000000;
+    color: var(--clr-black);
     background-color: none;
     border-color: transparent;
     border-radius: 10px;

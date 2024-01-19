@@ -1,6 +1,17 @@
 :root {
   --regular-weight: 400;
   --semi-bold-weight: 600;
+
+  --clr-black: #000000;
+  --clr-white: #ffffff;
+  --clr-gray-100: #f9f9f9;
+  --clr-gray-200: #d9d9d9;
+  --clr-gray-300: #979797;
+  --clr-gray-500: #4a4a4a;
+
+  --clr-blue-900: #0076ff;
+
+  --clr-red: red;
 }
 
 * {
@@ -103,21 +114,9 @@ ul {
 .container-width {
   width: 100%;
 }
-.secondary-text {
-  color: #4a4a4a;
-  font-size: 14px;
-  font-weight: normal;
-  opacity: 0.75;
-}
 
 h1 {
   margin: 0;
-}
-
-.divider {
-  border-width: 1px;
-  color: #ddd;
-  margin: 5px 0 10px 0;
 }
 
 div.sm-spacing {
@@ -133,7 +132,7 @@ div.lrg-spacing {
 }
 
 ul {
-  background: white;
+  background: var(--clr-white);
   margin: 0;
   padding: 0;
 }

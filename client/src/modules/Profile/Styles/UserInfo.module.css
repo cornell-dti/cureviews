@@ -11,7 +11,7 @@
   height: 660px;
   padding-bottom: 20px;
   left: 87px;
-  background: #ffffff;
+  background: var(--clr-white);
   border-radius: 10px;
 }
 
@@ -41,7 +41,7 @@
 
   letter-spacing: -0.128928px;
 
-  color: #000000;
+  color: var(--clr-black);
 
   border-radius: 19.6611px;
 }
@@ -76,7 +76,7 @@
   align-items: flex-end;
   letter-spacing: -0.128928px;
 
-  color: #000000;
+  color: var(--clr-black);
 
   border-radius: 19.6611px;
   margin-bottom: 20px;
@@ -86,7 +86,7 @@
   margin-top: 35px;
   text-align: center;
 
-  background: #0076ff;
+  background: var(--clr-blue-900);
   border-radius: 10px;
 
   width: 267px;
@@ -106,7 +106,7 @@
   text-align: center;
   justify-content: center;
 
-  color: #ffffff;
+  color: var(--clr-white);
 }
 
 @media (min-width: 481px) and (max-width: 1000px) {
@@ -161,7 +161,7 @@
 
     letter-spacing: -0.128928px;
 
-    color: #000000;
+    color: var(--clr-black);
 
     border-radius: 0px;
 
@@ -200,7 +200,7 @@
   .divider {
     display: inline;
     content: '';
-    border-left: 1px solid #d9d9d9;
+    border-left: 1px solid var(--clr-gray-200);
     height: 6rem;
     position: relative;
     right: 0.9rem;

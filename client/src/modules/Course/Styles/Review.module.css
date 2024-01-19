@@ -19,15 +19,15 @@
 }
 
 .reviewContainerStyle {
-  background: #ffffff;
+  background: var(--clr-white);
   border: 0.625px solid #b7d8ff;
 
   /* text */
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .reviewContainerStylePending {
-  background: #f9f9f9;
+  background: var(--clr-gray-100);
   border: 1px dashed #979797;
 
   color: #979797;
@@ -48,11 +48,11 @@
 }
 
 .ratingsContainerColor {
-  background: #ffffff;
+  background: var(--clr-white);
 }
 
 .pendingRatingsContainerColor {
-  background-color: #f9f9f9;
+  background-color: var(--clr-gray-100);
 }
 
 @media screen and (max-width: 768px) {
@@ -61,7 +61,7 @@
   }
 
   .pendingRatingsContainerColor {
-    background: #f9f9f9;
+    background: var(--clr-gray-100);
   }
 
   .ratingsContainer {
@@ -138,17 +138,17 @@
   .ratingsContainer {
     width: 95%;
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
     top: 4vh;
     left: 6vw;
   }
 
   .ratingsContainerColor {
-    background: #ffffff;
+    background: var(--clr-white);
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingNum {
@@ -159,11 +159,11 @@
 
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
-    background: #ffffff;
+    background: var(--clr-white);
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingsContainer {
@@ -191,13 +191,13 @@
   .ratingsContainer {
     width: 95%;
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
     top: 7vh;
     left: 1.2vw;
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingNum {
@@ -276,15 +276,15 @@
   }
 
   .reviewContainerStyle {
-    background: #ffffff;
+    background: var(--clr-white);
     border: 0.625px solid #b7d8ff;
 
     /* text */
-    color: #000000;
+    color: var(--clr-black);
   }
 
   .reviewContainerStylePending {
-    background: #f9f9f9;
+    background: var(--clr-gray-100);
     border: 1px dashed #979797;
 
     color: #979797;
@@ -292,17 +292,17 @@
 
   .ratingsContainer {
     position: relative;
-    background: #ffffff;
+    background: var(--clr-white);
     top: 6vh;
     left: -0.2vw;
   }
 
   .ratingsContainerColor {
-    background: #ffffff;
+    background: var(--clr-white);
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingElemColor {
@@ -311,15 +311,6 @@
 
   .pendingRatingElemColor {
     color: #807b7b;
-  }
-
-  .divider {
-    display: inline;
-    content: '';
-    border-left: 1px solid #a2a1a1;
-    height: 15px;
-    position: relative;
-    left: 0.5rem;
   }
 
   .acceptedReviewDividerColor {
@@ -369,7 +360,7 @@
   }
 
   .courseTitle {
-    color: #0076ff;
+    color: var(--clr-blue-900);
   }
 
   .pendingCourseTitle {

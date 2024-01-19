@@ -34,7 +34,7 @@
 }
 
 .profileMenuLink:hover {
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .signInButton {
@@ -42,7 +42,7 @@
   right: 2em;
   text-align: center;
   width: 9em;
-  background: #ffffff;
+  background: var(--clr-white);
   border-radius: 10px;
   margin-top: 0.5em;
 
@@ -63,14 +63,14 @@
   position: relative;
   text-align: center;
   width: 100%;
-  background: #0076ff;
+  background: var(--clr-blue-900);
   border-radius: 10px;
 
   padding: 5px;
 
   font-weight: 600;
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--clr-white);
 
   display: flex;
   justify-content: center;

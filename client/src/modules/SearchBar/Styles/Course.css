@@ -54,7 +54,7 @@
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   letter-spacing: 0.001em;
-  color: #000000;
+  color: var(--clr-black);
   padding-top: 1.5px;
   text-align: left;
   cursor: pointer;
@@ -103,27 +103,27 @@
 }
 
 .resultbutton:hover .result-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .active-class .matching-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .resultbutton:hover .matching-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .resultbutton:hover .result-label-course {
-  color: #ffffff !important;
-  border: 1px solid #ffffff;
+  color: var(--clr-white) !important;
+  border: 1px solid var(--clr-white);
 }
 
 .active-class > .result-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .active-class > .result-label-course {
-  color: #ffffff !important;
-  border: 1px solid #ffffff;
+  color: var(--clr-white) !important;
+  border: 1px solid var(--clr-white);
 }

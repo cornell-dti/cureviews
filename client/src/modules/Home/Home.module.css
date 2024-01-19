@@ -1,5 +1,5 @@
 .homepageText {
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 @media (min-width: 992px) {

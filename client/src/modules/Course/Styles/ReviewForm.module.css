@@ -8,14 +8,14 @@
   margin-top: 0;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 24px;
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .selectProfessorLabel {
   margin-top: 0px;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
-  color: #000000;
+  color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
 
@@ -28,7 +28,7 @@
   margin-top: 2px;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
-  color: #000000;
+  color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
 
@@ -51,8 +51,8 @@
 }
 
 .actionButton {
-  background-color: #0076ff;
-  color: #ffffff !important;
+  background-color: var(--clr-blue-900);
+  color: var(--clr-white) !important;
   width: 100%;
   border-radius: 10px;
   margin: 10px;
@@ -70,7 +70,7 @@
 
 .actionButton:hover {
   background-color: #004ca3;
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .covidCheckboxLabel {
@@ -82,7 +82,7 @@
   margin-left: 10px;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
-  color: #000000;
+  color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
 

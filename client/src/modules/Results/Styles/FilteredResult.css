@@ -38,7 +38,7 @@
   }
 
   .result-card-clicked {
-    border: 2.49858px solid #0076ff;
+    border: 2.49858px solid var(--clr-blue-900);
   }
 }
 
@@ -55,7 +55,7 @@
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   line-height: normal;
-  color: #0076ff;
+  color: var(--clr-blue-900);
   margin-bottom: 7px;
 }
 
@@ -84,7 +84,7 @@
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   line-height: normal;
-  color: #000000;
+  color: var(--clr-black);
   padding-bottom: 20px;
 }
 

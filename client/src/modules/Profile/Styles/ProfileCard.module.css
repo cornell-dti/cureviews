@@ -45,7 +45,7 @@
   width: 93px;
   margin-left: 5%;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .profileCardImage {

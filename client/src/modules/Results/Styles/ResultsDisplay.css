@@ -12,7 +12,7 @@
 
 .filter-title {
   font-style: normal;
-  color: #000000;
+  color: var(--clr-black);
   align-items: center;
   margin-bottom: 23px;
 }
@@ -29,7 +29,7 @@
 
 .filter-checkbox-label {
   font-style: normal;
-  color: #000000;
+  color: var(--clr-black);
   margin: 0px 0px 0px 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -144,7 +144,7 @@
 }
 
 .mobile-filter-button {
-  border: 1px solid #0076ff;
+  border: 1px solid var(--clr-blue-900);
   background-color: Transparent;
   background-image: url('/filterIcon.svg');
   background-repeat: no-repeat;
@@ -163,7 +163,7 @@
   font-size: 18px;
   line-height: 19px;
   letter-spacing: -0.225605px;
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .mobile-filter-done-button {
@@ -178,11 +178,11 @@
   border: none;
   background: none;
   float: right;
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .filter-popup {
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   top: 0px;
   left: 0px;
   height: 100vh;
@@ -230,11 +230,11 @@
 
 .react-major-select__control--is-focused
   .react-major-select__dropdown-indicator {
-  color: #0076ff !important;
+  color: var(--clr-blue-900) !important;
 }
 
 .react-major-select__control--is-focused {
-  border-color: #0076ff !important;
+  border-color: var(--clr-blue-900) !important;
   box-shadow: none !important;
 }
 
@@ -254,7 +254,7 @@
   border: none;
   outline: none;
   background-color: #f4f9fe;
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 @media (max-width: 992px) {
@@ -298,7 +298,7 @@
     font-weight: normal;
     font-size: 18px;
     line-height: 23px;
-    color: #0076ff;
+    color: var(--clr-blue-900);
     padding-top: 54px;
     padding-left: 36px;
   }
@@ -312,7 +312,7 @@
   }
 
   .mobile-search-gradient {
-    background: linear-gradient(180deg, #f4f9fe 0%, #ffffff 50%);
+    background: linear-gradient(180deg, #f4f9fe 0%, var(--clr-white) 50%);
   }
 
   .button-position-search-results {
@@ -326,7 +326,7 @@
   .review-bottom-button {
     width: 100%;
     height: 47px;
-    background: #0076ff;
+    background: var(--clr-blue-900);
     border-radius: 10px;
 
     font-family: Source Sans Pro;
@@ -336,7 +336,7 @@
     line-height: 23px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 
-    color: #ffffff;
+    color: var(--clr-white);
   }
 }
 
@@ -384,7 +384,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
-  color: #000000;
+  color: var(--clr-black);
   margin: 0;
 
   font-family: Source Sans Pro;

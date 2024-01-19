@@ -26,7 +26,7 @@
 
 .classview-gauge-container {
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 30px 15px 30px 0;
   height: 150px;
 }

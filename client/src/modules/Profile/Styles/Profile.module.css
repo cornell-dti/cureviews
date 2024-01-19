@@ -11,10 +11,6 @@
   height: 100%;
 }
 
-.divider {
-  display: none;
-}
-
 .profileRight {
   display: flex;
   margin-top: 42px;
@@ -36,7 +32,7 @@
   height: 660px;
   padding-bottom: 20px;
   left: 87px;
-  background: #ffffff;
+  background: var(--clr-white);
   border-radius: 10px;
 }
 
@@ -66,7 +62,7 @@
 
   letter-spacing: -0.128928px;
 
-  color: #000000;
+  color: var(--clr-black);
 
   border-radius: 19.6611px;
 }
@@ -101,7 +97,7 @@
   align-items: flex-end;
   letter-spacing: -0.128928px;
 
-  color: #000000;
+  color: var(--clr-black);
 
   border-radius: 19.6611px;
   margin-bottom: 20px;
@@ -111,7 +107,7 @@
   margin-top: 35px;
   text-align: center;
 
-  background: #0076ff;
+  background: var(--clr-blue-900);
   border-radius: 10px;
 
   width: 267px;
@@ -131,7 +127,7 @@
   text-align: center;
   justify-content: center;
 
-  color: #ffffff;
+  color: var(--clr-white);
 }
 
 .myReviews {
@@ -162,13 +158,13 @@
 }
 
 .courseInfoColumn {
-  background: #ffffff;
+  background: var(--clr-white);
   padding: 35px 35px 0;
 }
 
 .courseReviewColumn {
   padding-left: 0;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   height: 100%;
   padding: 0 24px 35px;
 }
@@ -181,7 +177,7 @@
   line-height: 50px;
   /* or 156% */
   letter-spacing: -0.128928px;
-  color: #000000;
+  color: var(--clr-black);
   padding: 0 0 20px;
   margin: 0;
 }
@@ -222,7 +218,7 @@
   background-color: transparent !important;
   border: none;
 
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .sortByLabel {
@@ -247,7 +243,7 @@
   line-height: 30px;
   text-align: center;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .noReviewsSubtitle {
@@ -261,7 +257,7 @@
   line-height: 23px;
   text-align: center;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .noReviewsImage {
@@ -311,7 +307,7 @@
   letter-spacing: -0.225605px;
   text-decoration-line: underline;
 
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .pastHeader {
@@ -388,7 +384,7 @@
 
     letter-spacing: -0.128928px;
 
-    color: #000000;
+    color: var(--clr-black);
 
     border-radius: 0px;
 
@@ -422,15 +418,6 @@
     margin-right: 3.5rem;
     display: flex;
     justify-content: space-evenly;
-  }
-
-  .divider {
-    display: inline;
-    content: '';
-    border-left: 1px solid #d9d9d9;
-    height: 6rem;
-    position: relative;
-    right: 0.9rem;
   }
 
   .profileSignOutButton {

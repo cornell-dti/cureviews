@@ -9,7 +9,7 @@
 }
 
 .mobile-form-container {
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   top: 0px;
   left: 0px;
   height: 100vh;
@@ -68,7 +68,7 @@
   margin-top: 50px;
   margin-bottom: 10px;
   width: 100%;
-  background: #ffffff;
+  background: var(--clr-white);
   border: none;
   box-sizing: border-box;
   border-radius: 10px;
@@ -99,7 +99,7 @@
   font-weight: 600;
   font-size: 24px;
   line-height: 30px;
-  color: #0076ff;
+  color: var(--clr-blue-900);
   margin-bottom: 25px;
   text-align: left;
 }
@@ -109,7 +109,7 @@
     font-family: Source Sans Pro;
     font-size: 28px;
     line-height: 35px;
-    color: #000000;
+    color: var(--clr-black);
   }
 }
 
@@ -135,7 +135,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
-  color: #4a4a4a;
+  color: var(--clr-gray-500);
   background-color: transparent;
   border: 0.673729px solid #65acff;
   box-sizing: border-box;
@@ -157,7 +157,7 @@
   font-style: normal;
   font-weight: normal;
 
-  color: #000000;
+  color: var(--clr-black);
 }
 
 @media (min-width: 992px) {
@@ -198,8 +198,8 @@
   line-height: 0px;
   align-items: center;
   text-align: center;
-  background: #0076ff;
-  color: #ffffff;
+  background: var(--clr-blue-900);
+  color: var(--clr-white);
   border-radius: 6.73729px;
   border-width: 0px;
   margin-bottom: 5vh;
@@ -209,7 +209,7 @@
   .form-postbutton {
     height: 46px;
 
-    background: #0076ff;
+    background: var(--clr-blue-900);
     border-radius: 5.65207px;
   }
 }
@@ -248,7 +248,7 @@
 /* Leaving these useful properties of "react-select"
     for future modifications:
     __value-container
-    
+
     */
 
 .react-select__control {
@@ -268,11 +268,11 @@
 }
 
 .react-select__control--is-focused .react-select__dropdown-indicator {
-  color: #0076ff !important;
+  color: var(--clr-blue-900) !important;
 }
 
 .react-select__control--is-focused {
-  border-color: #0076ff !important;
+  border-color: var(--clr-blue-900) !important;
   box-shadow: none !important;
 }
 
@@ -316,10 +316,10 @@ input[type='range']::-webkit-slider-runnable-track {
 
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: #000000;
-  border: 2px solid #000000;
+  background-color: var(--clr-black);
+  border: 2px solid var(--clr-black);
   border-radius: 100%;
-  box-shadow: 0px 1px 2px 0px #000000;
+  box-shadow: 0px 1px 2px 0px var(--clr-black);
   cursor: pointer;
   position: relative;
   bottom: 5px; /* Used to fix spacing */
@@ -390,11 +390,6 @@ textarea {
   background-color: #f44336;
 }
 
-.secondary-text {
-  margin-bottom: 0;
-  margin-top: 10px;
-}
-
 .sliderHolder {
   padding-left: 10%;
 }
@@ -405,8 +400,8 @@ input[type='range'] {
 
 .error,
 .error:focus {
-  border: 1px solid red !important;
-  outline: 1px solid red;
+  border: 1px solid var(--clr-red) !important;
+  outline: 1px solid var(--clr-red);
 }
 
 .hidden {
@@ -429,7 +424,7 @@ input[type='range'] {
   box-shadow: 0 2px 3.5px 0 rgba(231, 231, 231, 0.83);
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
 }
 
 #modal-background {
@@ -552,7 +547,7 @@ input[type='range'] {
 }
 
 .activeBox {
-  background: #0076ff !important;
+  background: var(--clr-blue-900) !important;
 }
 
 @media (min-width: 992px) {
@@ -581,7 +576,7 @@ input[type='range'] {
 }
 
 .activeText {
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .activeText,

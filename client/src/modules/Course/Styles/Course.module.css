@@ -33,7 +33,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
 }
 
@@ -52,7 +52,7 @@
   left: 20px;
   right: 20px;
   bottom: 20px;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
   border-radius: 20px;
   filter: drop-shadow(0 1px 6px rgba(168, 211, 245, 0.5));
@@ -65,7 +65,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
 }
 
@@ -84,7 +84,7 @@
   font-size: 32px;
   font-weight: var(--semi-bold-weight);
   letter-spacing: -0.13px;
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .courseSubtitle {
@@ -112,7 +112,7 @@
 .reviewFormContainer {
   margin-top: 30px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
   position: sticky;
   top: 10px;
@@ -120,7 +120,7 @@
 
 .gaugeContainer {
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   height: 150px;
   padding: 20px;
   display: flex;
@@ -133,8 +133,8 @@
 }
 
 .startReviewButton {
-  background-color: #0076ff;
-  color: #ffffff;
+  background-color: var(--clr-blue-900);
+  color: var(--clr-white);
   width: 100%;
   font-size: 18px;
   border-radius: 10px;
@@ -144,7 +144,7 @@
 
 .startReviewButton:hover {
   background-color: #004ca3;
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .fixedButtonContainer {
@@ -185,7 +185,7 @@
   font-size: 1.25rem;
   border: none;
   background-color: transparent;
-  color: #0076ff;
+  color: var(--clr-blue-900);
 }
 
 .pastReviews {
@@ -245,7 +245,7 @@
   .gaugeContainer {
     justify-content: space-around;
     padding: 30px;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
     width: 100%;
   }
 
@@ -267,13 +267,13 @@
   }
 
   .courseInfoColumnShadow {
-    box-shadow: 0 0 #000000;
+    box-shadow: 0 0 var(--clr-black);
   }
 
   .gaugeContainer {
     margin-top: 70px;
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
   }
 
   .courseReviewColumn {

@@ -44,7 +44,7 @@
   z-index: 110;
   top: 0px;
   position: sticky;
-  background: #ffffff;
+  background: var(--clr-white);
   border: 0;
   margin: 0;
   display: flex;
