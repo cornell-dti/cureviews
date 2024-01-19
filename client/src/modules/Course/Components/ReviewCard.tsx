@@ -119,7 +119,6 @@ export default function ReviewCard({
         token: getAuthToken(),
       })
 
-      console.log(response.data)
       setLiked(response.data.hasLiked)
     }
 
@@ -261,7 +260,6 @@ export default function ReviewCard({
                       src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
                       alt={liked ? 'Liked' : 'Not Liked Yet'}
                     />
-                    {console.log(_review)}
 
                     <p className={styles.upvoteText}>
                       Helpful ({_review.likes ? _review.likes : 0})
