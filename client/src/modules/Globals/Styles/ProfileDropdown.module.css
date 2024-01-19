@@ -34,7 +34,7 @@
 }
 
 .profileMenuLink:hover {
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
 }
 
 .signInButton {
@@ -63,7 +63,7 @@
   position: relative;
   text-align: center;
   width: 100%;
-  background: var(--clr-blue-800);
+  background: var(--clr-blue-400);
   border-radius: 10px;
 
   padding: 5px;

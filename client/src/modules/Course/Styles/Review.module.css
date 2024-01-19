@@ -20,7 +20,7 @@
 
 .reviewContainerStyle {
   background: var(--clr-white);
-  border: 0.625px solid #b7d8ff;
+  border: 0.625px solid var(--clr-blue-200);
 
   /* text */
   color: var(--clr-black);
@@ -28,14 +28,14 @@
 
 .reviewContainerStylePending {
   background: var(--clr-gray-100);
-  border: 1px dashed #979797;
+  border: 1px dashed var(--clr-gray-300);
 
-  color: #979797;
+  color: var(--clr-gray-300);
 }
 
 .pencilContainer {
   width: 100%;
-  color: #9b9b9b;
+  color: var(--clr-gray-300);
   text-align: right;
 }
 
@@ -118,7 +118,7 @@
   font-size: 12px;
   line-height: 15px;
 
-  color: #9b9b9b;
+  color: var(--clr-gray-300);
 }
 
 .upvoteText {
@@ -277,7 +277,7 @@
 
   .reviewContainerStyle {
     background: var(--clr-white);
-    border: 0.625px solid #b7d8ff;
+    border: 0.625px solid var(--clr-blue-200);
 
     /* text */
     color: var(--clr-black);
@@ -285,9 +285,9 @@
 
   .reviewContainerStylePending {
     background: var(--clr-gray-100);
-    border: 1px dashed #979797;
+    border: 1px dashed var(--clr-gray-300);
 
-    color: #979797;
+    color: var(--clr-gray-300);
   }
 
   .ratingsContainer {
@@ -305,16 +305,8 @@
     background-color: var(--clr-gray-100);
   }
 
-  .ratingElemColor {
-    color: #4d8dd8;
-  }
-
   .pendingRatingElemColor {
     color: var(--clr-gray-300);
-  }
-
-  .acceptedReviewDividerColor {
-    border-left: 1px solid #4d8dd8;
   }
 
   .ratingNum {
@@ -360,7 +352,7 @@
   }
 
   .courseTitle {
-    color: var(--clr-blue-800);
+    color: var(--clr-blue-400);
   }
 
   .pendingCourseTitle {

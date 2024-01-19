@@ -8,7 +8,7 @@
   margin-top: 0;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 24px;
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
 }
 
 .selectProfessorLabel {
@@ -38,7 +38,7 @@
 
 .reviewText:focus {
   outline: none !important;
-  border: 3px solid #65acff;
+  border: 3px solid var(--clr-blue-300);
 }
 
 .review {
@@ -46,12 +46,12 @@
 }
 
 .errorText {
-  color: #ff0000;
+  color: var(--clr-red);
   margin-top: 4px;
 }
 
 .actionButton {
-  background-color: var(--clr-blue-800);
+  background-color: var(--clr-blue-400);
   color: var(--clr-white) !important;
   width: 100%;
   border-radius: 10px;
@@ -69,7 +69,7 @@
 }
 
 .actionButton:hover {
-  background-color: var(--clr-blue-900);
+  background-color: var(--clr-blue-500);
   color: var(--clr-white) !important;
 }
 

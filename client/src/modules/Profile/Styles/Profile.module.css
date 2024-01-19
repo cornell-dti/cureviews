@@ -107,7 +107,7 @@
   margin-top: 35px;
   text-align: center;
 
-  background: var(--clr-blue-800);
+  background: var(--clr-blue-400);
   border-radius: 10px;
 
   width: 267px;
@@ -218,7 +218,7 @@
   background-color: transparent !important;
   border: none;
 
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
 }
 
 .sortByLabel {
@@ -307,7 +307,7 @@
   letter-spacing: -0.225605px;
   text-decoration-line: underline;
 
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
 }
 
 .pastHeader {

@@ -24,7 +24,7 @@
 
   .overall-rating-border {
     display: inline-flex;
-    border: 1px solid #b7d8ff;
+    border: 1px solid var(--clr-blue-200);
     box-sizing: border-box;
     border-radius: 5px;
     padding-left: 9px;
@@ -38,7 +38,7 @@
   }
 
   .result-card-clicked {
-    border: 2.49858px solid var(--clr-blue-800);
+    border: 2.49858px solid var(--clr-blue-400);
   }
 }
 
@@ -55,7 +55,7 @@
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   line-height: normal;
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
   margin-bottom: 7px;
 }
 

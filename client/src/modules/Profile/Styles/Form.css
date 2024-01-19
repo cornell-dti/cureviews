@@ -17,7 +17,7 @@
   position: fixed;
   bottom: 0;
   right: 15px;
-  border: 3px solid #f1f1f1;
+  border: 3px solid var(--clr-gray-100);
   z-index: 200;
   overflow: scroll;
 }
@@ -99,7 +99,7 @@
   font-weight: 600;
   font-size: 24px;
   line-height: 30px;
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
   margin-bottom: 25px;
   text-align: left;
 }
@@ -137,7 +137,7 @@
   letter-spacing: 0.001em;
   color: var(--clr-gray-500);
   background-color: transparent;
-  border: 0.673729px solid #65acff;
+  border: 0.673729px solid var(--clr-blue-300);
   box-sizing: border-box;
   border-radius: 10px;
 }
@@ -149,13 +149,13 @@
 }
 
 .form-field-error {
-  color: #ff314a;
+  color: var(--clr-red);
 }
 
 .form-label {
   font-family: 'Source Sans Pro', sans-serif;
   font-style: normal;
-  font-weight: normal;
+  font-weight: var(--regular-weight);
 
   color: var(--clr-black);
 }
@@ -198,7 +198,7 @@
   line-height: 0px;
   align-items: center;
   text-align: center;
-  background: var(--clr-blue-800);
+  background: var(--clr-blue-400);
   color: var(--clr-white);
   border-radius: 6.73729px;
   border-width: 0px;
@@ -209,7 +209,7 @@
   .form-postbutton {
     height: 46px;
 
-    background: var(--clr-blue-800);
+    background: var(--clr-blue-400);
     border-radius: 5.65207px;
   }
 }
@@ -255,7 +255,7 @@
   width: 100% !important;
   max-height: 90px !important;
   min-height: 28px !important;
-  border-color: #9fcbff !important;
+  border-color: var(--clr-blue-200) !important;
   border-radius: 7px !important;
 }
 
@@ -264,15 +264,15 @@
 }
 
 .react-select__dropdown-indicator {
-  color: #9fcbff !important;
+  color: var(--clr-blue-200) !important;
 }
 
 .react-select__control--is-focused .react-select__dropdown-indicator {
-  color: var(--clr-blue-800) !important;
+  color: var(--clr-blue-400) !important;
 }
 
 .react-select__control--is-focused {
-  border-color: var(--clr-blue-800) !important;
+  border-color: var(--clr-blue-400) !important;
   box-shadow: none !important;
 }
 
@@ -519,7 +519,7 @@ input[type='range'] {
   font-weight: normal;
   font-size: 12px;
   line-height: 15px;
-  color: #979797;
+  color: var(--clr-gray-300);
 }
 
 @media (max-width: 992px) {
@@ -547,12 +547,12 @@ input[type='range'] {
 }
 
 .activeBox {
-  background: var(--clr-blue-800) !important;
+  background: var(--clr-blue-400) !important;
 }
 
 @media (min-width: 992px) {
   .inactiveBox {
-    background: #979797 !important;
+    background: var(--clr-gray-300) !important;
   }
 }
 
@@ -572,11 +572,11 @@ input[type='range'] {
 }
 
 .inactiveText {
-  color: #979797;
+  color: var(--clr-gray-300);
 }
 
 .activeText {
-  color: var(--clr-blue-800);
+  color: var(--clr-blue-400);
 }
 
 .activeText,
