@@ -247,7 +247,7 @@ export default function ReviewCard({
 
               {/* Like Button */}
               {!isPreview && (
-                <div className="col">
+                <div>
                   <button
                     className={
                       liked === true ? 'review-voted' : 'review-upvote'
