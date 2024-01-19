@@ -103,9 +103,6 @@ export function useAuthOptionalLogin(): [
             verifiedEmail = data.result
           }
 
-          console.log(
-            verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@'))
-          )
           const netId = verifiedEmail.substring(
             0,
             verifiedEmail.lastIndexOf('@')
