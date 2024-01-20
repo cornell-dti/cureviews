@@ -11,8 +11,8 @@ type PastReviewsType = {
 const PastReviews = ({ pastReviews }: PastReviewsType) => {
   return (
     <>
-      <div className="row">
-        <div className={`col ${styles.pastHeader}`}>
+      <div className="">
+        <div className={`${styles.pastHeader}`}>
           <p className={styles.pastHeaderText}>
             Past Reviews ({pastReviews?.length})
           </p>

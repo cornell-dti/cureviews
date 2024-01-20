@@ -51,13 +51,13 @@
 
 html,
 body {
-  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   /* overflow: hidden; */
 }
 
 body {
-  padding: 0;
-  margin: 0;
   font-size: var(--font-p-size);
   font-weight: var(--regular-weight);
 
@@ -157,9 +157,4 @@ ul {
   background: var(--clr-white);
   margin: 0;
   padding: 0;
-}
-
-.noLeftRightPadding {
-  padding-left: 0px;
-  padding-right: 0px;
 }
