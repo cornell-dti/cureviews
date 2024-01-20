@@ -3,6 +3,10 @@
 .results-column-container {
   display: flex;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--clr-blue-100);
+  padding-bottom: 2%;
 }
 
 .filter-container {
@@ -45,7 +49,6 @@
 
 @media (min-width: 992px) {
   .filter-container {
-    padding-left: 6%;
     padding-top: 28px;
     min-width: 200px;
   }
@@ -157,7 +160,6 @@
   border-radius: 10px;
 
   float: right;
-  font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -167,7 +169,6 @@
 }
 
 .mobile-filter-done-button {
-  font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -215,7 +216,7 @@
 
 .react-major-select__placeholder {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
+  font-size: var(--font-p-size);
   font-weight: 300;
   color: var(--clr-gray-300) !important;
 }
@@ -293,7 +294,6 @@
 
 @media (max-width: 992px) {
   .search-results-text {
-    font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -333,7 +333,6 @@
     background: var(--clr-blue-400);
     border-radius: 10px;
 
-    font-family: Source Sans Pro;
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
@@ -360,10 +359,22 @@
   min-width: 250px;
 }
 
+.results-display-container {
+  padding: 3em 5em;
+  max-width: 100%;
+}
+
 .loading-results {
   margin-right: auto;
   margin-left: auto;
   margin-top: 20vh;
+}
+
+/* desktop*/
+@media (min-width: 992px) {
+}
+
+@media (max-width: 992px) {
 }
 
 .results-num-classes-found {
@@ -373,7 +384,6 @@
   color: var(--clr-black);
   margin: 0;
 
-  font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
