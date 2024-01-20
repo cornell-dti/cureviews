@@ -2,54 +2,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .profileCardContainer {
-  width: 267px;
-  height: 89px;
-  left: 1var (--font-sub-heading-size);
-  top: 530px;
+  font-size: var(--font-sub-heading-size);
 
   background: var(--clr-gray-100);
   border-radius: 10px;
 
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
 
-  margin-bottom: 10px;
-}
+  padding: 1em 2em;
 
-.profileCardCenterText {
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
+  gap: 1em;
 }
 
 .profileCardValue {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 38.1644px;
-  line-height: 45px;
+  font-weight: var(--bold-weight);
+  font-size: var(--font-heading-size);
   text-align: center;
+  width: 1ch;
 }
 
 .profileCardTitle {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 11.4493px;
-  line-height: 13px;
+  font-weight: var(--regular-weight);
+  font-size: var(--font-p-size);
   text-align: left;
-
-  width: 93px;
-  margin-left: 5%;
+  width: 15ch;
 
   color: var(--clr-black);
-}
-
-.profileCardImage {
-  margin-left: 10%;
 }
 
 @media (max-width: 480px) {
@@ -57,16 +40,6 @@
     background: transparent;
     margin-right: 4rem;
     margin-left: 1rem;
-  }
-
-  .profileCardCenterText {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    top: 1.5rem;
   }
 
   .profileCardValue {
