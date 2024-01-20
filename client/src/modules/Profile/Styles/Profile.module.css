@@ -18,69 +18,9 @@
 }
 
 .profileReviewsContainer {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.profileInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-}
-
-.profileImage {
-  width: 140px;
-}
-
-.profileTitle {
-  margin-top: 10px;
-  margin-left: 37px;
-  margin-bottom: 20px;
-
-  text-align: left;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
-  font-size: var(--font-heading-size);
-  line-height: 156%;
-
-  letter-spacing: -0.128928px;
-
-  color: var(--clr-black);
-
-  border-radius: 19.6611px;
-}
-
-.profileVerifiedNeId {
-  margin-top: 8%;
-  margin-bottom: 25px;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 38%;
-
-  display: flex;
-  align-items: center;
-  letter-spacing: -0.0819218px;
-  text-align: center;
-
-  color: var(--clr-gray-300);
-}
-
-.profileUserStatisticsText {
-  font-style: normal;
-  font-weight: var(--semi-bold-weight);
-  font-size: var(--font-sub-heading-size);
-
-  display: flex;
-  align-items: flex-end;
-
-  color: var(--clr-black);
+  gap: 1em;
 }
 
 .myReviews {
@@ -123,51 +63,37 @@
 }
 
 .myReviewsText {
-  font-family: SF Pro;
-  font-style: normal;
-  font-weight: 600;
+  font-weight: var(--semi-bold-weight);
   font-size: var(--font-heading-size);
-  line-height: 50px;
-  /* or 156% */
-  letter-spacing: -0.128928px;
   color: var(--clr-black);
-  padding: 0 0 20px;
-  margin: 0;
 }
 
 .reviewsHeader {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   color: var(--clr-gray-300);
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
 .sortContainer {
-  float: right;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
 }
 
 .sort {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  display: inline;
   text-decoration-line: underline;
   color: var(--clr-gray-300);
 }
 
 .sortBySelect {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  margin-left: 10px;
   background-color: transparent !important;
   border: none;
 
