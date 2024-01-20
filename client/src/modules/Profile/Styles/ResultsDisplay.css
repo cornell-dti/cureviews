@@ -4,7 +4,7 @@
   display: flex;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: var(--clr-blue-100);
   padding-bottom: 2%;
 }
@@ -87,14 +87,14 @@
 @media (max-width: 992px) {
   .filter-container {
     margin-top: 36px;
-    margin-left: var(--font-sub-heading-size);
-    margin-right: var(--font-sub-heading-size);
+    margin-left: 24px;
+    margin-right: 24px;
   }
 
   .filter-title {
     font-family: 'Source Sans Pro';
     font-weight: 600;
-    font-size: var(--font-heading-size);
+    font-size: 32px;
     line-height: 40px;
     padding-top: 44px;
     padding-left: 15px;
@@ -139,8 +139,8 @@
 
 .mobile-filter-box {
   padding: 26px 18px 0px 18px;
-  margin-top: var(--font-sub-heading-size);
-  margin-bottom: var(--font-sub-heading-size);
+  margin-top: 24px;
+  margin-bottom: 24px;
   background-color: white;
   border: 1px solid var(--clr-gray-100);
   box-sizing: border-box;
@@ -360,9 +360,9 @@
   min-width: 250px;
 }
 
-.noLeftRightMargin {
-  margin-left: 0;
-  margin-right: 0;
+.results-display-container {
+  padding: 3em 5em;
+  max-width: 100%;
 }
 
 .loading-results {
@@ -373,15 +373,9 @@
 
 /* desktop*/
 @media (min-width: 992px) {
-  .loading-margin-top {
-    margin-top: 52px;
-  }
 }
 
 @media (max-width: 992px) {
-  .loading-margin-top {
-    margin-top: 44px;
-  }
 }
 
 .results-num-classes-found {

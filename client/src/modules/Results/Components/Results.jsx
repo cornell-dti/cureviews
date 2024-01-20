@@ -106,10 +106,9 @@ export class Results extends Component {
   render() {
     const userInput = this.props.match.params.input.split('+').join(' ')
     return (
-      <div className="full-height bg-color">
-        <div className="row">
-          <Navbar userInput={userInput} />
-        </div>
+      <div className="bg-color">
+        <Navbar userInput={userInput} />
+
         <ResultsDisplay
           courses={this.state.courseList}
           history={this.props.history}

@@ -318,7 +318,7 @@ export default class ResultsDisplay extends Component {
 
   render() {
     return (
-      <div className="row loading-margin-top noLeftRightMargin">
+      <div className=" results-display-container">
         {/* Case where results are still being loaded */}
         {this.props.loading === true && (
           <div className="loading-results">

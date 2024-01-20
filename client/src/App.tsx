@@ -17,16 +17,16 @@ import { AuthRedirect } from './modules/AuthRedirect'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
-/** 
-  A router is generated using the react-router-dom library. 
-  This determines which component 
+/**
+  A router is generated using the react-router-dom library.
+  This determines which component
   the user should see based on the URL they enter.
 
 */
 const App = () => {
   return (
     <Router>
-      <div className="container-fluid full-height">
+      <div>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/admin" component={Admin} />

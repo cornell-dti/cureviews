@@ -83,14 +83,14 @@
 @media (max-width: 992px) {
   .filter-container {
     margin-top: 36px;
-    margin-left: var(--font-sub-heading-size);
-    margin-right: var(--font-sub-heading-size);
+    margin-left: 24px;
+    margin-right: 24px;
   }
 
   .filter-title {
     font-family: 'Source Sans Pro';
     font-weight: 600;
-    font-size: var(--font-heading-size);
+    font-size: 32px;
     line-height: 40px;
     padding-top: 44px;
     padding-left: 15px;
@@ -135,8 +135,8 @@
 
 .mobile-filter-box {
   padding: 26px 18px 0px 18px;
-  margin-top: var(--font-sub-heading-size);
-  margin-bottom: var(--font-sub-heading-size);
+  margin-top: 24px;
+  margin-bottom: 24px;
   background-color: white;
   border: 1px solid var(--clr-gray-100);
   box-sizing: border-box;
@@ -215,7 +215,7 @@
 
 .react-major-select__placeholder {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: var(--font-p-size);
+  font-size: 14px;
   font-weight: 300;
   color: var(--clr-gray-300) !important;
 }
@@ -360,28 +360,10 @@
   min-width: 250px;
 }
 
-.noLeftRightMargin {
-  margin-left: 0;
-  margin-right: 0;
-}
-
 .loading-results {
   margin-right: auto;
   margin-left: auto;
   margin-top: 20vh;
-}
-
-/* desktop*/
-@media (min-width: 992px) {
-  .loading-margin-top {
-    margin-top: 52px;
-  }
-}
-
-@media (max-width: 992px) {
-  .loading-margin-top {
-    margin-top: 44px;
-  }
 }
 
 .results-num-classes-found {

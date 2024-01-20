@@ -40,6 +40,7 @@
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  max-width: 100%;
 }
 
 *,
@@ -150,18 +151,6 @@ h2 {
 h3 {
   font-size: var(--font-heading-size);
   font-weight: var(--regular-weight);
-}
-
-div.sm-spacing {
-  padding: 10px;
-}
-
-div.med-spacing {
-  padding: 20px;
-}
-
-div.lrg-spacing {
-  padding: 40px;
 }
 
 ul {
