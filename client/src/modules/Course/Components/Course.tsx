@@ -328,24 +328,27 @@ export const Course = () => {
         </div>
 
         <div className={`${styles.reviewContent}`}>
-          <h2 className={styles.pastReviews}>
-            Past Reviews ({courseReviews?.length})
-          </h2>
-          <div className={styles.reviewsHeader}>
-            <div className={styles.sortByContainer}>
-              <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-                Sort By:
-              </label>
-              <select
-                onChange={sortReviewsBy}
-                className={styles.sortBySelect}
-                id="sort-reviews-by"
-              >
-                <option value="helpful">Most Helpful</option>
-                <option value="recent">Recent</option>
-              </select>
+          <div className={styles.reviewContentHeader}>
+            <h2 className={styles.pastReviews}>
+              Past Reviews ({courseReviews?.length})
+            </h2>
+            <div className={styles.reviewsHeader}>
+              <div className={styles.sortByContainer}>
+                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+                  Sort By:
+                </label>
+                <select
+                  onChange={sortReviewsBy}
+                  className={styles.sortBySelect}
+                  id="sort-reviews-by"
+                >
+                  <option value="helpful">Most Helpful</option>
+                  <option value="recent">Recent</option>
+                </select>
+              </div>
             </div>
           </div>
+
           <div className={styles.courseReviews}>
             <CourseReviews
               reviews={courseReviews}

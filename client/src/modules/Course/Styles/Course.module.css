@@ -6,6 +6,11 @@
   min-height: 100%;
 }
 
+.reviewContentHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
 .content {
   display: flex;
   flex-flow: row wrap;
@@ -99,7 +104,6 @@
   display: none;
   justify-content: space-between;
   /* margin: 20px 0; */
-  background: var(--clr-blue-100);
   border: 2px solid var(--clr-blue-200);
   border-radius: 5px;
   /* padding: 2px 10px; */
