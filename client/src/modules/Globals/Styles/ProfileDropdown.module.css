@@ -81,6 +81,7 @@
   .signOutButtonContainer {
     position: relative;
   }
+
   .signInButton {
     top: 3em;
     margin: 0;
@@ -90,7 +91,8 @@
 
   .profileMenuCard {
     border-radius: 5px;
-    padding: 20px;
+    padding: 1em;
+    width: 10em;
     gap: 0;
     padding-bottom: 40px;
   }
@@ -100,6 +102,13 @@
     width: 100%;
     top: 0;
     bottom: 0;
-    padding: 13px;
+    padding: 1em;
+    font-size: var(--font-small-size);
+  }
+
+  .profileMenuLink {
+    margin-bottom: 1em;
+    text-align: center;
+    font-size: var(--font-small-size);
   }
 }

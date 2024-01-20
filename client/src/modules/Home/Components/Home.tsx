@@ -69,39 +69,30 @@ export const Home = (imgSrc: any) => {
   }, [time, season])
 
   /** Displays "sign in" or profile bear picture */
-  const NavButton = () => {
-    return (
-      <ProfileDropdown
-        isLoggedIn={isLoggedIn}
-        netId={netId}
-        signOut={signOut}
-        signIn={signIn}
-      />
-    )
-  }
 
   return (
-    <div className="row ">
+    <div>
       <div
         className={`${styles.homeFullHeight} ${styles.backgroundCommon} background-gradient_${time}${season}`}
       >
-        <NavButton />
-
-        <div className="row">
+        <ProfileDropdown
+          isLoggedIn={isLoggedIn}
+          netId={netId}
+          signOut={signOut}
+          signIn={signIn}
+        />
+        <div>
           <img
             src="/logo.svg"
             className={`${styles.scaleLogoHome}`}
             alt="CU Reviews Logo"
           />
         </div>
-        <div className={`row ${styles.homepageTextPadding}`}>
+        <div className={`${styles.homepageTextPadding}`}>
           <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12">
-            <div className="row">
-              <p className={`${styles.homepageText}`}>
-                Search for Cornell courses, rate past classes, and share
-                feedback
-              </p>
-            </div>
+            <p className={`${styles.homepageText}`}>
+              Search for Cornell courses, rate past classes, and share feedback
+            </p>
             <SearchBar
               imgSrc={`${String(imgSrc.imgSrc)}`}
               signOut={signOut}
