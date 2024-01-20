@@ -1,6 +1,6 @@
 .profileMenuContainer {
   margin-top: 0;
-  margin-right: 36px;
+  margin-right: 2em;
   position: absolute;
   right: 0;
   cursor: pointer;
@@ -9,13 +9,13 @@
 .profileBear {
   width: 53px;
   height: 53px;
+  margin-left: auto;
 }
 
 .profileMenuCard {
-  background-color: white;
-  position: absolute;
+  background-color: var(--clr-white);
+  position: relative;
   right: 0;
-  width: 10em;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   padding: 1.5em;
   border-radius: 5px;

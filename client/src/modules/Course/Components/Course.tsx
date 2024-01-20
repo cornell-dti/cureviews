@@ -209,7 +209,7 @@ export const Course = () => {
    */
   if (pageStatus === PageStatus.Error) {
     return (
-      <div className={`row ${styles.errorContainer}`}>
+      <div className={`${styles.errorContainer}`}>
         {/* TODO: no props on orig implementation */}
         <Navbar userInput={input} />
         <img
@@ -266,11 +266,11 @@ export const Course = () => {
           </div>
         </Modal>
 
-        <div className="row d-lg-block">
+        <div className="d-lg-block">
           <Navbar userInput={input} />
         </div>
 
-        <div className={`row ${styles.content}`}>
+        <div className={`${styles.content}`}>
           <div
             className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
               isPastScrollThreshold && styles.courseInfoColumnShadow
@@ -327,7 +327,7 @@ export const Course = () => {
           </div>
         </div>
 
-        <div className={`row ${styles.reviewContent}`}>
+        <div className={`${styles.reviewContent}`}>
           <h2 className={styles.pastReviews}>
             Past Reviews ({courseReviews?.length})
           </h2>
