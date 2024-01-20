@@ -365,10 +365,9 @@ export class SearchBar extends Component {
     return (
       <div
         className={
-          'row ' +
-          (this.props.contrastingResultsBackground
+          this.props.contrastingResultsBackground
             ? 'contrasting-result-background'
-            : '')
+            : ''
         }
       >
         <div

@@ -89,15 +89,17 @@ export const Home = (imgSrc: any) => {
           />
         </div>
         <div className={`${styles.homepageTextPadding}`}>
-          <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12">
+          <div className="">
             <p className={`${styles.homepageText}`}>
               Search for Cornell courses, rate past classes, and share feedback
             </p>
-            <SearchBar
-              imgSrc={`${String(imgSrc.imgSrc)}`}
-              signOut={signOut}
-              isLoggedIn={isLoggedIn}
-            />
+            <div className={styles.homeSearchContainer}>
+              <SearchBar
+                imgSrc={`${String(imgSrc.imgSrc)}`}
+                signOut={signOut}
+                isLoggedIn={isLoggedIn}
+              />
+            </div>
           </div>
         </div>
         <img src={DTILogo} className={`${styles.dtiLogo}`} alt="DTI Logo" />
