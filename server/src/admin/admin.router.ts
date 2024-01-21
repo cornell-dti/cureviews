@@ -132,7 +132,7 @@ adminRouter.post('/getRaffleWinner', async (req, res) => {
   }
 });
 
-adminRouter.post('/addNewSemDbester', async (req, res) => {
+adminRouter.post('/addNewSemester', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
     const auth = new Auth({ token });
