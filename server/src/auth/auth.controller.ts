@@ -4,6 +4,12 @@ import { findStudent } from '../utils';
 import { insertNewStudent } from './auth.data-access';
 import { InsertStudentType, TokenPayloadType } from './auth.type';
 
+/**
+ * Inserts a new user.
+ *
+ * @param {TokenPayloadType} token: represents Google OAuth token payload derived from Google verifyIdToken.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const insertUser = async ({ token }: TokenPayloadType) => {
   try {
     if (!token.email) {
@@ -26,10 +32,12 @@ export const insertUser = async ({ token }: TokenPayloadType) => {
 
         await insertNewStudent(newStudent);
       }
+
+      return true;
     }
+
+    return false;
   } catch (err) {
     return false;
   }
-
-  return true;
 };
