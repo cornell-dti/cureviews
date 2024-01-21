@@ -7,6 +7,11 @@ type AuthEntity = {
   token: string;
 };
 
+/**
+ * Represents core business logic for authentication and contains necessary helper functions pertaining to the token.
+ * Should have not other server side dependencies.
+ */
+
 export class Auth {
   private token: string;
 
@@ -50,6 +55,10 @@ export class Auth {
     }
   }
 
+  /**
+   * Validates Auth object based on specified requirements from joi.
+   * Throws an exception if object is not valid.
+   */
   private validate() {
     const tokenSchema = joi.object({
       token: joi
