@@ -261,7 +261,7 @@ export const SearchBar = ({
   return (
     <div
       className={`${
-        contrastingResultsBackground ? styles.contrastingResultsBackground : ''
+        contrastingResultsBackground ? 'contasting-results-background' : ''
       }`}
     >
       <div
