@@ -3,6 +3,10 @@
 .results-column-container {
   display: flex;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--clr-blue-100);
+  padding-bottom: 2%;
 }
 
 .filter-container {
@@ -12,7 +16,7 @@
 
 .filter-title {
   font-style: normal;
-  color: #000000;
+  color: var(--clr-black);
   align-items: center;
   margin-bottom: 23px;
 }
@@ -24,12 +28,12 @@
 .filter-sub-title {
   font-style: normal;
   align-items: center;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .filter-checkbox-label {
   font-style: normal;
-  color: #000000;
+  color: var(--clr-black);
   margin: 0px 0px 0px 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -45,7 +49,6 @@
 
 @media (min-width: 992px) {
   .filter-container {
-    padding-left: 6%;
     padding-top: 28px;
     min-width: 200px;
   }
@@ -138,13 +141,13 @@
   margin-top: 24px;
   margin-bottom: 24px;
   background-color: white;
-  border: 1px solid #ececec;
+  border: 1px solid var(--clr-gray-100);
   box-sizing: border-box;
   border-radius: 10px;
 }
 
 .mobile-filter-button {
-  border: 1px solid #0076ff;
+  border: 1px solid var(--clr-blue-400);
   background-color: Transparent;
   background-image: url('/filterIcon.svg');
   background-repeat: no-repeat;
@@ -162,7 +165,7 @@
   font-size: 18px;
   line-height: 19px;
   letter-spacing: -0.225605px;
-  color: #0076ff;
+  color: var(--clr-blue-400);
 }
 
 .mobile-filter-done-button {
@@ -176,11 +179,11 @@
   border: none;
   background: none;
   float: right;
-  color: #0076ff;
+  color: var(--clr-blue-400);
 }
 
 .filter-popup {
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   top: 0px;
   left: 0px;
   height: 100vh;
@@ -188,7 +191,7 @@
   position: fixed;
   bottom: 0;
   right: 15px;
-  border: 3px solid #f1f1f1;
+  border: 3px solid var(--clr-gray-100);
   z-index: 200;
 }
 
@@ -213,9 +216,9 @@
 
 .react-major-select__placeholder {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
+  font-size: var(--font-p-size);
   font-weight: 300;
-  color: #807b7b !important;
+  color: var(--clr-gray-300) !important;
 }
 
 .react-major-select__indicator-separator {
@@ -223,16 +226,16 @@
 }
 
 .react-major-select__dropdown-indicator {
-  color: #9fcbff !important;
+  color: var(--clr-blue-200) !important;
 }
 
 .react-major-select__control--is-focused
   .react-major-select__dropdown-indicator {
-  color: #0076ff !important;
+  color: var(--clr-blue-400) !important;
 }
 
 .react-major-select__control--is-focused {
-  border-color: #0076ff !important;
+  border-color: var(--clr-blue-400) !important;
   box-shadow: none !important;
 }
 
@@ -251,8 +254,8 @@
   border-color: transparent;
   border: none;
   outline: none;
-  background-color: #f4f9fe;
-  color: #0076ff;
+  background-color: var(--clr-blue-100);
+  color: var(--clr-blue-400);
 }
 
 @media (max-width: 992px) {
@@ -269,7 +272,7 @@
   line-height: normal;
   text-decoration-line: underline;
   margin: 0;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 .results-classes-list {
@@ -295,7 +298,7 @@
     font-weight: normal;
     font-size: 18px;
     line-height: 23px;
-    color: #0076ff;
+    color: var(--clr-blue-400);
     padding-top: 54px;
     padding-left: 36px;
   }
@@ -309,7 +312,11 @@
   }
 
   .mobile-search-gradient {
-    background: linear-gradient(180deg, #f4f9fe 0%, #ffffff 50%);
+    background: linear-gradient(
+      180deg,
+      var(--clr-blue-100) 0%,
+      var(--clr-white) 50%
+    );
   }
 
   .button-position-search-results {
@@ -323,7 +330,7 @@
   .review-bottom-button {
     width: 100%;
     height: 47px;
-    background: #0076ff;
+    background: var(--clr-blue-400);
     border-radius: 10px;
 
     font-style: normal;
@@ -332,7 +339,7 @@
     line-height: 23px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 
-    color: #ffffff;
+    color: var(--clr-white);
   }
 }
 
@@ -352,9 +359,9 @@
   min-width: 250px;
 }
 
-.noLeftRightMargin {
-  margin-left: 0;
-  margin-right: 0;
+.results-display-container {
+  padding: 3em 5em;
+  max-width: 100%;
 }
 
 .loading-results {
@@ -365,22 +372,16 @@
 
 /* desktop*/
 @media (min-width: 992px) {
-  .loading-margin-top {
-    margin-top: 52px;
-  }
 }
 
 @media (max-width: 992px) {
-  .loading-margin-top {
-    margin-top: 44px;
-  }
 }
 
 .results-num-classes-found {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.001em;
-  color: #000000;
+  color: var(--clr-black);
   margin: 0;
 
   font-style: normal;
@@ -403,7 +404,7 @@
 }
 
 ul {
-  background: #f4f9fe;
+  background: var(--clr-blue-100);
 }
 
 /* Class Preview Styling */

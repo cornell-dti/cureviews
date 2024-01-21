@@ -36,15 +36,12 @@
 
 .custom-navbar {
   width: 100%;
-  padding-top: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 25px;
+  padding: 3em 2em 1.5em;
   box-shadow: 0px 2.49858px 2.49858px rgba(0, 0, 0, 0.08);
   z-index: 110;
   top: 0px;
   position: sticky;
-  background: #ffffff;
+  background: var(--clr-white);
   border: 0;
   margin: 0;
   display: flex;
@@ -56,8 +53,9 @@
   margin-left: 5vw;
 }
 
-.navbar-searchbar-container {
-  width: 100%;
+.searchbar-in-navbar {
+  border: 0.125em solid var(--clr-gray-200);
+  box-shadow: none;
 }
 
 .scale-logo-navbar {
@@ -70,10 +68,9 @@
   font-weight: var(--semi-bold-weight);
   font-size: 18px;
   text-decoration: none;
-  margin-top: 12px;
+  margin-top: var(--font-small-size);
   text-align: right;
   padding-right: 30px;
-
 }
 
 @media (max-width: 480px) {
@@ -105,4 +102,3 @@
     width: 100vw;
   }
 }
-

@@ -8,6 +8,6 @@
 }
 
 .error-message {
-  color: red;
+  color: var(--clr-red-200);
   margin-top: 5px;
 }

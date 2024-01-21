@@ -24,8 +24,9 @@ Before this PR (i.e. on the main branch), there are X linter warnings. After my 
 
 <!--- List any important or subtle points, future considerations, or other items of note. -->
 
-### Breaking Changes  <!-- Optional -->
+### Breaking Changes <!-- Optional -->
 
 <!-- Keep items that apply: -->
+
 - Database schema change (anything that changes Firestore collection structure)
 - Other change that could cause problems (Detailed in notes)

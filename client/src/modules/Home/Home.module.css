@@ -1,0 +1,71 @@
+.homepageText {
+  color: var(--clr-blue-400);
+}
+
+.homeSearchContainer {
+  width: 70%;
+}
+
+@media (min-width: 992px) {
+  .homepageText {
+    font-size: var(--font-sub-heading-size);
+  }
+
+  .homepageTextPadding {
+    padding-left: 120px;
+  }
+
+  .scaleLogoHome {
+    margin: 120px 0px 0px 120px;
+  }
+}
+
+@media (max-width: 992px) {
+  .homepageText {
+    font-size: 18px;
+  }
+
+  .homepageTextPadding {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .scaleLogoHome {
+    margin: 120px 0px 0px 30px;
+  }
+
+  .homeSearchContainer {
+    width: 100%;
+  }
+}
+
+.scaleLogoHome {
+  height: 100px;
+  width: auto;
+}
+
+.backgroundCommon {
+  background-repeat: no-repeat;
+  background-size: 101%;
+  background-position-y: 103%;
+  max-height: 100%;
+  min-width: 100%;
+  justify-items: start;
+  position: fixed;
+  bottom: 0px;
+}
+
+.dtiLogo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  height: auto;
+  width: 200px;
+}
+
+/* Needed so that background is flush against bottom */
+.homeFullHeight {
+  padding-top: 3em;
+  min-height: 100%;
+  background-color: var(--clr-blue-100);
+}

@@ -63,7 +63,7 @@ export const Course = () => {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(`/v2/getCourseByInfo`, {
+        const response = await axios.post(`/api/getCourseByInfo`, {
           number,
           subject: subject.toLowerCase(), // TODO: fix backend to handle this
         })
@@ -73,9 +73,12 @@ export const Course = () => {
           setSelectedClass(course)
 
           // after getting valid course info, fetch reviews
-          const reviewsResponse = await axios.post('/v2/getReviewsByCourseId', {
-            courseId: course._id,
-          })
+          const reviewsResponse = await axios.post(
+            '/api/getReviewsByCourseId',
+            {
+              courseId: course._id,
+            }
+          )
           const reviews = reviewsResponse.data.result
           // convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
@@ -101,16 +104,16 @@ export const Course = () => {
     /**
      * Submit review and clear session storage
      */
-    async function submitReview(review: NewReview, classId: string) {
+    async function submitReview(review: NewReview, courseId: string) {
       try {
-        const response = await axios.post('/v2/insertReview', {
+        const response = await axios.post('/api/insertReview', {
           token: token,
           review: review,
-          classId: classId,
+          courseId: courseId,
         })
 
         clearSessionReview()
-        if (response.data.result.resCode === 1) {
+        if (response.status === 200) {
           setIsReviewModalOpen(false)
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
@@ -157,9 +160,8 @@ export const Course = () => {
    */
   async function reportReview(reviewId: string) {
     try {
-      const response = await axios.post('reportReview', { id: reviewId })
-      const responseCode = response.data.result.resCode
-      if (responseCode === 1) {
+      const response = await axios.post('/api/reportReview', { id: reviewId })
+      if (response.status === 200) {
         setCourseReviews(
           courseReviews?.filter((element) => element._id !== reviewId)
         )
@@ -207,7 +209,7 @@ export const Course = () => {
    */
   if (pageStatus === PageStatus.Error) {
     return (
-      <div className={`row ${styles.errorContainer}`}>
+      <div className={`${styles.errorContainer}`}>
         {/* TODO: no props on orig implementation */}
         <Navbar userInput={input} />
         <img
@@ -264,17 +266,24 @@ export const Course = () => {
           </div>
         </Modal>
 
-        <div className="row d-lg-block">
+        <div className="d-lg-block">
           <Navbar userInput={input} />
         </div>
 
-        <div className={`row ${styles.content}`}>
+        <div className={`${styles.content}`}>
           <div
             className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
               isPastScrollThreshold && styles.courseInfoColumnShadow
             }`}
           >
-            <h1 className={styles.courseTitle}>{selectedClass.classTitle}</h1>
+            <h1
+              className={styles.courseTitle}
+              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
+                selectedClass.classNum
+              }`}
+            >
+              {selectedClass.classTitle}
+            </h1>
             <p className={styles.courseSubtitle}>
               {selectedClass.classSub.toUpperCase() +
                 ' ' +
@@ -282,16 +291,8 @@ export const Course = () => {
                 ', ' +
                 lastOfferedSems(selectedClass)}
             </p>
-            {/* <div
-              className={`d-lg-none ${!isPastScrollThreshold && 'd-none'} ${
-                styles.ratingMobileBox
-              }`}
-            >
-              <div>Overall {selectedClass!.classRating?.toFixed(1)}</div>
-              <div>Difficulty {selectedClass!.classDifficulty?.toFixed(1)}</div>
-              <div>Workload {selectedClass!.classWorkload?.toFixed(1)}</div>
-            </div> */}
             <button
+              data-cy="leave-review-button"
               className={`${styles.startReviewButton}`}
               onClick={() => onLeaveReview()}
             >
@@ -300,11 +301,6 @@ export const Course = () => {
           </div>
 
           <div className={`col ${styles.courseReviewColumn}`}>
-            {/* <div
-              className={`${isPastScrollThreshold && 'd-none'} d-lg-flex ${
-                styles.gaugeContainer
-              }`}
-            > */}
             <div className={` d-lg-flex ${styles.gaugeContainer}`}>
               <div className={styles.gauge}>
                 <Gauge
@@ -331,23 +327,28 @@ export const Course = () => {
           </div>
         </div>
 
-        <div className={`row ${styles.reviewContent}`}>
-          <h2 className={styles.pastReviews}>
-            Past Reviews ({courseReviews?.length})
-          </h2>
-          <div className={styles.reviewsHeader}>
-            <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-              Sort By:
-            </label>
-            <select
-              onChange={sortReviewsBy}
-              className={styles.sortBySelect}
-              id="sort-reviews-by"
-            >
-              <option value="helpful">Most Helpful</option>
-              <option value="recent">Recent</option>
-            </select>
+        <div className={`${styles.reviewContent}`}>
+          <div className={styles.reviewContentHeader}>
+            <h2 className={styles.pastReviews}>
+              Past Reviews ({courseReviews?.length})
+            </h2>
+            <div className={styles.reviewsHeader}>
+              <div className={styles.sortByContainer}>
+                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
+                  Sort By:
+                </label>
+                <select
+                  onChange={sortReviewsBy}
+                  className={styles.sortBySelect}
+                  id="sort-reviews-by"
+                >
+                  <option value="helpful">Most Helpful</option>
+                  <option value="recent">Recent</option>
+                </select>
+              </div>
+            </div>
           </div>
+
           <div className={styles.courseReviews}>
             <CourseReviews
               reviews={courseReviews}
@@ -368,19 +369,6 @@ export const Course = () => {
                 <MdOutlineRateReview size={25} />
               </button>
             </div>
-
-            {/* <div
-              className={`d-lg-none ${!isPastScrollThreshold && "d-none"} ${
-                styles.fixedButtonContainer
-              }`}
-            >
-              <button
-                className={`btn ${styles.startReviewButton}`}
-                onClick={() => onLeaveReview()}
-              >
-                Leave a review
-              </button>
-            </div> */}
           </div>
         </div>
       </div>

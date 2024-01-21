@@ -1,7 +1,6 @@
 {
   "name": "course-reviews-react-2.0",
-  "scripts": {
-  },
+  "scripts": {},
   "env": {
     "MONGO_URL": {
       "required": true
@@ -16,9 +15,7 @@
       "quantity": 1
     }
   },
-  "addons": [
-    "papertrail"
-  ],
+  "addons": ["papertrail"],
   "buildpacks": [
     {
       "url": "heroku/nodejs"

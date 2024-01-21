@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import Select from 'react-select'
 
 import axios from 'axios'
 
@@ -26,6 +27,7 @@ export const Admin = () => {
   const [loadingSemester, setLoadingSemester] = useState<number>(0)
   const [loadingProfs, setLoadingProfs] = useState<number>(0)
   const [resettingProfs, setResettingProfs] = useState<number>(0)
+  const [addSemester, setAddSemester] = useState('')
 
   const [isLoggedIn, token, isAuthenticating] = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
@@ -33,7 +35,7 @@ export const Admin = () => {
 
   useEffect(() => {
     async function confirmAdmin() {
-      const res = await axios.post(`/v2/tokenIsAdmin`, {
+      const res = await axios.post(`/api/tokenIsAdmin`, {
         token: token,
       })
 
@@ -52,13 +54,18 @@ export const Admin = () => {
 
   useEffect(() => {
     axios
-      .post('/v2/fetchReviewableClasses', { token: token })
+      .post('/api/fetchPendingReviews', { token: token })
       .then((response) => {
         const result = response.data.result
-        if (result.resCode !== 0) {
-          setUnapprovedReviews(result)
+        if (response.status === 200) {
+          setUnapprovedReviews(
+            result.filter((review: Review) => review.reported === 0)
+          )
+          setReportedReviews(
+            result.filter((review: Review) => review.reported === 1)
+          )
         } else {
-          console.log('Error at fetchReviewableClasses')
+          console.log('Error at fetchPendingReviews')
         }
       })
   }, [token, isAuthenticating])
@@ -76,13 +83,12 @@ export const Admin = () => {
   // and changes the review with this id to visible.
   function approveReview(review: Review) {
     axios
-      .post('/v2/makeReviewVisible', {
+      .post('/api/makeReviewVisible', {
         review: review,
         token: token,
       })
       .then((response) => {
-        const result = response.data.result
-        if (result.resCode === 1) {
+        if (response.status === 200) {
           const updatedUnapprovedReviews = removeReviewFromList(
             review,
             unapprovedReviews
@@ -96,13 +102,12 @@ export const Admin = () => {
   // and deletes the review with this id.
   function removeReview(review: Review, isUnapproved: boolean) {
     axios
-      .post('/v2/removeReview', {
+      .post('/api/removeReview', {
         review: review,
         token: token,
       })
       .then((response) => {
-        const result = response.data.result.resCode
-        if (result === 1) {
+        if (response.status === 200) {
           console.log('Review removed')
           if (isUnapproved) {
             const updatedUnapprovedReviews = removeReviewFromList(
@@ -111,30 +116,28 @@ export const Admin = () => {
             )
             setUnapprovedReviews(updatedUnapprovedReviews)
           } else {
-            console.log(reportedReviews)
             const updatedReportedReviews = removeReviewFromList(
               review,
               reportedReviews
             )
+
             setReportedReviews(updatedReportedReviews)
           }
-        } else {
-          console.log('Unable to remove review')
         }
       })
+      .catch((e) => console.log(`Unable to remove review ${e}`))
   }
 
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   function unReportReview(review: Review) {
     axios
-      .post('/v2/undoReportReview', {
+      .post('/api/undoReportReview', {
         review: review,
         token: token,
       })
       .then((response) => {
-        const result = response.data.result.resCode
-        if (result === 1) {
+        if (response.status === 200) {
           console.log('Review unreported')
           const updatedReportedReviews = removeReviewFromList(
             review,
@@ -150,8 +153,28 @@ export const Admin = () => {
   // Call when user selects "Add New Semester" button. Runs code to check the
   // course API for new classes and updates classes existing in the database.
   // sShould run once a semester, when new classes are added to the roster.
-  function addNewSem() {
-    console.log('Deprecated functionality')
+  function addNewSem(semester: string) {
+    console.log('Adding new semester...')
+    setDisableNewSem(true)
+    setDisableInit(true)
+    setLoadingSemester(1)
+
+    axios
+      .post('/api/addNewSemester', {
+        semester,
+        token: token,
+      })
+      .then((response) => {
+        const result = response.data.result
+        if (result === true) {
+          console.log('New Semester Added')
+          setDisableNewSem(false)
+          setDisableInit(false)
+          setLoadingSemester(2)
+        } else {
+          console.log('Unable to add new semester!')
+        }
+      })
   }
 
   // Call when user selects "Initialize Database" button. Scrapes the Cornell
@@ -162,7 +185,19 @@ export const Admin = () => {
   // NOTE: requries an initialize flag to ensure the function is only run on
   // a button click without this, it will run every time this component is created.
   function addAllCourses() {
-    console.log('Deprecated functionality')
+    console.log('Initializing database')
+
+    setDisableInit(true)
+    setLoadingInit(1)
+
+    axios.post('/api/dbInit', { token: token }).then((response) => {
+      if (response.status === 200) {
+        setDisableInit(false)
+        setLoadingInit(2)
+      } else {
+        console.log('Error at dbInit')
+      }
+    })
   }
 
   function updateProfessors() {
@@ -170,9 +205,8 @@ export const Admin = () => {
     setDisableInit(true)
     setLoadingProfs(1)
 
-    axios.post('/v2/setProfessors', { token: token }).then((response) => {
-      const result = response.data.result.resCode
-      if (result === 0) {
+    axios.post('/api/setProfessors', { token: token }).then((response) => {
+      if (response.status === 200) {
         console.log('Updated the professors')
         setDisableInit(false)
         setLoadingProfs(2)
@@ -187,9 +221,8 @@ export const Admin = () => {
     setDisableInit(true)
     setResettingProfs(1)
 
-    axios.post('/v2/resetProfessors', { token: token }).then((response) => {
-      const result = response.data.result.resCode
-      if (result === 1) {
+    axios.post('/api/resetProfessors', { token: token }).then((response) => {
+      if (response.status === 200) {
         console.log('Reset all the professors to empty arrays')
         setDisableInit(false)
         setResettingProfs(2)
@@ -243,6 +276,10 @@ export const Admin = () => {
     }
   }
 
+  function toSelectOptions(options: string[] | undefined) {
+    return options?.map((option) => ({ value: option, label: option })) || []
+  }
+
   function renderAdmin(token: string) {
     return (
       <div className="container-width whiteBg">
@@ -259,13 +296,39 @@ export const Admin = () => {
                     disabled={disableNewSem}
                     type="button"
                     className="btn btn-warning"
-                    onClick={() => addNewSem()}
+                    onClick={() => addNewSem(addSemester)}
                   >
                     Add New Semester
                   </button>
+                  <Select
+                    isDisabled={disableNewSem}
+                    value={{ value: addSemester, label: addSemester }}
+                    onChange={(semester: any) => {
+                      setAddSemester(semester.value)
+                    }}
+                    isSingle
+                    options={toSelectOptions([
+                      'SP24',
+                      'FA24',
+                      'SP25',
+                      'FA25',
+                      'SP26',
+                      'FA26',
+                      'SP27',
+                      'FA27',
+                      'SP28',
+                      'FA28',
+                      'SP29',
+                      'FA29',
+                      'SP30',
+                    ])}
+                    placeholder="Select Semester"
+                  />
                 </div>
+
                 <div className="btn-group separate-buttons" role="group">
                   <button
+                    disabled={disableInit}
                     type="button"
                     className="btn btn-warning"
                     onClick={() => updateProfessors()}
@@ -275,6 +338,7 @@ export const Admin = () => {
                 </div>
                 <div className="btn-group separate-buttons" role="group">
                   <button
+                    disabled={disableInit}
                     type="button"
                     className="btn btn-warning"
                     onClick={() => resetProfessors()}
@@ -362,7 +426,7 @@ export const Admin = () => {
                 </div>
                 <div className="card-body">
                   <ul>
-                    {unapprovedReviews.map((review: Review) => {
+                    {reportedReviews.map((review: Review) => {
                       //create a new class "button" that will set the selected class to this class when it is clicked.
                       if (review.reported === 1) {
                         return (

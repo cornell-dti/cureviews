@@ -6,7 +6,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--font-sub-heading-size);
   line-height: 11px;
   /* or 45% */
 
@@ -16,7 +16,7 @@
 
   /* Gray */
 
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 .hidePending {
@@ -36,7 +36,7 @@
   letter-spacing: -0.225605px;
   text-decoration-line: underline;
 
-  color: #0076ff;
+  color: var(--clr-blue-400);
 }
 
 @media (max-width: 480px) {

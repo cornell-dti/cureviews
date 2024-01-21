@@ -20,13 +20,14 @@ const CourseReviews = ({
   }
 
   return (
-    <div>
+    <div data-cy={`course-reviews`}>
       {reviews.map((review) => (
         <ReviewCard
           key={review._id}
           review={review}
           isPreview={isPreview}
           isProfile={isProfile}
+          reportHandler={reportReview}
         />
       ))}
     </div>

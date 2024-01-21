@@ -8,52 +8,66 @@
 
   font-family: Source Sans Pro;
   font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
+  font-weight: var(--regular-weight);
+  font-size: var(--font-p-size);
   line-height: 18px;
 }
 
+.buttonContainer {
+  display: flex;
+  padding: 0.5em 1em 0em;
+}
+
+.reviewMainSectionContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0em 1em;
+}
+
 .reviewContainerStyle {
-  background: #ffffff;
-  border: 0.625px solid #b7d8ff;
+  background: var(--clr-white);
+  border: 0.625px solid var(--clr-blue-200);
 
   /* text */
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .reviewContainerStylePending {
-  background: #f9f9f9;
-  border: 1px dashed #979797;
+  background: var(--clr-gray-100);
+  border: 1px dashed var(--clr-gray-300);
 
-  color: #979797;
+  color: var(--clr-gray-300);
 }
 
 .pencilContainer {
   width: 100%;
-  color: #9b9b9b;
+  color: var(--clr-gray-300);
   text-align: right;
 }
 
 .ratingsContainer {
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 2rem;
 }
 
 .ratingsContainerColor {
-  background: #ffffff;
+  background: var(--clr-white);
 }
 
 .pendingRatingsContainerColor {
-  background-color: #f9f9f9;
+  background-color: var(--clr-gray-100);
 }
 
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
-    background: #f4f9fe;
+    background: var(--clr-blue-100);
   }
 
   .pendingRatingsContainerColor {
-    background: #f9f9f9;
+    background: var(--clr-gray-100);
   }
 
   .ratingsContainer {
@@ -62,23 +76,31 @@
   }
 }
 
+.ratingsSection {
+  display: flex;
+  align-items: center;
+  margin: 0em auto;
+}
+
 .ratingElem {
-  width: 100px;
-  margin-left: 0;
-  margin-right: 0;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  align-items: start;
+  justify-content: space-between;
+  font-size: var(--font-p-size);
 }
 
 .ratingNum {
-  float: right;
-
   font-weight: 600;
 }
 
 .contentContainer {
   margin-top: 10px;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .courseTitle {
@@ -90,13 +112,24 @@
 }
 
 .courseCodeAndProf {
-  font-size: 12px;
+  font-size: var(--font-small-size);
   line-height: 15px;
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
 }
 
 .professors {
-  font-weight: var(--semi-bold-weight);
+  font-size: var(--font-p-size);
+  font-weight: var(--bold-weight);
+  margin: 0;
+}
+
+.gradeMajorContainer {
+  display: flex;
+  gap: 10em;
+}
+
+.gradeMajorText {
+  font-weight: var(--bold-weight);
 }
 
 .reviewText {
@@ -105,19 +138,19 @@
 }
 
 .date {
-  font-size: 12px;
+  font-size: var(--font-small-size);
   line-height: 15px;
 
-  color: #9b9b9b;
+  color: var(--clr-gray-300);
 }
 
 .upvoteText {
-  font-size: 12px;
+  font-size: var(--font-small-size);
   line-height: 15px;
   display: inline;
   align-items: center;
   text-align: right;
-  color: #807b7b;
+  color: var(--clr-gray-300);
 }
 
 @media (min-width: 768px) and (max-width: 1000px) {
@@ -128,17 +161,17 @@
   .ratingsContainer {
     width: 95%;
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
     top: 4vh;
     left: 6vw;
   }
 
   .ratingsContainerColor {
-    background: #ffffff;
+    background: var(--clr-white);
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingNum {
@@ -149,11 +182,11 @@
 
 @media screen and (max-width: 768px) {
   .ratingsContainerColor {
-    background: #ffffff;
+    background: var(--clr-white);
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingsContainer {
@@ -181,23 +214,18 @@
   .ratingsContainer {
     width: 95%;
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
     top: 7vh;
     left: 1.2vw;
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
+    background-color: var(--clr-gray-100);
   }
 
   .ratingNum {
     float: none;
     margin-left: 0.2rem;
-  }
-
-  .gradeMajorContainer {
-    position: relative;
-    top: 3vh;
   }
 
   .reviewText {
@@ -218,11 +246,11 @@
 
 @media screen and (max-width: 992px) {
   .covidTag {
-    background-color: #ffec5e;
+    background-color: var(--clr-yellow-100);
     border-radius: 5px;
     width: 95%;
     margin-left: 0.2%;
-    border-color: #ffd666;
+    border-color: var(--clr-yellow-200);
     border-width: 3px;
     border-style: solid;
     padding: 4px;
@@ -231,11 +259,11 @@
 
 @media screen and (min-width: 992px) {
   .covidTag {
-    background-color: #ffec5e;
+    background-color: var(--clr-yellow-100);
     border-radius: 5px;
     width: 70%;
     margin-left: 0.2%;
-    border-color: #ffd666;
+    border-color: var(--clr-yellow-200);
     border-width: 3px;
     border-style: solid;
     padding: 4px;
@@ -253,7 +281,7 @@
     font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: var(--font-p-size);
     line-height: 18px;
   }
 
@@ -266,54 +294,36 @@
   }
 
   .reviewContainerStyle {
-    background: #ffffff;
-    border: 0.625px solid #b7d8ff;
+    border: 0.625px solid var(--clr-blue-200);
 
     /* text */
-    color: #000000;
+    color: var(--clr-black);
   }
 
   .reviewContainerStylePending {
-    background: #f9f9f9;
-    border: 1px dashed #979797;
+    background: var(--clr-gray-100);
+    border: 1px dashed var(--clr-gray-300);
 
-    color: #979797;
+    color: var(--clr-gray-300);
   }
 
   .ratingsContainer {
     position: relative;
-    background: #ffffff;
+    background: var(--clr-white);
     top: 6vh;
     left: -0.2vw;
   }
 
   .ratingsContainerColor {
-    background: #ffffff;
+    background: var(--clr-white);
   }
 
   .pendingRatingsContainerColor {
-    background-color: #f9f9f9;
-  }
-
-  .ratingElemColor {
-    color: #4d8dd8;
+    background-color: var(--clr-gray-100);
   }
 
   .pendingRatingElemColor {
-    color: #807b7b;
-  }
-
-  .divider {
-    display: inline;
-    content: '';
-    border-left: 1px solid #a2a1a1;
-    height: 15px;
-    position: relative;
-    left: 0.5rem;
-  }
-
-  .acceptedReviewDividerColor {
-    border-left: 1px solid #4d8dd8;
+    color: var(--clr-gray-300);
   }
 
   .ratingNum {
@@ -359,10 +369,10 @@
   }
 
   .courseTitle {
-    color: #0076ff;
+    color: var(--clr-blue-400);
   }
 
   .pendingCourseTitle {
-    color: #807b7b;
+    color: var(--clr-gray-300);
   }
 }

@@ -5,45 +5,45 @@
 }
 
 .result-label-course {
-  border: 1px solid #4a90e2;
+  border: 1px solid var(--clr-blue-300);
   box-sizing: border-box;
   border-radius: 10px;
-  padding: 4px 14px;
-  margin: 0 14px 0 0;
+  padding: 4px var(--font-p-size);
+  margin: 0 var(--font-p-size) 0 0;
   height: 25px;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 10px;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
-  color: #4a90e2;
+  color: var(--clr-blue-300);
 }
 
 .result-label-subject {
-  border: 1px solid #f3a953;
+  border: 1px solid var(--clr-yellow-300);
   box-sizing: border-box;
   border-radius: 10px;
   padding: 5px 18px;
-  margin: 0 14px 0 0;
+  margin: 0 var(--font-p-size) 0 0;
   height: 25px;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 10px;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
-  color: #f3a953;
+  color: var(--clr-yellow-300);
 }
 
 .result-label-professor {
-  border: 1px solid #92cf48;
+  border: 1px solid var(--clr-green-100);
   box-sizing: border-box;
   border-radius: 10px;
   padding: 5px 9px;
-  margin: 0 14px 0 0;
+  margin: 0 var(--font-p-size) 0 0;
   height: 25px;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 10px;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
-  color: #92cf48;
+  color: var(--clr-green-100);
 }
 
 .result-text {
@@ -54,7 +54,7 @@
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   letter-spacing: 0.001em;
-  color: #000000;
+  color: var(--clr-black);
   padding-top: 1.5px;
   text-align: left;
   cursor: pointer;
@@ -66,7 +66,7 @@
 .matching-text {
   text-decoration: underline;
   font-weight: bold;
-  color: #4990e2;
+  color: var(--clr-blue-300);
 }
 
 .ellipsis {
@@ -103,27 +103,27 @@
 }
 
 .resultbutton:hover .result-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .active-class .matching-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .resultbutton:hover .matching-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .resultbutton:hover .result-label-course {
-  color: #ffffff !important;
-  border: 1px solid #ffffff;
+  color: var(--clr-white) !important;
+  border: 1px solid var(--clr-white);
 }
 
 .active-class > .result-text {
-  color: #ffffff !important;
+  color: var(--clr-white) !important;
 }
 
 .active-class > .result-label-course {
-  color: #ffffff !important;
-  border: 1px solid #ffffff;
+  color: var(--clr-white) !important;
+  border: 1px solid var(--clr-white);
 }

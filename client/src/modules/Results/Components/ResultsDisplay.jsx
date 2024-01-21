@@ -233,6 +233,9 @@ export default class ResultsDisplay extends Component {
 
     return items.map((result, index) => (
       <div
+        data-cy={`results-display-${result.classSub.toLowerCase()}-${
+          result.classNum
+        }`}
         onClick={() => {
           if (this.computeHeight() < 992) {
             this.props.history.push(
@@ -315,7 +318,7 @@ export default class ResultsDisplay extends Component {
 
   render() {
     return (
-      <div className="row loading-margin-top noLeftRightMargin">
+      <div className=" results-display-container">
         {/* Case where results are still being loaded */}
         {this.props.loading === true && (
           <div className="loading-results">
@@ -337,8 +340,8 @@ export default class ResultsDisplay extends Component {
         )}
         {/* Case where results are returned (non-empty) */}
         {this.state.courseList.length !== 0 && this.props.loading !== true && (
-          <div className="results-column-container">
-            <div className="d-none d-lg-block col-lg-2 col-md-2 col-sm-2 col-2 filter-container">
+          <div className="results-column-container" data-cy="results-display">
+            <div className="filter-container">
               <p className="filter-title">Filter</p>
               <div className="filter-sub-category">
                 <p className="filter-sub-title">Semester</p>

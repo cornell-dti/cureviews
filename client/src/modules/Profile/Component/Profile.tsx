@@ -7,7 +7,6 @@ import { Review as ReviewType } from 'common'
 
 import Navbar from '../../Globals/Navbar'
 
-import CourseReviews from '../../Course/Components/CourseReviews'
 import { UserInfo } from './UserInfo'
 import { NoReviews } from './NoReviews'
 import { PendingReviews } from './PendingReviews'
@@ -43,13 +42,13 @@ const Profile = () => {
    * Retrieves the total reviews that a student has made
    */
   async function getReviewsTotal() {
-    const response = await axios.post('/v2/countReviewsByStudentId', {
+    const response = await axios.post('/api/countReviewsByStudentId', {
       netId,
     })
 
-    const res = response.data.result
-    if (res.code === 200) {
-      setReviewsTotal(res.message)
+    const res = response.data
+    if (response.status === 200) {
+      setReviewsTotal(res.result)
     }
   }
 
@@ -57,13 +56,13 @@ const Profile = () => {
    * Retrieves the number of reviews that the student has made that have been upvoted
    */
   async function getReviewsHelpful() {
-    const response = await axios.post('/v2/getTotalLikesByStudentId', {
+    const response = await axios.post('/api/getTotalLikesByStudentId', {
       netId,
     })
 
-    const res = response.data.result
-    if (res.code === 200) {
-      setReviewsHelpful(res.message)
+    const res = response.data
+    if (response.status === 200) {
+      setReviewsHelpful(res.result)
     }
   }
 
@@ -78,8 +77,14 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
-    axios.post(`/v2/getReviewsByStudentId`, { netId }).then((response) => {
-      const reviews = response.data.result.message
+    if (token) {
+      axios.post('/api/insertUser', { token })
+    }
+  }, [token])
+
+  useEffect(() => {
+    axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
+      const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
         return review.visible === 0
       })
@@ -124,49 +129,57 @@ const Profile = () => {
 
   if (!loading && isLoggedIn) {
     return (
-      <div className={`row ${styles.fullScreen}`}>
+      <div className={`${styles.fullScreen}`}>
         <Navbar userInput="" />
-        <UserInfo
-          profilePicture={profilePicture}
-          reviewsHelpful={reviewsHelpful}
-          reviewsTotal={reviewsTotal}
-          netId={netId}
-          signOut={signOut}
-        />
-        <div className={`col ${styles.profileRight}`}>
-          <div className={styles.profileReviewsContainer}>
-            <div className={styles.reviewsHeader}>
-              <h2 className={styles.myReviewsText}>
-                My Reviews ({reviews?.length})
-              </h2>
-              <div className={styles.sortContainer}>
-                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-                  Sort By:
-                </label>
-                <select
-                  onChange={sortReviewsBy}
-                  className={styles.sortBySelect}
-                  id="sort-reviews-by"
-                >
-                  <option value="helpful">Most Helpful</option>
-                  <option value="recent">Recent</option>
-                </select>
+        <div className={`${styles.profileContainer}`}>
+          <div className={styles.profileLeft}>
+            <UserInfo
+              profilePicture={profilePicture}
+              reviewsHelpful={reviewsHelpful}
+              reviewsTotal={reviewsTotal}
+              netId={netId}
+              signOut={signOut}
+            />
+          </div>
+
+          <div className={`${styles.profileRight}`}>
+            <div className={styles.profileReviewsContainer}>
+              <div className={styles.reviewsHeader}>
+                <h2 className={styles.myReviewsText}>
+                  My Reviews ({reviews?.length})
+                </h2>
+                <div className={styles.sortContainer}>
+                  <label
+                    className={styles.sortByLabel}
+                    htmlFor="sort-reviews-by"
+                  >
+                    Sort By:
+                  </label>
+                  <select
+                    onChange={sortReviewsBy}
+                    className={styles.sortBySelect}
+                    id="sort-reviews-by"
+                  >
+                    <option value="helpful">Most Helpful</option>
+                    <option value="recent">Recent</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            {reviews.length === 0 && <NoReviews />}
-            {reviews.length > 0 && pendingReviews.length > 0 && (
-              <>
-                <PendingReviews
-                  hide={hide}
-                  setHide={setHide}
-                  pendingReviews={pendingReviews}
-                />
+              {reviews.length === 0 && <NoReviews />}
+              {reviews.length > 0 && pendingReviews.length > 0 && (
+                <>
+                  <PendingReviews
+                    hide={hide}
+                    setHide={setHide}
+                    pendingReviews={pendingReviews}
+                  />
+                  <PastReviews pastReviews={pastReviews} />
+                </>
+              )}
+              {reviews.length > 0 && pendingReviews.length === 0 && (
                 <PastReviews pastReviews={pastReviews} />
-              </>
-            )}
-            {reviews.length > 0 && pendingReviews.length === 0 && (
-              <PastReviews pastReviews={pastReviews} />
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -48,24 +48,23 @@ export function useAuthMandatoryLogin(
 
     if (!token || token === '') {
       signIn(redirectFrom)
+    } else {
+      axios
+        .post('/api/getStudentEmailByToken', {
+          token: token,
+        })
+        .then((response) => {
+          const res = response.data
+          let verifiedEmail = ''
+
+          if (response.status === 200) {
+            verifiedEmail = res.result
+          }
+
+          setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
+        })
+        .catch((e) => console.log(e.response))
     }
-
-    axios
-      .post('/v2/getStudentEmailByToken', {
-        token: token,
-      })
-      .then((response) => {
-        const res = response.data.result
-        var verifiedEmail = ''
-
-        if (res.code === 200) {
-          console.log(res.message)
-          verifiedEmail = res.message
-        }
-
-        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
-      })
-      .catch((e) => console.log(e.response))
 
     setToken(token)
     setIsAuthenticating(false)
@@ -92,26 +91,29 @@ export function useAuthOptionalLogin(): [
     const token = getAuthToken()
 
     if (token && token !== '') {
+      axios
+        .post('/api/getStudentEmailByToken', {
+          token: token,
+        })
+        .then((response) => {
+          const data = response.data
+          var verifiedEmail = ''
+
+          if (response.status === 200) {
+            verifiedEmail = data.result
+          }
+
+          const netId = verifiedEmail.substring(
+            0,
+            verifiedEmail.lastIndexOf('@')
+          )
+          setNetId(netId)
+        })
+        .catch((e) => console.log(e.response))
+
       setToken(token)
       setIsLoggedIn(true)
     }
-
-    axios
-      .post('/v2/getStudentEmailByToken', {
-        token: token,
-      })
-      .then((response) => {
-        const res = response.data.result
-        var verifiedEmail = ''
-
-        if (res.code === 200) {
-          console.log(res.message)
-          verifiedEmail = res.message
-        }
-
-        setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
-      })
-      .catch((e) => console.log(e.response))
   }, [])
 
   const signIn = (redirectFrom: string) => {

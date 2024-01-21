@@ -8,18 +8,18 @@ import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 import DTITextLogo from '../../../assets/img/dti-text-logo.png'
 import DTIWhiteLogo from '../../../assets/img/dti-text-white-logo.png'
 
-import '../home.css'
+import styles from '../Home.module.css'
 
 /**
-  Home Page. 
-  
+  Home Page.
+
   Uppermost View component in the component tree, the first element of the HTML body tag grabbed by index.html.
 
   @returns the application homepage with a navbar and searchbar, popular
   classes and recent reviews components.
 
   @param imgSrc for search bar
-  
+
 */
 export const Home = (imgSrc: any) => {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
@@ -66,59 +66,43 @@ export const Home = (imgSrc: any) => {
     if (time === 'night') {
       setDTILogo(DTIWhiteLogo)
     }
-    console.log(`background-gradient_${time}${season}`)
   }, [time, season])
 
   /** Displays "sign in" or profile bear picture */
-  const NavButton = () => {
-    if (isLoggedIn) {
-      return <ProfileDropdown netId={netId} signOut={signOut} />
-    }
-    return (
-      <button
-        type="button"
-        className="sign-in-button"
-        onClick={() => {
-          signIn('home')
-        }}
-      >
-        Sign In
-      </button>
-    )
-  }
 
   return (
-    <div className="row">
+    <div>
       <div
-        className={`full-height background-common background-gradient_${time}${season}`}
+        className={`${styles.homeFullHeight} ${styles.backgroundCommon} background-gradient_${time}${season}`}
       >
-        <NavButton />
-
-        <div className="row">
+        <ProfileDropdown
+          isLoggedIn={isLoggedIn}
+          netId={netId}
+          signOut={signOut}
+          signIn={signIn}
+        />
+        <div>
           <img
             src="/logo.svg"
-            className="scale-logo-homepage"
+            className={`${styles.scaleLogoHome}`}
             alt="CU Reviews Logo"
           />
         </div>
-        <div className="row homepage-text-padding">
-          <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
-            <div className="row">
-              <p className="homepage-text">
-                Search for Cornell courses, rate past classes, and share
-                feedback
-              </p>
+        <div className={`${styles.homepageTextPadding}`}>
+          <div className="">
+            <p className={`${styles.homepageText}`}>
+              Search for Cornell courses, rate past classes, and share feedback
+            </p>
+            <div className={styles.homeSearchContainer}>
+              <SearchBar
+                imgSrc={`${String(imgSrc.imgSrc)}`}
+                signOut={signOut}
+                isLoggedIn={isLoggedIn}
+              />
             </div>
-            <SearchBar
-              imgSrc={`${String(imgSrc.imgSrc)}`}
-              signOut={signOut}
-              isLoggedIn={isLoggedIn}
-            />
           </div>
         </div>
-        <div className="">
-          <img src={DTILogo} className="dti-logo" alt="DTI Logo" />
-        </div>
+        <img src={DTILogo} className={`${styles.dtiLogo}`} alt="DTI Logo" />
       </div>
     </div>
   )

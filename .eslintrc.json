@@ -25,6 +25,7 @@
     "@typescript-eslint/class-name-casing": "warn",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-empty-function": "warn",
+    "import/prefer-default-export": "off",
     "consistent-return": "warn",
     "guard-for-in": "warn",
     "import/extensions": "off",

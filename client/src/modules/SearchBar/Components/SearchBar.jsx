@@ -111,7 +111,7 @@ export class SearchBar extends Component {
       this.searchTimeout = setTimeout(() => {
         axios
           .post(
-            `/v2/getClassesByQuery`,
+            `/api/getClassesByQuery`,
             { query: this.state.query },
             { signal: this.controller.signal }
           )
@@ -131,7 +131,7 @@ export class SearchBar extends Component {
 
         axios
           .post(
-            `/v2/getSubjectsByQuery`,
+            `/api/getSubjectsByQuery`,
             { query: this.state.query },
             { signal: this.controller.signal }
           )
@@ -152,7 +152,7 @@ export class SearchBar extends Component {
 
         axios
           .post(
-            `/v2/getProfessorsByQuery`,
+            `/api/getProfessorsByQuery`,
             { query: this.state.query },
             { signal: this.controller.signal }
           )
@@ -365,19 +365,18 @@ export class SearchBar extends Component {
     return (
       <div
         className={
-          'row ' +
-          (this.props.contrastingResultsBackground
+          this.props.contrastingResultsBackground
             ? 'contrasting-result-background'
-            : '')
+            : ''
         }
       >
         <div
           className={
-            'col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 searchbar ' +
-            (this.props.isInNavbar ? 'searchbar-in-navbar' : '')
+            'searchbar ' + (this.props.isInNavbar ? 'searchbar-in-navbar' : '')
           }
         >
           <input
+            data-cy="search-bar"
             className="search-text"
             onKeyUp={this.handleKeyPress}
             defaultValue={
@@ -400,6 +399,7 @@ export class SearchBar extends Component {
           )}
 
           <ul
+            data-cy="search-output"
             className="output"
             style={this.state.query !== '' ? {} : { display: 'none' }}
             onKeyPress={this.handleKeyPress}

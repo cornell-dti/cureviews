@@ -15,14 +15,14 @@ export default function RaffleWinner({ adminToken }: RaffleWinnerProps) {
 
   const updateRaffleWinner = (startDate: Date) => {
     axios
-      .post('/v2/getRaffleWinner', {
+      .post('/api/getRaffleWinner', {
         token: adminToken,
         startDate: startDate,
       })
       .then((response) => {
         const result = response.data.result
-        if (result.resCode === 0) {
-          setRaffleWinner(result.netId)
+        if (response.status === 200) {
+          setRaffleWinner(result)
         } else {
           console.log('Error at getRaffleWinner')
         }

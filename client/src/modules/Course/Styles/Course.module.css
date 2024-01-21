@@ -3,16 +3,20 @@
 .classView {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
+}
+
+.reviewContentHeader {
+  display: flex;
+  justify-content: space-between;
 }
 
 .content {
   display: flex;
   flex-flow: row wrap;
   gap: 20px;
-  background: white;
-  margin-bottom: 50px;
   padding: 0 3%;
+  background-color: var(--clr-blue-100) !important;
 }
 
 @media only screen and (min-width: 1008px) {
@@ -25,7 +29,7 @@
 .reviewContent {
   padding-right: 10%;
   padding-left: 10%;
-  background-color: #f4f9fe;
+  background-color: var(--clr-blue-100) !important;
 }
 
 .authModal {
@@ -34,7 +38,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
 }
 
@@ -53,7 +57,7 @@
   left: 20px;
   right: 20px;
   bottom: 20px;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
   border-radius: 20px;
   filter: drop-shadow(0 1px 6px rgba(168, 211, 245, 0.5));
@@ -66,7 +70,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
 }
 
@@ -82,17 +86,17 @@
 }
 
 .courseTitle {
-  font-size: 32px;
+  font-size: var(--font-heading-size);
   font-weight: var(--semi-bold-weight);
   letter-spacing: -0.13px;
-  color: #000000;
+  color: var(--clr-black);
 }
 
 .courseSubtitle {
   font-size: 18px;
   font-weight: var(--regular-weight);
   letter-spacing: -0.13px;
-  color: #a2a1a1;
+  color: var(--clr-gray-300);
   margin: 16px 0 0 0;
 }
 
@@ -100,8 +104,7 @@
   display: none;
   justify-content: space-between;
   /* margin: 20px 0; */
-  background: #f4f9fe;
-  border: 2px solid #b7d8ff;
+  border: 2px solid var(--clr-blue-200);
   border-radius: 5px;
   /* padding: 2px 10px; */
   font-weight: 600;
@@ -113,7 +116,7 @@
 .reviewFormContainer {
   margin-top: 30px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   padding: 20px;
   position: sticky;
   top: 10px;
@@ -121,21 +124,21 @@
 
 .gaugeContainer {
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--clr-white);
   height: 150px;
-  padding: 20px;
+
   display: flex;
   justify-content: space-between;
 }
 
 .gauge {
-  height: 100%;
+  min-height: 100%;
   padding: 0 0px 0 0;
 }
 
 .startReviewButton {
-  background-color: #0076ff;
-  color: #ffffff;
+  background-color: var(--clr-blue-400);
+  color: var(--clr-white);
   width: 100%;
   font-size: 18px;
   border-radius: 10px;
@@ -144,8 +147,8 @@
 }
 
 .startReviewButton:hover {
-  background-color: #004ca3;
-  color: #ffffff !important;
+  background-color: var(--clr-blue-500);
+  color: var(--clr-white) !important;
 }
 
 .fixedButtonContainer {
@@ -166,25 +169,27 @@
 
 .reviewsHeader {
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  color: #a1a1a1;
+  align-items: center;
+}
+
+.sortByContainer {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 .sortByLabel {
-  font-weight: var(--regular-weight);
-  font-size: 18px;
+  font-size: 1.25rem;
   text-decoration-line: underline;
-  color: #807b7b;
+  color: var(--clr-gray-300);
+  display: flex;
 }
 
 .sortBySelect {
-  font-weight: var(--regular-weight);
-  margin-left: 10px;
-  font-size: 18px;
+  font-size: 1.25rem;
   border: none;
   background-color: transparent;
-  color: #0076ff;
+  color: var(--clr-blue-400);
 }
 
 .pastReviews {
@@ -192,7 +197,7 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
   font-weight: var(--regular-weight);
-  color: #807b7b;
+  color: var(--clr-gray-300);
   padding: 0 0 20px;
   margin: 0;
 }
@@ -214,7 +219,7 @@
 
 @media (min-width: 768px) {
   .courseSubtitle {
-    font-size: 24px;
+    font-size: var(--font-sub-heading-size);
   }
 
   .authModal {
@@ -244,12 +249,12 @@
   .gaugeContainer {
     justify-content: space-around;
     padding: 30px;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
     width: 100%;
   }
 
   .pastReviews {
-    font-size: 24px;
+    font-size: var(--font-sub-heading-size);
     padding-top: 35px;
   }
 
@@ -266,13 +271,13 @@
   }
 
   .courseInfoColumnShadow {
-    box-shadow: 0 0 #000000;
+    box-shadow: 0 0 var(--clr-black);
   }
 
   .gaugeContainer {
     margin-top: 70px;
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: var(--clr-white);
   }
 
   .courseReviewColumn {

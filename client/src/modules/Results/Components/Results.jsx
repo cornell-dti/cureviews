@@ -25,7 +25,7 @@ export class Results extends Component {
   updateResults() {
     if (this.props.match.params.type === 'major') {
       axios
-        .post('/v2/getCoursesByMajor', {
+        .post('/api/getCoursesByMajor', {
           query: this.props.match.params.input.toLowerCase(),
         })
         .then((response) => {
@@ -45,7 +45,7 @@ export class Results extends Component {
         })
     } else if (this.props.match.params.type === 'professor') {
       axios
-        .post('/v2/getCoursesByProfessor', {
+        .post('/api/getCoursesByProfessor', {
           query: this.props.match.params.input.toLowerCase(),
         })
         .then((response) => {
@@ -69,7 +69,7 @@ export class Results extends Component {
         userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(' ')
       }
       axios
-        .post(`/v2/getClassesByQuery`, { query: userQuery })
+        .post(`/api/getClassesByQuery`, { query: userQuery })
         .then((response) => {
           const queryCourseList = response.data.result
           if (queryCourseList.length !== 0) {
@@ -106,10 +106,9 @@ export class Results extends Component {
   render() {
     const userInput = this.props.match.params.input.split('+').join(' ')
     return (
-      <div className="full-height bg-color">
-        <div className="row">
-          <Navbar userInput={userInput} />
-        </div>
+      <div className="bg-color">
+        <Navbar userInput={userInput} />
+
         <ResultsDisplay
           courses={this.state.courseList}
           history={this.props.history}

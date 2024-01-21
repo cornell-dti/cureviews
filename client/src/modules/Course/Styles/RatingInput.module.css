@@ -2,8 +2,8 @@
 
 .ratingInputLabel {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
-  color: #000000;
+  font-size: var(--font-p-size);
+  color: var(--clr-black);
   font-weight: var(--regular-weight);
 }
 
@@ -32,11 +32,11 @@
   height: 8px;
   width: 100%;
   border-radius: 10px;
-  background-color: #ececec;
+  background-color: var(--clr-gray-100);
 }
 
 .ratingButtonPillSelected {
-  background-color: #0076ff;
+  background-color: var(--clr-blue-400);
 }
 
 /*
@@ -46,15 +46,15 @@ Green: rgba(83, 178, 39, 1), #53B227
 */
 
 .ratingButtonPillSelectedRed {
-  background-color: #ff756c;
+  background-color: var(--clr-red-100);
 }
 
 .ratingButtonPillSelectedYellow {
-  background-color: #f8cc30;
+  background-color: var(--clr-yellow-200);
 }
 
 .ratingButtonPillSelectedGreen {
-  background-color: #53b227;
+  background-color: var(--clr-green-200);
 }
 
 /*
@@ -66,7 +66,7 @@ Green: rgba(83, 178, 39, 0.5), #53b22780
 */
 
 .ratingButtonPillHover {
-  background-color: #b7d8ff;
+  background-color: var(--clr-blue-200);
 }
 
 .ratingButtonPillHoverRed {
@@ -86,7 +86,7 @@ Green: rgba(83, 178, 39, 0.5), #53b22780
   flex-direction: row;
   justify-content: space-between;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
-  color: #979797;
+  font-size: var(--font-p-size);
+  color: var(--clr-gray-300);
   font-weight: var(--regular-weight) !important;
 }

@@ -1,6 +1,35 @@
 :root {
   --regular-weight: 400;
   --semi-bold-weight: 600;
+  --bold-weight: 700;
+
+  --font-small-size: 0.8rem;
+  --font-p-size: 0.875rem;
+  --font-sub-heading-size: 1.5rem;
+  --font-heading-size: 2rem;
+
+  --clr-black: #000000;
+  --clr-white: #ffffff;
+  --clr-gray-100: #f9f9f9;
+  --clr-gray-200: #ececec;
+  --clr-gray-300: #9fa0a1;
+  --clr-gray-500: #3a3a3a;
+
+  --clr-blue-100: #f4f9fe;
+  --clr-blue-200: #b7d8ff;
+  --clr-blue-300: #65acff;
+  --clr-blue-400: #0076ff;
+  --clr-blue-500: #004ca3;
+
+  --clr-yellow-100: #ffec5e;
+  --clr-yellow-200: #f8cc30;
+  --clr-yellow-300: #f3a953;
+
+  --clr-green-100: #92cf48;
+  --clr-green-200: #5eb734;
+
+  --clr-red-100: #ff756c;
+  --clr-red-200: red;
 }
 
 * {
@@ -11,6 +40,7 @@
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  max-width: 100%;
 }
 
 *,
@@ -22,13 +52,15 @@
 html,
 body {
   height: 100%;
+  margin: 0;
+  padding: 0;
   /* overflow: hidden; */
 }
 
 body {
-  padding: 0;
-  margin: 0;
-  font-size: 14px;
+  font-size: var(--font-p-size);
+  font-weight: var(--regular-weight);
+
   /* line-height: 1.2; */
 }
 
@@ -82,6 +114,7 @@ button,
 textarea,
 select {
   font: inherit;
+  background-color: transparent;
 }
 
 /* Avoid text overflows */
@@ -103,42 +136,25 @@ ul {
 .container-width {
   width: 100%;
 }
-.secondary-text {
-  color: #4a4a4a;
-  font-size: 14px;
-  font-weight: normal;
-  opacity: 0.75;
-}
 
 h1 {
   margin: 0;
+  font-size: var(--font-heading-size);
+  font-weight: var(--semi-bold-weight);
 }
 
-.divider {
-  border-width: 1px;
-  color: #ddd;
-  margin: 5px 0 10px 0;
+h2 {
+  font-size: var(--font-sub-heading-size);
+  font-weight: var(--semi-bold-weight);
 }
 
-div.sm-spacing {
-  padding: 10px;
-}
-
-div.med-spacing {
-  padding: 20px;
-}
-
-div.lrg-spacing {
-  padding: 40px;
+h3 {
+  font-size: var(--font-heading-size);
+  font-weight: var(--regular-weight);
 }
 
 ul {
-  background: white;
+  background: var(--clr-white);
   margin: 0;
   padding: 0;
-}
-
-.noLeftRightPadding {
-  padding-left: 0px;
-  padding-right: 0px;
 }
