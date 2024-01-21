@@ -37,7 +37,7 @@ export const findAllPendingReviews = async () =>
 
 // eslint-disable-next-line arrow-body-style
 export const findAllReviewsAfterDate = async (date: Date) => {
-  return Reviews.find({ date: { $gte: date } });
+  return Reviews.find({ date: { $gte: date }, reported: 0 });
 };
 
 export const removeReviewById = async (reviewId: string) => {

@@ -34,6 +34,13 @@ import {
   addNewSemester,
 } from '../../scripts';
 
+/**
+ * Reports a review by setting its visibility to only admin and updating reported count.
+ * Will also update all course metrics accordingly.
+ *
+ * @param {string} id: Mongo-generated id of review
+ * @returns true if operation was successful, false otherwise
+ */
 export const reportReview = async ({ id }: ReportReviewRequestType) => {
   try {
     await updateReviewVisibility(id, 1, 0);
@@ -43,6 +50,12 @@ export const reportReview = async ({ id }: ReportReviewRequestType) => {
   }
 };
 
+/**
+ * Verifies that the token passed in an admin.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if token is from admin, false otherwise
+ */
 export const verifyTokenAdmin = async ({ auth }: VerifyAdminType) => {
   try {
     const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
@@ -65,6 +78,15 @@ export const verifyTokenAdmin = async ({ auth }: VerifyAdminType) => {
   }
 };
 
+/**
+ * Edits the review visibility given a Mongo generated reviewId
+ *
+ * @param {string} reviewId: Mongo generated review id.
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @param {visibility} number: 1 if want to set review to visible to public, 0 if review is only visible by admin.
+ * @param {reported} number: 1 review was reported, 0 otherwise.
+ * @returns true if operation was successful, false otherwise
+ */
 export const editReviewVisibility = async ({
   reviewId,
   auth,
@@ -80,6 +102,13 @@ export const editReviewVisibility = async ({
   return false;
 };
 
+/**
+ * Removes a review from db by mongo generated id.
+ *
+ * @param {string} reviewId: Mongo generated review id.
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false otherwise
+ */
 export const removePendingReview = async ({
   reviewId,
   auth,
@@ -96,6 +125,13 @@ export const removePendingReview = async ({
   return false;
 };
 
+/**
+ * Gets all reviews that are pending (visible only to admin).
+ * Includes reported reviews.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns all pending review objects if operation was successful, null otherwise
+ */
 export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
@@ -105,6 +141,12 @@ export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
   return null;
 };
 
+/**
+ * Gets random raffle winner from reviews beyond specified date that are not reported.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns student net id if operation was successful, null otherwise
+ */
 export const getRaffleWinner = async ({
   startDate,
 }: RaffleWinnerRequestType) => {
@@ -124,6 +166,12 @@ export const getRaffleWinner = async ({
   return student.netId;
 };
 
+/**
+ * Updated all professors in the database by scraping through the Cornell course API.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const updateAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
@@ -213,6 +261,14 @@ export const updateCourseMetricsFromReview = async (reviewId: string) => {
   }
 };
 
+/**
+ * Adds all courses and professors and all cross listed courses to database for every semester available on the Course API.
+ * This initializes the database completely should only be called for testing purposes.
+ * NEVER CALL IN PRODUCTION.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const initAllDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
@@ -221,15 +277,21 @@ export const initAllDb = async ({ auth }: VerifyAdminType) => {
 
   const semesters = await findAllSemesters();
   const coursesResult = await addAllCourses(COURSE_API_BASE_URL, semesters);
-  const result = await addAllCrossList(semesters);
 
   if (!coursesResult) {
     return false;
   }
 
+  const result = await addAllCrossList(semesters);
   return result;
 };
 
+/**
+ * Adds all courses and professors and all cross listed courses to database for specified semester.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
