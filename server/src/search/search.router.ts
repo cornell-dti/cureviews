@@ -34,9 +34,9 @@ searchRouter.post('/getClassesByQuery', async (req, res) => {
   }
 });
 
-/*
-//  * Searches the database on Subjects using the text index and returns matching subjects
-//  */
+/**
+ * Searches the database on Subjects using the text index and returns matching subjects
+ */
 searchRouter.post('/getSubjectsByQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;

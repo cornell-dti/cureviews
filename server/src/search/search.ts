@@ -29,6 +29,12 @@ export class Search {
     return this.query.search(' ');
   }
 
+  /**
+   * Searches for documents based off of query.
+   *
+   * @param searchMethod: method that query should be passed into.
+   * @returns relevant documents based on query
+   */
   async searchQuery(searchMethod) {
     return await searchMethod(this.query);
   }
