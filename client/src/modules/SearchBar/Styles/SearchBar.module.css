@@ -70,7 +70,7 @@
 }
 
 .output {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
   border-style: solid;
   border-color: var(--clr-blue-300);
   border-width: 0 1px 1px 1px;
