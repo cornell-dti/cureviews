@@ -157,7 +157,7 @@
 
 .preview-class-info {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   font-style: normal;
   font-stretch: normal;
@@ -196,7 +196,7 @@
 .preview-review-button {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--regular-weight);
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   color: white;
   text-align: center;
   border-radius: 10px;
@@ -227,7 +227,7 @@
 
 .gaugeHolder svg text:first-of-type {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px !important;
+  font-size: var(--font-medium-size) !important;
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   font-stretch: normal;

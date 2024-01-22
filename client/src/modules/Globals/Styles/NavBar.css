@@ -38,9 +38,8 @@
   width: 100%;
   padding: 3em 2em 1.5em;
   box-shadow: 0px 2.49858px 2.49858px rgba(0, 0, 0, 0.08);
-  z-index: 110;
   top: 0px;
-  position: sticky;
+  position: sticky !important;
   background: var(--clr-white);
   border: 0;
   margin: 0;
@@ -66,7 +65,7 @@
 .text-report-bug {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--semi-bold-weight);
-  font-size: 18px;
+  font-size: var(--font-h3-size);
   text-decoration: none;
   margin-top: var(--font-small-size);
   text-align: right;

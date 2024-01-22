@@ -85,14 +85,14 @@
 }
 
 .sort {
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   text-decoration-line: underline;
   color: var(--clr-gray-300);
 }
 
 .sortBySelect {
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   background-color: transparent !important;
   border: none;
@@ -102,7 +102,7 @@
 
 .sortByLabel {
   font-weight: var(--regular-weight);
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   text-decoration-line: underline;
   color: var(--clr-gray-300);
 }
@@ -132,7 +132,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   line-height: 23px;
   text-align: center;
 
@@ -179,7 +179,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   line-height: 19px;
   /* or 104% */
 

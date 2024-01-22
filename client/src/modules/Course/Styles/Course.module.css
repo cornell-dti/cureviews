@@ -93,7 +93,7 @@
 }
 
 .courseSubtitle {
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   letter-spacing: -0.13px;
   color: var(--clr-gray-300);
@@ -140,7 +140,7 @@
   background-color: var(--clr-blue-400);
   color: var(--clr-white);
   width: 100%;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   border-radius: 10px;
   margin-top: 20px;
   padding: 11px 10px;
@@ -195,7 +195,7 @@
 .pastReviews {
   flex: 1;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   color: var(--clr-gray-300);
   padding: 0 0 20px;

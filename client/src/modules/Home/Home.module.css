@@ -22,7 +22,7 @@
 
 @media (max-width: 992px) {
   .homepageText {
-    font-size: 18px;
+    font-size: var(--font-medium-size);
   }
 
   .homepageTextPadding {

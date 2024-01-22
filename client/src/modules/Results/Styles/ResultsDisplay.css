@@ -55,7 +55,7 @@
 
   .filter-title {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 18px;
+    font-size: var(--font-medium-size);
     font-weight: var(--semi-bold-weight);
     line-height: normal;
     text-decoration-line: underline;
@@ -63,7 +63,7 @@
 
   .filter-sub-title {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 18px;
+    font-size: var(--font-medium-size);
     font-weight: var(--semi-bold-weight);
     line-height: normal;
   }
@@ -71,7 +71,7 @@
   .filter-checkbox-label {
     width: 100%;
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 18px;
+    font-size: var(--font-medium-size);
     font-weight: var(--regular-weight);
     line-height: normal;
     align-items: center;
@@ -111,7 +111,7 @@
   .filter-checkbox-label {
     font-family: Source Sans Pro;
     font-weight: normal;
-    font-size: 18px;
+    font-size: var(--font-medium-size);
     line-height: 18px;
     letter-spacing: -0.104749px;
   }
@@ -162,7 +162,7 @@
   float: right;
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   line-height: 19px;
   letter-spacing: -0.225605px;
   color: var(--clr-blue-400);
@@ -247,7 +247,7 @@
 
 .results-sort-by-select {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   font-style: normal;
   line-height: normal;
@@ -266,7 +266,7 @@
 
 .results-sort-by-text {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   font-style: normal;
   line-height: normal;
@@ -296,7 +296,7 @@
   .search-results-text {
     font-style: normal;
     font-weight: normal;
-    font-size: 18px;
+    font-size: var(--font-medium-size);
     line-height: 23px;
     color: var(--clr-blue-400);
     padding-top: 54px;
@@ -335,7 +335,7 @@
 
     font-style: normal;
     font-weight: 600;
-    font-size: 18px;
+    font-size: var(--font-medium-size);
     line-height: 23px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 
@@ -386,7 +386,7 @@
 
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
 }
 
 .no-results {
