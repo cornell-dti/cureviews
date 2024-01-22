@@ -40,7 +40,7 @@
 }
 
 .searchbarInNavbar {
-  border: 1.24929px solid var(--clr-gray-200);
+  border: 1.24929px solid var(--clr-gray-300);
   box-shadow: none;
 }
 
@@ -72,7 +72,7 @@
 .output {
   background: rgba(255, 255, 255, 0.8);
   border-style: solid;
-  border-color: var(--clr-blue-200);
+  border-color: var(--clr-blue-300);
   border-width: 0 1px 1px 1px;
   cursor: pointer;
   max-height: 300px;
