@@ -33,13 +33,13 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
     // returns all courses taught by particular professor
     const coursesByProfessor = await search.searchQuery(findCourseProfessor);
     if (coursesByProfessor && coursesByProfessor.length > 0) {
-      fullSearch = new Set([...fullSearch, ...coursesByProfessor]);
+      return new Set(coursesByProfessor);
     }
 
     // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
     const courseSubject = await findCourseSubject(query);
     if (courseSubject.length > 0) {
-      fullSearch = new Set([...fullSearch, ...courseSubject]);
+      return new Set(courseSubject);
     }
 
     // check if first digit is a number. Catches searchs like "1100"
@@ -47,7 +47,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
     const indexFirstDigit = search.getFirstDigit();
     if (indexFirstDigit === 0) {
       const courses = await findCoursesByNum(query);
-      fullSearch = new Set([...fullSearch, ...courses]);
+      return new Set(courses);
     }
 
     // check if text before space is subject, if so search only classes with this subject.
@@ -63,7 +63,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
           strAfterSpace,
         );
 
-        fullSearch = new Set([...fullSearch, ...coursesWithinSubject]);
+        return new Set(coursesWithinSubject);
       }
     }
 
@@ -81,7 +81,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
           strAfterDigit,
         );
 
-        fullSearch = new Set([...fullSearch, ...result]);
+        return new Set(result);
       }
     }
   }
