@@ -265,10 +265,9 @@ export const SearchBar = ({
       }`}
     >
       <div
-        className={
-          `${styles.searchbar}` +
-          `${isInNavbar ? styles.searchbarInNavbar : ''}`
-        }
+        className={`${styles.searchbar} ${
+          isInNavbar ? styles.searchbarInNavbar : ''
+        }`}
       >
         <input
           className={`${styles.searchText}`}
