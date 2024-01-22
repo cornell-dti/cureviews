@@ -99,14 +99,13 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
 export const searchCourses = async ({ search }: SearchQueryType) => {
   try {
     const fullSearch = await fullCourseSearch({ search });
+    const sorted = Array.from(fullSearch).sort(courseSort(search.getQuery()));
 
     if (fullSearch.size > 200 && fullSearch.size > 0) {
-      return Array.from(fullSearch)
-        .sort(courseSort(search.getQuery()))
-        .slice(0, 200);
+      return sorted.slice(0, 200);
     }
 
-    return Array.from(fullSearch).sort(courseSort(search.getQuery()));
+    return sorted;
   } catch (e) {
     return null;
   }
