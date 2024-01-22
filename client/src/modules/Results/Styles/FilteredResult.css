@@ -51,7 +51,7 @@
 
 .result-card-title {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--semi-bold-weight);
   font-style: normal;
   line-height: normal;

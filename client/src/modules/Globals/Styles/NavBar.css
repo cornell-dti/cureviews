@@ -36,26 +36,22 @@
 
 .custom-navbar {
   width: 100%;
+  height: 130px;
   padding: 3em 2em 1.5em;
   box-shadow: 0px 2.49858px 2.49858px rgba(0, 0, 0, 0.08);
-  z-index: 110;
   top: 0px;
-  position: sticky;
+  position: sticky !important;
   background: var(--clr-white);
   border: 0;
   margin: 0;
   display: flex;
+  z-index: 1000;
 }
 
 .logo-container {
   width: 6vw;
   margin-right: 4.4vw;
   margin-left: 5vw;
-}
-
-.searchbar-in-navbar {
-  border: 0.125em solid var(--clr-gray-200);
-  box-shadow: none;
 }
 
 .scale-logo-navbar {
@@ -66,7 +62,7 @@
 .text-report-bug {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--semi-bold-weight);
-  font-size: 18px;
+  font-size: var(--font-h3-size);
   text-decoration: none;
   margin-top: var(--font-small-size);
   text-align: right;

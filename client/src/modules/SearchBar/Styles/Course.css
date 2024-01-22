@@ -50,7 +50,7 @@
   display: inline-block;
   text-overflow: ellipsis;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   letter-spacing: 0.001em;

@@ -29,7 +29,7 @@
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
+  font-size: var(--font-medium-size);
   line-height: 19px;
   /* or 104% */
 

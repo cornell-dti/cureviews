@@ -21,7 +21,7 @@ import styles from '../Home.module.css'
   @param imgSrc for search bar
 
 */
-export const Home = (imgSrc: any) => {
+export const Home = () => {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
   const [DTILogo, setDTILogo] = useState(DTITextLogo)
   const [season, setSeason] = useState('winter')
@@ -68,8 +68,6 @@ export const Home = (imgSrc: any) => {
     }
   }, [time, season])
 
-  /** Displays "sign in" or profile bear picture */
-
   return (
     <div>
       <div
@@ -94,11 +92,7 @@ export const Home = (imgSrc: any) => {
               Search for Cornell courses, rate past classes, and share feedback
             </p>
             <div className={styles.homeSearchContainer}>
-              <SearchBar
-                imgSrc={`${String(imgSrc.imgSrc)}`}
-                signOut={signOut}
-                isLoggedIn={isLoggedIn}
-              />
+              <SearchBar isInNavbar={false} />
             </div>
           </div>
         </div>
