@@ -58,7 +58,7 @@ export default function Navbar({ userInput }: NavbarProps) {
         </a>
       </div>
       <div
-        className={`col navbar-searchbar-container${
+        className={`col navbar-searchbar-container ${
           isLoggedIn ? '-profile' : ''
         }`}
       >

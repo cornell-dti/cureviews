@@ -70,7 +70,7 @@
 }
 
 .output {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   max-height: 300px;
   overflow-y: auto;
