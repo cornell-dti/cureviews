@@ -70,7 +70,10 @@
 }
 
 .output {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
+  border-style: solid;
+  border-color: var(--clr-blue-200);
+  border-width: 0 1px 1px 1px;
   cursor: pointer;
   max-height: 300px;
   overflow-y: auto;
@@ -92,14 +95,4 @@
   width: 86%; /* Made to fit in with the course/subject colored label, which is max width 12% */
   display: flex;
   margin: 0;
-}
-
-/* Selects all 'output' class objects that are decendents
-    of 'contrastingResultBackground' class .
-    Used to add background contrasting color to searchbar
-    search results */
-.contrastingResultBackground .output {
-  border-style: solid;
-  border-color: var(--clr-blue-200);
-  border-width: 0 1px 1px 1px;
 }
