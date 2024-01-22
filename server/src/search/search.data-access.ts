@@ -2,7 +2,7 @@
 import { Classes, Subjects, Professors } from '../../db/schema';
 
 export const findCourses = async (query: string) =>
-  await Classes.findOne(
+  await Classes.find(
     { $text: { $search: query } },
     { score: { $meta: 'textScore' } },
     { sort: { score: { $meta: 'textScore' } } },
