@@ -1,4 +1,25 @@
-{
+module.exports = {
+  root: true,
+  env: {browser: true, es2020: true},
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+  ],
+  ignorePatterns: ["dist", "build", "server", "node_modules", ".eslintrc.cjs"],
+  parser: "@typescript-eslint/parser",
+  plugins: ["react-refresh"],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react-refresh/only-export-components": [
+      "warn",
+      {allowConstantExport: true},
+    ],
+  },
+};
+
+// Old .json file & settings:
+/* {
   "env": {
     "browser": true,
     "es6": true,
@@ -59,3 +80,4 @@
     }
   }
 }
+ */
