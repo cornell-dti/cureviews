@@ -17,7 +17,6 @@ import { randomPicture } from '../../Globals/profile_picture'
 import 'rodal/lib/rodal.css'
 
 import '../Styles/ClassView.css'
-import '../Styles/App.css'
 import '../Styles/Form.css'
 import '../Styles/ResultsDisplay.css'
 import styles from '../Styles/Profile.module.css'
