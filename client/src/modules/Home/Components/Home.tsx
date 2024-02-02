@@ -70,7 +70,9 @@ export const Home = () => {
 
   return (
     <div
-      className={`${styles.fullheight} ${styles.bgfixed} background-gradient_${time}${season}`}
+      className={`${styles.fullheight} ${styles.bgfixed} ${
+        styles[`bg${time}${season}`]
+      }`}
     >
       <ProfileDropdown
         isLoggedIn={isLoggedIn}
