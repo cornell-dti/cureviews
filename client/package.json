@@ -9,7 +9,6 @@
     "@types/react-datepicker": "^4.8.0",
     "@types/react-dom": "^16.9.5",
     "axios": "^0.21.2",
-    "bootstrap": "^4",
     "chart.js": "^2.9.4",
     "common": "0.0.1",
     "i": "^0.3.7",
@@ -54,7 +53,6 @@
     ]
   },
   "devDependencies": {
-    "@types/bootstrap": "^3",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.31",
     "@types/react": "^16.9.26",

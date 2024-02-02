@@ -14,7 +14,6 @@ import { NotFound } from './modules/NotFound'
 import { AuthRedirect } from './modules/AuthRedirect'
 
 /* Styling */
-import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
 /**
@@ -23,6 +22,7 @@ import './index.css'
   the user should see based on the URL they enter.
 
 */
+
 const App = () => {
   return (
     <Router>

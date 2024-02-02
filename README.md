@@ -98,7 +98,6 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **[Node.js](https://nodejs.org/en/about/)** v10 - **Node.js provides the basis for our server. It handles external connects and gives us access to an vast array of useful packages via Node Package Manager (NPM)**
 - **[Express](https://expressjs.com/)** v4.17.1 - **The package for running the web server.**
 - **[React](https://reactjs.org/)** v16.13.1 - **We use React to help us create a component-based site. Using components allow us to re-use code more efficiently and modify their implementation more quickly**
-- **[Bootstrap](http://getbootstrap.com/)** v3.3.7 - **Allows us to quickly define our front end components’ display.**
 
 ## Screenshots
 
