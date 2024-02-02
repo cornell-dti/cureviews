@@ -1,61 +1,54 @@
-.homepageText {
+.header {
   color: var(--clr-blue-400);
+  padding: 10px 0 20px 0;
 }
 
-.homeSearchContainer {
-  width: 70%;
+.container {
+  padding: 5%;
 }
 
+.searchcontainer {
+  max-width: 800px;
+}
+
+/* Wide */
 @media (min-width: 992px) {
-  .homepageText {
+  .header {
     font-size: var(--font-sub-heading-size);
-  }
-
-  .homepageTextPadding {
-    padding-left: 120px;
-  }
-
-  .scaleLogoHome {
-    margin: 120px 0px 0px 120px;
+    font-size: 1.5rem;
   }
 }
 
+/* Mobile */
 @media (max-width: 992px) {
-  .homepageText {
+  .header {
     font-size: var(--font-medium-size);
   }
 
-  .homepageTextPadding {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
-  .scaleLogoHome {
-    margin: 120px 0px 0px 30px;
-  }
-
-  .homeSearchContainer {
-    width: 100%;
+  .container {
+    padding: 200px 5%;
   }
 }
 
-.scaleLogoHome {
-  height: 100px;
+/* Change the logo. */
+.logo {
+  height: 80px;
   width: auto;
 }
 
-.backgroundCommon {
+/* Fix background to fill the bottom of the screen */
+.bgfixed {
   background-repeat: no-repeat;
-  background-size: 101%;
-  background-position-y: 103%;
+  background-size: 100%;
+  background-position-y: 100%;
   max-height: 100%;
   min-width: 100%;
-  justify-items: start;
   position: fixed;
   bottom: 0px;
 }
 
-.dtiLogo {
+/* Position the DTI Logo at the bottom right of the screen */
+.dtilogo {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -64,8 +57,8 @@
 }
 
 /* Needed so that background is flush against bottom */
-.homeFullHeight {
-  padding-top: 3em;
-  min-height: 100%;
+.fullheight {
+  padding-top: 5%;
+  min-height: 100vh;
   background-color: var(--clr-blue-100);
 }

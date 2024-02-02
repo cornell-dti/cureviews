@@ -27,8 +27,8 @@ export const Home = () => {
   const [season, setSeason] = useState('winter')
   const [time, setTime] = useState('afternoon')
 
-  /** Logic for deciding the background image */
-  const setBackground = () => {
+  /** Logic for deciding the home pages' background image */
+  function setBackground() {
     const sunset_start_times = [
       17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
     ]
@@ -69,35 +69,32 @@ export const Home = () => {
   }, [time, season])
 
   return (
-    <div>
-      <div
-        className={`${styles.homeFullHeight} ${styles.backgroundCommon} background-gradient_${time}${season}`}
-      >
-        <ProfileDropdown
-          isLoggedIn={isLoggedIn}
-          netId={netId}
-          signOut={signOut}
-          signIn={signIn}
+    <div
+      className={`${styles.fullheight} ${styles.bgfixed} background-gradient_${time}${season}`}
+    >
+      <ProfileDropdown
+        isLoggedIn={isLoggedIn}
+        netId={netId}
+        signOut={signOut}
+        signIn={signIn}
+      />
+
+      <div className={styles.container}>
+        <img
+          src="/logo.svg"
+          className={`${styles.logo}`}
+          alt="CU Reviews Logo"
         />
-        <div>
-          <img
-            src="/logo.svg"
-            className={`${styles.scaleLogoHome}`}
-            alt="CU Reviews Logo"
-          />
+        <p className={styles.header}>
+          Search for Cornell courses, rate past classes, and share feedback
+        </p>
+        <div className={styles.searchcontainer}>
+          <SearchBar isInNavbar={false} />
         </div>
-        <div className={`${styles.homepageTextPadding}`}>
-          <div className="">
-            <p className={`${styles.homepageText}`}>
-              Search for Cornell courses, rate past classes, and share feedback
-            </p>
-            <div className={styles.homeSearchContainer}>
-              <SearchBar isInNavbar={false} />
-            </div>
-          </div>
-        </div>
-        <img src={DTILogo} className={`${styles.dtiLogo}`} alt="DTI Logo" />
       </div>
+
+      {/* Logo:  */}
+      <img src={DTILogo} className={styles.dtilogo} alt="DTI Logo" />
     </div>
   )
 }
