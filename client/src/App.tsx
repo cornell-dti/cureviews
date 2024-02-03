@@ -26,7 +26,6 @@ import './index.css'
 const App = () => {
   return (
     <Router>
-      <div>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/admin" component={Admin} />
@@ -37,7 +36,6 @@ const App = () => {
           <Route exact path="/profile" component={Profile} />
           <Route component={NotFound} />
         </Switch>
-      </div>
     </Router>
   )
 }
