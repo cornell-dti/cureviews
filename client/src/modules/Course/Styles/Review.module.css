@@ -353,9 +353,9 @@
   }
 
   button {
-    position: relative;
-    top: 12vh;
-    display: flex;
+    /* position: relative; */
+    /* top: 12vh; */
+    /* display: flex; */
   }
 
   .helpful {

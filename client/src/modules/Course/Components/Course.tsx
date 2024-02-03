@@ -231,7 +231,7 @@ export const Course = () => {
   if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum)
     return (
-      <div className={`${styles.classView}`}>
+      <div className={`${styles.page}`}>
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -266,64 +266,49 @@ export const Course = () => {
           </div>
         </Modal>
 
-        <div className="d-lg-block">
-          <Navbar userInput={input} />
-        </div>
+        <Navbar userInput={input} />
 
-        <div className={`${styles.content}`}>
-          <div
-            className={`col-xl-4 col-lg-5 col-12 ${styles.courseInfoColumn} ${
-              isPastScrollThreshold && styles.courseInfoColumnShadow
-            }`}
-          >
+        <div className={styles.overview}>
+          <div className={styles.classinfo}>
             <h1
-              className={styles.courseTitle}
               data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
                 selectedClass.classNum
               }`}
             >
               {selectedClass.classTitle}
             </h1>
-            <p className={styles.courseSubtitle}>
+            <div className={styles.subtitle}>
               {selectedClass.classSub.toUpperCase() +
                 ' ' +
                 selectedClass.classNum +
                 ', ' +
                 lastOfferedSems(selectedClass)}
-            </p>
+            </div>
             <button
               data-cy="leave-review-button"
-              className={`${styles.startReviewButton}`}
+              className={styles.reviewbutton}
               onClick={() => onLeaveReview()}
             >
               Leave a review
             </button>
           </div>
 
-          <div className={`col ${styles.courseReviewColumn}`}>
-            <div className={` d-lg-flex ${styles.gaugeContainer}`}>
-              <div className={styles.gauge}>
-                <Gauge
-                  rating={selectedClass!.classRating}
-                  label="Overall"
-                  isOverall={true}
-                />
-              </div>
-              <div className={styles.gauge}>
-                <Gauge
-                  rating={selectedClass.classDifficulty}
-                  label="Difficulty"
-                  isOverall={false}
-                />
-              </div>
-              <div className={styles.gauge}>
-                <Gauge
-                  rating={selectedClass.classWorkload}
-                  label="Workload"
-                  isOverall={false}
-                />
-              </div>
-            </div>
+          <div className={styles.gauges}>
+            <Gauge
+              rating={selectedClass.classRating}
+              label="Overall"
+              isOverall={true}
+            />
+            <Gauge
+              rating={selectedClass.classDifficulty}
+              label="Difficulty"
+              isOverall={false}
+            />
+            <Gauge
+              rating={selectedClass.classWorkload}
+              label="Workload"
+              isOverall={false}
+            />
           </div>
         </div>
 

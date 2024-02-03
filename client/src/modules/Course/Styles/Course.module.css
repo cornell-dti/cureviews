@@ -1,9 +1,78 @@
-@import '../../../index.css';
+/* @import '../../../index.css'; */
 
-.classView {
+.page {
+  background: var(--clr-blue-100);
   display: flex;
-  flex-direction: column;
-  min-height: 100%;
+  flex-flow: column nowrap;
+  min-height: 100vh;
+}
+
+.overview {
+  display: grid;
+  place-self: center;
+  grid-template-columns: 100%;
+  grid-gap: 20px;
+  width: 100%;
+  max-width: 1440px;
+  padding: 5% 5%;
+}
+
+.classinfo {
+  width: 100%;
+}
+
+.gauges {
+  /* Position guages to the center */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-self: center;
+
+  justify-self: center;
+
+  background-color: var(--clr-white);
+  border-radius: 10px;
+
+  width: 100%;
+  height: 128px;
+}
+
+/* Desktop-Only */
+@media only screen and (min-width: 768px) {
+  .overview {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+
+    padding: 5% 2%;
+
+    & > :first-child {
+      flex: 0 0 35%;
+    }
+
+    & > :nth-child(2) {
+      flex: 1;
+    }
+  }
+
+  .overview > * {
+    justify-self: center;
+  }
+
+  .gauges {
+    max-width: 720px;
+    margin: 0 10px;
+  }
+}
+
+/* Mobile-Only */
+@media only screen and (max-width: 768px) {
+  .classinfo {
+    padding-bottom: 50px;
+  }
+  .guages {
+    padding-bottom: 50px;
+  }
 }
 
 .reviewContentHeader {
@@ -92,7 +161,7 @@
   color: var(--clr-black);
 }
 
-.courseSubtitle {
+.subtitle {
   font-size: var(--font-medium-size);
   font-weight: var(--regular-weight);
   letter-spacing: -0.13px;
@@ -136,7 +205,7 @@
   padding: 0 0px 0 0;
 }
 
-.startReviewButton {
+.reviewbutton {
   background-color: var(--clr-blue-400);
   color: var(--clr-white);
   width: 100%;
@@ -144,11 +213,12 @@
   border-radius: 10px;
   margin-top: 20px;
   padding: 11px 10px;
+  cursor: pointer;
 }
 
-.startReviewButton:hover {
+.reviewbutton:hover {
   background-color: var(--clr-blue-500);
-  color: var(--clr-white) !important;
+  color: var(--clr-white);
 }
 
 .fixedButtonContainer {
@@ -218,7 +288,7 @@
 }
 
 @media (min-width: 768px) {
-  .courseSubtitle {
+  .subtitle {
     font-size: var(--font-sub-heading-size);
   }
 
