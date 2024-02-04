@@ -43,6 +43,7 @@ export default function ReviewCard({
   const [courseSub, setCourseSub] = useState<string>('')
   const [courseNum, setCourseNum] = useState<string>('')
 
+  /** Turns our date objects into a string form to render. */
   function dateToString() {
     if (!_review.date) return ''
 
@@ -55,7 +56,7 @@ export default function ReviewCard({
   }
 
   /**
-   * Increment the likes on the review.
+   * Shows user liked the review and updates DB count.
    */
   function likeReview() {
     if (!isLoggedIn) {
@@ -74,7 +75,7 @@ export default function ReviewCard({
       })
   }
 
-  /*
+  /**
    * Fetch the course information.
    */
   useEffect(() => {
@@ -92,6 +93,11 @@ export default function ReviewCard({
     if (isProfile) updateCourse()
   }, [_review, isProfile])
 
+  /**
+   * Initial call to check
+   * 1. IF user is @loggedin
+   * 2. IF logged in user has liked the review or not and updates @liked state.
+   */
   useEffect(() => {
     async function updateLiked() {
       const response = await axios.post('/api/userHasLiked', {
@@ -105,10 +111,10 @@ export default function ReviewCard({
     if (isLoggedIn) updateLiked()
   }, [_review, isLoggedIn])
 
-  /** Shows course name as well if on profile page */
+  /** Renders course name as well if on profile page */
   function TitleAndProfessor() {
     // list of professors (name1, name2, ..)
-    var professornames = 'Professor: '
+    var professornames = ''
     if (_review.professors && _review.professors.length > 0)
       professornames += _review.professors.join(', ')
     else professornames += 'N/A'
@@ -127,14 +133,24 @@ export default function ReviewCard({
         </>
       )
     } else {
-      return <div>{professornames}</div>
+      return (
+        <div>
+          Professor <span className={styles.bold}>{professornames}</span>
+        </div>
+      )
     }
   }
 
+  /* SEE MORE -> SEE LESS logic for lengthier reviews */
   const [expand, setExpand] = useState(false)
   const [seeMoreButton, setSeeMoreButton] = useState(false)
 
   const ref = useRef<HTMLDivElement>(null)
+
+  /* BUG (?) 
+    TODO: click read more -> shrink page -> "see less" option is gone. 
+    Fix the logic to not do this? 
+   */
   useEffect(() => {
     function handleResize() {
       if (ref.current) {
@@ -149,6 +165,18 @@ export default function ReviewCard({
     }
   }, [])
 
+  /** 
+   * CSS ORDER LAYOUT: 
+   * card 
+   *  - metrics (overall, diff, workload)
+   *  - content 
+   *    - prof
+   *    - grade & major 
+   *    - review 
+   *    - see more button 
+   *    - date & helpful
+   *    - covid? 
+   */
   return (
     <div className={styles.card}>
       <div className={styles.metrics}>
@@ -172,7 +200,7 @@ export default function ReviewCard({
         </div>
       </div>
       <div className={styles.content}>
-        <div className={styles.bold}> {TitleAndProfessor()} </div>
+        <TitleAndProfessor />
         <div className={styles.grademajor}>
           <div>
             Grade{' '}
@@ -187,9 +215,9 @@ export default function ReviewCard({
             <span className={styles.bold}>
               {_review.major && _review.major.length !== 0
                 ? _review.major.map((major, index) => (
-                    <>
+                    <span key={index}>
                       {index > 0 && ', '} {major}
-                    </>
+                    </span>
                   ))
                 : 'N/A'}
             </span>
