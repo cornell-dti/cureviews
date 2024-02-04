@@ -1,5 +1,6 @@
 /* @import '../../../index.css'; */
 
+/* Top Section of Page (Name, Button, Gauges) */
 .page {
   background: var(--clr-blue-100);
   display: flex;
@@ -44,7 +45,7 @@
     flex-flow: row nowrap;
     justify-content: space-between;
 
-    padding: 5% 2%;
+    padding: 5% 2% 1% 2%;
 
     & > :first-child {
       flex: 0 0 35%;
@@ -73,44 +74,113 @@
   .guages {
     padding-bottom: 50px;
   }
-}
-
-.reviewContentHeader {
-  display: flex;
-  justify-content: space-between;
-}
-
-.content {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 20px;
-  padding: 0 3%;
-  background-color: var(--clr-blue-100) !important;
-}
-
-@media only screen and (min-width: 1008px) {
-  .content {
-    padding: 0 5%;
-    background: transparent;
+  .subtitle {
+    font-size: var(--font-sub-heading-size);
   }
 }
 
-.reviewContent {
-  padding-right: 10%;
-  padding-left: 10%;
-  background-color: var(--clr-blue-100) !important;
+.subtitle {
+  font-size: var(--font-medium-size);
+  font-weight: var(--regular-weight);
+  letter-spacing: -0.13px;
+  color: var(--clr-gray-300);
+  margin: 16px 0 0 0;
 }
 
-.authModal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--clr-white);
-  padding: 20px;
+.reviewbutton {
+  background-color: var(--clr-blue-400);
+  color: var(--clr-white);
+  width: 100%;
+  font-size: var(--font-medium-size);
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 11px 10px;
+  cursor: pointer;
 }
 
+.reviewbutton:hover {
+  background-color: var(--clr-blue-500);
+  color: var(--clr-white);
+}
+
+/* <=== Student Reviews Display ===> */
+
+.reviewscontainer {
+  width: 100%;
+  max-width: 1440px;
+
+  padding: 5% 2%;
+
+  place-self: center;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.bar {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding-bottom: 50px;
+}
+
+.filtertext {
+  color: var(--clr-blue-400);
+}
+
+.reviews {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 50px;
+}
+
+.fixedreviewbutton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.5));
+  background-color: var(--clr-blue-400);
+  padding: 8px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+/* Mobile-Only */
+@media only screen and (max-width: 768px) {
+  .reviewscontainer {
+    padding: 5%;
+  }
+}
+
+/* <=== ERROR page ===> */
+.error {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+
+  align-items: center;
+  place-self: center;
+
+  width: 100%;
+  min-height: 100vh;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.errorgauge {
+  width: 150px;
+  height: auto;
+  margin: 60px 0;
+}
+
+/* <=== MODAL ===>  */
 .modalOverlay {
   top: 0;
   left: 0px;
@@ -121,8 +191,8 @@
 }
 
 .reviewModal {
-  position: absolute;
-  top: 20px;
+  position: fixed;
+  top: 200px;
   left: 20px;
   right: 20px;
   bottom: 20px;
@@ -131,42 +201,9 @@
   border-radius: 20px;
   filter: drop-shadow(0 1px 6px rgba(168, 211, 245, 0.5));
   overflow: auto;
-}
 
-.authModal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--clr-white);
-  padding: 20px;
-}
-
-.courseInfoColumn {
-  padding: 50px 50px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.courseInfoColumnShadow {
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-}
-
-.courseTitle {
-  font-size: var(--font-heading-size);
-  font-weight: var(--semi-bold-weight);
-  letter-spacing: -0.13px;
-  color: var(--clr-black);
-}
-
-.subtitle {
-  font-size: var(--font-medium-size);
-  font-weight: var(--regular-weight);
-  letter-spacing: -0.13px;
-  color: var(--clr-gray-300);
-  margin: 16px 0 0 0;
+  width: 100%;
+  height: 100%;
 }
 
 .ratingMobileBox {
@@ -191,114 +228,7 @@
   top: 10px;
 }
 
-.gaugeContainer {
-  width: 100%;
-  background-color: var(--clr-white);
-  height: 150px;
-
-  display: flex;
-  justify-content: space-between;
-}
-
-.gauge {
-  min-height: 100%;
-  padding: 0 0px 0 0;
-}
-
-.reviewbutton {
-  background-color: var(--clr-blue-400);
-  color: var(--clr-white);
-  width: 100%;
-  font-size: var(--font-medium-size);
-  border-radius: 10px;
-  margin-top: 20px;
-  padding: 11px 10px;
-  cursor: pointer;
-}
-
-.reviewbutton:hover {
-  background-color: var(--clr-blue-500);
-  color: var(--clr-white);
-}
-
-.fixedButtonContainer {
-  position: fixed;
-  bottom: 2%;
-  right: 0;
-  margin: 0 30px;
-  z-index: 100;
-  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.5));
-}
-
-.courseReviewColumn {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  width: 100%;
-  padding-bottom: 20px;
-}
-
-.reviewsHeader {
-  display: flex;
-  align-items: center;
-}
-
-.sortByContainer {
-  gap: 1rem;
-  display: flex;
-  align-items: center;
-}
-
-.sortByLabel {
-  font-size: 1.25rem;
-  text-decoration-line: underline;
-  color: var(--clr-gray-300);
-  display: flex;
-}
-
-.sortBySelect {
-  font-size: 1.25rem;
-  border: none;
-  background-color: transparent;
-  color: var(--clr-blue-400);
-}
-
-.pastReviews {
-  flex: 1;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: var(--font-medium-size);
-  font-weight: var(--regular-weight);
-  color: var(--clr-gray-300);
-  padding: 0 0 20px;
-  margin: 0;
-}
-
-.courseReviews {
-  background-color: transparent;
-  width: 100%;
-}
-
-.errorContainer {
-  font-family: 'Source Sans Pro', sans-serif;
-  padding: 0;
-  text-align: center;
-}
-
-.errorGauge {
-  padding: 70px 0;
-}
-
 @media (min-width: 768px) {
-  .subtitle {
-    font-size: var(--font-sub-heading-size);
-  }
-
-  .authModal {
-    margin: auto;
-    height: 500px;
-    width: 480px;
-    border-radius: 10px;
-  }
-
   .reviewModal {
     margin: auto;
     height: fit-content;
@@ -311,52 +241,9 @@
   .modalOverlay {
     background-color: rgba(0, 0, 0, 0.5);
   }
-
-  .classView {
-    background-color: transparent;
-  }
-
-  .gaugeContainer {
-    justify-content: space-around;
-    padding: 30px;
-    background-color: var(--clr-white);
-    width: 100%;
-  }
-
-  .pastReviews {
-    font-size: var(--font-sub-heading-size);
-    padding-top: 35px;
-  }
-
-  .courseReviewColumn {
-    padding: 0 35px 35px;
-  }
 }
 
 @media (min-width: 992px) {
-  .courseInfoColumn {
-    background-color: transparent;
-    padding: 50px 10px;
-    height: 100%;
-  }
-
-  .courseInfoColumnShadow {
-    box-shadow: 0 0 var(--clr-black);
-  }
-
-  .gaugeContainer {
-    margin-top: 70px;
-    border-radius: 10px;
-    background-color: var(--clr-white);
-  }
-
-  .courseReviewColumn {
-    background-color: transparent;
-    padding-right: 70px;
-    display: flex;
-    flex-direction: column;
-  }
-
   .reviewModal {
     width: 70%;
   }

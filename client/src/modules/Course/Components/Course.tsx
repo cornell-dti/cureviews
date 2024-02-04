@@ -35,7 +35,7 @@ export const Course = () => {
   const [selectedClass, setSelectedClass] = useState<Class>()
   const [courseReviews, setCourseReviews] = useState<Review[]>()
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
-  const [isPastScrollThreshold, setIsPastScrollThreshold] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
   const [isLoggedIn, token, netId, signIn] = useAuthOptionalLogin()
@@ -48,10 +48,12 @@ export const Course = () => {
     !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1
 
   /**
-   * Fetches current course info and reviews and updates UI state
+   * Update state to conditionally render sticky bottom-right review button
    */
   useEffect(() => {
-    const handleScroll = () => setIsPastScrollThreshold(window.scrollY >= 200)
+    function handleScroll() {
+      setScrolled(window.scrollY >= 240)
+    }
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -209,24 +211,24 @@ export const Course = () => {
    */
   if (pageStatus === PageStatus.Error) {
     return (
-      <div className={`${styles.errorContainer}`}>
-        {/* TODO: no props on orig implementation */}
+      <div>
         <Navbar userInput={input} />
-        <img
-          className={styles.errorGauge}
-          src="/error.svg"
-          width="100vw"
-          height="auto"
-          alt="error"
-        />
-        <h2>Sorry, we couldn't find the class you're searching for.</h2>
-        <h2>Please search for a different class.</h2>
+        <div className={styles.error}>
+          <img className={styles.errorgauge} src="/error.svg" alt="error" />
+          <h1> Uh oh. </h1>
+          <h2> Sorry, looks like this course does not exist. </h2>
+          <h2> Try searching for another course! </h2>
+          <div>
+            If you think we made a mistake, please contact @cureviews.dti on
+            instagram.
+          </div>
+        </div>
       </div>
     )
   }
 
   /**
-   * Successful render
+   * Successful render =>
    */
   if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum)
@@ -268,6 +270,7 @@ export const Course = () => {
 
         <Navbar userInput={input} />
 
+        {/* Course Name, Button + Gauges */}
         <div className={styles.overview}>
           <div className={styles.classinfo}>
             <h1
@@ -312,50 +315,38 @@ export const Course = () => {
           </div>
         </div>
 
-        <div className={`${styles.reviewContent}`}>
-          <div className={styles.reviewContentHeader}>
-            <h2 className={styles.pastReviews}>
-              Past Reviews ({courseReviews?.length})
-            </h2>
-            <div className={styles.reviewsHeader}>
-              <div className={styles.sortByContainer}>
-                <label className={styles.sortByLabel} htmlFor="sort-reviews-by">
-                  Sort By:
-                </label>
-                <select
-                  onChange={sortReviewsBy}
-                  className={styles.sortBySelect}
-                  id="sort-reviews-by"
-                >
-                  <option value="helpful">Most Helpful</option>
-                  <option value="recent">Recent</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.courseReviews}>
-            <CourseReviews
-              reviews={courseReviews}
-              onReportReview={reportReview}
-              isPreview={false}
-              isProfile={false}
-            />
-
-            <div
-              className={`${!isPastScrollThreshold && 'd-none'} ${
-                styles.fixedButtonContainer
-              }`}
-            >
-              <button
-                className={`btn ${styles.startReviewButton}`}
-                onClick={() => onLeaveReview()}
+        {/* Reviews Displaying */}
+        <div className={styles.reviewscontainer}>
+          <div className={styles.bar}>
+            <h2>Past Reviews ({courseReviews?.length}) </h2>
+            <div>
+              <label htmlFor="sort-reviews">Sort by:</label>
+              <select
+                name="sort-reviews"
+                id="sort-reviews"
+                onChange={sortReviewsBy}
+                className={styles.filtertext}
               >
-                <MdOutlineRateReview size={25} />
-              </button>
+                <option value="helpful">Most Helpful</option>
+                <option value="recent">Recent</option>
+              </select>
             </div>
           </div>
+          <CourseReviews
+            reviews={courseReviews}
+            onReportReview={reportReview}
+            isPreview={false}
+            isProfile={false}
+          />
         </div>
+
+        {/* Fixed Bottom-Right Review Button */}
+        <button
+          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton}`}
+          onClick={() => onLeaveReview()}
+        >
+          <MdOutlineRateReview size={30} />
+        </button>
       </div>
     )
   }
