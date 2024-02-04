@@ -78,10 +78,12 @@ export default function ReviewCard({
   /**
    * Increment the likes on the review.
    */
-  function increment() {
+  function likeReview() {
     if (!isLoggedIn) {
       signIn('path:' + location.pathname)
     }
+
+    setLiked((liked) => !liked)
 
     axios
       .post('/api/updateLiked', {
@@ -155,13 +157,19 @@ export default function ReviewCard({
 
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (ref.current) {
-      setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight)
+    function handleResize() {
+      if (ref.current) {
+        setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight)
+      }
+    }
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
-  const lorem =
-    'But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?'
   return (
     <div className={styles.card}>
       <div className={styles.metrics}>
@@ -190,30 +198,29 @@ export default function ReviewCard({
           <div>
             Grade{' '}
             <span className={styles.bold}>
-              {_review.grade && /^([^0-9]*)$/.test(_review.grade) ? (
-                <span>{_review.grade}</span>
-              ) : (
-                <span>N/A</span>
-              )}{' '}
+              {_review.grade && /^([^0-9]*)$/.test(_review.grade)
+                ? _review.grade
+                : 'N/A'}
             </span>
           </div>
           <div>
-            Major <span className={styles.bold}> Computer Science </span>
+            Major{' '}
+            <span className={styles.bold}>
+              {_review.major && _review.major.length !== 0
+                ? _review.major.map((major, index) => (
+                    <>
+                      {index > 0 && ', '} {major}
+                    </>
+                  ))
+                : 'N/A'}
+            </span>
           </div>
         </div>
         <div
           className={`${styles.reviewtext} ${!expand && styles.collapsedtext}`}
           ref={ref}
         >
-          Lectures are very helpful in this class! Definitely a great
-          introduction to object-oriented programming. The material is pretty
-          interesting and the workload isn’t bad. Definitely a great
-          introduction to object-oriented programming. The material is pretty
-          interesting and the workload isn’t bad. Lectures...Definitely a great
-          introduction to object-oriented programming. The material is pretty
-          interesting and the workload isn’t bad.
-          {lorem}
-          {lorem}
+          {_review.text}
         </div>
         {seeMoreButton && (
           <button
@@ -224,9 +231,27 @@ export default function ReviewCard({
           </button>
         )}
         <div className={styles.datehelpful}>
-          <div> 02/04/24 </div>
-          <div> [x] Helpful (6) </div>
+          <div> {getDateString()} </div>
+          {!isPreview && (
+            <div
+              className={`${styles.helpful} ${liked && styles.likedhelpful}`}
+              onClick={likeReview}
+            >
+              <img
+                src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
+                alt={liked ? 'Liked' : 'Not Liked Yet'}
+              />
+              {liked ? 'Liked!' : 'Helpful?'} (
+              {_review.likes ? _review.likes : 0}){' '}
+            </div>
+          )}
         </div>
+        {_review.isCovid && (
+          <div className={styles.covid}>
+            <span role="img" aria-label="alert"></span>
+            My experience was affected by COVID-19.
+          </div>
+        )}
       </div>
     </div>
   )
