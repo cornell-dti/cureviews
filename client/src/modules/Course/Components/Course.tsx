@@ -332,12 +332,14 @@ export const Course = () => {
               </select>
             </div>
           </div>
-          <CourseReviews
-            reviews={courseReviews}
-            onReportReview={reportReview}
-            isPreview={false}
-            isProfile={false}
-          />
+          <div className={styles.reviews}>
+            <CourseReviews
+              reviews={courseReviews}
+              onReportReview={reportReview}
+              isPreview={false}
+              isProfile={false}
+            />
+          </div>
         </div>
 
         {/* Fixed Bottom-Right Review Button */}
