@@ -3,7 +3,9 @@ import { useParams } from 'react-router'
 
 import axios from 'axios'
 import Modal from 'react-modal'
+
 import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { MdOutlineRateReview } from 'react-icons/md'
 
 import { courseVisited } from './Feedback'
@@ -21,7 +23,7 @@ import { Session } from '../../../session-store'
 
 import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 
-import 'react-toastify/dist/ReactToastify.css'
+import ReviewModal from './ReviewModal'
 
 enum PageStatus {
   Loading,
@@ -349,6 +351,8 @@ export const Course = () => {
         >
           <MdOutlineRateReview size={30} />
         </button>
+
+        <ReviewModal open={true} />
       </div>
     )
   }

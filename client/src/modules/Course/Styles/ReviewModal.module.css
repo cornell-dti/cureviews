@@ -1,0 +1,159 @@
+.modalbg {
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.modal {
+  width: 80%;
+  height: 100%;
+  max-width: 900px;
+  max-height: 564px;
+  place-self: center;
+  margin: 150px auto 0 auto;
+
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+
+  z-index: 201;
+  padding: 32px;
+  box-shadow: inset;
+
+  position: relative;
+}
+
+.closeicon {
+  position: absolute;
+  top: 38px;
+  right: 32px;
+  cursor: pointer;
+
+  width: 16px;
+  height: auto;
+}
+
+.title {
+  color: var(--clr-blue-400);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.content {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  gap: 73px;
+  font-size: 14px;
+}
+
+/* <=== LEFT COLUMN STYLING (TEXTBOX + TAGS SECTION) ===> */
+.textcol {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 32px;
+}
+
+.textinputbox {
+  width: 100%;
+  height: 100%;
+  width: 347px;
+  height: 225px;
+  border-radius: 10px;
+  border: 0.5px solid #65acff;
+  padding: 12px 14px;
+
+  outline: none;
+}
+
+.textinputbox:focus {
+  border: 3px solid var(--clr-blue-400);
+  padding: 10px 12px;
+}
+
+.textinputbox::placeholder {
+  color: #a8a8a8;
+}
+
+/* for future tags feature - placeholder  */
+.tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 347px;
+  height: 100px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background-color: var(--clr-blue-200);
+  color: #fff;
+}
+
+.submitbutton {
+  width: 100%;
+  height: 36px;
+
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+
+  background-color: var(--clr-blue-400);
+  border-radius: 10px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+/* <=== RIGHT COLUMN (METRICS, PROF, GRADE, MAJOR, ETC) ===> */
+
+.formcol {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 32px;
+  justify-content: center;
+
+  width: 100%;
+}
+
+/* Reset default styles */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Style the arrow icon */
+select:after {
+  content: '\25BC'; /* Unicode character for down arrow */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; /* Ensure the arrow doesn't interfere with clicking on the select */
+}
+
+/* Style the dropdown options */
+select option {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
+}
