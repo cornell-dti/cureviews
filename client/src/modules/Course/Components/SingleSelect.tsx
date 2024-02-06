@@ -2,17 +2,21 @@ import React, { useState } from 'react'
 
 // CSS FILES
 import styles from '../Styles/Select.module.css'
-import closeIcon from '../../../assets/icons/X.svg'
+import dropdownIcon from '../../../assets/icons/dropdownicon.svg'
 
-const Select = ({ options, placeholder }: SelectProps) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+const SingleSelect = ({
+  value,
+  options,
+  placeholder,
+  onChange,
+}: SelectProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
 
   // helpers
 
   const selected = (option: string) => {
-    return selectedOptions.includes(option)
+    return value.includes(option)
   }
 
   // logic controls:
@@ -20,17 +24,11 @@ const Select = ({ options, placeholder }: SelectProps) => {
   const handleDropdown = () => {
     setOpen(!open)
   }
-  const handleSelect = (option: string) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option))
-    } else {
-      setSelectedOptions([...selectedOptions, option])
-    }
-    setOpen(false)
-  }
 
-  const handleDelete = (option: string) => {
-    setSelectedOptions((options) => options.filter((opt) => opt !== option))
+  const handleSelect = (selected: string) => {
+    onChange(selected)
+
+    setOpen(false)
   }
 
   return (
@@ -41,21 +39,16 @@ const Select = ({ options, placeholder }: SelectProps) => {
       onClick={handleDropdown}
     >
       <div className={styles.values}>
-        {selectedOptions.length > 0 ? (
-          selectedOptions.map((option) => (
-            <div className={styles.value}>
-              {' '}
-              {option}{' '}
-              <img
-                onClick={() => handleDelete(option)}
-                src={closeIcon}
-                alt="close"
-              />
-            </div>
-          ))
+        {value !== '' ? (
+          <div className={styles['single-value']}>{value}</div>
         ) : (
           <div className={styles.placeholder}> {placeholder} </div>
         )}
+        <img
+          className={styles.dropdownicon}
+          src={dropdownIcon}
+          alt="drop-down-icon"
+        />
       </div>
       {open && (
         <ul className={styles.options}>
@@ -84,5 +77,8 @@ const Select = ({ options, placeholder }: SelectProps) => {
 type SelectProps = {
   options: string[]
   placeholder: string
+  value: string
+  onChange: (selectedOptions: string) => void
 }
-export default Select
+
+export default SingleSelect

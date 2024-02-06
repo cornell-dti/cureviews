@@ -29,6 +29,10 @@
   overflow-x: auto;
 }
 
+.single-value {
+  font-size: 14px;
+}
+
 .value {
   background: rgb(238, 238, 238);
   padding: 6px;
@@ -37,11 +41,18 @@
   display: flex;
   flex-flow: row nowrap;
   gap: 8px;
+
+  font-size: 14px;
 }
 
 .value > img {
   width: 10px;
   /* margin-bottom: -1px; */
+}
+
+.dropdownicon {
+  margin-left: auto;
+  width: 12px;
 }
 
 .select:focus {
