@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import Select from './Select'
+import MultiSelect from './MultiSelect'
+import SingleSelect from './SingleSelect'
+import RatingInput from './RatingInput'
 
 // CSS FILES
 import styles from '../Styles/ReviewModal.module.css'
@@ -9,22 +11,11 @@ import closeIcon from '../../../assets/icons/X.svg'
 // Data
 import majors from '../../Globals/majors'
 
-const ReviewModal = ({ open }: Modal) => {
-  if (!open) {
-    return <></>
-  }
-
+const ReviewModal = ({ open, professorOptions }: Modal) => {
   const placeholdertext =
     'What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?'
 
-  const professoroptions = [
-    'David Gries',
-    'Roben Van Vesselar',
-    'Anne Bracy',
-    'Killian Weinberger',
-    'Dean Kavita Bala',
-    'Robert Haribariban',
-  ]
+  const majorOptions: string[] = majors
 
   const gradeoptions = [
     'A+',
@@ -42,6 +33,36 @@ const ReviewModal = ({ open }: Modal) => {
     'F',
   ]
 
+  const [selectedProfessors, setSelectedProfessors] = useState<string[]>([])
+  const [selectedMajors, setSelectedMajors] = useState<string[]>([])
+  const [selectedGrade, setSelectedGrade] = useState<string>('')
+  const [reviewText, setReviewText] = useState<string>('')
+
+  const [overall, setOverall] = useState<number>(3)
+  const [difficulty, setDifficulty] = useState<number>(3)
+  const [workload, setWorkload] = useState<number>(3)
+
+  function onProfessorChange(newSelectedProfessors: string[]) {
+    setSelectedProfessors(newSelectedProfessors)
+  }
+
+  function onMajorChange(newSelectedMajors: string[]) {
+    setSelectedMajors(newSelectedMajors)
+  }
+
+  function onGradeChange(newSelectedGrade: string) {
+    setSelectedGrade(newSelectedGrade)
+  }
+
+  function onReviewTextChange(newText: string) {
+    setReviewText(newText)
+    console.log(newText)
+  }
+
+  if (!open) {
+    return <></>
+  }
+
   return (
     <div className={styles.modalbg}>
       <div className={styles.modal}>
@@ -50,13 +71,66 @@ const ReviewModal = ({ open }: Modal) => {
 
         <div className={styles.content}>
           <div className={styles.formcol}>
-            <Select options={professoroptions} placeholder="Porofessor" />
-            <Select options={gradeoptions} placeholder="B+" />
-            <Select options={majors} placeholder="Underwater Basket Weaving" />
+            <MultiSelect
+              options={professorOptions}
+              value={selectedProfessors}
+              onChange={onProfessorChange}
+              placeholder="Porofessor"
+            />
+            <div className={styles.slider}>
+              <RatingInput
+                name="overall"
+                label="Overall"
+                value={overall}
+                setValue={setOverall}
+                maxRating={5}
+                minLabel="Not for me"
+                maxLabel="Loved it"
+                isOverall={true}
+              />
+            </div>
+            <div className={styles.slider}>
+              <RatingInput
+                name="difficulty"
+                label="Difficulty"
+                value={difficulty}
+                setValue={setDifficulty}
+                maxRating={5}
+                minLabel="Piece of cake"
+                maxLabel="Challenging"
+                isOverall={false}
+              />
+            </div>
+            <div className={styles.slider}>
+              <RatingInput
+                name="workload"
+                label="Workload"
+                value={workload}
+                setValue={setWorkload}
+                maxRating={5}
+                minLabel="Not much"
+                maxLabel="Lots of work"
+                isOverall={false}
+              />
+            </div>
+            <MultiSelect
+              options={majorOptions}
+              value={selectedMajors}
+              onChange={onMajorChange}
+              placeholder="Underwater Basket Weaving"
+            />
+            <SingleSelect
+              options={gradeoptions}
+              value={selectedGrade}
+              onChange={onGradeChange}
+              placeholder="B+"
+            />
           </div>
           <div className={styles.textcol}>
             <textarea
               className={styles.textinputbox}
+              value={reviewText}
+              onChange={(e) => onReviewTextChange(e.target.value)}
               name="review-content"
               id="review-content"
               placeholder={placeholdertext}
@@ -75,5 +149,6 @@ const ReviewModal = ({ open }: Modal) => {
 
 type Modal = {
   open: boolean
+  professorOptions: string[]
 }
 export default ReviewModal

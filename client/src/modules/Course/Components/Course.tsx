@@ -352,7 +352,12 @@ export const Course = () => {
           <MdOutlineRateReview size={30} />
         </button>
 
-        <ReviewModal open={true} />
+        <ReviewModal
+          open={true}
+          professorOptions={
+            selectedClass.classProfessors ? selectedClass.classProfessors : []
+          }
+        />
       </div>
     )
   }
