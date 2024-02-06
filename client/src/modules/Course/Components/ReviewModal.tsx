@@ -11,7 +11,12 @@ import closeIcon from '../../../assets/icons/X.svg'
 // Data
 import majors from '../../Globals/majors'
 
-const ReviewModal = ({ open, professorOptions }: Modal) => {
+const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
+  // Modal Logic
+  function closeModal() {
+    setOpen(false)
+  }
+  // Content & Options
   const placeholdertext =
     'What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?'
 
@@ -33,6 +38,7 @@ const ReviewModal = ({ open, professorOptions }: Modal) => {
     'F',
   ]
 
+  // Form & Review Content State
   const [selectedProfessors, setSelectedProfessors] = useState<string[]>([])
   const [selectedMajors, setSelectedMajors] = useState<string[]>([])
   const [selectedGrade, setSelectedGrade] = useState<string>('')
@@ -59,6 +65,31 @@ const ReviewModal = ({ open, professorOptions }: Modal) => {
     console.log(newText)
   }
 
+  // Handle Submission
+  function validReview(): boolean {
+    const professorChosen = selectedProfessors.length > 0
+    const textWritten = reviewText.length > 5
+    if (professorChosen && textWritten) return true
+    return false
+  }
+
+  function submitReview() {
+    if (validReview()) {
+      const newReview = {
+        rating: overall,
+        difficulty: difficulty,
+        workload: workload,
+        professors: selectedProfessors,
+        text: reviewText,
+        isCovid: false,
+        grade: selectedGrade,
+        major: selectedMajors,
+      }
+
+      console.log('Submitting')
+    } else return
+  }
+
   if (!open) {
     return <></>
   }
@@ -66,7 +97,12 @@ const ReviewModal = ({ open, professorOptions }: Modal) => {
   return (
     <div className={styles.modalbg}>
       <div className={styles.modal}>
-        <img className={styles.closeicon} src={closeIcon} alt="close-modal" />
+        <img
+          className={styles.closeicon}
+          onClick={closeModal}
+          src={closeIcon}
+          alt="close-modal"
+        />
         <div className={styles.title}>Leave a Review</div>
 
         <div className={styles.content}>
@@ -139,7 +175,10 @@ const ReviewModal = ({ open, professorOptions }: Modal) => {
               {' '}
               🙈 New feature soon ... 🙈{' '}
             </div>
-            <button className={styles.submitbutton}> Submit Review </button>
+            <button className={styles.submitbutton} onClick={submitReview}>
+              {' '}
+              Submit Review{' '}
+            </button>
           </div>
         </div>
       </div>
@@ -149,6 +188,7 @@ const ReviewModal = ({ open, professorOptions }: Modal) => {
 
 type Modal = {
   open: boolean
+  setOpen: (open: boolean) => void
   professorOptions: string[]
 }
 export default ReviewModal

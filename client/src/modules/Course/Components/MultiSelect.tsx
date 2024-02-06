@@ -50,7 +50,7 @@ const MultiSelect = ({
       <div className={styles.values}>
         {value.length > 0 ? (
           value.map((selected) => (
-            <div className={styles.value}>
+            <div className={styles.value} key={selected}>
               {' '}
               {selected}{' '}
               <img

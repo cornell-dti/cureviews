@@ -208,6 +208,8 @@ export const Course = () => {
     Session.setPersistent({ courseId: '' })
   }
 
+  /** Modal Open and Close Logic */
+  const [open, setOpen] = useState<boolean>(false)
   /**
    * Error page
    */
@@ -292,7 +294,7 @@ export const Course = () => {
             <button
               data-cy="leave-review-button"
               className={styles.reviewbutton}
-              onClick={() => onLeaveReview()}
+              onClick={() => setOpen(true)}
             >
               Leave a review
             </button>
@@ -347,13 +349,14 @@ export const Course = () => {
         {/* Fixed Bottom-Right Review Button */}
         <button
           className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton}`}
-          onClick={() => onLeaveReview()}
+          onClick={() => setOpen(true)}
         >
           <MdOutlineRateReview size={30} />
         </button>
 
         <ReviewModal
-          open={true}
+          open={open}
+          setOpen={setOpen}
           professorOptions={
             selectedClass.classProfessors ? selectedClass.classProfessors : []
           }
