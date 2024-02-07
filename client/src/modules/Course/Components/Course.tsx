@@ -176,13 +176,6 @@ export const Course = () => {
   }
 
   /**
-   * Open review modal
-   */
-  function onLeaveReview() {
-    setIsReviewModalOpen(true)
-  }
-
-  /**
    * Save review information to session storage and begin redirect to auth
    */
   function onSubmitReview(review: NewReview) {
@@ -357,6 +350,7 @@ export const Course = () => {
         <ReviewModal
           open={open}
           setOpen={setOpen}
+          submitReview={onSubmitReview}
           professorOptions={
             selectedClass.classProfessors ? selectedClass.classProfessors : []
           }

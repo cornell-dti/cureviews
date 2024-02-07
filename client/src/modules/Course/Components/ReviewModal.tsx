@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import MultiSelect from './MultiSelect'
 import SingleSelect from './SingleSelect'
@@ -11,7 +11,12 @@ import closeIcon from '../../../assets/icons/X.svg'
 // Data
 import majors from '../../Globals/majors'
 
-const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
+const ReviewModal = ({
+  open,
+  setOpen,
+  submitReview,
+  professorOptions,
+}: Modal) => {
   // Modal Logic
   function closeModal() {
     setOpen(false)
@@ -48,21 +53,41 @@ const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
   const [difficulty, setDifficulty] = useState<number>(3)
   const [workload, setWorkload] = useState<number>(3)
 
+  const [valid, setValid] = useState<Valid>({
+    professor: false,
+    major: false,
+    grade: false,
+    text: false,
+  })
+  const [allowSubmit, setAllowSubmit] = useState<boolean>(false)
+
+  useEffect(() => {
+    setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text)
+  }, [valid])
+
   function onProfessorChange(newSelectedProfessors: string[]) {
     setSelectedProfessors(newSelectedProfessors)
+    if (newSelectedProfessors.length > 0)
+      setValid({ ...valid, professor: true })
+    else setValid({ ...valid, professor: false })
   }
 
   function onMajorChange(newSelectedMajors: string[]) {
     setSelectedMajors(newSelectedMajors)
+    if (newSelectedMajors.length > 0) setValid({ ...valid, major: true })
+    else setValid({ ...valid, major: false })
   }
 
   function onGradeChange(newSelectedGrade: string) {
     setSelectedGrade(newSelectedGrade)
+    if (newSelectedGrade !== '') setValid({ ...valid, grade: true })
+    else setValid({ ...valid, grade: false })
   }
 
   function onReviewTextChange(newText: string) {
     setReviewText(newText)
-    console.log(newText)
+    if (newText !== '') setValid({ ...valid, text: true })
+    else setValid({ ...valid, text: false })
   }
 
   // Handle Submission
@@ -73,9 +98,10 @@ const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
     return false
   }
 
-  function submitReview() {
+  function handleSubmitReview() {
+    console.log('tried to submit')
     if (validReview()) {
-      const newReview = {
+      const newReview: NewReview = {
         rating: overall,
         difficulty: difficulty,
         workload: workload,
@@ -85,6 +111,7 @@ const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
         grade: selectedGrade,
         major: selectedMajors,
       }
+      submitReview(newReview)
 
       console.log('Submitting')
     } else return
@@ -175,7 +202,11 @@ const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
               {' '}
               🙈 New feature soon ... 🙈{' '}
             </div>
-            <button className={styles.submitbutton} onClick={submitReview}>
+            <button
+              className={styles.submitbutton}
+              onClick={handleSubmitReview}
+              disabled={!allowSubmit}
+            >
               {' '}
               Submit Review{' '}
             </button>
@@ -189,6 +220,26 @@ const ReviewModal = ({ open, setOpen, professorOptions }: Modal) => {
 type Modal = {
   open: boolean
   setOpen: (open: boolean) => void
+  submitReview: (review: NewReview) => void
   professorOptions: string[]
 }
+
+type NewReview = {
+  text: string
+  rating: number
+  difficulty: number
+  workload: number
+  professors: string[]
+  isCovid: boolean
+  grade: string
+  major: string[]
+}
+
+type Valid = {
+  professor: boolean
+  major: boolean
+  grade: boolean
+  text: boolean
+}
+
 export default ReviewModal
