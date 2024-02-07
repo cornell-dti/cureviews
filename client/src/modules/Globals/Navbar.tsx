@@ -7,7 +7,6 @@ import ProfileDropdown from './ProfileDropdown'
 import { useAuthOptionalLogin } from '../../auth/auth_utils'
 import { Session } from '../../session-store'
 
-import './Styles/NavBar.css'
 import styles from './Styles/NavBar.module.css'
 
 /*
