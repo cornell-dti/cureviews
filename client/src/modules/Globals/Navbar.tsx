@@ -8,6 +8,8 @@ import { useAuthOptionalLogin } from '../../auth/auth_utils'
 import { Session } from '../../session-store'
 
 import './Styles/NavBar.css'
+import styles from './Styles/NavBar.module.css'
+
 /*
   Navbar Component. Short description if needed.
 
@@ -29,6 +31,7 @@ export default function Navbar({ userInput }: NavbarProps) {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
   const location = useLocation()
 
+  /** Show Profile DropDown  */
   function displayButton() {
     const token = Session.get('token')
     return (
@@ -47,21 +50,11 @@ export default function Navbar({ userInput }: NavbarProps) {
   }
 
   return (
-    <div className="custom-navbar">
-      <div className="logo-container">
-        <a className="" href="/">
-          <img
-            src="/logo.svg"
-            className="scale-logo-navbar"
-            alt="CU Reviews Logo"
-          />
-        </a>
-      </div>
-      <div
-        className={`col navbar-searchbar-container ${
-          isLoggedIn ? '-profile' : ''
-        }`}
-      >
+    <div className={styles.navbar}>
+      <a className="" href="/">
+        <img src="/logo.svg" className={styles.logo} alt="CU Reviews Logo" />
+      </a>
+      <div className={styles.searchbar}>
         <SearchBar
           userInput={userInput}
           contrastingResultsBackground={true}
