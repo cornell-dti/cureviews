@@ -7,6 +7,12 @@
   padding: 180px 50px 0px 50px;
 }
 
+.buttoncontainer {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
 .searchcontainer {
   max-width: 800px;
 }

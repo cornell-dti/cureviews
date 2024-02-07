@@ -74,12 +74,14 @@ export const Home = () => {
         styles[`bg${time}${season}`]
       }`}
     >
-      <ProfileDropdown
-        isLoggedIn={isLoggedIn}
-        netId={netId}
-        signOut={signOut}
-        signIn={signIn}
-      />
+      <div className={styles.buttoncontainer}>
+        <ProfileDropdown
+          isLoggedIn={isLoggedIn}
+          netId={netId}
+          signOut={signOut}
+          signIn={signIn}
+        />
+      </div>
 
       <div className={styles.container}>
         <img
