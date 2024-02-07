@@ -1,114 +1,83 @@
-.profileMenuContainer {
-  margin-top: 0;
-  margin-right: 2em;
-  position: absolute;
-  right: 0;
+.signinbutton {
+  background-color: var(--clr-gray-200);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  width: 100px;
+
+  font-weight: 600;
+}
+
+.profile {
+  width: 100%;
+  max-width: 40px;
+
+  position: relative;
+}
+
+/* img */
+.bear {
+  width: 100%;
+  height: auto;
+  object-fit: fill;
+  border-radius: 50%;
   cursor: pointer;
 }
 
-.profileBear {
-  width: 53px;
-  height: 53px;
-  margin-left: auto;
-}
-
-.profileMenuCard {
-  background-color: var(--clr-white);
-  position: relative;
-  right: 0;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  padding: 1.5em;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.profileMenuLink {
-  display: block;
-  color: black;
-  font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 1rem;
-}
-
-.profileMenuLink:hover {
-  color: var(--clr-blue-400);
-}
-
-.signInButton {
+.profiledropdown {
   position: absolute;
-  right: 2em;
-  text-align: center;
-  width: 9em;
-  background: var(--clr-white);
-  border-radius: 10px;
-  margin-top: 0.5em;
+  top: 70px;
+  right: 0;
+  min-width: 200px;
+  height: 200px;
 
-  padding: 0.5em;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.09));
+  background-color: #fff;
+  border-radius: 5px;
 
-  font-style: normal;
-  font-weight: 600;
-  font-size: 1rem;
+  padding: 12px 0;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: black;
+  flex-flow: column;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
-.profileMenuSignOutButton {
-  position: relative;
-  text-align: center;
+.option {
   width: 100%;
-  background: var(--clr-blue-400);
-  border-radius: 10px;
-
-  padding: 5px;
-
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--clr-white);
+  padding: 4px 16px;
+  cursor: pointer;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
 
-@media (max-width: 480px) {
-  .signOutButtonContainer {
-    position: relative;
-  }
+.option:hover,
+.option > button:hover {
+  background-color: var(--clr-gray-200);
+  color: var(--clr-blue-400);
+  font-weight: 500;
 
-  .signInButton {
-    top: 3em;
-    margin: 0;
-    right: 1em;
-    font-size: 1rem;
+  & .optionimg {
+    width: 15px;
   }
+}
 
-  .profileMenuCard {
-    border-radius: 5px;
-    padding: 1em;
-    width: 10em;
-    gap: 0;
-    padding-bottom: 40px;
-  }
+/* make our Sign Out button look interactive.  */
+.option > button {
+  cursor: pointer;
+}
 
-  .profileMenuSignOutButton {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    bottom: 0;
-    padding: 1em;
-    font-size: var(--font-small-size);
-  }
+/* make most of the "my reviews" clickable */
+.option > a {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
 
-  .profileMenuLink {
-    margin-bottom: 1em;
-    text-align: center;
-    font-size: var(--font-small-size);
-  }
+.optionimg {
+  width: 14px;
+  height: auto;
 }
