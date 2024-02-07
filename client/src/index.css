@@ -118,6 +118,11 @@ select {
   background-color: transparent;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* Avoid text overflows */
 p,
 h1,
