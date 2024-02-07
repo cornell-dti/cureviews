@@ -1,98 +1,118 @@
-@media screen and (max-width: 992px) {
-  .searchbar {
-    height: 42px;
-  }
-
-  .searchbarInNavbar {
-    height: 42px;
-  }
-
-  .searchText {
-    padding-left: 45px;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .searchbar {
-    height: 40px;
-  }
-
-  .searchbarInNavbar {
-    height: 52px;
-  }
-
-  .searchText {
-    padding-left: 40px;
-  }
-}
-
+/*  the entire actual searchbar (search icon, etc.) */
 .searchbar {
+  height: 34px;
   width: 100%;
-  background-color: transparent;
-  display: inline-block;
+
+  background-color: #fff;
+
   padding: 0;
   position: relative;
   outline: 0;
-  background: #ffffff;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 6px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
 }
 
-.searchbarInNavbar {
+/* Border when in the navbar (not home page) */
+.navbarsearchbar {
   border: 1.24929px solid var(--clr-gray-300);
   box-shadow: none;
 }
 
-.searchText {
-  font-size: var(--font-medium-size);
+.navbarsearchbar:hover {
+  border: 4px solid (--clr-blue-400);
+  box-shadow: none;
+}
+
+/* Change styling when the user has searched something (query !== '') (empty) */
+.searching {
+  /* border-radius: 10px 10px 0 0; */
+  border: 1px solid var(--clr-blue-400);
+}
+
+/* Flex row for the [ search icon | placeholder / query ] */
+.searchbarcontent {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 6px;
+}
+
+/* ICON */
+.searchicon {
+  width: 18px;
+  height: auto;
+}
+
+/* INPUT  */
+.searchtext {
+  font-size: 13px;
   font-weight: var(--regular-weight);
   color: var(--clr-black);
-  background-color: var(--clr-white);
   border-color: transparent;
-  border-radius: 10px;
   cursor: text;
   text-align: left;
   width: 100%;
   height: 100%;
-  background-image: url(/magnifying_glass.svg);
-  background-repeat: no-repeat;
-  background-position-y: center;
-  background-position-x: 10px;
-  background-size: 17px;
+  padding: 0;
   outline: 0;
   position: relative;
 }
 
-.searchText::placeholder {
+/* PLACEHOLDER */
+.searchtext::placeholder {
   color: var(--clr-gray-300);
   font-weight: var(--regular-weight);
+  font-size: 14px;
 }
 
+/* RESULTS */
 .output {
-  background: rgba(255, 255, 255, 0.7);
-  border-style: solid;
-  border-color: var(--clr-blue-300);
-  border-width: 0 1px 1px 1px;
+  background: rgba(255, 255, 255, 0.9);
+
+  border: 1px solid var(--clr-blue-300);
+  /* border-top: 0px; */
+  border-radius: 6px;
+
   cursor: pointer;
-  max-height: 300px;
+  max-height: 250px;
   overflow-y: auto;
-  width: 100%;
-  border-radius: 0 0 10px 10px;
+  min-width: calc(100% + 2px);
+
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -1px;
 }
 
-.resultText {
-  display: inline-block;
+/* What user query is 
+    e.g. -> ' Searched "my query was this" '
+    
+    TODO (potentially)
+      should cut text off into ... if it is too long (ideally)? Or not, if screen is too narrow. 
+    
+    */
+.searchedtext {
+  width: 100%;
+  max-height: 30px;
+  max-width: 100%;
+  overflow: hidden;
   text-overflow: ellipsis;
   font-size: var(--font-medium-size);
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   letter-spacing: 0.001em;
   color: var(--clr-black);
-  padding-top: 1.5px;
+
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
-  width: 86%; /* Made to fit in with the course/subject colored label, which is max width 12% */
   display: flex;
   margin: 0;
 }

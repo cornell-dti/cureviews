@@ -4,11 +4,13 @@ import { Redirect } from 'react-router'
 import axios from 'axios'
 import { Session } from '../../../session-store'
 
-import styles from '../Styles/SearchBar.module.css'
 import Course from './Course'
 import SubjectResult from './SubjectResult'
 import ProfessorResult from './ProfessorResult'
 import { Class, Subject, Professor } from 'common'
+
+import styles from '../Styles/SearchBar.module.css'
+import SearchIcon from '../../../assets/icons/search.svg'
 
 type SearchBarProps = {
   isInNavbar: boolean
@@ -152,12 +154,15 @@ export const SearchBar = ({
     Session.setPersistent({ 'last-search': query })
   }
 
+  /** Render the search results from querying  */
   const renderResults = () => {
+    /** Only render if the query is not empty */
     if (query !== '' && !selected) {
       let results = []
 
-      // Used for "enter" key on 'Search: "query" ' button for exact search
-      // Sends user to /results/keyword/query+query
+      /* User press [ENTER] button?
+            => Redirect user to '/results/keyword/query+query'
+       */
       if (index === 0 && enter === 1) {
         return (
           <Redirect
@@ -167,7 +172,8 @@ export const SearchBar = ({
         )
       }
 
-      let exact_search = (
+      /* Render the first row of the results "Search: [user query]" */
+      const exact_search = (
         <a
           key={'search'}
           className={
@@ -177,12 +183,18 @@ export const SearchBar = ({
           }
           href={`/results/keyword/${query.split(' ').join('+')}`}
         >
-          <p className={`${styles.resultText}`}>{'Search: "' + query + '"'}</p>
+          <p className={`${styles.searchedtext}`}>
+            {'Search: "' + query + '"'}
+          </p>
         </a>
       )
 
       results.push(exact_search)
 
+      /* Subject Lists ... hmmm ? not sure rn
+          TODO - document this  
+          FIX -> on notion doc 2024 spring dev docs
+      */
       let subjectList: JSX.Element[] = []
 
       subjectList = subjects.slice(0, 3).map((subject, i) => (
@@ -258,33 +270,40 @@ export const SearchBar = ({
     }
   }
 
+  const placeholdertext = () => {
+    if (isInNavbar) {
+      return 'Search for a new course'
+    } else if (window.innerWidth >= 840) {
+      return 'Look up any course or professor e.g. "FWS", "ECON", or "CS 2110"'
+    } else {
+      return 'Search any keyword'
+    }
+  }
+
   return (
-    <div
-      className={`${
-        contrastingResultsBackground ? 'contasting-results-background' : ''
-      }`}
-    >
+    <div>
       <div
         className={`${styles.searchbar} ${
-          isInNavbar ? styles.searchbarInNavbar : ''
-        }`}
+          isInNavbar ? styles.navbarsearchbar : ''
+        } ${query !== '' && styles.searching}`}
       >
-        <input
-          className={`${styles.searchText}`}
-          onKeyUp={handleKeyPress}
-          defaultValue={isInNavbar ? (userInput ? userInput : '') : ''}
-          placeholder={
-            isInNavbar
-              ? ''
-              : window.innerWidth >= 840
-              ? 'Search by any keyword e.g. “FWS”, “ECON” or “CS 2110”'
-              : 'Search any keyword'
-          }
-          autoComplete="off"
-        />
+        <div className={styles.searchbarcontent}>
+          <img
+            className={styles.searchicon}
+            src={SearchIcon}
+            alt="search-icon"
+          />
+          <input
+            className={`${styles.searchtext} `}
+            onKeyUp={handleKeyPress}
+            defaultValue={isInNavbar ? (userInput ? userInput : '') : ''}
+            placeholder={placeholdertext()}
+            autoComplete="off"
+          />
+        </div>
 
         <ul
-          className={`${styles.output}`}
+          className={styles.output}
           style={query !== '' ? {} : { display: 'none' }}
           onKeyPress={handleKeyPress}
           onMouseEnter={() => setMouse(1)}
