@@ -50,18 +50,20 @@ export default function Navbar({ userInput }: NavbarProps) {
   }
 
   return (
-    <div className={styles.navbar}>
-      <a className="" href="/">
-        <img src="/logo.svg" className={styles.logo} alt="CU Reviews Logo" />
-      </a>
-      <div className={styles.searchbar}>
-        <SearchBar
-          userInput={userInput}
-          contrastingResultsBackground={true}
-          isInNavbar={true}
-        />
+    <div className={styles.navbarwrapper}>
+      <div className={styles.navbar}>
+        <a className="" href="/">
+          <img src="/logo.svg" className={styles.logo} alt="CU Reviews Logo" />
+        </a>
+        <div className={styles.searchbar}>
+          <SearchBar
+            userInput={userInput}
+            contrastingResultsBackground={true}
+            isInNavbar={true}
+          />
+        </div>
+        {displayButton()}
       </div>
-      {displayButton()}
     </div>
   )
 }
