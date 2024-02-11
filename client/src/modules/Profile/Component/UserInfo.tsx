@@ -18,34 +18,29 @@ const UserInfo = ({
   signOut,
 }: UserInfoProps) => {
   return (
-    <div className={styles.profileContainer}>
-      <div className={styles.profileTitle}>My Dashboard</div>
-      <div className={styles.profileInfo}>
-        <img
-          className={styles.profileImage}
-          src={profilePicture}
-          alt="user profile bear"
+    <div className={styles.container}>
+      <div className={styles.title}>My Dashboard</div>
+      <img
+        className={styles.profileimage}
+        src={profilePicture}
+        alt="user profile bear"
+      />
+      <div className={styles.netid}>{netId}</div>
+      <div className={styles.subtitle}>User Statistics</div>
+      <div className={styles.statssection}>
+        <ProfileCard
+          title="Reviews"
+          value={reviewsTotal}
+          image="/total_reviews_icon.svg"
         />
-        <div className={styles.profileVerifiedNeId}>{netId}</div>
-        <div className={styles.profileUserStatistics}>
-          <div className={styles.profileUserStatisticsText}>
-            User Statistics
-          </div>
-
-          <ProfileCard
-            title="Reviews Total"
-            value={reviewsTotal}
-            image="/total_reviews_icon.svg"
-          />
-          <ProfileCard
-            title="People found your reviews helpful"
-            value={reviewsHelpful}
-            image="/helpful_review_icon.svg"
-          ></ProfileCard>
-        </div>
+        <ProfileCard
+          title="Upvotes"
+          value={reviewsHelpful}
+          image="/helpful_review_icon.svg"
+        ></ProfileCard>
       </div>
-      <button className={styles.profileSignOutButton} onClick={signOut}>
-        <p className={styles.profileSignOutText}>Sign Out</p>
+      <button className={styles.signoutbutton} onClick={signOut}>
+        Log Out
       </button>
     </div>
   )

@@ -1,5 +1,5 @@
 .signinbutton {
-  background-color: var(--clr-gray-200);
+  background-color: var(--clr-gray-100);
   border-radius: 8px;
   padding: 12px;
   cursor: pointer;
@@ -62,6 +62,14 @@
   & .optionimg {
     width: 15px;
   }
+}
+
+.logout {
+  color: var(--clr-red-200);
+}
+
+.logout:hover {
+  color: var(--clr-red-200);
 }
 
 /* make our Sign Out button look interactive.  */

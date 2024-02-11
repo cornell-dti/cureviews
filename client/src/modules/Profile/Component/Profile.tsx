@@ -128,10 +128,10 @@ const Profile = () => {
 
   if (!loading && isLoggedIn) {
     return (
-      <div className={`${styles.fullScreen}`}>
+      <div className={`${styles.page}`}>
         <Navbar userInput="" />
-        <div className={`${styles.profileContainer}`}>
-          <div className={styles.profileLeft}>
+      <div className={`${styles.container}`}>
+          <div className={styles.usersection}>
             <UserInfo
               profilePicture={profilePicture}
               reviewsHelpful={reviewsHelpful}
@@ -186,6 +186,7 @@ const Profile = () => {
   } else if (!loading && !token && !isAuthenticating) {
     return <Redirect to="/" />
   }
+
   return <>Loading...</>
 }
 

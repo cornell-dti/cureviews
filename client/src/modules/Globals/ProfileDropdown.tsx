@@ -75,7 +75,10 @@ export default function ProfileDropdown({
             </a>
           </div>
 
-          <div className={styles.option} onClick={() => signOut()}>
+          <div
+            className={`${styles.option} ${styles.logout}`}
+            onClick={() => signOut()}
+          >
             Log Out
             <img className={styles.optionimg} src={LogOutIcon} alt="log-out" />
           </div>

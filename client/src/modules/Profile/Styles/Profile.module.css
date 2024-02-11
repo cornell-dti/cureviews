@@ -1,12 +1,36 @@
-.fullScreen {
+.page {
   min-height: 100vh;
   background-color: var(--clr-blue-100);
+  width: 100%;
 }
 
-.profileContainer {
+.container {
+  width: 100%;
+  max-width: 1440px;
   display: flex;
-  gap: 8em;
-  padding: 3em 5em;
+  flex-flow: row nowrap;
+  gap: 36px;
+  padding: 100px 25px;
+  margin: 0 auto;
+}
+
+.usersection {
+  width: 40%;
+  max-width: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-flow: column nowrap;
+  }
+
+  .usersection {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 .profileLeft {
@@ -214,11 +238,6 @@
 @media (min-width: 481px) and (max-width: 1000px) {
   .profileLeft {
     width: 100%;
-  }
-
-  .profileContainer {
-    width: 85%;
-    height: 80%;
   }
 }
 
