@@ -19,11 +19,9 @@
 
 .modal {
   width: 80%;
-  height: fit-content;
   max-width: 900px;
   max-height: 564px;
   place-self: center;
-  margin: 150px auto 0 auto;
 
   background-color: white;
   border-radius: 10px;
@@ -34,6 +32,7 @@
   box-shadow: inset;
 
   position: relative;
+  top: 0;
 }
 
 .closeicon {

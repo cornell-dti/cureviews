@@ -79,6 +79,25 @@
   z-index: 101;
 }
 
+.gradeoptions {
+  display: flex;
+  flex-flow: column nowrap;
+
+  position: absolute;
+  margin: 0;
+  padding: 8px;
+  list-style-type: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 0.5px solid rgb(225, 225, 225);
+  border-radius: 4%;
+  width: 100%;
+  left: 0;
+  bottom: calc(100% + 0.55em);
+  background: #fff;
+  z-index: 101;
+}
+
 .option {
   padding: 0.8em 1em;
   cursor: pointer;

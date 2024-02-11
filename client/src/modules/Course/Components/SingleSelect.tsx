@@ -51,7 +51,7 @@ const SingleSelect = ({
         />
       </div>
       {open && (
-        <ul className={styles.options}>
+        <ul className={styles.gradeoptions}>
           {options.map((option, index) => (
             <li
               className={`${styles.option} ${
