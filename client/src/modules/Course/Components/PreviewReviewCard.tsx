@@ -13,7 +13,6 @@ import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 type ReviewProps = {
   review: ReviewType
-  reportHandler: (review: ReviewType) => void
   isPreview: boolean
   isProfile: boolean
 }
@@ -38,7 +37,6 @@ type ReviewProps = {
 */
 export default function PreviewReviewCard({
   review,
-  reportHandler,
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
@@ -64,26 +62,6 @@ export default function PreviewReviewCard({
     let review_day = date.getDate()
 
     return review_month + '/' + review_day + '/' + review_year
-  }
-
-  /**
-   * Shows user liked the review and updates DB count.
-   */
-  function likeReview() {
-    if (!isLoggedIn) {
-      signIn('path:' + location.pathname)
-    }
-
-    setLiked((liked) => !liked)
-
-    axios
-      .post('/api/updateLiked', {
-        id: _review._id,
-        token: getAuthToken(),
-      })
-      .then((response) => {
-        setReview(response.data.review)
-      })
   }
 
   /**

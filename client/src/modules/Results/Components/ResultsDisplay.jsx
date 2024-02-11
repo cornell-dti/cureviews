@@ -8,6 +8,11 @@ import FilteredResult from './FilteredResult.tsx'
 import PreviewCard from './PreviewCard.jsx'
 import FilterPopup from './FilterPopup'
 
+import PreviewReviewCard from '../../Course/Components/PreviewReviewCard'
+import FilterIcon from '../../../assets/icons/filtericon.svg'
+
+import styles from '../Styles/Results.module.css'
+
 /*
   ResultsDisplay Component.
 
@@ -318,64 +323,53 @@ export default class ResultsDisplay extends Component {
 
   render() {
     return (
-      <div className=" results-display-container">
+      <div className={styles.container}>
+        <h1> Search Results </h1>
         {/* Case where results are still being loaded */}
-        {this.props.loading === true && (
-          <div className="loading-results">
-            <Loading />
-          </div>
-        )}
+        {this.props.loading === true && <Loading />}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
-          <div className="col-lg-12 col-md-12 col-sm-12 col-12 results">
+          <div>
             <img
               src="/noResults.svg"
-              className="img-responsive no-results"
+              className={styles.noresultimg}
               alt="No class found"
-            ></img>
-            <div className="no-results-text">
-              Sorry! No classes match your search.
-            </div>
+            />
+            <div>Sorry! No classes match your search.</div>
           </div>
         )}
         {/* Case where results are returned (non-empty) */}
         {this.state.courseList.length !== 0 && this.props.loading !== true && (
-          <div className="results-column-container" data-cy="results-display">
-            <div className="filter-container">
-              <p className="filter-title">Filter</p>
-              <div className="filter-sub-category">
-                <p className="filter-sub-title">Semester</p>
+          <div className={styles.layout} data-cy="results-display">
+            <div className={styles.filtercol}>
+              <div className={styles.filtertext}>Filter</div>
+              <div>
+                <div className={styles.filtercategory}>Semester</div>
                 {this.renderCheckboxes('semesters')}
               </div>
-              <div className="filter-sub-category">
-                <p className="filter-sub-title">Level</p>
+              <div>
+                <div className={styles.filtercategory}>Level</div>
                 {this.renderCheckboxes('levels')}
               </div>
             </div>
 
-            <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 results">
+            <div className={styles.columns}>
               <div>
-                <p className="results-num-classes-found">
-                  We found{' '}
-                  <strong>
-                    {this.state.filteredItems.length === 0
-                      ? this.state.courseList.length
-                      : this.state.filteredItems.length}
-                  </strong>{' '}
-                  courses for &quot;{this.props.userInput}&quot;
-                </p>
+                We found{' '}
+                <b>
+                  {this.state.filteredItems.length === 0
+                    ? this.state.courseList.length
+                    : this.state.filteredItems.length}
+                </b>{' '}
+                courses for &quot;{this.props.userInput}&quot;
               </div>
 
-              <div className="row results-buttons">
+              <div className={styles.bar}>
                 <div>
-                  <p className="d-none d-lg-block results-sort-by-text">
-                    Sort By:
-                  </p>
-                </div>
-                <div className="col noPadding">
+                  Sort By:
                   <select
                     value={this.state.selected}
-                    className="results-sort-by-select"
+                    className={styles.sortselector}
                     onChange={(e) => this.handleSelect(e)}
                   >
                     <option value="relevance">Relevance</option>
@@ -384,31 +378,34 @@ export default class ResultsDisplay extends Component {
                     <option value="work">Workload</option>
                   </select>
                 </div>
-                <div className="col d-xs-block d-lg-none noPadding">
-                  <input
-                    class="mobile-filter-button"
-                    type="button"
-                    value="Filter"
-                    onClick={this.setShowFilterPopup}
-                  />
-                  {this.state.showFilterPopup && (
-                    <FilterPopup
-                      state={this.state}
-                      props={this.props}
-                      renderCheckboxes={this.renderCheckboxes}
-                      getSubjectOptions={this.getSubjectOptions}
-                      setShowFilterPopup={this.setShowFilterPopup}
-                    />
-                  )}
+
+                <button
+                  className={styles.filterbutton}
+                  onClick={this.setShowFilterPopup}
+                >
+                  Filter <img src={FilterIcon} alt="filter-icon" />
+                </button>
+              </div>
+              {this.state.showFilterPopup && (
+                <FilterPopup
+                  state={this.state}
+                  props={this.props}
+                  renderCheckboxes={this.renderCheckboxes}
+                  getSubjectOptions={this.getSubjectOptions}
+                  setShowFilterPopup={this.setShowFilterPopup}
+                />
+              )}
+
+              <div className={styles.layout}>
+                <div className={styles.list}>
+                  <div className={styles.resultslist}>
+                    <ul>{this.renderResults()}</ul>
+                  </div>
+                </div>
+                <div className={styles.preview}>
+                  <PreviewCard course={this.state.card_course} />
                 </div>
               </div>
-
-              <div className="results-classes-list">
-                <ul>{this.renderResults()}</ul>
-              </div>
-            </div>
-            <div className="d-none d-lg-block col preview">
-              <PreviewCard course={this.state.card_course} />
             </div>
           </div>
         )}

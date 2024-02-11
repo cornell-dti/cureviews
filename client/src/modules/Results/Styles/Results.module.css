@@ -1,0 +1,162 @@
+.page {
+  background-color: var(--clr-blue-100);
+  min-height: 100vh;
+  padding-bottom: 300px;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 36px 25px;
+
+  justify-content: center;
+  align-items: center;
+
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.container > h1 {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.layout {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 24px;
+
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.columns {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 24px;
+}
+
+.list {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 16px;
+  width: 100%;
+  max-width: 426px;
+}
+
+.preview {
+  width: 100%;
+  max-width: 620px;
+}
+
+.noresultimg {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.filtercol {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 24px;
+
+  width: 100%;
+  max-width: 120px;
+}
+
+.filtertext {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.filtercategory {
+  font-size: 20px;
+  color: var(--clr-gray-300);
+  font-weight: 600;
+}
+
+.bar {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+
+  position: relative;
+}
+
+.sortselector {
+  color: var(--clr-blue-400);
+  font-weight: 500;
+}
+
+.filterbutton {
+  cursor: pointer;
+  border: 1px solid var(--clr-blue-400);
+  padding: 5px;
+  display: flex;
+  gap: 6px;
+
+  border-radius: 8px;
+}
+
+.filterbutton img {
+  width: 18px;
+}
+
+.resultslist {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+@media only screen and (min-width: 769px) {
+  .filterbutton {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .filtercol {
+    display: none;
+  }
+}
+
+/* FILTER POPUP (MOBILE) */
+
+.filterpopup {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-flow: column nowrap;
+
+  background-color: #fff;
+  padding: 32px 24px;
+  border-radius: 10px;
+
+  z-index: 10;
+}
+
+.categories {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+
+  padding: 24px 0;
+
+  & > div {
+    max-width: 170px;
+  }
+}
+
+.donebutton {
+  padding: 16px 0;
+  border-radius: 10px;
+  background-color: var(--clr-blue-400);
+  color: #fff;
+  max-width: 200px;
+  width: 100%;
+  place-self: center;
+}

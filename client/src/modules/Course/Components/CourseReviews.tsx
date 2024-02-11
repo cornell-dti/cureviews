@@ -33,7 +33,6 @@ const CourseReviews = ({
             review={review}
             isPreview={isPreview}
             isProfile={isProfile}
-            reportHandler={reportReview}
           />
         ))}
       </div>
@@ -48,7 +47,6 @@ const CourseReviews = ({
             review={review}
             isPreview={isPreview}
             isProfile={isProfile}
-            reportHandler={reportReview}
           />
         ))}
       </div>
@@ -63,7 +61,6 @@ const CourseReviews = ({
             review={review}
             isPreview={isPreview}
             isProfile={isProfile}
-            reportHandler={reportReview}
           />
         ))}
       </div>
