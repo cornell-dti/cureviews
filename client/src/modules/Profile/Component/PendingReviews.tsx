@@ -4,6 +4,8 @@ import { Review as ReviewType } from 'common'
 import styles from '../Styles/PendingReviews.module.css'
 import CourseReviews from '../../Course/Components/CourseReviews'
 
+import DropdownIcon from '../../../assets/icons/dropdownicon.svg'
+
 type PendingReviewsProps = {
   pendingReviews: ReviewType[]
   hide: boolean
@@ -17,27 +19,25 @@ const PendingReviews = ({
 }: PendingReviewsProps) => {
   return (
     <>
-      <div className="row">
-        <div className={`col ${styles.pendingHeader}`}>
-          <p className={styles.pendingHeaderText}>
-            Pending ({pendingReviews?.length})
-          </p>
+      <div className={styles.pendingbar}>
+        <div className={styles.pendingheader}>
+          Pending Reviews ({pendingReviews?.length})
         </div>
-        <div className={`col ${styles.hidePending}`}>
-          <p onClick={() => setHide(!hide)} className={styles.hidePendingText}>
-            Hide
-          </p>
+        <div onClick={() => setHide(!hide)} className={styles.hide}>
+          <img
+            className={hide ? styles.flip : ''}
+            src={DropdownIcon}
+            alt="drop-down-pending-reviews"
+          />
         </div>
       </div>
-      <div className={hide === false ? styles.reviewCard : ''}>
-        {hide === false ? (
+      <div className={hide === false ? styles.reviewcards : ''}>
+        {hide === false && (
           <CourseReviews
             reviews={pendingReviews}
-            isPreview={false}
+            isPreview={true}
             isProfile={true}
           />
-        ) : (
-          <p></p>
         )}
       </div>
     </>

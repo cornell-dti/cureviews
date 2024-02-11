@@ -1,3 +1,26 @@
+.header {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: var(--clr-gray-300);
+  width: 100%;
+}
+
+.bar {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.reviewcards {
+  width: 100%;
+  overflow-y: auto;
+  height: 100%;
+  max-height: 100vh;
+
+  padding: 0 16px;
+}
+
 .pastHeader {
   /* margin-top: 61.5px; */
   margin-top: 30px;

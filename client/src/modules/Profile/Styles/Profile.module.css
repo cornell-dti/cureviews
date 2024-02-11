@@ -2,6 +2,7 @@
   min-height: 100vh;
   background-color: var(--clr-blue-100);
   width: 100%;
+  padding-bottom: 300px;
 }
 
 .container {
@@ -31,6 +32,29 @@
     width: 100%;
     max-width: none;
   }
+}
+
+.reviewsection {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+}
+
+.bar {
+  width: 100%;
+  max-width: 1006px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  margin: 0 auto;
+}
+
+.filtertext {
+  color: var(--clr-blue-400);
 }
 
 .profileLeft {

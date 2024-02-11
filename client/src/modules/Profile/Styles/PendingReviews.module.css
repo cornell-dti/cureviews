@@ -1,42 +1,35 @@
-.pendingHeader {
-  margin-top: 10px;
-}
-
-.pendingHeaderText {
-  font-family: Source Sans Pro;
-  font-style: normal;
+.pendingheader {
+  font-size: 1.5em;
   font-weight: 600;
-  font-size: var(--font-sub-heading-size);
-  line-height: 11px;
-  /* or 45% */
-
-  display: flex;
-  align-items: flex-end;
-  letter-spacing: -0.128928px;
-
-  /* Gray */
-
   color: var(--clr-gray-300);
 }
 
-.hidePending {
-  margin-right: 0px;
+.hide {
+  width: fit-content;
 }
 
-.hidePendingText {
-  text-align: right;
+.hide img {
+  width: 20px;
   cursor: pointer;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: 600;
-  font-size: var(--font-medium-size);
-  line-height: 19px;
-  /* or 104% */
+}
 
-  letter-spacing: -0.225605px;
-  text-decoration-line: underline;
+.flip {
+  transform: scaleY(-1);
+}
 
-  color: var(--clr-blue-400);
+.pendingbar {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.reviewcards {
+  width: 100%;
+  overflow-y: auto;
+  min-height: 40vh;
+
+  padding: 0 16px;
 }
 
 @media (max-width: 480px) {

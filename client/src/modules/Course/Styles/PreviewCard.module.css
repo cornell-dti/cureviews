@@ -1,0 +1,13 @@
+.pending {
+  border: 1px dashed;
+  opacity: 0.6;
+}
+
+.coursetitle {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.classprofessor {
+  font-size: 12px;
+}

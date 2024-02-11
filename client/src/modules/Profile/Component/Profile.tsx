@@ -128,9 +128,9 @@ const Profile = () => {
 
   if (!loading && isLoggedIn) {
     return (
-      <div className={`${styles.page}`}>
+      <div className={styles.page}>
         <Navbar userInput="" />
-      <div className={`${styles.container}`}>
+        <div className={styles.container}>
           <div className={styles.usersection}>
             <UserInfo
               profilePicture={profilePicture}
@@ -141,44 +141,35 @@ const Profile = () => {
             />
           </div>
 
-          <div className={`${styles.profileRight}`}>
-            <div className={styles.profileReviewsContainer}>
-              <div className={styles.reviewsHeader}>
-                <h2 className={styles.myReviewsText}>
-                  My Reviews ({reviews?.length})
-                </h2>
-                <div className={styles.sortContainer}>
-                  <label
-                    className={styles.sortByLabel}
-                    htmlFor="sort-reviews-by"
-                  >
-                    Sort By:
-                  </label>
-                  <select
-                    onChange={sortReviewsBy}
-                    className={styles.sortBySelect}
-                    id="sort-reviews-by"
-                  >
-                    <option value="helpful">Most Helpful</option>
-                    <option value="recent">Recent</option>
-                  </select>
-                </div>
+          <div className={styles.reviewsection}>
+            <div className={styles.bar}>
+              <h2>My Reviews ({reviews?.length})</h2>
+              <div>
+                <label htmlFor="sort-reviews-by">Sort By:</label>
+                <select
+                  onChange={sortReviewsBy}
+                  className={styles.filtertext}
+                  id="sort-reviews-by"
+                >
+                  <option value="helpful">Most Helpful</option>
+                  <option value="recent">Recent</option>
+                </select>
               </div>
-              {reviews.length === 0 && <NoReviews />}
-              {reviews.length > 0 && pendingReviews.length > 0 && (
-                <>
-                  <PendingReviews
-                    hide={hide}
-                    setHide={setHide}
-                    pendingReviews={pendingReviews}
-                  />
-                  <PastReviews pastReviews={pastReviews} />
-                </>
-              )}
-              {reviews.length > 0 && pendingReviews.length === 0 && (
-                <PastReviews pastReviews={pastReviews} />
-              )}
             </div>
+            {reviews.length === 0 && <NoReviews />}
+            {reviews.length > 0 && pendingReviews.length > 0 && (
+              <>
+                <PendingReviews
+                  hide={hide}
+                  setHide={setHide}
+                  pendingReviews={pendingReviews}
+                />
+                <PastReviews pastReviews={pastReviews} />
+              </>
+            )}
+            {reviews.length > 0 && pendingReviews.length === 0 && (
+              <PastReviews pastReviews={pastReviews} />
+            )}
           </div>
         </div>
       </div>
