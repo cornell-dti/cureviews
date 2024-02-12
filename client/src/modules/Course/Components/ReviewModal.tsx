@@ -198,9 +198,12 @@ const ReviewModal = ({
               id="review-content"
               placeholder={placeholdertext}
             ></textarea>
-            <div className={styles.tags} aria-label="tags-coming-soon">
-              {' '}
-              🙈 New feature soon ... 🙈{' '}
+            <div className={styles.tags}>
+              <span role="img" aria-label="tags-coming-soon">
+                {' '}
+                👀{' '}
+              </span>
+              coming soon ...
             </div>
             <button
               className={styles.submitbutton}

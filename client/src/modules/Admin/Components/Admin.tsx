@@ -12,7 +12,6 @@ import UpdateReview from './AdminReview'
 import Stats from './Stats'
 import RaffleWinner from './RaffleWinner'
 
-import '../Styles/Admin.css'
 
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
@@ -249,11 +248,11 @@ export const Admin = () => {
     // offer button to edit database
     if (doubleClick) {
       return (
-        <div className="btn-group separate-buttons" role="group">
+        <div className="" role="group">
           <button
             disabled={disableInit}
             type="button"
-            className="btn btn-warning"
+            className=""
             onClick={() => addAllCourses()}
           >
             Initialize Database
@@ -263,10 +262,10 @@ export const Admin = () => {
     } else {
       // offer button that gives alert and saves next click as a double click (in local state)
       return (
-        <div className="btn-group separate-buttons" role="group">
+        <div className="" role="group">
           <button
             type="button"
-            className="btn btn-warning"
+            className=""
             onClick={() => firstClickHandler()}
           >
             Initialize Database
@@ -282,20 +281,20 @@ export const Admin = () => {
 
   function renderAdmin(token: string) {
     return (
-      <div className="container-width whiteBg">
-        <div className="width-90">
-          <div className="container-width whiteBg">
-            <div className="width-90">
+      <div className="">
+        <div className="">
+          <div className="">
+            <div className="">
               <h2>Admin Interface</h2>
               <Stats token={token} />
               <br />
 
-              <div className="text-right">
-                <div className="btn-group separate-buttons" role="group">
+              <div className="">
+                <div className="" role="group">
                   <button
                     disabled={disableNewSem}
                     type="button"
-                    className="btn btn-warning"
+                    className=""
                     onClick={() => addNewSem(addSemester)}
                   >
                     Add New Semester
@@ -326,67 +325,67 @@ export const Admin = () => {
                   />
                 </div>
 
-                <div className="btn-group separate-buttons" role="group">
+                <div className="" role="group">
                   <button
                     disabled={disableInit}
                     type="button"
-                    className="btn btn-warning"
+                    className=""
                     onClick={() => updateProfessors()}
                   >
                     Update Professors
                   </button>
                 </div>
-                <div className="btn-group separate-buttons" role="group">
+                <div className="" role="group">
                   <button
                     disabled={disableInit}
                     type="button"
-                    className="btn btn-warning"
+                    className=""
                     onClick={() => resetProfessors()}
                   >
                     RESET Professors
                   </button>
                 </div>
-                <div className="btn-group" role="group">
+                <div className="" role="group">
                   {renderInitButton(doubleClick)}
                 </div>
               </div>
 
-              <div hidden={!(loadingSemester === 1)} className="width-90">
+              <div hidden={!(loadingSemester === 1)} className="">
                 <p>
                   Adding New Semester Data. This process can take up to 15
                   minutes.
                 </p>
               </div>
 
-              <div hidden={!(loadingSemester === 2)} className="width-90">
+              <div hidden={!(loadingSemester === 2)} className="">
                 <p>New Semester Data import is complete!</p>
               </div>
 
-              <div hidden={!(resettingProfs === 1)} className="width-90">
+              <div hidden={!(resettingProfs === 1)} className="">
                 <p>Clearing all associated professors from Classes.</p>
                 <p>This process can take up to 15 minutes.</p>
               </div>
 
-              <div hidden={!(resettingProfs === 2)} className="width-90">
+              <div hidden={!(resettingProfs === 2)} className="">
                 <p>All professor arrays in Classes reset to empty!</p>
               </div>
 
-              <div hidden={!(loadingProfs === 1)} className="width-90">
+              <div hidden={!(loadingProfs === 1)} className="">
                 <p>Updating professor data to Classes.</p>
                 <p>This process can take up to 15 minutes.</p>
               </div>
 
-              <div hidden={!(loadingProfs === 2)} className="width-90">
+              <div hidden={!(loadingProfs === 2)} className="">
                 <p>Professor data import to Classes is complete!</p>
               </div>
 
-              <div hidden={!(loadingInit === 1)} className="width-90">
+              <div hidden={!(loadingInit === 1)} className="">
                 <p>
                   Database Initializing. This process can take up to 15 minutes.
                 </p>
               </div>
 
-              <div hidden={!(loadingInit === 2)} className="width-90">
+              <div hidden={!(loadingInit === 2)} className="">
                 <p>Database initialaization is complete!</p>
               </div>
 
@@ -394,11 +393,11 @@ export const Admin = () => {
 
               <br />
 
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">New Reviews</h3>
+              <div className="">
+                <div className="">
+                  <h3 className="">New Reviews</h3>
                 </div>
-                <div className="card-body">
+                <div className="">
                   <ul>
                     {unapprovedReviews.map((review: Review) => {
                       if (review.reported !== 1) {
@@ -420,11 +419,11 @@ export const Admin = () => {
 
               <br />
 
-              <div className="card card-default">
-                <div className="card-heading">
-                  <h3 className="card-title">Reported Reviews</h3>
+              <div className="">
+                <div className="">
+                  <h3 className="">Reported Reviews</h3>
                 </div>
-                <div className="card-body">
+                <div className="">
                   <ul>
                     {reportedReviews.map((review: Review) => {
                       //create a new class "button" that will set the selected class to this class when it is clicked.

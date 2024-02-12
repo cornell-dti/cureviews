@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 
 import axios from 'axios'
-import Modal from 'react-modal'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -16,7 +15,8 @@ import { lastOfferedSems } from 'common/CourseCard'
 
 import Gauge from './Gauge'
 import CourseReviews from './CourseReviews'
-import ReviewForm, { NewReview } from './ReviewForm'
+
+import type { NewReview } from '../../../types'
 
 import { Class, Review } from 'common'
 import { Session } from '../../../session-store'
@@ -240,30 +240,6 @@ export const Course = () => {
           draggable
           pauseOnHover
         />
-        <Modal
-          isOpen={isReviewModalOpen}
-          className={styles.reviewModal}
-          overlayClassName={styles.modalOverlay}
-        >
-          <button
-            type="button"
-            className="close pull-left"
-            aria-label="Close"
-            onClick={() => {
-              setIsReviewModalOpen(false)
-              clearSessionReview()
-            }}
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div>
-            <ReviewForm
-              professors={selectedClass.classProfessors}
-              onSubmitReview={onSubmitReview}
-              actionButtonLabel="Submit Review"
-            />
-          </div>
-        </Modal>
 
         <Navbar userInput={input} />
 

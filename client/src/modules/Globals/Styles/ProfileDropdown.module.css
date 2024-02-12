@@ -35,7 +35,7 @@
   background-color: #fff;
   border-radius: 5px;
 
-  padding: 12px 0;
+  padding: 12px 6px;
 
   display: flex;
   flex-flow: column;
@@ -45,12 +45,14 @@
 
 .option {
   width: 100%;
-  padding: 4px 16px;
+  padding: 7px 16px;
   cursor: pointer;
 
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+
+  border-radius: 4px;
 }
 
 .option:hover,
