@@ -15,6 +15,8 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
+
+  overflow: hidden;
 }
 
 .modal {
@@ -70,7 +72,7 @@
 
   .modal {
     width: 100%;
-    max-height: calc(100vh - 130px);
+    min-height: 100vh;
 
     overflow-y: auto;
 
@@ -78,15 +80,26 @@
     bottom: 0;
     overflow: auto;
     border-radius: 0;
-    margin-top: 0px;
+    margin: 0px;
 
-    padding: 100px 32px;
+    padding: 120px 32px;
 
     z-index: 100;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
   .closeicon {
     margin-top: 69px;
+  }
+
+  .submitbutton {
+    margin-bottom: 124px;
+    padding: 10px;
   }
 }
 
