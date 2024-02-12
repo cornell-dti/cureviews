@@ -1,0 +1,32 @@
+.card {
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fff;
+  list-style-type: none;
+
+  cursor: pointer;
+
+  margin: 8px 0;
+}
+
+.selected {
+  border: 2.49858px solid var(--clr-blue-400);
+}
+
+.title {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--clr-blue-400);
+  margin-bottom: 7px;
+}
+
+.subtitle {
+  color: var(--clr-gray-300);
+  font-size: 1em;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.rating {
+  font-weight: 500;
+}

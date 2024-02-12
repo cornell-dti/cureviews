@@ -1,0 +1,70 @@
+.columns {
+  display: flex;
+  flex-flow: column;
+
+  gap: 24px;
+
+  width: 100%;
+}
+
+.gauges {
+  /* Position guages to the center */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-self: center;
+
+  justify-self: center;
+
+  background-color: var(--clr-white);
+  border-radius: 10px;
+
+  width: 100%;
+  height: 128px;
+}
+
+.coursetitle {
+  font-size: 2em;
+  font-weight: 600;
+  padding-bottom: 16px;
+  width: 100%;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--clr-blue-400);
+  }
+}
+
+.subtitle {
+  font-size: 1.15em;
+  color: var(--clr-gray-300);
+
+  padding-bottom: 16px;
+}
+
+.topreview {
+  font-size: 1.15em;
+  color: var(--clr-gray-300);
+  font-weight: 600;
+
+  padding: 32px 0 16px 0;
+}
+
+.reviewsbutton {
+  background-color: var(--clr-blue-400);
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+
+  font-weight: 600;
+}
+
+.noreviews {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+}

@@ -96,6 +96,7 @@
 .filterbutton {
   cursor: pointer;
   border: 1px solid var(--clr-blue-400);
+  color: var(--clr-blue-400);
   padding: 5px;
   display: flex;
   gap: 6px;
@@ -112,16 +113,38 @@
   overflow-y: auto;
 }
 
-@media only screen and (min-width: 769px) {
-  .filterbutton {
-    display: none;
+@media only screen and (max-width: 843px) {
+  .resultslist {
+    max-height: 40vh;
+    overflow-y: auto;
   }
-}
 
-@media only screen and (max-width: 768px) {
   .filtercol {
     display: none;
   }
+
+  .list {
+    width: 100%;
+    max-width: none;
+  }
+
+  .layout {
+    flex-flow: column;
+    gap: 50px;
+  }
+
+  .preview {
+    max-width: none;
+  }
+}
+
+/* Filtered Results Styling */
+.filteredresults {
+  display: flex;
+  flex-flow: column nowrap;
+  background: var(--clr-blue-100);
+
+  padding: 0 8px;
 }
 
 /* FILTER POPUP (MOBILE) */
@@ -137,6 +160,21 @@
   border-radius: 10px;
 
   z-index: 10;
+
+  .filtertext {
+    font-size: 1.4em;
+  }
+
+  .filtercategory {
+    font-size: 1.2em;
+  }
+}
+
+@media only screen and (min-width: 843px) {
+  .filterbutton,
+  .filterpopup {
+    display: none;
+  }
 }
 
 .categories {
@@ -144,19 +182,18 @@
   flex-flow: row wrap;
   justify-content: space-around;
 
-  padding: 24px 0;
-
   & > div {
     max-width: 170px;
   }
 }
 
 .donebutton {
-  padding: 16px 0;
+  display: none;
+  padding: 8px 0;
   border-radius: 10px;
   background-color: var(--clr-blue-400);
   color: #fff;
-  max-width: 200px;
+  max-width: 100px;
   width: 100%;
   place-self: center;
 }

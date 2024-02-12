@@ -8,7 +8,6 @@ import FilteredResult from './FilteredResult.tsx'
 import PreviewCard from './PreviewCard.jsx'
 import FilterPopup from './FilterPopup'
 
-import PreviewReviewCard from '../../Course/Components/PreviewReviewCard'
 import FilterIcon from '../../../assets/icons/filtericon.svg'
 
 import styles from '../Styles/Results.module.css'
@@ -238,16 +237,17 @@ export default class ResultsDisplay extends Component {
 
     return items.map((result, index) => (
       <div
+        className={styles.filteredresults}
         data-cy={`results-display-${result.classSub.toLowerCase()}-${
           result.classNum
         }`}
-        onClick={() => {
-          if (this.computeHeight() < 992) {
-            this.props.history.push(
-              `/course/${result?.classSub?.toUpperCase()}/${result?.classNum}`
-            )
-          }
-        }}
+        // onClick={() => {
+        //   if (this.computeHeight() < 992) {
+        //     this.props.history.push(
+        //       `/course/${result?.classSub?.toUpperCase()}/${result?.classNum}`
+        //     )
+        //   }
+        // }}
       >
         <FilteredResult
           key={index}

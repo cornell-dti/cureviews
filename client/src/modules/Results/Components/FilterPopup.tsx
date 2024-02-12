@@ -7,8 +7,6 @@ export default class FilterPopup extends Component<Props, {}> {
   render() {
     return (
       <div className={styles.filterpopup}>
-        <div className={styles.filtertext}>Filter</div>
-
         <div className={styles.categories}>
           <div className="">
             <div className={styles.filtercategory}>Semester</div>
