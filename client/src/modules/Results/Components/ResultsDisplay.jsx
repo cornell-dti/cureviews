@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Loading from 'react-loading-animation'
 
-import '../Styles/ResultsDisplay.css' // css files
-
 import FilteredResult from './FilteredResult.tsx'
 import PreviewCard from './PreviewCard.jsx'
 import FilterPopup from './FilterPopup'
