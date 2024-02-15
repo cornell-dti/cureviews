@@ -44,12 +44,12 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.3",
-    "@types/jest": "^25.2.1",
+    "@types/jest": "^29.5.12",
     "@types/mongodb": "^3.5.4",
     "@types/mongoose": "^5.7.7",
     "@types/prettier": "<2.6.0",
     "@types/ws": "8.5.4",
-    "jest-circus": "24",
-    "ts-jest": "24"
+    "jest-circus": "^29.7.0",
+    "ts-jest": "^29.1.2"
   }
 }
