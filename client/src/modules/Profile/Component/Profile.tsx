@@ -36,13 +36,16 @@ const Profile = () => {
    * Retrieves the total reviews that a student has made
    */
   async function getReviewsTotal() {
-    const response = await axios.post('/api/countReviewsByStudentId', {
-      netId,
-    })
-
-    const res = response.data
-    if (response.status === 200) {
-      setReviewsTotal(res.result)
+    try {
+      const response = await axios.post('/api/countReviewsByStudentId', {
+        netId,
+      })
+      const res = response.data
+      if (response.status === 200) {
+        setReviewsTotal(res.result)
+      }
+    } catch (error) {
+      console.error((error as Error).message)
     }
   }
 
@@ -50,13 +53,17 @@ const Profile = () => {
    * Retrieves the number of reviews that the student has made that have been upvoted
    */
   async function getReviewsHelpful() {
-    const response = await axios.post('/api/getTotalLikesByStudentId', {
-      netId,
-    })
+    try {
+      const response = await axios.post('/api/getTotalLikesByStudentId', {
+        netId,
+      })
 
-    const res = response.data
-    if (response.status === 200) {
-      setReviewsHelpful(res.result)
+      const res = response.data
+      if (response.status === 200) {
+        setReviewsHelpful(res.result)
+      }
+    } catch (error) {
+      console.error((error as Error).message)
     }
   }
 
@@ -71,27 +78,35 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
-    if (token) {
-      axios.post('/api/insertUser', { token })
+    try {
+      if (token) {
+        axios.post('/api/insertUser', { token })
+      }
+    } catch (e) {
+      console.log('ERROR in Profile -> UseEffect -> inserting User')
     }
   }, [token])
 
   useEffect(() => {
-    axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
-      const reviews = response.data.result
-      const pendingReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 0
-      })
-      const pastReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 1
-      })
+    try {
+      axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
+        const reviews = response.data.result
+        const pendingReviews = reviews.filter(function (review: ReviewType) {
+          return review.visible === 0
+        })
+        const pastReviews = reviews.filter(function (review: ReviewType) {
+          return review.visible === 1
+        })
 
-      reviews?.sort(sortByLikes)
-      setReviews(reviews)
-      setPendingReviews(pendingReviews)
-      setPastReviews(pastReviews)
-      setLoading(false)
-    })
+        reviews?.sort(sortByLikes)
+        setReviews(reviews)
+        setPendingReviews(pendingReviews)
+        setPastReviews(pastReviews)
+        setLoading(false)
+      })
+    } catch (e) {
+      console.log((e as Error).message)
+    }
   }, [netId])
 
   useEffect(() => {

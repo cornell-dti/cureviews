@@ -34,55 +34,59 @@ export const SearchBar = ({
   const DEBOUNCE_TIME = 200
 
   useEffect(() => {
-    if (query.toLowerCase() !== '') {
-      setTimeout(() => {
-        axios
-          .post(`/api/getClassesByQuery`, { query: query })
-          .then((response) => {
-            const queryCourseList = response.data.result
-            if (queryCourseList.length !== 0) {
-              setCourses(queryCourseList)
-            } else {
+    try {
+      if (query.toLowerCase() !== '') {
+        setTimeout(() => {
+          axios
+            .post(`/api/getClassesByQuery`, { query: query })
+            .then((response) => {
+              const queryCourseList = response.data.result
+              if (queryCourseList.length !== 0) {
+                setCourses(queryCourseList)
+              } else {
+                setCourses([])
+              }
+            })
+            .catch((e) => {
               setCourses([])
-            }
-          })
-          .catch((e) => {
-            setCourses([])
-            console.log('Getting courses failed!')
-          })
+              console.log('Getting courses failed!')
+            })
 
-        axios
-          .post(`/api/getSubjectsByQuery`, { query: query })
-          .then((response) => {
-            const subjectList = response.data.result
-            if (subjectList && subjectList.length !== 0) {
-              // Save the list of Subject objects that matches the request
-              setSubjects(subjectList)
-            } else {
+          axios
+            .post(`/api/getSubjectsByQuery`, { query: query })
+            .then((response) => {
+              const subjectList = response.data.result
+              if (subjectList && subjectList.length !== 0) {
+                // Save the list of Subject objects that matches the request
+                setSubjects(subjectList)
+              } else {
+                setSubjects([])
+              }
+            })
+            .catch((e) => {
               setSubjects([])
-            }
-          })
-          .catch((e) => {
-            setSubjects([])
-            console.log('Getting subjects failed!')
-          })
+              console.log('Getting subjects failed!')
+            })
 
-        axios
-          .post(`/api/getProfessorsByQuery`, { query: query })
-          .then((response) => {
-            const professorList = response.data.result
-            if (professorList && professorList.length !== 0) {
-              // Save the list of Subject objects that matches the request
-              setProfessors(professorList)
-            } else {
+          axios
+            .post(`/api/getProfessorsByQuery`, { query: query })
+            .then((response) => {
+              const professorList = response.data.result
+              if (professorList && professorList.length !== 0) {
+                // Save the list of Subject objects that matches the request
+                setProfessors(professorList)
+              } else {
+                setProfessors([])
+              }
+            })
+            .catch((e) => {
               setProfessors([])
-            }
-          })
-          .catch((e) => {
-            setProfessors([])
-            console.log('Getting professors failed!')
-          })
-      }, DEBOUNCE_TIME)
+              console.log('Getting professors failed!')
+            })
+        }, DEBOUNCE_TIME)
+      }
+    } catch (e) {
+      console.log('ERR in SearchBar -> UseEffect ')
     }
   }, [query])
 

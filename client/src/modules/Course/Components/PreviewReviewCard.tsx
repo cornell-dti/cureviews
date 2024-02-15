@@ -69,14 +69,18 @@ export default function PreviewReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/api/getCourseById`, {
-        courseId: _review.class,
-      })
-      const course = response.data.result
+      try {
+        const response = await axios.post(`/api/getCourseById`, {
+          courseId: _review.class,
+        })
+        const course = response.data.result
 
-      setCourseTitle(course.classTitle)
-      setCourseSub(course.classSub)
-      setCourseNum(course.classNum)
+        setCourseTitle(course.classTitle)
+        setCourseSub(course.classSub)
+        setCourseNum(course.classNum)
+      } catch (e) {
+        console.log((e as Error).message)
+      }
     }
 
     if (isProfile) updateCourse()
@@ -89,12 +93,16 @@ export default function PreviewReviewCard({
    */
   useEffect(() => {
     async function updateLiked() {
-      const response = await axios.post('/api/userHasLiked', {
-        id: _review._id,
-        token: getAuthToken(),
-      })
+      try {
+        const response = await axios.post('/api/userHasLiked', {
+          id: _review._id,
+          token: getAuthToken(),
+        })
 
-      setLiked(response.data.hasLiked)
+        setLiked(response.data.hasLiked)
+      } catch (e) {
+        console.log('Error in update liked')
+      }
     }
 
     if (isLoggedIn) updateLiked()
