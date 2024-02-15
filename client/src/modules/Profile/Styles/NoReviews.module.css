@@ -6,7 +6,6 @@
   text-align: center;
   margin-top: 75px;
 
-  font-family: Source Sans Pro;
   font-style: normal;
   font-weight: 600;
   font-size: var(--font-sub-heading-size);
@@ -20,7 +19,6 @@
   text-align: center;
   margin-top: var(--font-sub-heading-size);
 
-  font-family: Source Sans Pro;
   font-style: normal;
   font-weight: normal;
   font-size: var(--font-medium-size);

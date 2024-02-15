@@ -1,7 +1,6 @@
 /* @import '../../../index.css'; */
 
 .ratingInputLabel {
-  font-family: 'Source Sans Pro', sans-serif;
   font-size: var(--font-p-size);
   color: var(--clr-black);
   font-weight: var(--regular-weight);
@@ -86,7 +85,6 @@ Green: rgba(83, 178, 39, 0.5), #53b22780
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: 'Source Sans Pro', sans-serif;
   font-size: var(--font-p-size);
   color: var(--clr-gray-300);
   font-weight: var(--regular-weight) !important;
