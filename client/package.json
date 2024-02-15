@@ -16,13 +16,8 @@
     "react-google-login": "^5.1.21",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "react-select": "^3.1.0",
-    "react-show-more-text": "^1.4.0",
-    "react-summary-gauge-2": "^1.0.4",
     "react-toastify": "^7.0.3",
-    "rodal": "^1.8.1",
     "typescript": "^3.8.3",
-    "react-icons": "^4.7.1"
   },
   "scripts": {
     "start": "react-scripts start",
