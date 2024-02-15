@@ -14,5 +14,10 @@
     "node": "16.x",
     "npm": "7.x",
     "yarn": "1.x"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.0.1"
   }
 }
