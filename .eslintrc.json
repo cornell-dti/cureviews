@@ -8,7 +8,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
-  "extends": ["airbnb", "plugin:@typescript-eslint/recommended", "react-app"],
+  "extends": ["plugin:@typescript-eslint/recommended", "react-app"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
