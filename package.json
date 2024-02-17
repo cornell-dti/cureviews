@@ -10,11 +10,6 @@
     "lint": "eslint . --ext js --ext jsx --ext ts --ext tsx",
     "cypress:open": "cypress open"
   },
-  "engines": {
-    "node": "16.x",
-    "npm": "7.x",
-    "yarn": "1.x"
-  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
