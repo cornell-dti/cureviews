@@ -3,8 +3,8 @@ export {
   addCrossList,
   addNewSemester,
   addAllCourses,
-} from './populate-courses';
+} from './populate-courses.js';
 
-export { addAllProfessors, resetProfessors } from './populate-professors';
+export { addAllProfessors, resetProfessors } from './populate-professors.js';
 
-export { findAllSemesters } from './utils';
+export { findAllSemesters } from './utils.js';

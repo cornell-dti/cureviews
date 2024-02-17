@@ -1,6 +1,6 @@
 /* eslint-disable implicit-arrow-linebreak */
-import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
-import { UpdateCourseMetrics } from './admin.type';
+import { Classes, ReviewDocument, Reviews, Students } from '../db/schema.js';
+import { UpdateCourseMetrics } from './admin.type.js';
 
 export const findStudentById = async (id: string) => {
   const student = await Students.findOne({ _id: id }).exec();

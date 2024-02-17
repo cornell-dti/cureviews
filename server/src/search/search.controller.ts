@@ -1,4 +1,4 @@
-import { courseSort } from './search.algo';
+import { courseSort } from './search.algo.js';
 import {
   findCourseSubject,
   findCourses,
@@ -7,8 +7,8 @@ import {
   findSubjects,
   findCourseWithinSubject,
   findCourseProfessor,
-} from './search.data-access';
-import { SearchQueryType } from './search.type';
+} from './search.data-access.js';
+import { SearchQueryType } from './search.type.js';
 
 /**
  * Searches database for all relevant courses based on query.

@@ -1,7 +1,7 @@
-import { findCourseById, findCourseByInfo } from './course.data-access';
-import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
+import { findCourseById, findCourseByInfo } from './course.data-access.js';
+import { CourseIdRequestType, CourseInfoRequestType } from './course.type.js';
 
-import { findReviewCrossListOR } from '../utils';
+import { findReviewCrossListOR } from '../utils/index.js';
 
 /**
  * Returns array of course ids that a given course is crosslisted with

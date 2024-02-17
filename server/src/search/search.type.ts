@@ -1,4 +1,4 @@
-import { Search } from "./search";
+import { Search } from "./search.js";
 
 export interface SearchQueryRequestType {
   query: string;

@@ -1,14 +1,14 @@
 import express from 'express';
 
-import { Search } from './search';
+import { Search } from './search.js';
 import {
   searchCourses,
   searchProfessors,
   searchSubjects,
   searchCoursesBySubject,
   searchCoursesByProfessor,
-} from './search.controller';
-import { SearchQueryRequestType } from './search.type';
+} from './search.controller.js';
+import { SearchQueryRequestType } from './search.type.js';
 
 export const searchRouter = express.Router();
 

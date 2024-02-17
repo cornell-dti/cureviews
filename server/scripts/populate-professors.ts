@@ -5,10 +5,10 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-await-in-loop */
 import axios from 'axios';
-import { ScrapingInstructor, ScrapingClass } from './types';
-import { fetchSubjects } from './populate-subjects';
-import { fetchClassesForSubject } from './populate-courses';
-import { Classes } from '../db/schema';
+import { ScrapingInstructor, ScrapingClass } from './types.js';
+import { fetchSubjects } from './populate-subjects.js';
+import { fetchClassesForSubject } from './populate-courses.js';
+import { Classes } from '../src/db/schema.js';
 
 export function isInstructorEqual(
   a: ScrapingInstructor,

@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "module": "esnext",
+    "target": "es2016",
     "moduleResolution": "node",
-    "module": "CommonJS",
-    "target": "ES2015",
-    "lib": ["ES2017", "DOM"],
     "esModuleInterop": true,
-    "downlevelIteration": true,
-    "outDir": "dist"
+    // "downlevelIteration": true,
+    "outDir": "dist",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
-  "exclude": ["./tests/**/*"]
+  "exclude": ["./tests/**/*"],
+  "include": ["src"]
 }

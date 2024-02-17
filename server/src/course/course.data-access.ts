@@ -1,4 +1,4 @@
-import { Classes } from "../../db/schema";
+import { Classes } from "../db/schema.js";
 
 export const findCourseById = async (courseId: string) => await Classes.findOne({ _id: courseId }).exec();
 

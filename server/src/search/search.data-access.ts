@@ -1,5 +1,5 @@
 /* eslint-disable implicit-arrow-linebreak */
-import { Classes, Subjects, Professors } from '../../db/schema';
+import { Classes, Subjects, Professors } from '../db/schema.js';
 
 export const findCourses = async (query: string) =>
   await Classes.find(

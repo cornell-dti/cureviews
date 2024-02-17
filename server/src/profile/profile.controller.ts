@@ -1,7 +1,7 @@
-import { findReviewDocsById } from './profile.data-access';
-import { ProfileInfoRequestType } from './profile.type';
+import { findReviewDocsById } from './profile.data-access.js';
+import { ProfileInfoRequestType } from './profile.type.js';
 
-import { findStudent } from '../utils';
+import { findStudent } from '../utils/index.js';
 
 export const getStudentReviewIds = async ({
   netId,

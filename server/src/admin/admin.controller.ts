@@ -5,7 +5,7 @@ import {
   updateReviewVisibility,
   findStudentById,
   updateCourseMetrics,
-} from './admin.data-access';
+} from './admin.data-access.js';
 import {
   AdminAddSemesterType,
   AdminPendingReviewType,
@@ -14,15 +14,15 @@ import {
   ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
-} from './admin.type';
+} from './admin.type.js';
 
 import {
   findStudent,
   findReview,
   getReviewsCrossListOR,
   getCourseById,
-} from '../utils';
-import { COURSE_API_BASE_URL } from '../utils/constants';
+} from '../utils/index.js';
+import { COURSE_API_BASE_URL } from '../utils/constants.js';
 
 import {
   findAllSemesters,
@@ -32,7 +32,7 @@ import {
   addAllCrossList,
   addCrossList,
   addNewSemester,
-} from '../../scripts';
+} from '../../scripts/index.js';
 
 /**
  * Reports a review by setting its visibility to only admin and updating reported count.

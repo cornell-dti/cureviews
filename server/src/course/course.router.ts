@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR } from './course.controller';
+import { CourseIdRequestType, CourseInfoRequestType } from './course.type.js';
+import { getCourseByInfo, getReviewsCrossListOR } from './course.controller.js';
 
-import { getCourseById } from '../utils';
+import { getCourseById } from '../utils/index.js';
 
 export const courseRouter = express.Router();
 

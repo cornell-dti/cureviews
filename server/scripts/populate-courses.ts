@@ -5,10 +5,10 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import shortid from 'shortid';
-import { ScrapingSubject, ScrapingClass } from './types';
-import { Classes, Professors, Subjects } from '../db/schema';
-import { extractProfessors } from './populate-professors';
-import { fetchSubjects } from './populate-subjects';
+import { ScrapingSubject, ScrapingClass } from './types.js';
+import { Classes, Professors, Subjects } from '../src/db/schema.js';
+import { extractProfessors } from './populate-professors.js';
+import { fetchSubjects } from './populate-subjects.js';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
@@ -75,9 +75,9 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
           }).exec();
           console.log(
             courses[course].subject.toLowerCase() +
-              // eslint-disable-next-line operator-linebreak
-              ' ' +
-              courses[course].catalogNbr,
+            // eslint-disable-next-line operator-linebreak
+            ' ' +
+            courses[course].catalogNbr,
           );
           console.log(check);
           const crossList = courses[course].enrollGroups[0].simpleCombinations;
@@ -297,15 +297,13 @@ export const fetchAddClassesForSubject = async (
       });
 
       console.log(
-        `Extracted professors from course ${course.subject.toUpperCase()}${
-          course.catalogNbr
+        `Extracted professors from course ${course.subject.toUpperCase()}${course.catalogNbr
         }....`,
       );
 
       if (!classExists) {
         console.log(
-          `Course ${course.subject.toUpperCase()}${
-            course.catalogNbr
+          `Course ${course.subject.toUpperCase()}${course.catalogNbr
           } does not exist, adding to database...`,
         );
 
@@ -316,9 +314,8 @@ export const fetchAddClassesForSubject = async (
             classSub: course.subject.toLowerCase(),
             classNum: course.catalogNbr,
             classTitle: course.titleLong,
-            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${
-              course.titleLong
-            }`,
+            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${course.titleLong
+              }`,
             classSems: [semester],
             classProfessors: profs,
             classRating: 0,
@@ -333,8 +330,7 @@ export const fetchAddClassesForSubject = async (
             });
 
           console.log(
-            `Saved new course ${course.subject.toUpperCase()}${
-              course.catalogNbr
+            `Saved new course ${course.subject.toUpperCase()}${course.catalogNbr
             } to database...`,
           );
 
@@ -346,15 +342,13 @@ export const fetchAddClassesForSubject = async (
           });
 
           console.log(
-            `Adding course ${course.subject.toUpperCase()}${
-              course.catalogNbr
+            `Adding course ${course.subject.toUpperCase()}${course.catalogNbr
             } to professors' courses...`,
           );
 
           if (!saveNewClass) {
             console.log(
-              `Saving new course ${course.subject.toUpperCase()}${
-                course.catalogNbr
+              `Saving new course ${course.subject.toUpperCase()}${course.catalogNbr
               } failed!`,
             );
           }
@@ -367,8 +361,7 @@ export const fetchAddClassesForSubject = async (
             : classExists.classSems;
 
         console.log(
-          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${
-            course.catalogNbr
+          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${course.catalogNbr
           }...`,
         );
 
@@ -384,8 +377,7 @@ export const fetchAddClassesForSubject = async (
         });
 
         console.log(
-          `Added professors to course ${course.subject.toUpperCase()}${
-            course.catalogNbr
+          `Added professors to course ${course.subject.toUpperCase()}${course.catalogNbr
           }...`,
         );
 
@@ -410,22 +402,19 @@ export const fetchAddClassesForSubject = async (
         });
 
         console.log(
-          `Added course ${course.subject.toUpperCase()}${
-            course.catalogNbr
+          `Added course ${course.subject.toUpperCase()}${course.catalogNbr
           } to professors' course list...`,
         );
 
         if (!updateClassInfo) {
           console.log(
-            `Failed to update course ${course.subject.toUpperCase()}${
-              course.catalogNbr
+            `Failed to update course ${course.subject.toUpperCase()}${course.catalogNbr
             }!`,
           );
         }
 
         console.log(
-          `Successfully updated course ${course.subject.toUpperCase()}${
-            course.catalogNbr
+          `Successfully updated course ${course.subject.toUpperCase()}${course.catalogNbr
           }!`,
         );
       }
