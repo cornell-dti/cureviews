@@ -5,10 +5,11 @@
 - [CU Reviews](#cu-reviews)
   - [Contents](#contents)
   - [About](#about)
-  - [Getting Started](#getting-started)
+  - [Quick Start](#quick-start)
   - [Dependencies \& Libraries](#dependencies--libraries)
   - [Screenshots](#screenshots)
   - [Contributors](#contributors)
+    - [Spring 2024](#spring-2024)
     - [Fall 2023](#fall-2023)
     - [2022 - 2023](#2022---2023)
     - [2021 - 2022](#2021---2022)
@@ -21,26 +22,37 @@
 
 A web app for Cornell students to read and write reviews for Cornell classes, allowing a common platform for students to get advice and suggestions for picking classes. In other words, a _rate my classes_, but for Cornell University.
 
-## Getting Started
+## Quick Start
 
-1. `git clone` the repo
-2. Add the MongoDB connection inside `server/.env`:
+1. Clone the code:
 
    ```bash
+   git clone https://github.com/cornell-dti/course-reviews-react-2.0.git
+   ```
+
+2. Add the MongoDB connection inside `server/.env`:
+
+   ```txt
       MONGODB_URL=see-notion-page
    ```
 
-   This is the staging database. Only Leads have access to production.
+   *This would be only the staging DB, only Leads have access to production.*
 
 3. Now that you have the database configured, make sure you have [Yarn](https://classic.yarnpkg.com/) installed.
 4. Start the local environments.
 
-```bash
-# at root of directory:
-yarn # installs dependencies
-yarn workspace server start # start server
-yarn workspace client start # start client
-```
+   ```bash
+   # At Root (./cureviews/):
+   yarn # installs dependencies in package.json & lock file 
+   ```
+
+   ```bash
+   yarn server # starts server
+   ```
+
+   ```bash
+   yarn client # starts client
+   ```
 
 You can access the app at [http://localhost:3000].
 
@@ -107,10 +119,20 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 
 ## Contributors
 
-### Fall 2023
+### Spring 2024
 
 - **Jonathan Kim** - Product Manager
 - **TBD** - Associate Product Manager
+- **Will Zhang** - Technical Product Manager
+- **Michelle Li** - Developer Advisor
+- **Harrison Chin** - Developer
+- **Samuel Yeboah** - Developer
+- **Helen Lei** - Developer
+- **Andrea Thia** - Designer
+
+### Fall 2023
+
+- **Jonathan Kim** - Product Manager
 - **Will Zhang** - Technical Product Manager
 - **Michelle Li** - Developer Advisor
 - **Harrison Chin** - Developer
