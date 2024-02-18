@@ -1,8 +1,8 @@
 import shortid from 'shortid';
 
-import { findStudent } from '../utils';
-import { insertNewStudent } from './auth.data-access';
-import { InsertStudentType, TokenPayloadType } from './auth.type';
+import { findStudent } from '../utils/index.js';
+import { insertNewStudent } from './auth.data-access.js';
+import { InsertStudentType, TokenPayloadType } from './auth.type.js';
 
 /**
  * Inserts a new user.

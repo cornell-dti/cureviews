@@ -1,1 +1,1 @@
-export { courseRouter } from "./course.router";
+export { courseRouter } from "./course.router.js";

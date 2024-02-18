@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import { LineChart } from 'react-chartkick'
-import 'chart.js'
-
 type Props = {
   token: string
 }
@@ -153,7 +150,7 @@ export default class Stats extends Component<Props, State> {
           </button>
         </div>
         <p>Total reviews: {this.state.totalReviews}</p>
-        <LineChart width="77vw" height="55vh" data={this.state.chartData} />
+        {/* <LineChart width="77vw" height="55vh" data={this.state.chartData} /> */}
 
         <div className="">
           <div className="">

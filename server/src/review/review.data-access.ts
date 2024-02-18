@@ -1,5 +1,5 @@
-import { Reviews, Students } from '../../db/schema';
-import { Review } from './review';
+import { Reviews, Students } from '../db/schema.js';
+import { Review } from './review.js';
 
 export const findReviewCrossListOR = async (crossListOR) => {
   const reviews = await Reviews.find(

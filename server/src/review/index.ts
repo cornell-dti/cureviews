@@ -1,1 +1,1 @@
-export { reviewRouter } from "./review.router";
+export { reviewRouter } from "./review.router.js";

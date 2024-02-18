@@ -1,7 +1,7 @@
 import joi from 'joi';
 
 import { OAuth2Client } from 'google-auth-library';
-import { GOOGLE_AUTH_AUDIENCE } from '../utils/constants';
+import { GOOGLE_AUTH_AUDIENCE } from '../utils/constants.js';
 
 type AuthEntity = {
   token: string;

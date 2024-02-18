@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { InsertReviewRequestType, ReviewLikesRequestType } from './review.type';
-import { Auth } from '../auth/auth';
+import { InsertReviewRequestType, ReviewLikesRequestType } from './review.type.js';
+import { Auth } from '../auth/auth.js';
 import {
   checkStudentHasLiked,
   insertNewReview,
   updateStudentLiked,
-} from './review.controller';
+} from './review.controller.js';
 
 export const reviewRouter = express.Router();
 

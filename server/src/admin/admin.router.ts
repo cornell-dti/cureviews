@@ -1,13 +1,13 @@
 import express from 'express';
 
-import { Auth } from '../auth/auth';
+import { Auth } from '../auth/auth.js';
 import {
   AdminReviewRequestType,
   AdminRequestType,
   RaffleWinnerRequestType,
   AdminAddSemesterRequestType,
   ReportReviewRequestType,
-} from './admin.type';
+} from './admin.type.js';
 import {
   getPendingReviews,
   editReviewVisibility,
@@ -19,7 +19,7 @@ import {
   addNewSemDb,
   verifyTokenAdmin,
   reportReview,
-} from './admin.controller';
+} from './admin.controller.js';
 
 export const adminRouter = express.Router();
 

@@ -1,9 +1,9 @@
 /* eslint-disable operator-linebreak */
 import shortid from 'shortid';
 
-import { findReview, findStudent, insertUser } from '../utils';
+import { findReview, findStudent, insertUser } from '../utils/index.js';
 
-import { Review } from './review';
+import { Review } from './review.js';
 import {
   findClassReviews,
   insertReview,
@@ -11,7 +11,7 @@ import {
   updateStudentLikedReviews,
   updateStudentReviews,
   updateReviewLikes,
-} from './review.data-access';
+} from './review.data-access.js';
 import {
   InsertReviewType,
   ReviewLikesType,
@@ -19,7 +19,7 @@ import {
   AddStudentReviewType,
   VerifyAuthType,
   VerifyStudentType,
-} from './review.type';
+} from './review.type.js';
 
 export const verifyToken = async ({ auth }: VerifyAuthType) => {
   const ticket = await auth.getVerificationTicket();

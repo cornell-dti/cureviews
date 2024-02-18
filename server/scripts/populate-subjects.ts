@@ -2,8 +2,8 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 import shortid from 'shortid';
-import { ScrapingSubject } from './types';
-import { Subjects } from '../db/schema';
+import { ScrapingSubject } from './types.js';
+import { Subjects } from '../src/db/schema.js';
 
 /**
  * Fetches all subjects in class roster for a given semester

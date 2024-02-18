@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { Auth } from './auth';
-import { AuthRequestType } from './auth.type';
-import { insertUser } from '../utils';
+import { Auth } from './auth.js';
+import { AuthRequestType } from './auth.type.js';
+import { insertUser } from '../utils/index.js';
 
 export const authRouter = express.Router();
 

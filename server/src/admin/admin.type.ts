@@ -1,4 +1,4 @@
-import { Auth } from '../auth/auth';
+import { Auth } from '../auth/auth.js';
 
 export interface UpdateCourseMetrics {
   rating: number | null;

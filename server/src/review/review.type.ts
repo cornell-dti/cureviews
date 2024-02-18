@@ -1,5 +1,5 @@
-import { StudentDocument } from '../../db/schema';
-import { Auth } from '../auth/auth';
+import { StudentDocument } from '../db/schema.js';
+import { Auth } from '../auth/auth.js';
 
 export interface VerifyStudentType {
   netId: string;

@@ -1,5 +1,7 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { Class, Student, Subject, Review, Professor } from "common";
+
+const { Schema } = mongoose
 
 /*
 

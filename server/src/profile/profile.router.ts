@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { Profile } from './profile';
+import { Profile } from './profile.js';
 
 import {
   getStudentReviewDocs,
   getTotalLikesByNetId,
-} from './profile.controller';
-import { ProfileInfoRequestType } from './profile.type';
+} from './profile.controller.js';
+import { ProfileInfoRequestType } from './profile.type.js';
 
 export const profileRouter = express.Router();
 

@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { MdOutlineRateReview } from 'react-icons/md'
+import WriteReviewIcon from '../../../assets/icons/write.svg'
 
 import { courseVisited } from './Feedback'
 import Navbar from '../../Globals/Navbar'
@@ -320,7 +320,7 @@ export const Course = () => {
           className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton}`}
           onClick={() => setOpen(true)}
         >
-          <MdOutlineRateReview size={30} />
+          <img src={WriteReviewIcon} alt="write-new-review" />
         </button>
 
         <ReviewModal
