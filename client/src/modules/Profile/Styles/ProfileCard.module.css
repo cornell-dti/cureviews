@@ -1,61 +1,40 @@
-@import '../../../../src/index.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
-.profileCardContainer {
-  font-size: var(--font-sub-heading-size);
-
+.card {
   background: var(--clr-gray-100);
   border-radius: 10px;
+}
 
+.container {
   display: flex;
-  flex-direction: row;
-
-  padding: 1em 2em;
-
-  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  flex: 1;
-  gap: 1em;
+  padding: 12px 48px;
+
+  gap: 16px;
+
+  max-width: 300px;
+
+  margin: 0 auto;
 }
 
-.profileCardValue {
-  font-weight: var(--bold-weight);
-  font-size: var(--font-heading-size);
-  text-align: center;
-  width: 1ch;
+@media (max-width: 968px) {
+  .container {
+    padding: 12px 0px;
+    justify-content: center;
+  }
 }
 
-.profileCardTitle {
-  font-weight: var(--regular-weight);
-  font-size: var(--font-p-size);
-  text-align: left;
-  width: 15ch;
-
-  color: var(--clr-black);
+.description {
+  width: fit-content;
+  font-size: 0.85em;
 }
 
-@media (max-width: 480px) {
-  .profileCardContainer {
-    background: transparent;
-    margin-right: 4rem;
-    margin-left: 1rem;
-  }
+.count {
+  font-weight: 600;
+  font-size: 2.5em;
+}
 
-  .profileCardValue {
-    position: relative;
-    right: 2rem;
-  }
-
-  .profileCardTitle {
-    margin-top: 1rem;
-    width: 7rem;
-    position: relative;
-  }
-
-  .profileCardImage {
-    position: relative;
-    bottom: 4.7rem;
-    margin-left: 4rem;
-  }
+.img {
+  max-width: 50px;
+  height: auto;
 }

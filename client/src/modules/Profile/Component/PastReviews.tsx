@@ -11,14 +11,8 @@ type PastReviewsType = {
 const PastReviews = ({ pastReviews }: PastReviewsType) => {
   return (
     <>
-      <div className="">
-        <div className={`${styles.pastHeader}`}>
-          <p className={styles.pastHeaderText}>
-            Past Reviews ({pastReviews?.length})
-          </p>
-        </div>
-      </div>
-      <div className={styles.reviewCard}>
+      <div className={styles.header}>Past Reviews ({pastReviews?.length})</div>
+      <div className={styles.reviewcards}>
         <CourseReviews
           reviews={pastReviews}
           isPreview={false}

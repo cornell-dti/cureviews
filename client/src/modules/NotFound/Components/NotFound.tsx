@@ -3,15 +3,15 @@ import styles from '../NotFound.module.css'
 
 const NotFound = () => {
   return (
-    <div className="col-12">
+    <div className="">
       <div>
         <div className={styles.notFoundMarginTop}></div>
       </div>
-      <div className="text-center">
+      <div className="">
         <div className={styles.notFoundImage}>
           <img
             src="/noResults.svg"
-            className="img-fluid"
+            className=""
             alt="No class found"
             height="100%"
           ></img>

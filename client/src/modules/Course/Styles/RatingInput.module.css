@@ -1,4 +1,4 @@
-@import '../../../index.css';
+/* @import '../../../index.css'; */
 
 .ratingInputLabel {
   font-family: 'Source Sans Pro', sans-serif;
@@ -26,6 +26,7 @@
 .ratingButton {
   padding: 0;
   width: 100%;
+  cursor: pointer;
 }
 
 .ratingButtonPill {

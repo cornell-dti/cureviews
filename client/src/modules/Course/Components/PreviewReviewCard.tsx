@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Review as ReviewType } from 'common'
 
 import styles from '../Styles/Review.module.css'
+import previewstyle from '../Styles/PreviewCard.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
@@ -12,13 +13,20 @@ import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 type ReviewProps = {
   review: ReviewType
-  reportHandler: (review: ReviewType) => void
   isPreview: boolean
   isProfile: boolean
 }
 
 /**
-  Review Component.
+  A Preview Review Component.
+
+  Renders a review for 
+    i. profile page
+      a. pending review (isprofile && ispreview)
+      b. regular past review (isprofile)
+    ii. search page (ispreview)
+
+  if 
 
   Simple styling component that renders a single review (an li element)
   to show in a ClassView. These reivews will include:
@@ -27,14 +35,15 @@ type ReviewProps = {
   - report button
   - like button
 */
-export default function ReviewCard({
+export default function PreviewReviewCard({
   review,
-  reportHandler,
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
   const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
   const location = useLocation()
+
+  const pending = isPreview && isProfile
 
   const [_review, setReview] = useState<ReviewType>(review)
   const [liked, setLiked] = useState<boolean>(false)
@@ -53,26 +62,6 @@ export default function ReviewCard({
     let review_day = date.getDate()
 
     return review_month + '/' + review_day + '/' + review_year
-  }
-
-  /**
-   * Shows user liked the review and updates DB count.
-   */
-  function likeReview() {
-    if (!isLoggedIn) {
-      signIn('path:' + location.pathname)
-    }
-
-    setLiked((liked) => !liked)
-
-    axios
-      .post('/api/updateLiked', {
-        id: _review._id,
-        token: getAuthToken(),
-      })
-      .then((response) => {
-        setReview(response.data.review)
-      })
   }
 
   /**
@@ -122,14 +111,14 @@ export default function ReviewCard({
     if (isProfile) {
       return (
         <>
-          <h5>{courseTitle}</h5>
-          <p>
+          <div className={previewstyle.coursetitle}>{courseTitle}</div>
+          <div className={previewstyle.classprofessor}>
             {courseSub?.toUpperCase() +
               ' ' +
               courseNum?.toUpperCase() +
               ' | ' +
               professornames}
-          </p>
+          </div>
         </>
       )
     } else {
@@ -165,20 +154,20 @@ export default function ReviewCard({
     }
   }, [])
 
-  /** 
-   * CSS ORDER LAYOUT: 
-   * card 
+  /**
+   * CSS ORDER LAYOUT:
+   * card
    *  - metrics (overall, diff, workload)
-   *  - content 
+   *  - content
    *    - prof
-   *    - grade & major 
-   *    - review 
-   *    - see more button 
+   *    - grade & major
+   *    - review
+   *    - see more button
    *    - date & helpful
-   *    - covid? 
+   *    - covid?
    */
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${pending && previewstyle.pending}`}>
       <div className={styles.metrics}>
         <div>
           <span className={styles.metrictext}>Overall</span>
@@ -210,18 +199,6 @@ export default function ReviewCard({
                 : 'N/A'}
             </span>
           </div>
-          <div>
-            Major{' '}
-            <span className={styles.bold}>
-              {_review.major && _review.major.length !== 0
-                ? _review.major.map((major, index) => (
-                    <span key={index}>
-                      {index > 0 && ', '} {major}
-                    </span>
-                  ))
-                : 'N/A'}
-            </span>
-          </div>
         </div>
         <div
           className={`${styles.reviewtext} ${!expand && styles.collapsedtext}`}
@@ -239,19 +216,13 @@ export default function ReviewCard({
         )}
         <div className={styles.datehelpful}>
           <div> {dateToString()} </div>
-          {!isPreview && (
-            <div
-              className={`${styles.helpful} ${liked && styles.likedhelpful}`}
-              onClick={likeReview}
-            >
-              <img
-                src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
-                alt={liked ? 'Liked' : 'Not Liked Yet'}
-              />
-              {liked ? 'Liked!' : 'Helpful?'} (
-              {_review.likes ? _review.likes : 0}){' '}
-            </div>
-          )}
+          <div className={`${styles.helpful} ${liked && styles.likedhelpful}`}>
+            <img
+              src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
+              alt={liked ? 'Liked' : 'Not Liked Yet'}
+            />
+            ({_review.likes ? _review.likes : 0}) Found this helpful
+          </div>
         </div>
         {_review.isCovid && (
           <div className={styles.covid}>

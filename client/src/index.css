@@ -118,6 +118,11 @@ select {
   background-color: transparent;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* Avoid text overflows */
 p,
 h1,
@@ -158,4 +163,24 @@ ul {
   background: var(--clr-white);
   margin: 0;
   padding: 0;
+}
+
+/* <=== SCROLL BAR ===> */
+
+/* Change scrollbar track color (background) */
+::-webkit-scrollbar-track {
+  background: #ececec;
+  border-radius: 13.573px;
+}
+
+/* Change scrollbar thumb color (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #807b7b;
+  border-radius: 13.573px;
+}
+
+/* Change scrollbar width and height */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
 }

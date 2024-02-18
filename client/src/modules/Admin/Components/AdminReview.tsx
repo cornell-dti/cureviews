@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import moment from 'moment'
 
-import '../Styles/AdminReview.css'
 
 type Props = {
   info: any
@@ -74,10 +73,10 @@ export default class UpdateReview extends Component<Props, State> {
     const reported = review.reported
     if (reported === 1) {
       return (
-        <div className="text-right">
+        <div className="">
           <button
             type="button"
-            className="btn btn-success "
+            className=""
             onClick={() => this.props.unReportHandler(review)}
           >
             {' '}
@@ -85,7 +84,7 @@ export default class UpdateReview extends Component<Props, State> {
           </button>
           <button
             type="button"
-            className="btn btn-danger space-review-buttons"
+            className=""
             onClick={() => this.props.removeHandler(review, false)}
           >
             {' '}
@@ -95,10 +94,10 @@ export default class UpdateReview extends Component<Props, State> {
       )
     } else {
       return (
-        <div className="text-right">
+        <div className="">
           <button
             type="button"
-            className="btn btn-success"
+            className=""
             onClick={() => this.props.approveHandler(review)}
           >
             {' '}
@@ -106,7 +105,7 @@ export default class UpdateReview extends Component<Props, State> {
           </button>
           <button
             type="button"
-            className="btn btn-danger space-review-buttons"
+            className=""
             onClick={() => this.props.removeHandler(review, true)}
           >
             {' '}
@@ -121,40 +120,36 @@ export default class UpdateReview extends Component<Props, State> {
     const review = this.props.info
     return (
       <li id={review._id}>
-        <div className="row">
-          <div className="col-md-12">
+        <div className="">
+          <div className="">
             <b>Course:</b> {this.state.shortName}: {this.state.longName}
             <br></br>
             <b>Posted </b> {moment(review.date).fromNow()}
           </div>
         </div>
-        <div className="card">
-          <div className="card-body">
-            <div className="row">
-              <div className="col-md-3 col-sm-6 col-6">
-                <div className="card">
-                  <div className="card-body text-center">{review.rating}</div>
+        <div className="">
+          <div className="">
+            <div className="">
+              <div className="">
+                <div className="">
+                  <div className="">{review.rating}</div>
                 </div>
-                <div className="card">
-                  <div className="card-body text-center">
-                    {review.difficulty}
-                  </div>
+                <div className="">
+                  <div className="">{review.difficulty}</div>
                 </div>
-                <div className="card">
-                  <div className="card-body text-center">
-                    {review.professors}
-                  </div>
+                <div className="">
+                  <div className="">{review.professors}</div>
                 </div>
               </div>
-              <div className="col-md-3 col-sm-6 col-6">
-                <div className="card-body"> Overall Rating</div>
-                <div className="card-body"> Difficulty</div>
-                <div className="card-body"> Professor(s)</div>
+              <div className="">
+                <div className=""> Overall Rating</div>
+                <div className=""> Difficulty</div>
+                <div className=""> Professor(s)</div>
               </div>
-              <div className="col-md-6 col-sm-12 col-12">{review.text}</div>
+              <div className="">{review.text}</div>
             </div>
-            <div className="row">
-              <div className="offset-md-7">{this.renderButtons(review)}</div>
+            <div className="">
+              <div className="">{this.renderButtons(review)}</div>
             </div>
           </div>
         </div>

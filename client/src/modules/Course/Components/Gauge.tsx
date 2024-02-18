@@ -52,14 +52,12 @@ export default function Gauge({ rating, label, isOverall }: GaugeProps) {
   }, [setGaugeState, rating, isOverall])
 
   return (
-    <div className={styles.gaugeContainer}>
-      <div className={styles.gaugeTextContainer}>
-        <div className={styles.gaugeCenterText}>
-          <div className={styles.gaugeRating}>{gaugeState.rating}</div>
-          <div className={styles.gaugeLabel}>{label}</div>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.textcolumn}>
+        <div className={styles.rating}>{gaugeState.rating}</div>
+        <div className={styles.label}>{label}</div>
       </div>
-      <div className={styles.gaugeCircleContainer}>
+      <div className={styles.circle}>
         <CircularProgressbar
           className={styles.gaugeCircle}
           value={gaugeState.percentage}

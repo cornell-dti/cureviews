@@ -5,7 +5,7 @@ import axios from 'axios'
 import Navbar from '../../Globals/Navbar.tsx'
 import ResultsDisplay from './ResultsDisplay.jsx'
 
-import '../Styles/Results.css'
+import styles from '../Styles/Results.module.css'
 /**
  * Results Component
  * Used to render the results page. Uses Navbar and ResultsDisplay components directly.
@@ -106,7 +106,7 @@ export class Results extends Component {
   render() {
     const userInput = this.props.match.params.input.split('+').join(' ')
     return (
-      <div className="bg-color">
+      <div className={styles.page}>
         <Navbar userInput={userInput} />
 
         <ResultsDisplay

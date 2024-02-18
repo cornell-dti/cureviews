@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
-import '../Styles/PreviewCard.css'
 import { lastOfferedSems } from 'common/CourseCard'
 
 import Gauge from '../../Course/Components/Gauge'
 import ReviewCard from '../../Course/Components/ReviewCard'
+
+import styles from '../Styles/CoursePreview.module.css'
 const Review = ReviewCard
 // import Gauge from './Gauge.tsx'
 // import Review from './Review'
@@ -153,135 +154,89 @@ export default class PreviewCard extends Component {
     let theClass = this.props.course
     const offered = lastOfferedSems(theClass)
     return (
-      <div className="preview-panel">
-        <div className="row">
-          <div className="col-lg-12 col-md-12 col-sm-12">
-            <p className="preview-class-title">
+      <div className="">
+        <div className="">
+          <div className={styles.coursetitle}>
+            <a
+              href={`/course/${theClass.classSub.toUpperCase()}/${
+                theClass.classNum
+              }`}
+            >
+              {theClass.classTitle}
+            </a>
+          </div>
+          <div className={styles.subtitle}>
+            {theClass.classSub.toUpperCase() +
+              ' ' +
+              theClass.classNum +
+              ', ' +
+              offered}
+          </div>
+        </div>
+
+        {!this.props.transformGauges && (
+          <div className={styles.gauges}>
+            <Gauge
+              rating={parseFloat(this.state.rating)}
+              label="Overall"
+              isOverall={true}
+            />
+            <Gauge
+              rating={parseFloat(this.state.diff)}
+              label="Difficulty"
+              isOverall={false}
+            />
+            <Gauge
+              rating={parseFloat(this.state.workload)}
+              label="Workload"
+              isOverall={false}
+            />
+          </div>
+        )}
+
+        {this.state.numReviews !== 0 && (
+          <div className={styles.topreview}>Top Review</div>
+        )}
+
+        {!this.props.transformGauges && (
+          <div className={styles.columns}>
+            {/*If class has review show top review and link*/}
+            {this.state.numReviews !== 0 && (
+              <Review
+                key={this.state.topReview._id}
+                review={this.state.topReview}
+                reportHandler={this.reportHandler}
+                isPreview={true}
+                isProfile={false}
+              />
+            )}
+
+            {this.state.numReviews !== 0 && this.state.numReviews > 1 && (
               <a
-                className={
-                  '' +
-                  (this.props.transformGauges
-                    ? 'preview-class-link-scroll'
-                    : 'preview-class-link')
-                }
+                className={styles.reviewsbutton}
                 href={`/course/${theClass.classSub.toUpperCase()}/${
                   theClass.classNum
                 }`}
               >
-                {theClass.classTitle}
+                See {this.state.numReviews} more review
+                {this.state.numReviews > 1 ? 's' : ''}
               </a>
-            </p>
-            <p className="preview-class-info">
-              {theClass.classSub.toUpperCase() +
-                ' ' +
-                theClass.classNum +
-                ', ' +
-                offered}
-            </p>
-          </div>
-        </div>
-
-        {!this.props.transformGauges && (
-          <div className="row gaugeHolder">
-            <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge
-                rating={parseFloat(this.state.rating)}
-                label="Overall"
-                isOverall={true}
-              />
-            </div>
-            <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge
-                rating={parseFloat(this.state.diff)}
-                label="Difficulty"
-                isOverall={false}
-              />
-            </div>
-            <div className="col-lg-4 col-md-4 col-sm-4 col-4 remove-left-padding">
-              <Gauge
-                rating={parseFloat(this.state.workload)}
-                label="Workload"
-                isOverall={false}
-              />
-            </div>
-          </div>
-        )}
-        {this.props.transformGauges && (
-          <div className="row gaugeHolder m-bot-0">
-            <div className="rating-mobile-box">
-              <div className="row plain-row rating-text">
-                <div className="col-4 col-sm-4 col-md-4 col-lg-4 first-rating-box-padding">
-                  Overall{' '}
-                  <span className="text-padding">
-                    {parseFloat(this.state.rating).toFixed(1)}
-                  </span>
-                </div>
-                <div className="col-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
-                  Difficulty{' '}
-                  <span className="text-padding">
-                    {parseFloat(this.state.diff).toFixed(1)}
-                  </span>
-                </div>
-                <div className="col-4 col-sm-4 col-md-4 col-lg-4 rating-box-padding">
-                  Workload{' '}
-                  <span className="text-padding">
-                    {parseFloat(this.state.workload).toFixed(1)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="row top-review-text noLeftRightSpacing">
-          <div className="col-lg-12 col-md-12 col-sm-12 remove-left-padding">
-            {this.state.numReviews !== 0 && (
-              <p className="preview-top-review-label">Top Review</p>
             )}
-          </div>
-        </div>
 
-        {!this.props.transformGauges && (
-          <div className="row noLeftRightSpacing">
-            <div className="review-holder">
-              {/*If class has review show top review and link*/}
-              {this.state.numReviews !== 0 && (
-                <Review
-                  key={this.state.topReview._id}
-                  review={this.state.topReview}
-                  reportHandler={this.reportHandler}
-                  isPreview={true}
-                  isProfile={false}
-                />
-              )}
-
-              {this.state.numReviews !== 0 && this.state.numReviews > 1 && (
-                <a
-                  className="col-lg-12 preview-review-button"
-                  href={`/course/${theClass.classSub.toUpperCase()}/${
-                    theClass.classNum
-                  }`}
-                >
-                  See {this.state.numReviews} more review
-                  {this.state.numReviews > 1 ? 's' : ''}
-                </a>
-              )}
-
-              {/*If class has 0 reviews text and button*/}
-              {this.state.numReviews === 0 && (
-                <p className="preview-empty-top-review">No reviews yet</p>
-              )}
-              {(this.state.numReviews === 0 || this.state.numReviews === 1) && (
-                <a
-                  className="col-lg-12 preview-review-button"
-                  href={`/course/${theClass.classSub.toUpperCase()}/${
-                    theClass.classNum
-                  }`}
-                >
-                  Leave a Review
-                </a>
-              )}
-            </div>
+            {/*If class has 0 reviews text and button*/}
+            {this.state.numReviews === 0 && (
+              <div className={styles.noreviews}>No reviews yet</div>
+            )}
+            {(this.state.numReviews === 0 || this.state.numReviews === 1) && (
+              <a
+                className={styles.reviewsbutton}
+                href={`/course/${theClass.classSub.toUpperCase()}/${
+                  theClass.classNum
+                }`}
+              >
+                Leave a Review
+              </a>
+            )}
           </div>
         )}
       </div>

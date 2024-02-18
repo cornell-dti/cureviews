@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Class } from 'common'
 import { lastOfferedSems } from 'common/CourseCard'
-import '../Styles/FilteredResult.css'
+import styles from '../Styles/ResultList.module.css'
 
 type Props = {
   course: Class
@@ -115,40 +115,27 @@ export default class FilteredResult extends Component<Props, State> {
     let theClass = this.props.course
     let offered = lastOfferedSems(theClass)
     return (
-      <li
-        className={
-          this.props.selected === true
-            ? 'result-card result-card-clicked'
-            : ' result-card'
-        }
+      <div
+        className={`${styles.card} ${this.props.selected && styles.selected}`}
         onClick={() => {
           this.props.previewHandler(this.state.course, this.state.current_index)
         }}
       >
         <div className="">
-          <h1 className="result-card-title">{theClass.classTitle}</h1>
-          <h2 className="result-card-subtitle">
+          <h1 className={styles.title}>{theClass.classTitle}</h1>
+          <h2 className={styles.subtitle}>
             {theClass.classSub.toUpperCase() +
               ' ' +
               theClass.classNum +
               ', ' +
               offered}
           </h2>
-          <div className="result-card-rating-text">
-            <div className="overall-rating-border">
-              <div>
-                <p className="margin-btm-0">
-                  <strong>{this.updateSortNumberTitle()}</strong>
-                </p>
-                <p className="result-card-sort-by-value margin-btm-0">
-                  {this.getSortNumber(1)}
-                </p>
-                <p className="margin-btm-0 out-of-five">/5</p>
-              </div>
-            </div>
+          <div className={styles.rating}>
+            <strong>{this.updateSortNumberTitle()}:</strong>
+            {this.getSortNumber(1)}/5
           </div>
         </div>
-      </li>
+      </div>
     )
   }
 }

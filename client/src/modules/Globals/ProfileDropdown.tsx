@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { randomPicture } from './profile_picture'
 import styles from './Styles/ProfileDropdown.module.css'
 
+import LogOutIcon from '../../assets/icons/logout.svg'
+import ReviewsIcon from '../../assets/icons/review.svg'
+
 type ProfileDropdownProps = {
   netId: string
   isLoggedIn: boolean
@@ -36,46 +39,51 @@ export default function ProfileDropdown({
     }
   }, [open])
 
-  return isLoggedIn ? (
-    <div className={styles.profileMenuContainer}>
+  if (!isLoggedIn)
+    return (
+      <button
+        type="button"
+        className={`${styles.signinbutton}`}
+        onClick={() => {
+          signIn('home')
+        }}
+      >
+        Login
+      </button>
+    )
+
+  return (
+    <div className={styles.profile}>
       <img
         src={profilePicture}
         alt="profile bear"
-        className={styles.profileBear}
+        className={styles.bear}
         ref={dropdownRef}
         onClick={toggling}
       />
 
-      {open ? (
-        <div className={styles.profileMenuCard}>
-          <div>
-            <a href="/profile" className={styles.profileMenuLink}>
+      {open && (
+        <div className={styles.profiledropdown}>
+          <div className={styles.option}>
+            <a href="/profile">
               My Reviews
+              <img
+                className={styles.optionimg}
+                src={ReviewsIcon}
+                alt="my-reviews"
+              />
             </a>
           </div>
 
-          <div className={`${styles.signOutButtonContainer}`}>
-            <button
-              className={`${styles.profileMenuSignOutButton}`}
-              onClick={() => signOut()}
-            >
-              Sign Out
-            </button>
+          <div
+            className={`${styles.option} ${styles.logout}`}
+            onClick={() => signOut()}
+          >
+            Log Out
+            <img className={styles.optionimg} src={LogOutIcon} alt="log-out" />
           </div>
         </div>
-      ) : (
-        <div></div>
       )}
     </div>
-  ) : (
-    <button
-      type="button"
-      className={`${styles.signInButton}`}
-      onClick={() => {
-        signIn('home')
-      }}
-    >
-      Sign In
-    </button>
   )
 }

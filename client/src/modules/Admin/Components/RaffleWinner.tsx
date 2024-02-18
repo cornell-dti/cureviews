@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import DatePicker from 'react-datepicker'
 
-import 'react-datepicker/dist/react-datepicker.css'
 import styles from '../Styles/RaffleWinner.module.css'
 
 type RaffleWinnerProps = {
@@ -30,20 +29,20 @@ export default function RaffleWinner({ adminToken }: RaffleWinnerProps) {
   }
 
   return (
-    <div className={`${styles.raffleContainer}`}>
+    <div className={styles.raffleContainer}>
       <DatePicker
-        className={`${styles.raffleContainer}`}
+        className={styles.raffleContainer}
         selected={startDate}
         onChange={(date: Date) => setStartDate(date)}
       ></DatePicker>
       <button
         type="button"
-        className={`${styles.raffleButton} btn btn-warning`}
+        className={styles.raffleButton}
         onClick={() => updateRaffleWinner(startDate)}
       >
         Choose a Raffle Winner
       </button>
-      <p className={`${styles.raffleWinner}`}>{raffleWinner}</p>
+      <p className={styles.raffleWinner}>{raffleWinner}</p>
     </div>
   )
 }

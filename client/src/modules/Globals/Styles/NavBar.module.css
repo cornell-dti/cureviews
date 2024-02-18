@@ -1,0 +1,36 @@
+.navbarwrapper {
+  background-color: #fff;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+
+  z-index: 10;
+}
+
+.navbar {
+  width: 100%;
+  max-width: 1440px;
+
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
+
+  margin: 0 auto;
+  justify-content: flex-start;
+  align-items: center;
+  height: 80px;
+
+  padding: 10px 20px;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+  margin-bottom: -10px;
+}
+
+.searchbar {
+  /* width: calc(100% - 50px); */
+  width: 100%;
+}

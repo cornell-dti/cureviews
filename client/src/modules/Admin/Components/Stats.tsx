@@ -148,18 +148,18 @@ export default class Stats extends Component<Props, State> {
     return (
       <div>
         <div>
-          <button className="btn btn-primary" onClick={this.downloadCSVFile}>
+          <button className="" onClick={this.downloadCSVFile}>
             Download CSV For ReviewsPerClass
           </button>
         </div>
         <p>Total reviews: {this.state.totalReviews}</p>
         <LineChart width="77vw" height="55vh" data={this.state.chartData} />
 
-        <div className="row align-bottom">
-          <div className="col">
+        <div className="">
+          <div className="">
             <label htmlFor="range">Range in months</label>
             <input
-              className="form-control "
+              className=""
               type="number"
               id="range"
               name="range"
@@ -171,10 +171,10 @@ export default class Stats extends Component<Props, State> {
             />
           </div>
 
-          <div className="col">
+          <div className="">
             <label htmlFor="step">Step in days</label>
             <input
-              className="form-control"
+              className=""
               type="number"
               id="step"
               name="step"
@@ -185,12 +185,8 @@ export default class Stats extends Component<Props, State> {
               }
             />
           </div>
-          <div className="col">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={this.handleClick}
-            >
+          <div className="">
+            <button type="button" className="" onClick={this.handleClick}>
               Load Chart
             </button>
           </div>

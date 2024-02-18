@@ -14,7 +14,6 @@ import { NotFound } from './modules/NotFound'
 import { AuthRedirect } from './modules/AuthRedirect'
 
 /* Styling */
-import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
 /**
@@ -23,10 +22,10 @@ import './index.css'
   the user should see based on the URL they enter.
 
 */
+
 const App = () => {
   return (
     <Router>
-      <div>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/admin" component={Admin} />
@@ -37,7 +36,6 @@ const App = () => {
           <Route exact path="/profile" component={Profile} />
           <Route component={NotFound} />
         </Switch>
-      </div>
     </Router>
   )
 }
