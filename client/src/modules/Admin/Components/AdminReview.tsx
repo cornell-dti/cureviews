@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import moment from 'moment'
-
 
 type Props = {
   info: any
@@ -124,7 +122,7 @@ export default class UpdateReview extends Component<Props, State> {
           <div className="">
             <b>Course:</b> {this.state.shortName}: {this.state.longName}
             <br></br>
-            <b>Posted </b> {moment(review.date).fromNow()}
+            <b>Posted </b> {review.date}
           </div>
         </div>
         <div className="">

@@ -14,8 +14,6 @@ import { PendingReviews } from './PendingReviews'
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 import { randomPicture } from '../../Globals/profile_picture'
 
-import 'rodal/lib/rodal.css'
-
 import styles from '../Styles/Profile.module.css'
 import { PastReviews } from './PastReviews'
 
