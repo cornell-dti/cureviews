@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import WriteReviewIcon from '../../../assets/icons/write.svg'
+import WriteReviewIcon from '../../../assets/icons/writeicon.svg'
 
 import { courseVisited } from './Feedback'
 import Navbar from '../../Globals/Navbar'
