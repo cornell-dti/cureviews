@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import Select from 'react-select'
 
 import axios from 'axios'
 
