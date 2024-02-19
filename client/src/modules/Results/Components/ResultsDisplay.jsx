@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Loading from 'react-loading-animation'
 
 import FilteredResult from './FilteredResult.tsx'
 import PreviewCard from './PreviewCard.jsx'
@@ -324,7 +323,7 @@ export default class ResultsDisplay extends Component {
       <div className={styles.container}>
         <h1> Search Results </h1>
         {/* Case where results are still being loaded */}
-        {this.props.loading === true && <Loading />}
+        {this.props.loading === true && <div> Loading </div>}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
           <div>
