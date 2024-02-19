@@ -12,7 +12,6 @@ import UpdateReview from './AdminReview'
 import Stats from './Stats'
 import RaffleWinner from './RaffleWinner'
 
-
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
@@ -299,7 +298,7 @@ export const Admin = () => {
                   >
                     Add New Semester
                   </button>
-                  <Select
+                  {/* <Select
                     isDisabled={disableNewSem}
                     value={{ value: addSemester, label: addSemester }}
                     onChange={(semester: any) => {
@@ -322,7 +321,7 @@ export const Admin = () => {
                       'SP30',
                     ])}
                     placeholder="Select Semester"
-                  />
+                  /> */}
                 </div>
 
                 <div className="" role="group">

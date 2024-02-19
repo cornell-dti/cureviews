@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Loading from 'react-loading-animation'
 
 import FilteredResult from './FilteredResult.tsx'
 import PreviewCard from './PreviewCard.jsx'
@@ -11,7 +10,7 @@ import FilterIcon from '../../../assets/icons/filtericon.svg'
 import styles from '../Styles/Results.module.css'
 
 /*
-  ResultsDisplay Component.
+  ResultsDisplay Component.a
 
   Used by Results component, renders filters,
   list of class objects (results), and PreviewCard.
@@ -324,7 +323,7 @@ export default class ResultsDisplay extends Component {
       <div className={styles.container}>
         <h1> Search Results </h1>
         {/* Case where results are still being loaded */}
-        {this.props.loading === true && <Loading />}
+        {this.props.loading === true && <div> Loading ... </div>}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
           <div>
