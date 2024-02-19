@@ -11,12 +11,14 @@
 }
 
 .notFound404Text {
+  font-family: 'Source Sans Pro', sans-serif;
   font-size: 50px;
   font-weight: var(--regular-weight);
   text-align: center;
 }
 
 .notFoundText {
+  font-family: 'Source Sans Pro', sans-serif;
   font-size: 25px;
   font-weight: var(--regular-weight);
   text-align: center;

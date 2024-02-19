@@ -13,6 +13,7 @@
   padding: 4px var(--font-p-size);
   margin: 0 var(--font-p-size) 0 0;
   height: 25px;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   color: var(--clr-blue-300);
@@ -25,6 +26,7 @@
   padding: 5px 18px;
   margin: 0 var(--font-p-size) 0 0;
   height: 25px;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   color: var(--clr-yellow-300);
@@ -37,6 +39,7 @@
   padding: 5px 9px;
   margin: 0 var(--font-p-size) 0 0;
   height: 25px;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   color: var(--clr-green-100);
@@ -45,6 +48,7 @@
 .result-text {
   display: inline-block;
   text-overflow: ellipsis;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: var(--regular-weight) !important;
   line-height: normal;
   letter-spacing: 0.001em;
