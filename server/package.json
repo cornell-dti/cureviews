@@ -48,6 +48,7 @@
     "@types/mongodb": "^3.5.4",
     "@types/mongoose": "^5.7.7",
     "@types/prettier": "<2.6.0",
+    "@types/ws": "8.5.4",
     "jest-circus": "24",
     "ts-jest": "24"
   }
