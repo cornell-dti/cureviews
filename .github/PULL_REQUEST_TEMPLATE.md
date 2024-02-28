@@ -1,32 +1,35 @@
-### Summary <!-- Required -->
+# Summary
 
-<!-- Provide a general summary of your changes in the Title above -->
-<!-- Itemize bug fixes, new features, and other changes -->
-<!-- Feel free to break this into sub-sections, i.e. features, fixes, etc. -->
-<!-- Some examples are shown below. -->
+This PR works on the \_ feature.
 
-This pull request is the first step towards implementing feature Foo
+## PR Type
 
-- [x] implemented X
-- [ ] fixed Y
+- [ ] 🍕 Feature
+- [ ] 🐛 Bug Fix
+- [ ] 📝 Documentation Update
+- [ ] 🎨 Style
+- [ ] 🧑‍💻 Code Refactor
+- [ ] 🔥 Performance Improvements
+- [ ] ✅ Test
+- [ ] 🤖 Build
+- [ ] 🔁 CI
+- [ ] 📦 Chore (Release)
+- [ ] ⏩ Revert
 
-### Test Plan <!-- Required -->
+## Mobile + Desktop Screenshots & Recordings
 
-<!-- Provide screenshots or point out the additional unit tests -->
+## QA - Test Plan
 
-### Linter Warnings <!-- Required -->
+## Breaking Changes & Notes
 
-<!-- Please make sure that you are not adding linter warnings. Similarly, make sure that `yarn workspace client run` yields no warnings. -->
+## Added to documentation?
 
-Before this PR (i.e. on the main branch), there are X linter warnings. After my PR, there are Y.
+- [ ] 📜 README.md
+- [ ] 📓 notion
+- [ ] 🍕 ...
+- [ ] 📕 ...
+- [ ] 🙅 no documentation needed
 
-### Notes <!-- Optional -->
+## What GIF represents this PR?
 
-<!--- List any important or subtle points, future considerations, or other items of note. -->
-
-### Breaking Changes <!-- Optional -->
-
-<!-- Keep items that apply: -->
-
-- Database schema change (anything that changes Firestore collection structure)
-- Other change that could cause problems (Detailed in notes)
+[gif](https://www.icegif.com/wp-content/uploads/tom-and-jerry-icegif-4.gif)

@@ -8,7 +8,7 @@
 }
 
 .buttoncontainer {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
 }
@@ -33,6 +33,14 @@
 
   .container {
     padding: 200px 30px;
+  }
+
+  .dtilogo {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    height: auto;
+    width: 100px;
   }
 }
 
@@ -60,6 +68,17 @@
   right: 20px;
   height: auto;
   width: 200px;
+}
+
+/* Mobile */
+@media (max-width: 992px) {
+  .dtilogo {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    height: auto;
+    width: 140px;
+  }
 }
 
 /* Needed so that background is flush against bottom */
