@@ -126,9 +126,12 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **Will Zhang** - Technical Product Manager
 - **Andrea Thia** - Designer
 - **Valerie Wong** - Designer
+- **Erica Lee** - Designer
 - **Julie Jeong** - Developer Advisor
 - **Helen Lei** - Developer
 - **Andrew Qian** - Developer
+- **Jacqueline Cai** - Developer
+- **Jaeyoung Lee** - Product Marketing Manager
 - **Harrison Chin** - Coach
 
 ### Fall 2023
