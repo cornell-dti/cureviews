@@ -122,14 +122,14 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 ### Spring 2024
 
 - **Jonathan Kim** - Product Manager
-- **TBD** - Associate Product Manager
+- **Megan Yap** - Associate Product Manager
 - **Will Zhang** - Technical Product Manager
-- **Michelle Li** - Developer Advisor
-- **Harrison Chin** - Developer
-- **Samuel Yeboah** - Developer
-- **Helen Lei** - Developer
 - **Andrea Thia** - Designer
+- **Valerie Wong** - Designer
+- **Julie Jeong** - Developer Advisor
+- **Helen Lei** - Developer
 - **Andrew Qian** - Developer
+- **Harrison Chin** - Coach
 
 ### Fall 2023
 
