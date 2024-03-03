@@ -6,6 +6,7 @@ const router = Router()
 
 /** Reachable at POST /ai/costing 
  * @body none 
+ * values used for OpenAI model costing consideration
 */
 router.post('/costing', async (req, res) => {
   if (req) {
