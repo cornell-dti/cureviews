@@ -1,5 +1,10 @@
 import { Reviews } from "../../db/schema"; // <- Want to access the database?
 
+/** Docstring for avgWordsPerReview. Takes in a set of reviews and returns the
+ *  the average number of words per review
+ * @param reviews - a set of Reviews
+ * @returns the average length of a review in the set
+ */
 async function avgWordsPerReview(reviews) {
   const wordCounts = reviews.map(review => review.text.split(' ').length);
   const totalWords = wordCounts.reduce((acc, count) => acc + count, 0);
