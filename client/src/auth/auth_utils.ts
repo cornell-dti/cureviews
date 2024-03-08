@@ -3,6 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { Session } from '../session-store'
 import axios from 'axios'
 
+/**
+ * Sets the authentication token for each active session
+ * @param token 
+ * @returns `true` if token saving was successful, `false` otherwise
+ */
+
 export const setAuthToken = (token: string) => {
   Session.setPersistent({ token: token })
   if (Session.get('token') !== token) {
