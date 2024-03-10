@@ -40,7 +40,7 @@ export default function PreviewReviewCard({
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
-  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
+  const { isLoggedIn } = useAuthOptionalLogin()
   const location = useLocation()
 
   const pending = isPreview && isProfile

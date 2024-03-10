@@ -22,7 +22,7 @@ import styles from '../Home.module.css'
 
 */
 export const Home = () => {
-  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
+  const { isLoggedIn, netId, signIn, signOut } = useAuthOptionalLogin()
   const [DTILogo, setDTILogo] = useState(DTITextLogo)
   const [season, setSeason] = useState('winter')
   const [time, setTime] = useState('afternoon')
@@ -70,9 +70,8 @@ export const Home = () => {
 
   return (
     <div
-      className={`${styles.fullheight} ${styles.bgfixed} ${
-        styles[`bg${time}${season}`]
-      }`}
+      className={`${styles.fullheight} ${styles.bgfixed} ${styles[`bg${time}${season}`]
+        }`}
     >
       <div className={styles.buttoncontainer}>
         <ProfileDropdown

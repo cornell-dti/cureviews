@@ -88,13 +88,13 @@ export function useAuthMandatoryLogin(
   return [isLoggedIn, token, netId, isAuthenticating, signOut]
 }
 
-export function useAuthOptionalLogin(): [
-  boolean,
-  string | null,
-  string,
-  (redirectFrom: string) => void,
-  (redirectTo?: string) => void
-] {
+export function useAuthOptionalLogin(): {
+  isLoggedIn: boolean,
+  token: string | null,
+  netId: string,
+  signIn: (redirectFrom: string) => void,
+  signOut: (redirectTo?: string) => void
+} {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState(null)
   const [netId, setNetId] = useState('')
@@ -146,5 +146,11 @@ export function useAuthOptionalLogin(): [
     }
   }
 
-  return [isLoggedIn, token, netId, signIn, signOut]
+  return {
+    isLoggedIn: isLoggedIn,
+    token: token,
+    netId: netId,
+    signIn: signIn,
+    signOut: signOut
+  }
 }

@@ -40,7 +40,7 @@ export const Course = () => {
   const [scrolled, setScrolled] = useState(false)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
-  const [isLoggedIn, token, netId, signIn] = useAuthOptionalLogin()
+  const { isLoggedIn, token, signIn } = useAuthOptionalLogin()
 
   /**
    * Arrow functions for sorting reviews
@@ -247,9 +247,8 @@ export const Course = () => {
         <div className={styles.overview}>
           <div className={styles.classinfo}>
             <h1
-              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
-                selectedClass.classNum
-              }`}
+              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
+                }`}
             >
               {selectedClass.classTitle}
             </h1>
