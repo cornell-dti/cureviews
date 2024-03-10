@@ -29,6 +29,14 @@ export const getAuthToken = () => {
   } else return null
 }
 
+/**
+ * Manages the authentication for pages that require logging in
+ * @param redirectFrom a path representing where the user is redirected to log in
+ * @returns array that denotes whether a user is logged in, the session 
+ * token, netid, whether the user is still being authenticated, and a function 
+ * that logs out the user
+ */
+
 export function useAuthMandatoryLogin(
   redirectFrom: string
 ): [boolean, string | null, string, boolean, () => void] {
