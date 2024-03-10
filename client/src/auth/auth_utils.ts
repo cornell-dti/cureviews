@@ -18,6 +18,11 @@ export const setAuthToken = (token: string) => {
   return true
 }
 
+/**Checks to see if the user has a currently active token and returns it
+ * 
+ * @returns a user's session token or null if there is not a current one
+ */
+
 export const getAuthToken = () => {
   const token = Session.get('token')
   if (!token || token === '') {
@@ -87,6 +92,16 @@ export function useAuthMandatoryLogin(
 
   return [isLoggedIn, token, netId, isAuthenticating, signOut]
 }
+
+/**Manages authentication for pages with optional login
+ * 
+ * @returns An object with the following fields:
+ *    isLoggedIn denotes whether a user is logged in
+ *    token returns the session token
+ *    netid is the user's Cornell netid
+ *    signIn is a function to sign in
+ *    signOut is a function to sign out
+ */
 
 export function useAuthOptionalLogin(): {
   isLoggedIn: boolean,
