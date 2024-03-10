@@ -27,7 +27,7 @@ const Profile = () => {
   const [reviewsTotal, setReviewsTotal] = useState('0')
   const [reviewsHelpful, setReviewsHelpful] = useState('0')
 
-  const [isLoggedIn, token, netId, isAuthenticating, signOut] =
+  const {isLoggedIn, token, netId, isAuthenticating, signOut} =
     useAuthMandatoryLogin('profile')
 
   const profilePicture: string = randomPicture(netId)

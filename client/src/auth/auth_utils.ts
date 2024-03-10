@@ -42,9 +42,13 @@ export const getAuthToken = () => {
  * that logs out the user
  */
 
-export function useAuthMandatoryLogin(
-  redirectFrom: string
-): [boolean, string | null, string, boolean, () => void] {
+export function useAuthMandatoryLogin(redirectFrom: string):{
+  isLoggedIn: boolean,
+  token: string | null,
+  netId: string,
+  isAuthenticating: boolean,
+  signOut: (redirectTo?: string) => void
+} {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState(null)
   const [isAuthenticating, setIsAuthenticating] = useState(true)
@@ -90,7 +94,13 @@ export function useAuthMandatoryLogin(
     setIsLoggedIn(true)
   }, [redirectFrom, history])
 
-  return [isLoggedIn, token, netId, isAuthenticating, signOut]
+  return {
+    isLoggedIn: isLoggedIn,
+    token: token,
+    netId: netId,
+    isAuthenticating: isAuthenticating,
+    signOut: signOut
+  }
 }
 
 /**Manages authentication for pages with optional login
