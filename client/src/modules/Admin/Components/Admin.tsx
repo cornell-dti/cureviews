@@ -10,6 +10,7 @@ import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 import UpdateReview from './AdminReview'
 import Stats from './Stats'
 import RaffleWinner from './RaffleWinner'
+import Loading from '../../Globals/Loading'
 
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
@@ -450,7 +451,7 @@ export const Admin = () => {
 
   function adminLogin() {
     if (loading) {
-      return <div>Loading...</div>
+      return <div><Loading /></div>
     } else if (isLoggedIn && token && isAdmin) {
       return renderAdmin(token)
     } else {

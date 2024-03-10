@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import FilteredResult from './FilteredResult.tsx'
 import PreviewCard from './PreviewCard.jsx'
 import FilterPopup from './FilterPopup'
+import Loading from '../../Globals/Loading'
 
 import FilterIcon from '../../../assets/icons/filtericon.svg'
 
@@ -323,7 +324,7 @@ export default class ResultsDisplay extends Component {
       <div className={styles.container}>
         <h1> Search Results </h1>
         {/* Case where results are still being loaded */}
-        {this.props.loading === true && <div> Loading ... </div>}
+        {this.props.loading === true && <div><Loading /></div>}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
           <div>
