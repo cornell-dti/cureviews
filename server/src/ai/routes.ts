@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { minReviewsCosting, simpleCosting } from './functions'
+import { minReviewsCosting, simpleCosting, avgReviewsPerCourse } from './functions'
 
 const router = Router()
 
@@ -11,14 +11,24 @@ router.post('/costing', async (req, res) => {
   if (req) {
     console.log(req)
   }
-  const number1 = await simpleCosting()
-  const number2 = await minReviewsCosting(3)
 
-  res.send(` Number of total reviews: ${number1.reviews}, 
-  \n Average length of all reviews: ${number1.words},
-  \n Number of total reviews belonging to courses with minimum ${number2.min} reviews: ${number2.reviews},
-  \n Number of total words belonging to courses with minimum ${number2.min} reviews: ${number2.words}
-  \n Average length of all reviews belonging to courses with minimum ${number2.min} reviews: ${number2.avgwords}`)
+  const overallNumbers = await simpleCosting()
+  const avgRevsPerCourse = await avgReviewsPerCourse()
+  let outputString: string = `Number of total reviews: ${overallNumbers.reviews}
+  Number of total tokens: ${overallNumbers.tokens}
+  Average length of all reviews: ${overallNumbers.words}
+  Average number of reviews per course:  ${avgRevsPerCourse}`;
+  for (let i = 3; i <= 10; i++) {
+    const min = await minReviewsCosting(i)
+    outputString += `\n\n Number of total reviews belonging to courses with minimum ${min.min} reviews: ${min.reviews}
+    Number of total words belonging to courses with minimum ${min.min} reviews: ${min.words}
+    Number of total characters belonging to courses with minimum ${min.min} reviews: ${min.chars}
+    Number of total tokens belonging to courses with minimum ${min.min} reviews: ${min.tokens}
+    Average word length of all reviews belonging to courses with minimum ${min.min} reviews: ${min.avgwords}
+    Average character length of all reviews belonging to courses with minimum ${min.min} reviews: ${min.avgchar}`
+  }
+
+  res.send(outputString)
 })
 
 export default router 
