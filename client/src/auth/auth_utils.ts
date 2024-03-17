@@ -3,6 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { Session } from '../session-store'
 import axios from 'axios'
 
+/**
+ * Sets the authentication token for each active session
+ * @param token 
+ * @returns `true` if token saving was successful, `false` otherwise
+ */
+
 export const setAuthToken = (token: string) => {
   Session.setPersistent({ token: token })
   if (Session.get('token') !== token) {
@@ -11,6 +17,11 @@ export const setAuthToken = (token: string) => {
   }
   return true
 }
+
+/**
+ * Checks to see if the user has a currently active token
+ * @returns a user's session token or null if there is not a current one
+ */
 
 export const getAuthToken = () => {
   const token = Session.get('token')
@@ -23,9 +34,24 @@ export const getAuthToken = () => {
   } else return null
 }
 
-export function useAuthMandatoryLogin(
-  redirectFrom: string
-): [boolean, string | null, string, boolean, () => void] {
+/**
+ * Manages the authentication for pages that require logging in
+ * @param redirectFrom a path representing where the user is redirected to log in
+ * @returns An object with the following fields:
+ *    isLoggedIn denotes whether a user is logged in
+ *    token returns the session token
+ *    netid is the user's Cornell netid
+ *    isAuthenticating returns whether the user is still being authenticated
+ *    signOut is a function to sign out
+ */
+
+export function useAuthMandatoryLogin(redirectFrom: string): {
+  isLoggedIn: boolean,
+  token: string | null,
+  netId: string,
+  isAuthenticating: boolean,
+  signOut: (redirectTo?: string) => void
+} {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState(null)
   const [isAuthenticating, setIsAuthenticating] = useState(true)
@@ -71,16 +97,32 @@ export function useAuthMandatoryLogin(
     setIsLoggedIn(true)
   }, [redirectFrom, history])
 
-  return [isLoggedIn, token, netId, isAuthenticating, signOut]
+  return {
+    isLoggedIn: isLoggedIn,
+    token: token,
+    netId: netId,
+    isAuthenticating: isAuthenticating,
+    signOut: signOut
+  }
 }
 
-export function useAuthOptionalLogin(): [
-  boolean,
-  string | null,
-  string,
-  (redirectFrom: string) => void,
-  (redirectTo?: string) => void
-] {
+/**
+ * Manages authentication for pages with optional login
+ * @returns An object with the following fields:
+ *    isLoggedIn denotes whether a user is logged in
+ *    token returns the session token
+ *    netid is the user's Cornell netid
+ *    signIn is a function to sign in
+ *    signOut is a function to sign out
+ */
+
+export function useAuthOptionalLogin(): {
+  isLoggedIn: boolean,
+  token: string | null,
+  netId: string,
+  signIn: (redirectFrom: string) => void,
+  signOut: (redirectTo?: string) => void
+} {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [token, setToken] = useState(null)
   const [netId, setNetId] = useState('')
@@ -132,5 +174,11 @@ export function useAuthOptionalLogin(): [
     }
   }
 
-  return [isLoggedIn, token, netId, signIn, signOut]
+  return {
+    isLoggedIn: isLoggedIn,
+    token: token,
+    netId: netId,
+    signIn: signIn,
+    signOut: signOut
+  }
 }

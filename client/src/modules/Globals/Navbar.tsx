@@ -27,7 +27,7 @@ type NavbarProps = {
 }
 
 export default function Navbar({ userInput }: NavbarProps) {
-  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
+  const { netId, signIn, signOut } = useAuthOptionalLogin()
   const location = useLocation()
 
   /** Show Profile DropDown  */

@@ -33,7 +33,7 @@ export default function ReviewCard({
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
-  const [isLoggedIn, token, netId, signIn, signOut] = useAuthOptionalLogin()
+  const { isLoggedIn, signIn } = useAuthOptionalLogin()
   const location = useLocation()
 
   const [_review, setReview] = useState<ReviewType>(review)
@@ -215,10 +215,10 @@ export default function ReviewCard({
             <span className={styles.bold}>
               {_review.major && _review.major.length !== 0
                 ? _review.major.map((major, index) => (
-                    <span key={index}>
-                      {index > 0 && ', '} {major}
-                    </span>
-                  ))
+                  <span key={index}>
+                    {index > 0 && ', '} {major}
+                  </span>
+                ))
                 : 'N/A'}
             </span>
           </div>
