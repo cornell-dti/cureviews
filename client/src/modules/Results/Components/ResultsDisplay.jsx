@@ -324,7 +324,7 @@ export default class ResultsDisplay extends Component {
       <div className={styles.container}>
         <h1> Search Results </h1>
         {/* Case where results are still being loaded */}
-        {this.props.loading === true && <div><Loading /></div>}
+        {this.props.loading === true && <Loading />}
         {/* Case where no results returned */}
         {this.state.courseList.length === 0 && this.props.loading === false && (
           <div>

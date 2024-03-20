@@ -451,7 +451,7 @@ export const Admin = () => {
 
   function adminLogin() {
     if (loading) {
-      return <div><Loading /></div>
+      return <Loading />
     } else if (isLoggedIn && token && isAdmin) {
       return renderAdmin(token)
     } else {
