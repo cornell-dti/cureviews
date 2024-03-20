@@ -21,7 +21,8 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
   const query = search.getQuery();
   let fullSearch = new Set(); // set to ensure no duplicate courses
 
-  if (query !== undefined && query !== '') {
+  // checks query after at least 2 characters to speed up search
+  if (query !== undefined && query.length >= 2) {
     // naive search
     const initialSearch = await search.searchQuery(findCourses);
 

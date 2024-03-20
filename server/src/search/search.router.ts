@@ -12,6 +12,30 @@ import { SearchQueryRequestType } from './search.type';
 
 export const searchRouter = express.Router();
 
+searchRouter.post('/getResultsFromQuery', async (req, res) => {
+  try {
+    const { query }: SearchQueryRequestType = req.body;
+    const search = new Search({ query });
+
+    const courses = await searchCourses({ search });
+    const subjects = await searchSubjects({ search });
+    const professors = await searchProfessors({ search });
+
+    if (!courses || !subjects || !professors) {
+      return res.status(500).json({ error: `Internal Server Error.` });
+    }
+
+    return res.status(200).json({
+      message: `Success! Retrieved all courses by query: ${query}`,
+      result: [courses, subjects, professors],
+    });
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ error: `Search query must contain ASCII characters.` });
+  }
+})
+
 searchRouter.post('/getClassesByQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
@@ -81,7 +105,7 @@ searchRouter.post('/getProfessorsByQuery', async (req, res) => {
   }
 });
 
-searchRouter.post('/getCoursesByMajor', async (req, res) => {
+searchRouter.post('/getCoursesBySubject', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
