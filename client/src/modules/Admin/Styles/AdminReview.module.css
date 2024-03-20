@@ -1,0 +1,21 @@
+.approvebutton {
+    background-color: var(--clr-green-200);
+    color: var(--clr-white);
+    width: 50%;
+    font-size: var(--font-medium-size);
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 11px 10px;
+    cursor: pointer;
+}
+
+.removebutton {
+    background-color: var(--clr-red-200);
+    color: var(--clr-white);
+    width: 50%;
+    font-size: var(--font-medium-size);
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 11px 10px;
+    cursor: pointer;
+}

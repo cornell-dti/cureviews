@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
+import styles from '../Styles/AdminReview.module.css'
+
 type Props = {
   info: any
   approveHandler: (arg1: any) => any
@@ -74,7 +76,7 @@ export default class UpdateReview extends Component<Props, State> {
         <div className="">
           <button
             type="button"
-            className=""
+            className={styles.approvebutton}
             onClick={() => this.props.unReportHandler(review)}
           >
             {' '}
@@ -82,7 +84,7 @@ export default class UpdateReview extends Component<Props, State> {
           </button>
           <button
             type="button"
-            className=""
+            className={styles.removebutton}
             onClick={() => this.props.removeHandler(review, false)}
           >
             {' '}
@@ -95,7 +97,7 @@ export default class UpdateReview extends Component<Props, State> {
         <div className="">
           <button
             type="button"
-            className=""
+            className={styles.approvebutton}
             onClick={() => this.props.approveHandler(review)}
           >
             {' '}
@@ -103,7 +105,7 @@ export default class UpdateReview extends Component<Props, State> {
           </button>
           <button
             type="button"
-            className=""
+            className={styles.removebutton}
             onClick={() => this.props.removeHandler(review, true)}
           >
             {' '}
