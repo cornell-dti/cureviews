@@ -12,7 +12,6 @@ import { SearchQueryType } from './search.type';
 
 /**
  * Searches database for all relevant courses based on query.
- * Returns at most 200 relevant courses based on edit distance.
  *
  * @param {Search} search: Object that represents the search of a request being passed in.
  * @returns list of courses if operation was successful, null otherwise.

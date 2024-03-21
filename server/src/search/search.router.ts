@@ -12,12 +12,20 @@ import { SearchQueryRequestType } from './search.type';
 
 export const searchRouter = express.Router();
 
+/**
+ * Searches the database for potential courses, subjects, and professors relating 
+ * to the query and returns an object containing 3 arrays of the above queries
+ */
 searchRouter.post('/getResultsFromQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
-    const search = new Search({ query });
+    const cleanQuery = query.replace('+', ' ');
+    const search = new Search({ query: cleanQuery });
 
+    // divide up course search by whether it is subject or professor first, then use default at the end
     const courses = await searchCourses({ search });
+    // const courses = await searchCoursesByProfessor({ search });
+    // const courses = await searchCoursesBySubject({ search });
     const subjects = await searchSubjects({ search });
     const professors = await searchProfessors({ search });
 
@@ -26,15 +34,15 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
     }
 
     return res.status(200).json({
-      message: `Success! Retrieved all courses by query: ${query}`,
-      result: [courses, subjects, professors],
+      message: `Success! Retrieved all courses, subjects, and professors by query: ${cleanQuery}`,
+      result: { courses: courses, subjects: subjects, professors: professors },
     });
   } catch (err) {
     return res
       .status(400)
       .json({ error: `Search query must contain ASCII characters.` });
   }
-})
+});
 
 searchRouter.post('/getClassesByQuery', async (req, res) => {
   try {
@@ -105,7 +113,7 @@ searchRouter.post('/getProfessorsByQuery', async (req, res) => {
   }
 });
 
-searchRouter.post('/getCoursesBySubject', async (req, res) => {
+searchRouter.post('/getCoursesByMajor', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const search = new Search({ query });
