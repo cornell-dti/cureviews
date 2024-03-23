@@ -26,7 +26,7 @@ export const Admin = () => {
   const [resettingProfs, setResettingProfs] = useState<number>(0)
   const [addSemester, setAddSemester] = useState('')
 
-  const {isLoggedIn, token, isAuthenticating} = useAuthMandatoryLogin('admin')
+  const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
 
