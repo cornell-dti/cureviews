@@ -81,6 +81,9 @@ async function minReviewsCosting(minimum) {
     return accumulator + course.totalChars;
   }, 0);
 
+  const gpt4cost = ((totalCharCount / 4) / 1000000 * 30) + ((totalCharCount / 4) / 1000000 * 60)
+  const gpt3cost = ((totalCharCount / 4) / 1000000 * 0.5) + ((totalCharCount / 4) / 1000000 * 1.5)
+
   return {
     "min": minimum,
     "reviews": totalReviewCount,
@@ -89,7 +92,9 @@ async function minReviewsCosting(minimum) {
     "chars": totalCharCount,
     "avgchar": totalCharCount / totalReviewCount,
     "tokens": totalCharCount / 4,
-    "avgtokens": (totalCharCount / 4) / totalReviewCount
+    "avgtokens": (totalCharCount / 4) / totalReviewCount,
+    "gpt4cost": Math.round(gpt4cost * 100) / 100,
+    "gpt3cost": Math.round(gpt3cost * 100) / 100
   };
 }
 

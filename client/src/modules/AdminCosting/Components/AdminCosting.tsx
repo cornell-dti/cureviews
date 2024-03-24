@@ -7,26 +7,27 @@ import { Review } from 'common'
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 
+import '../Styles/Admin.Costing.css'
+
 import UpdateReview from '../../Admin/Components/AdminReview'
 import Stats from '../../Admin/Components/Stats'
 import RaffleWinner from '../../Admin/Components/RaffleWinner'
 
-/** Admin Page
- * Approve new reviews, see stats, and import new semester courses & Profs.
+/** Admin Costing Page
+ * Get costing estimates for GPT4 and GPT3.5 using data from courses that have
+ * at least an x amount of reviews.
  */
 export const AdminCosting = () => {
-  const [minimumReviews, setMinimumReviews] = useState<number>(0)
-  const [cost, setCost] = useState<number>(0)
+  const [minimumReviews, setMinimumReviews] = useState<number | "">("");
   const [totalTokens, setTotalTokens] = useState<number>(0)
-  const [unapprovedReviews, setUnapprovedReviews] = useState<Review[]>([])
-  const [reportedReviews, setReportedReviews] = useState<Review[]>([])
-  const [disableInit, setDisableInit] = useState<boolean>(false)
-  const [disableNewSem, setDisableNewSem] = useState<boolean>(false)
-  const [loadingInit, setLoadingInit] = useState<number>(0)
-  const [loadingSemester, setLoadingSemester] = useState<number>(0)
-  const [loadingProfs, setLoadingProfs] = useState<number>(0)
-  const [resettingProfs, setResettingProfs] = useState<number>(0)
-  const [addSemester, setAddSemester] = useState('')
+  const [totalReviews, setTotalReviews] = useState<number>(0)
+  const [totalChars, setTotalChars] = useState<number>(0)
+  const [totalWords, setTotalWords] = useState<number>(0)
+  const [avgWords, setAvgWords] = useState<number>(0)
+  const [avgChars, setAvgChars] = useState<number>(0)
+  const [avgTokens, setAvgTokens] = useState<number>(0)
+  const [gpt4cost, setGpt4Cost] = useState<number>(0)
+  const [gpt3cost, setGpt3Cost] = useState<number>(0)
 
   const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
@@ -51,168 +52,80 @@ export const AdminCosting = () => {
     }
   }, [isLoggedIn, token, isAuthenticating])
 
-  useEffect(() => {
-    axios
-      .post('/api/fetchPendingReviews', { token: token })
+  // Takes in a minimum number of reviews selected from a dropdown menu.  
+  // Gets data from all courses that have at least that number of reviews.
+  function getCostingData(min: number, setTotalTokens: React.Dispatch<React.SetStateAction<number>>) {
+    console.log('loading costing data...');
+
+    axios.post('/ai/costing', { min })
       .then((response) => {
-        const result = response.data.result
-        if (response.status === 200) {
-          setUnapprovedReviews(
-            result.filter((review: Review) => review.reported === 0)
-          )
-          setReportedReviews(
-            result.filter((review: Review) => review.reported === 1)
-          )
-        } else {
-          console.log('Error at fetchPendingReviews')
-        }
+        const result = response.data.result;
+        console.log('Costing Data Loaded');
+        setTotalTokens(result.tokens);
+        setTotalChars(result.chars);
+        setTotalWords(result.words);
+        setTotalReviews(result.reviews);
+        setAvgTokens(result.avgtokens);
+        setAvgWords(result.avgwords);
+        setAvgChars(result.avgchar);
+        setGpt3Cost(result.gpt3cost);
+        setGpt4Cost(result.gpt4cost);
       })
-  }, [token, isAuthenticating])
-
-  // Helper function to remove a review from a list of reviews and
-  // return the updated list
-  function removeReviewFromList(reviewToRemove: Review, reviews: Review[]) {
-    reviews = reviews.filter((review: Review) => {
-      return review && review._id !== reviewToRemove._id
-    })
-    return reviews
-  }
-
-  // Call when user asks to approve a review. Accesses the Reviews database
-  // and changes the review with this id to visible.
-  function approveReview(review: Review) {
-    axios
-      .post('/api/makeReviewVisible', {
-        review: review,
-        token: token,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const updatedUnapprovedReviews = removeReviewFromList(
-            review,
-            unapprovedReviews
-          )
-          setUnapprovedReviews(updatedUnapprovedReviews)
-        }
-      })
-  }
-
-  // Call when user asks to remove a review. Accesses the Reviews database
-  // and deletes the review with this id.
-  function removeReview(review: Review, isUnapproved: boolean) {
-    axios
-      .post('/api/removeReview', {
-        review: review,
-        token: token,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('Review removed')
-          if (isUnapproved) {
-            const updatedUnapprovedReviews = removeReviewFromList(
-              review,
-              unapprovedReviews
-            )
-            setUnapprovedReviews(updatedUnapprovedReviews)
-          } else {
-            const updatedReportedReviews = removeReviewFromList(
-              review,
-              reportedReviews
-            )
-
-            setReportedReviews(updatedReportedReviews)
-          }
-        }
-      })
-      .catch((e) => console.log(`Unable to remove review ${e}`))
-  }
-
-  // Call when user asks to un-report a reported review. Accesses the Reviews database
-  // and changes the reported flag for this review to false.
-  function unReportReview(review: Review) {
-    axios
-      .post('/api/undoReportReview', {
-        review: review,
-        token: token,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('Review unreported')
-          const updatedReportedReviews = removeReviewFromList(
-            review,
-            reportedReviews
-          )
-          setReportedReviews(updatedReportedReviews)
-        } else {
-          console.log('Unable to undo report review!')
-        }
-      })
-  }
-
-  // Call when user selects "Add New Semester" button. Runs code to check the
-  // course API for new classes and updates classes existing in the database.
-  // sShould run once a semester, when new classes are added to the roster.
-  function addNewSem(semester: string) {
-    console.log('Adding new semester...')
-    setDisableNewSem(true)
-    setDisableInit(true)
-    setLoadingSemester(1)
-
-    axios
-      .post('/api/addNewSemester', {
-        semester,
-        token: token,
-      })
-      .then((response) => {
-        const result = response.data.result
-        if (result === true) {
-          console.log('New Semester Added')
-          setDisableNewSem(false)
-          setDisableInit(false)
-          setLoadingSemester(2)
-        } else {
-          console.log('Unable to add new semester!')
-        }
-      })
-  }
-
-  function getCostingData(min: Number) {
-    console.log('loading costing data...')
-
-    axios
-      .post('/ai/costing', {
-        min: minimumReviews
-      })
-      .then((response) => {
-        const result = response.data.result
-        console.log('New Semester Added')
-        setTotalTokens(result.tokens)
-      })
+      .catch((error) => {
+        console.error('Error loading costing data:', error);
+      });
   }
 
   function renderAdmin(token: string) {
     return (
       <div>
-        <h1>GPT Costing Page</h1>
-        <select
-          value={minimumReviews}
-          onChange={(e) => {
-            const value = Number(e.target.value);
-            setMinimumReviews(value);
-            getCostingData(value);
-          }}
-        >
-          <option value="">x</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="3">6</option>
-          <option value="4">7</option>
-          <option value="5">8</option>
-          <option value="3">9</option>
-          <option value="4">10</option>
-        </select>
-        <h1>Total tokens: {totalTokens}</h1>
+        <div className="heading">
+          <h1>GPT Costing Page</h1>
+          <label htmlFor="minReviews">For courses with minimum of</label>
+          <select
+            id="minReviews"
+            value={minimumReviews}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setMinimumReviews(value);
+              getCostingData(value, setTotalTokens);
+            }}
+          >
+            <option value="100000">x</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <span>reviews:</span>
+        </div>
+
+        <div className="gpt4">
+          <h1>${gpt4cost}</h1>
+          <h2>GPT-4 cost</h2>
+          <p>$30/1M tokens input</p>
+          <p>$60/1M tokens output</p>
+        </div>
+        <div className="gpt3">
+          <h1>${gpt3cost}</h1>
+          <h2>GPT-3.5 cost</h2>
+          <p>$0.50/1M tokens input</p>
+          <p>$1.50/1M tokens output</p>
+        </div>
+
+        <div className="other-numbers">
+          <p>Number of total reviews: {totalReviews}</p>
+          <p>Number of total words: {totalWords}</p>
+          <p>Number of total characters: {totalChars}</p>
+          <p>Number of total tokens: {totalTokens}</p>
+          <p>Number of average words per review: {avgWords}</p>
+          <p>Number of average characters per review: {avgChars}</p>
+          <p>Number of average tokens per review: {avgTokens}</p>
+        </div>
       </div>
     )
   }

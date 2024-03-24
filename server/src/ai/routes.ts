@@ -4,8 +4,8 @@ import { minReviewsCosting, simpleCosting, avgReviewsPerCourse } from './functio
 const router = Router()
 
 /** Reachable at POST /ai/costing 
- * @body none 
- * values used for OpenAI model costing consideration
+ * @body minimum number of reviews a course needs to be included in data
+ * returns values used for OpenAI model costing consideration
 */
 router.post('/costing', async (req, res) => {
   const min = req.body.min;
