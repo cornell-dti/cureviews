@@ -9,6 +9,7 @@ import WriteReviewIcon from '../../../assets/icons/write.svg'
 
 import { courseVisited } from './Feedback'
 import Navbar from '../../Globals/Navbar'
+import Loading from '../../Globals/Loading'
 
 import styles from '../Styles/Course.module.css'
 import { lastOfferedSems } from 'common/CourseCard'
@@ -335,5 +336,5 @@ export const Course = () => {
   }
 
   // TODO: create idle state, rethink how to handle this
-  return <>Loading...</>
+  return <Loading />
 }
