@@ -23,8 +23,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
   // checks query after at least 2 characters to speed up search
   if (query !== undefined && query.length >= 2) {
     // naive search
-    const queryLower = query.toLowerCase();
-    const initialSearch = await search.searchQuery(findCourses(queryLower));
+    const initialSearch = await search.searchQuery(findCourses);
 
     if (initialSearch && initialSearch.length > 0) {
       fullSearch = new Set([...fullSearch, ...initialSearch]);

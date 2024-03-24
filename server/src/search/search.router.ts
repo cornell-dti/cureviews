@@ -22,12 +22,19 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
     const cleanQuery = query.replace('+', ' ');
     const search = new Search({ query: cleanQuery });
 
-    // divide up course search by whether it is subject or professor first, then use default at the end
-    const courses = await searchCourses({ search });
-    // const courses = await searchCoursesByProfessor({ search });
-    // const courses = await searchCoursesBySubject({ search });
+    // divide up course search by whether it is subject or professor, 
+    // then use default course search at the end
     const subjects = await searchSubjects({ search });
     const professors = await searchProfessors({ search });
+    let courses;
+
+    if (subjects.length > 0) {
+      courses = await searchCoursesBySubject({ search });
+    } else if (professors.length > 0) {
+      courses = await searchCoursesByProfessor({ search });
+    } else {
+      courses = await searchCourses({ search });
+    }
 
     if (!courses || !subjects || !professors) {
       return res.status(500).json({ error: `Internal Server Error.` });
