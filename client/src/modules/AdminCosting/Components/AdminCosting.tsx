@@ -3,15 +3,9 @@ import { Redirect } from 'react-router-dom'
 
 import axios from 'axios'
 
-import { Review } from 'common'
-
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 
 import '../Styles/Admin.Costing.css'
-
-import UpdateReview from '../../Admin/Components/AdminReview'
-import Stats from '../../Admin/Components/Stats'
-import RaffleWinner from '../../Admin/Components/RaffleWinner'
 
 /** Admin Costing Page
  * Get costing estimates for GPT4 and GPT3.5 using data from courses that have

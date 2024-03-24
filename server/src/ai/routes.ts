@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { minReviewsCosting, simpleCosting, avgReviewsPerCourse } from './functions'
+import { minReviewsCosting } from './functions'
 
 const router = Router()
 
