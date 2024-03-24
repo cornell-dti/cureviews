@@ -17,7 +17,7 @@ import { SearchQueryType } from './search.type';
  * @returns list of courses if operation was successful, null otherwise.
  */
 const fullCourseSearch = async ({ search }: SearchQueryType) => {
-  const query = search.getQuery();
+  const query = search.getQuery().toLowerCase();
   let fullSearch = new Set(); // set to ensure no duplicate courses
 
   // checks query after at least 2 characters to speed up search
