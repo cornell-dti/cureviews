@@ -35,7 +35,7 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
 
     return res.status(200).json({
       message: `Success! Retrieved all courses, subjects, and professors by query: ${cleanQuery}`,
-      result: { subjects: subjects, professors: professors, courses: courses },
+      result: { courses: courses, subjects: subjects, professors: professors },
     });
   } catch (err) {
     return res
