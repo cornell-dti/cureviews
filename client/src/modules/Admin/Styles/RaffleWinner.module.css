@@ -1,14 +1,20 @@
 .raffleContainer {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  max-width: 400px;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  flex: 1;
 }
 
 .raffleButton {
-  width: 400px;
+  font-weight: var(--semi-bold-weight);
+  font-size: var(--font-small-size);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 6px;
+  flex: 1;
+  cursor: pointer;
 }
 
 .raffleWinner {
-  width: 400px;
 }

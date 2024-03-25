@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import styles from '../Styles/Stats.module.css'
 
 type Props = {
   token: string
@@ -143,50 +144,13 @@ export default class Stats extends Component<Props, State> {
 
   render() {
     return (
-      <div>
-        <div>
+      <div className={styles.diagnosticbox}>
+        <h2>Diagnostic information</h2>
+        <div className = {styles.stats}>
           <button className="" onClick={this.downloadCSVFile}>
             Download CSV For ReviewsPerClass
           </button>
-        </div>
-        <p>Total reviews: {this.state.totalReviews}</p>
-        {/* <LineChart width="77vw" height="55vh" data={this.state.chartData} /> */}
-
-        <div className="">
-          <div className="">
-            <label htmlFor="range">Range in months</label>
-            <input
-              className=""
-              type="number"
-              id="range"
-              name="range"
-              min="1"
-              value={this.state.range}
-              onChange={(e) =>
-                this.setState({ range: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-
-          <div className="">
-            <label htmlFor="step">Step in days</label>
-            <input
-              className=""
-              type="number"
-              id="step"
-              name="step"
-              min="1"
-              value={this.state.step}
-              onChange={(e) =>
-                this.setState({ step: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-          <div className="">
-            <button type="button" className="" onClick={this.handleClick}>
-              Load Chart
-            </button>
-          </div>
+          <p>Total reviews: {this.state.totalReviews}</p>
         </div>
       </div>
     )

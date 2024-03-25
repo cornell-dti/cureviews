@@ -11,6 +11,8 @@ import UpdateReview from './AdminReview'
 import Stats from './Stats'
 import RaffleWinner from './RaffleWinner'
 
+import styles from '../Styles/Admin.module.css'
+
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
@@ -246,11 +248,11 @@ export const Admin = () => {
     // offer button to edit database
     if (doubleClick) {
       return (
-        <div className="" role="group">
+        <div className="">
           <button
             disabled={disableInit}
             type="button"
-            className=""
+            className={styles.semesterButtons}
             onClick={() => addAllCourses()}
           >
             Initialize Database
@@ -260,10 +262,10 @@ export const Admin = () => {
     } else {
       // offer button that gives alert and saves next click as a double click (in local state)
       return (
-        <div className="" role="group">
+        <div className="">
           <button
             type="button"
-            className=""
+            className={styles.semesterButtons}
             onClick={() => firstClickHandler()}
           >
             Initialize Database
@@ -279,172 +281,116 @@ export const Admin = () => {
 
   function renderAdmin(token: string) {
     return (
-      <div className="">
-        <div className="">
-          <div className="">
-            <div className="">
-              <h2>Admin Interface</h2>
-              <Stats token={token} />
-              <br />
-
-              <div className="">
-                <div className="" role="group">
-                  <button
+      <div className = "">
+        <div className = "headInfo">
+          <h1>Admin Interface</h1>
+          <Stats token={token} />
+          <div className={styles.semesterUpdate}>
+            <h2>Tools for new semester</h2>
+            <div className="" role="group">
+                <button
                     disabled={disableNewSem}
                     type="button"
-                    className=""
+                    className={styles.semesterButtons}
                     onClick={() => addNewSem(addSemester)}
                   >
                     Add New Semester
-                  </button>
-                  {/* <Select
-                    isDisabled={disableNewSem}
-                    value={{ value: addSemester, label: addSemester }}
-                    onChange={(semester: any) => {
-                      setAddSemester(semester.value)
-                    }}
-                    isSingle
-                    options={toSelectOptions([
-                      'SP24',
-                      'FA24',
-                      'SP25',
-                      'FA25',
-                      'SP26',
-                      'FA26',
-                      'SP27',
-                      'FA27',
-                      'SP28',
-                      'FA28',
-                      'SP29',
-                      'FA29',
-                      'SP30',
-                    ])}
-                    placeholder="Select Semester"
-                  /> */}
-                </div>
-
-                <div className="" role="group">
-                  <button
+                </button>
+                <button
                     disabled={disableInit}
                     type="button"
-                    className=""
+                    className={styles.semesterButtons}
                     onClick={() => updateProfessors()}
                   >
                     Update Professors
-                  </button>
-                </div>
-                <div className="" role="group">
-                  <button
+                </button>
+                <button
                     disabled={disableInit}
                     type="button"
-                    className=""
+                    className={styles.semesterButtons}
                     onClick={() => resetProfessors()}
                   >
-                    RESET Professors
-                  </button>
-                </div>
-                <div className="" role="group">
-                  {renderInitButton(doubleClick)}
-                </div>
-              </div>
-
-              <div hidden={!(loadingSemester === 1)} className="">
-                <p>
-                  Adding New Semester Data. This process can take up to 15
-                  minutes.
-                </p>
-              </div>
-
-              <div hidden={!(loadingSemester === 2)} className="">
-                <p>New Semester Data import is complete!</p>
-              </div>
-
-              <div hidden={!(resettingProfs === 1)} className="">
-                <p>Clearing all associated professors from Classes.</p>
-                <p>This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(resettingProfs === 2)} className="">
-                <p>All professor arrays in Classes reset to empty!</p>
-              </div>
-
-              <div hidden={!(loadingProfs === 1)} className="">
-                <p>Updating professor data to Classes.</p>
-                <p>This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(loadingProfs === 2)} className="">
-                <p>Professor data import to Classes is complete!</p>
-              </div>
-
-              <div hidden={!(loadingInit === 1)} className="">
-                <p>
-                  Database Initializing. This process can take up to 15 minutes.
-                </p>
-              </div>
-
-              <div hidden={!(loadingInit === 2)} className="">
-                <p>Database initialaization is complete!</p>
-              </div>
-
-              <RaffleWinner adminToken={token} />
-
-              <br />
-
-              <div className="">
-                <div className="">
-                  <h3 className="">New Reviews</h3>
-                </div>
-                <div className="">
-                  <ul>
-                    {unapprovedReviews.map((review: Review) => {
-                      if (review.reported !== 1) {
-                        return (
-                          <UpdateReview
-                            key={review._id}
-                            info={review}
-                            removeHandler={removeReview}
-                            approveHandler={approveReview}
-                            unReportHandler={approveReview}
-                          />
-                        )
-                      }
-                      return null
-                    })}
-                  </ul>
-                </div>
-              </div>
-
-              <br />
-
-              <div className="">
-                <div className="">
-                  <h3 className="">Reported Reviews</h3>
-                </div>
-                <div className="">
-                  <ul>
-                    {reportedReviews.map((review: Review) => {
-                      //create a new class "button" that will set the selected class to this class when it is clicked.
-                      if (review.reported === 1) {
-                        return (
-                          <UpdateReview
-                            key={review._id}
-                            info={review}
-                            removeHandler={removeReview}
-                            approveHandler={approveReview}
-                            unReportHandler={unReportReview}
-                          />
-                        )
-                      }
-                      return null
-                    })}
-                  </ul>
-                </div>
-              </div>
+                    Reset Professors
+                </button>
+                {renderInitButton(doubleClick)}
             </div>
           </div>
+          
+          <div hidden={!(loadingSemester === 1)} className="">
+            <p>Adding New Semester Data. This process can take up to 15 minutes.</p>
+          </div>
+          
+          <div hidden={!(loadingSemester === 2)} className="">
+            <p>New Semester Data import is complete!</p>
+          </div>
+          
+          <div hidden={!(resettingProfs === 1)} className="">
+            <p>Clearing all associated professors from Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+          
+          <div hidden={!(resettingProfs === 2)} className="">
+            <p>All professor arrays in Classes reset to empty!</p>
+          </div>
+          
+          <div hidden={!(loadingProfs === 1)} className="">
+            <p>Updating professor data to Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+          
+          <div hidden={!(loadingProfs === 2)} className="">
+            <p>Professor data import to Classes is complete!</p>
+          </div>
+          
+          <div hidden={!(loadingInit === 1)} className="">
+            <p>Database Initializing. This process can take up to 15 minutes.</p>
+          </div>
+          
+          <div hidden={!(loadingInit === 2)} className="">
+            <p>Database initialization is complete!</p>
+          </div>
+
+          <RaffleWinner adminToken={token} />
         </div>
-      </div>
+          
+        <div className="PendingReviews">
+          <h1>New Reviews</h1>    
+          <div className = "NewReviews">
+            {unapprovedReviews.map((review: Review) => {
+              if (review.reported !== 1) {
+                return (
+                  <UpdateReview
+                    key={review._id}
+                    info={review}
+                    removeHandler={removeReview}
+                    approveHandler={approveReview}
+                    unReportHandler={approveReview}
+                    />
+                )
+              }
+              return null
+            })}
+          </div>    
+          <h1>Reported Reviews</h1>
+          <div className= "ReportedReviews">
+            {reportedReviews.map((review: Review) => {
+              //create a new class "button" that will set the selected class to this class when it is clicked.
+              if (review.reported === 1) {
+                return (
+                  <UpdateReview
+                    key={review._id}
+                    info={review}
+                    removeHandler={removeReview}
+                    approveHandler={approveReview}
+                    unReportHandler={unReportReview}                      
+                  />
+                )
+              }
+              return null
+              })}
+          </div>
+        </div>
+      </div>   
     )
   }
 

@@ -1,0 +1,20 @@
+.semesterUpdate {
+    border: 2px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+    flex: 1;
+}
+
+.semesterButtons {
+    background-color: var(--clr-gray-300);
+    color: var(--clr-white);
+    font-weight: var(--semi-bold-weight);
+    font-size: var(--font-small-size);
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 2px;
+    padding: 5px 6px;
+    cursor: pointer;
+}
+
