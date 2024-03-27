@@ -16,6 +16,7 @@ type State = {
   shortName: string
   longName: string
 }
+
 /*
   Update Review Component.
 
@@ -119,41 +120,22 @@ export default class UpdateReview extends Component<Props, State> {
   render() {
     const review = this.props.info
     return (
-      <li id={review._id}>
-        <div className="">
-          <div className="">
-            <b>Course:</b> {this.state.shortName}: {this.state.longName}
-            <br></br>
-            {/* <b>Posted </b> {moment(review.date).fromNow()} */}
-          </div>
+      <div id = {review._id} className = {styles.pendingreview}>
+        <div className = {styles.titleinfo}>
+        <h4 className = "">
+          Course: {this.state.shortName}, {this.state.longName}
+        </h4>
+        <p>{review.date}</p>
         </div>
-        <div className="">
-          <div className="">
-            <div className="">
-              <div className="">
-                <div className="">
-                  <div className="">{review.rating}</div>
-                </div>
-                <div className="">
-                  <div className="">{review.difficulty}</div>
-                </div>
-                <div className="">
-                  <div className="">{review.professors}</div>
-                </div>
-              </div>
-              <div className="">
-                <div className=""> Overall Rating</div>
-                <div className=""> Difficulty</div>
-                <div className=""> Professor(s)</div>
-              </div>
-              <div className="">{review.text}</div>
-            </div>
-            <div className="">
-              <div className="">{this.renderButtons(review)}</div>
-            </div>
-          </div>
+        <div className = {styles.reviewinfo}>
+          <p>Professor(s): {review.professors}</p>
+          <p>Overall Rating: {review.rating}</p>
+          <p>Difficult: {review.difficulty}</p>
+          <br></br>
+          <p>{review.text}</p>
         </div>
-      </li>
+        <div className="">{this.renderButtons(review)}</div>
+      </div>
     )
   }
 }

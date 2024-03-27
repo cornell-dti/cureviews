@@ -19,3 +19,21 @@
     padding: 5px 6px;
     cursor: pointer;
 }
+
+.pendingreview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+    flex: 1;
+}
+
+.reviewinfo {
+    text-indent: 10px;
+}
+
+.titleinfo {
+    font-size: var(--font-p-size);
+    font-weight: var(--semi-bold-weight);
+    color: var(--clr-gray-300)
+}
