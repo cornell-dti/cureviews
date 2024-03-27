@@ -130,7 +130,8 @@ export default class UpdateReview extends Component<Props, State> {
         <div className = {styles.reviewinfo}>
           <p>Professor(s): {review.professors}</p>
           <p>Overall Rating: {review.rating}</p>
-          <p>Difficult: {review.difficulty}</p>
+          <p>Difficulty: {review.difficulty}</p>
+          <p>Workload: {review.workload}</p>
           <br></br>
           <p>{review.text}</p>
         </div>
