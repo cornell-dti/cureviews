@@ -29,17 +29,17 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       fullSearch = new Set([...fullSearch, ...initialSearch]);
     }
 
+    // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
+    const courseSubject = await findCourseSubject(query);
+    if (courseSubject.length > 0) {
+      return new Set(courseSubject);
+    }
+
     // checks if search is a professor
     // returns all courses taught by particular professor
     const coursesByProfessor = await search.searchQuery(findCourseProfessor);
     if (coursesByProfessor && coursesByProfessor.length > 0) {
       return new Set(coursesByProfessor);
-    }
-
-    // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
-    const courseSubject = await findCourseSubject(query);
-    if (courseSubject.length > 0) {
-      return new Set(courseSubject);
     }
 
     // check if first digit is a number. Catches searchs like "1100"
