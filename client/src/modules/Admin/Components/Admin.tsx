@@ -17,6 +17,7 @@ import styles from '../Styles/Admin.module.css'
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
 export const Admin = () => {
+  const [pendingReviews, setPendingReviews] = useState<Review[]>([])
   const [unapprovedReviews, setUnapprovedReviews] = useState<Review[]>([])
   const [reportedReviews, setReportedReviews] = useState<Review[]>([])
   const [disableInit, setDisableInit] = useState<boolean>(false)
@@ -57,6 +58,8 @@ export const Admin = () => {
       .then((response) => {
         const result = response.data.result
         if (response.status === 200) {
+          setPendingReviews(result)
+          console.log(result.length)
           setUnapprovedReviews(
             result.filter((review: Review) => review.reported === 0)
           )
@@ -284,7 +287,8 @@ export const Admin = () => {
       <div className = "">
         <div className = "headInfo">
           <h1>Admin Interface</h1>
-          <Stats token={token} />
+          <div>Total reviews: {pendingReviews.length}</div>
+          <Stats token={token} reviews = {pendingReviews} />
           <div className={styles.semesterUpdate}>
             <h2>Tools for new semester</h2>
             <div className="" role="group">

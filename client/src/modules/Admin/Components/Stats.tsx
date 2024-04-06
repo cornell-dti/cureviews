@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import styles from '../Styles/Stats.module.css'
+import { Review } from 'common'
 
 type Props = {
   token: string
+  reviews: Review[]
 }
 type State = {
   howManyEachClass: any[]
@@ -25,7 +27,8 @@ export default class Stats extends Component<Props, State> {
     this.state = {
       howManyEachClass: [],
       howManyReviewsEachClass: [],
-      totalReviews: -1,
+      totalReviews: 0,
+      // keep this line or make a function to set the value?
       chartData: [],
       step: 14,
       range: 12,
@@ -35,9 +38,14 @@ export default class Stats extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.getHowManyEachClass()
-    this.howManyReviewsEachClass()
     this.totalReviews()
+  //   this.getHowManyEachClass()
+  //   this.howManyReviewsEachClass()
+  }
+
+  // Not running currently for some reason
+  totalReviews() {
+    this.setState({totalReviews: this.props.reviews.length})
   }
 
   getChartData() {
@@ -112,20 +120,6 @@ export default class Stats extends Component<Props, State> {
       })
   }
 
-  totalReviews() {
-    axios
-      .post(`/api/totalReviews`, {
-        token: this.props.token,
-      })
-      .then((res) => {
-        const total = res.data.result
-        this.setState({ totalReviews: total })
-      })
-      .catch((err) => {
-        console.log('error retrieving totalReviews ', err)
-      })
-  }
-
   handleClick = (e: any) => {
     e.preventDefault()
     this.getChartData()
@@ -150,7 +144,7 @@ export default class Stats extends Component<Props, State> {
           <button className="" onClick={this.downloadCSVFile}>
             Download CSV For ReviewsPerClass
           </button>
-          <p>Total reviews: {this.state.totalReviews}</p>
+          <p>Total reviews: {this.props.reviews.length}</p>
         </div>
       </div>
     )
