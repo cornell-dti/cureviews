@@ -287,7 +287,6 @@ export const Admin = () => {
       <div className = "">
         <div className = "headInfo">
           <h1>Admin Interface</h1>
-          <div>Total reviews: {pendingReviews.length}</div>
           <Stats token={token} reviews = {pendingReviews} />
           <div className={styles.semesterUpdate}>
             <h2>Tools for new semester</h2>

@@ -9,3 +9,8 @@
 .stats {
     text-indent: 10px;
 }
+
+.downloadButton {
+    cursor: pointer;
+    text-decoration: underline;
+}

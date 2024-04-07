@@ -8,8 +8,6 @@ type Props = {
   reviews: Review[]
 }
 type State = {
-  howManyEachClass: any[]
-  howManyReviewsEachClass: any[]
   totalReviews: number
   chartData: any[]
   step: number
@@ -25,10 +23,9 @@ export default class Stats extends Component<Props, State> {
     super(props)
 
     this.state = {
-      howManyEachClass: [],
-      howManyReviewsEachClass: [],
       totalReviews: 0,
-      // keep this line or make a function to set the value?
+      // keep this line and make a function to set the value?
+      // does the stats need state for the things it's displaying...
       chartData: [],
       step: 14,
       range: 12,
@@ -37,11 +34,11 @@ export default class Stats extends Component<Props, State> {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  componentDidMount() {
-    this.totalReviews()
-  //   this.getHowManyEachClass()
-  //   this.howManyReviewsEachClass()
-  }
+  // componentDidMount() {
+  //   this.totalReviews()
+  // //   this.getHowManyEachClass()
+  // //   this.howManyReviewsEachClass()
+  // }
 
   // Not running currently for some reason
   totalReviews() {
@@ -82,43 +79,73 @@ export default class Stats extends Component<Props, State> {
       })
   }
 
-  howManyReviewsEachClass() {
-    axios
-      .post(`/api/howManyReviewsEachClass`, {
-        token: this.props.token,
-      })
-      .then((res) => {
-        let data = res.data.result
-        data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total ? -1 : 1))
-        this.setState({ howManyReviewsEachClass: data })
-      })
-      .catch((err) => {
-        console.log('error retrieving reviews for each class ', err)
-      })
+  numReviewsPerClass(reviews: Review[]): {courseName?: string, reviewCount?: number | undefined}[] {
+    const reviewsPerCourse: Map<string | undefined, number | undefined> = new Map()
+
+    reviews.forEach(
+      review => {
+        if (reviewsPerCourse.has(review.class!)) {
+          reviewsPerCourse.set(review.class!, reviewsPerCourse.get(review.class!)! + 1)
+        } else {
+          reviewsPerCourse.set(review.class!, 1)
+        }
+      }
+    )
+    
+    const result: {courseName: string | undefined, reviewCount: number | undefined}[] = [];
+    reviewsPerCourse.forEach((count, courseName) => {
+      result.push({courseName, reviewCount: count})
+    })
+    return result
   }
+
+  // numReviewsPerClass(props: Props) {
+  //   let reviewsPerClass: [] = []
+  //   props.reviews.forEach(
+  //     review.shortName in reviewsPerClass?
+  //       reviewsPerClass.push({
+  //           review.shortName, 1
+  //       })
+  //       : 
+  //   )
+
+  //   axios
+  //     .post(`/api/howManyReviewsEachClass`, {
+  //       token: this.props.token,
+  //     })
+  //     .then((res) => {
+  //       let data = res.data.result
+  //       data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total ? -1 : 1))
+  //       this.setState({ howManyReviewsEachClass: data })
+  //     })
+  //     .catch((err) => {
+  //       console.log('error retrieving reviews for each class ', err)
+  //     })
+  // }
 
   getReviewsPerClassCSV() {
-    let strRet = 'class,total\n'
-    this.state.howManyReviewsEachClass.forEach((obj) => {
-      strRet += obj._id + ',' + obj.total + '\n'
+    let csv = 'Class,Number of Reviews\n'
+    const reviewsPerClass = this.numReviewsPerClass(this.props.reviews)
+    reviewsPerClass.forEach(({courseName, reviewCount}) => {
+      csv += courseName + ',' + reviewCount + '\n'
     })
-    return strRet
+    return csv
   }
 
-  getHowManyEachClass() {
-    axios
-      .post(`/api/howManyEachClass`, {
-        token: this.props.token,
-      })
-      .then((res) => {
-        let data = res.data.result
-        data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total ? -1 : 1))
-        this.setState({ howManyEachClass: data })
-      })
-      .catch((err) => {
-        console.log('error retrieving how many each class ', err)
-      })
-  }
+  // getHowManyEachClass() {
+  //   axios
+  //     .post(`/api/howManyEachClass`, {
+  //       token: this.props.token,
+  //     })
+  //     .then((res) => {
+  //       let data = res.data.result
+  //       data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total ? -1 : 1))
+  //       this.setState({ howManyEachClass: data })
+  //     })
+  //     .catch((err) => {
+  //       console.log('error retrieving how many each class ', err)
+  //     })
+  // }
 
   handleClick = (e: any) => {
     e.preventDefault()
@@ -141,8 +168,8 @@ export default class Stats extends Component<Props, State> {
       <div className={styles.diagnosticbox}>
         <h2>Diagnostic information</h2>
         <div className = {styles.stats}>
-          <button className="" onClick={this.downloadCSVFile}>
-            Download CSV For ReviewsPerClass
+          <button className={styles.downloadButton} onClick={this.downloadCSVFile}>
+            Download CSV for ReviewsPerClass
           </button>
           <p>Total reviews: {this.props.reviews.length}</p>
         </div>
