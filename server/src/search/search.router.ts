@@ -45,7 +45,7 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
       (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
 
     if (!subjects || !professors || !courses) {
-      return res.status(500).json({ error: `Internal Server Error.` });
+      return res.status(204).json({ error: `No results found for query: ${cleanQuery}` });
     }
 
     return res.status(200).json({

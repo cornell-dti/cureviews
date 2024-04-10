@@ -23,75 +23,29 @@ export class Results extends Component {
   }
 
   updateResults() {
-    if (this.props.match.params.type === 'major') {
-      axios
-        .post('/api/getCoursesByMajor', {
-          query: this.props.match.params.input.toLowerCase(),
+    axios
+      .post('/api/getResultsFromQuery', {
+        query: this.props.match.params.input.toLowerCase(),
+      })
+      .then((response) => {
+        const subjectList = response.data.result.subjects
+        const professorList = response.data.result.professors
+        const courseList = response.data.result.courses
+        this.setState({
+          subjectList: !subjectList.error && subjectList.length > 0 ? subjectList : [],
+          professorList: !professorList.error && professorList.length > 0 ? professorList : [],
+          courseList: !courseList.error && courseList.length > 0 ? courseList : [],
+          loading: false,
         })
-        .then((response) => {
-          const courseList = response.data.result
-          if (!courseList.error && courseList.length > 0) {
-            // Save the Class object that matches the request
-            this.setState({
-              courseList: courseList,
-              loading: false,
-            })
-          } else {
-            this.setState({
-              courseList: [],
-              loading: false,
-            })
-          }
-        })
-    } else if (this.props.match.params.type === 'professor') {
-      axios
-        .post('/api/getCoursesByProfessor', {
-          query: this.props.match.params.input.toLowerCase(),
-        })
-        .then((response) => {
-          const courseList = response.data.result
-          if (!courseList.error && courseList.length > 0) {
-            // Save the Class object that matches the request
-            this.setState({
-              courseList: courseList,
-              loading: false,
-            })
-          } else {
-            this.setState({
-              courseList: [],
-              loading: false,
-            })
-          }
-        })
-    } else if (this.props.match.params.type === 'keyword') {
-      let userQuery = this.props.match.params.input.split('+').join(' ')
-      if (userQuery && userQuery.split(' ').length === 1) {
-        userQuery = userQuery.match(/[a-z]+|[^a-z]+/gi).join(' ')
-      }
-      axios
-        .post(`/api/getClassesByQuery`, { query: userQuery })
-        .then((response) => {
-          const queryCourseList = response.data.result
-          if (queryCourseList.length !== 0) {
-            // Save the Class object that matches the request
-            this.setState({
-              courseList: queryCourseList,
-              loading: false,
-            })
-          } else {
-            this.setState({
-              courseList: [],
-              loading: false,
-            })
-          }
-        })
-        .catch((e) => console.log('Getting courses failed!'))
-    }
+      })
+      .catch((e) => console.log('Getting subjects, professors, or courses failed!'))
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.setState({
+        subjectList: [],
+        professorList: [],
         courseList: [],
         loading: true,
       })
@@ -110,6 +64,8 @@ export class Results extends Component {
         <Navbar userInput={userInput} />
 
         <ResultsDisplay
+          subjects={this.state.subjectList}
+          professors={this.state.professorList}
           courses={this.state.courseList}
           history={this.props.history}
           userInput={userInput}

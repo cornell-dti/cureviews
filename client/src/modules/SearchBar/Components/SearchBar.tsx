@@ -37,50 +37,33 @@ export const SearchBar = ({
     if (query.toLowerCase() !== '') {
       setTimeout(() => {
         axios
-          .post(`/api/getClassesByQuery`, { query: query })
+          .post(`/api/getResultsFromQuery`, { query: query })
           .then((response) => {
-            const queryCourseList = response.data.result
-            if (queryCourseList.length !== 0) {
-              setCourses(queryCourseList)
+            const subjectList = response.data.result.subjects
+            const professorList = response.data.result.professors
+            const courseList = response.data.result.courses
+
+            if (subjectList && subjectList.length !== 0) {
+              setSubjects(subjectList)
+            } else {
+              setSubjects([])
+            }
+
+            if (professorList && professorList.length !== 0) {
+              setProfessors(professorList)
+            } else {
+              setProfessors([])
+            }
+
+            if (courseList && courseList.length !== 0) {
+              setCourses(courseList)
             } else {
               setCourses([])
             }
           })
           .catch((e) => {
             setCourses([])
-            console.log('Getting courses failed!')
-          })
-
-        axios
-          .post(`/api/getSubjectsByQuery`, { query: query })
-          .then((response) => {
-            const subjectList = response.data.result
-            if (subjectList && subjectList.length !== 0) {
-              // Save the list of Subject objects that matches the request
-              setSubjects(subjectList)
-            } else {
-              setSubjects([])
-            }
-          })
-          .catch((e) => {
-            setSubjects([])
-            console.log('Getting subjects failed!')
-          })
-
-        axios
-          .post(`/api/getProfessorsByQuery`, { query: query })
-          .then((response) => {
-            const professorList = response.data.result
-            if (professorList && professorList.length !== 0) {
-              // Save the list of Subject objects that matches the request
-              setProfessors(professorList)
-            } else {
-              setProfessors([])
-            }
-          })
-          .catch((e) => {
-            setProfessors([])
-            console.log('Getting professors failed!')
+            console.log('Getting courses, subjects, or professors failed!')
           })
       }, DEBOUNCE_TIME)
     }
@@ -250,9 +233,9 @@ export const SearchBar = ({
           active={
             index ===
             i +
-              subjectList.length +
-              professorList.length +
-              1 /* plus because of exact search, professors, subjects */
+            subjectList.length +
+            professorList.length +
+            1 /* plus because of exact search, professors, subjects */
           }
           enter={enter}
           mouse={mouse}
@@ -283,9 +266,8 @@ export const SearchBar = ({
   return (
     <div>
       <div
-        className={`${styles.searchbar} ${
-          isInNavbar ? styles.navbarsearchbar : ''
-        } ${query !== '' && styles.searching}`}
+        className={`${styles.searchbar} ${isInNavbar ? styles.navbarsearchbar : ''
+          } ${query !== '' && styles.searching}`}
       >
         <div className={styles.searchbarcontent}>
           <img
