@@ -29,7 +29,7 @@ export const fetchSubjects = async (
       return null;
     }
 
-    const { subjects } = result.data.subjects;
+    const { subjects } = result.data.data;
     return subjects;
   } catch (err) {
     return null;
