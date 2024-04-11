@@ -9,7 +9,7 @@ import {
   ReportReviewRequestType,
 } from './admin.type';
 import {
-  getPendingReviews,
+  getAllReviews,
   editReviewVisibility,
   getRaffleWinner,
   removePendingReview,
@@ -92,20 +92,20 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchPendingReviews', async (req, res) => {
+adminRouter.post('/fetchAllReviews', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
-    const pendingReviews = await getPendingReviews({ auth });
-    if (pendingReviews === null) {
+    const reviews = await getAllReviews({ auth });
+    if (reviews === null) {
       return res.status(400).json({
         error: `User is not an admin.`,
       });
     }
 
     return res.status(200).json({
-      message: 'Retrieved all pending reviews',
-      result: pendingReviews,
+      message: 'Retrieved all reviews: approved, pending, and reported',
+      result: reviews,
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

@@ -28,12 +28,13 @@ export const updateCourseMetrics = async (
   );
 };
 
-export const findAllPendingReviews = async () =>
-  await Reviews.find(
-    { visible: 0 },
-    {},
-    { sort: { date: -1 }, limit: 700 },
-  ).exec();
+export const findAllReviews = async () =>
+  await Reviews.find().exec();
+  //   { visible: 0 },
+  //   {},
+  //   { sort: { date: -1 }, limit: 700 },
+  // ).exec();
+
 
 // eslint-disable-next-line arrow-body-style
 export const findAllReviewsAfterDate = async (date: Date) => {

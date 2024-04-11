@@ -1,5 +1,5 @@
 import {
-  findAllPendingReviews,
+  findAllReviews,
   findAllReviewsAfterDate,
   removeReviewById,
   updateReviewVisibility,
@@ -132,10 +132,10 @@ export const removePendingReview = async ({
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns all pending review objects if operation was successful, null otherwise
  */
-export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
+export const getAllReviews = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    return findAllPendingReviews();
+    return findAllReviews();
   }
 
   return null;

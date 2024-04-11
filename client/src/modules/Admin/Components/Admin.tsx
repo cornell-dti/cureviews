@@ -17,8 +17,8 @@ import styles from '../Styles/Admin.module.css'
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
 export const Admin = () => {
+  const [approvedReviews, setApprovedReviews] = useState<Review[]>([])
   const [pendingReviews, setPendingReviews] = useState<Review[]>([])
-  const [unapprovedReviews, setUnapprovedReviews] = useState<Review[]>([])
   const [reportedReviews, setReportedReviews] = useState<Review[]>([])
   const [disableInit, setDisableInit] = useState<boolean>(false)
   const [disableNewSem, setDisableNewSem] = useState<boolean>(false)
@@ -54,20 +54,31 @@ export const Admin = () => {
 
   useEffect(() => {
     axios
-      .post('/api/fetchPendingReviews', { token: token })
+      .post('/api/fetchAllReviews', { token: token })
       .then((response) => {
         const result = response.data.result
         if (response.status === 200) {
-          setPendingReviews(result)
-          console.log(result.length)
-          setUnapprovedReviews(
-            result.filter((review: Review) => review.reported === 0)
+          setApprovedReviews(
+            result.filter((review: Review) => review.visible === 1)
+          )
+          setPendingReviews(
+            result.filter((review: Review) => review.reported === 0 && review.visible === 0)
           )
           setReportedReviews(
-            result.filter((review: Review) => review.reported === 1)
+            result.filter((review: Review) => review.reported === 1 && review.visible === 0)
           )
         } else {
-          console.log('Error at fetchPendingReviews')
+          console.log('Error at fetchAllReviews')
+        }
+      })
+    axios
+      .post('/api/fetchApprovedReviews', { token: token })
+      .then((response) => {
+        const result = response.data.result
+        if (response.status === 200) {
+          setApprovedReviews(result)
+        } else {
+          console.log('Error at fetchApprovedReviews')
         }
       })
   }, [token, isAuthenticating])
@@ -91,11 +102,11 @@ export const Admin = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          const updatedUnapprovedReviews = removeReviewFromList(
+          const updatedPendingReviews = removeReviewFromList(
             review,
-            unapprovedReviews
+            pendingReviews
           )
-          setUnapprovedReviews(updatedUnapprovedReviews)
+          setPendingReviews(updatedPendingReviews)
         }
       })
   }
@@ -114,9 +125,9 @@ export const Admin = () => {
           if (isUnapproved) {
             const updatedUnapprovedReviews = removeReviewFromList(
               review,
-              unapprovedReviews
+              pendingReviews
             )
-            setUnapprovedReviews(updatedUnapprovedReviews)
+            setPendingReviews(updatedUnapprovedReviews)
           } else {
             const updatedReportedReviews = removeReviewFromList(
               review,
@@ -287,7 +298,10 @@ export const Admin = () => {
       <div className = "">
         <div className = "headInfo">
           <h1>Admin Interface</h1>
-          <Stats token={token} reviews = {pendingReviews} />
+          <Stats token={token}
+                 approvedReviews = {approvedReviews}
+                 pendingReviews = {pendingReviews}
+                 reportedReviews = {reportedReviews} />
           <div className={styles.semesterUpdate}>
             <h2>Tools for new semester</h2>
             <div className="" role="group">
@@ -359,7 +373,7 @@ export const Admin = () => {
         <div className="PendingReviews">
           <h1>New Reviews</h1>    
           <div className = "NewReviews">
-            {unapprovedReviews.map((review: Review) => {
+            {pendingReviews.map((review: Review) => {
               if (review.reported !== 1) {
                 return (
                   <UpdateReview
