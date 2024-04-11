@@ -96,6 +96,8 @@ export const Admin = () => {
             review,
             pendingReviews
           )
+          const updatedApprovedReviews = approvedReviews.concat(review)
+          setApprovedReviews(updatedApprovedReviews)
           setPendingReviews(updatedPendingReviews)
         }
       })
@@ -360,9 +362,16 @@ export const Admin = () => {
           <RaffleWinner adminToken={token} />
         </div>
           
-        <div className="PendingReviews">
-          <h1>New Reviews</h1>    
-          <div className = "NewReviews">
+        <div className="StagedReviews">
+          <h1>Pending Reviews</h1>
+          <button
+            type="button"
+            className={styles.massApproveButton}
+            onClick={() => resetProfessors()}
+            >
+            Approve all pending reviews
+            </button>    
+          <div className = "PendingReviews">
             {pendingReviews.map((review: Review) => {
               if (review.reported !== 1) {
                 return (
