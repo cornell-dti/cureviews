@@ -119,7 +119,7 @@ export default class Stats extends Component<Props, State> {
         <h2>Diagnostic information</h2>
         <div className = {styles.stats}>
           <button className={styles.downloadButton} onClick={this.downloadCSVFile}>
-            Download CSV for ReviewsPerClass
+            Download ApprovedReviewCount by Class
           </button>
           <p>Approved review count: {this.props.approvedReviews.length}</p>
           <p>Pending review count: {this.props.pendingReviews.length}</p>
