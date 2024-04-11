@@ -71,16 +71,6 @@ export const Admin = () => {
           console.log('Error at fetchAllReviews')
         }
       })
-    axios
-      .post('/api/fetchApprovedReviews', { token: token })
-      .then((response) => {
-        const result = response.data.result
-        if (response.status === 200) {
-          setApprovedReviews(result)
-        } else {
-          console.log('Error at fetchApprovedReviews')
-        }
-      })
   }, [token, isAuthenticating])
 
   // Helper function to remove a review from a list of reviews and
