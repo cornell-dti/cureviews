@@ -66,7 +66,6 @@ export const Home = () => {
     if (time === 'night') {
       setDTILogo(DTIWhiteLogo)
     }
-    setTime('night')
   }, [time, season])
 
   return (
