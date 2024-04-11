@@ -66,12 +66,14 @@ export const Home = () => {
     if (time === 'night') {
       setDTILogo(DTIWhiteLogo)
     }
+    setTime('night')
   }, [time, season])
 
   return (
     <div
-      className={`${styles.fullheight} ${styles.bgfixed} ${styles[`bg${time}${season}`]
-        }`}
+      className={`${styles.fullheight} ${styles.bgfixed} ${
+        styles[`bg${time}${season}`]
+      }`}
     >
       <div className={styles.buttoncontainer}>
         <ProfileDropdown
