@@ -68,6 +68,11 @@ export default class Stats extends Component<Props, State> {
       })
   }
 
+  /* 
+    Helper function that takes an array of reviews and returns an array of key-value pairs containing
+    a course's name/id and the number of times it appears in the array of reviews.
+    Used to print out a CSV of all approved reviews on the website and their review counts.
+   */
   numReviewsPerClass(reviews: Review[]): {courseName?: string, reviewCount?: number | undefined}[] {
     const reviewsPerCourse: Map<string | undefined, number | undefined> = new Map()
 
@@ -88,6 +93,10 @@ export default class Stats extends Component<Props, State> {
     return result
   }
 
+  /*
+    Helper method that converts an array of (course: number of reviews) objects to a
+    CSV format that can be read out
+  */
   getReviewsPerClassCSV() {
     let csv = 'Class,Number of Reviews\n'
     const reviewsPerClass = this.numReviewsPerClass(this.props.approvedReviews)
@@ -102,6 +111,10 @@ export default class Stats extends Component<Props, State> {
     this.getChartData()
   }
 
+  /*
+    Function to download a file containing all reviewed classes in the database and their
+    number of reviews
+  */
   downloadCSVFile = () => {
     const element = document.createElement('a')
     const file = new Blob([this.getReviewsPerClassCSV()], {
