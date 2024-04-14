@@ -123,13 +123,13 @@ export const testProfessors: Professor[] = [
     _id: 'prof_1',
     fullName: 'Gazghul Thraka',
     courses: ['newCourse1', 'newCourse2'],
-    major: 'MORK',
+    major: 'mork',
   },
   {
     _id: 'prof_2',
     fullName: 'Jean-Luc Picard',
     courses: [],
-    major: 'FEDN',
+    major: 'fedn',
   },
 ];
 
@@ -211,7 +211,7 @@ export const testClasses: Class[] = [
   },
   {
     _id: 'newCourse1',
-    classSub: 'MORK',
+    classSub: 'mork',
     classNum: '1110',
     classTitle: 'Introduction to Testing',
     classFull: 'MORK 1110: Introduction to Testing',
@@ -225,7 +225,7 @@ export const testClasses: Class[] = [
   },
   {
     _id: 'newCourse2',
-    classSub: 'MORK',
+    classSub: 'mork',
     classNum: '2110',
     classTitle: 'Intermediate Testing',
     classFull: 'MORK 2110: Intermediate Testing',
