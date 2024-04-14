@@ -44,8 +44,8 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
       (coursesBySubject.length > coursesNaive.length ? coursesBySubject : coursesNaive) :
       (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
 
-    if (!subjects || !professors || !courses) {
-      return res.status(204).json({ error: `No results found for query: ${cleanQuery}` });
+    if (subjects.length < 1 && professors.length < 1 && courses.length < 1) {
+      return res.status(200).json({ error: `No results found for query: ${cleanQuery}` });
     }
 
     return res.status(200).json({

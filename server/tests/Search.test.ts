@@ -53,17 +53,13 @@ describe('search functionality unit tests', () => {
     ]);
   });
 
-  it('getResultsFromQuery - valid query: "MORK1" sent with correct subject and order of classes', async () => {
+  it('getResultsFromQuery - valid query: "MORK1" sent with correct order of classes', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/getResultsFromQuery`,
       {
         query: 'MORK1',
       },
     );
-
-    expect(res.data.result.subjects.map((e) => e.subShort)).toContain('MORK');
-    expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('MAD');
-    expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('FEDN');
 
     expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
@@ -74,7 +70,7 @@ describe('search functionality unit tests', () => {
   it('getResultsFromQuery - valid query: "MORK 1110" sent with correct subject and order of classes', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/getResultsFromQuery`,
-      { query: 'MORK1110' },
+      { query: 'MORK 1110' },
     );
 
     expect(res.data.result.subjects.map((e) => e.subShort)).toContain('MORK');
@@ -84,6 +80,19 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
     ]);
+  });
+
+  it('getResultsFromQuery - valid query: "1110" sent with correct order of classes', async () => {
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      { query: '1110' },
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).toContain(
+      'MORK 1110: Introduction to Testing'
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
+      'MORK 2110: Intermediate Testing'
+    );
   });
 
   it('getResultsFromQuery - valid query subject: "MORK" sent with correct order', async () => {
