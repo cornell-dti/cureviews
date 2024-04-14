@@ -52,6 +52,9 @@ export const Admin = () => {
     }
   }, [isLoggedIn, token, isAuthenticating])
 
+  // Accesses the database and fetches all reviews. Called when admin page loads, and
+  // splits the reviews into three categories: approved (visible on the website),
+  // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
     axios
       .post('/api/fetchAllReviews', { token: token })
@@ -133,6 +136,13 @@ export const Admin = () => {
       .catch((e) => console.log(`Unable to remove review ${e}`))
   }
 
+  // Call when admin would like to mass-approve all of the currently pending reviews.
+  function approveAllReviews(reviews: Review[]) {
+    reviews.forEach((review: Review) => {
+      approveReview(review)
+    })
+  }
+
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   function unReportReview(review: Review) {
@@ -157,7 +167,7 @@ export const Admin = () => {
 
   // Call when user selects "Add New Semester" button. Runs code to check the
   // course API for new classes and updates classes existing in the database.
-  // sShould run once a semester, when new classes are added to the roster.
+  // Should run once a semester, when new classes are added to the roster.
   function addNewSem(semester: string) {
     console.log('Adding new semester...')
     setDisableNewSem(true)
@@ -367,7 +377,7 @@ export const Admin = () => {
           <button
             type="button"
             className={styles.massApproveButton}
-            onClick={() => resetProfessors()}
+            onClick={() => approveAllReviews(pendingReviews)}
             >
             Approve all pending reviews
             </button>    
