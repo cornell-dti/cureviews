@@ -39,6 +39,7 @@
     "mongodb-memory-server": "^6.5.2",
     "mongoose": "^5.9.6",
     "nodemon": "^3.0.2",
+    "openai": "^4.33.1",
     "shortid": "^2.2.15",
     "ts-node": "^10.9.2"
   },

@@ -3,10 +3,15 @@
     "moduleResolution": "node",
     "module": "CommonJS",
     "target": "ES2015",
-    "lib": ["ES2017", "DOM"],
+    "lib": [
+      "ES2017",
+      "DOM"
+    ],
     "esModuleInterop": true,
     "downlevelIteration": true,
     "outDir": "dist"
   },
-  "exclude": ["./tests/**/*"]
+  "exclude": [
+    "./tests/**/*"
+  ]
 }
