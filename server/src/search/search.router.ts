@@ -29,7 +29,8 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
 
     // checks to see if input is full subject name
     let coursesBySubject
-    if (subjects.length > 0 && cleanQuery == subjects[0].subFull.toLowerCase()) {
+    console.log(cleanQuery)
+    if (subjects.length > 0 && cleanQuery === subjects[0].subFull.toLowerCase()) {
       const subjectQuery = subjects[0].subShort;
       const search = new Search({ query: subjectQuery })
       coursesBySubject = await searchCoursesBySubject({ search });
