@@ -50,6 +50,7 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
       'MORK 2110: Intermediate Testing',
+      'MORK 3110: Advanced Mock',
     ]);
   });
 
@@ -64,6 +65,7 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
       'MORK 2110: Intermediate Testing',
+      'MORK 3110: Advanced Mock',
     ]);
   });
 
@@ -88,6 +90,41 @@ describe('search functionality unit tests', () => {
       { query: '1110' },
     );
     expect(res.data.result.courses.map((e) => e.classFull)).toContain(
+      'MORK 1110: Introduction to Testing'
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
+      'MORK 2110: Intermediate Testing'
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
+      'MORK 3110: Advanced Mock'
+    );
+  });
+
+  it('getResultsFromQuery - valid query: "Advanced" sent with correct order of classes', async () => {
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      { query: 'Advanced' },
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).toContain(
+      'MORK 3110: Advanced Mock'
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
+      'MORK 1110: Introduction to Testing'
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
+      'MORK 2110: Intermediate Testing'
+    );
+  });
+
+  it('getResultsFromQuery - valid query: "Advanced Mock" sent with correct order of classes', async () => {
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      { query: 'Advanced Mock' },
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).toContain(
+      'MORK 3110: Advanced Mock'
+    );
+    expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
       'MORK 1110: Introduction to Testing'
     );
     expect(res.data.result.courses.map((e) => e.classFull)).not.toContain(
@@ -118,6 +155,7 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
       'MORK 1110: Introduction to Testing',
       'MORK 2110: Intermediate Testing',
+      'MORK 3110: Advanced Mock',
     ]);
   });
 
@@ -161,6 +199,7 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.courses.map((e) => e.classFull)).not.toContain([
       'MORK 1110: Introduction to Testing',
       'MORK 2110: Intermediate Testing',
+      'MORK 3110: Advanced Mock',
     ]);
   });
 

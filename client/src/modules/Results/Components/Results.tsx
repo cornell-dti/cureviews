@@ -1,21 +1,39 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import Navbar from '../../Globals/Navbar.tsx'
+import Navbar from '../../Globals/Navbar.js'
 import ResultsDisplay from './ResultsDisplay.jsx'
 
 import styles from '../Styles/Results.module.css'
+
+type ResultsProps = {
+  match: {
+    params: {
+      input: string;
+      type: string;
+    };
+  };
+  history: any;
+};
+
+type ResultsLists = {
+  courseList: any[];
+  subjectList: any[];
+  professorList: any[];
+  loading: boolean;
+};
+
 /**
  * Results Component
  * Used to render the results page. Uses Navbar and ResultsDisplay components directly.
- * @Props uses params from URL
  */
-export class Results extends Component {
-  constructor(props) {
+export class Results extends Component<ResultsProps, ResultsLists> {
+  constructor(props: ResultsProps) {
     super(props)
     this.state = {
       courseList: [],
+      subjectList: [],
+      professorList: [],
       loading: true,
     }
 
@@ -41,7 +59,7 @@ export class Results extends Component {
       .catch((e) => console.log('Getting subjects, professors, or courses failed!'))
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: ResultsProps) {
     if (prevProps !== this.props) {
       this.setState({
         subjectList: [],
@@ -73,10 +91,6 @@ export class Results extends Component {
           type={this.props.match.params.type}
         />
       </div>
-    )
+    );
   }
-}
-
-Results.propTypes = {
-  match: PropTypes.object,
 }

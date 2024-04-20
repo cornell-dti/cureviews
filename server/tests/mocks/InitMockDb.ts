@@ -237,4 +237,18 @@ export const testClasses: Class[] = [
     classDifficulty: 5,
     crossList: [],
   },
+  {
+    _id: 'newCourse3',
+    classSub: 'mork',
+    classNum: '3110',
+    classTitle: 'Advanced Mock',
+    classFull: 'MORK 3110: Advanced Mock',
+    classSems: ['SP20'],
+    classPrereq: ['newCourse2'], // the class above
+    classProfessors: ['Gazghul Thraka'],
+    classRating: 3,
+    classWorkload: 5,
+    classDifficulty: 5,
+    crossList: [],
+  },
 ];

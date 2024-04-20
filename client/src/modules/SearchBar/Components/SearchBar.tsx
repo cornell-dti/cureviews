@@ -31,6 +31,7 @@ export const SearchBar = ({
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [professors, setProfessors] = useState<Professor[]>([])
   const [query, setQuery] = useState<string>('')
+  const [width, setWidth] = useState<number>(window.innerWidth)
   const DEBOUNCE_TIME = 200
 
   useEffect(() => {
@@ -43,31 +44,27 @@ export const SearchBar = ({
             const professorList = response.data.result.professors
             const courseList = response.data.result.courses
 
-            if (subjectList && subjectList.length !== 0) {
-              setSubjects(subjectList)
-            } else {
-              setSubjects([])
-            }
-
-            if (professorList && professorList.length !== 0) {
-              setProfessors(professorList)
-            } else {
-              setProfessors([])
-            }
-
-            if (courseList && courseList.length !== 0) {
-              setCourses(courseList)
-            } else {
-              setCourses([])
-            }
+            setSubjects(subjectList)
+            setProfessors(professorList)
+            setCourses(courseList)
           })
           .catch((e) => {
+            setSubjects([])
+            setProfessors([])
             setCourses([])
-            console.log('Getting courses, subjects, or professors failed!')
           })
       }, DEBOUNCE_TIME)
     }
   }, [query])
+
+  useEffect(() => {
+    const resize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
+  }, []);
 
   const setNewSearchState = () => {
     setSelected(false)
@@ -80,7 +77,9 @@ export const SearchBar = ({
     //detect some arrow key movement (up, down, or enter)
     if (e.key === 'ArrowDown') {
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
-      setIndex(index + 1)
+      //never index above the total number of results
+      const numResults = subjects.length + professors.length + courses.length
+      setIndex(Math.min(index + 1, numResults - 1))
     } else if (e.key === 'ArrowUp') {
       //if the up arrow key was detected, decrease the index value by 1 to highlight the prev element
       //never index below 0 (the first element)
@@ -118,23 +117,23 @@ export const SearchBar = ({
   const updateQuery = (event: any) => {
     // Reset index, enter, mouse, and selected
     setNewSearchState()
-    // trim the query to remove trailing spaces
-    let query = event.target.value.trim()
+    // trim the input to remove trailing spaces
+    let userInput = event.target.value.trim()
 
     // This is used to make "cs2110" and "cs 2110" equivalent
-    if (query && query.split(' ').length === 1) {
-      query = query.match(/[a-z]+|[^a-z]+/gi).join(' ')
+    if (userInput && userInput.split(' ').length === 1) {
+      userInput = userInput.match(/[a-z]+|[^a-z]+/gi).join(' ')
     }
 
-    if (checkForCourseMatch(query)) {
-      // If query is exact match to a class,
+    if (checkForCourseMatch(userInput)) {
+      // If input is exact match to a class,
       //  highlight this class by setting index to index of this class
       //  in search results dropdown
       setIndex(subjects.length + 1)
     }
-    setQuery(query)
+    setQuery(userInput)
 
-    Session.setPersistent({ 'last-search': query })
+    Session.setPersistent({ 'last-search': userInput })
   }
 
   /** Render the search results from querying  */
@@ -156,107 +155,107 @@ export const SearchBar = ({
       }
 
       /* Render the first row of the results "Search: [user query]" */
-      const exact_search = (
-        <a
-          key={'search'}
-          className={
-            index === 0 && mouse !== 1
-              ? 'active-class resultbutton'
-              : 'resultbutton top-resultbutton'
-          }
-          href={`/results/keyword/${query.split(' ').join('+')}`}
-        >
-          <p className={`${styles.searchedtext}`}>
-            {'Search: "' + query + '"'}
-          </p>
-        </a>
-      )
-
-      results.push(exact_search)
+      const ExactSearch = () => {
+        return <div>
+          <a
+            key={'search'}
+            className={
+              index === 0 && mouse !== 1
+                ? 'active-class resultbutton'
+                : 'resultbutton top-resultbutton'
+            }
+            href={`/results/keyword/${query.split(' ').join('+')}`}
+          >
+            <p className={`${styles.searchedtext}`}>
+              {'Search: "' + query + '"'}
+            </p>
+          </a>
+        </div>
+      }
 
       /* Subject Lists ... hmmm ? not sure rn
           TODO - document this  
           FIX -> on notion doc 2024 spring dev docs
       */
-      let subjectList: JSX.Element[] = []
 
-      subjectList = subjects.slice(0, 3).map((subject, i) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <SubjectResult
-          key={subject._id}
-          info={subject}
-          query={query}
-          active={index === i + 1 /* plus 1 because of exact search */}
-          enter={enter}
-          mouse={mouse}
-        />
-        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
-        //the index matching with the course
-        //the prop "enter" will pass through the value of the enter state
-        //the prop "mouse" will pass through the value of the mouse state
-      ))
+      // Generate list of matching subjects
+      const SubjectsList = () => {
+        return <div>
+          {subjects.slice(0, 3).map((subject, i) => (
+            //create a new class "button" that will set the selected class to this class when it is clicked.
+            <SubjectResult
+              key={subject._id}
+              info={subject}
+              query={query}
+              active={index === i + 1 /* plus 1 because of exact search */}
+              enter={enter}
+              mouse={mouse}
+            />
+            // the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
+            // the index matching with the course
+            // the prop "enter" will pass through the value of the enter state
+            // the prop "mouse" will pass through the value of the mouse state
+          ))}
+        </div>
+      }
 
-      results.push(subjectList)
+      // Generate list of matching professors
+      const ProfessorsList = () => {
+        return <div>
+          {professors.slice(0, 3).map((professor, i) => (
+            // create a new class "button" that will set the selected class to this class when it is clicked.
+            <ProfessorResult
+              key={professor._id}
+              professor={professor}
+              query={query}
+              active={
+                index ===
+                i + subjects.length + 1 /* plus 1 because of exact search */
+              }
+              enter={enter}
+              mouse={mouse}
+            />
+          ))}
+        </div>
+      }
 
-      let professorList: JSX.Element[] = []
+      const CourseList = () => {
+        return <div>
+          {courses.slice(0, 5).map((course, i) => (
+            // create a new class "button" that will set the selected class to this class when it is clicked.
+            <Course
+              key={course._id}
+              info={course}
+              query={query}
+              active={
+                index ===
+                i +
+                subjects.length +
+                professors.length +
+                1 /* plus because of exact search, professors, subjects */
+              }
+              enter={enter}
+              mouse={mouse}
+            />
+          ))}
+        </div>
+      }
 
-      // Generate list of matching professors and add to results list
-      professorList = professors.slice(0, 3).map((professor, i) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <ProfessorResult
-          key={professor._id}
-          professor={professor}
-          query={query}
-          active={
-            index ===
-            i + subjectList.length + 1 /* plus 1 because of exact search */
-          }
-          enter={enter}
-          mouse={mouse}
-        />
-        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
-        //the index matching with the course
-        //the prop "enter" will pass through the value of the enter state
-        //the prop "mouse" will pass through the value of the mouse state
-      ))
-
-      results.push(professorList)
-
-      let coursesList: JSX.Element[] = []
-
-      coursesList = courses.slice(0, 5).map((course, i) => (
-        //create a new class "button" that will set the selected class to this class when it is clicked.
-        <Course
-          key={course._id}
-          info={course}
-          query={query}
-          active={
-            index ===
-            i +
-            subjectList.length +
-            professorList.length +
-            1 /* plus because of exact search, professors, subjects */
-          }
-          enter={enter}
-          mouse={mouse}
-        />
-        //the prop "active" will pass through a bool indicating if the index affected through arrow movement is equal to
-        //the index matching with the course
-        //the prop "enter" will pass through the value of the enter state
-        //the prop "mouse" will pass through the value of the mouse state
-      ))
-      results.push(coursesList)
-
-      return results
+      return <div>
+        <ExactSearch />
+        <ProfessorsList />
+        <SubjectsList />
+        <CourseList />
+      </div>
     } else {
-      return <div />
+      return null
     }
   }
 
   const placeholdertext = () => {
     if (isInNavbar) {
       return 'Search for a new course'
-    } else if (window.innerWidth >= 840) {
+    } else if (width >= 840) {
       return 'Look up any course or professor e.g. "FWS", "ECON", or "CS 2110"'
     } else {
       return 'Search any keyword'

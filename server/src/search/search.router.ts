@@ -44,10 +44,6 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
       (coursesBySubject.length > coursesNaive.length ? coursesBySubject : coursesNaive) :
       (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
 
-    if (subjects.length < 1 && professors.length < 1 && courses.length < 1) {
-      return res.status(204);
-    }
-
     return res.status(200).json({
       message: `Success! Retrieved all courses, subjects, and professors by query: ${cleanQuery}`,
       result: { subjects: subjects, professors: professors, courses: courses },
