@@ -4,17 +4,17 @@ export const testSubjects: Subject[] = [
   {
     _id: 'newSubject1',
     subShort: 'MORK',
-    subFull: 'study of angry fungi',
+    subFull: 'Study of Angry Fungi',
   },
   {
     _id: 'angry subject',
     subShort: 'MAD',
-    subFull: 'the study of anger issues',
+    subFull: 'The Study of Anger Issues',
   },
   {
     _id: 'federation subject',
     subShort: 'FEDN',
-    subFull: 'the study of where no man has gone before!',
+    subFull: 'The Study of Where No Man Has Gone Before!',
   },
 ];
 
