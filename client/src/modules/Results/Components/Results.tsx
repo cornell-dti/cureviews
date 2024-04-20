@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import Navbar from '../../Globals/Navbar.js'
+import Navbar from '../../Globals/Navbar'
 import ResultsDisplay from './ResultsDisplay.jsx'
 
 import styles from '../Styles/Results.module.css'
