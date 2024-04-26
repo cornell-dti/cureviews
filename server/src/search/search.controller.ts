@@ -89,51 +89,53 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
   return fullSearch;
 };
 
+const courseSlicing = (sorted, searchType: string) => {
+  if (sorted && searchType === "search" && sorted.length > 5) {
+    return sorted.slice(0, 5);
+  }
+
+  if (sorted && searchType === "results" && sorted.length > 200) {
+    return sorted.slice(0, 200);
+  }
+  return sorted;
+}
+
 /**
  * Searches database for all relevant courses based on query.
- * Returns at most 200 relevant courses based on edit distance.
+ * Returns at most 5 relevant courses in search or 200 relevant courses in results based on edit distance.
  *
  * @param {Search} search: Object that represents the search of a request being passed in.
+ * @param searchType: string that represents a search or result return
  * @returns list of courses if operation was successful, null otherwise.
  */
-export const searchCourses = async ({ search }: SearchQueryType) => {
+export const searchCourses = async ({ search }: SearchQueryType, searchType: string) => {
   try {
     const fullSearch = await fullCourseSearch({ search });
     const sorted = Array.from(fullSearch).sort(courseSort(search.getQuery()));
 
-    if (fullSearch && fullSearch.size > 5) {
-      return sorted.slice(0, 5);
-    }
-
-    return sorted;
+    return courseSlicing(sorted, searchType);
   } catch (e) {
     return null;
   }
 };
 
-export const searchCoursesByProfessor = async ({ search }: SearchQueryType) => {
+export const searchCoursesByProfessor = async ({ search }: SearchQueryType, searchType: string) => {
   try {
     const courses = await search.searchQuery(findCourseProfessor);
     const sorted = Array.from(courses).sort(courseSort(search.getQuery()));
-    if (courses && courses.length > 5) {
-      return sorted.slice(0, 5);
-    }
 
-    return sorted;
+    return courseSlicing(sorted, searchType);
   } catch (e) {
     return null;
   }
 };
 
-export const searchCoursesBySubject = async ({ search }: SearchQueryType) => {
+export const searchCoursesBySubject = async ({ search }: SearchQueryType, searchType: string) => {
   try {
     const courses = await search.searchQuery(findCourseSubject);
     const sorted = Array.from(courses).sort(courseSort(search.getQuery()));
-    if (courses && courses.length > 5) {
-      return sorted.slice(0, 5);
-    }
 
-    return sorted;
+    return courseSlicing(sorted, searchType);
   } catch (e) {
     return null;
   }

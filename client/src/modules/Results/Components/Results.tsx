@@ -18,8 +18,6 @@ type ResultsProps = {
 
 type ResultsLists = {
   courseList: any[];
-  subjectList: any[];
-  professorList: any[];
   loading: boolean;
 };
 
@@ -32,8 +30,6 @@ export class Results extends Component<ResultsProps, ResultsLists> {
     super(props)
     this.state = {
       courseList: [],
-      subjectList: [],
-      professorList: [],
       loading: true,
     }
 
@@ -42,16 +38,12 @@ export class Results extends Component<ResultsProps, ResultsLists> {
 
   updateResults() {
     axios
-      .post('/api/getResultsFromQuery', {
+      .post('/api/getCourseResults', {
         query: this.props.match.params.input.toLowerCase(),
       })
       .then((response) => {
-        const subjectList = response.data.result.subjects
-        const professorList = response.data.result.professors
         const courseList = response.data.result.courses
         this.setState({
-          subjectList: !subjectList.error && subjectList.length > 0 ? subjectList : [],
-          professorList: !professorList.error && professorList.length > 0 ? professorList : [],
           courseList: !courseList.error && courseList.length > 0 ? courseList : [],
           loading: false,
         })
@@ -61,8 +53,6 @@ export class Results extends Component<ResultsProps, ResultsLists> {
   componentDidUpdate(prevProps: ResultsProps) {
     if (prevProps !== this.props) {
       this.setState({
-        subjectList: [],
-        professorList: [],
         courseList: [],
         loading: true,
       })
@@ -81,8 +71,6 @@ export class Results extends Component<ResultsProps, ResultsLists> {
         <Navbar userInput={userInput} />
 
         <ResultsDisplay
-          subjects={this.state.subjectList}
-          professors={this.state.professorList}
           courses={this.state.courseList}
           history={this.props.history}
           userInput={userInput}
