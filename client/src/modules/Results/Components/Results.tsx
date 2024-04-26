@@ -56,7 +56,6 @@ export class Results extends Component<ResultsProps, ResultsLists> {
           loading: false,
         })
       })
-      .catch((e) => console.log('Getting subjects, professors, or courses failed!'))
   }
 
   componentDidUpdate(prevProps: ResultsProps) {

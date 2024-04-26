@@ -32,28 +32,32 @@ export const SearchBar = ({
   const [professors, setProfessors] = useState<Professor[]>([])
   const [query, setQuery] = useState<string>('')
   const [width, setWidth] = useState<number>(window.innerWidth)
-  const DEBOUNCE_TIME = 200
 
   useEffect(() => {
-    if (query.toLowerCase() !== '') {
-      setTimeout(() => {
-        axios
-          .post(`/api/getResultsFromQuery`, { query: query })
-          .then((response) => {
-            const subjectList = response.data.result.subjects
-            const professorList = response.data.result.professors
-            const courseList = response.data.result.courses
+    const controller = new AbortController();
 
-            setSubjects(subjectList)
-            setProfessors(professorList)
-            setCourses(courseList)
-          })
-          .catch((e) => {
-            setSubjects([])
-            setProfessors([])
-            setCourses([])
-          })
-      }, DEBOUNCE_TIME)
+    if (query.toLowerCase() !== '') {
+
+      function sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+      }
+
+      const fetchResults = async () => {
+        const results = await axios.post(`/api/getResultsFromQuery`, { query: query })
+
+        const subjectList = results.data.result.subjects
+        const professorList = results.data.result.professors
+        const courseList = results.data.result.courses
+        setSubjects(subjectList)
+        setProfessors(professorList)
+        setCourses(courseList)
+      }
+
+      fetchResults().catch()
+      sleep(1000)
+      fetchResults().catch()
+
+      return () => controller.abort();
     }
   }, [query])
 
