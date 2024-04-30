@@ -49,7 +49,7 @@ describe('admin functionality unit tests', () => {
       { token: 'non-empty' },
     );
     const ids = res.data.result.map((i) => i._id);
-    const reviewsPending = await Reviews.findOne({ visible: 0 }).map(
+    const reviewsPending = await Reviews.findOne({ visible: 0, reported: 0 }).map(
       (review) => review?._id,
     );
 
