@@ -43,9 +43,9 @@ afterAll(async () => {
 });
 
 describe('admin functionality unit tests', () => {
-  it('fetchAllReviews-works', async () => {
+  it('fetchPendingReviews-works', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/fetchAllReviews`,
+      `http://localhost:${testPort}/api/fetchPendingReviews`,
       { token: 'non-empty' },
     );
     const ids = res.data.result.map((i) => i._id);
