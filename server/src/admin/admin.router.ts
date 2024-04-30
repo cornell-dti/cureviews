@@ -9,9 +9,10 @@ import {
   ReportReviewRequestType,
 } from './admin.type';
 import {
-  getAllReviews,
+  getPendingReviews,
+  getReportedReviews,
+  getApprovedReviewCount,
   editReviewVisibility,
-  getRaffleWinner,
   removePendingReview,
   updateAllProfessorsDb,
   resetAllProfessorsDb,
@@ -92,11 +93,11 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchAllReviews', async (req, res) => {
+adminRouter.post('/fetchPendingReviews', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
-    const reviews = await getAllReviews({ auth });
+    const reviews = await getPendingReviews({ auth });
     if (reviews === null) {
       return res.status(400).json({
         error: `User is not an admin.`,
@@ -104,7 +105,7 @@ adminRouter.post('/fetchAllReviews', async (req, res) => {
     }
 
     return res.status(200).json({
-      message: 'Retrieved all reviews: approved, pending, and reported',
+      message: 'Retrieved all pending reviews',
       result: reviews,
     });
   } catch (err) {
@@ -112,25 +113,46 @@ adminRouter.post('/fetchAllReviews', async (req, res) => {
   }
 });
 
-adminRouter.post('/getRaffleWinner', async (req, res) => {
+adminRouter.post('/fetchReportedReviews', async (req, res) => {
   try {
-    const { startDate }: RaffleWinnerRequestType = req.body;
-    const winner = await getRaffleWinner({ startDate });
-
-    if (winner === null) {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const reviews = await getReportedReviews({ auth });
+    if (reviews === null) {
       return res.status(400).json({
-        error: `No raffle winner found.`,
+        error: `User is not an admin.`,
       });
     }
 
     return res.status(200).json({
-      message: 'Retrieved raffle winner',
-      result: winner,
+      message: 'Retrieved all pending reviews',
+      result: reviews,
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
+
+adminRouter.post('/countApproved', async (req, res) => {
+  try {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const count = await getApprovedReviewCount({ auth });
+    if (count === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      });
+    }
+    
+    return res.status(200).json({
+      message: 'Retrieved approved review count',
+      result: count,
+    })
+
+  } catch (err) {
+      return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
 
 adminRouter.post('/addNewSemester', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;

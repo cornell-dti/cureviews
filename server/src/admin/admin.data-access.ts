@@ -28,13 +28,24 @@ export const updateCourseMetrics = async (
   );
 };
 
-export const findAllReviews = async () =>
-  await Reviews.find().exec();
-  //   { visible: 0 },
-  //   {},
-  //   { sort: { date: -1 }, limit: 700 },
-  // ).exec();
+export const findPendingReviews = async () =>
+  await Reviews.find(
+    { visible: 0, reported: 0},
+    {},
+    { sort: { date: -1 }, limit: 700 },
+  ).exec();
 
+export const findReportedReviews = async () =>
+  await Reviews.find(
+    { visible: 0, reported: 1},
+    {},
+    { sort: { date: -1 }, limit: 700 },
+  ).exec();
+
+export const findApprovedReviews = async () => {
+  const count = await Reviews.countDocuments({ visible : 1}).exec()
+  return count
+}
 
 // eslint-disable-next-line arrow-body-style
 export const findAllReviewsAfterDate = async (date: Date) => {

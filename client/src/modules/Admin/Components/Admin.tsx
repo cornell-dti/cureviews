@@ -9,7 +9,6 @@ import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 
 import UpdateReview from './AdminReview'
 import Stats from './Stats'
-import RaffleWinner from './RaffleWinner'
 
 import styles from '../Styles/Admin.module.css'
 
@@ -17,9 +16,9 @@ import styles from '../Styles/Admin.module.css'
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
 export const Admin = () => {
-  const [approvedReviews, setApprovedReviews] = useState<Review[]>([])
   const [pendingReviews, setPendingReviews] = useState<Review[]>([])
   const [reportedReviews, setReportedReviews] = useState<Review[]>([])
+  const [approvedReviewCount, setApprovedReviewCount] = useState<number>(0)
   const [disableInit, setDisableInit] = useState<boolean>(false)
   const [disableNewSem, setDisableNewSem] = useState<boolean>(false)
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
@@ -57,23 +56,40 @@ export const Admin = () => {
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
     axios
-      .post('/api/fetchAllReviews', { token: token })
+      .post('/api/fetchPendingReviews', { token: token })
       .then((response) => {
         const result = response.data.result
         if (response.status === 200) {
-          setApprovedReviews(
-            result.filter((review: Review) => review.visible === 1)
-          )
-          setPendingReviews(
-            result.filter((review: Review) => review.reported === 0 && review.visible === 0)
-          )
-          setReportedReviews(
-            result.filter((review: Review) => review.reported === 1 && review.visible === 0)
-          )
+          setPendingReviews(result)
         } else {
-          console.log('Error at fetchAllReviews')
+          console.log('Error at fetchPendingReviews')
         }
       })
+    axios
+      .post('/api/fetchReportedReviews', { token: token})
+      .then((response) => {
+        const result = response.data.result
+        if (response.status === 200) {
+          setReportedReviews(result)
+        } else {
+          console.log('Error at fetchReportedReviews')
+        }
+      })
+  }, [token, isAuthenticating])
+
+  useEffect(() => {
+    axios
+    .post('/api/countApproved', {token: token})
+    .then((response) => {
+      console.log("count" + response.data.result);
+      const result = response.data.result
+      if (response.status === 200) {
+        console.log("success")
+        setApprovedReviewCount(result)
+      } else {
+        console.log('Error at countApproved')
+      }
+    })
   }, [token, isAuthenticating])
 
   // Helper function to remove a review from a list of reviews and
@@ -99,8 +115,6 @@ export const Admin = () => {
             review,
             pendingReviews
           )
-          const updatedApprovedReviews = approvedReviews.concat(review)
-          setApprovedReviews(updatedApprovedReviews)
           setPendingReviews(updatedPendingReviews)
         }
       })
@@ -301,7 +315,7 @@ export const Admin = () => {
         <div className = "headInfo">
           <h1>Admin Interface</h1>
           <Stats token={token}
-                 approvedReviews = {approvedReviews}
+                 approvedReviewCount = {approvedReviewCount}
                  pendingReviews = {pendingReviews}
                  reportedReviews = {reportedReviews} />
           <div className={styles.semesterUpdate}>
@@ -368,8 +382,6 @@ export const Admin = () => {
           <div hidden={!(loadingInit === 2)} className="">
             <p>Database initialization is complete!</p>
           </div>
-
-          <RaffleWinner adminToken={token} />
         </div>
           
         <div className="StagedReviews">

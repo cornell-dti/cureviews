@@ -1,10 +1,12 @@
 import {
-  findAllReviews,
+  findPendingReviews,
+  findReportedReviews,
   findAllReviewsAfterDate,
   removeReviewById,
   updateReviewVisibility,
   findStudentById,
   updateCourseMetrics,
+  findApprovedReviews,
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
@@ -127,44 +129,41 @@ export const removePendingReview = async ({
 
 /**
  * Gets all reviews that are pending (visible only to admin).
- * Includes reported reviews.
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns all pending review objects if operation was successful, null otherwise
  */
-export const getAllReviews = async ({ auth }: VerifyAdminType) => {
+export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    return findAllReviews();
+    return findPendingReviews();
   }
 
   return null;
 };
 
 /**
- * Gets random raffle winner from reviews beyond specified date that are not reported.
+ * Gets all reviews that are pending and reported (visible only to admin).
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
- * @returns student net id if operation was successful, null otherwise
+ * @returns all reported review objects if operation was successful, null otherwise
  */
-export const getRaffleWinner = async ({
-  startDate,
-}: RaffleWinnerRequestType) => {
-  const date = new Date(startDate);
-  const reviews = await findAllReviewsAfterDate(date);
-  if (reviews.length <= 0) {
-    return null;
+export const getReportedReviews = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    return findReportedReviews();
   }
 
-  const randomInt = Math.floor(Math.random() * reviews.length);
-
-  const student = await findStudentById(reviews[randomInt].user);
-  if (!student) {
-    return null;
-  }
-
-  return student.netId;
+  return null;
 };
+
+export const getApprovedReviewCount = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const count = findApprovedReviews();
+    return count;
+  }
+}
 
 /**
  * Updated all professors in the database by scraping through the Cornell course API.

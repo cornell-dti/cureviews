@@ -5,12 +5,11 @@ import { Review } from 'common'
 
 type Props = {
   token: string
-  approvedReviews: Review[]
+  approvedReviewCount: number
   pendingReviews: Review[]
   reportedReviews: Review[]
 }
 type State = {
-  // approvedReviews: any[]
   chartData: any[]
   step: number
   range: number
@@ -25,47 +24,10 @@ export default class Stats extends Component<Props, State> {
     super(props)
 
     this.state = {
-      // approvedReviews: [];
       chartData: [],
       step: 14,
       range: 12,
     }
-
-    this.handleClick = this.handleClick.bind(this)
-  }
-
-  getChartData() {
-    axios
-      .post(`/api/getReviewsOverTimeTop15`, {
-        token: this.props.token,
-        step: this.state.step,
-        range: this.state.range,
-      })
-      .then((resp) => {
-        const res = resp.data.result
-        let data: any[] = []
-        //key-> EX: cs
-        for (let key in res) {
-          let finalDateObj: any = {} //{date1:totalNum, date2:totalNum}
-          let obj: any = {} // {name: cs, data: {date1:totalNum, date2:totalNum}}
-          obj.name = key
-
-          //[{date1:totalNum}, {date2: totalNum}, ...]
-          let arrDates = res[key]
-
-          arrDates.forEach((arrEntry: any) => {
-            let dateObject = Object.keys(arrEntry) //[date1]
-            dateObject.forEach((date) => {
-              finalDateObj[date] = arrEntry[date]
-            })
-          })
-
-          obj.data = finalDateObj
-          data.push(obj)
-        }
-
-        this.setState({ chartData: data })
-      })
   }
 
   /* 
@@ -99,16 +61,11 @@ export default class Stats extends Component<Props, State> {
   */
   getReviewsPerClassCSV() {
     let csv = 'Class,Number of Reviews\n'
-    const reviewsPerClass = this.numReviewsPerClass(this.props.approvedReviews)
-    reviewsPerClass.forEach(({courseName, reviewCount}) => {
-      csv += courseName + ',' + reviewCount + '\n'
-    })
+    // const reviewsPerClass = this.numReviewsPerClass(this.props.pendingReviews)
+    // reviewsPerClass.forEach(({courseName, reviewCount}) => {
+    //   csv += courseName + ',' + reviewCount + '\n'
+    // })
     return csv
-  }
-
-  handleClick = (e: any) => {
-    e.preventDefault()
-    this.getChartData()
   }
 
   /*
@@ -134,7 +91,7 @@ export default class Stats extends Component<Props, State> {
           <button className={styles.downloadButton} onClick={this.downloadCSVFile}>
             Download ApprovedReviewCount by Class
           </button>
-          <p>Approved review count: {this.props.approvedReviews.length}</p>
+          <p>Approved review count: {this.props.approvedReviewCount}</p>
           <p>Pending review count: {this.props.pendingReviews.length}</p>
           <p>Reported review count: {this.props.reportedReviews.length}</p>
         </div>
