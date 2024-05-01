@@ -19,6 +19,9 @@
 }
 
 .massApproveButton {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5px;
     background-color: var(--clr-green-200);
     color: var(--clr-white);
     font-size: var(--font-small-size);

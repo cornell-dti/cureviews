@@ -60,8 +60,6 @@ export const Admin = () => {
         const result = response.data.result
         if (response.status === 200) {
           setPendingReviews(result)
-        } else {
-          console.log('Error at fetchPendingReviews')
         }
       })
     axios
@@ -70,8 +68,6 @@ export const Admin = () => {
         const result = response.data.result
         if (response.status === 200) {
           setReportedReviews(result)
-        } else {
-          console.log('Error at fetchReportedReviews')
         }
       })
   }, [token, isAuthenticating])
@@ -114,7 +110,6 @@ export const Admin = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log('Review removed')
           if (isUnapproved) {
             const updatedUnapprovedReviews = removeReviewFromList(
               review,
@@ -151,14 +146,11 @@ export const Admin = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log('Review unreported')
           const updatedReportedReviews = removeReviewFromList(
             review,
             reportedReviews
           )
           setReportedReviews(updatedReportedReviews)
-        } else {
-          console.log('Unable to undo report review!')
         }
       })
   }
@@ -380,7 +372,7 @@ export const Admin = () => {
                 return (
                   <UpdateReview
                     key={review._id}
-                    info={review}
+                    review={review}
                     removeHandler={removeReview}
                     approveHandler={approveReview}
                     unReportHandler={approveReview}
@@ -398,7 +390,7 @@ export const Admin = () => {
                 return (
                   <UpdateReview
                     key={review._id}
-                    info={review}
+                    review={review}
                     removeHandler={removeReview}
                     approveHandler={approveReview}
                     unReportHandler={unReportReview}                      
