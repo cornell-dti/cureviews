@@ -1,3 +1,8 @@
+.adminWrapper {
+    max-width: 1440px;
+    padding: 10px 10px;
+}
+
 .semesterUpdate {
     border: 2px solid #ccc;
     padding: 10px;

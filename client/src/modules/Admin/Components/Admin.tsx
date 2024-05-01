@@ -287,7 +287,7 @@ export const Admin = () => {
 
   function renderAdmin(token: string) {
     return (
-      <div className = "">
+      <div className = {styles.adminWrapper}>
         <div className = "headInfo">
           <h1>Admin Interface</h1>
           <Stats token={token}/>
