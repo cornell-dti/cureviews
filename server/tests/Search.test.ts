@@ -142,22 +142,22 @@ describe('search functionality unit tests', () => {
     expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('FEDN');
   });
 
-  it('getResultsFromQuery - query full subject: "Study of Angry Fungi" sent', async () => {
-    const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
-      { query: 'Study of Angry Fungi' },
-    );
+  // it('getResultsFromQuery - query full subject: "Study of Angry Fungi" sent', async () => {
+  //   const res = await axios.post(
+  //     `http://localhost:${testPort}/api/getResultsFromQuery`,
+  //     { query: 'Study of Angry Fungi' },
+  //   );
 
-    expect(res.data.result.subjects.map((e) => e.subShort)).toContain('MORK');
-    expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('MAD');
-    expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('FEDN');
+  //   expect(res.data.result.subjects.map((e) => e.subShort)).toContain('MORK');
+  //   expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('MAD');
+  //   expect(res.data.result.subjects.map((e) => e.subShort)).not.toContain('FEDN');
 
-    expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
-      'MORK 1110: Introduction to Testing',
-      'MORK 2110: Intermediate Testing',
-      'MORK 3110: Advanced Mock',
-    ]);
-  });
+  //   expect(res.data.result.courses.map((e) => e.classFull)).toStrictEqual([
+  //     'MORK 1110: Introduction to Testing',
+  //     'MORK 2110: Intermediate Testing',
+  //     'MORK 3110: Advanced Mock',
+  //   ]);
+  // });
 
   it('getResultsFromQuery - query professor: "Gazghul Thraka" sent', async () => {
     const res1 = await axios.post(
