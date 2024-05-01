@@ -13,6 +13,7 @@
     "client": "cd client && yarn start"
   },
   "engines": {
+    "node": "^18.x",
     "npm": "^7.x",
     "yarn": "^1.x"
   },
