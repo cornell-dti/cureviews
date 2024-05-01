@@ -32,7 +32,7 @@ aiRouter.post('/getCourseIdsForSummary', async (req, res) => {
     const ids = await getCoursesWithMinReviews(min);
     if (ids === null) {
       return res.status(400).json({
-        error: `No reviews found`,
+        error: `No courses found with given minimum number of reviews`,
       });
     }
 
