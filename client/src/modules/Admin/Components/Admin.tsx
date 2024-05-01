@@ -18,7 +18,6 @@ import styles from '../Styles/Admin.module.css'
 export const Admin = () => {
   const [pendingReviews, setPendingReviews] = useState<Review[]>([])
   const [reportedReviews, setReportedReviews] = useState<Review[]>([])
-  const [approvedReviewCount, setApprovedReviewCount] = useState<number>(0)
   const [disableInit, setDisableInit] = useState<boolean>(false)
   const [disableNewSem, setDisableNewSem] = useState<boolean>(false)
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
@@ -75,21 +74,6 @@ export const Admin = () => {
           console.log('Error at fetchReportedReviews')
         }
       })
-  }, [token, isAuthenticating])
-
-  useEffect(() => {
-    axios
-    .post('/api/countApproved', {token: token})
-    .then((response) => {
-      console.log("count" + response.data.result);
-      const result = response.data.result
-      if (response.status === 200) {
-        console.log("success")
-        setApprovedReviewCount(result)
-      } else {
-        console.log('Error at countApproved')
-      }
-    })
   }, [token, isAuthenticating])
 
   // Helper function to remove a review from a list of reviews and
@@ -314,10 +298,7 @@ export const Admin = () => {
       <div className = "">
         <div className = "headInfo">
           <h1>Admin Interface</h1>
-          <Stats token={token}
-                 approvedReviewCount = {approvedReviewCount}
-                 pendingReviews = {pendingReviews}
-                 reportedReviews = {reportedReviews} />
+          <Stats token={token}/>
           <div className={styles.semesterUpdate}>
             <h2>Tools for new semester</h2>
             <div className="" role="group">

@@ -6,7 +6,8 @@ import {
   updateReviewVisibility,
   findStudentById,
   updateCourseMetrics,
-  findApprovedReviews,
+  findReviewCounts,
+  createCourseCSV
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
@@ -157,11 +158,19 @@ export const getReportedReviews = async ({ auth }: VerifyAdminType) => {
   return null;
 };
 
-export const getApprovedReviewCount = async ({ auth }: VerifyAdminType) => {
+export const getReviewCounts = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    const count = findApprovedReviews();
-    return count;
+    const counts = findReviewCounts();
+    return counts;
+  }
+}
+
+export const getCourseCSV = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const csv = await createCourseCSV();
+    return csv;
   }
 }
 

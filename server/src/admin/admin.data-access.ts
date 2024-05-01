@@ -42,9 +42,37 @@ export const findReportedReviews = async () =>
     { sort: { date: -1 }, limit: 700 },
   ).exec();
 
-export const findApprovedReviews = async () => {
-  const count = await Reviews.countDocuments({ visible : 1}).exec()
-  return count
+export const findReviewCounts = async () => {
+  const approvedCount = await Reviews.countDocuments({ visible : 1}).exec()
+  const pendingCount = await Reviews.countDocuments({ visible: 0, reported: 0}).exec()
+  const reportedCount = await Reviews.countDocuments({ visible: 0, reported: 1}).exec()
+  const result = {
+    approved: approvedCount,
+    pending: pendingCount,
+    reported: reportedCount
+  }
+  return result
+}
+
+export const createCourseCSV = async () => {
+  const approvedReviews = await Reviews.find({ visible: 1}).exec()
+  let csv = 'Class,Number of Reviews\n'
+
+  const revsPerCourse: Map<string, number> = new Map()
+  approvedReviews.forEach(
+    review => {
+      if (revsPerCourse.has(review.class)) {
+        revsPerCourse.set(review.class, revsPerCourse.get(review.class) + 1)
+      } else {
+        revsPerCourse.set(review.class, 1)
+      }
+    }
+  )
+  revsPerCourse.forEach((count, courseId) => {
+    csv += courseId + ',' + count + '\n'
+  })
+
+  return csv
 }
 
 // eslint-disable-next-line arrow-body-style

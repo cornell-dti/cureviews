@@ -11,7 +11,8 @@ import {
 import {
   getPendingReviews,
   getReportedReviews,
-  getApprovedReviewCount,
+  getReviewCounts,
+  getCourseCSV,
   editReviewVisibility,
   removePendingReview,
   updateAllProfessorsDb,
@@ -133,24 +134,45 @@ adminRouter.post('/fetchReportedReviews', async (req, res) => {
   }
 });
 
-adminRouter.post('/countApproved', async (req, res) => {
+adminRouter.post('/countReviews', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
-    const count = await getApprovedReviewCount({ auth });
-    if (count === null) {
+    const counts = await getReviewCounts({ auth });
+    if (counts === null) {
       return res.status(400).json({
         error: `User is not an admin.`
       });
     }
     
     return res.status(200).json({
-      message: 'Retrieved approved review count',
-      result: count,
+      message: 'Retrieved review counts',
+      result: counts,
     })
 
   } catch (err) {
       return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
+
+adminRouter.post('/getCourseCSV', async (req, res) => {
+  try {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const csv = await getCourseCSV({ auth });
+    if (csv === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved CSV of approved reviews',
+      result: csv
+    })
+
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`});
   }
 })
 
