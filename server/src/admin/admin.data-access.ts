@@ -1,6 +1,7 @@
 /* eslint-disable implicit-arrow-linebreak */
 import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
 import { UpdateCourseMetrics } from './admin.type';
+import { findCourseById } from '../course/course.data-access';
 
 export const findStudentById = async (id: string) => {
   const student = await Students.findOne({ _id: id }).exec();
@@ -59,17 +60,19 @@ export const createCourseCSV = async () => {
   let csv = 'Class,Number of Reviews\n'
 
   const revsPerCourse: Map<string, number> = new Map()
-  approvedReviews.forEach(
-    review => {
-      if (revsPerCourse.has(review.class)) {
-        revsPerCourse.set(review.class, revsPerCourse.get(review.class) + 1)
-      } else {
-        revsPerCourse.set(review.class, 1)
-      }
+  await Promise.all(approvedReviews.map(async review => {
+    const course = await findCourseById(review.class)
+    const title = await course.classSub.toUpperCase() + ' ' + course.classNum
+
+    if (revsPerCourse.has(title)) {
+      await revsPerCourse.set(title, revsPerCourse.get(title) + 1)
+    } else {
+      await revsPerCourse.set(title, 1)
     }
-  )
-  revsPerCourse.forEach((count, courseId) => {
-    csv += courseId + ',' + count + '\n'
+  }))
+
+  revsPerCourse.forEach((count, courseTitle) => {
+    csv += courseTitle + ',' + count + '\n'
   })
 
   return csv

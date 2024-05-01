@@ -36,11 +36,11 @@ const Stats = ({token}: StatsProps) => {
       Function to download a file containing all reviewed classes in the database and their
       number of reviews
     */
-    function downloadCSVFile() {
+    async function downloadCSVFile() {
       const element = document.createElement('a')
       let csv = ""
       
-      axios
+      await axios
         .post('/api/getCourseCSV', {token: token})
         .then((response) => {
           const result = response.data.result
