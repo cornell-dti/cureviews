@@ -38,7 +38,7 @@ aiRouter.post('/getCourseIdsForSummary', async (req, res) => {
 
     return res.status(200).json({
       message: 'Retrieved all courses',
-      result: ids,
+      ids: ids,
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

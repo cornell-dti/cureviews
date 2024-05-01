@@ -15,7 +15,7 @@ export const configure = (app: Express) => {
     profileRouter,
     reviewRouter,
     courseRouter,
-    adminRouter,
-    aiRouter
+    adminRouter
   );
+  app.use('/ai', aiRouter);
 };
