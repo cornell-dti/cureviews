@@ -126,7 +126,7 @@ export const SearchBar = ({
 
     // This is used to make "cs2110" and "cs 2110" equivalent
     if (userInput && userInput.split(' ').length === 1) {
-      userInput = userInput.match(/[a-z]+|[^a-z]+/gi).join(' ')
+      userInput = userInput.replace(/(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/gi, ' ');
     }
 
     if (checkForCourseMatch(userInput)) {
