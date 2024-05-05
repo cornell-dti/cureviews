@@ -9,6 +9,7 @@ import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 
 import UpdateReview from './AdminReview'
 import Stats from './Stats'
+import ManageAdminModal from './ManageAdminModal'
 
 import styles from '../Styles/Admin.module.css'
 
@@ -26,6 +27,7 @@ export const Admin = () => {
   const [loadingProfs, setLoadingProfs] = useState<number>(0)
   const [resettingProfs, setResettingProfs] = useState<number>(0)
   const [addSemester, setAddSemester] = useState('')
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
 
   const {isLoggedIn, token, isAuthenticating} = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
@@ -258,7 +260,7 @@ export const Admin = () => {
           <button
             disabled={disableInit}
             type="button"
-            className={styles.semesterButtons}
+            className={styles.adminButtons}
             onClick={() => addAllCourses()}
           >
             Initialize Database
@@ -271,7 +273,7 @@ export const Admin = () => {
         <div className="">
           <button
             type="button"
-            className={styles.semesterButtons}
+            className={styles.adminButtons}
             onClick={() => firstClickHandler()}
           >
             Initialize Database
@@ -292,12 +294,18 @@ export const Admin = () => {
           <h1>Admin Interface</h1>
           <Stats token={token}/>
           <div className={styles.semesterUpdate}>
-            <h2>Tools for new semester</h2>
+            <h2>Admin tools</h2>
             <div className="" role="group">
+                <button
+                  className={styles.adminButtons}
+                  onClick={() => setIsAdminModalOpen(true)}
+                >
+                  Manage Administrators
+                </button>
                 <button
                     disabled={disableNewSem}
                     type="button"
-                    className={styles.semesterButtons}
+                    className={styles.adminButtons}
                     onClick={() => addNewSem(addSemester)}
                   >
                     Add New Semester
@@ -305,7 +313,7 @@ export const Admin = () => {
                 <button
                     disabled={disableInit}
                     type="button"
-                    className={styles.semesterButtons}
+                    className={styles.adminButtons}
                     onClick={() => updateProfessors()}
                   >
                     Update Professors
@@ -313,7 +321,7 @@ export const Admin = () => {
                 <button
                     disabled={disableInit}
                     type="button"
-                    className={styles.semesterButtons}
+                    className={styles.adminButtons}
                     onClick={() => resetProfessors()}
                   >
                     Reset Professors
@@ -321,6 +329,12 @@ export const Admin = () => {
                 {renderInitButton(doubleClick)}
             </div>
           </div>
+
+          <ManageAdminModal
+            open = {isAdminModalOpen}
+            setOpen = {setIsAdminModalOpen}
+            token = {token}
+          />
           
           <div hidden={!(loadingSemester === 1)} className="">
             <p>Adding New Semester Data. This process can take up to 15 minutes.</p>

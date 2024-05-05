@@ -11,8 +11,8 @@
     flex: 1;
 }
 
-.semesterButtons {
-    background-color: var(--clr-gray-300);
+.adminButtons {
+    background-color: var(--clr-blue-300);
     color: var(--clr-white);
     font-weight: var(--semi-bold-weight);
     font-size: var(--font-small-size);
