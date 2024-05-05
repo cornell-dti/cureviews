@@ -4,7 +4,6 @@ import { Classes, Subjects, Professors } from '../../db/schema';
 export const findCourses = async (query: string) =>
   await Classes.find(
     {
-      // classSub: subject,
       classFull: { $regex: `.*${query}.*`, $options: 'i' },
     },
     {},

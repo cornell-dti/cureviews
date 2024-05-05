@@ -56,6 +56,10 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
   }
 });
 
+/**
+ * Searches the database for potential courses relating to the query and returns
+ * the full list of courses
+ */
 searchRouter.post('/getCourseResults', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
@@ -63,8 +67,6 @@ searchRouter.post('/getCourseResults', async (req, res) => {
     const search = new Search({ query: cleanQuery });
     const searchType = "results";
 
-    // divide up course search by whether it is subject or professor, 
-    // then use default course search at the end
     const subjects = await searchSubjects({ search });
 
     // checks to see if input is full subject name
