@@ -7,7 +7,10 @@ import {
   findStudentById,
   updateCourseMetrics,
   findReviewCounts,
-  createCourseCSV
+  createCourseCSV,
+  findAdminUsers,
+  removeAdminPrivilege,
+  grantAdminPrivilege
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
@@ -17,6 +20,7 @@ import {
   ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
+  VerifyManageAdminType
 } from './admin.type';
 
 import {
@@ -144,7 +148,7 @@ export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
 };
 
 /**
- * Gets all reviews that are pending and reported (visible only to admin).
+ * Gets all reviews that are reported (visible only to admin).
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns all reported review objects if operation was successful, null otherwise
@@ -158,6 +162,12 @@ export const getReportedReviews = async ({ auth }: VerifyAdminType) => {
   return null;
 };
 
+/**
+ * Counts all reviews that are approved, pending, and reported.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns all counts if operation was successful, null otherwise
+ */
 export const getReviewCounts = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
@@ -166,11 +176,47 @@ export const getReviewCounts = async ({ auth }: VerifyAdminType) => {
   }
 }
 
+/**
+ * Gets CSV text string of all reviews that are approved, sorted by class.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns CSV text if operation was successful, null otherwise
+ */
 export const getCourseCSV = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     const csv = await createCourseCSV();
     return csv;
+  }
+}
+
+/**
+ * Gets all users with admin privilege.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns all admin users if operation was successful, null otherwise
+ */
+export const getAdminUsers = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const admins = await findAdminUsers();
+    return admins;
+  }
+}
+
+/**
+ * Removes a user's admin privilege by id. Assumes that the user is already in the
+ * database because they are retrieved into the ManageAdminModal
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @param {string} id: String identifying the user in the
+ * @returns all admin users if operation was successful, null otherwise
+ */
+export const removeAdmin = async ({auth, id}: VerifyManageAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const res = await removeAdminPrivilege(id);
+    return res;
   }
 }
 

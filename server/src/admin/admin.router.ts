@@ -4,6 +4,7 @@ import { Auth } from '../auth/auth';
 import {
   AdminReviewRequestType,
   AdminRequestType,
+  AdminUserRequestType,
   RaffleWinnerRequestType,
   AdminAddSemesterRequestType,
   ReportReviewRequestType,
@@ -21,6 +22,8 @@ import {
   addNewSemDb,
   verifyTokenAdmin,
   reportReview,
+  getAdminUsers,
+  removeAdmin,
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -173,6 +176,48 @@ adminRouter.post('/getCourseCSV', async (req, res) => {
 
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
+
+adminRouter.post('/getAdmins', async (req, res) => {
+  try {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const admins = await getAdminUsers({ auth });
+    if (admins === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved admin users',
+      result: admins
+    })
+
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
+
+adminRouter.post('/removeAdmin', async (req, res) => {
+  const {token, userId}: AdminUserRequestType = req.body;
+
+  try {
+    const auth = new Auth({ token });
+    const result = await removeAdmin({ auth: auth, id: userId})
+
+    if (result) {
+      return res.status(200).json({
+        message: `Remove admin privilege from user with id ${userId}`
+      });
+    }
+
+    return res.status(400).json({
+      error: 'User is not an admin.'
+    })
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`})
   }
 })
 

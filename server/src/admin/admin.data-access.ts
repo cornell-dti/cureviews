@@ -114,15 +114,17 @@ export const updateReviewVisibility = async (
  * Admin users have privilege "admin" and everyone else has privilege "regular"
  */
 
-export const getAdminUsers = async () => {
+export const findAdminUsers = async () => {
   const adminUsers = await Students.find({ privilege: 'admin' }).exec()
   return adminUsers
 }
 
 export const removeAdminPrivilege = async (id: string) => {
-  await Students.updateOne({ _id: id }, { $set: {privilege: 'regular'} }).exec()
+  const res = await Students.updateOne({ _id: id }, { $set: {privilege: 'regular'} }).exec()
+  return res
 }
 
 export const grantAdminPrivilege = async (id: string) => {
-  await Students.updateOne({ _id: id }, { $set: {privilege: 'admin'} }).exec()
+  const res = await Students.updateOne({ _id: id }, { $set: {privilege: 'admin'} }).exec()
+  return res
 }

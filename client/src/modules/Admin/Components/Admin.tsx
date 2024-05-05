@@ -382,7 +382,6 @@ export const Admin = () => {
             </button>    
           <div className = "PendingReviews">
             {pendingReviews.map((review: Review) => {
-              if (review.reported !== 1) {
                 return (
                   <UpdateReview
                     key={review._id}
@@ -393,14 +392,12 @@ export const Admin = () => {
                     />
                 )
               }
-              return null
-            })}
+            )}
           </div>    
           <h1>Reported Reviews</h1>
           <div className= "ReportedReviews">
             {reportedReviews.map((review: Review) => {
               //create a new class "button" that will set the selected class to this class when it is clicked.
-              if (review.reported === 1) {
                 return (
                   <UpdateReview
                     key={review._id}
@@ -410,9 +407,8 @@ export const Admin = () => {
                     unReportHandler={unReportReview}                      
                   />
                 )
-              }
-              return null
-              })}
+               }
+              )}
           </div>
         </div>
       </div>   
