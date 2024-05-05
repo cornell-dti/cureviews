@@ -4,6 +4,7 @@ import styles from '../Styles/ManageAdminModal.module.css'
 
 import { Student } from 'common'
 import AdminUser from './AdminUser'
+import closeIcon from '../../../assets/icons/X.svg'
 
 type Props = {
     open: boolean
@@ -55,7 +56,12 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
         <div className={styles.modalbg}>
             <div className={styles.modal}>
                 <h2>Administrators</h2>
-
+                <img
+                    className={styles.closeButton}
+                    onClick={closeModal}
+                    src={closeIcon}
+                    alt="close-modal"
+                />
                 {admins.map((admin) => {
                     return (
                         <AdminUser
@@ -65,11 +71,6 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
                         />
                     )
                 })}
-                <button 
-                  onClick={closeModal}
-                >
-                  Close
-                </button>
             </div>
         </div>
     )

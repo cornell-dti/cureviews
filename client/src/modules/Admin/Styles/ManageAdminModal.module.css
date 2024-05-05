@@ -35,4 +35,12 @@
   
     position: relative;
     top: 0;
+    overflow-y: auto;
+}
+
+.closeButton {
+    cursor: pointer;
+    position: absolute;
+    top: 32px;
+    right: 32px;
 }
