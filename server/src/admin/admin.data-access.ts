@@ -29,6 +29,9 @@ export const updateCourseMetrics = async (
   );
 };
 
+/*
+ * Function to return all pending reviews in the database.
+ */
 export const findPendingReviews = async () =>
   await Reviews.find(
     { visible: 0, reported: 0},
@@ -36,6 +39,9 @@ export const findPendingReviews = async () =>
     { sort: { date: -1 }, limit: 700 },
   ).exec();
 
+/*
+ * Function to return all reported reviews in the database.
+ */
 export const findReportedReviews = async () =>
   await Reviews.find(
     { visible: 0, reported: 1},
@@ -43,6 +49,9 @@ export const findReportedReviews = async () =>
     { sort: { date: -1 }, limit: 700 },
   ).exec();
 
+/*
+ * Function to count reviews by approved, pending, and reported and return the values.
+ */
 export const findReviewCounts = async () => {
   const approvedCount = await Reviews.countDocuments({ visible : 1}).exec()
   const pendingCount = await Reviews.countDocuments({ visible: 0, reported: 0}).exec()
@@ -55,6 +64,10 @@ export const findReviewCounts = async () => {
   return result
 }
 
+/*
+ * Function to count the number of approved reviews per class in the database.
+ * Count per class is mapped to a CSV string format.
+ */
 export const createCourseCSV = async () => {
   const approvedReviews = await Reviews.find({ visible: 1}).exec()
   let csv = 'Class,Number of Reviews\n'
@@ -94,3 +107,22 @@ export const updateReviewVisibility = async (
 ) => {
   await Reviews.updateOne({ _id: reviewId }, { $set: { visible, reported } });
 };
+
+/*
+ * Functions for the manage admin functionality. Enables grant admin privilege to a
+ * user, removing admin privilege from a user, and retrieving all priviliged users.
+ * Admin users have privilege "admin" and everyone else has privilege "regular"
+ */
+
+export const getAdminUsers = async () => {
+  const adminUsers = await Students.find({ privilege: 'admin' }).exec()
+  return adminUsers
+}
+
+export const removeAdminPrivilege = async (id: string) => {
+  await Students.updateOne({ _id: id }, { $set: {privilege: 'regular'} }).exec()
+}
+
+export const grantAdminPrivilege = async (id: string) => {
+  await Students.updateOne({ _id: id }, { $set: {privilege: 'admin'} }).exec()
+}
