@@ -50,7 +50,6 @@
     "@types/prettier": "<2.6.0",
     "@types/shortid": "^0.0.29",
     "jest-circus": "24",
-    "ts-jest": "24",
-    "typescript": "^5.4.5"
+    "ts-jest": "24"
   }
 }
