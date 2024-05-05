@@ -132,6 +132,11 @@ export const grantAdminPrivilege = async (id: string) => {
   return res
 }
 
+/*
+ * If there is an attempt to grant admin privilege to someone not in the database,
+ * a new user will be created with the given netid and added to the database.
+ */
+
 export const createNewAdminUser = async (id: string) => {
 
   const admin: InsertStudentType = {

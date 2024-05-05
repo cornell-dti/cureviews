@@ -20,6 +20,9 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
         setOpen(false)
     }
 
+    /**
+     * Endpoint to get all admins
+     */
     useEffect(() => {
         axios
         .post('/api/getAdmins', {token: token})
@@ -32,6 +35,11 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
           }
         })
       }, [token])
+
+    /**
+     * Removes an admin from the list, giving that user 'regular' privilege
+     * @param user assumes that this user already has admin privilege
+     */
 
     function removeAdmin(user: Student) {
         axios
@@ -48,6 +56,11 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
             }
         }).catch((e) => console.log(`Unable to remove admin ${e}`))
     }
+
+    /**
+     * Calls endpoint to add or update a user with admin privilege
+     * @param _netId the user's net id
+     */
 
     function addAdminByNetId(_netId: string) {
         axios
