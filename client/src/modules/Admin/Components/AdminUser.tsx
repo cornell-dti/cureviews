@@ -10,7 +10,6 @@ type Props = {
 
 const AdminUser = ({user, token, removeHandler}: Props) => {
 
-
     return (
         <div className={styles.userEntry}>
             {user.firstName} {user.lastName}, {user.netId}

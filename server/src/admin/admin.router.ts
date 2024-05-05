@@ -24,6 +24,7 @@ import {
   reportReview,
   getAdminUsers,
   removeAdmin,
+  addOrUpdateAdmin,
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -210,6 +211,27 @@ adminRouter.post('/removeAdmin', async (req, res) => {
     if (result) {
       return res.status(200).json({
         message: `Remove admin privilege from user with id ${userId}`
+      });
+    }
+
+    return res.status(400).json({
+      error: 'User is not an admin.'
+    })
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`})
+  }
+})
+
+adminRouter.post('/grantAdmin', async (req, res) => {
+  const {token, userId}: AdminUserRequestType = req.body;
+
+  try {
+    const auth = new Auth({ token });
+    const result = await addOrUpdateAdmin({ auth: auth, id: userId})
+
+    if (result) {
+      return res.status(200).json({
+        message: `Granted admin privilege to user with id ${userId}`
       });
     }
 

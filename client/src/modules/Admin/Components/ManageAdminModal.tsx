@@ -14,6 +14,11 @@ type Props = {
 
 const ManageAdminModal = ({token, open, setOpen}: Props) => {
     const [admins, setAdmins] = useState<Student[]>([])
+    const [netId, setNetId] = useState<string>("")
+
+    function closeModal() {
+        setOpen(false)
+    }
 
     useEffect(() => {
         axios
@@ -44,8 +49,21 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
         }).catch((e) => console.log(`Unable to remove admin ${e}`))
     }
 
-    function closeModal() {
-        setOpen(false)
+    function addAdminByNetId(_netId: string) {
+        axios
+        .post('/api/grantAdmin', {
+            userId: _netId,
+            token: token
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                console.log(`Successfully gave admin privilege to ${_netId}`)
+            }
+        }).catch((e) => console.log(`Unable to remove admin ${e}`))
+    }
+
+    function onTextChange(newText: string) {
+        setNetId(newText)
     }
 
     if (!open) {
@@ -62,6 +80,22 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
                     src={closeIcon}
                     alt="close-modal"
                 />
+                <div className={styles.addAdmin}>
+                    <input
+                        className={styles.textInputBox}
+                        value={netId}
+                        onChange={(e) => onTextChange(e.target.value)}
+                        name="new-admin"
+                        id="new-admin"
+                        placeholder="User net-id"
+                    ></input>
+                    <button
+                        className = {styles.addAdminButton}
+                        onClick={() => addAdminByNetId(netId)}
+                    >Add administrator</button>
+                </div>
+                <br>
+                </br>
                 {admins.map((admin) => {
                     return (
                         <AdminUser

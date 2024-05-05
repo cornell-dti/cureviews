@@ -1,16 +1,15 @@
 .userEntry {
     padding: 1px;
-    margin: 1px;
+    margin: 2px;
     display: flex;
     border-bottom: 1px solid #ccc;
 }
 
 .removeButton {
-    background-color: var(--clr-red-200);
-    color: var(--clr-white);
+    color: var(--clr-black);
     font-size: var(--font-small-size);
     border-radius: 5px;
     margin-left: auto;
-    padding: 5px 3px;
+    padding: 2px 3px;
     cursor: pointer;
 }

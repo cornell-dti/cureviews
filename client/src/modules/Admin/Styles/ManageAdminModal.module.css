@@ -44,3 +44,25 @@
     top: 32px;
     right: 32px;
 }
+
+.addAdmin {
+    display: flex;
+    padding: 2px;
+    border-bottom: 2px solid #ccc;
+}
+
+.addAdminButton {
+    background-color: var(--clr-blue-300);
+    color: var(--clr-white);
+    font-size: var(--font-small-size);
+    border-radius: 5px;
+    margin-left: auto;
+    padding: 3px 7px;
+    cursor: pointer;
+}
+
+.textInputBox {
+    border-radius: 10px;
+    border: 0.5px solid #65acff;
+    padding: 3px 7px;
+}

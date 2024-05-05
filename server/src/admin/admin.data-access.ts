@@ -2,6 +2,8 @@
 import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
 import { UpdateCourseMetrics } from './admin.type';
 import { findCourseById } from '../course/course.data-access';
+import { InsertStudentType } from '../auth/auth.type';
+import shortid from 'shortid';
 
 export const findStudentById = async (id: string) => {
   const student = await Students.findOne({ _id: id }).exec();
@@ -125,6 +127,25 @@ export const removeAdminPrivilege = async (id: string) => {
 }
 
 export const grantAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ _id: id }, { $set: {privilege: 'admin'} }).exec()
+  console.log('grant privilege')
+  const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
+  return res
+}
+
+export const createNewAdminUser = async (id: string) => {
+
+  const admin: InsertStudentType = {
+    _id: shortid.generate(),
+    firstName: '',
+    lastName: '',
+    netId: id,
+    affiliation: '',
+    token: '',
+    privilege: 'admin',
+  };
+  
+  const newAdmin = new Students(admin);
+  const res = await newAdmin.save();
+
   return res
 }
