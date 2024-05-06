@@ -127,7 +127,6 @@ export const removeAdminPrivilege = async (id: string) => {
 }
 
 export const grantAdminPrivilege = async (id: string) => {
-  console.log('grant privilege')
   const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
   return res
 }
