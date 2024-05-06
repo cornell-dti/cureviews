@@ -33,31 +33,39 @@ export const SearchBar = ({
   const [query, setQuery] = useState<string>('')
   const [width, setWidth] = useState<number>(window.innerWidth)
 
+  let timeoutId: NodeJS.Timeout
+
   useEffect(() => {
-    const controller = new AbortController();
-
-    if (query.toLowerCase() !== '') {
-
-      function sleep(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms))
+    function debounce(func: Function, delay: number) {
+      return (...args: any[]) => {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(() => func(...args), delay)
       }
+    }
 
-      const fetchResults = async () => {
-        const results = await axios.post(`/api/getResultsFromQuery`, { query: query })
+    async function fetchCourses() {
+      const response = await axios.post(`/api/getResultsFromQuery`, {
+        query: query,
+      })
+      const courseList = response.data.result.courses
+      const subjectList = response.data.result.subjects
+      const professorList = response.data.result.professors
+      setCourses(courseList)
+      setSubjects(subjectList)
+      setProfessors(professorList)
+    }
+    const debouncedFetchCourses = debounce(fetchCourses, 300)
 
-        const subjectList = results.data.result.subjects
-        const professorList = results.data.result.professors
-        const courseList = results.data.result.courses
-        setSubjects(subjectList)
-        setProfessors(professorList)
-        setCourses(courseList)
-      }
+    if (query.trim() !== '') {
+      debouncedFetchCourses()
+    } else {
+      setCourses([])
+      setSubjects([])
+      setProfessors([])
+    }
 
-      fetchResults().catch()
-      sleep(1000)
-      fetchResults().catch()
-
-      return () => controller.abort();
+    return () => {
+      clearTimeout(timeoutId)
     }
   }, [query])
 
@@ -83,7 +91,7 @@ export const SearchBar = ({
       //if the down arrow was detected, increase the index value by 1 to highlight the next element
       //never index above the total number of results
       const numResults = subjects.length + professors.length + courses.length
-      setIndex(Math.min(index + 1, numResults - 1))
+      setIndex(Math.min(index + 1, numResults))
     } else if (e.key === 'ArrowUp') {
       //if the up arrow key was detected, decrease the index value by 1 to highlight the prev element
       //never index below 0 (the first element)
@@ -129,6 +137,7 @@ export const SearchBar = ({
       userInput = userInput.replace(/(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/gi, ' ');
     }
 
+    // only sets the index after key pressed
     if (checkForCourseMatch(userInput)) {
       // If input is exact match to a class,
       //  highlight this class by setting index to index of this class

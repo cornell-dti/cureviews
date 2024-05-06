@@ -41,6 +41,7 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
     const coursesByProfessor = await searchCoursesByProfessor({ search }, searchType);
     const coursesNaive = await searchCourses({ search }, searchType);
 
+    // given 3 potential course lists, select the list with the longest length
     const courses = coursesBySubject.length > coursesByProfessor.length ?
       (coursesBySubject.length > coursesNaive.length ? coursesBySubject : coursesNaive) :
       (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
@@ -82,6 +83,7 @@ searchRouter.post('/getCourseResults', async (req, res) => {
     const coursesByProfessor = await searchCoursesByProfessor({ search }, searchType);
     const coursesNaive = await searchCourses({ search }, searchType);
 
+    // given 3 potential course lists, select the list with the longest length
     const courses = coursesBySubject.length > coursesByProfessor.length ?
       (coursesBySubject.length > coursesNaive.length ? coursesBySubject : coursesNaive) :
       (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
