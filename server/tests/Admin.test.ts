@@ -45,7 +45,7 @@ afterAll(async () => {
 describe('admin functionality unit tests', () => {
   it('fetchPendingReviews-works', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/fetchPendingReviews`,
+      `http://localhost:${testPort}/api/admin/reviews/pending`,
       { token: 'non-empty' },
     );
     const ids = res.data.result.map((i) => i._id);
@@ -63,7 +63,7 @@ describe('admin functionality unit tests', () => {
     });
 
     const res = await axios
-      .post(`http://localhost:${testPort}/api/makeReviewVisible`, {
+      .post(`http://localhost:${testPort}/api/admin/reviews/approve`, {
         review: pendingReportedReview,
         token: 'non-empty',
       })
@@ -76,7 +76,7 @@ describe('admin functionality unit tests', () => {
     const pendingReview = await Reviews.findOne({ visible: 0, reported: 0 });
 
     const res = await axios.post(
-      `http://localhost:${testPort}/api/makeReviewVisible`,
+      `http://localhost:${testPort}/api/admin/reviews/approve`,
       { review: pendingReview, token: 'non-empty' },
     );
 
@@ -93,7 +93,7 @@ describe('admin functionality unit tests', () => {
     const reportedReview = await Reviews.findOne({ visible: 0, reported: 1 });
 
     const res = await axios.post(
-      `http://localhost:${testPort}/api/undoReportReview`,
+      `http://localhost:${testPort}/api/admin/reviews/unreport`,
       {
         review: reportedReview,
         token: 'non empty',
@@ -114,7 +114,7 @@ describe('admin functionality unit tests', () => {
     const reportedReview = await Reviews.findOne({ visible: 0, reported: 1 });
 
     const res = await axios
-      .post(`http://localhost:${testPort}/api/removeReview`, {
+      .post(`http://localhost:${testPort}/api/admin/reviews/remove`, {
         review: reportedReview,
         token: 'non empty',
       })
