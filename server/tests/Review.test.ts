@@ -80,7 +80,7 @@ describe("review functionality unit tests", () => {
 
   it("reportReview - works", async () => {
     const res1 = await axios.post(
-      `http://localhost:${testPort}/api/reportReview`,
+      `http://localhost:${testPort}/api/admin/reviews/report`,
       { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
     );
 
