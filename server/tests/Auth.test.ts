@@ -52,7 +52,7 @@ describe("auth functionality works", () => {
 
   it("tokenIsAdmin-works", async () => {
     const failRes = await axios.post(
-      `http://localhost:${testPort}/api/validate/token`,
+      `http://localhost:${testPort}/api/admin/validate/token`,
       { token: "fakeTokencv4620" },
     );
 
