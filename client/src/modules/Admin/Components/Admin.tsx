@@ -12,6 +12,7 @@ import Stats from './Stats'
 import ManageAdminModal from './ManageAdminModal'
 
 import styles from '../Styles/Admin.module.css'
+import Loading from '../../Globals/Loading'
 
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
