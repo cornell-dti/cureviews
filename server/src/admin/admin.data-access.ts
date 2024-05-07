@@ -122,7 +122,7 @@ export const findAdminUsers = async () => {
 }
 
 export const removeAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netid: id }, { $set: {privilege: 'regular'} }).exec()
+  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'regular'} }).exec()
   return res
 }
 
