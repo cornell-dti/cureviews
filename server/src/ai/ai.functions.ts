@@ -1,9 +1,12 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
 import { Reviews } from "../../db/schema";
-import { findCourseById } from '../course/course.data-access';
 import { CourseIdRequestType } from '../course/course.type';
 import { findReviewCrossListOR } from '../utils';
+import { Classes } from "../../db/schema";
+
+const findCourseById = async (courseId: string) => await Classes.findOne({ _id: courseId }).exec();
+
 
 dotenv.config();
 const openai = new OpenAI({
@@ -63,10 +66,10 @@ async function getReviewsForSummary(params: CourseIdRequestType) {
   const { courseId } = params;
 
   // Validate the course ID format
-  const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-  if (!regex.test(courseId)) {
-    return null; // Return null for invalid course ID
-  }
+  // const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+  // if (!regex.test(courseId)) {
+  //   return null; // Return null for invalid course ID
+  // }
 
   // Fetch the course by ID
   const course = await findCourseById(courseId);
