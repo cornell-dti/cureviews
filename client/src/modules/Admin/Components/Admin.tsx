@@ -133,6 +133,8 @@ export const Admin = () => {
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   function unReportReview(review: Review) {
+
+    //wz
     axios
       .post('/api/reviews/unreport', {
         review: review,
@@ -157,7 +159,7 @@ export const Admin = () => {
     setDisableNewSem(true)
     setDisableInit(true)
     setLoadingSemester(1)
-
+    //wz
     axios
       .post('/api/admin/semester/add', {
         semester,
@@ -188,7 +190,7 @@ export const Admin = () => {
 
     setDisableInit(true)
     setLoadingInit(1)
-
+    //wz
     axios.post('/api/admin/db/initialize', { token: token }).then((response) => {
       if (response.status === 200) {
         setDisableInit(false)
@@ -203,6 +205,7 @@ export const Admin = () => {
     console.log('Updating professors')
     setDisableInit(true)
     setLoadingProfs(1)
+    //wz
 
     axios.post('/api/admin/professors/add', { token: token }).then((response) => {
       if (response.status === 200) {
@@ -219,7 +222,7 @@ export const Admin = () => {
     console.log('Setting the professors to an empty array')
     setDisableInit(true)
     setResettingProfs(1)
-
+    // wz
     axios.post('/api/admin/professors/reset', { token: token }).then((response) => {
       if (response.status === 200) {
         console.log('Reset all the professors to empty arrays')
@@ -275,9 +278,6 @@ export const Admin = () => {
     }
   }
 
-  function toSelectOptions(options: string[] | undefined) {
-    return options?.map((option) => ({ value: option, label: option })) || []
-  }
 
   function renderAdmin(token: string) {
     return (
