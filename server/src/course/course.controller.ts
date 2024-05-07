@@ -56,7 +56,7 @@ export const getCourseByInfo = async ({
 
 export const getReviewsCrossListOR = async ({
   courseId,
-}: CourseIdRequestType) => {
+}: CourseIdRequestType, returnTextOnly: boolean = false) => {
   const course = await getCourseById({ courseId });
 
   if (course) {
@@ -65,15 +65,22 @@ export const getReviewsCrossListOR = async ({
     if (!crossListOR) {
       return null;
     }
-
     const reviews = await findReviewCrossListOR(crossListOR);
-    const sanitizedReviews = reviews.map((review) => {
-      const copy = review;
-      copy.user = '';
-      return copy;
-    });
 
-    return sanitizedReviews;
+    // Return only the text from each review if returnTextOnly is true
+    if (returnTextOnly) {
+      return reviews.map(review => review.text).join(" ");
+    }
+    else {
+      const sanitizedReviews = reviews.map((review) => {
+        const copy = review;
+        copy.user = '';
+        return copy;
+      });
+
+      return sanitizedReviews;
+    }
+
   }
 
   return null;
