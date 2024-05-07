@@ -14,7 +14,7 @@ export const testSubjects: Subject[] = [
   {
     _id: 'federation subject',
     subShort: 'FEDN',
-    subFull: 'The Study of Where No Man has Gone Before!',
+    subFull: 'The Study of Where No Man Has Gone Before!',
   },
 ];
 
@@ -123,13 +123,13 @@ export const testProfessors: Professor[] = [
     _id: 'prof_1',
     fullName: 'Gazghul Thraka',
     courses: ['newCourse1', 'newCourse2'],
-    major: 'MORK',
+    major: 'mork',
   },
   {
     _id: 'prof_2',
     fullName: 'Jean-Luc Picard',
     courses: [],
-    major: 'FEDN',
+    major: 'fedn',
   },
 ];
 
@@ -211,7 +211,7 @@ export const testClasses: Class[] = [
   },
   {
     _id: 'newCourse1',
-    classSub: 'MORK',
+    classSub: 'mork',
     classNum: '1110',
     classTitle: 'Introduction to Testing',
     classFull: 'MORK 1110: Introduction to Testing',
@@ -225,7 +225,7 @@ export const testClasses: Class[] = [
   },
   {
     _id: 'newCourse2',
-    classSub: 'MORK',
+    classSub: 'mork',
     classNum: '2110',
     classTitle: 'Intermediate Testing',
     classFull: 'MORK 2110: Intermediate Testing',
@@ -234,6 +234,20 @@ export const testClasses: Class[] = [
     classProfessors: ['Gazghul Thraka'],
     classRating: 3,
     classWorkload: 4,
+    classDifficulty: 5,
+    crossList: [],
+  },
+  {
+    _id: 'newCourse3',
+    classSub: 'mork',
+    classNum: '3110',
+    classTitle: 'Advanced Mock',
+    classFull: 'MORK 3110: Advanced Mock',
+    classSems: ['SP20'],
+    classPrereq: ['newCourse2'], // the class above
+    classProfessors: ['Gazghul Thraka'],
+    classRating: 3,
+    classWorkload: 5,
     classDifficulty: 5,
     crossList: [],
   },

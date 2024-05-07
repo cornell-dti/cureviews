@@ -70,8 +70,9 @@ export const Home = () => {
 
   return (
     <div
-      className={`${styles.fullheight} ${styles.bgfixed} ${styles[`bg${time}${season}`]
-        }`}
+      className={`${styles.fullheight} ${styles.bgfixed} ${
+        styles[`bg${time}${season}`]
+      }`}
     >
       <div className={styles.buttoncontainer}>
         <ProfileDropdown
