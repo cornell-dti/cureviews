@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Review as ReviewType } from 'common'
 
 import Navbar from '../../Globals/Navbar'
+import Loading from '../../Globals/Loading'
 
 import { UserInfo } from './UserInfo'
 import { NoReviews } from './NoReviews'
@@ -173,7 +174,7 @@ const Profile = () => {
     return <Redirect to="/" />
   }
 
-  return <>Loading...</>
+  return <Loading />
 }
 
 export { Profile }

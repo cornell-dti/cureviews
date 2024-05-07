@@ -12,7 +12,6 @@ import { SearchQueryType } from './search.type';
 
 /**
  * Searches database for all relevant courses based on query.
- * Returns at most 200 relevant courses based on edit distance.
  *
  * @param {Search} search: Object that represents the search of a request being passed in.
  * @returns list of courses if operation was successful, null otherwise.
@@ -21,7 +20,8 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
   const query = search.getQuery();
   let fullSearch = new Set(); // set to ensure no duplicate courses
 
-  if (query !== undefined && query !== '') {
+  // checks query after at least 2 characters to speed up search
+  if (query !== undefined && query.length >= 2) {
     // naive search
     const initialSearch = await search.searchQuery(findCourses);
 
@@ -29,17 +29,17 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       fullSearch = new Set([...fullSearch, ...initialSearch]);
     }
 
+    // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
+    const courseSubject = await findCourseSubject(query);
+    if (courseSubject.length > 0) {
+      return new Set(courseSubject);
+    }
+
     // checks if search is a professor
     // returns all courses taught by particular professor
     const coursesByProfessor = await search.searchQuery(findCourseProfessor);
     if (coursesByProfessor && coursesByProfessor.length > 0) {
       return new Set(coursesByProfessor);
-    }
-
-    // check if query is a subject, if so return only classes with this subject. Catches searches like "CS"
-    const courseSubject = await findCourseSubject(query);
-    if (courseSubject.length > 0) {
-      return new Set(courseSubject);
     }
 
     // check if first digit is a number. Catches searchs like "1100"
@@ -57,7 +57,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       const strBeforeSpace = query.substring(0, indexFirstSpace);
       const strAfterSpace = query.substring(indexFirstSpace + 1);
       const subject = await findCourseSubject(strBeforeSpace);
-      if (subject) {
+      if (subject.length > 0) {
         const coursesWithinSubject = await findCourseWithinSubject(
           strBeforeSpace,
           strAfterSpace,
@@ -75,7 +75,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       const strAfterDigit = query.substring(indexFirstDigit);
       const subject = await findCourseSubject(strBeforeDigit);
 
-      if (subject) {
+      if (subject.length > 0) {
         const result = await findCourseWithinSubject(
           strBeforeDigit,
           strAfterDigit,
@@ -89,49 +89,53 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
   return fullSearch;
 };
 
+const courseSlicing = (sorted, searchType: string) => {
+  if (sorted && searchType === "search" && sorted.length > 5) {
+    return sorted.slice(0, 5);
+  }
+
+  if (sorted && searchType === "results" && sorted.length > 200) {
+    return sorted.slice(0, 200);
+  }
+  return sorted;
+}
+
 /**
  * Searches database for all relevant courses based on query.
- * Returns at most 200 relevant courses based on edit distance.
+ * Returns at most 5 relevant courses in search or 200 relevant courses in results based on edit distance.
  *
  * @param {Search} search: Object that represents the search of a request being passed in.
+ * @param searchType: string that represents a search or result return
  * @returns list of courses if operation was successful, null otherwise.
  */
-export const searchCourses = async ({ search }: SearchQueryType) => {
+export const searchCourses = async ({ search }: SearchQueryType, searchType: string) => {
   try {
     const fullSearch = await fullCourseSearch({ search });
     const sorted = Array.from(fullSearch).sort(courseSort(search.getQuery()));
 
-    if (fullSearch.size > 200 && fullSearch.size > 0) {
-      return sorted.slice(0, 200);
-    }
-
-    return sorted;
+    return courseSlicing(sorted, searchType);
   } catch (e) {
     return null;
   }
 };
 
-export const searchCoursesByProfessor = async ({ search }: SearchQueryType) => {
+export const searchCoursesByProfessor = async ({ search }: SearchQueryType, searchType: string) => {
   try {
     const courses = await search.searchQuery(findCourseProfessor);
-    if (courses && courses.length > 0) {
-      return courses.sort(courseSort(search.getQuery()));
-    }
+    const sorted = Array.from(courses).sort(courseSort(search.getQuery()));
 
-    return [];
+    return courseSlicing(sorted, searchType);
   } catch (e) {
     return null;
   }
 };
 
-export const searchCoursesBySubject = async ({ search }: SearchQueryType) => {
+export const searchCoursesBySubject = async ({ search }: SearchQueryType, searchType: string) => {
   try {
     const courses = await search.searchQuery(findCourseSubject);
-    if (courses && courses.length > 0) {
-      return courses.sort(courseSort(search.getQuery()));
-    }
+    const sorted = Array.from(courses).sort(courseSort(search.getQuery()));
 
-    return [];
+    return courseSlicing(sorted, searchType);
   } catch (e) {
     return null;
   }
@@ -140,6 +144,10 @@ export const searchCoursesBySubject = async ({ search }: SearchQueryType) => {
 export const searchSubjects = async ({ search }: SearchQueryType) => {
   try {
     const subjects = await search.searchQuery(findSubjects);
+    if (subjects && subjects.length > 3) {
+      return Array.from(subjects).slice(0, 3);
+    }
+
     return subjects;
   } catch (e) {
     return null;
@@ -149,6 +157,9 @@ export const searchSubjects = async ({ search }: SearchQueryType) => {
 export const searchProfessors = async ({ search }: SearchQueryType) => {
   try {
     const professors = await search.searchQuery(findProfessors);
+    if (professors && professors.length > 3) {
+      return Array.from(professors).slice(0, 3);
+    }
     return professors;
   } catch (e) {
     return null;

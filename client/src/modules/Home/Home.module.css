@@ -55,10 +55,10 @@
   background-repeat: no-repeat;
   background-size: 100%;
   background-position-y: 100%;
-  max-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  bottom: 0px;
+  /* max-height: 100%; */
+  /* min-width: 100%; */
+  /* position: fixed; */
+  /* bottom: 0px; */
 }
 
 /* Position the DTI Logo at the bottom right of the screen */
@@ -85,7 +85,7 @@
 .fullheight {
   padding-top: 50px;
   min-height: 100vh;
-  background-color: var(--clr-blue-100);
+  /* background-color: var(--clr-blue-100); */
 }
 
 /* Handle different time & seasons background */
@@ -173,12 +173,12 @@
     linear-gradient(
       180deg,
       rgba(51, 145, 254, 0.7) 7.5%,
-      rgba(255, 255, 255, 0.7) 79.5%
+      rgba(255, 236, 152, 0.577) 79.5%
     );
 }
 
 .bgsunsetspring {
-  background-image: url('../../assets/Home/bg_sunset_spring.svg'),
+  background-image: url('../../assets/Home/bg_afternoon_spring.svg'),
     linear-gradient(
       201.93deg,
       rgba(164, 193, 209, 0.7) 19.17%,

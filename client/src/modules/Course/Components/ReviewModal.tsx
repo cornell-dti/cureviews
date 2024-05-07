@@ -141,7 +141,7 @@ const ReviewModal = ({
               options={professorOptions}
               value={selectedProfessors}
               onChange={onProfessorChange}
-              placeholder="Porofessor"
+              placeholder="Professor"
             />
             <div className={styles.slider}>
               <RatingInput

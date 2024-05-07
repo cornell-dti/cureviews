@@ -8,7 +8,7 @@ export class Search {
   private query: string;
 
   constructor({ query }: SearchEntity) {
-    this.query = query.replace(/(?=[^\s])\W/g, '');
+    this.query = query.replace(/(?=[^\s])[^a-zA-Z0-9_-\s]/g, '');
 
     this.validate();
   }
