@@ -44,13 +44,13 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
     function removeAdmin(user: Student) {
         axios
         .post('/api/removeAdmin', {
-            userId: user._id,
+            userId: user.netId,
             token: token
         })
         .then((response) => {
             if (response.status === 200) {
                 const updatedAdmins = admins.filter((admin: Student) => {
-                    return admin && admin._id !== user._id
+                    return admin && admin._id !== user.netId
                 })
                 setAdmins(updatedAdmins)
             }
