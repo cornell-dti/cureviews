@@ -4,8 +4,7 @@ import { Reviews } from "../../db/schema";
 import { CourseIdRequestType } from '../course/course.type';
 import { findReviewCrossListOR } from '../utils';
 import { Classes } from "../../db/schema";
-
-const findCourseById = async (courseId: string) => await Classes.findOne({ _id: courseId }).exec();
+import { findCourseById } from '../course/course.data-access';
 
 
 dotenv.config();
@@ -62,43 +61,72 @@ async function getCoursesWithMinReviews(minimum) {
  * @param params takes in the courseID of a course that we need to generate a summary for
  * @returns all reviews for that course concatenated into a single string
  */
-async function getReviewsForSummary(params: CourseIdRequestType) {
-  const { courseId } = params;
+const getReviewsForSummary = async ({ courseId }: CourseIdRequestType) => {
+  const course = await getCourseById({ courseId });
 
-  // Validate the course ID format
-  // const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
-  // if (!regex.test(courseId)) {
-  //   return null; // Return null for invalid course ID
-  // }
+  if (course) {
+    const crossListOR = getCrossListOR(course);
 
-  // Fetch the course by ID
-  const course = await findCourseById(courseId);
-  if (!course) return null; // Return null if no course is found
+    if (!crossListOR) {
+      return null;
+    }
 
-  // Fetch reviews for the course, including cross-listed courses
-  const crossListOR = getCrossListOR(course);
-  if (!crossListOR) return null; // Return null if no cross-listing data is available
+    const reviews = await findReviewCrossListOR(crossListOR);
+    if (reviews.length === 0) {
+      return "No reviews available";
+    }
 
-  const reviews = await findReviewCrossListOR(crossListOR);
-  if (reviews.length === 0) return null; // Return null if no reviews are found
+    // Sanitize reviews and join them into a single string separated by '/'
+    const reviewTexts = reviews.map(review => {
+      return review.text ? review.text.replace(/\/+/g, ' ') : "No review text";
+    }).join(' / ');
 
-  // Create a single string of all review texts separated by '/'
-  const reviewTexts = reviews.map(review => review.text || "No review text").join(' / ');
+    return reviewTexts;
+  } else {
+    return "Course not found";
+  }
+};
 
-  return reviewTexts;
-}
 
+const getCourseById = async ({ courseId }: CourseIdRequestType) => {
+  // check: make sure course id is valid and non-malicious
+  const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+  if (regex.test(courseId)) {
+    return await findCourseById(courseId);
+  }
+
+  return null;
+};
 
 /**
- * Helper function to get crosslist OR search criteria from a course.
- * @param course The course object to extract crosslist data.
- * @returns The formatted search criteria for crosslist.
+ * Helper function that returns array of course ids that a given course is crosslisted with
+ *
+ * @param {string} reviewId: Mongo-generated id of review
+ * @returns true if operation was successful, false otherwise
  */
-const getCrossListOR = (course) => {
-  if (!course || !course.crossList || course.crossList.length === 0) {
+export const getCrossListOR = (course) => {
+  if (!course) {
     return null;
   }
-  return [...course.crossList.map(cID => ({ class: cID })), { class: course._id }];
+
+  const { crossList } = course;
+  const courseId = course._id;
+
+  if (crossList !== undefined && crossList.length > 0) {
+    const crossListOR = crossList.map((cID) => ({
+      class: cID,
+    }));
+
+    crossListOR.push({ class: courseId });
+
+    return crossListOR;
+  }
+
+  return [
+    {
+      class: courseId,
+    },
+  ];
 };
 
 export { makeSummary, getCoursesWithMinReviews, getReviewsForSummary } 

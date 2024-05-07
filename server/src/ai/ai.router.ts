@@ -1,4 +1,5 @@
 import express from 'express';
+import { CourseIdRequestType } from '../course/course.type';
 import { makeSummary, getCoursesWithMinReviews, getReviewsForSummary } from './ai.functions';
 
 const aiRouter = express.Router();
@@ -24,14 +25,20 @@ aiRouter.post('/text/summary', async (req, res) => {
 
 aiRouter.post('/get/text', async (req, res) => {
   try {
-    if (!req.body.id) {
-      return res.status(400).json({ error: 'No id provided' });
+    const { courseId }: CourseIdRequestType = req.body;
+    const reviews = await getReviewsForSummary({ courseId });
+
+    if (!reviews) {
+      return res.status(404).json({
+        error: `Reviews could not be found for course id: ${courseId}`,
+      });
     }
-    const summary = await getReviewsForSummary(req.body.id);
-    res.status(200).json({ summary });
+
+    return res.status(200).json({ result: reviews });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
   }
 });
 
