@@ -25,11 +25,12 @@ import {
   getAdminUsers,
   removeAdmin,
   addOrUpdateAdmin,
+  approveReviews
 } from './admin.controller';
 
 export const adminRouter = express.Router();
 
-adminRouter.post('/reportReview', async (req, res) => {
+adminRouter.post('/reviews/report', async (req, res) => {
   try {
     const { id }: ReportReviewRequestType = req.body;
     const result = await reportReview({ id });
@@ -52,7 +53,7 @@ adminRouter.post('/reportReview', async (req, res) => {
 /*
  * Check if a token is for an admin
  */
-adminRouter.post('/tokenIsAdmin', async (req, res) => {
+adminRouter.post('/validate/token', async (req, res) => {
   try {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
@@ -65,7 +66,7 @@ adminRouter.post('/tokenIsAdmin', async (req, res) => {
   }
 });
 
-adminRouter.post('/makeReviewVisible', async (req, res) => {
+adminRouter.post('/reviews/approve', async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
@@ -98,7 +99,27 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchPendingReviews', async (req, res) => {
+adminRouter.post('/reviews/approve/all', async (req, res) => {
+  try {
+    const { token }: AdminReviewRequestType = req.body;
+    const auth = new Auth({ token });
+
+    const response = await approveReviews({auth: auth})
+    if (response !== null) {
+      return res.status(200).json({
+        message: `All pending reviews have been approved`
+      })
+    } else {
+      return res.status(400).json({
+        error: `User is not an admin`
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/reviews/get/pending', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -118,7 +139,7 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchReportedReviews', async (req, res) => {
+adminRouter.post('/reviews/get/reported', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -138,7 +159,7 @@ adminRouter.post('/fetchReportedReviews', async (req, res) => {
   }
 });
 
-adminRouter.post('/countReviews', async (req, res) => {
+adminRouter.post('/reviews/count', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -159,7 +180,7 @@ adminRouter.post('/countReviews', async (req, res) => {
   }
 })
 
-adminRouter.post('/getCourseCSV', async (req, res) => {
+adminRouter.post('/reviews/csv', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -180,7 +201,7 @@ adminRouter.post('/getCourseCSV', async (req, res) => {
   }
 })
 
-adminRouter.post('/getAdmins', async (req, res) => {
+adminRouter.post('/users/get', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -201,7 +222,7 @@ adminRouter.post('/getAdmins', async (req, res) => {
   }
 })
 
-adminRouter.post('/removeAdmin', async (req, res) => {
+adminRouter.post('/users/remove', async (req, res) => {
   const {token, userId}: AdminUserRequestType = req.body;
 
   try {
@@ -222,7 +243,7 @@ adminRouter.post('/removeAdmin', async (req, res) => {
   }
 })
 
-adminRouter.post('/grantAdmin', async (req, res) => {
+adminRouter.post('/users/add', async (req, res) => {
   const {token, userId}: AdminUserRequestType = req.body;
 
   try {
@@ -243,7 +264,7 @@ adminRouter.post('/grantAdmin', async (req, res) => {
   }
 })
 
-adminRouter.post('/addNewSemester', async (req, res) => {
+adminRouter.post('/semester/add', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -270,7 +291,7 @@ adminRouter.post('/addNewSemester', async (req, res) => {
   }
 });
 
-adminRouter.post('/undoReportReview', async (req, res) => {
+adminRouter.post('/reviews/unreport', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -296,7 +317,7 @@ adminRouter.post('/undoReportReview', async (req, res) => {
   }
 });
 
-adminRouter.post('/removeReview', async (req, res) => {
+adminRouter.post('/reviews/remove', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
 
   try {
@@ -318,7 +339,7 @@ adminRouter.post('/removeReview', async (req, res) => {
   }
 });
 
-adminRouter.post('/setProfessors', async (req, res) => {
+adminRouter.post('/professors/add', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -334,7 +355,7 @@ adminRouter.post('/setProfessors', async (req, res) => {
   }
 });
 
-adminRouter.post('/resetProfessors', async (req, res) => {
+adminRouter.post('/professors/reset', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -355,7 +376,7 @@ adminRouter.post('/resetProfessors', async (req, res) => {
   }
 });
 
-adminRouter.post('/dbInit', async (req, res) => {
+adminRouter.post('/db/initialize', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });

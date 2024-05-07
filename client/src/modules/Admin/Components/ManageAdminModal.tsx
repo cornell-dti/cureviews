@@ -25,7 +25,7 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
      */
     useEffect(() => {
         axios
-        .post('/api/getAdmins', {token: token})
+        .post('/api/admin/users/get', {token: token})
         .then((response) => {
           const result = response.data.result
           if (response.status === 200) {
@@ -43,7 +43,7 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
 
     function removeAdmin(user: Student) {
         axios
-        .post('/api/removeAdmin', {
+        .post('/api/admin/users/remove', {
             userId: user.netId,
             token: token
         })
@@ -64,7 +64,7 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
 
     function addAdminByNetId(_netId: string) {
         axios
-        .post('/api/grantAdmin', {
+        .post('/api/admin/users/add', {
             userId: _netId,
             token: token
         })

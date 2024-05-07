@@ -18,7 +18,7 @@ const Stats = ({token}: StatsProps) => {
     */
     useEffect(() => {
         axios
-        .post('/api/countReviews', {token: token})
+        .post('/api/admin/reviews/count', {token: token})
         .then((response) => {
           const result = response.data.result
           if (response.status === 200) {
@@ -41,7 +41,7 @@ const Stats = ({token}: StatsProps) => {
       let csv = ""
       
       await axios
-        .post('/api/getCourseCSV', {token: token})
+        .post('/api/admin/reviews/csv', {token: token})
         .then((response) => {
           const result = response.data.result
           if (response.status === 200) {

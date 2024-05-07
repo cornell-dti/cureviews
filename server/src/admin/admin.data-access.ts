@@ -110,6 +110,10 @@ export const updateReviewVisibility = async (
   await Reviews.updateOne({ _id: reviewId }, { $set: { visible, reported } });
 };
 
+export const approveAllReviews = async () => {
+  await Reviews.updateMany({ visible: 0, reported: 0 }, { $set: { visible: 1 } });
+};
+
 /*
  * Functions for the manage admin functionality. Enables grant admin privilege to a
  * user, removing admin privilege from a user, and retrieving all priviliged users.

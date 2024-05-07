@@ -12,6 +12,7 @@ import {
   removeAdminPrivilege,
   grantAdminPrivilege,
   createNewAdminUser,
+  approveAllReviews,
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
@@ -109,6 +110,13 @@ export const editReviewVisibility = async ({
 
   return false;
 };
+
+export const approveReviews = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    return approveAllReviews();
+  }
+}
 
 /**
  * Removes a review from db by mongo generated id.

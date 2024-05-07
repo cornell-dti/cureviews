@@ -53,32 +53,20 @@ export const Admin = () => {
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
     async function loadReviews() { 
-      const pending = await axios.post('/api/admin/reviews/pending', {
+      const pending = await axios.post('/api/admin/reviews/get/pending', {
         token: token,
       })
       if (pending.status === 200) {
         setPendingReviews(pending.data.result)
       }
-
+      const reported = await axios.post('/api/admin/reviews/get/reported', {
+        token: token
+      })
+      if (reported.status === 200) {
+        setReportedReviews(reported.data.result);
+      }
     }
-
-    
-    axios
-      .post('/api/fetchPendingReviews', { token: token })
-      .then((response) => {
-        const result = response.data.result
-        if (response.status === 200) {
-          setPendingReviews(result)
-        }
-      })
-    axios
-      .post('/api/fetchReportedReviews', { token: token })
-      .then((response) => {
-        const result = response.data.result
-        if (response.status === 200) {
-          setReportedReviews(result)
-        }
-      })
+    loadReviews()
   }, [token, isAuthenticating])
 
   // Helper function to remove a review from a list of reviews and
@@ -93,7 +81,7 @@ export const Admin = () => {
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
   async function approveReview(review: Review) {
-    const response = await axios.post('/api/makeReviewVisible', {
+    const response = await axios.post('/api/admin/reviews/approve', {
       review: review,
       token: token,
     })
@@ -108,7 +96,7 @@ export const Admin = () => {
   // and deletes the review with this id.
   async function removeReview(review: Review, isUnapproved: boolean) {
     try {
-      const response = await axios.post('/api/removeReview', {
+      const response = await axios.post('/api/admin/reviews/remove', {
         review: review,
         token: token,
       })
@@ -133,17 +121,20 @@ export const Admin = () => {
   }
 
   // Call when admin would like to mass-approve all of the currently pending reviews.
-  function approveAllReviews(reviews: Review[]) {
-    reviews.forEach((review: Review) => {
-      approveReview(review)
-    })
+  async function approveAllReviews(reviews: Review[]) {
+    const response = await axios.post('/api/admin/reviews/approve/all', {token: token})
+    if (response.status === 200) {
+      setPendingReviews([])
+    } else {
+      alert('Could not approve all reviews')
+    }
   }
 
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   function unReportReview(review: Review) {
     axios
-      .post('/api/undoReportReview', {
+      .post('/api/reviews/unreport', {
         review: review,
         token: token,
       })
@@ -168,7 +159,7 @@ export const Admin = () => {
     setLoadingSemester(1)
 
     axios
-      .post('/api/addNewSemester', {
+      .post('/api/admin/semester/add', {
         semester,
         token: token,
       })
@@ -198,7 +189,7 @@ export const Admin = () => {
     setDisableInit(true)
     setLoadingInit(1)
 
-    axios.post('/api/dbInit', { token: token }).then((response) => {
+    axios.post('/api/admin/db/initialize', { token: token }).then((response) => {
       if (response.status === 200) {
         setDisableInit(false)
         setLoadingInit(2)
@@ -213,7 +204,7 @@ export const Admin = () => {
     setDisableInit(true)
     setLoadingProfs(1)
 
-    axios.post('/api/setProfessors', { token: token }).then((response) => {
+    axios.post('/api/admin/professors/add', { token: token }).then((response) => {
       if (response.status === 200) {
         console.log('Updated the professors')
         setDisableInit(false)
@@ -229,7 +220,7 @@ export const Admin = () => {
     setDisableInit(true)
     setResettingProfs(1)
 
-    axios.post('/api/resetProfessors', { token: token }).then((response) => {
+    axios.post('/api/admin/professors/reset', { token: token }).then((response) => {
       if (response.status === 200) {
         console.log('Reset all the professors to empty arrays')
         setDisableInit(false)
@@ -398,6 +389,7 @@ export const Admin = () => {
               )
             })}
           </div>
+          <br></br>
           <h1>Reported Reviews</h1>
           <div className="ReportedReviews">
             {reportedReviews.map((review: Review) => {
