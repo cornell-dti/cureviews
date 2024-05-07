@@ -29,21 +29,17 @@ export const Admin = () => {
   const [addSemester, setAddSemester] = useState('')
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
 
-  const {isLoggedIn, token, isAuthenticating} = useAuthMandatoryLogin('admin')
+  const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     async function confirmAdmin() {
-      const res = await axios.post(`/api/tokenIsAdmin`, {
+      const res = await axios.post(`/api/admin/validate/token`, {
         token: token,
       })
-
-      if (res.data.result) {
-        setIsAdmin(true)
-      } else {
-        setIsAdmin(false)
-      }
+      const userIsAdmin = res.data.result
+      setIsAdmin(userIsAdmin)
       setLoading(false)
     }
 
@@ -56,6 +52,17 @@ export const Admin = () => {
   // splits the reviews into three categories: approved (visible on the website),
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
+    async function loadReviews() { 
+      const pending = await axios.post('/api/admin/reviews/pending', {
+        token: token,
+      })
+      if (pending.status === 200) {
+        setPendingReviews(pending.data.result)
+      }
+
+    }
+
+    
     axios
       .post('/api/fetchPendingReviews', { token: token })
       .then((response) => {
@@ -65,7 +72,7 @@ export const Admin = () => {
         }
       })
     axios
-      .post('/api/fetchReportedReviews', { token: token})
+      .post('/api/fetchReportedReviews', { token: token })
       .then((response) => {
         const result = response.data.result
         if (response.status === 200) {
@@ -85,21 +92,16 @@ export const Admin = () => {
 
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
-  function approveReview(review: Review) {
-    axios
-      .post('/api/makeReviewVisible', {
-        review: review,
-        token: token,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const updatedPendingReviews = removeReviewFromList(
-            review,
-            pendingReviews
-          )
-          setPendingReviews(updatedPendingReviews)
-        }
-      })
+  async function approveReview(review: Review) {
+    const response = await axios.post('/api/makeReviewVisible', {
+      review: review,
+      token: token,
+    })
+
+    if (response.status === 200) {
+      const updatedPendingReviews = removeReviewFromList(review, pendingReviews)
+      setPendingReviews(updatedPendingReviews)
+    }
   }
 
   // Call when user asks to remove a review. Accesses the Reviews database
@@ -289,129 +291,131 @@ export const Admin = () => {
 
   function renderAdmin(token: string) {
     return (
-      <div className = {styles.adminWrapper}>
-        <div className = "headInfo">
+      <div className={styles.adminWrapper}>
+        <div className="headInfo">
           <h1>Admin Interface</h1>
-          <Stats token={token}/>
+          <Stats token={token} />
           <div className={styles.semesterUpdate}>
             <h2>Admin tools</h2>
             <div className="" role="group">
-                <button
-                  className={styles.adminButtons}
-                  onClick={() => setIsAdminModalOpen(true)}
-                >
-                  Manage Administrators
-                </button>
-                <button
-                    disabled={disableNewSem}
-                    type="button"
-                    className={styles.adminButtons}
-                    onClick={() => addNewSem(addSemester)}
-                  >
-                    Add New Semester
-                </button>
-                <button
-                    disabled={disableInit}
-                    type="button"
-                    className={styles.adminButtons}
-                    onClick={() => updateProfessors()}
-                  >
-                    Update Professors
-                </button>
-                <button
-                    disabled={disableInit}
-                    type="button"
-                    className={styles.adminButtons}
-                    onClick={() => resetProfessors()}
-                  >
-                    Reset Professors
-                </button>
-                {renderInitButton(doubleClick)}
+              <button
+                className={styles.adminButtons}
+                onClick={() => setIsAdminModalOpen(true)}
+              >
+                Manage Administrators
+              </button>
+              <button
+                disabled={disableNewSem}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => addNewSem(addSemester)}
+              >
+                Add New Semester
+              </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateProfessors()}
+              >
+                Update Professors
+              </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => resetProfessors()}
+              >
+                Reset Professors
+              </button>
+              {renderInitButton(doubleClick)}
             </div>
           </div>
 
           <ManageAdminModal
-            open = {isAdminModalOpen}
-            setOpen = {setIsAdminModalOpen}
-            token = {token}
+            open={isAdminModalOpen}
+            setOpen={setIsAdminModalOpen}
+            token={token}
           />
-          
+
           <div hidden={!(loadingSemester === 1)} className="">
-            <p>Adding New Semester Data. This process can take up to 15 minutes.</p>
+            <p>
+              Adding New Semester Data. This process can take up to 15 minutes.
+            </p>
           </div>
-          
+
           <div hidden={!(loadingSemester === 2)} className="">
             <p>New Semester Data import is complete!</p>
           </div>
-          
+
           <div hidden={!(resettingProfs === 1)} className="">
             <p>Clearing all associated professors from Classes.</p>
             <p>This process can take up to 15 minutes.</p>
           </div>
-          
+
           <div hidden={!(resettingProfs === 2)} className="">
             <p>All professor arrays in Classes reset to empty!</p>
           </div>
-          
+
           <div hidden={!(loadingProfs === 1)} className="">
             <p>Updating professor data to Classes.</p>
             <p>This process can take up to 15 minutes.</p>
           </div>
-          
+
           <div hidden={!(loadingProfs === 2)} className="">
             <p>Professor data import to Classes is complete!</p>
           </div>
-          
+
           <div hidden={!(loadingInit === 1)} className="">
-            <p>Database Initializing. This process can take up to 15 minutes.</p>
+            <p>
+              Database Initializing. This process can take up to 15 minutes.
+            </p>
           </div>
-          
+
           <div hidden={!(loadingInit === 2)} className="">
             <p>Database initialization is complete!</p>
           </div>
         </div>
-          
+
         <div className="StagedReviews">
           <h1>Pending Reviews</h1>
           <button
             type="button"
             className={styles.massApproveButton}
             onClick={() => approveAllReviews(pendingReviews)}
-            >
+          >
             Approve all pending reviews
-            </button>    
-          <div className = "PendingReviews">
+          </button>
+          <div className="PendingReviews">
             {pendingReviews.map((review: Review) => {
-                return (
-                  <UpdateReview
-                    key={review._id}
-                    review={review}
-                    removeHandler={removeReview}
-                    approveHandler={approveReview}
-                    unReportHandler={approveReview}
-                    />
-                )
-              }
-            )}
-          </div>    
+              return (
+                <UpdateReview
+                  key={review._id}
+                  review={review}
+                  removeHandler={removeReview}
+                  approveHandler={approveReview}
+                  unReportHandler={approveReview}
+                />
+              )
+            })}
+          </div>
           <h1>Reported Reviews</h1>
-          <div className= "ReportedReviews">
+          <div className="ReportedReviews">
             {reportedReviews.map((review: Review) => {
               //create a new class "button" that will set the selected class to this class when it is clicked.
-                return (
-                  <UpdateReview
-                    key={review._id}
-                    review={review}
-                    removeHandler={removeReview}
-                    approveHandler={approveReview}
-                    unReportHandler={unReportReview}                      
-                  />
-                )
-               }
-              )}
+              return (
+                <UpdateReview
+                  key={review._id}
+                  review={review}
+                  removeHandler={removeReview}
+                  approveHandler={approveReview}
+                  unReportHandler={unReportReview}
+                />
+              )
+            })}
           </div>
         </div>
-      </div>   
+      </div>
     )
   }
 
