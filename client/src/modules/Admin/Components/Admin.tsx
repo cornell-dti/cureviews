@@ -104,31 +104,30 @@ export const Admin = () => {
 
   // Call when user asks to remove a review. Accesses the Reviews database
   // and deletes the review with this id.
-  function removeReview(review: Review, isUnapproved: boolean) {
-    axios
-      .post('/api/removeReview', {
+  async function removeReview(review: Review, isUnapproved: boolean) {
+    try {
+      const response = await axios.post('/api/removeReview', {
         review: review,
         token: token,
       })
-      .then((response) => {
-        if (response.status === 200) {
-          if (isUnapproved) {
-            const updatedUnapprovedReviews = removeReviewFromList(
-              review,
-              pendingReviews
-            )
-            setPendingReviews(updatedUnapprovedReviews)
-          } else {
-            const updatedReportedReviews = removeReviewFromList(
-              review,
-              reportedReviews
-            )
-
-            setReportedReviews(updatedReportedReviews)
-          }
+      if (response.status === 200) {
+        if (isUnapproved) {
+          const updatedUnapprovedReviews = removeReviewFromList(
+            review,
+            pendingReviews
+          )
+        setPendingReviews(updatedUnapprovedReviews)
+        } else {
+          const updatedReportedReviews = removeReviewFromList(
+            review,
+            reportedReviews
+          )
+          setReportedReviews(updatedReportedReviews)
         }
-      })
-      .catch((e) => console.log(`Unable to remove review ${e}`))
+      }
+    } catch (e) {
+      alert(`Unable to remove review ${e}`)
+    }
   }
 
   // Call when admin would like to mass-approve all of the currently pending reviews.
