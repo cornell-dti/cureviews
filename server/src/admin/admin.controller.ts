@@ -1,10 +1,18 @@
 import {
-  findAllPendingReviews,
+  findPendingReviews,
+  findReportedReviews,
   findAllReviewsAfterDate,
   removeReviewById,
   updateReviewVisibility,
   findStudentById,
   updateCourseMetrics,
+  findReviewCounts,
+  createCourseCSV,
+  findAdminUsers,
+  removeAdminPrivilege,
+  grantAdminPrivilege,
+  createNewAdminUser,
+  approveAllReviews,
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
@@ -14,6 +22,7 @@ import {
   ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
+  VerifyManageAdminType
 } from './admin.type';
 
 import {
@@ -102,6 +111,13 @@ export const editReviewVisibility = async ({
   return false;
 };
 
+export const approveReviews = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    return approveAllReviews();
+  }
+}
+
 /**
  * Removes a review from db by mongo generated id.
  *
@@ -127,7 +143,6 @@ export const removePendingReview = async ({
 
 /**
  * Gets all reviews that are pending (visible only to admin).
- * Includes reported reviews.
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns all pending review objects if operation was successful, null otherwise
@@ -135,36 +150,103 @@ export const removePendingReview = async ({
 export const getPendingReviews = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    return findAllPendingReviews();
+    return findPendingReviews();
   }
 
   return null;
 };
 
 /**
- * Gets random raffle winner from reviews beyond specified date that are not reported.
+ * Gets all reviews that are reported (visible only to admin).
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
- * @returns student net id if operation was successful, null otherwise
+ * @returns all reported review objects if operation was successful, null otherwise
  */
-export const getRaffleWinner = async ({
-  startDate,
-}: RaffleWinnerRequestType) => {
-  const date = new Date(startDate);
-  const reviews = await findAllReviewsAfterDate(date);
-  if (reviews.length <= 0) {
-    return null;
+export const getReportedReviews = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    return findReportedReviews();
   }
 
-  const randomInt = Math.floor(Math.random() * reviews.length);
-
-  const student = await findStudentById(reviews[randomInt].user);
-  if (!student) {
-    return null;
-  }
-
-  return student.netId;
+  return null;
 };
+
+/**
+ * Counts all reviews that are approved, pending, and reported.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns all counts if operation was successful, null otherwise
+ */
+export const getReviewCounts = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const counts = findReviewCounts();
+    return counts;
+  }
+}
+
+/**
+ * Gets CSV text string of all reviews that are approved, sorted by class.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns CSV text if operation was successful, null otherwise
+ */
+export const getCourseCSV = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const csv = await createCourseCSV();
+    return csv;
+  }
+}
+
+/**
+ * Gets all users with admin privilege.
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns all admin users if operation was successful, null otherwise
+ */
+export const getAdminUsers = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const admins = await findAdminUsers();
+    return admins;
+  }
+}
+
+/**
+ * Removes a user's admin privilege by id. Assumes that the user is already in the
+ * database because they are retrieved into the ManageAdminModal
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @param {string} id: String identifying the user in the database
+ * @returns all admin users if operation was successful, null otherwise
+ */
+export const removeAdmin = async ({auth, id}: VerifyManageAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    const res = await removeAdminPrivilege(id);
+    return res;
+  }
+}
+
+/**
+ * Grants a user admin privilege by updating them if they are in the database.
+ * If the user is not in the database, creates a new user with their netid and admin privilege
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @param {string} id: String identifying the user by netid
+ * @returns The user with updated admin privilege if operation was successful, null otherwise
+ */
+export const addOrUpdateAdmin = async ({auth, id}: VerifyManageAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
+    let res = await grantAdminPrivilege(id);
+    if (res.nModified === 0) {
+      res = await createNewAdminUser(id);
+    }
+    return res;
+  }
+}
 
 /**
  * Updated all professors in the database by scraping through the Cornell course API.

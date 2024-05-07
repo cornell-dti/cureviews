@@ -1,194 +1,78 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import styles from '../Styles/Stats.module.css'
+import { Review } from 'common'
 
-type Props = {
-  token: string
-}
-type State = {
-  howManyEachClass: any[]
-  howManyReviewsEachClass: any[]
-  totalReviews: number
-  chartData: any[]
-  step: number
-  range: number
+type StatsProps = {
+    token: string
 }
 
-/*
-  A Statistics component that gives data concerning the
-  database and allows devs to moniter status and progress of the project
-*/
-export default class Stats extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
+const Stats = ({token}: StatsProps) => {
+    const [approvedRevCount, setApprovedRevCount] = useState<Number>(0)
+    const [pendingRevCount, setPendingRevCount] = useState<Number>(0)
+    const [reportedRevCount, setReportedRevCount] = useState<Number>(0)
 
-    this.state = {
-      howManyEachClass: [],
-      howManyReviewsEachClass: [],
-      totalReviews: -1,
-      chartData: [],
-      step: 14,
-      range: 12,
+    /*
+      Calls route to update the approved, pending, and reported review counts
+      Fires on every render to check for approvals or removals of reviews
+    */
+    useEffect(() => {
+        axios
+        .post('/api/admin/reviews/count', {token: token})
+        .then((response) => {
+          const result = response.data.result
+          if (response.status === 200) {
+            setApprovedRevCount(result.approved)
+            setPendingRevCount(result.pending)
+            setReportedRevCount(result.reported)
+          } else {
+            console.log('Error at countReviews')
+          }
+        })
+      }
+    )
+
+    /*
+      Function to download a file containing all reviewed classes in the database and their
+      number of reviews
+    */
+    async function downloadCSVFile() {
+      const element = document.createElement('a')
+      let csv = ""
+      
+      await axios
+        .post('/api/admin/reviews/csv', {token: token})
+        .then((response) => {
+          const result = response.data.result
+          if (response.status === 200) {
+            csv = result
+          } else {
+            console.log('Error at getCourseCSV')
+          }
+        })
+
+      const file = new Blob([csv], {
+        type: 'text/plain',
+      })
+      element.href = URL.createObjectURL(file)
+      element.download = 'ReviewsPerClass.csv'
+      document.body.appendChild(element) // Required for this to work in FireFox
+      element.click()
     }
 
-    this.handleClick = this.handleClick.bind(this)
-  }
-
-  componentDidMount() {
-    this.getHowManyEachClass()
-    this.howManyReviewsEachClass()
-    this.totalReviews()
-  }
-
-  getChartData() {
-    axios
-      .post(`/api/getReviewsOverTimeTop15`, {
-        token: this.props.token,
-        step: this.state.step,
-        range: this.state.range,
-      })
-      .then((resp) => {
-        const res = resp.data.result
-        let data: any[] = []
-        //key-> EX: cs
-        for (let key in res) {
-          let finalDateObj: any = {} //{date1:totalNum, date2:totalNum}
-          let obj: any = {} // {name: cs, data: {date1:totalNum, date2:totalNum}}
-          obj.name = key
-
-          //[{date1:totalNum}, {date2: totalNum}, ...]
-          let arrDates = res[key]
-
-          arrDates.forEach((arrEntry: any) => {
-            let dateObject = Object.keys(arrEntry) //[date1]
-            dateObject.forEach((date) => {
-              finalDateObj[date] = arrEntry[date]
-            })
-          })
-
-          obj.data = finalDateObj
-          data.push(obj)
-        }
-
-        this.setState({ chartData: data })
-      })
-  }
-
-  howManyReviewsEachClass() {
-    axios
-      .post(`/api/howManyReviewsEachClass`, {
-        token: this.props.token,
-      })
-      .then((res) => {
-        let data = res.data.result
-        data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total ? -1 : 1))
-        this.setState({ howManyReviewsEachClass: data })
-      })
-      .catch((err) => {
-        console.log('error retrieving reviews for each class ', err)
-      })
-  }
-
-  getReviewsPerClassCSV() {
-    let strRet = 'class,total\n'
-    this.state.howManyReviewsEachClass.forEach((obj) => {
-      strRet += obj._id + ',' + obj.total + '\n'
-    })
-    return strRet
-  }
-
-  getHowManyEachClass() {
-    axios
-      .post(`/api/howManyEachClass`, {
-        token: this.props.token,
-      })
-      .then((res) => {
-        let data = res.data.result
-        data.sort((rev1: any, rev2: any) => (rev1.total > rev2.total ? -1 : 1))
-        this.setState({ howManyEachClass: data })
-      })
-      .catch((err) => {
-        console.log('error retrieving how many each class ', err)
-      })
-  }
-
-  totalReviews() {
-    axios
-      .post(`/api/totalReviews`, {
-        token: this.props.token,
-      })
-      .then((res) => {
-        const total = res.data.result
-        this.setState({ totalReviews: total })
-      })
-      .catch((err) => {
-        console.log('error retrieving totalReviews ', err)
-      })
-  }
-
-  handleClick = (e: any) => {
-    e.preventDefault()
-    this.getChartData()
-  }
-
-  downloadCSVFile = () => {
-    const element = document.createElement('a')
-    const file = new Blob([this.getReviewsPerClassCSV()], {
-      type: 'text/plain',
-    })
-    element.href = URL.createObjectURL(file)
-    element.download = 'ReviewsPerClass.csv'
-    document.body.appendChild(element) // Required for this to work in FireFox
-    element.click()
-  }
-
-  render() {
     return (
-      <div>
-        <div>
-          <button className="" onClick={this.downloadCSVFile}>
-            Download CSV For ReviewsPerClass
+      <div className={styles.diagnosticbox}>
+        <h2>Diagnostic information</h2>
+        <div className = {styles.stats}>
+          <button className={styles.downloadButton} onClick={downloadCSVFile}>
+            Download ApprovedReviewCount by Class
           </button>
-        </div>
-        <p>Total reviews: {this.state.totalReviews}</p>
-        {/* <LineChart width="77vw" height="55vh" data={this.state.chartData} /> */}
-
-        <div className="">
-          <div className="">
-            <label htmlFor="range">Range in months</label>
-            <input
-              className=""
-              type="number"
-              id="range"
-              name="range"
-              min="1"
-              value={this.state.range}
-              onChange={(e) =>
-                this.setState({ range: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-
-          <div className="">
-            <label htmlFor="step">Step in days</label>
-            <input
-              className=""
-              type="number"
-              id="step"
-              name="step"
-              min="1"
-              value={this.state.step}
-              onChange={(e) =>
-                this.setState({ step: parseInt(e.target.value, 10) })
-              }
-            />
-          </div>
-          <div className="">
-            <button type="button" className="" onClick={this.handleClick}>
-              Load Chart
-            </button>
-          </div>
+          <p>Approved review count: {approvedRevCount}</p>
+          <p>Pending review count: {pendingRevCount}</p>
+          <p>Reported review count: {reportedRevCount}</p>
         </div>
       </div>
     )
-  }
 }
+
+export default Stats

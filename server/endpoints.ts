@@ -7,6 +7,7 @@ import { courseRouter } from "./src/course";
 import { adminRouter } from "./src/admin";
 
 export const configure = (app: Express) => {
+  app.use("/api/admin", adminRouter) 
   app.use(
     "/api",
     authRouter,
@@ -14,6 +15,5 @@ export const configure = (app: Express) => {
     profileRouter,
     reviewRouter,
     courseRouter,
-    adminRouter,
   );
 };
