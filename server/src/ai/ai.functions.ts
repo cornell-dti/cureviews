@@ -1,10 +1,20 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
 import { Reviews } from "../../db/schema";
+import { Classes } from "../../db/schema";
+
 import { CourseIdRequestType } from '../course/course.type';
 import { findReviewCrossListOR } from '../utils';
-import { Classes } from "../../db/schema";
-import { findCourseById } from '../course/course.data-access';
+
+
+/* <=== Helper Functions ===> */
+
+/** findCourseById 
+ * 
+ * @param courseId 
+ * @returns a Class object that matches the courseId  
+ */
+export const findCourseById = async (courseId: string) => await Classes.findOne({ _id: courseId }).exec();
 
 
 dotenv.config();
@@ -12,9 +22,11 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-/** Docstring for makeSummary. Takes in all reviews from a course as text and 
+/** makeSummary. 
+ * 
+ * Takes in all reviews from a course as text and 
  * creates a 50 word summary of those reviews.
- * @params all reviews from a course
+ * @params a string that combines all reviews from a course
  * @returns summary of reviews
  */
 async function makeSummary(text: string) {
@@ -28,11 +40,12 @@ async function makeSummary(text: string) {
   return completion.choices[0].message.content;
 }
 
-/** Docstring for getCoursesWithMinReviews. We only want to create summaries for
- * courses that have at least a certain number of reviews, so takes in that number
- * and returns the courses that have at least that number of reviews.
- * @params min reviews summary should be created for
- * @returns courses ids with at least min reviews
+/** getCoursesWithMinReviews.
+ * 
+ *  Create summaries for courses that have at least a certain number of reviews. 
+ * Takes in `min` number of reviews and returns the a list of course IDs that have at least that number of reviews.
+ * @params min count of reviews that a course
+ * @returns coursesIDs[] with at least min reviews
  */
 async function getCoursesWithMinReviews(minimum) {
   const courses = await Reviews.aggregate([
@@ -56,12 +69,14 @@ async function getCoursesWithMinReviews(minimum) {
 }
 
 /**
- * DocString for getReviewsForSummary. Gets all reviews from a course that will be used 
+ * getReviewsPerCourse. 
+ * 
+ * Gets all reviews from a course that will be used 
  * to generate the summary for a course
- * @param params takes in the courseID of a course that we need to generate a summary for
- * @returns all reviews for that course concatenated into a single string
+ * @param courseId takes in the courseID of a course that we need to generate a summary for
+ * @returns a single string of all reviews for that course concatenated 
  */
-const getReviewsForSummary = async ({ courseId }: CourseIdRequestType) => {
+const getReviewsPerCourse = async ({ courseId }: CourseIdRequestType) => {
   const course = await getCourseById({ courseId });
 
   if (course) {
@@ -91,6 +106,7 @@ const getReviewsForSummary = async ({ courseId }: CourseIdRequestType) => {
 const getCourseById = async ({ courseId }: CourseIdRequestType) => {
   // check: make sure course id is valid and non-malicious
   const regex = new RegExp(/^(?=.*[A-Z0-9])/i);
+
   if (regex.test(courseId)) {
     return await findCourseById(courseId);
   }
@@ -129,4 +145,4 @@ export const getCrossListOR = (course) => {
   ];
 };
 
-export { makeSummary, getCoursesWithMinReviews, getReviewsForSummary } 
+export { makeSummary, getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary } 
