@@ -39,7 +39,6 @@ export const Course = () => {
   const [courseReviews, setCourseReviews] = useState<Review[]>()
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
   const [scrolled, setScrolled] = useState(false)
-  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
   const { isLoggedIn, token, signIn } = useAuthOptionalLogin()
 
@@ -119,7 +118,6 @@ export const Course = () => {
 
         clearSessionReview()
         if (response.status === 200) {
-          setIsReviewModalOpen(false)
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           )
