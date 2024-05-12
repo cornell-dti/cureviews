@@ -13,13 +13,14 @@
     "client": "cd client && yarn start"
   },
   "engines": {
-    "node": "16.x",
+    "node": "^18.x",
     "npm": "^7.x",
     "yarn": "^1.x"
   },
   "devDependencies": {
+    "@types/ws": "8.5.4",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
+    "@typescript-eslint/parser": "6",
     "cypress": "^13.6.2",
     "eslint": "7.32.0",
     "eslint-config-airbnb": "^18.1.0",
@@ -28,6 +29,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^4.0.0"
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "typescript": "^5.4.5"
   }
 }
