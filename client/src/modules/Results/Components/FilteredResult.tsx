@@ -131,7 +131,7 @@ export default class FilteredResult extends Component<Props, State> {
               offered}
           </h2>
           <div className={styles.rating}>
-            <strong>{this.updateSortNumberTitle()}:</strong>
+            <strong>{this.updateSortNumberTitle()}: </strong>
             {this.getSortNumber(1)}/5
           </div>
         </div>
