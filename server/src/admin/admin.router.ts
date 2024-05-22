@@ -30,30 +30,10 @@ import {
 
 export const adminRouter = express.Router();
 
-adminRouter.post('/reviews/report', async (req, res) => {
-  try {
-    const { id }: ReportReviewRequestType = req.body;
-    const result = await reportReview({ id });
-    if (!result) {
-      return res
-        .status(400)
-        .json({ error: `Review with id: ${id} unable to be reported.` });
-    }
-
-    return res
-      .status(200)
-      .json({ message: `Review with id: ${id} successfully reported.` });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ error: `Internal Server Error: ${err.message}` });
-  }
-});
-
 /*
  * Check if a token is for an admin
  */
-adminRouter.post('/validate/token', async (req, res) => {
+adminRouter.post('/token/validate', async (req, res) => {
   try {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
@@ -99,7 +79,7 @@ adminRouter.post('/reviews/approve', async (req, res) => {
   }
 });
 
-adminRouter.post('/reviews/approve/all', async (req, res) => {
+adminRouter.post('/reviews/approve-all', async (req, res) => {
   try {
     const { token }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
@@ -119,7 +99,75 @@ adminRouter.post('/reviews/approve/all', async (req, res) => {
   }
 });
 
-adminRouter.post('/reviews/get/pending', async (req, res) => {
+adminRouter.post('/reviews/report', async (req, res) => {
+  try {
+    const { id }: ReportReviewRequestType = req.body;
+    const result = await reportReview({ id });
+    if (!result) {
+      return res
+        .status(400)
+        .json({ error: `Review with id: ${id} unable to be reported.` });
+    }
+
+    return res
+      .status(200)
+      .json({ message: `Review with id: ${id} successfully reported.` });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+adminRouter.post('/reviews/restore', async (req, res) => {
+  const { review, token }: AdminReviewRequestType = req.body;
+  try {
+    const auth = new Auth({ token });
+    const result = await editReviewVisibility({
+      reviewId: review._id,
+      auth,
+      visibility: 1,
+      reported: 0,
+    });
+
+    if (result) {
+      return res.status(200).json({
+        message: `Undo reported review with review id ${review._id}`,
+      });
+    }
+
+    return res.status(400).json({
+      error:
+        'User does not have an authorized token (not an admin) or review was not found!',
+    });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/reviews/remove', async (req, res) => {
+  const { review, token }: AdminReviewRequestType = req.body;
+
+  try {
+    const auth = new Auth({ token });
+    const result = await removePendingReview({ reviewId: review._id, auth });
+
+    if (result) {
+      return res.status(200).json({
+        message: `Undo reported review with review id ${review._id}`,
+      });
+    }
+
+    return res.status(400).json({
+      error:
+        'User does not have an authorized token (not an admin) or review was not found!',
+    });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/reviews/get-pending', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -139,7 +187,7 @@ adminRouter.post('/reviews/get/pending', async (req, res) => {
   }
 });
 
-adminRouter.post('/reviews/get/reported', async (req, res) => {
+adminRouter.post('/reviews/get-reported', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
@@ -285,54 +333,6 @@ adminRouter.post('/semester/add', async (req, res) => {
 
     return res.status(400).json({
       result: false,
-    });
-  } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}` });
-  }
-});
-
-adminRouter.post('/reviews/unreport', async (req, res) => {
-  const { review, token }: AdminReviewRequestType = req.body;
-  try {
-    const auth = new Auth({ token });
-    const result = await editReviewVisibility({
-      reviewId: review._id,
-      auth,
-      visibility: 1,
-      reported: 0,
-    });
-
-    if (result) {
-      return res.status(200).json({
-        message: `Undo reported review with review id ${review._id}`,
-      });
-    }
-
-    return res.status(400).json({
-      error:
-        'User does not have an authorized token (not an admin) or review was not found!',
-    });
-  } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}` });
-  }
-});
-
-adminRouter.post('/reviews/remove', async (req, res) => {
-  const { review, token }: AdminReviewRequestType = req.body;
-
-  try {
-    const auth = new Auth({ token });
-    const result = await removePendingReview({ reviewId: review._id, auth });
-
-    if (result) {
-      return res.status(200).json({
-        message: `Undo reported review with review id ${review._id}`,
-      });
-    }
-
-    return res.status(400).json({
-      error:
-        'User does not have an authorized token (not an admin) or review was not found!',
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

@@ -44,7 +44,7 @@ export const SearchBar = ({
     }
 
     async function fetchCourses() {
-      const response = await axios.post(`/api/getResultsFromQuery`, {
+      const response = await axios.post(`/api/search/results`, {
         query: query,
       })
       const courseList = response.data.result.courses

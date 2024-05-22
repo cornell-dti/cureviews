@@ -67,7 +67,7 @@ export const Course = () => {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(`/api/getCourseByInfo`, {
+        const response = await axios.post(`/api/courses/get-by-info`, {
           number,
           subject: subject.toLowerCase(), // TODO: fix backend to handle this
         })
@@ -78,7 +78,7 @@ export const Course = () => {
 
           // after getting valid course info, fetch reviews
           const reviewsResponse = await axios.post(
-            '/api/getReviewsByCourseId',
+            '/api/courses/get-reviews',
             {
               courseId: course._id,
             }
@@ -110,7 +110,7 @@ export const Course = () => {
      */
     async function submitReview(review: NewReview, courseId: string) {
       try {
-        const response = await axios.post('/api/insertReview', {
+        const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
           courseId: courseId,

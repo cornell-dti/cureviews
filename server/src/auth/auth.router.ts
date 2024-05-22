@@ -6,7 +6,7 @@ import { insertUser } from '../utils';
 
 export const authRouter = express.Router();
 
-authRouter.post('/insertUser', async (req, res) => {
+authRouter.post('/new-user', async (req, res) => {
   try {
     const { token }: AuthRequestType = req.body;
     const auth = new Auth({ token });
@@ -24,7 +24,7 @@ authRouter.post('/insertUser', async (req, res) => {
   }
 });
 
-authRouter.post('/getStudentEmailByToken', async (req, res) => {
+authRouter.post('/get-email', async (req, res) => {
   try {
     const { token }: AuthRequestType = req.body;
     const auth: Auth = new Auth({ token });

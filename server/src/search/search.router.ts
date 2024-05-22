@@ -16,7 +16,7 @@ export const searchRouter = express.Router();
  * Searches the database for potential courses, subjects, and professors relating 
  * to the query and returns an object containing 3 arrays of the above queries
  */
-searchRouter.post('/getResultsFromQuery', async (req, res) => {
+searchRouter.post('/results', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const cleanQuery = query.replace('+', ' ').toLowerCase();
@@ -61,7 +61,7 @@ searchRouter.post('/getResultsFromQuery', async (req, res) => {
  * Searches the database for potential courses relating to the query and returns
  * the full list of courses
  */
-searchRouter.post('/getCourseResults', async (req, res) => {
+searchRouter.post('/get-courses', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
     const cleanQuery = query.replace('+', ' ').toLowerCase();

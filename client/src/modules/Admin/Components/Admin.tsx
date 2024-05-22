@@ -36,7 +36,7 @@ export const Admin = () => {
 
   useEffect(() => {
     async function confirmAdmin() {
-      const response = await axios.post(`/api/admin/validate/token`, {
+      const response = await axios.post(`/api/admin/token/validate`, {
         token: token,
       })
       const userIsAdmin = response.data.result
@@ -54,13 +54,13 @@ export const Admin = () => {
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
     async function loadReviews() { 
-      const pending = await axios.post('/api/admin/reviews/get/pending', {
+      const pending = await axios.post('/api/admin/reviews/get-pending', {
         token: token,
       })
       if (pending.status === 200) {
         setPendingReviews(pending.data.result)
       }
-      const reported = await axios.post('/api/admin/reviews/get/reported', {
+      const reported = await axios.post('/api/admin/reviews/get-reported', {
         token: token
       })
       if (reported.status === 200) {
@@ -123,7 +123,7 @@ export const Admin = () => {
 
   // Call when admin would like to mass-approve all of the currently pending reviews.
   async function approveAllReviews(reviews: Review[]) {
-    const response = await axios.post('/api/admin/reviews/approve/all', {token: token})
+    const response = await axios.post('/api/admin/reviews/approve-all', {token: token})
     if (response.status === 200) {
       setPendingReviews([])
     } else {
@@ -134,7 +134,7 @@ export const Admin = () => {
   // Call when user asks to un-report a reported review. Accesses the Reviews database
   // and changes the reported flag for this review to false.
   async function unReportReview(review: Review) {
-    const response = await axios.post('/api/reviews/unreport', {
+    const response = await axios.post('/api/admin/reviews/restore', {
       review: review,
       token: token,
     })
@@ -180,7 +180,7 @@ export const Admin = () => {
     setDisableInit(true)
     setLoadingInit(1)
 
-    const response = await axios.post('api/admin/db/initialize', {
+    const response = await axios.post('/api/admin/db/initialize', {
       token: token
     })
 

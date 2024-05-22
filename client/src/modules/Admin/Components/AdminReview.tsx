@@ -23,7 +23,7 @@ const UpdateReview = ({review, approveHandler, removeHandler, unReportHandler}: 
     const [fullName, setFullName] = useState<string>("")
 
     axios
-    .post(`/api/getCourseById`, {
+    .post(`/api/courses/get-by-id`, {
       courseId: review.class,
     })
     .then((response) => {

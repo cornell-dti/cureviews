@@ -72,7 +72,7 @@ export default class PreviewCard extends Component {
   //Updates the top review to be the one with the most likes
   updateTopReview() {
     axios
-      .post(`/api/getReviewsByCourseId`, { courseId: this.props.course._id })
+      .post(`/api/courses/get-reviews`, { courseId: this.props.course._id })
       .then((response) => {
         const reviews = response.data.result
         if (reviews) {

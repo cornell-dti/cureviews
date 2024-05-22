@@ -10,7 +10,7 @@ import {
 
 export const reviewRouter = express.Router();
 
-reviewRouter.post('/insertReview', async (req, res) => {
+reviewRouter.post('/post', async (req, res) => {
   try {
     const { token, courseId, review }: InsertReviewRequestType = req.body;
     const auth = new Auth({ token });
@@ -32,7 +32,7 @@ reviewRouter.post('/insertReview', async (req, res) => {
   }
 });
 
-reviewRouter.post('/updateLiked', async (req, res) => {
+reviewRouter.post('/update-liked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });
@@ -55,7 +55,7 @@ reviewRouter.post('/updateLiked', async (req, res) => {
   }
 });
 
-reviewRouter.post('/userHasLiked', async (req, res) => {
+reviewRouter.post('/user-liked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;
     const auth = new Auth({ token });

@@ -76,7 +76,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
       signIn(redirectFrom)
     } else {
       axios
-        .post('/api/getStudentEmailByToken', {
+        .post('/api/auth/get-email', {
           token: token,
         })
         .then((response) => {
@@ -134,7 +134,7 @@ export function useAuthOptionalLogin(): {
 
     if (token && token !== '') {
       axios
-        .post('/api/getStudentEmailByToken', {
+        .post('/api/auth/get-email', {
           token: token,
         })
         .then((response) => {
