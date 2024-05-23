@@ -67,7 +67,7 @@ export default function PreviewReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/api/courses/get-by-info`, {
+      const response = await axios.post(`/api/courses/get-by-id`, {
         courseId: _review.class,
       })
       const course = response.data.result

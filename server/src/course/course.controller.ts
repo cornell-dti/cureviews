@@ -50,7 +50,7 @@ export const getCourseByInfo = async ({
   number,
   subject,
 }: CourseInfoRequestType) => {
-  const course = await findCourseByInfo(number, subject);
+  const course = await findCourseByInfo(number, subject.toLowerCase());
   return course;
 };
 

@@ -58,21 +58,19 @@ export default function ReviewCard({
   /**
    * Shows user liked the review and updates DB count.
    */
-  function likeReview() {
+  async function likeReview() {
     if (!isLoggedIn) {
       signIn('path:' + location.pathname)
     }
 
     setLiked((liked) => !liked)
 
-    axios
-      .post('/api/reviews/update-liked', {
-        id: _review._id,
-        token: getAuthToken(),
-      })
-      .then((response) => {
-        setReview(response.data.review)
-      })
+    const response = await axios.post(`/api/reviews/update-liked`, {
+      id: _review._id,
+      token: getAuthToken(),
+    })
+
+    setReview(response.data.review)
   }
 
   /**
@@ -80,7 +78,7 @@ export default function ReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/api/courses/get-by-info`, {
+      const response = await axios.post(`/api/courses/get-by-id`, {
         courseId: _review.class,
       })
       const course = response.data.result

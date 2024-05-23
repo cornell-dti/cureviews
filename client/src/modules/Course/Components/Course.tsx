@@ -69,7 +69,7 @@ export const Course = () => {
       try {
         const response = await axios.post(`/api/courses/get-by-info`, {
           number,
-          subject: subject.toLowerCase(), // TODO: fix backend to handle this
+          subject: subject,
         })
 
         const course = response.data.result
