@@ -12,10 +12,11 @@ import { SearchQueryRequestType } from './search.type';
 
 export const searchRouter = express.Router();
 
-/**
+/** Reachable at POST /api/search/results
+ * @body query: the search keyword
  * Searches the database for potential courses, subjects, and professors relating 
  * to the query and returns an object containing 3 arrays of the above queries
- */
+*/
 searchRouter.post('/results', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
@@ -57,10 +58,12 @@ searchRouter.post('/results', async (req, res) => {
   }
 });
 
-/**
+
+/** Reachable at POST /api/search/get-courses
+ * @body query: the search keyword
  * Searches the database for potential courses relating to the query and returns
  * the full list of courses
- */
+*/
 searchRouter.post('/get-courses', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;

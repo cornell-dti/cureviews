@@ -7,6 +7,11 @@ import { getCourseById } from '../utils';
 
 export const courseRouter = express.Router();
 
+/** Reachable at POST /api/courses/get-by-info
+ * @body number: a course's number
+ * @body subject: a course's subject code
+ * Gets a course by its subject and number
+*/
 courseRouter.post('/get-by-info', async (req, res) => {
   try {
     const { number, subject }: CourseInfoRequestType = req.body;
@@ -26,6 +31,10 @@ courseRouter.post('/get-by-info', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/courses/get-by-id
+ * @body courseId: a course's id field
+ * Gets a course by its id in the database
+*/
 courseRouter.post('/get-by-id', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
@@ -38,6 +47,10 @@ courseRouter.post('/get-by-id', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/courses/get-reviews
+ * @body courseId: a course's id field
+ * Gets the array of all reviews for the course with id = courseId
+*/
 courseRouter.post('/get-reviews', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;

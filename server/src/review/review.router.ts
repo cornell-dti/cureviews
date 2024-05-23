@@ -10,6 +10,12 @@ import {
 
 export const reviewRouter = express.Router();
 
+/** Reachable at POST /api/reviews/post
+ * @body token: a user's token
+ * @body courseId: a course's id field
+ * @body review: an object containing the review information
+ * Inserts a new review into the database for the given course. Review requires approval
+*/
 reviewRouter.post('/post', async (req, res) => {
   try {
     const { token, courseId, review }: InsertReviewRequestType = req.body;
@@ -32,6 +38,11 @@ reviewRouter.post('/post', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/reviews/update-liked
+ * @body token: a user's token
+ * @body id: a review's id field
+ * Updates the likes for the review with the given id
+*/
 reviewRouter.post('/update-liked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;
@@ -55,6 +66,11 @@ reviewRouter.post('/update-liked', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/reviews/user-liked
+ * @body token: a user's token
+ * @body id: a review's id field
+ * Returns true if the current user has liked the review with the given id
+*/
 reviewRouter.post('/user-liked', async (req, res) => {
   try {
     const { token, id }: ReviewLikesRequestType = req.body;

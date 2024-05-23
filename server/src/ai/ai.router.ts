@@ -6,8 +6,8 @@ const aiRouter = express.Router();
 
 aiRouter.use(express.json());
 
-/** Reachable at POST /api/ai/summarizeReviews
- * @body a block of text containing all reviews from a course
+/** Reachable at POST /api/ai/course-summary
+ * @body text: a block of text containing all reviews from a course
  * returns a summary created by OpenAI
 */
 aiRouter.post('/course-summary', async (req, res) => {
@@ -23,6 +23,10 @@ aiRouter.post('/course-summary', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/ai/get-reviews
+ * @body courseId: a course's _id field
+ * returns all reviews for that course as a concatenated single string
+*/
 aiRouter.post('/get-reviews', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
@@ -43,7 +47,7 @@ aiRouter.post('/get-reviews', async (req, res) => {
 });
 
 /** Reachable at POST /api/ai/course-ids
- * @body minimum number of reviews needed to create a summary
+ * @body min: the minimum number of reviews needed to create a summary
  * returns all course ids that have at least that number of reviews
 */
 aiRouter.post('/course-ids', async (req, res) => {

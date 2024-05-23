@@ -10,11 +10,11 @@ import { ProfileInfoRequestType } from './profile.type';
 
 export const profileRouter = express.Router();
 
-/**
- * Counts the number of reviews made by a given student id.
- */
-
-profileRouter.post('/profiles/count-reviews', async (req, res) => {
+/** Reachable at POST /api/profiles/count-reviews
+ * @body netId: a user's netId
+ * Gets all reviews made by the user with the given netId
+*/
+profileRouter.post('/count-reviews', async (req, res) => {
   try {
     const { netId }: ProfileInfoRequestType = req.body;
     const profile: Profile = new Profile({ netId });
@@ -34,11 +34,11 @@ profileRouter.post('/profiles/count-reviews', async (req, res) => {
   }
 });
 
-/**
- * [getTotalLikesByStudentId] returns the total number of likes a student has gotten on their reviews
- */
-
-profileRouter.post('/profiles/get-likes', async (req, res) => {
+/** Reachable at POST /api/profiles/get-likes
+ * @body netId: a user's netId
+ * Gets the total number of likes by the user with the given netId
+*/
+profileRouter.post('/get-likes', async (req, res) => {
   try {
     const { netId }: ProfileInfoRequestType = req.body;
     const profile: Profile = new Profile({ netId });
@@ -62,9 +62,10 @@ profileRouter.post('/profiles/get-likes', async (req, res) => {
   }
 });
 
-/**
- * [getReviewsByStudentId] returns a list of review objects that are created by the given student's netID
- */
+/** Reachable at POST /api/profiles/get-reviews
+ * @body netId: a user's netId
+ * Gets the array of reviews made by the user with the given netId
+*/
 profileRouter.post('/get-reviews', async (req, res) => {
   try {
     const { netId }: ProfileInfoRequestType = req.body;
