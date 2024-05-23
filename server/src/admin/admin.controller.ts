@@ -11,7 +11,6 @@ import {
   findAdminUsers,
   removeAdminPrivilege,
   grantAdminPrivilege,
-  createNewAdminUser,
   approveAllReviews,
 } from './admin.data-access';
 import {
@@ -241,9 +240,6 @@ export const addOrUpdateAdmin = async ({auth, id}: VerifyManageAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     let res = await grantAdminPrivilege(id);
-    if (res.nModified === 0) {
-      res = await createNewAdminUser(id);
-    }
     return res;
   }
 }

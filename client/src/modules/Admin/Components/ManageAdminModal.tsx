@@ -24,55 +24,47 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
      * Endpoint to get all admins
      */
     useEffect(() => {
-        axios
-        .post('/api/admin/users/get', {token: token})
-        .then((response) => {
-          const result = response.data.result
-          if (response.status === 200) {
-            setAdmins(result)
-          } else {
-            console.log('Error at getAdmins')
-          }
-        })
+        async function getAdmins() {
+            const response = await axios.post('/api/admin/users/get', {token: token})
+            const admins = response.data.result
+            if (response.status === 200) {
+                setAdmins(admins)
+            }
+        }
+        getAdmins()
       }, [token])
 
     /**
      * Removes an admin from the list, giving that user 'regular' privilege
      * @param user assumes that this user already has admin privilege
      */
-
-    function removeAdmin(user: Student) {
-        axios
-        .post('/api/admin/users/remove', {
+    async function removeAdmin(user: Student) {
+        const response = await axios.post('/api/admin/users/remove', {
             userId: user.netId,
             token: token
         })
-        .then((response) => {
-            if (response.status === 200) {
-                const updatedAdmins = admins.filter((admin: Student) => {
-                    return admin && admin._id !== user.netId
-                })
-                setAdmins(updatedAdmins)
-            }
-        }).catch((e) => console.log(`Unable to remove admin ${e}`))
+
+        if (response.status === 200) {
+            const updatedAdmins = admins.filter((admin: Student) => {
+                return admin && admin._id !== user.netId
+            })
+            setAdmins(updatedAdmins)
+        }
     }
 
     /**
      * Calls endpoint to add or update a user with admin privilege
      * @param _netId the user's net id
      */
-
-    function addAdminByNetId(_netId: string) {
-        axios
-        .post('/api/admin/users/add', {
+    async function addAdminByNetId(_netId: string) {
+        const response = await axios.post('/api/admin/users/add', {
             userId: _netId,
             token: token
         })
-        .then((response) => {
-            if (response.status === 200) {
-                console.log(`Successfully gave admin privilege to ${_netId}`)
-            }
-        }).catch((e) => console.log(`Unable to remove admin ${e}`))
+
+        if (response.status === 200) {
+            console.log(`Successfully gave admin privilege to ${_netId}`)
+        }
     }
 
     function onTextChange(newText: string) {

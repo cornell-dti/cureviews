@@ -130,30 +130,29 @@ export const removeAdminPrivilege = async (id: string) => {
   return res
 }
 
-export const grantAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
-  return res
-}
-
 /*
+ * Updates the user with netId = id to have admin privilege
  * If there is an attempt to grant admin privilege to someone not in the database,
  * a new user will be created with the given netid and added to the database.
  */
-
-export const createNewAdminUser = async (id: string) => {
-
-  const admin: InsertStudentType = {
-    _id: shortid.generate(),
-    firstName: '',
-    lastName: '',
-    netId: id,
-    affiliation: '',
-    token: '',
-    privilege: 'admin',
-  };
+export const grantAdminPrivilege = async (id: string) => {
+  const user = await Students.findOne({ netId: id }).exec()
+  if (user) {
+    const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
+  } else {
+    const admin: InsertStudentType = {
+      _id: shortid.generate(),
+      firstName: '',
+      lastName: '',
+      netId: id,
+      affiliation: '',
+      token: '',
+      privilege: 'admin',
+    };
+    
+    const newAdmin = new Students(admin);
+    const res = await newAdmin.save();
   
-  const newAdmin = new Students(admin);
-  const res = await newAdmin.save();
-
-  return res
+    return res
+  }
 }
