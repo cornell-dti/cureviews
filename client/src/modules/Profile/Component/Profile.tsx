@@ -78,7 +78,9 @@ const Profile = () => {
   }, [token])
 
   useEffect(() => {
-    axios.post(`/api/profiles/get-reviews`, { netId }).then((response) => {
+    async function getReviews() {
+      const response = await axios.post(`/api/profiles/get-reviews`, {netId})
+
       const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
         return review.visible === 0
@@ -92,7 +94,9 @@ const Profile = () => {
       setPendingReviews(pendingReviews)
       setPastReviews(pastReviews)
       setLoading(false)
-    })
+    }
+    
+    getReviews()
   }, [netId])
 
   useEffect(() => {

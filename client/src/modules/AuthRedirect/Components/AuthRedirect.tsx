@@ -1,4 +1,4 @@
-import React, { useEffect, Component } from 'react'
+import React from 'react'
 import { Redirect } from 'react-router'
 
 import { setAuthToken } from '../../../auth/auth_utils'
