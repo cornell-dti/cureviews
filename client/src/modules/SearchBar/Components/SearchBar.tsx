@@ -198,7 +198,7 @@ export const SearchBar = ({
             //create a new class "button" that will set the selected class to this class when it is clicked.
             <SubjectResult
               key={subject._id}
-              info={subject}
+              subject={subject}
               query={query}
               active={index === i + 1 /* plus 1 because of exact search */}
               enter={enter}
@@ -238,14 +238,11 @@ export const SearchBar = ({
             // create a new class "button" that will set the selected class to this class when it is clicked.
             <Course
               key={course._id}
-              info={course}
+              classInfo={course}
               query={query}
               active={
-                index ===
-                i +
-                subjects.length +
-                professors.length +
-                1 /* plus because of exact search, professors, subjects */
+                index === i + subjects.length + professors.length + 1
+                /* plus because of exact search, professors, subjects */
               }
               enter={enter}
               mouse={mouse}

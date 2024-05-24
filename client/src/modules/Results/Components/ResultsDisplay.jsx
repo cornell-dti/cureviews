@@ -401,7 +401,9 @@ export default class ResultsDisplay extends Component {
                   </div>
                 </div>
                 <div className={styles.preview}>
-                  <PreviewCard course={this.state.card_course} />
+                  <PreviewCard 
+                    course={this.state.card_course}
+                    transformGauges = {this.state.transformGauges} />
                 </div>
               </div>
             </div>
