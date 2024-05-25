@@ -27,6 +27,7 @@ export const Admin = () => {
   const [loadingSemester, setLoadingSemester] = useState<number>(0)
   const [loadingProfs, setLoadingProfs] = useState<number>(0)
   const [resettingProfs, setResettingProfs] = useState<number>(0)
+  const [updatingSubjects, setUpdatingSubjects] = useState<number>(0)
   const [addSemester, setAddSemester] = useState('')
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
 
@@ -53,7 +54,7 @@ export const Admin = () => {
   // splits the reviews into three categories: approved (visible on the website),
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
-    async function loadReviews() { 
+    async function loadReviews() {
       const pending = await axios.post('/api/admin/reviews/get/pending', {
         token: token,
       })
@@ -107,7 +108,7 @@ export const Admin = () => {
             review,
             pendingReviews
           )
-        setPendingReviews(updatedUnapprovedReviews)
+          setPendingReviews(updatedUnapprovedReviews)
         } else {
           const updatedReportedReviews = removeReviewFromList(
             review,
@@ -123,7 +124,7 @@ export const Admin = () => {
 
   // Call when admin would like to mass-approve all of the currently pending reviews.
   async function approveAllReviews(reviews: Review[]) {
-    const response = await axios.post('/api/admin/reviews/approve/all', {token: token})
+    const response = await axios.post('/api/admin/reviews/approve/all', { token: token })
     if (response.status === 200) {
       setPendingReviews([])
     } else {
@@ -235,6 +236,20 @@ export const Admin = () => {
     })
   }
 
+  function updateSubjects() {
+    setDisableInit(true);
+    setUpdatingSubjects(1);
+    axios.post('/api/admin/subjects/update', { token: token }).then((response) => {
+      if (response.status === 200) {
+        console.log('Updated all subject names');
+        setDisableInit(false);
+        setUpdatingSubjects(2);
+      } else {
+        console.log('Error at updateSubjects');
+      }
+    })
+  }
+
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
   function firstClickHandler() {
@@ -319,6 +334,14 @@ export const Admin = () => {
               >
                 Reset Professors
               </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateSubjects()}
+              >
+                Update Subjects
+              </button>
               {renderInitButton(doubleClick)}
             </div>
           </div>
@@ -355,6 +378,15 @@ export const Admin = () => {
 
           <div hidden={!(loadingProfs === 2)} className="">
             <p>Professor data import to Classes is complete!</p>
+          </div>
+
+          <div hidden={!(updatingSubjects === 1)} className="">
+            <p>Updating subject data to Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+
+          <div hidden={!(updatingSubjects === 2)} className="">
+            <p>Subject data import to Classes is complete!</p>
           </div>
 
           <div hidden={!(loadingInit === 1)} className="">
