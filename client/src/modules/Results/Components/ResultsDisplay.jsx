@@ -262,10 +262,10 @@ export default class ResultsDisplay extends Component {
   renderCheckboxes(group) {
     let group_list = Array.from(this.state.filterMap.get(group).keys())
     return group_list.map((name, index) => (
-      <div>
-        <label className="filter-checkbox-label">
+      <div className = {styles.filterlabel}>
+        <label className={styles.filterlabel}>
           <input
-            className="filter-checkbox"
+            className={styles.filterlabel}
             onChange={(e) => this.checkboxOnChange(e)}
             type="checkbox"
             checked={this.state.filterMap.get(group).get(name)}

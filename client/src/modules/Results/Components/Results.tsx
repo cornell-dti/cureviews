@@ -36,18 +36,16 @@ export class Results extends Component<ResultsProps, ResultsLists> {
     this.updateResults = this.updateResults.bind(this)
   }
 
-  updateResults() {
-    axios
-      .post('/api/search/get-courses', {
-        query: this.props.match.params.input.toLowerCase(),
-      })
-      .then((response) => {
-        const courseList = response.data.result.courses
-        this.setState({
-          courseList: !courseList.error && courseList.length > 0 ? courseList : [],
-          loading: false,
-        })
-      })
+  async updateResults() {
+    const response = await axios.post( `/api/search/get-courses`, {
+      query: this.props.match.params.input.toLowerCase()
+    })
+
+    const courseList = response.data.result.courses
+    this.setState({
+      courseList: !courseList.error && courseList.length > 0 ? courseList : [],
+      loading: false,
+    })
   }
 
   componentDidUpdate(prevProps: ResultsProps) {
