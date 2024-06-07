@@ -121,12 +121,12 @@ export const approveAllReviews = async () => {
  */
 
 export const findAdminUsers = async () => {
-  const adminUsers = await Students.find({ privilege: 'admin' }).exec()
+  const adminUsers = await Students.find({ privilege: "admin" }).exec()
   return adminUsers
 }
 
 export const removeAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'regular'} }).exec()
+  const res = await Students.updateOne({ netId: id }, { $set: {privilege: "regular"} }).exec()
   return res
 }
 

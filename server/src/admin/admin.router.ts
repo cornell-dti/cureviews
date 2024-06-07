@@ -296,9 +296,9 @@ adminRouter.post('/reviews/csv', async (req, res) => {
 */
 adminRouter.post('/users/get', async (req, res) => {
   try {
-    // const { token }: AdminRequestType = req.body;
-    // const auth = new Auth({ token });
-    const admins = await getAdminUsers();
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const admins = await getAdminUsers({ auth });
     if (admins === null) {
       return res.status(400).json({
         error: `User is not an admin.`

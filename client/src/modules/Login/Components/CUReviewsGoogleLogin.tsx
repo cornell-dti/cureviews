@@ -40,7 +40,7 @@ export default class CUreviewsGoogleLogin extends Component<
     }
   }
 
-  //Using meteor session to save the redirct page to Session
+  //Using meteor session to save the redirect page to Session
   saveRedirectToSession = (from: string) => {
     Session.setPersistent({ redirectFrom: from })
     if (Session.get('redirectFrom') !== from) {

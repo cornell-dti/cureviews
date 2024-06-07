@@ -204,12 +204,12 @@ export const getCourseCSV = async ({ auth }: VerifyAdminType) => {
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns all admin users if operation was successful, null otherwise
  */
-export const getAdminUsers = async () => {
-  // const userIsAdmin = await verifyTokenAdmin({ auth });
-  // if (userIsAdmin) {
+export const getAdminUsers = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = await verifyTokenAdmin({ auth });
+  if (userIsAdmin) {
     const admins = await findAdminUsers();
     return admins;
-  // }
+  }
 }
 
 /**
