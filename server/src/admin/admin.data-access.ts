@@ -137,5 +137,6 @@ export const grantAdminPrivilege = async (id: string) => {
   const user = await Students.findOne({ netId: id }).exec()
   if (user) {
     const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
+    return res
   }
 }
