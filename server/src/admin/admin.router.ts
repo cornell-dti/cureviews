@@ -296,9 +296,9 @@ adminRouter.post('/reviews/csv', async (req, res) => {
 */
 adminRouter.post('/users/get', async (req, res) => {
   try {
-    const { token }: AdminRequestType = req.body;
-    const auth = new Auth({ token });
-    const admins = await getAdminUsers({ auth });
+    // const { token }: AdminRequestType = req.body;
+    // const auth = new Auth({ token });
+    const admins = await getAdminUsers();
     if (admins === null) {
       return res.status(400).json({
         error: `User is not an admin.`
@@ -344,8 +344,7 @@ adminRouter.post('/users/remove', async (req, res) => {
 /** Reachable at POST /api/admin/users/add
  * @body token: a session's current token
  * @body userId: a user's _id field
- * Grants admin privilege to an existing user with _id = userId or
- * creates a new admin user in the database. For admins only
+ * Grants admin privilege to an existing user with netId = userId
 */
 adminRouter.post('/users/add', async (req, res) => {
   const {token, userId}: AdminUserRequestType = req.body;
