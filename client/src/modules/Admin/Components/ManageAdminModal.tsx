@@ -46,7 +46,7 @@ const ManageAdminModal = ({token, open, setOpen}: Props) => {
 
         if (response.status === 200) {
             const updatedAdmins = admins.filter((admin: Student) => {
-                return admin && admin._id !== user.netId
+                return admin && admin.netId !== user.netId
             })
             setAdmins(updatedAdmins)
         }

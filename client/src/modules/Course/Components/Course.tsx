@@ -292,7 +292,7 @@ export const Course = () => {
           <div className={styles.bar}>
             <h2>Past Reviews ({courseReviews?.length}) </h2>
             <div>
-              <label htmlFor="sort-reviews">Sort by:</label>
+              <label htmlFor="sort-reviews">Sort by: </label>
               <select
                 name="sort-reviews"
                 id="sort-reviews"

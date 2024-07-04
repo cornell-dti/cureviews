@@ -364,7 +364,7 @@ export default class ResultsDisplay extends Component {
 
               <div className={styles.bar}>
                 <div>
-                  Sort By:
+                  <label>Sort By: </label>
                   <select
                     value={this.state.selected}
                     className={styles.sortselector}
