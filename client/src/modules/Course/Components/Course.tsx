@@ -159,23 +159,6 @@ export const Course = () => {
   }
 
   /**
-   * Attempts to report review, and filters out the reported review locally
-   * @param reviewId - id of review to report
-   */
-  async function reportReview(reviewId: string) {
-    try {
-      const response = await axios.post('/api/reportReview', { id: reviewId })
-      if (response.status === 200) {
-        setCourseReviews(
-          courseReviews?.filter((element) => element._id !== reviewId)
-        )
-      }
-    } catch (e) {
-      toast.error('Failed to report review.')
-    }
-  }
-
-  /**
    * Save review information to session storage and begin redirect to auth
    */
   function onSubmitReview(review: NewReview) {
@@ -307,7 +290,6 @@ export const Course = () => {
           <div className={styles.reviews}>
             <CourseReviews
               reviews={courseReviews}
-              onReportReview={reportReview}
               isPreview={false}
               isProfile={false}
             />

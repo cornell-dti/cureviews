@@ -8,11 +8,12 @@ import styles from '../Styles/Review.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
+import ReportModal from './ReportModal'
+
 // use review.visible for pending
 
 type ReviewProps = {
   review: ReviewType
-  reportHandler: (review: ReviewType) => void
   isPreview: boolean
   isProfile: boolean
 }
@@ -29,7 +30,6 @@ type ReviewProps = {
 */
 export default function ReviewCard({
   review,
-  reportHandler,
   isPreview,
   isProfile,
 }: ReviewProps): JSX.Element {
@@ -38,6 +38,7 @@ export default function ReviewCard({
 
   const [_review, setReview] = useState<ReviewType>(review)
   const [liked, setLiked] = useState<boolean>(false)
+  const [reportOpen, setReportOpen] = useState<boolean>(false)
 
   const [courseTitle, setCourseTitle] = useState<string>('')
   const [courseSub, setCourseSub] = useState<string>('')
@@ -71,6 +72,21 @@ export default function ReviewCard({
     })
 
     setReview(response.data.review)
+  }
+
+  /**
+   * Attempts to report review, and filters out the reported review locally
+   * @param reviewId: id of review to report
+   */
+  async function reportReview(reviewId: string) {
+    // try {
+    //   const response = await axios.post('/api/reportReview', { id: reviewId })
+    //   if (response.status === 200) {
+    //     reviews = reviews.filter((rev) => rev._id !== reviewId);
+    //   }
+    // } catch (e) {
+    //   toast.error('Failed to report review.')
+    // }
   }
 
   /**
@@ -235,22 +251,41 @@ export default function ReviewCard({
             {expand ? 'See less' : '...See more'}
           </button>
         )}
+
         <div className={styles.datehelpful}>
           <div> {dateToString()} </div>
           {!isPreview && (
-            <div
-              className={`${styles.helpful} ${liked && styles.likedhelpful}`}
-              onClick={likeReview}
-            >
-              <img
-                src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
-                alt={liked ? 'Liked' : 'Not Liked Yet'}
-              />
-              {liked ? 'Liked!' : 'Helpful?'} (
-              {_review.likes ? _review.likes : 0}){' '}
+            <div>
+
+              <button
+                className={styles.openreport}
+                onClick={() => setReportOpen(true)}
+              >
+                Report
+              </button>
+
+              <div
+                className={`${styles.helpful} ${liked && styles.likedhelpful}`}
+                onClick={likeReview}
+              >
+                <img
+                  src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
+                  alt={liked ? 'Liked' : 'Not Liked Yet'}
+                />
+                {liked ? 'Liked!' : 'Helpful?'} (
+                  {_review.likes ? _review.likes : 0}){' '}
+              </div>
             </div>
+
           )}
         </div>
+
+        <ReportModal 
+          open={reportOpen}
+          setOpen={setReportOpen}
+          reportHandler={reportReview}
+        />
+        
         {_review.isCovid && (
           <div className={styles.covid}>
             <span role="img" aria-label="alert"></span>

@@ -94,6 +94,10 @@
   margin-top: auto;
 }
 
+.openreport {
+  cursor: pointer;
+}
+
 .helpful {
   display: flex;
   flex-flow: row nowrap;

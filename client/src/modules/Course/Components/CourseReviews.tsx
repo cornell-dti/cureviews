@@ -5,20 +5,15 @@ import { Review } from 'common'
 
 type CourseReviewsProps = {
   reviews: readonly Review[]
-  onReportReview?: (id: string) => void
   isPreview: boolean
   isProfile: boolean
 }
 
 const CourseReviews = ({
   reviews,
-  onReportReview,
   isPreview,
   isProfile,
 }: CourseReviewsProps) => {
-  function reportReview(review: Review) {
-    onReportReview?.(review._id)
-  }
 
   // isPreview and isProfile => PENDING review
   // !isPreview and isProfile => PROFILE regular review
@@ -74,7 +69,6 @@ const CourseReviews = ({
             review={review}
             isPreview={isPreview}
             isProfile={isProfile}
-            reportHandler={reportReview}
           />
         ))}
       </div>
