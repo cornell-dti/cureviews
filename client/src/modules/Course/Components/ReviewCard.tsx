@@ -7,8 +7,7 @@ import { Review as ReviewType } from 'common'
 import styles from '../Styles/Review.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
-
-import ReportModal from './ReportModal'
+import { report } from 'process'
 
 // use review.visible for pending
 
@@ -16,6 +15,7 @@ type ReviewProps = {
   review: ReviewType
   isPreview: boolean
   isProfile: boolean
+  reportHandler: (reviewId: string) => void
 }
 
 /**
@@ -32,13 +32,13 @@ export default function ReviewCard({
   review,
   isPreview,
   isProfile,
+  reportHandler
 }: ReviewProps): JSX.Element {
   const { isLoggedIn, signIn } = useAuthOptionalLogin()
   const location = useLocation()
 
   const [_review, setReview] = useState<ReviewType>(review)
   const [liked, setLiked] = useState<boolean>(false)
-  const [reportOpen, setReportOpen] = useState<boolean>(false)
 
   const [courseTitle, setCourseTitle] = useState<string>('')
   const [courseSub, setCourseSub] = useState<string>('')
@@ -72,21 +72,6 @@ export default function ReviewCard({
     })
 
     setReview(response.data.review)
-  }
-
-  /**
-   * Attempts to report review, and filters out the reported review locally
-   * @param reviewId: id of review to report
-   */
-  async function reportReview(reviewId: string) {
-    // try {
-    //   const response = await axios.post('/api/reportReview', { id: reviewId })
-    //   if (response.status === 200) {
-    //     reviews = reviews.filter((rev) => rev._id !== reviewId);
-    //   }
-    // } catch (e) {
-    //   toast.error('Failed to report review.')
-    // }
   }
 
   /**
@@ -259,7 +244,7 @@ export default function ReviewCard({
 
               <button
                 className={styles.openreport}
-                onClick={() => setReportOpen(true)}
+                onClick={() => reportHandler(_review._id)}
               >
                 Report
               </button>
@@ -279,13 +264,6 @@ export default function ReviewCard({
 
           )}
         </div>
-
-        <ReportModal 
-          open={reportOpen}
-          setOpen={setReportOpen}
-          reportHandler={reportReview}
-        />
-        
         {_review.isCovid && (
           <div className={styles.covid}>
             <span role="img" aria-label="alert"></span>
