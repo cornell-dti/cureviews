@@ -292,6 +292,7 @@ export const Course = () => {
               reviews={courseReviews}
               isPreview={false}
               isProfile={false}
+              token={token}
             />
           </div>
         </div>

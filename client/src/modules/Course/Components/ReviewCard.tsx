@@ -7,7 +7,6 @@ import { Review as ReviewType } from 'common'
 import styles from '../Styles/Review.module.css'
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
-import { report } from 'process'
 
 // use review.visible for pending
 

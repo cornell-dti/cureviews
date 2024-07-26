@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -11,23 +11,28 @@ type CourseReviewsProps = {
   reviews: readonly Review[]
   isPreview: boolean
   isProfile: boolean
+  token: string | null
 }
 
 const CourseReviews = ({
   reviews,
   isPreview,
   isProfile,
+  token,
 }: CourseReviewsProps) => {
+
+  const [visibleReviews, setVisibleReviews] = useState(reviews)
 
   /**
    * Attempts to report review, and filters out the reported review locally
-   * @param reviewId: id of review to report
+   * @param reviewId: _id of review to report
    */
     async function reportReview(reviewId: string) {
-      const response = await axios.post('/api/reviews/report', { id: reviewId })
+      const response = await axios.post('/api/reviews/report', { token: token, id: reviewId })
       if (response.status === 200) {
-        reviews = reviews.filter((rev) => rev._id !== reviewId);
-        toast.success("Thank you, we'll check if this review meets our guidelines."
+        const updated = reviews.filter((rev) => rev._id !== reviewId);
+        setVisibleReviews(updated)
+        toast.success("Thank you. We'll check if this review meets our guidelines."
         )
       } else {
         toast.error('An error occurred. Please try again.')
@@ -41,7 +46,7 @@ const CourseReviews = ({
   if (isPreview && isProfile) {
     return (
       <div data-cy={`course-reviews`}>
-        {reviews.map((review) => (
+        {visibleReviews.map((review) => (
           <PreviewReviewCard
             key={review._id}
             review={review}
@@ -55,7 +60,7 @@ const CourseReviews = ({
     /* PROFILE PAST REVIEWS PREVIEWS */
     return (
       <div data-cy={`course-reviews`}>
-        {reviews.map((review) => (
+        {visibleReviews.map((review) => (
           <PreviewReviewCard
             key={review._id}
             review={review}
@@ -69,7 +74,7 @@ const CourseReviews = ({
     /* SEARCH RESULTS */
     return (
       <div data-cy={`course-reviews`}>
-        {reviews.map((review) => (
+        {visibleReviews.map((review) => (
           <PreviewReviewCard
             key={review._id}
             review={review}
@@ -82,7 +87,7 @@ const CourseReviews = ({
   } else
     return (
       <div data-cy={`course-reviews`}>
-        {reviews.map((review) => (
+        {visibleReviews.map((review) => (
           <ReviewCard
             key={review._id}
             review={review}
