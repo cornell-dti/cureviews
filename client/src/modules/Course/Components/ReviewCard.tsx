@@ -239,10 +239,10 @@ export default function ReviewCard({
         <div className={styles.datehelpful}>
           <div> {dateToString()} </div>
           {!isPreview && (
-            <div>
+            <div className={styles.reporthelpful}>
 
               <button
-                className={styles.openreport}
+                className={styles.report}
                 onClick={() => reportHandler(_review._id)}
               >
                 Report
