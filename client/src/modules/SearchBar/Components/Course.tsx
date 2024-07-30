@@ -21,10 +21,9 @@ type Props = {
   active: boolean
   enter: number
   mouse: number
-  key?: string
 }
 
-const Course = ({classInfo, query, active, enter, mouse, key}: Props) => {
+const Course = ({classInfo, query, active, enter, mouse}: Props) => {
   let text: any = classInfo.classSub.toUpperCase() + ' ' + classInfo.classNum + ': ' + classInfo.classTitle
 
   //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class

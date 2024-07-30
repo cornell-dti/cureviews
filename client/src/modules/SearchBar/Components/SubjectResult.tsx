@@ -16,10 +16,9 @@ type Props = {
   active: boolean
   enter: 1 | 0
   mouse: 1 | 0
-  key: string
 }
 
-const SubjectResult = ({subject, query, active, enter, mouse, key}: Props) => {
+const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
   // generate full human-readable name of class
   const text = subject.subFull
 
