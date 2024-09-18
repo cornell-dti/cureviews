@@ -27,13 +27,14 @@ A web app for Cornell students to read and write reviews for Cornell classes, al
 1. Clone the code:
 
    ```bash
-   git clone https://github.com/cornell-dti/course-reviews-react-2.0.git
+   git clone https://github.com/cornell-dti/cureviews.git
    ```
 
 2. Add the MongoDB connection inside `server/.env`:
 
    ```txt
       MONGODB_URL=see-notion-page
+      OPENAI_API_KEY=see-notion-page
    ```
 
    *This would be only the staging DB, only Leads have access to production.*

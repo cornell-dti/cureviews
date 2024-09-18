@@ -171,10 +171,10 @@ export const Admin = () => {
   // Call when user selects "Initialize Database" button. Scrapes the Cornell
   // Course API to store all classes and subjects in the local database.
   // Then, runs code to store id's of cross-listed classes against each class.
-  // Should only be run ONCE when the app is initialzied.
+  // Should only be run ONCE when the app is initialized.
   //
-  // NOTE: requries an initialize flag to ensure the function is only run on
-  // a button click without this, it will run every time this component is created.
+  // NOTE: requires an initialize flag to ensure the function is only run on
+  // a button click. Without this, it will run every time this component is created.
   async function addAllCourses() {
     console.log('Initializing database')
     setDisableInit(true)
@@ -232,7 +232,7 @@ export const Admin = () => {
   // and update state to remember the next click will be a double click.
   function firstClickHandler() {
     alert(
-      '<div><h1>STOP AND THINK REALLY HARD</h1><p>This will delete all data in the database!!! Click again ONLY if you are initializing the database.</p></div>'
+      '<div><h1>Warning!</h1><p>Clicking again will reset all data in the database. Are you sure you want to do this?</p></div>'
     )
     setDoubleClick(true)
   }

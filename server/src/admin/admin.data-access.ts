@@ -2,8 +2,6 @@
 import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
 import { UpdateCourseMetrics } from './admin.type';
 import { findCourseById } from '../course/course.data-access';
-import { InsertStudentType } from '../auth/auth.type';
-import shortid from 'shortid';
 
 export const findStudentById = async (id: string) => {
   const student = await Students.findOne({ _id: id }).exec();
