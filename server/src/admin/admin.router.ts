@@ -4,14 +4,17 @@ import { Auth } from '../auth/auth';
 import {
   AdminReviewRequestType,
   AdminRequestType,
+  AdminUserRequestType,
   RaffleWinnerRequestType,
   AdminAddSemesterRequestType,
   ReportReviewRequestType,
 } from './admin.type';
 import {
   getPendingReviews,
+  getReportedReviews,
+  getReviewCounts,
+  getCourseCSV,
   editReviewVisibility,
-  getRaffleWinner,
   removePendingReview,
   updateAllProfessorsDb,
   resetAllProfessorsDb,
@@ -19,11 +22,15 @@ import {
   addNewSemDb,
   verifyTokenAdmin,
   reportReview,
+  getAdminUsers,
+  removeAdmin,
+  addOrUpdateAdmin,
+  approveReviews
 } from './admin.controller';
 
 export const adminRouter = express.Router();
 
-adminRouter.post('/reportReview', async (req, res) => {
+adminRouter.post('/reviews/report', async (req, res) => {
   try {
     const { id }: ReportReviewRequestType = req.body;
     const result = await reportReview({ id });
@@ -46,7 +53,7 @@ adminRouter.post('/reportReview', async (req, res) => {
 /*
  * Check if a token is for an admin
  */
-adminRouter.post('/tokenIsAdmin', async (req, res) => {
+adminRouter.post('/validate/token', async (req, res) => {
   try {
     const { token } = req.body;
     const auth: Auth = new Auth({ token });
@@ -59,7 +66,7 @@ adminRouter.post('/tokenIsAdmin', async (req, res) => {
   }
 });
 
-adminRouter.post('/makeReviewVisible', async (req, res) => {
+adminRouter.post('/reviews/approve', async (req, res) => {
   try {
     const { token, review }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
@@ -92,12 +99,32 @@ adminRouter.post('/makeReviewVisible', async (req, res) => {
   }
 });
 
-adminRouter.post('/fetchPendingReviews', async (req, res) => {
+adminRouter.post('/reviews/approve/all', async (req, res) => {
+  try {
+    const { token }: AdminReviewRequestType = req.body;
+    const auth = new Auth({ token });
+
+    const response = await approveReviews({auth: auth})
+    if (response !== null) {
+      return res.status(200).json({
+        message: `All pending reviews have been approved`
+      })
+    } else {
+      return res.status(400).json({
+        error: `User is not an admin`
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/reviews/get/pending', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
-    const pendingReviews = await getPendingReviews({ auth });
-    if (pendingReviews === null) {
+    const reviews = await getPendingReviews({ auth });
+    if (reviews === null) {
       return res.status(400).json({
         error: `User is not an admin.`,
       });
@@ -105,34 +132,139 @@ adminRouter.post('/fetchPendingReviews', async (req, res) => {
 
     return res.status(200).json({
       message: 'Retrieved all pending reviews',
-      result: pendingReviews,
+      result: reviews,
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/getRaffleWinner', async (req, res) => {
+adminRouter.post('/reviews/get/reported', async (req, res) => {
   try {
-    const { startDate }: RaffleWinnerRequestType = req.body;
-    const winner = await getRaffleWinner({ startDate });
-
-    if (winner === null) {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const reviews = await getReportedReviews({ auth });
+    if (reviews === null) {
       return res.status(400).json({
-        error: `No raffle winner found.`,
+        error: `User is not an admin.`,
       });
     }
 
     return res.status(200).json({
-      message: 'Retrieved raffle winner',
-      result: winner,
+      message: 'Retrieved all pending reviews',
+      result: reviews,
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
 
-adminRouter.post('/addNewSemester', async (req, res) => {
+adminRouter.post('/reviews/count', async (req, res) => {
+  try {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const counts = await getReviewCounts({ auth });
+    if (counts === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      });
+    }
+    
+    return res.status(200).json({
+      message: 'Retrieved review counts',
+      result: counts,
+    })
+
+  } catch (err) {
+      return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
+
+adminRouter.post('/reviews/csv', async (req, res) => {
+  try {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const csv = await getCourseCSV({ auth });
+    if (csv === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved CSV of approved reviews',
+      result: csv
+    })
+
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
+
+adminRouter.post('/users/get', async (req, res) => {
+  try {
+    const { token }: AdminRequestType = req.body;
+    const auth = new Auth({ token });
+    const admins = await getAdminUsers({ auth });
+    if (admins === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved admin users',
+      result: admins
+    })
+
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`});
+  }
+})
+
+adminRouter.post('/users/remove', async (req, res) => {
+  const {token, userId}: AdminUserRequestType = req.body;
+
+  try {
+    const auth = new Auth({ token });
+    const result = await removeAdmin({ auth: auth, id: userId})
+
+    if (result) {
+      return res.status(200).json({
+        message: `Remove admin privilege from user with id ${userId}`
+      });
+    }
+
+    return res.status(400).json({
+      error: 'User is not an admin.'
+    })
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`})
+  }
+})
+
+adminRouter.post('/users/add', async (req, res) => {
+  const {token, userId}: AdminUserRequestType = req.body;
+
+  try {
+    const auth = new Auth({ token });
+    const result = await addOrUpdateAdmin({ auth: auth, id: userId})
+
+    if (result) {
+      return res.status(200).json({
+        message: `Granted admin privilege to user with id ${userId}`
+      });
+    }
+
+    return res.status(400).json({
+      error: 'User is not an admin.'
+    })
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}`})
+  }
+})
+
+adminRouter.post('/semester/add', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -159,7 +291,7 @@ adminRouter.post('/addNewSemester', async (req, res) => {
   }
 });
 
-adminRouter.post('/undoReportReview', async (req, res) => {
+adminRouter.post('/reviews/unreport', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -185,7 +317,7 @@ adminRouter.post('/undoReportReview', async (req, res) => {
   }
 });
 
-adminRouter.post('/removeReview', async (req, res) => {
+adminRouter.post('/reviews/remove', async (req, res) => {
   const { review, token }: AdminReviewRequestType = req.body;
 
   try {
@@ -207,7 +339,7 @@ adminRouter.post('/removeReview', async (req, res) => {
   }
 });
 
-adminRouter.post('/setProfessors', async (req, res) => {
+adminRouter.post('/professors/add', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -223,7 +355,7 @@ adminRouter.post('/setProfessors', async (req, res) => {
   }
 });
 
-adminRouter.post('/resetProfessors', async (req, res) => {
+adminRouter.post('/professors/reset', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
@@ -244,7 +376,7 @@ adminRouter.post('/resetProfessors', async (req, res) => {
   }
 });
 
-adminRouter.post('/dbInit', async (req, res) => {
+adminRouter.post('/db/initialize', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });

@@ -9,14 +9,16 @@ import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 
 import UpdateReview from './AdminReview'
 import Stats from './Stats'
-import RaffleWinner from './RaffleWinner'
+import ManageAdminModal from './ManageAdminModal'
+
+import styles from '../Styles/Admin.module.css'
 import Loading from '../../Globals/Loading'
 
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
 export const Admin = () => {
-  const [unapprovedReviews, setUnapprovedReviews] = useState<Review[]>([])
+  const [pendingReviews, setPendingReviews] = useState<Review[]>([])
   const [reportedReviews, setReportedReviews] = useState<Review[]>([])
   const [disableInit, setDisableInit] = useState<boolean>(false)
   const [disableNewSem, setDisableNewSem] = useState<boolean>(false)
@@ -26,22 +28,19 @@ export const Admin = () => {
   const [loadingProfs, setLoadingProfs] = useState<number>(0)
   const [resettingProfs, setResettingProfs] = useState<number>(0)
   const [addSemester, setAddSemester] = useState('')
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
 
-  const {isLoggedIn, token, isAuthenticating} = useAuthMandatoryLogin('admin')
+  const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     async function confirmAdmin() {
-      const res = await axios.post(`/api/tokenIsAdmin`, {
+      const res = await axios.post(`/api/admin/validate/token`, {
         token: token,
       })
-
-      if (res.data.result) {
-        setIsAdmin(true)
-      } else {
-        setIsAdmin(false)
-      }
+      const userIsAdmin = res.data.result
+      setIsAdmin(userIsAdmin)
       setLoading(false)
     }
 
@@ -50,22 +49,25 @@ export const Admin = () => {
     }
   }, [isLoggedIn, token, isAuthenticating])
 
+  // Accesses the database and fetches all reviews. Called when admin page loads, and
+  // splits the reviews into three categories: approved (visible on the website),
+  // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
-    axios
-      .post('/api/fetchPendingReviews', { token: token })
-      .then((response) => {
-        const result = response.data.result
-        if (response.status === 200) {
-          setUnapprovedReviews(
-            result.filter((review: Review) => review.reported === 0)
-          )
-          setReportedReviews(
-            result.filter((review: Review) => review.reported === 1)
-          )
-        } else {
-          console.log('Error at fetchPendingReviews')
-        }
+    async function loadReviews() { 
+      const pending = await axios.post('/api/admin/reviews/get/pending', {
+        token: token,
       })
+      if (pending.status === 200) {
+        setPendingReviews(pending.data.result)
+      }
+      const reported = await axios.post('/api/admin/reviews/get/reported', {
+        token: token
+      })
+      if (reported.status === 200) {
+        setReportedReviews(reported.data.result);
+      }
+    }
+    loadReviews()
   }, [token, isAuthenticating])
 
   // Helper function to remove a review from a list of reviews and
@@ -79,86 +81,88 @@ export const Admin = () => {
 
   // Call when user asks to approve a review. Accesses the Reviews database
   // and changes the review with this id to visible.
-  function approveReview(review: Review) {
-    axios
-      .post('/api/makeReviewVisible', {
-        review: review,
-        token: token,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const updatedUnapprovedReviews = removeReviewFromList(
-            review,
-            unapprovedReviews
-          )
-          setUnapprovedReviews(updatedUnapprovedReviews)
-        }
-      })
+  async function approveReview(review: Review) {
+    const response = await axios.post('/api/admin/reviews/approve', {
+      review: review,
+      token: token,
+    })
+
+    if (response.status === 200) {
+      const updatedPendingReviews = removeReviewFromList(review, pendingReviews)
+      setPendingReviews(updatedPendingReviews)
+    }
   }
 
   // Call when user asks to remove a review. Accesses the Reviews database
   // and deletes the review with this id.
-  function removeReview(review: Review, isUnapproved: boolean) {
-    axios
-      .post('/api/removeReview', {
+  async function removeReview(review: Review, isUnapproved: boolean) {
+    try {
+      const response = await axios.post('/api/admin/reviews/remove', {
         review: review,
         token: token,
       })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('Review removed')
-          if (isUnapproved) {
-            const updatedUnapprovedReviews = removeReviewFromList(
-              review,
-              unapprovedReviews
-            )
-            setUnapprovedReviews(updatedUnapprovedReviews)
-          } else {
-            const updatedReportedReviews = removeReviewFromList(
-              review,
-              reportedReviews
-            )
-
-            setReportedReviews(updatedReportedReviews)
-          }
-        }
-      })
-      .catch((e) => console.log(`Unable to remove review ${e}`))
-  }
-
-  // Call when user asks to un-report a reported review. Accesses the Reviews database
-  // and changes the reported flag for this review to false.
-  function unReportReview(review: Review) {
-    axios
-      .post('/api/undoReportReview', {
-        review: review,
-        token: token,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('Review unreported')
+      if (response.status === 200) {
+        if (isUnapproved) {
+          const updatedUnapprovedReviews = removeReviewFromList(
+            review,
+            pendingReviews
+          )
+        setPendingReviews(updatedUnapprovedReviews)
+        } else {
           const updatedReportedReviews = removeReviewFromList(
             review,
             reportedReviews
           )
           setReportedReviews(updatedReportedReviews)
-        } else {
-          console.log('Unable to undo report review!')
+        }
+      }
+    } catch (e) {
+      alert(`Unable to remove review ${e}`)
+    }
+  }
+
+  // Call when admin would like to mass-approve all of the currently pending reviews.
+  async function approveAllReviews(reviews: Review[]) {
+    const response = await axios.post('/api/admin/reviews/approve/all', {token: token})
+    if (response.status === 200) {
+      setPendingReviews([])
+    } else {
+      alert('Could not approve all reviews')
+    }
+  }
+
+  // Call when user asks to un-report a reported review. Accesses the Reviews database
+  // and changes the reported flag for this review to false.
+  function unReportReview(review: Review) {
+
+    //wz
+    axios
+      .post('/api/reviews/unreport', {
+        review: review,
+        token: token,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          const updatedReportedReviews = removeReviewFromList(
+            review,
+            reportedReviews
+          )
+          setReportedReviews(updatedReportedReviews)
         }
       })
   }
 
   // Call when user selects "Add New Semester" button. Runs code to check the
   // course API for new classes and updates classes existing in the database.
-  // sShould run once a semester, when new classes are added to the roster.
+  // Should run once a semester, when new classes are added to the roster.
   function addNewSem(semester: string) {
     console.log('Adding new semester...')
     setDisableNewSem(true)
     setDisableInit(true)
     setLoadingSemester(1)
-
+    //wz
     axios
-      .post('/api/addNewSemester', {
+      .post('/api/admin/semester/add', {
         semester,
         token: token,
       })
@@ -187,8 +191,8 @@ export const Admin = () => {
 
     setDisableInit(true)
     setLoadingInit(1)
-
-    axios.post('/api/dbInit', { token: token }).then((response) => {
+    //wz
+    axios.post('/api/admin/db/initialize', { token: token }).then((response) => {
       if (response.status === 200) {
         setDisableInit(false)
         setLoadingInit(2)
@@ -202,8 +206,9 @@ export const Admin = () => {
     console.log('Updating professors')
     setDisableInit(true)
     setLoadingProfs(1)
+    //wz
 
-    axios.post('/api/setProfessors', { token: token }).then((response) => {
+    axios.post('/api/admin/professors/add', { token: token }).then((response) => {
       if (response.status === 200) {
         console.log('Updated the professors')
         setDisableInit(false)
@@ -218,8 +223,8 @@ export const Admin = () => {
     console.log('Setting the professors to an empty array')
     setDisableInit(true)
     setResettingProfs(1)
-
-    axios.post('/api/resetProfessors', { token: token }).then((response) => {
+    // wz
+    axios.post('/api/admin/professors/reset', { token: token }).then((response) => {
       if (response.status === 200) {
         console.log('Reset all the professors to empty arrays')
         setDisableInit(false)
@@ -247,11 +252,11 @@ export const Admin = () => {
     // offer button to edit database
     if (doubleClick) {
       return (
-        <div className="" role="group">
+        <div className="">
           <button
             disabled={disableInit}
             type="button"
-            className=""
+            className={styles.adminButtons}
             onClick={() => addAllCourses()}
           >
             Initialize Database
@@ -261,10 +266,10 @@ export const Admin = () => {
     } else {
       // offer button that gives alert and saves next click as a double click (in local state)
       return (
-        <div className="" role="group">
+        <div className="">
           <button
             type="button"
-            className=""
+            className={styles.adminButtons}
             onClick={() => firstClickHandler()}
           >
             Initialize Database
@@ -274,175 +279,132 @@ export const Admin = () => {
     }
   }
 
-  function toSelectOptions(options: string[] | undefined) {
-    return options?.map((option) => ({ value: option, label: option })) || []
-  }
 
   function renderAdmin(token: string) {
     return (
-      <div className="">
-        <div className="">
-          <div className="">
-            <div className="">
-              <h2>Admin Interface</h2>
-              <Stats token={token} />
-              <br />
-
-              <div className="">
-                <div className="" role="group">
-                  <button
-                    disabled={disableNewSem}
-                    type="button"
-                    className=""
-                    onClick={() => addNewSem(addSemester)}
-                  >
-                    Add New Semester
-                  </button>
-                  {/* <Select
-                    isDisabled={disableNewSem}
-                    value={{ value: addSemester, label: addSemester }}
-                    onChange={(semester: any) => {
-                      setAddSemester(semester.value)
-                    }}
-                    isSingle
-                    options={toSelectOptions([
-                      'SP24',
-                      'FA24',
-                      'SP25',
-                      'FA25',
-                      'SP26',
-                      'FA26',
-                      'SP27',
-                      'FA27',
-                      'SP28',
-                      'FA28',
-                      'SP29',
-                      'FA29',
-                      'SP30',
-                    ])}
-                    placeholder="Select Semester"
-                  /> */}
-                </div>
-
-                <div className="" role="group">
-                  <button
-                    disabled={disableInit}
-                    type="button"
-                    className=""
-                    onClick={() => updateProfessors()}
-                  >
-                    Update Professors
-                  </button>
-                </div>
-                <div className="" role="group">
-                  <button
-                    disabled={disableInit}
-                    type="button"
-                    className=""
-                    onClick={() => resetProfessors()}
-                  >
-                    RESET Professors
-                  </button>
-                </div>
-                <div className="" role="group">
-                  {renderInitButton(doubleClick)}
-                </div>
-              </div>
-
-              <div hidden={!(loadingSemester === 1)} className="">
-                <p>
-                  Adding New Semester Data. This process can take up to 15
-                  minutes.
-                </p>
-              </div>
-
-              <div hidden={!(loadingSemester === 2)} className="">
-                <p>New Semester Data import is complete!</p>
-              </div>
-
-              <div hidden={!(resettingProfs === 1)} className="">
-                <p>Clearing all associated professors from Classes.</p>
-                <p>This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(resettingProfs === 2)} className="">
-                <p>All professor arrays in Classes reset to empty!</p>
-              </div>
-
-              <div hidden={!(loadingProfs === 1)} className="">
-                <p>Updating professor data to Classes.</p>
-                <p>This process can take up to 15 minutes.</p>
-              </div>
-
-              <div hidden={!(loadingProfs === 2)} className="">
-                <p>Professor data import to Classes is complete!</p>
-              </div>
-
-              <div hidden={!(loadingInit === 1)} className="">
-                <p>
-                  Database Initializing. This process can take up to 15 minutes.
-                </p>
-              </div>
-
-              <div hidden={!(loadingInit === 2)} className="">
-                <p>Database initialaization is complete!</p>
-              </div>
-
-              <RaffleWinner adminToken={token} />
-
-              <br />
-
-              <div className="">
-                <div className="">
-                  <h3 className="">New Reviews</h3>
-                </div>
-                <div className="">
-                  <ul>
-                    {unapprovedReviews.map((review: Review) => {
-                      if (review.reported !== 1) {
-                        return (
-                          <UpdateReview
-                            key={review._id}
-                            info={review}
-                            removeHandler={removeReview}
-                            approveHandler={approveReview}
-                            unReportHandler={approveReview}
-                          />
-                        )
-                      }
-                      return null
-                    })}
-                  </ul>
-                </div>
-              </div>
-
-              <br />
-
-              <div className="">
-                <div className="">
-                  <h3 className="">Reported Reviews</h3>
-                </div>
-                <div className="">
-                  <ul>
-                    {reportedReviews.map((review: Review) => {
-                      //create a new class "button" that will set the selected class to this class when it is clicked.
-                      if (review.reported === 1) {
-                        return (
-                          <UpdateReview
-                            key={review._id}
-                            info={review}
-                            removeHandler={removeReview}
-                            approveHandler={approveReview}
-                            unReportHandler={unReportReview}
-                          />
-                        )
-                      }
-                      return null
-                    })}
-                  </ul>
-                </div>
-              </div>
+      <div className={styles.adminWrapper}>
+        <div className="headInfo">
+          <h1>Admin Interface</h1>
+          <Stats token={token} />
+          <div className={styles.semesterUpdate}>
+            <h2>Admin tools</h2>
+            <div className="" role="group">
+              <button
+                className={styles.adminButtons}
+                onClick={() => setIsAdminModalOpen(true)}
+              >
+                Manage Administrators
+              </button>
+              <button
+                disabled={disableNewSem}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => addNewSem(addSemester)}
+              >
+                Add New Semester
+              </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateProfessors()}
+              >
+                Update Professors
+              </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => resetProfessors()}
+              >
+                Reset Professors
+              </button>
+              {renderInitButton(doubleClick)}
             </div>
+          </div>
+
+          <ManageAdminModal
+            open={isAdminModalOpen}
+            setOpen={setIsAdminModalOpen}
+            token={token}
+          />
+
+          <div hidden={!(loadingSemester === 1)} className="">
+            <p>
+              Adding New Semester Data. This process can take up to 15 minutes.
+            </p>
+          </div>
+
+          <div hidden={!(loadingSemester === 2)} className="">
+            <p>New Semester Data import is complete!</p>
+          </div>
+
+          <div hidden={!(resettingProfs === 1)} className="">
+            <p>Clearing all associated professors from Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+
+          <div hidden={!(resettingProfs === 2)} className="">
+            <p>All professor arrays in Classes reset to empty!</p>
+          </div>
+
+          <div hidden={!(loadingProfs === 1)} className="">
+            <p>Updating professor data to Classes.</p>
+            <p>This process can take up to 15 minutes.</p>
+          </div>
+
+          <div hidden={!(loadingProfs === 2)} className="">
+            <p>Professor data import to Classes is complete!</p>
+          </div>
+
+          <div hidden={!(loadingInit === 1)} className="">
+            <p>
+              Database Initializing. This process can take up to 15 minutes.
+            </p>
+          </div>
+
+          <div hidden={!(loadingInit === 2)} className="">
+            <p>Database initialization is complete!</p>
+          </div>
+        </div>
+
+        <div className="StagedReviews">
+          <h1>Pending Reviews</h1>
+          <button
+            type="button"
+            className={styles.massApproveButton}
+            onClick={() => approveAllReviews(pendingReviews)}
+          >
+            Approve all pending reviews
+          </button>
+          <div className="PendingReviews">
+            {pendingReviews.map((review: Review) => {
+              return (
+                <UpdateReview
+                  key={review._id}
+                  review={review}
+                  removeHandler={removeReview}
+                  approveHandler={approveReview}
+                  unReportHandler={approveReview}
+                />
+              )
+            })}
+          </div>
+          <br></br>
+          <h1>Reported Reviews</h1>
+          <div className="ReportedReviews">
+            {reportedReviews.map((review: Review) => {
+              //create a new class "button" that will set the selected class to this class when it is clicked.
+              return (
+                <UpdateReview
+                  key={review._id}
+                  review={review}
+                  removeHandler={removeReview}
+                  approveHandler={approveReview}
+                  unReportHandler={unReportReview}
+                />
+              )
+            })}
           </div>
         </div>
       </div>

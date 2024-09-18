@@ -12,20 +12,43 @@ import { SearchQueryRequestType } from './search.type';
 
 export const searchRouter = express.Router();
 
-searchRouter.post('/getClassesByQuery', async (req, res) => {
+/**
+ * Searches the database for potential courses, subjects, and professors relating 
+ * to the query and returns an object containing 3 arrays of the above queries
+ */
+searchRouter.post('/getResultsFromQuery', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
-    const search = new Search({ query });
+    const cleanQuery = query.replace('+', ' ').toLowerCase();
+    const search = new Search({ query: cleanQuery });
+    const searchType = "search";
 
-    const courses = await searchCourses({ search });
+    // divide up course search by whether it is subject or professor, 
+    // then use default course search at the end
+    const subjects = await searchSubjects({ search });
+    const professors = await searchProfessors({ search });
 
-    if (!courses) {
-      return res.status(500).json({ error: `Internal Server Error.` });
+    // checks to see if input is full subject name
+    let coursesBySubject
+    if (subjects.length > 0 && cleanQuery === subjects[0].subFull.toLowerCase()) {
+      const subjectQuery = subjects[0].subShort;
+      const search = new Search({ query: subjectQuery })
+      coursesBySubject = await searchCoursesBySubject({ search }, searchType);
+    } else {
+      coursesBySubject = await searchCoursesBySubject({ search }, searchType);
     }
 
+    const coursesByProfessor = await searchCoursesByProfessor({ search }, searchType);
+    const coursesNaive = await searchCourses({ search }, searchType);
+
+    // given 3 potential course lists, select the list with the longest length
+    const courses = coursesBySubject.length > coursesByProfessor.length ?
+      (coursesBySubject.length > coursesNaive.length ? coursesBySubject : coursesNaive) :
+      (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
+
     return res.status(200).json({
-      message: `Success! Retrieved all courses by query: ${query}`,
-      result: courses,
+      message: `Success! Retrieved all courses, subjects, and professors by query: ${cleanQuery}`,
+      result: { subjects: subjects, professors: professors, courses: courses },
     });
   } catch (err) {
     return res
@@ -35,88 +58,39 @@ searchRouter.post('/getClassesByQuery', async (req, res) => {
 });
 
 /**
- * Searches the database on Subjects using the text index and returns matching subjects
+ * Searches the database for potential courses relating to the query and returns
+ * the full list of courses
  */
-searchRouter.post('/getSubjectsByQuery', async (req, res) => {
+searchRouter.post('/getCourseResults', async (req, res) => {
   try {
     const { query }: SearchQueryRequestType = req.body;
-    const search = new Search({ query });
+    const cleanQuery = query.replace('+', ' ').toLowerCase();
+    const search = new Search({ query: cleanQuery });
+    const searchType = "results";
 
     const subjects = await searchSubjects({ search });
 
-    if (!subjects) {
-      return res.status(500).json({ error: `Internal Server Error.` });
+    // checks to see if input is full subject name
+    let coursesBySubject
+    if (subjects.length > 0 && cleanQuery === subjects[0].subFull.toLowerCase()) {
+      const subjectQuery = subjects[0].subShort;
+      const search = new Search({ query: subjectQuery })
+      coursesBySubject = await searchCoursesBySubject({ search }, searchType);
+    } else {
+      coursesBySubject = await searchCoursesBySubject({ search }, searchType);
     }
 
-    return res.status(200).json({
-      message: `Success! Retrieved all subjects by query: ${query}`,
-      result: subjects,
-    });
-  } catch (err) {
-    return res
-      .status(400)
-      .json({ error: `Search query must contain ASCII characters.` });
-  }
-});
+    const coursesByProfessor = await searchCoursesByProfessor({ search }, searchType);
+    const coursesNaive = await searchCourses({ search }, searchType);
 
-searchRouter.post('/getProfessorsByQuery', async (req, res) => {
-  try {
-    const { query }: SearchQueryRequestType = req.body;
-    const search = new Search({ query });
-
-    const professors = await searchProfessors({ search });
-
-    if (!professors) {
-      return res.status(500).json({ error: `Internal Server Error.` });
-    }
+    // given 3 potential course lists, select the list with the longest length
+    const courses = coursesBySubject.length > coursesByProfessor.length ?
+      (coursesBySubject.length > coursesNaive.length ? coursesBySubject : coursesNaive) :
+      (coursesByProfessor.length > coursesNaive.length ? coursesByProfessor : coursesNaive)
 
     return res.status(200).json({
-      message: `Success! Retrieved all subjects by query: ${query}`,
-      result: professors,
-    });
-  } catch (err) {
-    return res
-      .status(400)
-      .json({ error: `Search query must contain ASCII characters.` });
-  }
-});
-
-searchRouter.post('/getCoursesByMajor', async (req, res) => {
-  try {
-    const { query }: SearchQueryRequestType = req.body;
-    const search = new Search({ query });
-
-    const courses = await searchCoursesBySubject({ search });
-
-    if (!courses) {
-      return res.status(500).json({ error: `Internal Server Error.` });
-    }
-
-    return res.status(200).json({
-      message: `Success! Retrieved all courses by query: ${query}`,
-      result: courses,
-    });
-  } catch (err) {
-    return res
-      .status(400)
-      .json({ error: `Search query must contain ASCII characters.` });
-  }
-});
-
-searchRouter.post('/getCoursesByProfessor', async (req, res) => {
-  try {
-    const { query }: SearchQueryRequestType = req.body;
-    const cleanQuery = query.replace('+', ' ');
-    const search = new Search({ query: cleanQuery });
-    const courses = await searchCoursesByProfessor({ search });
-
-    if (!courses) {
-      return res.status(500).json({ error: `Internal Server Error.` });
-    }
-
-    return res.status(200).json({
-      message: `Success! Retrieved all courses by query: ${query}`,
-      result: courses,
+      message: `Success! Retrieved all courses by query: ${cleanQuery}`,
+      result: { courses: courses },
     });
   } catch (err) {
     return res

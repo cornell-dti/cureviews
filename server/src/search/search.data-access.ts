@@ -3,9 +3,11 @@ import { Classes, Subjects, Professors } from '../../db/schema';
 
 export const findCourses = async (query: string) =>
   await Classes.find(
-    { $text: { $search: query } },
-    { score: { $meta: 'textScore' } },
-    { sort: { score: { $meta: 'textScore' } } },
+    {
+      classFull: { $regex: `.*${query}.*`, $options: 'i' },
+    },
+    {},
+    { sort: { classFull: 1 }, limit: 200, reactive: false },
   ).exec();
 
 export const findCoursesByNum = async (query: string) => {

@@ -15,6 +15,11 @@ export interface AdminReviewRequestType {
   review: AdminReviewType;
 }
 
+export interface AdminUserRequestType {
+  token: string;
+  userId: string;
+}
+
 interface AdminReviewType {
   _id: string;
   reported: number;
@@ -26,6 +31,11 @@ export interface AdminRequestType {
 
 export interface VerifyAdminType {
   auth: Auth;
+}
+
+export interface VerifyManageAdminType {
+  auth: Auth;
+  id: string;
 }
 
 export interface RaffleWinnerRequestType {

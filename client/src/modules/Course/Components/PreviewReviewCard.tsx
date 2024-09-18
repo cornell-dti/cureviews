@@ -40,11 +40,9 @@ export default function PreviewReviewCard({
   isProfile,
 }: ReviewProps): JSX.Element {
   const { isLoggedIn } = useAuthOptionalLogin()
-
   const pending = isPreview && isProfile
-
-  const _review = review
   const [liked, setLiked] = useState<boolean>(false)
+  const _review = review
 
   const [courseTitle, setCourseTitle] = useState<string>('')
   const [courseSub, setCourseSub] = useState<string>('')
