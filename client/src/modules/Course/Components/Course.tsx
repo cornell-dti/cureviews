@@ -317,6 +317,5 @@ export const Course = () => {
     )
   }
 
-  // TODO: create idle state, rethink how to handle this
   return <Loading />
 }
