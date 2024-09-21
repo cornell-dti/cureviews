@@ -1,6 +1,6 @@
 import express from 'express';
 import { CourseIdRequestType } from '../course/course.type';
-import { makeSummary, getCoursesWithMinReviews, getReviewsForSummary } from './ai.functions';
+import { makeSummary, getCoursesWithMinReviews, getReviewsForSummary, generateTags } from './ai.functions';
 
 const aiRouter = express.Router();
 
@@ -17,6 +17,19 @@ aiRouter.post('/text/summary', async (req, res) => {
     }
     const summary = await makeSummary(req.body.text);
     res.status(200).json({ summary });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+aiRouter.post('/text/tags', async (req, res) => {
+  try {
+    if (!req.body.text) {
+      return res.status(400).json({ error: 'No text provided' });
+    }
+    const tags = await generateTags(req.body.text);
+    res.status(200).json({ tags });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
