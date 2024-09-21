@@ -385,7 +385,6 @@ adminRouter.post('/subjects/update', async (req, res) => {
     if (result) {
       return res.status(200).json({ result: true });
     }
-
     return res.status(400).json({ result: false });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

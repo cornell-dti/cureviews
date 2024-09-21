@@ -32,6 +32,7 @@ export const fetchSubjects = async (
     const { subjects } = result.data.data;
     return subjects;
   } catch (err) {
+    console.log(err)
     return null;
   }
 };
@@ -48,7 +49,7 @@ export const fetchAddSubjects = async (
   endpoint: string,
   semesters: string[],
 ): Promise<boolean> => {
-  for (const semester in semesters) {
+  for (const semester of semesters) {
     const subjects = await fetchSubjects(endpoint, semester);
 
     if (subjects === null) {
