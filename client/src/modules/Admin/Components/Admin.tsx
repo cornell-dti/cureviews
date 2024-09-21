@@ -203,6 +203,10 @@ export const Admin = () => {
     })
   }
 
+  /**
+   * Call when admin wants to update professors for users to search through
+   * when clicking the "Update Professors" button
+   */
   function updateProfessors() {
     console.log('Updating professors')
     setDisableInit(true)
@@ -220,6 +224,10 @@ export const Admin = () => {
     })
   }
 
+  /**
+   * Call when admin wants to reset all professors in classes when clicking the 
+   * "Reset Professors" button
+   */
   function resetProfessors() {
     console.log('Setting the professors to an empty array')
     setDisableInit(true)
@@ -236,6 +244,10 @@ export const Admin = () => {
     })
   }
 
+  /**
+   * Call when admin wants to update the list of subjects users can search through
+   * when clicking the "Update Subjects" button
+   */
   function updateSubjects() {
     setDisableInit(true);
     setUpdatingSubjects(1);
