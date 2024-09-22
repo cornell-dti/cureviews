@@ -40,6 +40,50 @@ async function makeSummary(text: string) {
   return completion.choices[0].message.content;
 }
 
+/** generateTags. 
+ * 
+ * Takes in all reviews from a course as text and 
+ * generates 5 tags for those reviews describing lectures, assignments, professor,
+ * skill, and resources as well as the corresponding connotation of that tag.
+ * @params a string that combines all reviews from a course
+ * @returns an array of adjectives and their corresponding connotations describing
+ * lectures, assignments, professr, skills, and resources in that order
+ */
+async function generateTags(text: string) {
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system", content: `
+          You are creating 5 adjectives describing the lectures, assignments, professor, skills, and resources,
+          along with their connotations (positive, negative, neutral).
+          
+          Please provide the adjectives and connotations in the following format:
+          'Lectures: [adjective] (positive/negative/neutral),
+          Assignments: [adjective] (positive/negative/neutral),
+          Professor: [adjective] (positive/negative/neutral),
+          Skills: [adjective] (positive/negative/neutral),
+          Resources: [adjective] (positive/negative/neutral)'.
+        `
+      },
+      { role: "user", content: text }
+    ],
+  });
+  const response = completion.choices[0].message.content;
+  const tagsArray = response.split(',').map(item => {
+    const match = item.match(/: (.+) \((.+)\)/);
+    if (match) {
+      const adjective = match[1].trim();
+      const connotation = match[2].trim();
+      return [adjective, connotation];
+    } else {
+      console.error("Unexpected format: ", item);
+      return ["", ""];
+    }
+  });
+  return tagsArray;
+}
+
 /** getCoursesWithMinReviews.
  * 
  *  Create summaries for courses that have at least a certain number of reviews. 
@@ -145,4 +189,4 @@ export const getCrossListOR = (course) => {
   ];
 };
 
-export { makeSummary, getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary } 
+export { makeSummary, getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, generateTags } 
