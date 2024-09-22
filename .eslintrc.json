@@ -22,10 +22,10 @@
     "sourceType": "module"
   },
   "rules": {
-    "@typescript-eslint/camelcase": "warn",
-    "@typescript-eslint/class-name-casing": "warn",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-empty-function": "warn",
+    "camelcase": "warn",
+    "class-name-casing": "warn",
+    "explicit-function-return-type": "off",
+    "no-empty-function": "warn",
     "import/prefer-default-export": "off",
     "consistent-return": "warn",
     "guard-for-in": "warn",
