@@ -101,7 +101,7 @@ export default function PreviewReviewCard({
   /** Renders course name as well if on profile page */
   function TitleAndProfessor() {
     // list of professors (name1, name2, ..)
-    var professornames = ''
+    let professornames = ''
     if (_review.professors && _review.professors.length > 0)
       professornames += _review.professors.join(', ')
     else professornames += 'N/A'
