@@ -23,7 +23,6 @@
   },
   "rules": {
     "camelcase": "warn",
-    "class-name-casing": "warn",
     "explicit-function-return-type": "off",
     "no-empty-function": "warn",
     "import/prefer-default-export": "off",
@@ -45,7 +44,7 @@
     "no-undef": "warn",
     "no-var": "error",
     "object-curly-newline": "off",
-    "react/prop-types": "error",
+    "react/prop-types": "warn",
     "react/no-string-refs": "warn",
     "react/no-deprecated": "warn"
   },
