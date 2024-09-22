@@ -38,7 +38,7 @@ export default function PreviewReviewCard({
   review,
   isPreview,
   isProfile,
-}: ReviewProps): JSX.Element {
+}: ReviewProps): React.JSX.Element {
   const { isLoggedIn } = useAuthOptionalLogin()
   const pending = isPreview && isProfile
 
@@ -55,11 +55,11 @@ export default function PreviewReviewCard({
     if (!_review.date) return ''
 
     const date = new Date(_review.date)
-    let review_year = String(date.getFullYear()).substring(2)
-    let review_month = date.getMonth() + 1
-    let review_day = date.getDate()
+    let reviewYear = String(date.getFullYear()).substring(2)
+    let reviewMonth = date.getMonth() + 1
+    let reviewDay = date.getDate()
 
-    return review_month + '/' + review_day + '/' + review_year
+    return reviewMonth + '/' + reviewDay + '/' + reviewYear
   }
 
   /**

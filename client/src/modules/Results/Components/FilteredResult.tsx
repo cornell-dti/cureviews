@@ -11,12 +11,6 @@ type Props = {
   sortBy: 'rating' | 'relevance' | 'diff' | 'work'
 }
 
-type State = {
-  course: Class
-  current_index: number
-  sortBy: string
-}
-
 /**
   Filtered Result Component.
 
