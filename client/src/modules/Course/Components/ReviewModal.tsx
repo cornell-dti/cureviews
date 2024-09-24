@@ -10,6 +10,7 @@ import closeIcon from '../../../assets/icons/X.svg'
 
 // Data
 import majors from '../../Globals/majors'
+import AnonymousWarning from './AnonymousWarning'
 
 const ReviewModal = ({
   open,
@@ -52,6 +53,8 @@ const ReviewModal = ({
   const [overall, setOverall] = useState<number>(3)
   const [difficulty, setDifficulty] = useState<number>(3)
   const [workload, setWorkload] = useState<number>(3)
+
+  const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false)
 
   const [valid, setValid] = useState<Valid>({
     professor: false,
@@ -101,23 +104,33 @@ const ReviewModal = ({
     return false
   }
 
-  function handleSubmitReview() {
-    console.log('tried to submit')
-    if (validReview()) {
-      const newReview: NewReview = {
-        rating: overall,
-        difficulty: difficulty,
-        workload: workload,
-        professors: selectedProfessors,
-        text: reviewText,
-        isCovid: false,
-        grade: selectedGrade,
-        major: selectedMajors,
-      }
-      submitReview(newReview)
+  if (!open && anonymousOpen) {
 
-      console.log('Submitting')
-    } else return
+    // Handling the new review to be passed into the anonymous warning
+    const valid = validReview()
+    const newReview: NewReview = {
+      rating: overall,
+      difficulty: difficulty,
+      workload: workload,
+      professors: selectedProfessors,
+      text: reviewText,
+      isCovid: false,
+      grade: selectedGrade,
+      major: selectedMajors,
+    }
+
+    return (
+      <div className = {styles.modalbg}>
+        <div className = {styles.modal}>
+          <AnonymousWarning
+            open = {anonymousOpen}
+            validReview = {valid}
+            submitReview = {submitReview}
+            review = {newReview}
+          />
+        </div>
+      </div>
+    )
   }
 
   if (!open) {
@@ -210,7 +223,10 @@ const ReviewModal = ({
             </div>
             <button
               className={styles.submitbutton}
-              onClick={handleSubmitReview}
+              onClick={() => {
+                setAnonymousOpen(true)
+                setOpen(false)
+              }}
               disabled={!allowSubmit}
             >
               {' '}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import styles from '../Styles/Stats.module.css'
-import { Review } from 'common'
 
 type StatsProps = {
     token: string
