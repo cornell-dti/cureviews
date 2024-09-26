@@ -186,7 +186,7 @@ export const Course = () => {
     })
     Session.setPersistent({ review_num: selectedClass?.classNum })
     Session.setPersistent({ courseId: selectedClass?._id })
-
+ 
     signIn('course')
   }
 

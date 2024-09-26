@@ -45,7 +45,7 @@ export default function ProfileDropdown({
         type="button"
         className={`${styles.signinbutton}`}
         onClick={() => {
-          signIn('home')
+          signIn('profile')
         }}
       >
         Login

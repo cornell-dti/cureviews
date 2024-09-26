@@ -4,26 +4,20 @@ import styles from '../Styles/AnonymousWarning.module.css'
 
 import Anonymous from '../../../assets/img/anonymous.png'
 import { useAuthOptionalLogin } from '../../../auth/auth_utils'
+import { useHistory } from 'react-router-dom'
 
 type Props = {
     open: boolean
     validReview: boolean
-    submitReview: (review: NewReview) => void
     review: NewReview
   }
 
-const AnonymousWarning = ({ open, validReview, submitReview, review }: Props) => {
+const AnonymousWarning = ({ open, validReview, review }: Props) => {
     const {isLoggedIn, signIn} = useAuthOptionalLogin()
+    const history = useHistory()
 
     if (!open) {
       return <></>
-    }
-
-    function handleSubmitReview() {
-      console.log('submit')
-      if (validReview) {
-        submitReview(review)
-      }
     }
 
     if (isLoggedIn) {
@@ -37,7 +31,7 @@ const AnonymousWarning = ({ open, validReview, submitReview, review }: Props) =>
             </div>
             <button
               className={`${styles.button}`}
-              onClick={() => handleSubmitReview()}
+              onClick={() => history.push('/profile')}
             >
               Submit Review
             </button>
@@ -61,7 +55,7 @@ const AnonymousWarning = ({ open, validReview, submitReview, review }: Props) =>
             </div>
             <button
                 className={`${styles.button}`}
-                onClick={() => signIn('course')}
+                onClick={() => signIn('profile')}
             >
                 Login
             </button>
