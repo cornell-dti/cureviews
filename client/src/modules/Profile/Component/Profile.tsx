@@ -141,6 +141,7 @@ const Profile = () => {
 
         clearSessionReview()
         if (response.status === 200) {
+          console.log('toast!')
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           )
@@ -184,6 +185,15 @@ const Profile = () => {
     return (
       <div className={styles.page}>
         <Navbar userInput="" />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <div className={styles.container}>
           <div className={styles.usersection}>
             <UserInfo

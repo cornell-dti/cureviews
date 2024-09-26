@@ -59,7 +59,7 @@ const ReviewModal = ({
   const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false)
   const [noReviews, setNoReviews] = useState<boolean>(false)
 
-  const {isLoggedIn, netId} = useAuthOptionalLogin()
+  const {isLoggedIn, netId, signIn} = useAuthOptionalLogin()
 
   const [valid, setValid] = useState<Valid>({
     professor: false,
@@ -145,9 +145,11 @@ const ReviewModal = ({
 
   // Handle click of submit button
   function onSubmitReview() {
-    if (!noReviews) {
+    if (!noReviews && isLoggedIn) {
       handleSubmitReview()
+      signIn('profile')
     } else {
+      handleSubmitReview()
       setAnonymousOpen(true)
       setOpen(false)
     }
