@@ -8,11 +8,9 @@ import { useHistory } from 'react-router-dom'
 
 type Props = {
     open: boolean
-    validReview: boolean
-    review: NewReview
   }
 
-const AnonymousWarning = ({ open, validReview, review }: Props) => {
+const AnonymousWarning = ({ open }: Props) => {
     const {isLoggedIn, signIn} = useAuthOptionalLogin()
     const history = useHistory()
 

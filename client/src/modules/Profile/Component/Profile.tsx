@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import axios from 'axios'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { Session } from '../../../session-store'
 
 import { Review as ReviewType } from 'common'
 
@@ -11,9 +14,11 @@ import Loading from '../../Globals/Loading'
 import { UserInfo } from './UserInfo'
 import { NoReviews } from './NoReviews'
 import { PendingReviews } from './PendingReviews'
+import type { NewReview } from '../../../types'
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
 import { randomPicture } from '../../Globals/profile_picture'
+
 
 import styles from '../Styles/Profile.module.css'
 import { PastReviews } from './PastReviews'
@@ -107,6 +112,59 @@ const Profile = () => {
     setPastReviews(pastReviews)
     setLoading(false)
   }, [reviews])
+
+  /**
+   * Clear review stored in session storage
+   */
+  function clearSessionReview() {
+    Session.setPersistent({ review: '' })
+    Session.setPersistent({ review_major: '' })
+    Session.setPersistent({ review_num: '' })
+    Session.setPersistent({ courseId: '' })
+  }
+
+  /**
+   * Checks if there is a review stored in Session (i.e. this redirected from
+   * auth)
+   */
+  useEffect(() => {
+    /**
+     * Submit review and clear session storage
+     */
+    async function submitReview(review: NewReview, courseId: string) {
+      try {
+        const response = await axios.post('/api/insertReview', {
+          token: token,
+          review: review,
+          courseId: courseId,
+        })
+
+        clearSessionReview()
+        if (response.status === 200) {
+          toast.success(
+            'Thanks for reviewing! New reviews are updated every 24 hours.'
+          )
+        } else {
+          toast.error('An error occurred, please try again.')
+        }
+      } catch (e) {
+        clearSessionReview()
+        toast.error('An error occurred, please try again.')
+      }
+    }
+
+    const sessionReview = Session.get('review')
+    const sessionCourseId = Session.get('courseId')
+    if (
+      sessionReview !== undefined &&
+      sessionReview !== '' &&
+      sessionCourseId !== undefined &&
+      sessionCourseId !== '' &&
+      isLoggedIn
+    ) {
+      submitReview(sessionReview, sessionCourseId)
+    }
+  }, [isLoggedIn, token])
 
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value

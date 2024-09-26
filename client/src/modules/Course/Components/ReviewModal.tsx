@@ -154,27 +154,11 @@ const ReviewModal = ({
   }
 
   if (!open && anonymousOpen) {
-
-    // Handling the new review to be passed into the anonymous warning
-    const valid = validReview()
-    const newReview: NewReview = {
-      rating: overall,
-      difficulty: difficulty,
-      workload: workload,
-      professors: selectedProfessors,
-      text: reviewText,
-      isCovid: false,
-      grade: selectedGrade,
-      major: selectedMajors,
-    }
-
     return (
       <div className = {styles.modalbg}>
         <div className = {styles.modal}>
           <AnonymousWarning
             open = {anonymousOpen}
-            validReview = {valid}
-            review = {newReview}
           />
         </div>
       </div>
