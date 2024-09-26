@@ -5,7 +5,6 @@ import {
   AdminReviewRequestType,
   AdminRequestType,
   AdminUserRequestType,
-  RaffleWinnerRequestType,
   AdminAddSemesterRequestType,
   ReportReviewRequestType,
 } from './admin.type';
@@ -24,7 +23,7 @@ import {
   reportReview,
   getAdminUsers,
   removeAdmin,
-  addOrUpdateAdmin,
+  addAdmin,
   approveReviews
 } from './admin.controller';
 
@@ -248,7 +247,7 @@ adminRouter.post('/users/add', async (req, res) => {
 
   try {
     const auth = new Auth({ token });
-    const result = await addOrUpdateAdmin({ auth: auth, id: userId})
+    const result = await addAdmin({ auth: auth, id: userId})
 
     if (result) {
       return res.status(200).json({
