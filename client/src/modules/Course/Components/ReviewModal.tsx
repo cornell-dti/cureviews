@@ -77,7 +77,7 @@ const ReviewModal = ({
   }, [valid])
   useEffect(() => {
     if (isLoggedIn) {getNoReviews()}
-  }, [])
+  }, [valid])
 
   /**
    * Determines if the current user has no reviews, so they should receive
