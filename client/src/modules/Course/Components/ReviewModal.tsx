@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 import MultiSelect from './MultiSelect'
 import SingleSelect from './SingleSelect'
@@ -10,6 +11,8 @@ import closeIcon from '../../../assets/icons/X.svg'
 
 // Data
 import majors from '../../Globals/majors'
+import AnonymousWarning from './AnonymousWarning'
+import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 const ReviewModal = ({
   open,
@@ -53,6 +56,11 @@ const ReviewModal = ({
   const [difficulty, setDifficulty] = useState<number>(3)
   const [workload, setWorkload] = useState<number>(3)
 
+  const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false)
+  const [noReviews, setNoReviews] = useState<boolean>(false)
+
+  const {isLoggedIn, netId, signIn} = useAuthOptionalLogin()
+
   const [valid, setValid] = useState<Valid>({
     professor: false,
     major: false,
@@ -66,7 +74,22 @@ const ReviewModal = ({
   }, [professorOptions])
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text)
+    if (isLoggedIn) {getNoReviews()}
   }, [valid])
+
+  /**
+   * Determines if the current user has no reviews, so they should receive
+   * the anonymous modal
+   */
+  async function getNoReviews() {
+    const response = await axios.post('/api/countReviewsByStudentId', {
+        netId,
+    })
+    const res = response.data
+    if (response.status === 200) {
+      setNoReviews(res.result === 0)
+    }
+  }
 
   function onProfessorChange(newSelectedProfessors: string[]) {
     setSelectedProfessors(newSelectedProfessors)
@@ -101,8 +124,8 @@ const ReviewModal = ({
     return false
   }
 
+  // Called by onSubmitReview if the user should not see anonymous
   function handleSubmitReview() {
-    console.log('tried to submit')
     if (validReview()) {
       const newReview: NewReview = {
         rating: overall,
@@ -115,9 +138,31 @@ const ReviewModal = ({
         major: selectedMajors,
       }
       submitReview(newReview)
+    }
+  }
 
-      console.log('Submitting')
-    } else return
+  // Handle click of submit button
+  function onSubmitReview() {
+    if (!noReviews && isLoggedIn) {
+      handleSubmitReview()
+      signIn('profile')
+    } else {
+      handleSubmitReview()
+      setAnonymousOpen(true)
+      setOpen(false)
+    }
+  }
+
+  if (!open && anonymousOpen) {
+    return (
+      <div className = {styles.modalbg}>
+        <div className = {styles.modal}>
+          <AnonymousWarning
+            open = {anonymousOpen}
+          />
+        </div>
+      </div>
+    )
   }
 
   if (!open) {
@@ -210,7 +255,7 @@ const ReviewModal = ({
             </div>
             <button
               className={styles.submitbutton}
-              onClick={handleSubmitReview}
+              onClick={() => {onSubmitReview()}}
               disabled={!allowSubmit}
             >
               {' '}

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React from 'react'
 import styles from '../Styles/AdminUser.module.css'
 
 type Props = {

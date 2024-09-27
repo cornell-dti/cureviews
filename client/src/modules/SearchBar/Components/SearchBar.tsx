@@ -153,7 +153,6 @@ export const SearchBar = ({
   const renderResults = () => {
     /** Only render if the query is not empty */
     if (query !== '' && !selected) {
-      let results = []
 
       /* User press [ENTER] button?
             => Redirect user to '/results/keyword/query+query'
