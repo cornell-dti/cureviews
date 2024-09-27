@@ -74,8 +74,6 @@ const ReviewModal = ({
   }, [professorOptions])
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text)
-  }, [valid])
-  useEffect(() => {
     if (isLoggedIn) {getNoReviews()}
   }, [valid])
 
