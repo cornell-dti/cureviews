@@ -40,8 +40,6 @@ export const Course = () => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
   const [scrolled, setScrolled] = useState(false)
 
-  const { isLoggedIn, token, signIn } = useAuthOptionalLogin()
-
   /**
    * Arrow functions for sorting reviews
    */
@@ -101,49 +99,6 @@ export const Course = () => {
   }, [number, subject])
 
   /**
-   * Checks if there is a review stored in Session (i.e. this redirected from
-   * auth)
-   */
-  useEffect(() => {
-    /**
-     * Submit review and clear session storage
-     */
-    async function submitReview(review: NewReview, courseId: string) {
-      try {
-        const response = await axios.post('/api/insertReview', {
-          token: token,
-          review: review,
-          courseId: courseId,
-        })
-
-        clearSessionReview()
-        if (response.status === 200) {
-          toast.success(
-            'Thanks for reviewing! New reviews are updated every 24 hours.'
-          )
-        } else {
-          toast.error('An error occurred, please try again.')
-        }
-      } catch (e) {
-        clearSessionReview()
-        toast.error('An error occurred, please try again.')
-      }
-    }
-
-    const sessionReview = Session.get('review')
-    const sessionCourseId = Session.get('courseId')
-    if (
-      sessionReview !== undefined &&
-      sessionReview !== '' &&
-      sessionCourseId !== undefined &&
-      sessionCourseId !== '' &&
-      isLoggedIn
-    ) {
-      submitReview(sessionReview, sessionCourseId)
-    }
-  }, [isLoggedIn, token])
-
-  /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -187,16 +142,6 @@ export const Course = () => {
     Session.setPersistent({ review_num: selectedClass?.classNum })
     Session.setPersistent({ courseId: selectedClass?._id })
    }
-
-  /**
-   * Clear review stored in session storage
-   */
-  function clearSessionReview() {
-    Session.setPersistent({ review: '' })
-    Session.setPersistent({ review_major: '' })
-    Session.setPersistent({ review_num: '' })
-    Session.setPersistent({ courseId: '' })
-  }
 
   /** Modal Open and Close Logic */
   const [open, setOpen] = useState<boolean>(false)
