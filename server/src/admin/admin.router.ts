@@ -25,7 +25,8 @@ import {
   getAdminUsers,
   removeAdmin,
   addOrUpdateAdmin,
-  approveReviews
+  approveReviews,
+  addCourseDescriptionsDb
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -104,7 +105,7 @@ adminRouter.post('/reviews/approve/all', async (req, res) => {
     const { token }: AdminReviewRequestType = req.body;
     const auth = new Auth({ token });
 
-    const response = await approveReviews({auth: auth})
+    const response = await approveReviews({ auth: auth })
     if (response !== null) {
       return res.status(200).json({
         message: `All pending reviews have been approved`
@@ -169,14 +170,14 @@ adminRouter.post('/reviews/count', async (req, res) => {
         error: `User is not an admin.`
       });
     }
-    
+
     return res.status(200).json({
       message: 'Retrieved review counts',
       result: counts,
     })
 
   } catch (err) {
-      return res.status(500).json({ error: `Internal Server Error: ${err}`});
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 })
 
@@ -197,7 +198,7 @@ adminRouter.post('/reviews/csv', async (req, res) => {
     })
 
   } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}`});
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 })
 
@@ -218,16 +219,16 @@ adminRouter.post('/users/get', async (req, res) => {
     })
 
   } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}`});
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 })
 
 adminRouter.post('/users/remove', async (req, res) => {
-  const {token, userId}: AdminUserRequestType = req.body;
+  const { token, userId }: AdminUserRequestType = req.body;
 
   try {
     const auth = new Auth({ token });
-    const result = await removeAdmin({ auth: auth, id: userId})
+    const result = await removeAdmin({ auth: auth, id: userId })
 
     if (result) {
       return res.status(200).json({
@@ -239,16 +240,16 @@ adminRouter.post('/users/remove', async (req, res) => {
       error: 'User is not an admin.'
     })
   } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}`})
+    return res.status(500).json({ error: `Internal Server Error: ${err}` })
   }
 })
 
 adminRouter.post('/users/add', async (req, res) => {
-  const {token, userId}: AdminUserRequestType = req.body;
+  const { token, userId }: AdminUserRequestType = req.body;
 
   try {
     const auth = new Auth({ token });
-    const result = await addOrUpdateAdmin({ auth: auth, id: userId})
+    const result = await addOrUpdateAdmin({ auth: auth, id: userId })
 
     if (result) {
       return res.status(200).json({
@@ -260,7 +261,7 @@ adminRouter.post('/users/add', async (req, res) => {
       error: 'User is not an admin.'
     })
   } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}`})
+    return res.status(500).json({ error: `Internal Server Error: ${err}` })
   }
 })
 
@@ -371,6 +372,27 @@ adminRouter.post('/professors/reset', async (req, res) => {
     return res
       .status(400)
       .json({ error: 'Professors were unable to be reset!' });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/courseDescriptions/add', async (req, res) => {
+  const { token }: AdminRequestType = req.body;
+  try {
+    const auth = new Auth({ token });
+    const result = await addCourseDescriptionsDb({ auth });
+
+    if (result) {
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ message: 'Course descriptions added!' });
+      return res;
+    }
+
+    return res
+      .status(400)
+      .json({ error: 'Course descriptions were unable to be added!' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

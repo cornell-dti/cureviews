@@ -22,7 +22,7 @@ import {
   ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
-  VerifyManageAdminType
+  VerifyManageAdminType,
 } from './admin.type';
 
 import {
@@ -41,6 +41,7 @@ import {
   addAllCrossList,
   addCrossList,
   addNewSemester,
+  addAllDescriptions,
 } from '../../scripts';
 
 /**
@@ -221,7 +222,7 @@ export const getAdminUsers = async ({ auth }: VerifyAdminType) => {
  * @param {string} id: String identifying the user in the database
  * @returns all admin users if operation was successful, null otherwise
  */
-export const removeAdmin = async ({auth, id}: VerifyManageAdminType) => {
+export const removeAdmin = async ({ auth, id }: VerifyManageAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     const res = await removeAdminPrivilege(id);
@@ -237,7 +238,7 @@ export const removeAdmin = async ({auth, id}: VerifyManageAdminType) => {
  * @param {string} id: String identifying the user by netid
  * @returns The user with updated admin privilege if operation was successful, null otherwise
  */
-export const addOrUpdateAdmin = async ({auth, id}: VerifyManageAdminType) => {
+export const addOrUpdateAdmin = async ({ auth, id }: VerifyManageAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     let res = await grantAdminPrivilege(id);
@@ -389,3 +390,25 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
   const result = await addCrossList(semester);
   return result;
 };
+
+/**
+ * Adds all course descriptions to the database after updating the courses for the most recent semester.
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
+export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  // const coursesResult = await addNewSemester(COURSE_API_BASE_URL, semester);
+
+  // if (!coursesResult) {
+  //   return false;
+  // }
+
+  const descriptionResult = await addAllDescriptions();
+  return descriptionResult;
+}

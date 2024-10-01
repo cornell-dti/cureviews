@@ -479,7 +479,6 @@ export const addAllDescriptions = async (): Promise<boolean> => {
   } catch (err) {
     console.log(`Error in adding descriptions: ${err}`);
   }
-
 }
 
 /**
