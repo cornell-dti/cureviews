@@ -9,6 +9,7 @@ import { ScrapingSubject, ScrapingClass } from './types';
 import { Classes, Professors, Subjects } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
+import { addStudentReview } from '../src/review/review.controller';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
@@ -454,3 +455,71 @@ export const addAllCourses = async (
   console.log('Finished addAllCourses');
   return true;
 };
+
+/**
+ * Adds all course descriptions for the most recent semester from Course API to each class in Course database.
+ * Called after adding all new courses and professors for a new semester.
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllDescriptions = async (): Promise<boolean> => {
+  try {
+    const courses = await Classes.find().exec();
+    if (!courses)
+      for (const course of courses) {
+        const courseId = course._id;
+        const semester = course.classSems[0];
+        const result = await addCourseDescription(semester, courseId);
+
+        if (!result) {
+          return false;
+        }
+        return true;
+      }
+  } catch (err) {
+    console.log(`Error in adding descriptions: ${err}`);
+  }
+
+}
+
+/**
+ * Retrieves course description from Course API and adds course description field in Course database
+ * 
+ * @param {string} semester: course roster semester for most recent offering of course
+ * @param {string} courseId: course ID of class stored in Course database
+ * @returns true if operation was successful, false otherwise
+ */
+export const addCourseDescription = async (
+  semester: string,
+  courseId: string,
+): Promise<boolean> => {
+  try {
+    const course = await Classes.findOne({ _id: courseId }).exec();
+
+    const subject = course.classSub.toUpperCase();
+    const courseNum = course.classNum;
+    const result = await axios.get(
+      `https://classes.cornell.edu/api/2.0/search/classes?roster=${semester}&subject=${subject}`,
+      { timeout: 30000 },
+    );
+
+    if (result.status !== 200 || !result.data.classes.length) {
+      console.log(`Error fetching courses with subject ${subject}`);
+      return false;
+    }
+
+    const courses = result.data.classes;
+    for (const c of courses) {
+      if (c.catalogNbr === courseNum) {
+        const description = c.description;
+        await Classes.updateOne(
+          { _id: courseId },
+          { $set: { classDescription: description } },
+        );
+      }
+    }
+  } catch (err) {
+    console.log(`Error in adding description: ${err}`);
+  }
+}
+
