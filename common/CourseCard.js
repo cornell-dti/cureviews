@@ -2,7 +2,9 @@
   Additonal functions used in the CourseCard component.
 */
 
-// helper function to convert semester abbreviations to a full word
+/**
+ * Helper function to convert semester abbreviations to a full word
+ */
 export function semAbbriviationToWord(sem) {
   switch (sem) {
     case 'SP':
@@ -18,7 +20,9 @@ export function semAbbriviationToWord(sem) {
   }
 }
 
-// Get a human-readable string representing a list of [up to] the last 2 semesters this class was offered.
+/**
+ * Get a human-readable string representing a list of [up to] the last 2 semesters this class was offered.
+ */
 export function lastOfferedSems(theClass) {
   const offered = new Set();
 

@@ -76,7 +76,7 @@ export const Course = () => {
         if (course) {
           setSelectedClass(course)
 
-          // after getting valid course info, fetch reviews
+          // After getting valid course info, fetch reviews
           const reviewsResponse = await axios.post(
             '/api/courses/get-reviews',
             {
@@ -84,7 +84,7 @@ export const Course = () => {
             }
           )
           const reviews = reviewsResponse.data.result
-          // convert date field of Review to JavaScript Date object
+          // Convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
           reviews.sort(sortByLikes)
           setCourseReviews(reviews)

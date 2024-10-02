@@ -27,7 +27,9 @@ export const AuthRedirect = ({location}: Props) => {
     setAuthToken(googleToken)
   }
 
-  if (Session.get('redirectFrom') === 'course') {
+  const redirectFrom = Session.get('redirectFrom')
+
+  if (redirectFrom === 'course') {
     return (
       <Redirect
         push
@@ -36,14 +38,14 @@ export const AuthRedirect = ({location}: Props) => {
         )}`}
       ></Redirect>
     )
-  } else if (Session.get('redirectFrom') === 'admin') {
+  } else if (redirectFrom === 'admin') {
     return <Redirect push to={'/admin'}></Redirect>
-  } else if (Session.get('redirectFrom') === 'profile') {
+  } else if (redirectFrom === 'profile') {
     return <Redirect push to={'/profile'}></Redirect>
-  } else if (Session.get('redirectFrom') === 'home') {
+  } else if (redirectFrom === 'home') {
     return <Redirect push to={'/'}></Redirect>
-  } else if (Session.get('redirectFrom').startsWith('path:')) {
-    return (<Redirect push to={Session.get('redirectFrom').replace('path:', '')} />)
+  } else if (redirectFrom.startsWith('path:')) {
+    return (<Redirect push to={redirectFrom.replace('path:', '')} />)
   } else {
     return <Redirect push to={'/'}></Redirect>
   }

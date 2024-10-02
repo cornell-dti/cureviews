@@ -8,10 +8,13 @@ import './index.css'
  * SSR 
  *
  * Generates appliation component sent to the client side entry point (index.html)
-as an HTML object with id "render-target".
+ * as an HTML object with id "render-target".
 */
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const container = document.getElementById("root")
+const root = ReactDOM.createRoot(container!)
+
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,

@@ -49,9 +49,11 @@ export const Admin = () => {
     }
   }, [isLoggedIn, token, isAuthenticating])
 
-  // Accesses the database and fetches all reviews. Called when admin page loads, and
-  // splits the reviews into three categories: approved (visible on the website),
-  // pending (awaiting approval), and reported (hidden and awaiting approval)
+  /**
+   * Accesses the database and fetches all reviews. Called when admin page loads, and
+   * splits the reviews into three categories: approved (visible on the website),
+   * pending (awaiting approval), and reported (hidden and awaiting approval)
+   */
   useEffect(() => {
     async function loadReviews() { 
       const pending = await axios.post('/api/admin/reviews/get-pending', {
@@ -70,8 +72,10 @@ export const Admin = () => {
     loadReviews()
   }, [token, isAuthenticating])
 
-  // Helper function to remove a review from a list of reviews and
-  // return the updated list
+  /**
+   * Helper function to remove a review from a list of reviews and
+   * return the updated list
+   */
   function removeReviewFromList(reviewToRemove: Review, reviews: Review[]) {
     reviews = reviews.filter((review: Review) => {
       return review && review._id !== reviewToRemove._id
@@ -79,8 +83,10 @@ export const Admin = () => {
     return reviews
   }
 
-  // Call when user asks to approve a review. Accesses the Reviews database
-  // and changes the review with this id to visible.
+  /**
+   * Call when user asks to approve a review. Accesses the Reviews database
+   * and changes the review with this id to visible.
+   */
   async function approveReview(review: Review) {
     const response = await axios.post('/api/admin/reviews/approve', {
       review: review,
@@ -93,8 +99,10 @@ export const Admin = () => {
     }
   }
 
-  // Call when user asks to remove a review. Accesses the Reviews database
-  // and deletes the review with this id.
+  /**
+   * Call when user asks to remove a review. Accesses the Reviews database
+   * and deletes the review with this id.
+   */
   async function removeReview(review: Review, isUnapproved: boolean) {
     try {
       const response = await axios.post('/api/admin/reviews/remove', {
@@ -121,7 +129,9 @@ export const Admin = () => {
     }
   }
 
-  // Call when admin would like to mass-approve all of the currently pending reviews.
+  /**
+   * Call when admin would like to mass-approve all of the currently pending reviews.
+   */
   async function approveAllReviews(reviews: Review[]) {
     const response = await axios.post('/api/admin/reviews/approve-all', {token: token})
     if (response.status === 200) {
@@ -131,8 +141,10 @@ export const Admin = () => {
     }
   }
 
-  // Call when user asks to un-report a reported review. Accesses the Reviews database
-  // and changes the reported flag for this review to false.
+  /**
+   * Call when user asks to un-report a reported review. Accesses the Reviews database
+   * and changes the reported flag for this review to false.
+   */
   async function unReportReview(review: Review) {
     const response = await axios.post('/api/admin/reviews/restore', {
       review: review,
@@ -145,9 +157,11 @@ export const Admin = () => {
     }
   }
 
-  // Call when user selects "Add New Semester" button. Runs code to check the
-  // course API for new classes and updates classes existing in the database.
-  // Should run once a semester, when new classes are added to the roster.
+  /**
+   * Call when user selects "Add New Semester" button. Runs code to check the
+   * course API for new classes and updates classes existing in the database.
+   * Should run once a semester, when new classes are added to the roster.
+   */
   async function addNewSem(semester: string) {
     console.log('Adding new semester...')
     setDisableNewSem(true)
@@ -168,13 +182,15 @@ export const Admin = () => {
     }
   }
 
-  // Call when user selects "Initialize Database" button. Scrapes the Cornell
-  // Course API to store all classes and subjects in the local database.
-  // Then, runs code to store id's of cross-listed classes against each class.
-  // Should only be run ONCE when the app is initialized.
-  //
-  // NOTE: requires an initialize flag to ensure the function is only run on
-  // a button click. Without this, it will run every time this component is created.
+  /**
+   * Call when user selects "Initialize Database" button. Scrapes the Cornell
+   * Course API to store all classes and subjects in the local database.
+   * Then, runs code to store id's of cross-listed classes against each class.
+   * Should only be run ONCE when the app is initialized.
+   * 
+   * NOTE: requires an initialize flag to ensure the function is only run on
+   * a button click. Without this, it will run every time this component is created.
+   */
   async function addAllCourses() {
     console.log('Initializing database')
     setDisableInit(true)
@@ -228,8 +244,10 @@ export const Admin = () => {
     }
   }
 
-  // handle the first click to the "Initialize Database" button. Show an alert
-  // and update state to remember the next click will be a double click.
+  /**
+   * Handle the first click to the "Initialize Database" button. Show an alert
+   * and update state to remember the next click will be a double click.
+   */
   function firstClickHandler() {
     alert(
       '<div><h1>Warning!</h1><p>Clicking again will reset all data in the database. Are you sure you want to do this?</p></div>'
@@ -237,12 +255,14 @@ export const Admin = () => {
     setDoubleClick(true)
   }
 
-  // Render the "Initialize Database" button.
-  // If this is the user's first click, make the button give an alert.
-  // If this is the user's second click, call addAllCourses above to initiaize
-  // the local database
+  /**
+   * Render the "Initialize Database" button.
+   * If this is the user's first click, make the button give an alert.
+   * If this is the user's second click, call addAllCourses above to initiaize
+   * the local database
+   */
   function renderInitButton(doubleClick: boolean) {
-    // offer button to edit database
+    // Offer button to edit database
     if (doubleClick) {
       return (
         <div className="">
@@ -257,7 +277,7 @@ export const Admin = () => {
         </div>
       )
     } else {
-      // offer button that gives alert and saves next click as a double click (in local state)
+      // Offer button that gives alert and saves next click as a double click (in local state)
       return (
         <div className="">
           <button

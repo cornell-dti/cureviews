@@ -20,9 +20,9 @@ type Props = {
 
 const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
   // generate full human-readable name of class
-  const text = subject.subFull
+  const fullSubjectName = subject.subFull
 
-  //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
+  // if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
   if (active && enter === 1) {
     return (
       <Redirect
@@ -32,11 +32,11 @@ const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
     )
   }
 
-  //return classname as a list element
+  // return classname as a list element
   return (
-    //highlight the element if the indexes matched up (the active prop is true)
-    //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
-    //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
+    // highlight the element if the indexes matched up (the active prop is true)
+    // if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
+    // if the mouse leaves the list element, highlighting by arrow key continues but from the first element
     <a
       data-cy={`search-result-${subject.subShort.toLowerCase()}`}
       className={
@@ -47,7 +47,7 @@ const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
       href={`/results/major/${subject.subShort.toUpperCase()}`}
     >
       <p className="result-label-subject">Major</p>
-      <p className="result-text">{text}</p>
+      <p className="result-text">{fullSubjectName}</p>
     </a>
   )
 }

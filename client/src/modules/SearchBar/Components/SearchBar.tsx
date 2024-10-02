@@ -193,7 +193,7 @@ export const SearchBar = ({
       const SubjectsList = () => {
         return <div>
           {subjects.slice(0, 3).map((subject, i) => (
-            //create a new class "button" that will set the selected class to this class when it is clicked.
+            // create a new class "button" that will set the selected class to this class when it is clicked.
             <SubjectResult
               key={subject._id}
               subject={subject}
@@ -236,7 +236,7 @@ export const SearchBar = ({
             // create a new class "button" that will set the selected class to this class when it is clicked.
             <Course
               key={course._id}
-              classInfo={course}
+              course={course}
               query={query}
               active={
                 index === i + subjects.length + professors.length + 1

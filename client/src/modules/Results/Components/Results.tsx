@@ -37,7 +37,7 @@ export class Results extends Component<ResultsProps, ResultsLists> {
   }
 
   async updateResults() {
-    const response = await axios.post( `/api/search/get-courses`, {
+    const response = await axios.post(`/api/search/get-courses`, {
       query: this.props.match.params.input.toLowerCase()
     })
 

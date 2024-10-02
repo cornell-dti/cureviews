@@ -100,13 +100,17 @@ export default class ResultsDisplay extends Component {
     ])
   }
 
-  // Handles selecting different sort bys
+  /**
+   * Handles selecting different sort filters
+   */
   handleSelect = (event) => {
     let opt = event.target.value
     this.setState({ selected: opt }, () => this.sort())
   }
 
-  // Helper function to sort()
+  /**
+   * Helper function to sort()
+   */
   sortBy(courseList, sortByField, fieldDefault, increasing) {
     courseList = courseList.sort((a, b) => {
       let first = Number(b[sortByField]) || fieldDefault
@@ -129,7 +133,9 @@ export default class ResultsDisplay extends Component {
     })
   }
 
-  // Sorts list of class results by category selected in this.state.selected
+  /**
+   * Sorts list of class results by category selected in this.state.selected
+   */
   sort() {
     let availableClasses
     if (this.state.filteredItems.length === 0) {
@@ -196,7 +202,9 @@ export default class ResultsDisplay extends Component {
     this.setState({ filteredItems: filteredItems }, () => this.sort())
   }
 
-  //Updates the list of filtered items when filters are checked/unchecked
+  /**
+   * Updates the list of filtered items when filters are checked/unchecked
+   */
   checkboxOnChange = (e) => {
     const group = e.target.getAttribute('group')
     const name = e.target.name
@@ -209,8 +217,10 @@ export default class ResultsDisplay extends Component {
     this.setState({ filterMap: newFilterMap }, () => this.filterClasses())
   }
 
-  //Updates the displayed PreviewCard to the correct [course]
-  //if the course's [index] in the list of FilteredResult components is clicked
+  /**
+   * Updates the displayed PreviewCard to the correct [course]
+   * if the course's [index] in the list of FilteredResult components is clicked
+   */
   previewHandler(course, index) {
     this.setState({
       cardCourse: course,
@@ -226,8 +236,11 @@ export default class ResultsDisplay extends Component {
       document.body.clientWidth
     )
   }
-  //Displays the filtered items as FilteredResult components if there are any
-  //The original list as FilteredResult components otherwise
+
+  /**
+   * Displays the filtered items as FilteredResult components if there are any
+   * The original list as FilteredResult components otherwise
+   */
   renderResults() {
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
@@ -239,13 +252,6 @@ export default class ResultsDisplay extends Component {
         data-cy={`results-display-${result.classSub.toLowerCase()}-${
           result.classNum
         }`}
-        // onClick={() => {
-        //   if (this.computeHeight() < 992) {
-        //     this.props.history.push(
-        //       `/course/${result?.classSub?.toUpperCase()}/${result?.classNum}`
-        //     )
-        //   }
-        // }}
       >
         <FilteredResult
           key={index}
@@ -277,29 +283,9 @@ export default class ResultsDisplay extends Component {
       </div>
     ))
   }
-
+  
   getSubjectOptions(inputValue, callback) {
     console.log('Deprecated functionality')
-    // Meteor.call("getSubjectsByKeyword", inputValue, (err, subjectList) => {
-    //   if (!err && subjectList && subjectList.length !== 0) {
-    //     // Save the list of Subject objects that matches the request
-
-    //     const subjectOptions = []
-    //     for(const subject in subjectList){
-    //       subjectOptions.push({
-    //         "value" : subjectList[subject].subShort.toUpperCase(),
-    //         "label" : subjectList[subject].subShort.toUpperCase()
-    //       })
-    //     }
-
-    //     callback(subjectOptions)
-    //   }
-    //   else {
-    //     callback([])
-    //   }
-    // });
-
-    // callback(this.filterColors(inputValue));
   }
 
   setShowFilterPopup() {

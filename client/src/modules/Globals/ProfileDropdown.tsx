@@ -62,10 +62,7 @@ export default function ProfileDropdown({
       />
 
       {open && (
-        <div
-          className={'outside-modal'}
-          onClick={() => setOpen(false)}
-        > 
+        <div onClick={() => setOpen(false)}> 
           <div className={styles.profiledropdown}>
             <div className={styles.option}>
               <a href="/profile">

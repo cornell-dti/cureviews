@@ -16,23 +16,23 @@ import { Class } from 'common'
 */
 
 type Props = {
-  classInfo: Class
+  course: Class
   query?: string
   active: boolean
   enter: number
   mouse: number
 }
 
-const Course = ({classInfo, query, active, enter, mouse}: Props) => {
-  let text: any = classInfo.classSub.toUpperCase() + ' ' + classInfo.classNum + ': ' + classInfo.classTitle
+const Course = ({course, query, active, enter, mouse}: Props) => {
+  let text: any = course.classSub.toUpperCase() + ' ' + course.classNum + ': ' + course.classTitle
 
-  //if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
+  // if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
   if (active && enter === 1) {
     return (
       <Redirect
         push
-        to={`/course/${classInfo.classSub.toUpperCase()}/${
-          classInfo.classNum
+        to={`/course/${course.classSub.toUpperCase()}/${
+          course.classNum
         }`}
       ></Redirect>
     )
@@ -63,11 +63,11 @@ const Course = ({classInfo, query, active, enter, mouse}: Props) => {
 
       // substring of query after the subject, without trailing spaces
       const queryWithoutSubject = queryLowerCase
-        .substring(classInfo.classSub.length)
+        .substring(course.classSub.length)
         .trim()
       // search substring of text after subject for substring of query.
       const textWithoutSubject =
-        classInfo.classNum + ': ' + classInfo.classTitle
+        course.classNum + ': ' + course.classTitle
       const startIndex = textWithoutSubject
         .toLowerCase()
         .indexOf(queryWithoutSubject)
@@ -76,7 +76,7 @@ const Course = ({classInfo, query, active, enter, mouse}: Props) => {
       // underline the subject and any other matching text
       text = (
         <span className="ellipsis">
-          <span>{classInfo.classSub.toUpperCase() + ' '}</span>
+          <span>{course.classSub.toUpperCase() + ' '}</span>
           {textWithoutSubject.substring(0, startIndex)}
           <span className="matching-text">
             {textWithoutSubject.substring(startIndex, endIndex)}
@@ -87,23 +87,23 @@ const Course = ({classInfo, query, active, enter, mouse}: Props) => {
     }
   }
 
-  //return classname as a list element
+  // return classname as a list element
   return (
-    //highlight the element if the indexes matched up (the active prop is true)
-    //if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
-    //if the mouse leaves the list element, highlighting by arrow key continues but from the first element
+    // highlight the element if the indexes matched up (the active prop is true)
+    // if the mouse is in the list element, highlighting by arrow key stops and follow the mouse hovers
+    // if the mouse leaves the list element, highlighting by arrow key continues but from the first element
     <a
       className={
         active && mouse !== 1
           ? 'active-class resultbutton'
           : 'resultbutton'
       }
-      id={classInfo.classSub.toUpperCase() + '_' + classInfo.classNum}
-      href={`/course/${classInfo.classSub.toUpperCase()}/${
-        classInfo.classNum
+      id={course.classSub.toUpperCase() + '_' + course.classNum}
+      href={`/course/${course.classSub.toUpperCase()}/${
+        course.classNum
       }`}
-      data-cy={`search-result-${classInfo.classSub.toLowerCase()}-${
-        classInfo.classNum
+      data-cy={`search-result-${course.classSub.toLowerCase()}-${
+        course.classNum
       }`}
     >
       <p className="result-label-course">Course</p>

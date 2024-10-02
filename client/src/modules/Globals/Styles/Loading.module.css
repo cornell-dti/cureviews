@@ -16,6 +16,7 @@
   height: 80px;
   animation: spin 1s linear infinite;
   position: absolute;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, 0);
 }

@@ -72,22 +72,25 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
 
     const authToken = getAuthToken()
 
-    if (!authToken || authToken === '') {
-      signIn(redirectFrom)
-    } else {
-      axios
-        .post('/api/auth/get-email', {
-          token: token,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            const verifiedEmail = response.data.result
-            setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
-          }
-        })
-        .catch((e) => console.log(e.response))
+    async function getEmail() {
+      if (!authToken || authToken === '') {
+        signIn(redirectFrom)
+      } else {
+        await axios
+          .post('/api/auth/get-email', {
+            token: token,
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              const userEmail = response.data.result
+              const userNetId = userEmail.substring(0, userEmail.lastIndexOf('@'))
+              setNetId(userNetId)
+            }
+          })
+      }
     }
 
+    getEmail().catch((e) => console.log(e.response))
     setToken(authToken)
     setIsAuthenticating(false)
     setIsLoggedIn(true)

@@ -28,29 +28,10 @@ type Props = {
 
 const FilteredResult = ({course, previewHandler, selected, index, sortBy}: Props) => {
 
-    //Returns the color corresponding to the [val] for the [metric]
-    function getColor(metric: string, val: any) {
-      if (metric === 'Overall Rating' || metric === 'Relevance') {
-        if (val !== '?' && 3.0 <= val && val < 4.0) {
-          return '#f9cc30'
-        } else if (val !== '?' && 4.0 <= val && val <= 5.0) {
-          return '#53B277'
-        } else {
-          return '#E64458'
-        }
-      } else if (metric === 'Difficulty' || metric === 'Workload') {
-        if (val !== '?' && 3.0 <= val && val < 4.0) {
-          return '#f9cc30'
-        } else if (val === '?' || (4.0 <= val && val <= 5.0)) {
-          return '#E64458'
-        } else {
-          return '#53B277'
-        }
-      }
-    }
-
-    //Returns the corresponding number of the class's metric based on the [sortBy] metric
-  //Returns ? if it is null
+  /**
+   * Returns the corresponding number of the class's metric based on the [sortBy] metric
+   * Returns ? if it is null
+   */
   function getSortNumber(roundTo?: number) {
     let sortNumber
     if (sortBy === 'rating' || sortBy === 'relevance') {
