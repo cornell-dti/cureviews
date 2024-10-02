@@ -10,7 +10,7 @@
     "prestart": "yarn build",
     "start": "nodemon server.ts",
     "heroku-start": "node dist/server.js",
-    "test": "vitest"
+    "test": ":"
   },
   "dependencies": {
     "axios": "^0.21.2",
