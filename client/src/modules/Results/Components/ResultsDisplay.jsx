@@ -26,8 +26,8 @@ export default class ResultsDisplay extends Component {
     super(props)
     this.state = {
       courseList: this.props.courses,
-      card_course: this.props.courses[0],
-      active_card: 0,
+      cardCourse: this.props.courses[0],
+      activeCard: 0,
       selected: props.type === 'major' ? 'rating' : 'relevance',
       filters: {
         Fall: true,
@@ -65,7 +65,7 @@ export default class ResultsDisplay extends Component {
         {
           courseList: this.props.courses,
           relevantCourseList: this.props.courses,
-          card_course: this.props.courses[0],
+          cardCourse: this.props.courses[0],
         },
         () => this.filterClasses()
       )
@@ -124,8 +124,8 @@ export default class ResultsDisplay extends Component {
     })
     this.setState({
       filteredItems: courseList,
-      card_course: courseList[0],
-      active_card: 0,
+      cardCourse: courseList[0],
+      activeCard: 0,
     })
   }
 
@@ -183,12 +183,12 @@ export default class ResultsDisplay extends Component {
       )
     )
 
-    let subjects_objects = this.state.filterMap.get('subjects')
-    if (subjects_objects && subjects_objects.length > 0) {
+    let subjectsObjects = this.state.filterMap.get('subjects')
+    if (subjectsObjects && subjectsObjects.length > 0) {
       filteredItems = filteredItems.filter((course) =>
-        subjects_objects.some(
-          (subject_object) =>
-            course.classSub.toUpperCase() === subject_object.value
+        subjectsObjects.some(
+          (subjectObject) =>
+            course.classSub.toUpperCase() === subjectObject.value
         )
       )
     }
@@ -213,8 +213,8 @@ export default class ResultsDisplay extends Component {
   //if the course's [index] in the list of FilteredResult components is clicked
   previewHandler(course, index) {
     this.setState({
-      card_course: course,
-      active_card: index,
+      cardCourse: course,
+      activeCard: index,
     })
     this.setState({ transformGauges: false })
   }
@@ -250,7 +250,7 @@ export default class ResultsDisplay extends Component {
         <FilteredResult
           key={index}
           index={index}
-          selected={index === this.state.active_card}
+          selected={index === this.state.activeCard}
           course={result}
           previewHandler={this.previewHandler}
           sortBy={this.state.selected}
@@ -260,8 +260,8 @@ export default class ResultsDisplay extends Component {
   }
 
   renderCheckboxes(group) {
-    let group_list = Array.from(this.state.filterMap.get(group).keys())
-    return group_list.map((name, index) => (
+    let groupList = Array.from(this.state.filterMap.get(group).keys())
+    return groupList.map((name, index) => (
       <div className = {styles.filterlabel}>
         <label className={styles.filterlabel}>
           <input
@@ -402,7 +402,7 @@ export default class ResultsDisplay extends Component {
                 </div>
                 <div className={styles.preview}>
                   <PreviewCard 
-                    course={this.state.card_course}
+                    course={this.state.cardCourse}
                     transformGauges = {this.state.transformGauges} />
                 </div>
               </div>

@@ -70,9 +70,9 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
       history.push('/login')
     }
 
-    const token = getAuthToken()
+    const authToken = getAuthToken()
 
-    if (!token || token === '') {
+    if (!authToken || authToken === '') {
       signIn(redirectFrom)
     } else {
       axios
@@ -88,7 +88,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
         .catch((e) => console.log(e.response))
     }
 
-    setToken(token)
+    setToken(authToken)
     setIsAuthenticating(false)
     setIsLoggedIn(true)
   }, [redirectFrom, history])

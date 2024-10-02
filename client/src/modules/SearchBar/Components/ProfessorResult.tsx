@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import '../Styles/Course.css'
 import { Redirect } from 'react-router'
 import { Professor } from 'common'

@@ -19,12 +19,12 @@ Saves Google ID Token from URL parameters when Google redirects user back to thi
 
 export const AuthRedirect = ({location}: Props) => {
 
-  const google_hash = location.hash
-  if (google_hash !== '') {
-    const google_token = google_hash
+  const googleHash = location.hash
+  if (googleHash !== '') {
+    const googleToken = googleHash
       .match(/(?=id_token=)([^&]+)/)![0]
       .split('=')[1]
-    setAuthToken(google_token)
+    setAuthToken(googleToken)
   }
 
   if (Session.get('redirectFrom') === 'course') {

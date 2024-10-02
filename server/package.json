@@ -12,18 +12,6 @@
     "heroku-start": "node dist/server.js",
     "test": ":"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testRunner": "jest-circus/runner",
-    "testTimeout": 20000,
-    "moduleFileExtensions": [
-      "js",
-      "ts"
-    ],
-    "transform": {
-      "\\.(ts|tsx)$": "ts-jest"
-    }
-  },
   "dependencies": {
     "axios": "^0.21.2",
     "common": "0.0.1",
@@ -44,9 +32,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.3",
-    "@types/jest": "^25.2.1",
     "@types/shortid": "^0.0.29",
-    "jest-circus": "24",
-    "ts-jest": "24"
+    "vitest": "^2.1.1"
   }
 }
