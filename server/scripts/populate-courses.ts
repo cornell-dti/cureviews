@@ -456,6 +456,23 @@ export const addAllCourses = async (
   return true;
 };
 
+const checkCourseExists = async (course): Promise<string> => {
+  const semesters = course.classSems;
+  for (let i = semesters.length - 1; i >= 0; i--) {
+    const semester = semesters[i];
+    const subject = course.classSub.toUpperCase();
+    try {
+      await axios.get(
+        `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
+      );
+      return semester;
+    } catch (err) {
+      continue;
+    }
+  }
+  return null;
+}
+
 /**
  * Adds all course descriptions for the most recent semester from Course API to each class in Course database.
  * Called after adding all new courses and professors for a new semester.
@@ -465,17 +482,17 @@ export const addAllCourses = async (
 export const addAllDescriptions = async (): Promise<boolean> => {
   try {
     const courses = await Classes.find().exec();
-    if (!courses)
+    if (courses)
       for (const course of courses) {
         const courseId = course._id;
-        const semester = course.classSems[0];
+        const semester = await checkCourseExists(course);
         const result = await addCourseDescription(semester, courseId);
 
         if (!result) {
           return false;
         }
-        return true;
       }
+    return true;
   } catch (err) {
     console.log(`Error in adding descriptions: ${err}`);
   }
@@ -497,26 +514,29 @@ export const addCourseDescription = async (
 
     const subject = course.classSub.toUpperCase();
     const courseNum = course.classNum;
+    console.log(`searching for ${subject} ${courseNum} in ${semester}`)
     const result = await axios.get(
-      `https://classes.cornell.edu/api/2.0/search/classes?roster=${semester}&subject=${subject}`,
-      { timeout: 30000 },
+      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
     );
 
-    if (result.status !== 200 || !result.data.classes.length) {
+    const courses = result.data.data.classes;
+    if (result.status !== 200 || !courses) {
       console.log(`Error fetching courses with subject ${subject}`);
       return false;
     }
 
-    const courses = result.data.classes;
-    for (const c of courses) {
-      if (c.catalogNbr === courseNum) {
-        const description = c.description;
+    for (const course of courses) {
+      if (course.catalogNbr === courseNum) {
+        const description = course.description;
+        const res = await Classes.findOne({ _id: courseId })
+        console.log(res);
         await Classes.updateOne(
           { _id: courseId },
           { $set: { classDescription: description } },
         );
       }
     }
+    return true;
   } catch (err) {
     console.log(`Error in adding description: ${err}`);
   }

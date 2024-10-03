@@ -382,6 +382,7 @@ adminRouter.post('/courseDescriptions/add', async (req, res) => {
   try {
     const auth = new Auth({ token });
     const result = await addCourseDescriptionsDb({ auth });
+    console.log(result)
 
     if (result) {
       res.status(200);

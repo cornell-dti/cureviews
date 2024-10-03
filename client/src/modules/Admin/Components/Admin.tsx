@@ -34,6 +34,8 @@ export const Admin = () => {
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
 
+  const [descAdded, setDescAdded] = useState<boolean>(false)
+
   useEffect(() => {
     async function confirmAdmin() {
       const res = await axios.post(`/api/admin/validate/token`, {
@@ -53,7 +55,7 @@ export const Admin = () => {
   // splits the reviews into three categories: approved (visible on the website),
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
-    async function loadReviews() { 
+    async function loadReviews() {
       const pending = await axios.post('/api/admin/reviews/get/pending', {
         token: token,
       })
@@ -107,7 +109,7 @@ export const Admin = () => {
             review,
             pendingReviews
           )
-        setPendingReviews(updatedUnapprovedReviews)
+          setPendingReviews(updatedUnapprovedReviews)
         } else {
           const updatedReportedReviews = removeReviewFromList(
             review,
@@ -123,7 +125,7 @@ export const Admin = () => {
 
   // Call when admin would like to mass-approve all of the currently pending reviews.
   async function approveAllReviews(reviews: Review[]) {
-    const response = await axios.post('/api/admin/reviews/approve/all', {token: token})
+    const response = await axios.post('/api/admin/reviews/approve/all', { token: token })
     if (response.status === 200) {
       setPendingReviews([])
     } else {
@@ -235,6 +237,24 @@ export const Admin = () => {
     })
   }
 
+  /**
+   * Call when user selects "Update Descriptions" button. Scrapes the Course API 
+   * to retrieve course description and stores them in the Course database.
+  */
+  function updateDescriptions() {
+    console.log('Updating course descriptions')
+    setDisableInit(true)
+    axios.post('/api/admin/courseDescriptions/add', { token: token }).then((response) => {
+      if (response.status === 200) {
+        console.log('Updated all course descriptions')
+        setDisableInit(false)
+        setDescAdded(true)
+      } else {
+        console.log('Error at updateDescriptions')
+      }
+    })
+  }
+
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
   function firstClickHandler() {
@@ -319,6 +339,14 @@ export const Admin = () => {
               >
                 Reset Professors
               </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateDescriptions()}
+              >
+                Update Descriptions
+              </button>
               {renderInitButton(doubleClick)}
             </div>
           </div>
@@ -365,6 +393,10 @@ export const Admin = () => {
 
           <div hidden={!(loadingInit === 2)} className="">
             <p>Database initialization is complete!</p>
+          </div>
+
+          <div hidden={!descAdded} className="">
+            <p>Course descriptions added!</p>
           </div>
         </div>
 

@@ -403,12 +403,6 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
     return null;
   }
 
-  // const coursesResult = await addNewSemester(COURSE_API_BASE_URL, semester);
-
-  // if (!coursesResult) {
-  //   return false;
-  // }
-
   const descriptionResult = await addAllDescriptions();
   return descriptionResult;
 }
