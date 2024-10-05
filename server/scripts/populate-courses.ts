@@ -9,6 +9,7 @@ import { ScrapingSubject, ScrapingClass } from './types';
 import { Classes, Professors, Subjects } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
+import { addStudentReview } from '../src/review/review.controller';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
@@ -454,3 +455,90 @@ export const addAllCourses = async (
   console.log('Finished addAllCourses');
   return true;
 };
+
+const checkCourseExists = async (course): Promise<string> => {
+  const semesters = course.classSems;
+  for (let i = semesters.length - 1; i >= 0; i--) {
+    const semester = semesters[i];
+    const subject = course.classSub.toUpperCase();
+    try {
+      await axios.get(
+        `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
+      );
+      return semester;
+    } catch (err) {
+      continue;
+    }
+  }
+  return null;
+}
+
+/**
+ * Adds all course descriptions for the most recent semester from Course API to each class in Course database.
+ * Called after adding all new courses and professors for a new semester.
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllDescriptions = async (): Promise<boolean> => {
+  try {
+    const courses = await Classes.find().exec();
+    if (courses)
+      for (const course of courses) {
+        const courseId = course._id;
+        const semester = await checkCourseExists(course);
+        const result = await addCourseDescription(semester, courseId);
+
+        if (!result) {
+          return false;
+        }
+      }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding descriptions: ${err}`);
+  }
+}
+
+/**
+ * Retrieves course description from Course API and adds course description field in Course database
+ * 
+ * @param {string} semester: course roster semester for most recent offering of course
+ * @param {string} courseId: course ID of class stored in Course database
+ * @returns true if operation was successful, false otherwise
+ */
+export const addCourseDescription = async (
+  semester: string,
+  courseId: string,
+): Promise<boolean> => {
+  try {
+    const course = await Classes.findOne({ _id: courseId }).exec();
+
+    const subject = course.classSub.toUpperCase();
+    const courseNum = course.classNum;
+    console.log(`searching for ${subject} ${courseNum} in ${semester}`)
+    const result = await axios.get(
+      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
+    );
+
+    const courses = result.data.data.classes;
+    if (result.status !== 200 || !courses) {
+      console.log(`Error fetching courses with subject ${subject}`);
+      return false;
+    }
+
+    for (const course of courses) {
+      if (course.catalogNbr === courseNum) {
+        const description = course.description;
+        const res = await Classes.findOne({ _id: courseId })
+        console.log(res);
+        await Classes.updateOne(
+          { _id: courseId },
+          { $set: { classDescription: description } },
+        );
+      }
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding description: ${err}`);
+  }
+}
+
