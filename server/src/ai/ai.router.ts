@@ -6,11 +6,11 @@ const aiRouter = express.Router();
 
 aiRouter.use(express.json());
 
-/** Reachable at POST /api/ai/summarizeReviews
- * @body a block of text containing all reviews from a course
+/** Reachable at POST /api/ai/course-summary
+ * @body text: a block of text containing all reviews from a course
  * returns a summary created by OpenAI
 */
-aiRouter.post('/text/summary', async (req, res) => {
+aiRouter.post('/course-summary', async (req, res) => {
   try {
     if (!req.body.text) {
       return res.status(400).json({ error: 'No text provided' });
@@ -23,7 +23,11 @@ aiRouter.post('/text/summary', async (req, res) => {
   }
 });
 
-aiRouter.post('/get/text', async (req, res) => {
+/** Reachable at POST /api/ai/get-reviews
+ * @body courseId: a course's _id field
+ * returns all reviews for that course as a concatenated single string
+*/
+aiRouter.post('/get-reviews', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsForSummary({ courseId });
@@ -42,11 +46,11 @@ aiRouter.post('/get/text', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/ai/courseids
- * @body minimum number of reviews needed to create a summary
+/** Reachable at POST /api/ai/course-ids
+ * @body min: the minimum number of reviews needed to create a summary
  * returns all course ids that have at least that number of reviews
 */
-aiRouter.post('/courseids', async (req, res) => {
+aiRouter.post('/course-ids', async (req, res) => {
   try {
     const min = req.body.min;
     const ids = await getCoursesWithMinReviews(min);

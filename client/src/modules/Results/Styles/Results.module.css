@@ -108,6 +108,13 @@
   width: 18px;
 }
 
+.filterlabel {
+  padding-top: 1px;
+  display: flex;
+  align-items: center;
+  text-indent: 2px;
+}
+
 .resultslist {
   max-height: 60vh;
   overflow-y: auto;

@@ -11,6 +11,7 @@ import {
   updateStudentLikedReviews,
   updateStudentReviews,
   updateReviewLikes,
+  hideReportedReview,
 } from './review.data-access';
 import {
   InsertReviewType,
@@ -19,6 +20,7 @@ import {
   AddStudentReviewType,
   VerifyAuthType,
   VerifyStudentType,
+  SetReviewReportedType,
 } from './review.type';
 
 export const verifyToken = async ({ auth }: VerifyAuthType) => {
@@ -206,5 +208,30 @@ export const insertNewReview = async ({
     return newReview;
   } catch (err) {
     return null;
+  }
+};
+
+/**
+ * Controller method for reporting a review.
+ * @param auth: an Auth token to verify the current user
+ * @param reviewId: the _id string of a Review object, the Review must exist
+ * @returns null if user is not verified, true if the review is successfully reported, false if unsuccessful
+ */
+
+export const setReviewReported = async ({
+  auth,
+  reviewId,
+}: SetReviewReportedType) => {
+  const verified = await verifyToken({ auth });
+
+  if (verified === null) {
+    return null;
+  }
+
+  try {
+    const review = await hideReportedReview(reviewId);
+    return true;
+  } catch {
+    return false;
   }
 };

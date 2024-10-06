@@ -19,17 +19,11 @@
   },
   "devDependencies": {
     "@types/ws": "8.5.4",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "6",
     "cypress": "^13.6.2",
-    "eslint": "7.32.0",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-flowtype": "^4.7.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^4.0.0",
-    "typescript": "^5.4.5"
-  }
+    "eslint": "^8.57.1",
+    "eslint-config-react-app": "^7.0.1",
+    "typescript": "^5.4.5",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "version": "0.0.0"
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import styles from '../Styles/Stats.module.css'
-import { Review } from 'common'
 
 type StatsProps = {
     token: string
@@ -17,20 +16,17 @@ const Stats = ({token}: StatsProps) => {
       Fires on every render to check for approvals or removals of reviews
     */
     useEffect(() => {
-        axios
-        .post('/api/admin/reviews/count', {token: token})
-        .then((response) => {
-          const result = response.data.result
-          if (response.status === 200) {
-            setApprovedRevCount(result.approved)
-            setPendingRevCount(result.pending)
-            setReportedRevCount(result.reported)
-          } else {
-            console.log('Error at countReviews')
-          }
-        })
+      async function getCounts() {
+        const response = await axios.post('/api/admin/reviews/count', {token: token})
+        const result = response.data.result
+        if (response.status === 200) {
+          setApprovedRevCount(result.approved)
+          setPendingRevCount(result.pending)
+          setReportedRevCount(result.reported)
+        }
       }
-    )
+      getCounts()
+    })
 
     /*
       Function to download a file containing all reviewed classes in the database and their
@@ -39,17 +35,12 @@ const Stats = ({token}: StatsProps) => {
     async function downloadCSVFile() {
       const element = document.createElement('a')
       let csv = ""
-      
-      await axios
-        .post('/api/admin/reviews/csv', {token: token})
-        .then((response) => {
-          const result = response.data.result
-          if (response.status === 200) {
-            csv = result
-          } else {
-            console.log('Error at getCourseCSV')
-          }
-        })
+
+      const response = await axios.post('/api/admin/reviews/csv', {token: token})
+      const result = response.data.result
+      if (response.status === 200) {
+        csv = result
+      }
 
       const file = new Blob([csv], {
         type: 'text/plain',

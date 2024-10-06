@@ -12,9 +12,9 @@ import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 type ReviewProps = {
   review: ReviewType
-  reportHandler: (review: ReviewType) => void
   isPreview: boolean
   isProfile: boolean
+  reportHandler: (reviewId: string) => void
 }
 
 /**
@@ -29,9 +29,9 @@ type ReviewProps = {
 */
 export default function ReviewCard({
   review,
-  reportHandler,
   isPreview,
   isProfile,
+  reportHandler
 }: ReviewProps): JSX.Element {
   const { isLoggedIn, signIn } = useAuthOptionalLogin()
   const location = useLocation()
@@ -58,21 +58,19 @@ export default function ReviewCard({
   /**
    * Shows user liked the review and updates DB count.
    */
-  function likeReview() {
+  async function likeReview() {
     if (!isLoggedIn) {
       signIn('path:' + location.pathname)
     }
 
     setLiked((liked) => !liked)
 
-    axios
-      .post('/api/updateLiked', {
-        id: _review._id,
-        token: getAuthToken(),
-      })
-      .then((response) => {
-        setReview(response.data.review)
-      })
+    const response = await axios.post(`/api/reviews/update-liked`, {
+      id: _review._id,
+      token: getAuthToken(),
+    })
+
+    setReview(response.data.review)
   }
 
   /**
@@ -80,7 +78,7 @@ export default function ReviewCard({
    */
   useEffect(() => {
     async function updateCourse() {
-      const response = await axios.post(`/api/getCourseById`, {
+      const response = await axios.post(`/api/courses/get-by-id`, {
         courseId: _review.class,
       })
       const course = response.data.result
@@ -100,7 +98,7 @@ export default function ReviewCard({
    */
   useEffect(() => {
     async function updateLiked() {
-      const response = await axios.post('/api/userHasLiked', {
+      const response = await axios.post('/api/reviews/user-liked', {
         id: _review._id,
         token: getAuthToken(),
       })
@@ -114,7 +112,7 @@ export default function ReviewCard({
   /** Renders course name as well if on profile page */
   function TitleAndProfessor() {
     // list of professors (name1, name2, ..)
-    var professornames = ''
+    let professornames = ''
     if (_review.professors && _review.professors.length > 0)
       professornames += _review.professors.join(', ')
     else professornames += 'N/A'
@@ -237,20 +235,32 @@ export default function ReviewCard({
             {expand ? 'See less' : '...See more'}
           </button>
         )}
+
         <div className={styles.datehelpful}>
           <div> {dateToString()} </div>
           {!isPreview && (
-            <div
-              className={`${styles.helpful} ${liked && styles.likedhelpful}`}
-              onClick={likeReview}
-            >
-              <img
-                src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
-                alt={liked ? 'Liked' : 'Not Liked Yet'}
-              />
-              {liked ? 'Liked!' : 'Helpful?'} (
-              {_review.likes ? _review.likes : 0}){' '}
+            <div className={styles.reporthelpful}>
+
+              <button
+                className={styles.report}
+                onClick={() => reportHandler(_review._id)}
+              >
+                Report
+              </button>
+
+              <div
+                className={`${styles.helpful} ${liked && styles.likedhelpful}`}
+                onClick={likeReview}
+              >
+                <img
+                  src={liked ? '/handClap_liked.svg' : '/handClap.svg'}
+                  alt={liked ? 'Liked' : 'Not Liked Yet'}
+                />
+                {liked ? 'Liked!' : 'Helpful?'} (
+                  {_review.likes ? _review.likes : 0}){' '}
+              </div>
             </div>
+
           )}
         </div>
         {_review.isCovid && (

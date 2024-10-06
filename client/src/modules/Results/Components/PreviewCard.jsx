@@ -8,8 +8,6 @@ import ReviewCard from '../../Course/Components/ReviewCard'
 
 import styles from '../Styles/CoursePreview.module.css'
 const Review = ReviewCard
-// import Gauge from './Gauge.tsx'
-// import Review from './Review'
 
 /*
   Preview Card component.
@@ -21,7 +19,7 @@ const Review = ReviewCard
 export default class PreviewCard extends Component {
   constructor(props) {
     super(props)
-    // set gauge values
+    // Set gauge values
     this.state = {
       id: this.props.course._id,
       rating: this.props.course.classRating,
@@ -50,7 +48,7 @@ export default class PreviewCard extends Component {
     }
   }
 
-  //If the value of the metric is null, set the Gauge value to "-"
+  // If the value of the metric is null, set the Gauge value to "-"
   updateGauges() {
     this.setState(
       {
@@ -69,10 +67,10 @@ export default class PreviewCard extends Component {
     )
   }
 
-  //Updates the top review to be the one with the most likes
+  // Updates the top review to be the one with the most likes
   updateTopReview() {
     axios
-      .post(`/api/getReviewsByCourseId`, { courseId: this.props.course._id })
+      .post(`/api/courses/get-reviews`, { courseId: this.props.course._id })
       .then((response) => {
         const reviews = response.data.result
         if (reviews) {
@@ -104,7 +102,7 @@ export default class PreviewCard extends Component {
       })
   }
 
-  //Updates the colors of the metrics
+  // Updates the colors of the metrics
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({

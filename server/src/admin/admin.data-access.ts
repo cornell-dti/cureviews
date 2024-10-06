@@ -2,8 +2,6 @@
 import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
 import { UpdateCourseMetrics } from './admin.type';
 import { findCourseById } from '../course/course.data-access';
-import { InsertStudentType } from '../auth/auth.type';
-import shortid from 'shortid';
 
 export const findStudentById = async (id: string) => {
   const student = await Students.findOne({ _id: id }).exec();
@@ -121,39 +119,22 @@ export const approveAllReviews = async () => {
  */
 
 export const findAdminUsers = async () => {
-  const adminUsers = await Students.find({ privilege: 'admin' }).exec()
+  const adminUsers = await Students.find({ privilege: "admin" }).exec()
   return adminUsers
 }
 
 export const removeAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'regular'} }).exec()
-  return res
-}
-
-export const grantAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
+  const res = await Students.updateOne({ netId: id }, { $set: {privilege: "regular"} }).exec()
   return res
 }
 
 /*
- * If there is an attempt to grant admin privilege to someone not in the database,
- * a new user will be created with the given netid and added to the database.
+ * Updates the user with netId = id to have admin privilege
  */
-
-export const createNewAdminUser = async (id: string) => {
-
-  const admin: InsertStudentType = {
-    _id: shortid.generate(),
-    firstName: '',
-    lastName: '',
-    netId: id,
-    affiliation: '',
-    token: '',
-    privilege: 'admin',
-  };
-  
-  const newAdmin = new Students(admin);
-  const res = await newAdmin.save();
-
-  return res
+export const grantAdminPrivilege = async (id: string) => {
+  const user = await Students.findOne({ netId: id }).exec()
+  if (user) {
+    const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
+    return res
+  }
 }

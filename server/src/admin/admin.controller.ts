@@ -11,7 +11,6 @@ import {
   findAdminUsers,
   removeAdminPrivilege,
   grantAdminPrivilege,
-  createNewAdminUser,
   approveAllReviews,
 } from './admin.data-access';
 import {
@@ -231,19 +230,15 @@ export const removeAdmin = async ({auth, id}: VerifyManageAdminType) => {
 
 /**
  * Grants a user admin privilege by updating them if they are in the database.
- * If the user is not in the database, creates a new user with their netid and admin privilege
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @param {string} id: String identifying the user by netid
  * @returns The user with updated admin privilege if operation was successful, null otherwise
  */
-export const addOrUpdateAdmin = async ({auth, id}: VerifyManageAdminType) => {
+export const addAdmin = async ({auth, id}: VerifyManageAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     let res = await grantAdminPrivilege(id);
-    if (res.nModified === 0) {
-      res = await createNewAdminUser(id);
-    }
     return res;
   }
 }

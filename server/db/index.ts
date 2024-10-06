@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 
 import dotenv from 'dotenv';
 
@@ -10,10 +10,7 @@ const uri = process.env.MONGODB_URL
 
 export async function setupDb() {
   try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(uri);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('No DB connection defined!');

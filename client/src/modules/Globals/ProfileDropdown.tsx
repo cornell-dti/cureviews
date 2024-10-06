@@ -18,24 +18,23 @@ export default function ProfileDropdown({
   signIn,
   signOut,
 }: ProfileDropdownProps) {
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<HTMLInputElement>()
   const [open, setOpen] = useState(false)
-  const toggling = () => setOpen(!open)
   const profilePicture = randomPicture(netId)
 
   useEffect(() => {
-    const pageClickEvent = (e: { target: any }) => {
-      if (dropdownRef.current !== null) {
-        setOpen(!open)
+    const handleClickOutside = (e: { target: any }) => {
+      if (dropdownRef.current && !dropdownRef.current?.contains(e.target)) {
+        setOpen(false)
       }
     }
 
     if (open) {
-      window.addEventListener('click', pageClickEvent)
+      window.addEventListener('click', handleClickOutside)
     }
 
     return () => {
-      window.removeEventListener('click', pageClickEvent)
+      window.removeEventListener('click', handleClickOutside)
     }
   }, [open])
 
@@ -59,28 +58,30 @@ export default function ProfileDropdown({
         alt="profile bear"
         className={styles.bear}
         ref={dropdownRef}
-        onClick={toggling}
+        onClick={() => setOpen(!open)}
       />
 
       {open && (
-        <div className={styles.profiledropdown}>
-          <div className={styles.option}>
-            <a href="/profile">
-              My Reviews
-              <img
-                className={styles.optionimg}
-                src={ReviewsIcon}
-                alt="my-reviews"
-              />
-            </a>
-          </div>
+        <div onClick={() => setOpen(false)}> 
+          <div className={styles.profiledropdown}>
+            <div className={styles.option}>
+              <a href="/profile">
+                My Reviews
+                <img
+                  className={styles.optionimg}
+                  src={ReviewsIcon}
+                  alt="my-reviews"
+                />
+              </a>
+            </div>
 
-          <div
-            className={`${styles.option} ${styles.logout}`}
-            onClick={() => signOut()}
-          >
-            Log Out
-            <img className={styles.optionimg} src={LogOutIcon} alt="log-out" />
+            <div
+              className={`${styles.option} ${styles.logout}`}
+              onClick={() => signOut()}
+            >
+              Log Out
+              <img className={styles.optionimg} src={LogOutIcon} alt="log-out" />
+            </div>
           </div>
         </div>
       )}
