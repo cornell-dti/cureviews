@@ -41,8 +41,6 @@ export default function PreviewReviewCard({
 }: ReviewProps): React.JSX.Element {
   const { isLoggedIn } = useAuthOptionalLogin()
   const pending = isPreview && isProfile
-
-
   const [liked, setLiked] = useState<boolean>(false)
   const _review = review
 

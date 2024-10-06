@@ -118,7 +118,6 @@ export const Course = () => {
 
         clearSessionReview()
         if (response.status === 200) {
-
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           )
