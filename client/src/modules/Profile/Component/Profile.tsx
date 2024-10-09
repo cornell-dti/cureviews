@@ -77,12 +77,6 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
-    if (token) {
-      axios.post('/api/insertUser', { token })
-    }
-  }, [token])
-
-  useEffect(() => {
     axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
       const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
@@ -98,7 +92,7 @@ const Profile = () => {
       setPastReviews(pastReviews)
       setLoading(false)
     })
-  }, [netId])
+  }, [netId, token])
 
   useEffect(() => {
     const pendingReviews = reviews.filter(function (review: ReviewType) {
