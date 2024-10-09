@@ -40,7 +40,7 @@ describe("review functionality unit tests", () => {
     };
 
     const res = await axios.post(
-      `http://localhost:${testPort}/api/insertReview`,
+      `http://localhost:${testPort}/api/reviews/post`,
       {
         courseId: "oH37S3mJ4eAsktypy",
         review: reviewToInsert,
@@ -60,7 +60,7 @@ describe("review functionality unit tests", () => {
 
   it("like/dislike - increment and decrement", async () => {
     const res1 = await axios.post(
-      `http://localhost:${testPort}/api/updateLiked`,
+      `http://localhost:${testPort}/api/reviews/update-liked`,
       { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
     );
 
@@ -69,7 +69,7 @@ describe("review functionality unit tests", () => {
     expect(reviewLiked?.likes).toBe(3);
 
     const res2 = await axios.post(
-      `http://localhost:${testPort}/api/updateLiked`,
+      `http://localhost:${testPort}/api/reviews/update-liked`,
       { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
     );
 

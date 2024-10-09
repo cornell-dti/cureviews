@@ -1,5 +1,5 @@
 import React from 'react'
-import { hydrate } from 'react-dom'
+import ReactDOM from 'react-dom/client'
 
 import App from './App'
 import './index.css'
@@ -8,12 +8,14 @@ import './index.css'
  * SSR 
  *
  * Generates appliation component sent to the client side entry point (index.html)
-as an HTML object with id "render-target".
+ * as an HTML object with id "render-target".
 */
 
-hydrate(
+const container = document.getElementById("root")
+const root = ReactDOM.createRoot(container!)
+
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('render-target')
-)
+);

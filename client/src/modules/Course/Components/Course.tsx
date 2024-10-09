@@ -67,24 +67,24 @@ export const Course = () => {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(`/api/getCourseByInfo`, {
+        const response = await axios.post(`/api/courses/get-by-info`, {
           number,
-          subject: subject.toLowerCase(), // TODO: fix backend to handle this
+          subject: subject,
         })
 
         const course = response.data.result
         if (course) {
           setSelectedClass(course)
 
-          // after getting valid course info, fetch reviews
+          // After getting valid course info, fetch reviews
           const reviewsResponse = await axios.post(
-            '/api/getReviewsByCourseId',
+            '/api/courses/get-reviews',
             {
               courseId: course._id,
             }
           )
           const reviews = reviewsResponse.data.result
-          // convert date field of Review to JavaScript Date object
+          // Convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
           reviews.sort(sortByLikes)
           setCourseReviews(reviews)
@@ -110,7 +110,7 @@ export const Course = () => {
      */
     async function submitReview(review: NewReview, courseId: string) {
       try {
-        const response = await axios.post('/api/insertReview', {
+        const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
           courseId: courseId,
@@ -118,7 +118,6 @@ export const Course = () => {
 
         clearSessionReview()
         if (response.status === 200) {
-
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           )
@@ -156,23 +155,6 @@ export const Course = () => {
       currentReviews?.sort(sortByDate)
     }
     setCourseReviews(currentReviews)
-  }
-
-  /**
-   * Attempts to report review, and filters out the reported review locally
-   * @param reviewId - id of review to report
-   */
-  async function reportReview(reviewId: string) {
-    try {
-      const response = await axios.post('/api/reportReview', { id: reviewId })
-      if (response.status === 200) {
-        setCourseReviews(
-          courseReviews?.filter((element) => element._id !== reviewId)
-        )
-      }
-    } catch (e) {
-      toast.error('Failed to report review.')
-    }
   }
 
   /**
@@ -292,7 +274,7 @@ export const Course = () => {
           <div className={styles.bar}>
             <h2>Past Reviews ({courseReviews?.length}) </h2>
             <div>
-              <label htmlFor="sort-reviews">Sort by:</label>
+              <label htmlFor="sort-reviews">Sort by: </label>
               <select
                 name="sort-reviews"
                 id="sort-reviews"
@@ -307,9 +289,9 @@ export const Course = () => {
           <div className={styles.reviews}>
             <CourseReviews
               reviews={courseReviews}
-              onReportReview={reportReview}
               isPreview={false}
               isProfile={false}
+              token={token}
             />
           </div>
         </div>
@@ -334,6 +316,5 @@ export const Course = () => {
     )
   }
 
-  // TODO: create idle state, rethink how to handle this
   return <Loading />
 }

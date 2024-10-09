@@ -90,8 +90,24 @@
   color: #9b9b9b;
   font-size: 12px;
 
-  padding-top: 20px;
+  padding-top: 1px;
   margin-top: auto;
+}
+
+.reporthelpful {
+  display: flex;
+  flex-flow: row nowrap;
+  color: #9b9b9b;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.report {
+  display: flex;
+  flex-flow: row nowrap;
+  cursor: pointer;
+  color: #9b9b9b;
+  padding-right: 20px
 }
 
 .helpful {

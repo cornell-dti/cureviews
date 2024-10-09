@@ -221,7 +221,7 @@ export const resetProfessors = async (
                   console.log(matchedCourse);
 
                   if (matchedCourse) {
-                    await Classes.update(
+                    await Classes.findOneAndUpdate(
                       { _id: matchedCourse._id },
                       { $set: { classProfessors: [] } },
                     ).exec();

@@ -32,7 +32,7 @@ export const fetchSubjects = async (
     const { subjects } = result.data.data;
     return subjects;
   } catch (err) {
-    console.log(err)
+    console.error(`Failed to retrieve subjects for semester ${semester}: `, err);
     return null;
   }
 };
