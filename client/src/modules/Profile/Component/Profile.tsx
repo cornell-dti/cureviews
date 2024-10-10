@@ -28,7 +28,7 @@ const Profile = () => {
   const [reviewsTotal, setReviewsTotal] = useState('0')
   const [reviewsHelpful, setReviewsHelpful] = useState('0')
 
-  const {isLoggedIn, token, netId, isAuthenticating, signOut} =
+  const { isLoggedIn, token, netId, isAuthenticating, signOut } =
     useAuthMandatoryLogin('profile')
 
   const profilePicture: string = randomPicture(netId)
@@ -79,7 +79,7 @@ const Profile = () => {
 
   useEffect(() => {
     async function getReviews() {
-      const response = await axios.post(`/api/profiles/get-reviews`, {netId})
+      const response = await axios.post(`/api/profiles/get-reviews`, { netId })
 
       const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
@@ -95,7 +95,7 @@ const Profile = () => {
       setPastReviews(pastReviews)
       setLoading(false)
     }
-    
+
     getReviews()
   }, [netId])
 

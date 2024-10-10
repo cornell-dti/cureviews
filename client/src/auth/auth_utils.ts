@@ -69,28 +69,24 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
       Session.setPersistent({ redirectFrom: redirectFrom })
       history.push('/login')
     }
-
-    const authToken = getAuthToken()
-
+    const authToken = getAuthToken();
     async function getEmail() {
       if (!authToken || authToken === '') {
         signIn(redirectFrom)
       } else {
-        await axios
+        const response = await axios
           .post('/api/auth/get-email', {
-            token: token,
+            token: authToken,
           })
-          .then((response) => {
-            if (response.status === 200) {
-              const userEmail = response.data.result
-              const userNetId = userEmail.substring(0, userEmail.lastIndexOf('@'))
-              setNetId(userNetId)
-            }
-          })
+        if (response.status === 200) {
+          const email = response.data.result;
+          const netid = email.substring(0, email.lastIndexOf('@'))
+          setNetId(netid)
+        }
       }
     }
 
-    getEmail().catch((e) => console.log(e.response))
+    getEmail().catch((e) => console.log("Failed in auth_util: ", e.response))
     setToken(authToken)
     setIsAuthenticating(false)
     setIsLoggedIn(true)
@@ -127,26 +123,21 @@ export function useAuthOptionalLogin(): {
   const [netId, setNetId] = useState('')
 
   const history = useHistory()
-
   useEffect(() => {
-    const token = getAuthToken()
-
-    if (token && token !== '') {
-      axios
-        .post('/api/auth/get-email', {
-          token: token,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            const verifiedEmail = response.data.result
-            setNetId(verifiedEmail.substring(0, verifiedEmail.lastIndexOf('@')))
-          }
-        })
-        .catch((e) => console.log(e.response))
-
-      setToken(token)
+    const authToken = getAuthToken();
+    async function getEmail() {
+      if (authToken && authToken !== '') {
+        const response = await axios.post('/api/auth/get-email');
+        if (response.status === 200) {
+          const email = response.data.result;
+          setNetId(email.substring(0, email.lastIndexOf('@')));
+        }
+      }
+      setToken(authToken)
       setIsLoggedIn(true)
     }
+    getEmail().catch(e => console.log('[ERROR] Get Email in useAuthOptionalLogin(): ', e));
+
   }, [])
 
   const signIn = (redirectFrom: string) => {
