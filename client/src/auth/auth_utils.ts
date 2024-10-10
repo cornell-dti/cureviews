@@ -86,7 +86,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
       }
     }
 
-    getEmail().catch((e) => console.log("Failed in auth_util: ", e.response))
+    getEmail().catch((e) => console.log("[ERROR] Failed in authMandatoryLogin: ", e.response))
     setToken(authToken)
     setIsAuthenticating(false)
     setIsLoggedIn(true)
