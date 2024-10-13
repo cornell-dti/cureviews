@@ -34,7 +34,7 @@ export const updateCourseMetrics = async (
  */
 export const findPendingReviews = async () =>
   await Reviews.find(
-    { visible: 0, reported: 0},
+    { visible: 0, reported: 0 },
     {},
     { sort: { date: -1 }, limit: 700 },
   ).exec();
@@ -44,7 +44,7 @@ export const findPendingReviews = async () =>
  */
 export const findReportedReviews = async () =>
   await Reviews.find(
-    { visible: 0, reported: 1},
+    { visible: 0, reported: 1 },
     {},
     { sort: { date: -1 }, limit: 700 },
   ).exec();
@@ -53,9 +53,9 @@ export const findReportedReviews = async () =>
  * Function to count reviews by approved, pending, and reported and return the values.
  */
 export const findReviewCounts = async () => {
-  const approvedCount = await Reviews.countDocuments({ visible : 1}).exec()
-  const pendingCount = await Reviews.countDocuments({ visible: 0, reported: 0}).exec()
-  const reportedCount = await Reviews.countDocuments({ visible: 0, reported: 1}).exec()
+  const approvedCount = await Reviews.countDocuments({ visible: 1 }).exec()
+  const pendingCount = await Reviews.countDocuments({ visible: 0, reported: 0 }).exec()
+  const reportedCount = await Reviews.countDocuments({ visible: 0, reported: 1 }).exec()
   const result = {
     approved: approvedCount,
     pending: pendingCount,
@@ -69,7 +69,7 @@ export const findReviewCounts = async () => {
  * Count per class is mapped to a CSV string format.
  */
 export const createCourseCSV = async () => {
-  const approvedReviews = await Reviews.find({ visible: 1}).exec()
+  const approvedReviews = await Reviews.find({ visible: 1 }).exec()
   let csv = 'Class,Number of Reviews\n'
 
   const revsPerCourse: Map<string, number> = new Map()
@@ -124,7 +124,7 @@ export const findAdminUsers = async () => {
 }
 
 export const removeAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: "regular"} }).exec()
+  const res = await Students.updateOne({ netId: id }, { $set: { privilege: "regular" } }).exec()
   return res
 }
 
@@ -134,7 +134,7 @@ export const removeAdminPrivilege = async (id: string) => {
 export const grantAdminPrivilege = async (id: string) => {
   const user = await Students.findOne({ netId: id }).exec()
   if (user) {
-    const res = await Students.updateOne({ netId: id }, { $set: {privilege: "admin"} }).exec()
+    const res = await Students.updateOne({ netId: id }, { $set: { privilege: "admin" } }).exec()
     return res
   }
 }
