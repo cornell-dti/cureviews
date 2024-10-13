@@ -22,32 +22,16 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-/** makeSummary. 
- * 
- * Takes in all reviews from a course as text and 
- * creates a 50 word summary of those reviews.
- * @params a string that combines all reviews from a course
- * @returns summary of reviews
- */
-async function makeSummary(text: string) {
-  const completion = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [
-      { role: "system", content: "You are creating a 50 word summary based on the collection of course reviews provided." },
-      { role: "user", content: text }
-    ],
-  });
-  return completion.choices[0].message.content;
-}
-
 /** generateTags. 
  * 
  * Takes in all reviews from a course as text and 
  * generates 5 tags for those reviews describing lectures, assignments, professor,
  * skill, and resources as well as the corresponding connotation of that tag.
  * @params a string that combines all reviews from a course
- * @returns an array of adjectives and their corresponding connotations describing
- * lectures, assignments, professr, skills, and resources in that order
+ * @returns a dictionary containing 
+ * Summary: 50 word summary of all reviews,
+ * Tags: array of nouns, adjectives, and their corresponding connotations describing
+ * in that order, ex: ["Lectures", "Entertaining", "Positive"]
  */
 async function generateTags(text: string) {
   const completion = await openai.chat.completions.create({
@@ -55,10 +39,14 @@ async function generateTags(text: string) {
     messages: [
       {
         role: "system", content: `
-          You are creating 5 adjectives describing the lectures, assignments, professor, skills, and resources,
-          along with their connotations (positive, negative, neutral).
+          You are given a collection of course reviews provided where each review is separated by a /. You
+          will then complete two tasks. First you should generate a 50 word summary of all reviews. Then 
+          should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
+          along with their connotations (positive, negative, neutral). Please only pick one adjective for each.
           
-          Please provide the adjectives and connotations in the following format:
+          Please provide the summary and tags in the following format:
+          Summary: [50-word summary]
+          Tags:
           'Lectures: [adjective] (positive/negative/neutral),
           Assignments: [adjective] (positive/negative/neutral),
           Professor: [adjective] (positive/negative/neutral),
@@ -70,18 +58,27 @@ async function generateTags(text: string) {
     ],
   });
   const response = completion.choices[0].message.content;
-  const tagsArray = response.split(',').map(item => {
-    const match = item.match(/: (.+) \((.+)\)/);
+  const summaryMatch = response.match(/Summary: ([\s\S]*?)(?=Tags)/);
+  const summary = summaryMatch ? summaryMatch[1].trim() : "";
+  const tagsMatch = response.match(/Tags:\s*([\s\S]*)/);
+  const tags = tagsMatch ? tagsMatch[1] : "";
+
+  const tagsArray = tags.split(',').map(item => {
+    const match = item.match(/(\w+): (.+) \((.+)\)/);
     if (match) {
-      const adjective = match[1].trim();
-      const connotation = match[2].trim();
-      return [adjective, connotation];
+      const category = match[1].trim();       // e.g., "Lectures"
+      const adjective = match[2].trim();      // e.g., "engaging"
+      const connotation = match[3].trim();    // e.g., "positive"
+      return [category, adjective, connotation];
     } else {
       console.error("Unexpected format: ", item);
-      return ["", ""];
+      return ["", "", ""];
     }
-  });
-  return tagsArray;
+  })
+  return {
+    summary: summary,
+    tags: tagsArray
+  };
 }
 
 /** getCoursesWithMinReviews.
@@ -189,4 +186,4 @@ export const getCrossListOR = (course) => {
   ];
 };
 
-export { makeSummary, getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, generateTags } 
+export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, generateTags } 

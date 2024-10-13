@@ -1,39 +1,22 @@
 import express from 'express';
 import { CourseIdRequestType } from '../course/course.type';
-import { makeSummary, getCoursesWithMinReviews, getReviewsForSummary, generateTags } from './ai.functions';
+import { getCoursesWithMinReviews, getReviewsForSummary, generateTags } from './ai.functions';
 
 const aiRouter = express.Router();
 
 aiRouter.use(express.json());
 
-/** Reachable at POST /api/ai/text/summary
- * @body a block of text containing all reviews from a course
- * returns a summary created by OpenAI
-*/
-aiRouter.post('/text/summary', async (req, res) => {
-  try {
-    if (!req.body.text) {
-      return res.status(400).json({ error: 'No text provided' });
-    }
-    const summary = await makeSummary(req.body.text);
-    res.status(200).json({ summary });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 /** Reachable at POST /api/ai/text/tags
  * @body a block of text containing all reviews from a course
- * returns an array of tags along with their connotation created by OpenAI
+ * returns a dictionary containing the summary and tags created by OpenAI
 */
-aiRouter.post('/text/tags', async (req, res) => {
+aiRouter.post('/text/summary/tags', async (req, res) => {
   try {
     if (!req.body.text) {
       return res.status(400).json({ error: 'No text provided' });
     }
-    const tags = await generateTags(req.body.text);
-    res.status(200).json({ tags });
+    const summaryAndTags = await generateTags(req.body.text);
+    res.status(200).json({ summaryAndTags });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
