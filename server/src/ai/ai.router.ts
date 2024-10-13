@@ -12,10 +12,11 @@ aiRouter.use(express.json());
 */
 aiRouter.post('/text/summary/tags', async (req, res) => {
   try {
-    if (!req.body.text) {
+    const { text } = req.body;
+    if (!text) {
       return res.status(400).json({ error: 'No text provided' });
     }
-    const summaryAndTags = await generateTags(req.body.text);
+    const summaryAndTags = await generateTags(text);
     res.status(200).json({ summaryAndTags });
   } catch (err) {
     console.error(err);
