@@ -1,4 +1,4 @@
-import { Reviews, Students } from '../../db/schema';
+import { Reviews, Classes, Students } from '../../db/schema';
 import { Review } from './review';
 
 export const findReviewCrossListOR = async (crossListOR) => {
@@ -49,6 +49,11 @@ export const findClassReviews = async (courseId: string) => {
 export const insertReview = async (review: Review) => {
   const newReview = new Reviews(review);
   await newReview.save();
+  const courseId = review['class'];
+  await Classes.updateOne(
+    { _id: courseId },
+    { $inc: { freshness: 1 } }
+  );
 };
 
 export const updateReviewLikedBy = async (
