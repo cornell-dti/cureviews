@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config';
+import { config } from 'dotenv';
 import react from '@vitejs/plugin-react';
-import eslint from 'vite-plugin-eslint'
+import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
     build: {
@@ -19,5 +20,11 @@ export default defineConfig({
           secure: false,
         },
       },
+    },
+    test: {
+      clearMocks: true,
+      env: {
+        ...config({ path: "../server/.env"}).parsed
+      }
     }
 });
