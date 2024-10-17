@@ -23,8 +23,5 @@ export default defineConfig({
     },
     test: {
       clearMocks: true,
-      env: {
-        ...config({ path: "../server/.env"}).parsed
-      }
     }
 });
