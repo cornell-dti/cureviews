@@ -77,12 +77,9 @@ export const Course = () => {
           setSelectedClass(course)
 
           // After getting valid course info, fetch reviews
-          const reviewsResponse = await axios.post(
-            '/api/courses/get-reviews',
-            {
-              courseId: course._id,
-            }
-          )
+          const reviewsResponse = await axios.post('/api/courses/get-reviews', {
+            courseId: course._id,
+          })
           const reviews = reviewsResponse.data.result
           // Convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
@@ -229,8 +226,9 @@ export const Course = () => {
         <div className={styles.overview}>
           <div className={styles.classinfo}>
             <h1
-              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
-                }`}
+              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
+                selectedClass.classNum
+              }`}
             >
               {selectedClass.classTitle}
             </h1>

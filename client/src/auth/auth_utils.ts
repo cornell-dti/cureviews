@@ -126,18 +126,18 @@ export function useAuthOptionalLogin(): {
   useEffect(() => {
     const authToken = getAuthToken();
     async function getEmail() {
-      if (authToken && authToken !== '') {
-        const response = await axios.post('/api/auth/get-email');
-        if (response.status === 200) {
-          const email = response.data.result;
-          setNetId(email.substring(0, email.lastIndexOf('@')));
-        }
+      const response = await axios.post('/api/auth/get-email', { token: authToken });
+      if (response.status === 200) {
+        const email = response.data.result;
+        setNetId(email.substring(0, email.lastIndexOf('@')));
       }
+    }
+
+    if (authToken && authToken !== '') {
+      getEmail().catch(e => console.log('[ERROR] Get Email in useAuthOptionalLogin(): ', e));
       setToken(authToken)
       setIsLoggedIn(true)
     }
-    getEmail().catch(e => console.log('[ERROR] Get Email in useAuthOptionalLogin(): ', e));
-
   }, [])
 
   const signIn = (redirectFrom: string) => {
