@@ -1,5 +1,6 @@
 import { TokenPayload } from "google-auth-library";
 import { Auth } from "../../src/auth/auth";
+import { vi } from 'vitest';
 
 export const validTokenPayload: TokenPayload = {
   email: "dti1@cornell.edu",
@@ -20,7 +21,7 @@ export const invalidTokenPayload: TokenPayload = {
   exp: 0,
 };
 
-export const mockVerificationTicket = jest
+export const mockVerificationTicket = vi
   .spyOn(Auth.prototype, "getVerificationTicket")
   .mockImplementation(async () => {
     if (Auth.prototype.getToken() === "fakeTokenDti1") {
@@ -29,6 +30,6 @@ export const mockVerificationTicket = jest
     return invalidTokenPayload;
   });
 
-export const getValidTokenMock = jest
+export const getValidTokenMock = vi
   .spyOn(Auth.prototype, "getToken")
   .mockImplementation(() => "fakeTokenDti1");

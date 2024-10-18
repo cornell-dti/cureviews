@@ -22,6 +22,8 @@ const testingEndpoint = `http://localhost:${testPort}/`;
 beforeAll(async () => {
   // get mongoose all set up
   testServer = new MongoMemoryServer();
+  await testServer.start();
+
   const mongoUri = testServer.getUri();
   await mongoose.connect(mongoUri);
 

@@ -26,6 +26,5 @@ export default defineConfig({
       poolOptions: {
         singleThread: true,
       },
-      fileParallelism: false,
     }
 });

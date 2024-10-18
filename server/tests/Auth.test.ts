@@ -1,4 +1,4 @@
-import { expect, test, describe } from 'vitest'
+import { expect, test, describe, vi } from 'vitest'
 import { beforeAll, afterAll } from 'vitest'
 
 import axios from "axios";
@@ -26,7 +26,7 @@ afterAll(async () => {
 
 describe("Auth functionality unit tests", () => {
   test("Insert a user works correctly", async () => {
-    const getInvalidTokenMock = jest
+    const getInvalidTokenMock = vi
       .spyOn(Auth.prototype, "getToken")
       .mockImplementation(() => "fakeTokencv4620");
 
@@ -53,7 +53,7 @@ describe("Auth functionality unit tests", () => {
     getInvalidTokenMock.mockRestore();
   });
 
-  test("TokenIsAdmin works correctly", async () => {
+  test("tokenIsAdmin works correctly", async () => {
     const failRes = await axios.post(
       `http://localhost:${testPort}/api/admin/token/validate`,
       { token: "fakeTokencv4620" },
@@ -61,7 +61,7 @@ describe("Auth functionality unit tests", () => {
 
     expect(failRes.data.result).toEqual(false);
 
-    const getValidTokenMock = jest
+    const getValidTokenMock = vi
       .spyOn(Auth.prototype, "getToken")
       .mockImplementation(() => "fakeTokenDti1");
 

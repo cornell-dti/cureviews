@@ -1,4 +1,4 @@
-import { expect, test, describe } from 'vitest'
+import { expect, test, describe, vi } from 'vitest'
 import { beforeAll, afterAll } from 'vitest'
 
 import axios from 'axios';
@@ -8,7 +8,7 @@ import { testServer, testPort } from './mocks/MockServer';
 import * as AdminAuth from '../src/admin/admin.controller';
 import { testClasses, testReviews } from './mocks/InitMockDb';
 
-const mockVerification = jest
+const mockVerification = vi
   .spyOn(AdminAuth, 'verifyTokenAdmin')
   .mockImplementation(async ({ auth }) => true);
 
@@ -74,7 +74,7 @@ describe('Admin functionality unit tests', () => {
     expect(res.response.status).toEqual(400);
   });
 
-  test('Making a review visible works correctly', async () => {
+  test('Approving a review works correctly', async () => {
     const pendingReview = await Reviews.findOne({ visible: 0, reported: 0 });
 
     const res = await axios.post(
