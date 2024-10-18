@@ -456,21 +456,50 @@ export const addAllCourses = async (
   return true;
 };
 
-const checkCourseExists = async (course): Promise<string> => {
-  const semesters = course.classSems;
-  for (let i = semesters.length - 1; i >= 0; i--) {
-    const semester = semesters[i];
-    const subject = course.classSub.toUpperCase();
-    try {
-      await axios.get(
-        `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
-      );
-      return semester;
-    } catch (err) {
-      continue;
-    }
+/**
+ * Helper function that removes invalid entries from the database based on the updated Course API
+ * @param course the course that includes an invalid entry
+ * @param semester the invalid semester, must exist in the classSems list of course
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+const removeInvalidSem = async (course, semester): Promise<boolean> => {
+  try {
+    const semesters = (course.classSems).filter(sem => sem !== semester);
+    const courseId = course._id;
+    await Classes.updateOne(
+      { _id: courseId },
+      { $set: { classSems: semesters } },
+    );
+    return true;
+  } catch (err) {
+    console.log(`Error occurred in removing invalid entry in database: ${err}`)
   }
-  return null;
+  return false;
+}
+
+/**
+ * Helper function that removes a course from the database
+ * @param course the course that is being removed
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+const removeCourse = async (course): Promise<boolean> => {
+  const subject = course.classSub.toUpperCase();
+  const num = course.classNum;
+  try {
+    const courseId = course._id;
+    const result = await Classes.deleteOne({ _id: courseId });
+    if (result.deletedCount === 1) {
+      console.log(`Course ${subject} ${num} successfully removed from database.`);
+      return true;
+    } else {
+      console.log(`Course ${subject} ${num} was not found in the database.`);
+    }
+  } catch (err) {
+    console.log(`Failed to remove course ${subject} ${num} from database due to ${err}.`);
+  }
+  return false;
 }
 
 /**
@@ -484,13 +513,7 @@ export const addAllDescriptions = async (): Promise<boolean> => {
     const courses = await Classes.find().exec();
     if (courses)
       for (const course of courses) {
-        const courseId = course._id;
-        const semester = await checkCourseExists(course);
-        const result = await addCourseDescription(semester, courseId);
-
-        if (!result) {
-          return false;
-        }
+        await addCourseDescription(course);
       }
     return true;
   } catch (err) {
@@ -505,40 +528,44 @@ export const addAllDescriptions = async (): Promise<boolean> => {
  * @param {string} courseId: course ID of class stored in Course database
  * @returns true if operation was successful, false otherwise
  */
-export const addCourseDescription = async (
-  semester: string,
-  courseId: string,
-): Promise<boolean> => {
-  try {
-    const course = await Classes.findOne({ _id: courseId }).exec();
-
-    const subject = course.classSub.toUpperCase();
-    const courseNum = course.classNum;
-    console.log(`searching for ${subject} ${courseNum} in ${semester}`)
-    const result = await axios.get(
-      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
-    );
-
-    const courses = result.data.data.classes;
-    if (result.status !== 200 || !courses) {
-      console.log(`Error fetching courses with subject ${subject}`);
-      return false;
-    }
-
-    for (const course of courses) {
-      if (course.catalogNbr === courseNum) {
-        const description = course.description;
-        const res = await Classes.findOne({ _id: courseId })
-        console.log(res);
-        await Classes.updateOne(
-          { _id: courseId },
-          { $set: { classDescription: description } },
-        );
-      }
-    }
+export const addCourseDescription = async (course): Promise<boolean> => {
+  const courseId = course._id;
+  const semesters = course.classSems;
+  let semester;
+  const subject = course.classSub.toUpperCase();
+  const courseNum = course.classNum;
+  const courseFromDb = await Classes.findOne({ _id: courseId }).exec();
+  const checkDescription = courseFromDb.classDescription;
+  if (checkDescription && checkDescription !== null) {
+    console.log(`Already added description to ${subject} ${courseNum}`);
     return true;
-  } catch (err) {
-    console.log(`Error in adding description: ${err}`);
   }
+  for (let i = semesters.length - 1; i >= 0; i--) {
+    semester = semesters[i];
+    try {
+      const result = await axios.get(
+        `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
+      );
+      const courses = result.data.data.classes;
+      for (const c of courses) {
+        if (c.catalogNbr === courseNum) {
+          const description = c.description && c.description !== null ? c.description : c.titleLong;
+          const res = await Classes.findOne({ _id: courseId })
+          console.log(res.classTitle);
+          await Classes.updateOne(
+            { _id: courseId },
+            { $set: { classDescription: description } },
+          );
+          return true;
+        }
+      }
+      removeInvalidSem(course, semester);
+    } catch (err) {
+      console.log(`Semester ${semester} for course subject ${subject} not in Course API`);
+      removeInvalidSem(course, semester);
+    }
+  }
+  removeCourse(course);
+  console.log(`Error in adding description to course ${subject} ${courseNum}`);
+  return false;
 }
-

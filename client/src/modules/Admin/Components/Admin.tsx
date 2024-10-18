@@ -244,7 +244,7 @@ export const Admin = () => {
   function updateDescriptions() {
     console.log('Updating course descriptions')
     setDisableInit(true)
-    axios.post('/api/admin/courseDescriptions/add', { token: token }).then((response) => {
+    axios.post('/api/admin/course/desc', { token: token }).then((response) => {
       if (response.status === 200) {
         console.log('Updated all course descriptions')
         setDisableInit(false)

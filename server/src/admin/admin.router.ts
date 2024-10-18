@@ -377,7 +377,7 @@ adminRouter.post('/professors/reset', async (req, res) => {
   }
 });
 
-adminRouter.post('/courseDescriptions/add', async (req, res) => {
+adminRouter.post('/course/desc', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
