@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config';
-import { config } from 'dotenv';
 import react from '@vitejs/plugin-react';
 import eslint from 'vite-plugin-eslint';
 
@@ -23,5 +22,10 @@ export default defineConfig({
     },
     test: {
       clearMocks: true,
+      pool: 'thread',
+      poolOptions: {
+        singleThread: true,
+      },
+      fileParallelism: false,
     }
 });

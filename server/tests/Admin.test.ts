@@ -1,4 +1,6 @@
-/* eslint-disable operator-linebreak */
+import { expect, test, describe } from 'vitest'
+import { beforeAll, afterAll } from 'vitest'
+
 import axios from 'axios';
 
 import { Classes, Reviews } from '../db/schema';
@@ -42,8 +44,8 @@ afterAll(async () => {
   mockVerification.mockRestore();
 });
 
-describe('admin functionality unit tests', () => {
-  it('fetchPendingReviews-works', async () => {
+describe('Admin functionality unit tests', () => {
+  test('Fetching pending reviews works', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/get-pending`,
       { token: 'non-empty' },
@@ -56,7 +58,7 @@ describe('admin functionality unit tests', () => {
     expect(ids.includes(reviewsPending)).toBeTruthy();
   });
 
-  it('makeReviewVisible - will not make review that has been reported visible', async () => {
+  test('Make review visible will not make a reported review visible', async () => {
     const pendingReportedReview = await Reviews.findOne({
       visible: 0,
       reported: 1,
@@ -72,7 +74,7 @@ describe('admin functionality unit tests', () => {
     expect(res.response.status).toEqual(400);
   });
 
-  it('makeReviewVisible-works', async () => {
+  test('Making a review visible works correctly', async () => {
     const pendingReview = await Reviews.findOne({ visible: 0, reported: 0 });
 
     const res = await axios.post(
@@ -89,7 +91,7 @@ describe('admin functionality unit tests', () => {
     expect(reviewClass?.classDifficulty).toEqual(avg);
   });
 
-  it('undoReportReview-works', async () => {
+  test('Restoring a review (undoing a report) works correctly', async () => {
     const reportedReview = await Reviews.findOne({ visible: 0, reported: 1 });
 
     const res = await axios.post(
@@ -110,7 +112,7 @@ describe('admin functionality unit tests', () => {
     expect(reviewClass?.classDifficulty).toEqual(avg);
   });
 
-  it('removeReview-works', async () => {
+  test('Removing a review works correctly', async () => {
     const reportedReview = await Reviews.findOne({ visible: 0, reported: 1 });
 
     const res = await axios

@@ -1,3 +1,6 @@
+import { expect, test, describe } from 'vitest'
+import { beforeAll, afterAll } from 'vitest'
+
 // Set up fake endpoints to query
 import express from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -19,13 +22,8 @@ const testingEndpoint = `http://localhost:${testPort}/`;
 beforeAll(async () => {
   // get mongoose all set up
   testServer = new MongoMemoryServer();
-  const mongoUri = await testServer.getUri();
-  await mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  });
-  mongoose.set('useFindAndModify', false);
+  const mongoUri = testServer.getUri();
+  await mongoose.connect(mongoUri);
 
   await new Subjects({
     _id: 'some id',
@@ -151,8 +149,8 @@ afterAll(async () => {
   serverCloseHandle.close();
 });
 
-describe('db init and scraping functionality unit tests', () => {
-  it('dbInit-db-works', async () => {
+describe('Database initialization and scraping functionality unit tests', () => {
+  test('Database initialization works', async () => {
     expect((await Subjects.findOne({ subShort: 'gork' }))?.subShort).toBe(
       'gork',
     );
@@ -162,7 +160,7 @@ describe('db init and scraping functionality unit tests', () => {
   });
 
   // Does fetching the subjects collection work as expected?
-  it('fetching-roster-works', async () => {
+  test('Fetching roster works', async () => {
     const response = await fetchSubjects(testingEndpoint, 'FA20');
     expect(response?.length).toBe(2);
     expect(response[0].descrformal).toBe('The Study of Fungi');
@@ -175,7 +173,7 @@ describe('db init and scraping functionality unit tests', () => {
   });
 
   // Does fetching the classes collection work as expected?
-  it('fetching-classes-by-subject-works', async () => {
+  test('Fetching classes by subject works', async () => {
     const response = await fetchAddClassesForSubject(
       {
         descrformal: 'The Study of Angry Fungi',
@@ -199,7 +197,7 @@ describe('db init and scraping functionality unit tests', () => {
     expect(nil).toBeTruthy();
   });
 
-  it('full-scraping-works', async () => {
+  test('Full scraping works', async () => {
     const worked = await addNewSemester(testingEndpoint, 'FA20');
     expect(worked).toBe(true);
 

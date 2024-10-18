@@ -1,3 +1,6 @@
+import { expect, test, describe } from 'vitest'
+import { beforeAll, afterAll } from 'vitest'
+
 import axios from "axios";
 
 import { testPort, testServer } from "./mocks/MockServer";
@@ -21,8 +24,8 @@ afterAll(async () => {
   await mockVerificationTicket.mockRestore();
 });
 
-describe("auth functionality works", () => {
-  it("insertUser", async () => {
+describe("Auth functionality unit tests", () => {
+  test("Insert a user works correctly", async () => {
     const getInvalidTokenMock = jest
       .spyOn(Auth.prototype, "getToken")
       .mockImplementation(() => "fakeTokencv4620");
@@ -50,7 +53,7 @@ describe("auth functionality works", () => {
     getInvalidTokenMock.mockRestore();
   });
 
-  it("tokenIsAdmin-works", async () => {
+  test("TokenIsAdmin works correctly", async () => {
     const failRes = await axios.post(
       `http://localhost:${testPort}/api/admin/token/validate`,
       { token: "fakeTokencv4620" },

@@ -1,4 +1,6 @@
-/* eslint-disable import/prefer-default-export */
+import { expect, test, describe } from 'vitest'
+import { beforeAll, afterAll } from 'vitest'
+
 import axios from "axios";
 
 import { Review } from "common";
@@ -25,8 +27,8 @@ afterAll(async () => {
   await testServer.shutdownTestingServer();
 });
 
-describe("review functionality unit tests", () => {
-  it("insertReview - working functionality", async () => {
+describe("Review functionality unit tests", () => {
+  test("Insert review function works correctly", async () => {
     const reviewToInsert: Review = {
       _id: "blah",
       user: "Irrelevant2",
@@ -58,7 +60,7 @@ describe("review functionality unit tests", () => {
     expect(dtiUser?.reviews).toContain(review?._id);
   });
 
-  it("like/dislike - increment and decrement", async () => {
+  test("Like and dislike correctly increments and decrements", async () => {
     const res1 = await axios.post(
       `http://localhost:${testPort}/api/reviews/update-liked`,
       { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
@@ -78,7 +80,7 @@ describe("review functionality unit tests", () => {
     expect(reviewDisliked?.likes).toBe(2);
   });
 
-  it("reportReview - works", async () => {
+  test("Reporting a review works correctly", async () => {
     const res1 = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/report`,
       { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
