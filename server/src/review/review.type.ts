@@ -52,3 +52,13 @@ export interface ReviewLikesType {
   auth: Auth;
   reviewId: string;
 }
+
+export interface SetReviewReportedType {
+  reviewId: string;
+  auth: Auth;
+}
+
+export interface ReportReviewRequestType {
+  id: string;
+  token: string;
+}

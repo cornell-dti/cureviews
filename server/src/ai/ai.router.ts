@@ -47,11 +47,11 @@ aiRouter.post('/get-course-reviews-text', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/ai/courseids
- * @body minimum number of reviews needed to create a summary
+/** Reachable at POST /api/ai/course-ids
+ * @body min: the minimum number of reviews needed to create a summary
  * returns all course ids that have at least that number of reviews
 */
-aiRouter.post('/courseids', async (req, res) => {
+aiRouter.post('/course-ids', async (req, res) => {
   try {
     const min = req.body.min;
     const ids = await getCoursesWithMinReviews(min);
