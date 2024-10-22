@@ -6,11 +6,11 @@ const aiRouter = express.Router();
 
 aiRouter.use(express.json());
 
-/** Reachable at POST /api/ai/text/tags
+/** Reachable at POST /api/ai/summarize-reviews
  * @body a block of text containing all reviews from a course
  * returns a dictionary containing the summary and tags created by OpenAI
 */
-aiRouter.post('/text/summary/tags', async (req, res) => {
+aiRouter.post('/summarize-reviews', async (req, res) => {
   try {
     const { text } = req.body;
     if (!text) {
@@ -24,11 +24,11 @@ aiRouter.post('/text/summary/tags', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/ai/get/text
+/** Reachable at POST api/ai/get-course-reviews-text
  * @body a course ID
  * returns a block of text containing all reviews from that course
 */
-aiRouter.post('/get/text', async (req, res) => {
+aiRouter.post('/get-course-reviews-text', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsForSummary({ courseId });
