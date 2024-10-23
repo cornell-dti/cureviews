@@ -32,6 +32,7 @@ export const fetchSubjects = async (
     const { subjects } = result.data.data;
     return subjects;
   } catch (err) {
+    console.error(`Failed to retrieve subjects for semester ${semester}: `, err);
     return null;
   }
 };
@@ -41,56 +42,58 @@ export const fetchSubjects = async (
  * Updates existing Subject in collection with new semester
  *
  * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
- * @param {string} semester: course roster semester for (i.e FA23)
+ * @param {string[]} semesters: all available course roster semesters
  * @returns subject on success, null if there was an error
  */
 export const fetchAddSubjects = async (
   endpoint: string,
-  semester: string,
+  semesters: string[],
 ): Promise<boolean> => {
-  const subjects = await fetchSubjects(endpoint, semester);
+  for (const semester of semesters) {
+    const subjects = await fetchSubjects(endpoint, semester);
 
-  if (subjects === null) {
-    return false;
-  }
+    if (subjects === null) {
+      return false;
+    }
 
-  await Promise.all(
-    subjects.map(async (subject) => {
-      const subjectExists = await Subjects.findOne({
-        subShort: subject.value.toLowerCase(),
-      }).exec();
-
-      if (!subjectExists) {
-        const res = await new Subjects({
-          _id: shortid.generate(),
+    await Promise.all(
+      subjects.map(async (subject) => {
+        const subjectExists = await Subjects.findOne({
           subShort: subject.value.toLowerCase(),
-          subFull: subject.descrformal,
-        })
-          .save()
-          .catch((err) => {
-            console.log(err);
+        }).exec();
+
+        if (!subjectExists) {
+          const res = await new Subjects({
+            _id: shortid.generate(),
+            subShort: subject.value.toLowerCase(),
+            subFull: subject.descrformal,
+          })
+            .save()
+            .catch((err) => {
+              console.log(err);
+              return false;
+            });
+
+          if (!res) {
+            return false;
+          }
+        } else {
+          // Update with descrformal name
+          await Subjects.updateOne(
+            { subShort: subject.value.toLowerCase() },
+            {
+              $set: {
+                subFull: subject.descrformal
+              }
+            }
+          ).catch((err) => {
+            console.log(`Error updating subject ${subject.value}: ${err}`);
             return false;
           });
-
-        if (!res) {
-          return false;
         }
-      } else {
-        // Update with descrformal name
-        await Subjects.updateOne(
-          { subShort: subject.value.toLowerCase() },
-          {
-            $set: {
-              subFull: subject.descrformal
-            }
-          }
-        ).catch((err) => {
-          console.log(`Error updating subject ${subject.value}: ${err}`);
-          return false;
-        });
-      }
-    }),
-  );
+      }),
+    );
 
-  return true;
+    return true;
+  }
 };
