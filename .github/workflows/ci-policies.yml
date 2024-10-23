@@ -9,4 +9,3 @@ jobs:
       - uses: cornell-dti/big-diff-warning@master
         env:
           BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"
-          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
