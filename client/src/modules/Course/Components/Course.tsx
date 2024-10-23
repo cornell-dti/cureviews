@@ -266,7 +266,7 @@ export const Course = () => {
 
         <ReviewModal
           open={open}
-          setOpen={setOpen}
+          setReviewOpen={setOpen}
           submitReview={onSubmitReview}
           professorOptions={
             selectedClass.classProfessors ? selectedClass.classProfessors : []

@@ -49,7 +49,7 @@ const AnonymousWarning = ({ open }: Props) => {
                 <img src={Anonymous} className="anonymous-logo" alt="anonymous logo" />
             </div>
             <div className={styles.message}>
-                <span className="line1">Don't worry - all your reviews are<br /></span> <span className={styles.line2}> anonymous!</span>
+                <span className="line1">Login to submit - all your reviews are<br /></span> <span className={styles.line2}> anonymous!</span>
             </div>
             <button
                 className={`${styles.button}`}
@@ -63,17 +63,6 @@ const AnonymousWarning = ({ open }: Props) => {
             </div>
         )
     }
-}
-
-type NewReview = {
-  text: string
-  rating: number
-  difficulty: number
-  workload: number
-  professors: string[]
-  isCovid: boolean
-  grade: string
-  major: string[]
 }
 
 export default AnonymousWarning

@@ -16,13 +16,13 @@ import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 const ReviewModal = ({
   open,
-  setOpen,
+  setReviewOpen,
   submitReview,
   professorOptions,
 }: Modal) => {
   // Modal Logic
   function closeModal() {
-    setOpen(false)
+    setReviewOpen(false)
   }
   // Content & Options
   const placeholdertext =
@@ -149,7 +149,7 @@ const ReviewModal = ({
     } else {
       handleSubmitReview()
       setAnonymousOpen(true)
-      setOpen(false)
+      setReviewOpen(false)
     }
   }
 
@@ -270,7 +270,7 @@ const ReviewModal = ({
 
 type Modal = {
   open: boolean
-  setOpen: (open: boolean) => void
+  setReviewOpen: (open: boolean) => void
   submitReview: (review: NewReview) => void
   professorOptions: string[]
 }
