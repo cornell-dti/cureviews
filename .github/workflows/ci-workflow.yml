@@ -21,5 +21,3 @@ jobs:
         run: CI=false yarn workspace client build
       - name: Test
         run: yarn workspace server test
-        env:
-          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
