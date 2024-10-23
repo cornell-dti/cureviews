@@ -17,7 +17,7 @@ import {
   removePendingReview,
   updateAllProfessorsDb,
   resetAllProfessorsDb,
-  updateSubjectsDb,
+  updateDatabaseCourseFullSubjectName,
   initAllDb,
   addNewSemDb,
   verifyTokenAdmin,
@@ -448,7 +448,7 @@ adminRouter.post('/subjects/update', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await updateSubjectsDb({ auth });
+    const result = await updateDatabaseCourseFullSubjectName({ auth });
 
     if (result) {
       return res.status(200).json({ result: true });

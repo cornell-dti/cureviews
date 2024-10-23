@@ -279,7 +279,7 @@ export const resetAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
-export const updateSubjectsDb = async ({ auth }: VerifyAdminType) => {
+export const updateDatabaseCourseFullSubjectName = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;

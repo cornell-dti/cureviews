@@ -20,19 +20,19 @@ import Loading from '../../Globals/Loading'
 export const Admin = () => {
   const [pendingReviews, setPendingReviews] = useState<Review[]>([])
   const [reportedReviews, setReportedReviews] = useState<Review[]>([])
-  const [disableInit, setDisableInit] = useState<boolean>(false)
-  const [disableNewSem, setDisableNewSem] = useState<boolean>(false)
-  const [disableUpdateProfs, setDisableUpdateProfs] = useState<boolean>(false)
-  const [disableResetProfs, setDisableResetProfs] = useState<boolean>(false)
-  const [disableUpdateSubjects, setDisableUpdateSubjects] = useState<boolean>(false)
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
 
   const [updating, setUpdating] = useState<boolean>(false);
-  const [semAdded, setSemAdded] = useState<boolean>(false);
-  const [profsReset, setProfsReset] = useState<boolean>(false)
-  const [profsUpdated, setProfsUpdated] = useState<boolean>(false);
-  const [subjectsUpdated, setSubjectsUpdated] = useState<boolean>(false);
-  const [databaseLoaded, setDatabaseLoaded] = useState<boolean>(false);
+  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database';
+  const [updated, setUpdated] = useState<updatedStates>('empty');
+  const successMessages = {
+    'empty': '',
+    'semester': "New semester data successfully added",
+    'profsReset': "Professor data successfully reset to empty",
+    'profsUpdate': "Professor data successfully updated",
+    'subjects': "Subject full name data successfully updated",
+    'database': "Database successfully initialized",
+  };
   const [updatingField, setUpdatingField] = useState<string>("");
 
   const [addSemester, setAddSemester] = useState('')
@@ -79,23 +79,6 @@ export const Admin = () => {
     }
     loadReviews()
   }, [token, isAuthenticating])
-
-  // Disables the database update buttons when an update is occurring
-  useEffect(() => {
-    if (updating) {
-      setDisableInit(true)
-      setDisableNewSem(true)
-      setDisableUpdateProfs(true)
-      setDisableResetProfs(true)
-      setDisableUpdateSubjects(true)
-    } else {
-      setDisableInit(false)
-      setDisableNewSem(false)
-      setDisableUpdateProfs(false)
-      setDisableResetProfs(false)
-      setDisableUpdateSubjects(false)
-    }
-  }, [updating])
 
   /**
    * Helper function to remove a review from a list of reviews and
@@ -190,24 +173,20 @@ export const Admin = () => {
   async function addNewSem(semester: string) {
     console.log('Adding new semester...')
     setUpdating(true)
-    setSemAdded(false)
     setUpdatingField("new semester")
     //wz
-    axios
-      .post('/api/admin/semester/add', {
-        semester,
-        token: token,
-      })
-      .then((response) => {
-        const result = response.data.result
-        if (result === true) {
-          console.log('New Semester Added')
-          setUpdating(false)
-          setSemAdded(true)
-        } else {
-          console.log('Unable to add new semester!')
-        }
-      })
+    const response = await axios.post('/api/admin/semester/add', {
+      semester,
+      token: token,
+    })
+    const result = response.data.result;
+    if (result === true) {
+      console.log('New Semester Added')
+      setUpdating(false)
+      setUpdated('semester')
+    } else {
+      console.log('Unable to add new semester!')
+    }
   }
 
   // Call when user selects "Initialize Database" button. Scrapes the Cornell
@@ -217,83 +196,73 @@ export const Admin = () => {
   //
   // NOTE: requires an initialize flag to ensure the function is only run on
   // a button click without this, it will run every time this component is created.
-  function addAllCourses() {
+  async function addAllCourses() {
     console.log('Initializing database')
     setUpdating(true)
-    setDatabaseLoaded(false)
     setUpdatingField("all database")
     //wz
-    axios.post('/api/admin/db/initialize', { token: token }).then((response) => {
-      if (response.status === 200) {
-        setUpdating(false)
-        setDatabaseLoaded(true)
-      } else {
-        console.log('Error at dbInit')
-      }
-    })
+    const response = await axios.post('/api/admin/db/initialize', { token: token });
+    if (response.status === 200) {
+      setUpdating(false)
+      setUpdated('database')
+    } else {
+      console.log('Error at dbInit')
+    }
   }
 
   /**
    * Call when admin wants to update professors for users to search through
    * when clicking the "Update Professors" button
    */
-  function updateProfessors() {
+  async function updateProfessors() {
     console.log('Updating professors')
     setUpdating(true)
-    setProfsUpdated(false)
     setUpdatingField("professors")
     //wz
-
-    axios.post('/api/admin/professors/add', { token: token }).then((response) => {
-      if (response.status === 200) {
-        console.log('Updated the professors')
-        setUpdating(false)
-        setProfsUpdated(true)
-      } else {
-        console.log('Error at setProfessors')
-      }
-    })
+    const response = await axios.post('/api/admin/professors/add', { token: token });
+    if (response.status === 200) {
+      console.log('Updated the professors')
+      setUpdating(false)
+      setUpdated('profsUpdate')
+    } else {
+      console.log('Error at setProfessors')
+    }
   }
 
   /**
    * Call when admin wants to reset all professors in classes when clicking the 
    * "Reset Professors" button
    */
-  function resetProfessors() {
+  async function resetProfessors() {
     console.log('Setting the professors to an empty array')
     setUpdating(true)
-    setProfsReset(false)
     setUpdatingField("professors to empty arrays")
     // wz
-    axios.post('/api/admin/professors/reset', { token: token }).then((response) => {
-      if (response.status === 200) {
-        console.log('Reset all the professors to empty arrays')
-        setUpdating(false)
-        setProfsReset(true)
-      } else {
-        console.log('Error at resetProfessors')
-      }
-    })
+    const response = await axios.post('/api/admin/professors/reset', { token: token });
+    if (response.status === 200) {
+      console.log('Reset all the professors to empty arrays')
+      setUpdating(false)
+      setUpdated('profsReset')
+    } else {
+      console.log('Error at resetProfessors')
+    }
   }
 
   /**
    * Call when admin wants to update the list of subjects users can search through
    * when clicking the "Update Subjects" button
    */
-  function updateSubjects() {
+  async function updateSubjects() {
     setUpdating(true);
-    setSubjectsUpdated(false);
     setUpdatingField("subjects");
-    axios.post('/api/admin/subjects/update', { token: token }).then((response) => {
-      if (response.status === 200) {
-        console.log('Updated all subject names');
-        setDisableInit(false);
-        setUpdating(false);
-        setSubjectsUpdated(true);
-      } else {
-        console.log('Error at updateSubjects');
-      }
-    })
+    const response = await axios.post('/api/admin/subjects/update', { token: token });
+    if (response.status === 200) {
+      console.log('Updated all subject names');
+      setUpdating(false);
+      setUpdated('subjects');
+    } else {
+      console.log('Error at updateSubjects');
+    }
   }
 
   /**
@@ -319,7 +288,7 @@ export const Admin = () => {
       return (
         <div className="">
           <button
-            disabled={disableInit}
+            disabled={updating}
             type="button"
             className={styles.adminButtons}
             onClick={() => addAllCourses()}
@@ -361,7 +330,7 @@ export const Admin = () => {
                 Manage Administrators
               </button>
               <button
-                disabled={disableNewSem}
+                disabled={updating}
                 type="button"
                 className={styles.adminButtons}
                 onClick={() => addNewSem(addSemester)}
@@ -369,7 +338,7 @@ export const Admin = () => {
                 Add New Semester
               </button>
               <button
-                disabled={disableUpdateProfs}
+                disabled={updating}
                 type="button"
                 className={styles.adminButtons}
                 onClick={() => updateProfessors()}
@@ -377,7 +346,7 @@ export const Admin = () => {
                 Update Professors
               </button>
               <button
-                disabled={disableResetProfs}
+                disabled={updating}
                 type="button"
                 className={styles.adminButtons}
                 onClick={() => resetProfessors()}
@@ -385,7 +354,7 @@ export const Admin = () => {
                 Reset Professors
               </button>
               <button
-                disabled={disableUpdateSubjects}
+                disabled={updating}
                 type="button"
                 className={styles.adminButtons}
                 onClick={() => updateSubjects()}
@@ -402,29 +371,13 @@ export const Admin = () => {
             token={token}
           />
 
-          <div hidden={!semAdded} className="">
-            <p>New Semester Data import is complete!</p>
-          </div>
-
-          <div hidden={!profsReset} className="">
-            <p>All professor arrays in Classes reset to empty!</p>
-          </div>
-
-          <div hidden={!profsUpdated} className="">
-            <p>Professor data import to Classes is complete!</p>
+          <div hidden={updated === 'empty'}>
+            {successMessages[updated]}
           </div>
 
           <div hidden={!updating} className="">
             <p>Updating {updatingField} in the Course database.</p>
             <p>This process can take up to 15 minutes.</p>
-          </div>
-
-          <div hidden={!subjectsUpdated} className="">
-            <p>Subject data import to Classes is complete!</p>
-          </div>
-
-          <div hidden={!databaseLoaded} className="">
-            <p>Database initialization is complete!</p>
           </div>
         </div>
 
