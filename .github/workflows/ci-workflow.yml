@@ -22,4 +22,4 @@ jobs:
       - name: Test
         run: yarn workspace server test
         env:
-          BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"
+          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
