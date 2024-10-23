@@ -27,7 +27,7 @@ describe('search functionality unit tests', () => {
   it('getResultsFromQuery - invalid body is sent', async () => {
     expect(
       await axios
-        .post(`http://localhost:${testPort}/api/getResultsFromQuery`, {
+        .post(`http://localhost:${testPort}/api/search/results`, {
           'other query': 'other',
         })
         .catch((e) => 'failed!'),
@@ -36,7 +36,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query "MORK 1" sent with correct subject and order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       {
         query: 'MORK 1',
       },
@@ -56,7 +56,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query: "MORK1" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       {
         query: 'MORK1',
       },
@@ -71,7 +71,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query: "MORK 1110" sent with correct subject and order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'MORK 1110' },
     );
 
@@ -86,7 +86,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query: "1110" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: '1110' },
     );
     expect(res.data.result.courses.map((e) => e.classFull)).toContain(
@@ -102,7 +102,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query: "Advanced" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'Advanced' },
     );
     expect(res.data.result.courses.map((e) => e.classFull)).toContain(
@@ -118,7 +118,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query: "Advanced Mock" sent with correct order of classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'Advanced Mock' },
     );
     expect(res.data.result.courses.map((e) => e.classFull)).toContain(
@@ -134,7 +134,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - valid query subject: "MORK" sent with correct order', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'MORK' },
     );
     expect(res.data.result.subjects.map((e) => e.subShort)).toContain('MORK');
@@ -144,7 +144,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - query professor: "Gazghul Thraka" sent', async () => {
     const res1 = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'Gazghul Thraka' },
     );
     expect(res1.data.result.professors.map((e) => e.fullName)).toContain(
@@ -157,7 +157,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - query professor: "Jean-Luc Picard" sent', async () => {
     const res2 = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'Jean-Luc Picard' },
     );
     expect(res2.data.result.professors.map((e) => e.fullName)).not.toContain(
@@ -171,7 +171,7 @@ describe('search functionality unit tests', () => {
   // Query has no matching results:
   it('getResultsFromQuery - no matching classes', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       {
         query: 'random',
       },
@@ -188,7 +188,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - no matching subjects', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'RAND' },
     );
     // we expect no results to be returned
@@ -200,7 +200,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - no matching professors', async () => {
     const res = await axios.post(
-      `http://localhost:${testPort}/api/getResultsFromQuery`,
+      `http://localhost:${testPort}/api/search/results`,
       { query: 'Random Professor' },
     );
     // we expect no results to be returned
@@ -215,7 +215,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - non Ascii query', async () => {
     const res = await axios
-      .post(`http://localhost:${testPort}/api/getResultsFromQuery`, {
+      .post(`http://localhost:${testPort}/api/search/results`, {
         query: 'भारत',
       })
       .catch((e) => e);
@@ -224,7 +224,7 @@ describe('search functionality unit tests', () => {
 
   it('getResultsFromQuery - empty query', async () => {
     const res = await axios
-      .post(`http://localhost:${testPort}/api/getResultsFromQuery`, {
+      .post(`http://localhost:${testPort}/api/search/results`, {
         query: '',
       })
       .catch((e) => e);

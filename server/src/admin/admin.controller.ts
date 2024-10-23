@@ -11,7 +11,6 @@ import {
   findAdminUsers,
   removeAdminPrivilege,
   grantAdminPrivilege,
-  createNewAdminUser,
   approveAllReviews,
 } from './admin.data-access';
 import {
@@ -43,6 +42,7 @@ import {
   addNewSemester,
   addAllDescriptions,
 } from '../../scripts';
+import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
 /**
  * Reports a review by setting its visibility to only admin and updating reported count.
@@ -232,19 +232,15 @@ export const removeAdmin = async ({ auth, id }: VerifyManageAdminType) => {
 
 /**
  * Grants a user admin privilege by updating them if they are in the database.
- * If the user is not in the database, creates a new user with their netid and admin privilege
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @param {string} id: String identifying the user by netid
  * @returns The user with updated admin privilege if operation was successful, null otherwise
  */
-export const addOrUpdateAdmin = async ({ auth, id }: VerifyManageAdminType) => {
+export const addAdmin = async ({ auth, id }: VerifyManageAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     let res = await grantAdminPrivilege(id);
-    if (res.nModified === 0) {
-      res = await createNewAdminUser(id);
-    }
     return res;
   }
 }
@@ -278,6 +274,23 @@ export const resetAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
 
   return result;
 };
+
+/**
+ * Updates all subjects in the database to represent their full subject names
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
+export const updateDatabaseCourseFullSubjectName = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const semesters = await findAllSemesters();
+  const result = await fetchAddSubjects(COURSE_API_BASE_URL, semesters);
+
+  return result;
+}
 
 /**
  * Helper function to get metrics associated with a course

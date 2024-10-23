@@ -7,7 +7,12 @@ import { getCourseById } from '../utils';
 
 export const courseRouter = express.Router();
 
-courseRouter.post('/getCourseByInfo', async (req, res) => {
+/** Reachable at POST /api/courses/get-by-info
+ * @body number: a course's number
+ * @body subject: a course's subject code
+ * Gets a course by its subject and number
+*/
+courseRouter.post('/get-by-info', async (req, res) => {
   try {
     const { number, subject }: CourseInfoRequestType = req.body;
     const course = await getCourseByInfo({ number, subject });
@@ -26,7 +31,11 @@ courseRouter.post('/getCourseByInfo', async (req, res) => {
   }
 });
 
-courseRouter.post('/getCourseById', async (req, res) => {
+/** Reachable at POST /api/courses/get-by-id
+ * @body courseId: a course's id field
+ * Gets a course by its id in the database
+*/
+courseRouter.post('/get-by-id', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const course = await getCourseById({ courseId });
@@ -38,7 +47,11 @@ courseRouter.post('/getCourseById', async (req, res) => {
   }
 });
 
-courseRouter.post('/getReviewsByCourseId', async (req, res) => {
+/** Reachable at POST /api/courses/get-reviews
+ * @body courseId: a course's id field
+ * Gets the array of all reviews for the course with id = courseId
+*/
+courseRouter.post('/get-reviews', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsCrossListOR({ courseId });

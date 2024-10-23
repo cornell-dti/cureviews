@@ -44,7 +44,7 @@ export const SearchBar = ({
     }
 
     async function fetchCourses() {
-      const response = await axios.post(`/api/getResultsFromQuery`, {
+      const response = await axios.post(`/api/search/results`, {
         query: query,
       })
       const courseList = response.data.result.courses
@@ -153,8 +153,6 @@ export const SearchBar = ({
   const renderResults = () => {
     /** Only render if the query is not empty */
     if (query !== '' && !selected) {
-      let results = []
-
       /* User press [ENTER] button?
             => Redirect user to '/results/keyword/query+query'
        */
@@ -195,10 +193,10 @@ export const SearchBar = ({
       const SubjectsList = () => {
         return <div>
           {subjects.slice(0, 3).map((subject, i) => (
-            //create a new class "button" that will set the selected class to this class when it is clicked.
+            // create a new class "button" that will set the selected class to this class when it is clicked.
             <SubjectResult
               key={subject._id}
-              info={subject}
+              subject={subject}
               query={query}
               active={index === i + 1 /* plus 1 because of exact search */}
               enter={enter}
@@ -238,14 +236,11 @@ export const SearchBar = ({
             // create a new class "button" that will set the selected class to this class when it is clicked.
             <Course
               key={course._id}
-              info={course}
+              course={course}
               query={query}
               active={
-                index ===
-                i +
-                subjects.length +
-                professors.length +
-                1 /* plus because of exact search, professors, subjects */
+                index === i + subjects.length + professors.length + 1
+                /* plus because of exact search, professors, subjects */
               }
               enter={enter}
               mouse={mouse}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import styles from '../Styles/AdminReview.module.css'
 
@@ -22,17 +22,19 @@ const UpdateReview = ({review, approveHandler, removeHandler, unReportHandler}: 
     const [shortName, setShortName] = useState<string>("")
     const [fullName, setFullName] = useState<string>("")
 
-    axios
-    .post(`/api/getCourseById`, {
-      courseId: review.class,
-    })
-    .then((response) => {
+    async function getCourse() {
+      const response = await axios.post(`/api/courses/get-by-id`, {
+        courseId: review.class
+      })
+  
       const course = response.data.result
       if (course) {
         setShortName(course.classSub.toUpperCase() + ' ' + course.classNum)
         setFullName(course.classTitle)
       }
-    })
+    }
+    
+    getCourse()
 
     function renderButtons(review: any) {
         const reported = review.reported

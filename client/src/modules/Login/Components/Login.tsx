@@ -1,5 +1,4 @@
 import React from 'react'
-// import CUreviewsGoogleLogin from './CUreviewsGoogleLogin'
 
 import CUReviewsGoogleLogin from './CUReviewsGoogleLogin'
 import '../Styles/Login.css'

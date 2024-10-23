@@ -29,10 +29,10 @@ export const Home = () => {
 
   /** Logic for deciding the home pages' background image */
   function setBackground() {
-    const sunset_start_times = [
+    const sunsetStartTimes = [
       17.0, 17.5, 18, 19.5, 20, 20.5, 20.5, 19.5, 18.5, 18, 16.5, 16.5,
     ]
-    const sunset_end_times = [
+    const sunsetEndTimes = [
       18.5, 19, 20.5, 21, 22, 22, 22, 21.5, 20.5, 20, 19, 18,
     ]
     const date = new Date()
@@ -40,9 +40,9 @@ export const Home = () => {
     const hours = date.getHours()
     const minutes = date.getMinutes()
 
-    let time_of_day = hours
+    let timeOfDay = hours
     if (minutes > 30) {
-      time_of_day += 0.51
+      timeOfDay += 0.51
     }
     if (month === 11 || month === 0 || month === 1) {
       setSeason('winter')
@@ -54,9 +54,9 @@ export const Home = () => {
       setSeason('fall')
     }
 
-    if (time_of_day < 6 || time_of_day >= sunset_end_times[month]) {
+    if (timeOfDay < 6 || timeOfDay >= sunsetStartTimes[month]) {
       setTime('night')
-    } else if (time_of_day >= sunset_start_times[month]) {
+    } else if (timeOfDay >= sunsetEndTimes[month]) {
       setTime('sunset')
     }
   }

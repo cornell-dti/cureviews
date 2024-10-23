@@ -66,3 +66,9 @@ export const updateReviewLikedBy = async (
 export const updateReviewLikes = async (reviewId: string, likes: number) => {
   await Reviews.updateOne({ _id: reviewId }, { $set: { likes } });
 };
+
+export const hideReportedReview = async (
+  reviewId: string,
+) => {
+  await Reviews.updateOne({ _id: reviewId }, { $set: { visible: 0, reported: 1} });
+};
