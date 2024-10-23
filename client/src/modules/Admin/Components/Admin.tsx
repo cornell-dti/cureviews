@@ -371,7 +371,7 @@ export const Admin = () => {
             token={token}
           />
 
-          <div hidden={updated === 'empty'}>
+          <div>
             {successMessages[updated]}
           </div>
 
