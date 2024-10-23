@@ -536,10 +536,12 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   const courseNum = course.classNum;
   const courseFromDb = await Classes.findOne({ _id: courseId }).exec();
   const checkDescription = courseFromDb.classDescription;
+
   if (checkDescription && checkDescription !== null) {
     console.log(`Already added description to ${subject} ${courseNum}`);
     return true;
   }
+
   for (let i = semesters.length - 1; i >= 0; i--) {
     semester = semesters[i];
     try {
@@ -550,8 +552,6 @@ export const addCourseDescription = async (course): Promise<boolean> => {
       for (const c of courses) {
         if (c.catalogNbr === courseNum) {
           const description = c.description && c.description !== null ? c.description : c.titleLong;
-          const res = await Classes.findOne({ _id: courseId })
-          console.log(res.classTitle);
           await Classes.updateOne(
             { _id: courseId },
             { $set: { classDescription: description } },
