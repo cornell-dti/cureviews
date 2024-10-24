@@ -127,7 +127,7 @@ const Profile = () => {
      */
     async function submitReview(review: NewReview, courseId: string) {
       try {
-        const response = await axios.post('/api/insertReview', {
+        const response = await axios.post('/api/reviews/insert', {
           token: token,
           review: review,
           courseId: courseId,

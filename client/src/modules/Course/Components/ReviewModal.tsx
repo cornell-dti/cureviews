@@ -82,7 +82,7 @@ const ReviewModal = ({
    * the anonymous modal
    */
   async function getNoReviews() {
-    const response = await axios.post('/api/countReviewsByStudentId', {
+    const response = await axios.post('/api/profile/count-reviews', {
         netId,
     })
     const res = response.data
