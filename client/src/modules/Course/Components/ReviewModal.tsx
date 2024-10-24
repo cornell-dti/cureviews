@@ -228,13 +228,13 @@ const ReviewModal = ({
               options={majorOptions}
               value={selectedMajors}
               onChange={onMajorChange}
-              placeholder="Underwater Basket Weaving"
+              placeholder="Select Major"
             />
             <SingleSelect
               options={gradeoptions}
               value={selectedGrade}
               onChange={onGradeChange}
-              placeholder="B+"
+              placeholder="Grade Received"
             />
           </div>
           <div className={styles.textcol}>
@@ -246,20 +246,12 @@ const ReviewModal = ({
               id="review-content"
               placeholder={placeholdertext}
             ></textarea>
-            <div className={styles.tags}>
-              <span role="img" aria-label="tags-coming-soon">
-                {' '}
-                👀{' '}
-              </span>
-              coming soon ...
-            </div>
             <button
               className={styles.submitbutton}
               onClick={() => {onSubmitReview()}}
               disabled={!allowSubmit}
             >
-              {' '}
-              Submit Review{' '}
+              Submit Review
             </button>
           </div>
         </div>

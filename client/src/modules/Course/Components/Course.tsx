@@ -65,24 +65,21 @@ export const Course = () => {
   useEffect(() => {
     async function updateCurrentClass(number: number, subject: string) {
       try {
-        const response = await axios.post(`/api/getCourseByInfo`, {
+        const response = await axios.post(`/api/courses/get-by-info`, {
           number,
-          subject: subject.toLowerCase(), // TODO: fix backend to handle this
+          subject: subject,
         })
 
         const course = response.data.result
         if (course) {
           setSelectedClass(course)
 
-          // after getting valid course info, fetch reviews
-          const reviewsResponse = await axios.post(
-            '/api/getReviewsByCourseId',
-            {
-              courseId: course._id,
-            }
-          )
+          // After getting valid course info, fetch reviews
+          const reviewsResponse = await axios.post('/api/courses/get-reviews', {
+            courseId: course._id,
+          })
           const reviews = reviewsResponse.data.result
-          // convert date field of Review to JavaScript Date object
+          // Convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
           reviews.sort(sortByLikes)
           setCourseReviews(reviews)
@@ -97,6 +94,49 @@ export const Course = () => {
     }
     updateCurrentClass(number, subject)
   }, [number, subject])
+
+  /**
+   * Checks if there is a review stored in Session (i.e. this redirected from
+   * auth)
+   */
+  useEffect(() => {
+    /**
+     * Submit review and clear session storage
+     */
+    async function submitReview(review: NewReview, courseId: string) {
+      try {
+        const response = await axios.post('/api/reviews/post', {
+          token: token,
+          review: review,
+          courseId: courseId,
+        })
+
+        clearSessionReview()
+        if (response.status === 200) {
+          toast.success(
+            'Thanks for reviewing! New reviews are updated every 24 hours.'
+          )
+        } else {
+          toast.error('An error occurred, please try again.')
+        }
+      } catch (e) {
+        clearSessionReview()
+        toast.error('An error occurred, please try again.')
+      }
+    }
+
+    const sessionReview = Session.get('review')
+    const sessionCourseId = Session.get('courseId')
+    if (
+      sessionReview !== undefined &&
+      sessionReview !== '' &&
+      sessionCourseId !== undefined &&
+      sessionCourseId !== '' &&
+      isLoggedIn
+    ) {
+      submitReview(sessionReview, sessionCourseId)
+    }
+  }, [isLoggedIn, token])
 
   /**
    * Sorts reviews based on selected filter
@@ -189,8 +229,9 @@ export const Course = () => {
         <div className={styles.overview}>
           <div className={styles.classinfo}>
             <h1
-              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
-                }`}
+              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
+                selectedClass.classNum
+              }`}
             >
               {selectedClass.classTitle}
             </h1>
@@ -234,7 +275,7 @@ export const Course = () => {
           <div className={styles.bar}>
             <h2>Past Reviews ({courseReviews?.length}) </h2>
             <div>
-              <label htmlFor="sort-reviews">Sort by:</label>
+              <label htmlFor="sort-reviews">Sort by: </label>
               <select
                 name="sort-reviews"
                 id="sort-reviews"
@@ -249,9 +290,9 @@ export const Course = () => {
           <div className={styles.reviews}>
             <CourseReviews
               reviews={courseReviews}
-              onReportReview={reportReview}
               isPreview={false}
               isProfile={false}
+              token={token}
             />
           </div>
         </div>
@@ -276,6 +317,5 @@ export const Course = () => {
     )
   }
 
-  // TODO: create idle state, rethink how to handle this
   return <Loading />
 }

@@ -1,29 +1,34 @@
 import express from 'express';
 import { CourseIdRequestType } from '../course/course.type';
-import { makeSummary, getCoursesWithMinReviews, getReviewsForSummary } from './ai.functions';
+import { getCoursesWithMinReviews, getReviewsForSummary, generateTags } from './ai.functions';
 
 const aiRouter = express.Router();
 
 aiRouter.use(express.json());
 
-/** Reachable at POST /api/ai/summarizeReviews
+/** Reachable at POST /api/ai/summarize-reviews
  * @body a block of text containing all reviews from a course
- * returns a summary created by OpenAI
+ * returns a dictionary containing the summary and tags created by OpenAI
 */
-aiRouter.post('/text/summary', async (req, res) => {
+aiRouter.post('/summarize-reviews', async (req, res) => {
   try {
-    if (!req.body.text) {
+    const { text } = req.body;
+    if (!text) {
       return res.status(400).json({ error: 'No text provided' });
     }
-    const summary = await makeSummary(req.body.text);
-    res.status(200).json({ summary });
+    const summaryAndTags = await generateTags(text);
+    res.status(200).json({ summaryAndTags });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-aiRouter.post('/get/text', async (req, res) => {
+/** Reachable at POST api/ai/get-course-reviews-text
+ * @body a course ID
+ * returns a block of text containing all reviews from that course
+*/
+aiRouter.post('/get-course-reviews-text', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsForSummary({ courseId });
@@ -42,11 +47,11 @@ aiRouter.post('/get/text', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/ai/courseids
- * @body minimum number of reviews needed to create a summary
+/** Reachable at POST /api/ai/course-ids
+ * @body min: the minimum number of reviews needed to create a summary
  * returns all course ids that have at least that number of reviews
 */
-aiRouter.post('/courseids', async (req, res) => {
+aiRouter.post('/course-ids', async (req, res) => {
   try {
     const min = req.body.min;
     const ids = await getCoursesWithMinReviews(min);

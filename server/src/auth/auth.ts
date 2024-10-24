@@ -36,7 +36,7 @@ export class Auth {
    * @param token: google auth token
    * @param netid: netid to verify
    * @requires that you have a handleVerifyError, like as follows:
-   * verify(token, function(){//do whatever}).catch(function(error){
+   * verify(token, function(){//do whatever}).catch(function(error)){
    */
   async getVerificationTicket() {
     try {

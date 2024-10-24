@@ -33,7 +33,7 @@ const Profile = () => {
   const [reviewsTotal, setReviewsTotal] = useState('0')
   const [reviewsHelpful, setReviewsHelpful] = useState('0')
 
-  const {isLoggedIn, token, netId, isAuthenticating, signOut} =
+  const { isLoggedIn, token, netId, isAuthenticating, signOut } =
     useAuthMandatoryLogin('profile')
 
   const profilePicture: string = randomPicture(netId)
@@ -42,7 +42,7 @@ const Profile = () => {
    * Retrieves the total reviews that a student has made
    */
   async function getReviewsTotal() {
-    const response = await axios.post('/api/countReviewsByStudentId', {
+    const response = await axios.post('/api/profiles/count-reviews', {
       netId,
     })
 
@@ -56,7 +56,7 @@ const Profile = () => {
    * Retrieves the number of reviews that the student has made that have been upvoted
    */
   async function getReviewsHelpful() {
-    const response = await axios.post('/api/getTotalLikesByStudentId', {
+    const response = await axios.post('/api/profiles/get-likes', {
       netId,
     })
 
@@ -77,7 +77,14 @@ const Profile = () => {
       : -1
 
   useEffect(() => {
-    axios.post(`/api/getReviewsByStudentId`, { netId }).then((response) => {
+    if (token) {
+      axios.post('/api/auth/new-user', { token })
+    }
+  }, [token])
+
+  useEffect(() => {
+    async function getReviews() {
+      const response = await axios.post(`/api/profiles/get-reviews`, { netId })
       const reviews = response.data.result
       const pendingReviews = reviews.filter(function (review: ReviewType) {
         return review.visible === 0
@@ -91,8 +98,10 @@ const Profile = () => {
       setPendingReviews(pendingReviews)
       setPastReviews(pastReviews)
       setLoading(false)
-    })
-  }, [netId, token])
+    }
+
+    getReviews()
+  }, [netId])
 
   useEffect(() => {
     const pendingReviews = reviews.filter(function (review: ReviewType) {
