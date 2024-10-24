@@ -64,7 +64,7 @@ export const Admin = () => {
    */
   useEffect(() => {
     async function loadReviews() {
-      const pending = await axios.post('/api/admin/reviews/get/pending', {
+      const pending = await axios.post('/api/admin/reviews/get-pending', {
         token: token,
       })
       if (pending.status === 200) {
