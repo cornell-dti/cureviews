@@ -124,17 +124,11 @@ export const findAdminUsers = async () => {
 }
 
 export const removeAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: { privilege: "regular" } }).exec()
+  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'regular'} }).exec()
   return res
 }
 
-/*
- * Updates the user with netId = id to have admin privilege
- */
 export const grantAdminPrivilege = async (id: string) => {
-  const user = await Students.findOne({ netId: id }).exec()
-  if (user) {
-    const res = await Students.updateOne({ netId: id }, { $set: { privilege: "admin" } }).exec()
-    return res
-  }
+  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'admin'} }).exec()
+  return res
 }
