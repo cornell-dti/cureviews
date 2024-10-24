@@ -136,7 +136,7 @@ const Profile = () => {
      */
     async function submitReview(review: NewReview, courseId: string) {
       try {
-        const response = await axios.post('/api/reviews/insert', {
+        const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
           courseId: courseId,
@@ -144,7 +144,6 @@ const Profile = () => {
 
         clearSessionReview()
         if (response.status === 200) {
-          console.log('toast!')
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           )
