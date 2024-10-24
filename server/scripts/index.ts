@@ -3,6 +3,7 @@ export {
   addCrossList,
   addNewSemester,
   addAllCourses,
+  addAllDescriptions,
 } from './populate-courses';
 
 export { addAllProfessors, resetProfessors } from './populate-professors';

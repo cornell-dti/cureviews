@@ -5,6 +5,7 @@ export interface Class {
   classSub: string;
   classNum: string;
   classTitle?: string;
+  classDescription?: string;
   classPrereq: string[];
   crossList: string[];
   classFull?: string;

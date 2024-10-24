@@ -21,7 +21,7 @@ import {
   ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
-  VerifyManageAdminType
+  VerifyManageAdminType,
 } from './admin.type';
 
 import {
@@ -40,6 +40,7 @@ import {
   addAllCrossList,
   addCrossList,
   addNewSemester,
+  addAllDescriptions,
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
@@ -402,3 +403,19 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
   const result = await addCrossList(semester);
   return result;
 };
+
+/**
+ * Adds all course descriptions to the database after updating the courses for the most recent semester.
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
+export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const descriptionResult = await addAllDescriptions();
+  return descriptionResult;
+}

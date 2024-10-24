@@ -25,7 +25,8 @@ import {
   getAdminUsers,
   removeAdmin,
   addAdmin,
-  approveReviews
+  approveReviews,
+  addCourseDescriptionsDb
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -439,6 +440,28 @@ adminRouter.post('/professors/reset', async (req, res) => {
     return res
       .status(400)
       .json({ error: 'Professors were unable to be reset!' });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/course/desc', async (req, res) => {
+  const { token }: AdminRequestType = req.body;
+  try {
+    const auth = new Auth({ token });
+    const result = await addCourseDescriptionsDb({ auth });
+    console.log(result)
+
+    if (result) {
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ message: 'Course descriptions added!' });
+      return res;
+    }
+
+    return res
+      .status(400)
+      .json({ error: 'Course descriptions were unable to be added!' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

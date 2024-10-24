@@ -23,6 +23,7 @@ const ClassSchema = new Schema<ClassDocument>({
   classSub: { type: String }, // subject, like "PHIL" or "CS"
   classNum: { type: String }, // course number, like 1110
   classTitle: { type: String }, // class title, like 'Introduction to Algorithms'
+  classDescription: { type: String }, // class description from Course API
   classPrereq: { type: [String], required: false }, // list of pre-req classes, a string of Classes _id.
   crossList: { type: [String], required: false }, // list of classes that are crosslisted with this one, a string of Classes _id.
   classFull: { type: String }, // full class title to search by, formated as 'classSub classNum: classTitle'
