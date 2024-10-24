@@ -11,12 +11,12 @@ const stemWord = (word) => {
   return word;
 }
 
-const preprocess = (text) => {
+export const preprocess = (text: string) => {
   let sentences = text.match(/[^.!?]*[.!?]\s+[A-Z]/g) || [text];
   let processedText = sentences.map(sentence => {
     let words = sentence.match(/\b\w+\b/g) || [];
     let cleanedWords = words.map(word => {
-      let singularWord = stemWord(word.toLowerCase());
+      const singularWord = stemWord(word.toLowerCase());
       return singularWord.replace(/[^\w\s]/g, '');
     });
     return cleanedWords.join(' ');
@@ -24,16 +24,17 @@ const preprocess = (text) => {
   return processedText.join('. ');
 }
 
-const idf = (terms, words) => {
+export const idf = (terms, words) => {
   let df = {};
   let idf = {};
   for (const term of terms) {
     df[term] = words.reduce((count, wordsSet) => (count + (wordsSet.includes(term) ? 1 : 0)), 0);
     idf[term] = 1 / (df[term] + 1);
   }
+  return idf;
 }
 
-const tfidf = (terms, idf) => {
+export const tfidf = (terms, idf) => {
   let d = {};
   for (const term of terms) {
     if (!d[term]) {
@@ -42,6 +43,9 @@ const tfidf = (terms, idf) => {
     d[term]++;
   }
   for (const term in d) {
+    if (idf && idf[term] === undefined) {
+      idf[term] = 1;
+    }
     d[term] *= idf[term];
   }
   return d;
@@ -62,7 +66,7 @@ const norm = (vec) => {
   return Math.sqrt(sum);
 }
 
-const cosineSimilarity = (vecA, vecB) => {
+export const cosineSimilarity = (vecA, vecB) => {
   const dotProduct = dot(vecA, vecB);
   const magA = norm(vecA);
   const magB = norm(vecB);

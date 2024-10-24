@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR } from './course.controller';
+import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
+import { getCourseByInfo, getReviewsCrossListOR, getProcessedDescription, getSimilarity } from './course.controller';
 
 import { getCourseById } from '../utils';
 
@@ -68,4 +68,25 @@ courseRouter.post('/get-reviews', async (req, res) => {
       .status(500)
       .json({ error: `Internal Server Error: ${err.message}` });
   }
+});
+
+/** Reachable at POST /api/courses/getPreDesc
+ * @body description: a course description
+ * Gets the processed description to use for the similarity algorithm
+ * Currently used for testing
+*/
+courseRouter.post('/getPreDesc', async (req, res) => {
+  const { description }: CourseDescriptionRequestType = req.body;
+  const processed = getProcessedDescription(description);
+  return res.status(200).json({ result: processed });
+});
+
+/** Reachable at POST /api/courses/getSimilarity
+ * @body courseId: a course's id field
+ * Gets the array of the top 5 similar courses for the course with id = courseId
+*/
+courseRouter.post('/getSimilarity', async (req, res) => {
+  // const { courseId }: CourseIdRequestType = req.body;
+  const similarity = getSimilarity();
+  return res.status(200).json({ result: similarity });
 });
