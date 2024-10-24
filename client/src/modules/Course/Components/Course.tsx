@@ -40,6 +40,8 @@ export const Course = () => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
   const [scrolled, setScrolled] = useState(false)
 
+  const { isLoggedIn, token } = useAuthOptionalLogin()
+
   /**
    * Arrow functions for sorting reviews
    */
