@@ -1,3 +1,6 @@
+/**
+ * Applies stemming rules to reduce a word to its base form
+ */
 const stemWord = (word) => {
   if (word.endsWith("sses")) {
     return word.replace(/sses$/, 'ss');
@@ -11,8 +14,13 @@ const stemWord = (word) => {
   return word;
 }
 
-export const preprocess = (text: string) => {
-  let sentences = text.match(/[^.!?]*[.!?]\s+[A-Z]/g) || [text];
+/**
+ * Preprocesses the description to remove pluralities and unnecessary punctuation
+ * @param description A course description that needs to be preprocessed
+ * @returns The processed description for a course
+ */
+export const preprocess = (description: string) => {
+  let sentences = description.match(/[^.!?]*[.!?]\s+[A-Z]/g) || [description];
   let processedText = sentences.map(sentence => {
     let words = sentence.match(/\b\w+\b/g) || [];
     let cleanedWords = words.map(word => {
@@ -24,6 +32,12 @@ export const preprocess = (text: string) => {
   return processedText.join('. ');
 }
 
+/**
+ * Calculates the inverse document frequency for the given terms
+ * @param terms list of terms in the course description
+ * @param words list of all course descriptions as word arrays
+ * @returns a dictionary with terms as keys and their IDF scores as values
+ */
 export const idf = (terms, words) => {
   let df = {};
   let idf = {};
@@ -34,6 +48,12 @@ export const idf = (terms, words) => {
   return idf;
 }
 
+/**
+ * Calculates the TF-IDF vector for the given terms
+ * @param terms list of terms in the course description
+ * @param idf inverse document frequency (IDF) for the terms
+ * @returns a dictionary with terms as keys and their TF-IDF scores as values
+ */
 export const tfidf = (terms, idf) => {
   let d = {};
   for (const term of terms) {
@@ -51,6 +71,9 @@ export const tfidf = (terms, idf) => {
   return d;
 }
 
+/**
+ * Computes the dot product between two vectors
+ */
 const dot = (a, b) => {
   let sum = 0;
   for (let key in a) {
@@ -61,11 +84,20 @@ const dot = (a, b) => {
   return sum;
 }
 
+/**
+ * Computes the magnitude of a vector
+ */
 const norm = (vec) => {
   const sum = dot(vec, vec);
   return Math.sqrt(sum);
 }
 
+/**
+ * Calculates the cosine similarity of two frequency word vectors
+ * @param vecA frequency word vector corresponding to the first course description
+ * @param vecB frequency word vector corresponding to the second course description
+ * @returns a number representing the similarity between the two descriptions
+ */
 export const cosineSimilarity = (vecA, vecB) => {
   const dotProduct = dot(vecA, vecB);
   const magA = norm(vecA);
