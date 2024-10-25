@@ -4,6 +4,42 @@ import { getCoursesWithMinReviews, getReviewsForSummary, summarize, updateCourse
 const aiRouter = express.Router();
 aiRouter.use(express.json());
 
+/** Reachable at POST /api/ai/update-all-courses
+ * retrieves all course IDs with a minimum of 3 reviews,
+ * and then attempts to update the classSummary, classTags, and freshness
+ * for each course ID by calling updateCoursesWithAI.
+ * returns a message summarizing how many courses were updated successfully
+ * and how many failed.
+ */
+aiRouter.post('/update-all-courses', async (req, res) => {
+  try {
+    const minReviews = 3;
+    //get all courses with at least minimum reviews (will be changed later to check for freshness as well)
+    const courseIds = await getCoursesWithMinReviews(minReviews);
+    if (!courseIds || courseIds.length === 0) {
+      return res.status(404).json({ error: `No courses found with at least ${minReviews} reviews.` });
+    }
+    const results = { success: [], failed: [] };
+
+    //loop through each courseId and update
+    for (const courseId of courseIds) {
+      const success = await updateCoursesWithAI(courseId);
+      if (success) {
+        results.success.push(courseId);
+      } else {
+        results.failed.push(courseId);
+      }
+    }
+
+    //show how many courses were updated successfully
+    const message = `Update completed. ${results.success.length} courses updated successfully. ${results.failed.length} courses failed to update.`;
+    return res.status(200).json({ message, details: results });
+
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
 /** Reachable at POST /api/ai/update-summaries
  * @body a courseId
  * returns a message indicating whether classSumary, classTags, and freshness have
