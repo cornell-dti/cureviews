@@ -106,5 +106,6 @@ export const getSimilarity = () => {
       similarity.push({ courseA: i, courseB: j, similarity: cos });
     }
   }
-  return similarity;
+  similarity.sort((a, b) => b.similarity - a.similarity);
+  return similarity.slice(0, 5);
 }
