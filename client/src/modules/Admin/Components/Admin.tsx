@@ -23,7 +23,7 @@ export const Admin = () => {
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
 
   const [updating, setUpdating] = useState<boolean>(false);
-  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database';
+  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
     'empty': '',
@@ -32,6 +32,7 @@ export const Admin = () => {
     'profsUpdate': "Professor data successfully updated",
     'subjects': "Subject full name data successfully updated",
     'database': "Database successfully initialized",
+    'description': "Course description data successfully added"
   };
   const [updatingField, setUpdatingField] = useState<string>("");
 
@@ -249,6 +250,24 @@ export const Admin = () => {
   }
 
   /**
+   * Call when user selects "Update Descriptions" button. Scrapes the Course API 
+   * to retrieve course description and stores them in the Course database.
+  */
+  async function updateDescriptions() {
+    console.log('Updating course descriptions')
+    setUpdating(true)
+    setUpdatingField("course descriptions")
+    const response = await axios.post('/api/admin/course/desc', { token: token });
+    if (response.status === 200) {
+      console.log('Updated all course descriptions')
+      setUpdating(false)
+      setUpdated('description')
+    } else {
+      console.log('Error at updateDescriptions')
+    }
+  }
+
+  /*
    * Call when admin wants to update the list of subjects users can search through
    * when clicking the "Update Subjects" button
    */
@@ -357,6 +376,14 @@ export const Admin = () => {
                 disabled={updating}
                 type="button"
                 className={styles.adminButtons}
+                onClick={() => updateDescriptions()}
+              >
+                Update Descriptions
+              </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
                 onClick={() => updateSubjects()}
               >
                 Update Subjects
@@ -420,7 +447,7 @@ export const Admin = () => {
             })}
           </div>
         </div>
-      </div>
+      </div >
     )
   }
 

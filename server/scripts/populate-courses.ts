@@ -9,6 +9,7 @@ import { ScrapingSubject, ScrapingClass } from './types';
 import { Classes, Professors, Subjects } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
+import { addStudentReview } from '../src/review/review.controller';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
@@ -454,3 +455,117 @@ export const addAllCourses = async (
   console.log('Finished addAllCourses');
   return true;
 };
+
+/**
+ * Helper function that removes invalid entries from the database based on the updated Course API
+ * @param course the course that includes an invalid entry
+ * @param semester the invalid semester, must exist in the classSems list of course
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+const removeInvalidSem = async (course, semester): Promise<boolean> => {
+  try {
+    const semesters = (course.classSems).filter(sem => sem !== semester);
+    const courseId = course._id;
+    await Classes.updateOne(
+      { _id: courseId },
+      { $set: { classSems: semesters } },
+    );
+    return true;
+  } catch (err) {
+    console.log(`Error occurred in removing invalid entry in database: ${err}`)
+  }
+  return false;
+}
+
+/**
+ * Helper function that removes a course from the database
+ * @param course the course that is being removed
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+const removeCourse = async (course): Promise<boolean> => {
+  const subject = course.classSub.toUpperCase();
+  const num = course.classNum;
+  try {
+    const courseId = course._id;
+    const result = await Classes.deleteOne({ _id: courseId });
+    if (result.deletedCount === 1) {
+      console.log(`Course ${subject} ${num} successfully removed from database.`);
+      return true;
+    } else {
+      console.log(`Course ${subject} ${num} was not found in the database.`);
+    }
+  } catch (err) {
+    console.log(`Failed to remove course ${subject} ${num} from database due to ${err}.`);
+  }
+  return false;
+}
+
+/**
+ * Adds all course descriptions for the most recent semester from Course API to each class in Course database.
+ * Called after adding all new courses and professors for a new semester.
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllDescriptions = async (): Promise<boolean> => {
+  try {
+    const courses = await Classes.find().exec();
+    if (courses)
+      for (const course of courses) {
+        await addCourseDescription(course);
+      }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding descriptions: ${err}`);
+  }
+}
+
+/**
+ * Retrieves course description from Course API and adds course description field in Course database
+ * 
+ * @param {string} semester: course roster semester for most recent offering of course
+ * @param {string} courseId: course ID of class stored in Course database
+ * @returns true if operation was successful, false otherwise
+ */
+export const addCourseDescription = async (course): Promise<boolean> => {
+  const courseId = course._id;
+  const semesters = course.classSems;
+  let semester;
+  const subject = course.classSub.toUpperCase();
+  const courseNum = course.classNum;
+  const courseFromDb = await Classes.findOne({ _id: courseId }).exec();
+  const checkDescription = courseFromDb.classDescription;
+
+  if (checkDescription && checkDescription !== null) {
+    console.log(`Already added description to ${subject} ${courseNum}`);
+    return true;
+  }
+
+  for (let i = semesters.length - 1; i >= 0; i--) {
+    semester = semesters[i];
+    try {
+      const result = await axios.get(
+        `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
+      );
+      const courses = result.data.data.classes;
+      for (const c of courses) {
+        if (c.catalogNbr === courseNum) {
+          const description = c.description && c.description !== null ? c.description : c.titleLong;
+          await Classes.updateOne(
+            { _id: courseId },
+            { $set: { classDescription: description } },
+          );
+          return true;
+        }
+      }
+      removeInvalidSem(course, semester);
+    } catch (err) {
+      console.log(`Semester ${semester} for course subject ${subject} not in Course API`);
+      removeInvalidSem(course, semester);
+    }
+  }
+  removeCourse(course);
+  console.log(`Error in adding description to course ${subject} ${courseNum}`);
+  return false;
+}
