@@ -40,7 +40,7 @@ export const Course = () => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
   const [scrolled, setScrolled] = useState(false)
 
-  const { isLoggedIn, token, signIn } = useAuthOptionalLogin()
+  const { isLoggedIn, token } = useAuthOptionalLogin()
 
   /**
    * Arrow functions for sorting reviews
@@ -155,6 +155,23 @@ export const Course = () => {
   }
 
   /**
+   * Attempts to report review, and filters out the reported review locally
+   * @param reviewId - id of review to report
+   */
+  async function reportReview(reviewId: string) {
+    try {
+      const response = await axios.post('/api/reviews/report', { id: reviewId })
+      if (response.status === 200) {
+        setCourseReviews(
+          courseReviews?.filter((element) => element._id !== reviewId)
+        )
+      }
+    } catch (e) {
+      toast.error('Failed to report review.')
+    }
+  }
+
+  /**
    * Save review information to session storage and begin redirect to auth
    */
   function onSubmitReview(review: NewReview) {
@@ -166,19 +183,7 @@ export const Course = () => {
     })
     Session.setPersistent({ review_num: selectedClass?.classNum })
     Session.setPersistent({ courseId: selectedClass?._id })
-
-    signIn('course')
-  }
-
-  /**
-   * Clear review stored in session storage
-   */
-  function clearSessionReview() {
-    Session.setPersistent({ review: '' })
-    Session.setPersistent({ review_major: '' })
-    Session.setPersistent({ review_num: '' })
-    Session.setPersistent({ courseId: '' })
-  }
+   }
 
   /** Modal Open and Close Logic */
   const [open, setOpen] = useState<boolean>(false)
@@ -304,7 +309,7 @@ export const Course = () => {
 
         <ReviewModal
           open={open}
-          setOpen={setOpen}
+          setReviewOpen={setOpen}
           submitReview={onSubmitReview}
           professorOptions={
             selectedClass.classProfessors ? selectedClass.classProfessors : []
