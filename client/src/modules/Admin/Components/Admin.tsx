@@ -29,6 +29,8 @@ export const Admin = () => {
   const [resettingProfs, setResettingProfs] = useState<number>(0)
   const [addSemester, setAddSemester] = useState('')
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
+  const [isUpdatingAI, setIsUpdatingAI] = useState(false);
+  const [updateStatusAI, setUpdateStatusAI] = useState(0);
 
   const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
@@ -53,7 +55,7 @@ export const Admin = () => {
   // splits the reviews into three categories: approved (visible on the website),
   // pending (awaiting approval), and reported (hidden and awaiting approval)
   useEffect(() => {
-    async function loadReviews() { 
+    async function loadReviews() {
       const pending = await axios.post('/api/admin/reviews/get/pending', {
         token: token,
       })
@@ -107,7 +109,7 @@ export const Admin = () => {
             review,
             pendingReviews
           )
-        setPendingReviews(updatedUnapprovedReviews)
+          setPendingReviews(updatedUnapprovedReviews)
         } else {
           const updatedReportedReviews = removeReviewFromList(
             review,
@@ -123,7 +125,7 @@ export const Admin = () => {
 
   // Call when admin would like to mass-approve all of the currently pending reviews.
   async function approveAllReviews(reviews: Review[]) {
-    const response = await axios.post('/api/admin/reviews/approve/all', {token: token})
+    const response = await axios.post('/api/admin/reviews/approve/all', { token: token })
     if (response.status === 200) {
       setPendingReviews([])
     } else {
@@ -235,6 +237,29 @@ export const Admin = () => {
     })
   }
 
+  // Call when user selects "Sumarize Reviews" button. Calls endpoint to generate
+  // summaries and tags using AI for all courses with a freshness above a certain
+  // threshold, then updates those courses to include these new summaries and tags. 
+  function summarizeReviews() {
+    console.log('Updating all courses with AI');
+    if (isUpdatingAI) {
+      return;
+    }
+    setIsUpdatingAI(true);
+    setUpdateStatusAI(1);
+
+    axios.post('/api/ai/update-all-courses')
+      .then((response) => {
+        setUpdateStatusAI(2);
+      })
+      .catch((error) => {
+        setUpdateStatusAI(-1);
+      }).finally(() => {
+        setIsUpdatingAI(false);
+      });
+  }
+
+
   // handle the first click to the "Initialize Database" button. Show an alert
   // and update state to remember the next click will be a double click.
   function firstClickHandler() {
@@ -319,6 +344,14 @@ export const Admin = () => {
               >
                 Reset Professors
               </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => summarizeReviews()}
+              >
+                Summarize Reviews
+              </button>
               {renderInitButton(doubleClick)}
             </div>
           </div>
@@ -328,6 +361,18 @@ export const Admin = () => {
             setOpen={setIsAdminModalOpen}
             token={token}
           />
+
+          <div hidden={!(updateStatusAI === 1)} className="">
+            <p>Updating courses with AI. Process may take some time.</p>
+          </div>
+
+          <div hidden={!(updateStatusAI === 2)} className="">
+            <p>Update complete! Check log for details of successful and failed courses.</p>
+          </div>
+
+          <div hidden={!(updateStatusAI === -1)} className="">
+            <p>Error updating courses with AI.</p>
+          </div>
 
           <div hidden={!(loadingSemester === 1)} className="">
             <p>

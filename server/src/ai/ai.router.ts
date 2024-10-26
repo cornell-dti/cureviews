@@ -1,6 +1,6 @@
 import express from 'express';
 import { CourseIdRequestType } from '../course/course.type';
-import { getCoursesWithMinReviews, getReviewsForSummary, summarize, updateCoursesWithAI } from './ai.functions';
+import { getCoursesWithMinReviews, getReviewsForSummary, summarize, updateCourseWithAI } from './ai.functions';
 const aiRouter = express.Router();
 aiRouter.use(express.json());
 
@@ -23,7 +23,7 @@ aiRouter.post('/update-all-courses', async (req, res) => {
 
     //loop through each courseId and update
     for (const courseId of courseIds) {
-      const success = await updateCoursesWithAI(courseId);
+      const success = await updateCourseWithAI(courseId);
       if (success) {
         results.success.push(courseId);
       } else {
@@ -40,15 +40,15 @@ aiRouter.post('/update-all-courses', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/ai/update-summaries
+/** Reachable at POST /api/ai/update-course-summary
  * @body a courseId
  * returns a message indicating whether classSumary, classTags, and freshness have
  * been updated successfully for the given courseId
 */
-aiRouter.post('/update-summaries', async (req, res) => {
+aiRouter.post('/update-course-summary', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
-    const success = await updateCoursesWithAI(courseId);
+    const success = await updateCourseWithAI(courseId);
     if (!success) {
       return res.status(404).json({
         error: `Failed to update course with ID: ${courseId}. No reviews found.`,
@@ -80,11 +80,11 @@ aiRouter.post('/text/summarize-reviews', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/ai/get/text
+/** Reachable at POST /api/ai/get-course-review-text
  * @body a course ID
  * returns a block of text containing all reviews from that course
 */
-aiRouter.post('/get/text', async (req, res) => {
+aiRouter.post('/get-course-review-text', async (req, res) => {
   try {
     const { courseId }: CourseIdRequestType = req.body;
     const reviews = await getReviewsForSummary({ courseId });

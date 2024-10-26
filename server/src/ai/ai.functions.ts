@@ -41,7 +41,7 @@ async function summarize(text: string) {
         role: "system", content: `
           You are given a collection of course reviews provided where each review is separated by a /. You
           will then complete two tasks. First you should generate a 50 word summary of all reviews. Then 
-          should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
+          you should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
           along with their connotations (positive, negative, neutral). Please only pick one adjective for each.
           
           Please provide the summary and tags in the following format:
@@ -57,20 +57,22 @@ async function summarize(text: string) {
       { role: "user", content: text }
     ],
   });
+
   const response = completion.choices[0].message.content;
   const summaryMatch = response.match(/Summary: ([\s\S]*?)(?=Tags)/);
-  const summary = summaryMatch ? summaryMatch[1].trim() : "";
+  const summary = summaryMatch ? summaryMatch[1].trim() : "Summary not found.";
   const tagsMatch = response.match(/Tags:\s*([\s\S]*)/);
   const tags = tagsMatch ? tagsMatch[1] : "";
   const tagsObject: { [key: string]: [string, string] } = {};
-
   tags.split(',').forEach(item => {
     const match = item.match(/(\w+): (.+) \((.+)\)/);
     if (match) {
       const category = match[1].trim();
       const adjective = match[2].trim();
       const connotation = match[3].trim();
-      tagsObject[category] = [adjective, connotation];
+      if (adjective !== "N/A" && connotation != "N/A") {
+        tagsObject[category] = [adjective, connotation];
+      }
     } else {
       console.error("Unexpected format: ", item);
     }
@@ -83,7 +85,7 @@ async function summarize(text: string) {
 }
 
 /**
- * updateCoursesWithAI.
+ * updateCourseWithAI.
  * 
  * Takes in a courseId and uses that ID to get all reviews from a course to then
  * generate a summary and 5 tags for those reviews. Then updates the classSummary
@@ -94,7 +96,7 @@ async function summarize(text: string) {
  * @returns true if update was successful and false if something went wrong
  * 
  */
-const updateCoursesWithAI = async (courseId: string) => {
+const updateCourseWithAI = async (courseId: string) => {
   try {
     const courseReviews = await Reviews.find({ class: courseId }).exec();
 
@@ -220,4 +222,4 @@ export const getCrossListOR = (course) => {
   ];
 };
 
-export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, summarize, updateCoursesWithAI } 
+export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, summarize, updateCourseWithAI } 
