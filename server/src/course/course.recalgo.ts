@@ -20,17 +20,24 @@ const stemWord = (word) => {
  * @returns The processed description for a course
  */
 export const preprocess = (description: string) => {
-  let sentences = description.match(/[^.!?]*[.!?]\s+[A-Z]/g) || [description];
-  let processedText = sentences.map(sentence => {
-    let words = sentence.match(/\b\w+\b/g) || [];
-    let cleanedWords = words.map(word => {
-      const singularWord = stemWord(word.toLowerCase());
+  const sentences = description.match(/[^.!?]*[.!?]\s+[A-Z]/g) || [description];
+  const fillerWords = ["and", "the", "to", "for", "with"];
+
+  const processedText = sentences.map(sentence => {
+    const words = sentence.match(/\b\w+\b/g) || [];
+    const cleanedWords = words.map(word => {
+      let singularWord = stemWord(word.toLowerCase());
+      fillerWords.forEach(filler => {
+        const regex = new RegExp(`\\b${filler}\\b`, 'g');
+        singularWord = singularWord.replace(regex, '');
+      });
       return singularWord.replace(/[^\w\s]/g, '');
     });
     return cleanedWords.join(' ');
   });
   return processedText.join('. ');
 }
+
 
 /**
  * Calculates the inverse document frequency for the given terms
@@ -56,12 +63,14 @@ export const idf = (terms, words) => {
  */
 export const tfidf = (terms, idf) => {
   let d = {};
+  // tf
   for (const term of terms) {
     if (!d[term]) {
       d[term] = 0;
     }
     d[term]++;
   }
+  // idf
   for (const term in d) {
     if (idf && idf[term] === undefined) {
       idf[term] = 1;

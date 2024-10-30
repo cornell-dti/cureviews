@@ -87,6 +87,6 @@ courseRouter.post('/getPreDesc', async (req, res) => {
 */
 courseRouter.post('/getSimilarity', async (req, res) => {
   // const { courseId }: CourseIdRequestType = req.body;
-  const similarity = getSimilarity();
+  const similarity = await getSimilarity();
   return res.status(200).json({ result: similarity });
 });

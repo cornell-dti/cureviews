@@ -3,6 +3,7 @@ import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestTyp
 import { preprocess, tfidf, cosineSimilarity, idf } from './course.recalgo';
 
 import { findReviewCrossListOR } from '../utils';
+import axios from 'axios';
 
 /**
  * Returns array of course ids that a given course is crosslisted with
@@ -85,27 +86,46 @@ export const getProcessedDescription = (text) => {
   return processed;
 }
 
-export const getSimilarity = () => {
-  const descriptions = ["This course provides a detailed study on multiple financial markets including bonds, forwards, futures, swaps, and options and their role in addressing major issues facing humanity. In particular, we plan to study specific topics on the role of financial markets in addressing important issues like funding cancer cure, tackling climate change, and financing educational needs for the underserved. Relative to a traditional finance class, we take a broad approach and think of finance as a way to get things done and financial instruments as a way to solve problems. We explore topics related to diversification and purpose investing, including a highly innovative idea of a mega-fund developing cancer treatment. We examine how financial instruments can help solve or hedge some societal issues, particularly on climate change. As an example, we will be studying a financial solution to deal with California forest fire. We also examine the potential for social impact bonds for educating pre-school children and reducing prisoners' recidivism.",
-    "This course introduces and develops the leading modern theories of economies open to trade in financial assets and real goods. The goal is to understand how cross-country linkages in influence macroeconomic developments within individual countries; how financial markets distribute risk and wealth around the world; and how trade changes the effectiveness of national monetary and fiscal policies. In exploring these questions, we emphasize the role that exchange rates and exchange rate policy take in shaping the consequences of international linkages. We apply our theories to current and recent events, including growing geoeconomic conflict between Eastern and Western countries, hyperinflation in Argentina, Brexit, and recent Euro-area debt crises.",
-    "The Corporate Finance Immersion (CFI) Practicum is designed to provide students with a real world and practical perspective on the activities, processes and critical questions faced by corporate finance executives. It is oriented around the key principles of shareholder value creation and the skills and processes corporations use to drive value. The CFI Practicum will help develop skills and executive judgement for students seeking roles in corporate finance, corporate strategy, business development, financial planning, treasury, and financial management training programs. The course can also help students pursuing consulting to sharpen their financial skills and get an excellent view of a corporation's strategic and financial objectives. The practicum will be comprised of a mix of lectures, cases, guest speakers, and team projects. Additionally, there will be training workshops to build your financial modelling skills.",
-    "Environmental Finance & Impact Investing Practicum",
-    "Corporate Finance II"
-  ]
+export const getSimilarity = async () => {
+  const result = await axios.get(
+    `https://classes.cornell.edu/api/2.0/search/classes.json?roster=FA24&subject=CS`
+  );
+
+  const csClasses = result.data.data.classes;
+  let descriptions = [];
+  for (const c of csClasses) {
+    descriptions.push(c.description)
+  }
+  // const descriptions = ["Intermediate programming in a high-level language and introduction to software engineering. Topics include object-oriented programming (objects, classes, subtypes, encapsulation, polymorphism), program correctness (specifications, invariants, testing), algorithm analysis (asymptotic complexity, big \"O\" notation), recursion, data structures (lists, trees, stacks, queues, heaps, hash tables, graphs), iteration and searching/sorting, graph algorithms, and concurrent and event-driven programming (graphical user interfaces, synchronization). Java is the principal programming language.",
+  //   "Intermediate software design and introduction to key computer science ideas. Topics are similar to those in CS 2110 but are covered in greater depth, with more challenging assignments. Topics include object-oriented programming, program structure and organization, program reasoning using specifications and invariants, recursion, design patterns, concurrent programming, graphical user interfaces, data structures as in CS 2110, sorting and graph algorithms, asymptotic complexity, and simple algorithm analysis. Java is the principal programming language.",
+  //   "Programming and problem solving using Python. Emphasizes principles of software development, style, and testing. Topics include procedures and functions, iteration, recursion, arrays and vectors, strings, an operational model of procedure and function calls, algorithms, exceptions, object-oriented programming. Weekly labs provide guided practice on the computer, with staff present to help. ",
+  //   "Programming and problem solving using Python. Emphasizes the systematic development of algorithms and programs. Topics include iteration, functions, arrays, strings, recursion, object-oriented programming, algorithms, and data handling and visualization. Assignments are designed to build an appreciation for complexity, dimension, randomness, simulation, and the role of approximation in engineering and science. Weekly discussion section provides guided practice on the computer, with staff present to help."
+  // ]
 
   const processedDescriptions = descriptions.map(desc => preprocess(desc).split(' '));
   const allTerms = [...new Set(processedDescriptions.flat())];
   const idfValues = idf(allTerms, processedDescriptions);
   const tfidfVectors = processedDescriptions.map(terms => tfidf(terms, idfValues));
 
-  let similarity = [];
+  const topSimilarities = {};
 
   for (let i = 0; i < descriptions.length; i++) {
-    for (let j = i + 1; j < descriptions.length; j++) {
-      const cos = cosineSimilarity(tfidfVectors[i], tfidfVectors[j]);
-      similarity.push({ courseA: i, courseB: j, similarity: cos });
+    const similarities = [];
+    for (let j = 0; j < descriptions.length; j++) {
+      if (i !== j) {
+        const cos = cosineSimilarity(tfidfVectors[i], tfidfVectors[j]);
+        if (cos < 1) {
+          similarities.push({
+            courseA: csClasses[i].catalogNbr,
+            courseB: csClasses[j].catalogNbr,
+            similarity: cos
+          });
+        }
+      }
     }
+    topSimilarities[csClasses[i].catalogNbr] = similarities
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, 5);
   }
-  similarity.sort((a, b) => b.similarity - a.similarity);
-  return similarity.slice(0, 5);
+  return topSimilarities;
 }
