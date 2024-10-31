@@ -41,6 +41,7 @@ import {
   addCrossList,
   addNewSemester,
   addAllDescriptions,
+  addAllProcessedDescriptions,
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
@@ -417,5 +418,15 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
   }
 
   const descriptionResult = await addAllDescriptions();
+  return descriptionResult;
+}
+
+export const addProcessedDescriptionsDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const descriptionResult = await addAllProcessedDescriptions();
   return descriptionResult;
 }

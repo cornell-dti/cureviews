@@ -1,4 +1,4 @@
-import { findCourseById, findCourseByInfo } from './course.data-access';
+import { findCourseById, findCourseByInfo, findRecommendationByInfo } from './course.data-access';
 import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
 import { preprocess, tfidf, cosineSimilarity, idf } from './course.recalgo';
 
@@ -80,6 +80,15 @@ export const getReviewsCrossListOR = async ({
 
   return null;
 };
+
+export const getRecommendationData = async (
+  { number,
+    subject,
+  }: CourseInfoRequestType
+) => {
+  const course = await findRecommendationByInfo(number, subject.toLowerCase());
+  return course;
+}
 
 export const getProcessedDescription = (text) => {
   const processed = preprocess(text);

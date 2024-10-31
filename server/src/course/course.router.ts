@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR, getProcessedDescription, getSimilarity } from './course.controller';
+import { getCourseByInfo, getReviewsCrossListOR, getRecommendationData, getProcessedDescription, getSimilarity } from './course.controller';
 
 import { getCourseById } from '../utils';
 
@@ -63,6 +63,25 @@ courseRouter.post('/get-reviews', async (req, res) => {
     }
 
     return res.status(200).json({ result: reviews });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+courseRouter.post('/getRecData', async (req, res) => {
+  try {
+    const { number, subject }: CourseInfoRequestType = req.body;
+    const course = await getRecommendationData({ number, subject });
+
+    if (!course) {
+      return res.status(404).json({
+        error: `Recommendation data could not be found for ${subject} ${number}`,
+      });
+    }
+
+    return res.status(200).json({ result: course });
   } catch (err) {
     return res
       .status(500)

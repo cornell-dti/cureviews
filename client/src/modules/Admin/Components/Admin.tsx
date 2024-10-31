@@ -23,7 +23,7 @@ export const Admin = () => {
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
 
   const [updating, setUpdating] = useState<boolean>(false);
-  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description';
+  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description' | 'processed';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
     'empty': '',
@@ -32,7 +32,8 @@ export const Admin = () => {
     'profsUpdate': "Professor data successfully updated",
     'subjects': "Subject full name data successfully updated",
     'database': "Database successfully initialized",
-    'description': "Course description data successfully added"
+    'description': "Course description data successfully added",
+    'processed': "Processed course descriptino data successfully added"
   };
   const [updatingField, setUpdatingField] = useState<string>("");
 
@@ -284,6 +285,20 @@ export const Admin = () => {
     }
   }
 
+  async function updateProcessedDescriptions() {
+    console.log('Updating processed course descriptions')
+    setUpdating(true)
+    setUpdatingField("processed course descriptions")
+    const response = await axios.post('/api/admin/rec/desc', { token: token });
+    if (response.status === 200) {
+      console.log('Updated all processed course descriptions')
+      setUpdating(false)
+      setUpdated('processed')
+    } else {
+      console.log('Error at updateProcessedDescriptions')
+    }
+  }
+
   /**
    * Handle the first click to the "Initialize Database" button. Show an alert
    * and update state to remember the next click will be a double click.
@@ -387,6 +402,14 @@ export const Admin = () => {
                 onClick={() => updateSubjects()}
               >
                 Update Subjects
+              </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateProcessedDescriptions()}
+              >
+                Update Processed Descriptions
               </button>
               {renderInitButton(doubleClick)}
             </div>

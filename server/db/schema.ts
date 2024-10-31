@@ -158,7 +158,7 @@ const RecommendationMetadataSchema = new Schema({
   _id: { type: String },
   classSub: { type: String },
   classNum: { type: String },
-  processedDescriptions: { type: String },
+  processedDescription: { type: String },
   tfidfVector: { type: Map, of: Number },
 });
 

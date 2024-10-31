@@ -6,10 +6,11 @@
 import axios from 'axios';
 import shortid from 'shortid';
 import { ScrapingSubject, ScrapingClass } from './types';
-import { Classes, Professors, Subjects } from '../db/schema';
+import { Classes, Professors, Subjects, RecommendationMetadata } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
 import { addStudentReview } from '../src/review/review.controller';
+import { preprocess } from '../src/course/course.recalgo';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
@@ -569,3 +570,82 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   console.log(`Error in adding description to course ${subject} ${courseNum}`);
   return false;
 }
+
+export const addAllProcessedDescriptions = async (): Promise<boolean> => {
+  try {
+    const courses = await Classes.find().exec();
+    if (courses) {
+      for (const course of courses) {
+        await addProcessedDescription(course);
+      }
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding processed descriptions: ${err}`);
+  }
+}
+
+const addProcessedDescription = async (course): Promise<boolean> => {
+  const courseId = course._id;
+  const description = course.classDescription;
+  const processed = preprocess(description);
+  const subject = course.classSub;
+  const num = course.classNum;
+  try {
+    console.log(`${subject} ${num}: ${processed}`)
+    const rec = await RecommendationMetadata.findOne({ _id: courseId });
+    if (rec) {
+      await RecommendationMetadata.updateOne(
+        { _id: courseId },
+        { $set: { processedDescription: processed } }
+      );
+    } else {
+      const res = await new RecommendationMetadata({
+        _id: courseId,
+        classSub: subject,
+        classNum: num,
+        processedDescription: processed
+      })
+        .save()
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      if (!res) {
+        throw new Error();
+      }
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding processed description for ${subject} ${num}: ${err}`);
+  }
+}
+
+// export const addAllSimilarityData = async (): Promise<boolean> => {
+//   try {
+//     const courses = await Classes.find().exec();
+//     if (courses) {
+//       for (const course of courses) {
+//         await addSimilarityData(courses, course);
+//       }
+//     }
+//     return true;
+//   } catch (err) {
+//     console.log(`Error in adding similarity data: ${err}`);
+//   }
+// }
+
+// const addSimilarityData = async (courses, course): Promise<boolean> => {
+//   try {
+//     const courseId = course._id;
+//     const description = course.classDescription;
+//     for (const c of courses) {
+//       if (c._id !== courseId) {
+
+//       }
+//     }
+//     return true;
+//   } catch (err) {
+
+//   }
+// }
