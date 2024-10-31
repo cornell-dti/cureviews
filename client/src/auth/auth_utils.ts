@@ -127,7 +127,9 @@ export function useAuthOptionalLogin(): {
     const authToken = getAuthToken();
     async function getEmail() {
       if (authToken && authToken !== '') {
-        const response = await axios.post('/api/auth/get-email');
+        const response = await axios.post('/api/auth/get-email', {
+          token: authToken,
+        });
         if (response.status === 200) {
           const email = response.data.result;
           setNetId(email.substring(0, email.lastIndexOf('@')));

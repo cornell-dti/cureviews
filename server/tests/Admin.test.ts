@@ -4,13 +4,12 @@ import { beforeAll, afterAll } from 'vitest'
 import axios from 'axios';
 
 import { Classes, Reviews } from '../db/schema';
-import { testServer, testPort } from './mocks/MockServer';
 import * as AdminAuth from '../src/admin/admin.controller';
-import { testClasses, testReviews } from './mocks/InitMockDb';
+import { Auth } from "../src/auth/auth";
 
-const mockVerification = vi
-  .spyOn(AdminAuth, 'verifyTokenAdmin')
-  .mockImplementation(async ({ auth }) => true);
+import { testServer, testPort } from './mocks/MockServer';
+import { mockVerificationTicket } from "./mocks/MockAuth";
+import { testClasses, testStudents, testReviews } from './mocks/InitMockDb';
 
 const getReviewDifficultyMetric = async (review) => {
   const reviews = await Reviews.find({
@@ -32,7 +31,7 @@ const getReviewDifficultyMetric = async (review) => {
 beforeAll(async () => {
   await testServer.setUpDB(
     testReviews,
-    undefined,
+    testStudents,
     testClasses,
     undefined,
     undefined,
@@ -41,21 +40,20 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testServer.shutdownTestingServer();
-  mockVerification.mockRestore();
+  await mockVerificationTicket.mockRestore();
 });
 
 describe('Admin functionality unit tests', () => {
   test('Fetching pending reviews works', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/get-pending`,
-      { token: 'non-empty' },
+      { token: 'fakeTokenDti1' },
     );
     const ids = res.data.result.map((i) => i._id);
-    const reviewsPending = await Reviews.findOne({ visible: 0, reported: 0 }).map(
-      (review) => review?._id,
-    );
+    const pendingReview = await Reviews.findOne({ visible: 0, reported: 0 })
+    const pendingId = pendingReview?._id
 
-    expect(ids.includes(reviewsPending)).toBeTruthy();
+    expect(ids.includes(pendingId)).toBeTruthy();
   });
 
   test('Make review visible will not make a reported review visible', async () => {
@@ -67,7 +65,7 @@ describe('Admin functionality unit tests', () => {
     const res = await axios
       .post(`http://localhost:${testPort}/api/admin/reviews/approve`, {
         review: pendingReportedReview,
-        token: 'non-empty',
+        token: 'fakeTokenDti1',
       })
       .catch((e) => e);
 
@@ -98,7 +96,7 @@ describe('Admin functionality unit tests', () => {
       `http://localhost:${testPort}/api/admin/reviews/restore`,
       {
         review: reportedReview,
-        token: 'non empty',
+        token: 'fakeTokenDti1',
       },
     );
 
@@ -118,7 +116,7 @@ describe('Admin functionality unit tests', () => {
     const res = await axios
       .post(`http://localhost:${testPort}/api/admin/reviews/remove`, {
         review: reportedReview,
-        token: 'non empty',
+        token: 'fakeTokenDti1',
       })
       .catch((e) => e);
     expect(res.status).toEqual(200);

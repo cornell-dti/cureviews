@@ -199,6 +199,7 @@ adminRouter.post('/reviews/get-pending', async (req, res) => {
   try {
     const { token }: AdminRequestType = req.body;
     const auth = new Auth({ token });
+    console.log(auth)
     const reviews = await getPendingReviews({ auth });
     if (reviews === null) {
       return res.status(400).json({

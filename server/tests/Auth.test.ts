@@ -54,19 +54,24 @@ describe("Auth functionality unit tests", () => {
   });
 
   test("tokenIsAdmin works correctly", async () => {
+    const getInvalidTokenMock = vi
+    .spyOn(Auth.prototype, "getToken")
+    .mockImplementation(() => "fakeTokencv4620");
+
     const failRes = await axios.post(
       `http://localhost:${testPort}/api/admin/token/validate`,
       { token: "fakeTokencv4620" },
     );
 
     expect(failRes.data.result).toEqual(false);
+    await getInvalidTokenMock.mockRestore();
 
     const getValidTokenMock = vi
       .spyOn(Auth.prototype, "getToken")
       .mockImplementation(() => "fakeTokenDti1");
 
     const successRes = await axios.post(
-      `http://localhost:${testPort}/api/tokenIsAdmin`,
+      `http://localhost:${testPort}/api/admin/token/validate`,
       { token: "fakeTokenDti1" },
     );
 

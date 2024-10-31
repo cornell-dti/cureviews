@@ -1,10 +1,8 @@
 import {
   findPendingReviews,
   findReportedReviews,
-  findAllReviewsAfterDate,
   removeReviewById,
   updateReviewVisibility,
-  findStudentById,
   updateCourseMetrics,
   findReviewCounts,
   createCourseCSV,
@@ -17,7 +15,6 @@ import {
   AdminAddSemesterType,
   AdminPendingReviewType,
   AdminReviewVisibilityType,
-  RaffleWinnerRequestType,
   ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
