@@ -1,4 +1,4 @@
-import { findCourseById, findCourseByInfo, findRecommendationByInfo } from './course.data-access';
+import { findCourseById, findCourseByInfo, findRecommendationByInfo, findGlobalMetadata } from './course.data-access';
 import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
 import { preprocess, tfidf, cosineSimilarity, idf } from './course.recalgo';
 
@@ -88,6 +88,11 @@ export const getRecommendationData = async (
 ) => {
   const course = await findRecommendationByInfo(number, subject.toLowerCase());
   return course;
+}
+
+export const getGlobalMetadata = async () => {
+  const global = await findGlobalMetadata();
+  return global;
 }
 
 export const getProcessedDescription = (text) => {

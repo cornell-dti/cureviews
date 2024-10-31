@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { Class, Student, Subject, Review, Professor } from "common";
+import { object } from "joi";
 
 /*
 
@@ -180,11 +181,11 @@ export const RecommendationMetadata = mongoose.model<RecommendationMetadataDocum
  * Stores global course data
  */
 const GlobalMetadataSchema = new Schema({
-  idfVector: { type: Map, of: Number }
+  idfVector: { type: Object }
 });
 
 interface GlobalMetadataDocument extends mongoose.Document {
-  idfVector: Map<string, number>;
+  idfVector: Object;
 }
 
 export const GlobalMetadata = mongoose.model<GlobalMetadataDocument>(

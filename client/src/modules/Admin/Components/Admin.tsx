@@ -23,7 +23,7 @@ export const Admin = () => {
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
 
   const [updating, setUpdating] = useState<boolean>(false);
-  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description' | 'processed';
+  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description' | 'processed' | 'idf';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
     'empty': '',
@@ -33,7 +33,8 @@ export const Admin = () => {
     'subjects': "Subject full name data successfully updated",
     'database': "Database successfully initialized",
     'description': "Course description data successfully added",
-    'processed': "Processed course descriptino data successfully added"
+    'processed': "Processed course descriptino data successfully added",
+    'idf': "IDF vector data successfully added"
   };
   const [updatingField, setUpdatingField] = useState<string>("");
 
@@ -299,6 +300,20 @@ export const Admin = () => {
     }
   }
 
+  async function updateIdfVector() {
+    console.log('Updatng IDF vector')
+    setUpdating(true)
+    setUpdatingField("IDF vector")
+    const response = await axios.post('/api/admin/rec/idf', { token: token });
+    if (response.status === 200) {
+      console.log('Updated IDF vector')
+      setUpdating(false)
+      setUpdated('idf')
+    } else {
+      console.log('Error at updateIdfVector')
+    }
+  }
+
   /**
    * Handle the first click to the "Initialize Database" button. Show an alert
    * and update state to remember the next click will be a double click.
@@ -410,6 +425,14 @@ export const Admin = () => {
                 onClick={() => updateProcessedDescriptions()}
               >
                 Update Processed Descriptions
+              </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateIdfVector()}
+              >
+                Update IDF Vector
               </button>
               {renderInitButton(doubleClick)}
             </div>

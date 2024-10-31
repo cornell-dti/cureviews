@@ -42,6 +42,7 @@ import {
   addNewSemester,
   addAllDescriptions,
   addAllProcessedDescriptions,
+  addIdfVector,
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
@@ -429,4 +430,14 @@ export const addProcessedDescriptionsDb = async ({ auth }: VerifyAdminType) => {
 
   const descriptionResult = await addAllProcessedDescriptions();
   return descriptionResult;
+}
+
+export const addIdfVectorDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const idfResult = await addIdfVector();
+  return idfResult;
 }
