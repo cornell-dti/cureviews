@@ -102,7 +102,6 @@ const ReviewModal = ({
   }
 
   function handleSubmitReview() {
-    console.log('tried to submit')
     if (validReview()) {
       const newReview: NewReview = {
         rating: overall,
@@ -115,8 +114,6 @@ const ReviewModal = ({
         major: selectedMajors,
       }
       submitReview(newReview)
-
-      console.log('Submitting')
     } else return
   }
 

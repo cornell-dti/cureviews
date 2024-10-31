@@ -12,7 +12,6 @@ import axios from 'axios'
 export const setAuthToken = (token: string) => {
   Session.setPersistent({ token: token })
   if (Session.get('token') !== token) {
-    console.log('Error saving token to session')
     return false
   }
   return true
@@ -86,7 +85,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
       }
     }
 
-    getEmail().catch((e) => console.log("[ERROR] Failed in authMandatoryLogin: ", e.response))
+    getEmail().catch((e) => e)
     setToken(authToken)
     setIsAuthenticating(false)
     setIsLoggedIn(true)
@@ -138,7 +137,7 @@ export function useAuthOptionalLogin(): {
       setToken(authToken)
       setIsLoggedIn(true)
     }
-    getEmail().catch(e => console.log('[ERROR] Get Email in useAuthOptionalLogin(): ', e));
+    getEmail().catch(e => e);
 
   }, [])
 
