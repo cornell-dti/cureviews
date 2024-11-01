@@ -23,7 +23,7 @@ export const Admin = () => {
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
 
   const [updating, setUpdating] = useState<boolean>(false);
-  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description' | 'processed' | 'idf';
+  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description' | 'processed' | 'idf' | 'tfidf';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
     'empty': '',
@@ -34,7 +34,8 @@ export const Admin = () => {
     'database': "Database successfully initialized",
     'description': "Course description data successfully added",
     'processed': "Processed course descriptino data successfully added",
-    'idf': "IDF vector data successfully added"
+    'idf': "IDF vector data successfully added",
+    'tfidf': "TF-IDF vector data successfully added",
   };
   const [updatingField, setUpdatingField] = useState<string>("");
 
@@ -314,6 +315,20 @@ export const Admin = () => {
     }
   }
 
+  async function updateTfIdfVectors() {
+    console.log('Updatng TF-IDF vectors')
+    setUpdating(true)
+    setUpdatingField("TF-IDF vectors")
+    const response = await axios.post('/api/admin/rec/tfidf', { token: token });
+    if (response.status === 200) {
+      console.log('Updated TF-IDF vectors')
+      setUpdating(false)
+      setUpdated('tfidf')
+    } else {
+      console.log('Error at updateTfIdfVectors')
+    }
+  }
+
   /**
    * Handle the first click to the "Initialize Database" button. Show an alert
    * and update state to remember the next click will be a double click.
@@ -433,6 +448,14 @@ export const Admin = () => {
                 onClick={() => updateIdfVector()}
               >
                 Update IDF Vector
+              </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateTfIdfVectors()}
+              >
+                Update TF-IDF Vectors
               </button>
               {renderInitButton(doubleClick)}
             </div>

@@ -28,7 +28,8 @@ import {
   approveReviews,
   addCourseDescriptionsDb,
   addProcessedDescriptionsDb,
-  addIdfVectorDb
+  addIdfVectorDb,
+  addTfIdfVectorsDb
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -550,6 +551,28 @@ adminRouter.post('/rec/idf', async (req, res) => {
     return res
       .status(400)
       .json({ error: 'IDF vector was unable to be added!' });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+adminRouter.post('/rec/tfidf', async (req, res) => {
+  const { token }: AdminRequestType = req.body;
+  try {
+    const auth = new Auth({ token });
+    const result = await addTfIdfVectorsDb({ auth });
+    console.log(result)
+
+    if (result) {
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ message: 'TF-IDF vectors added!' });
+      return res;
+    }
+
+    return res
+      .status(400)
+      .json({ error: 'TF-IDF vectors were unable to be added!' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

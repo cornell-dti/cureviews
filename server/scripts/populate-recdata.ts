@@ -1,5 +1,5 @@
 import { Classes, RecommendationMetadata, GlobalMetadata } from '../db/schema';
-import { preprocess, idf } from '../src/course/course.recalgo';
+import { preprocess, idf, tfidf } from '../src/course/course.recalgo';
 
 export const addAllProcessedDescriptions = async (): Promise<boolean> => {
   try {
@@ -68,5 +68,41 @@ export const addIdfVector = async (): Promise<boolean> => {
   } catch (err) {
     console.log(`Error in adding IDF Vector to Global Metadata database: ${err}`);
     return false;
+  }
+}
+
+export const addAllTfIdfVectors = async (): Promise<boolean> => {
+  try {
+    const courses = await RecommendationMetadata.find().exec();
+    const global = await GlobalMetadata.findOne().exec();
+    const idfVector = global.idfVector;
+    if (courses) {
+      for (const course of courses) {
+        await addTfIdfVector(course, idfVector);
+      }
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding TF-IDF vectors: ${err}`);
+  }
+}
+
+const addTfIdfVector = async (course, idfVector): Promise<boolean> => {
+  const courseId = course._id;
+  const description = (course.processedDescription).split(' ');
+  const subject = course.classSub;
+  const num = course.classNum;
+  try {
+    console.log(`${subject} ${num}`)
+    const tfidfVector = description.map(terms => tfidf(terms, idfVector));
+    const res = await RecommendationMetadata.updateOne(
+      { _id: courseId },
+      { $set: { tfidfVector: tfidfVector } });
+    if (!res) {
+      throw new Error();
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding TF-IDF vector for ${subject} ${num}: ${err}`);
   }
 }

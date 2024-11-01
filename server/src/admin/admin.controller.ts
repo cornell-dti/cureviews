@@ -43,6 +43,7 @@ import {
   addAllDescriptions,
   addAllProcessedDescriptions,
   addIdfVector,
+  addAllTfIdfVectors,
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
@@ -440,4 +441,14 @@ export const addIdfVectorDb = async ({ auth }: VerifyAdminType) => {
 
   const idfResult = await addIdfVector();
   return idfResult;
+}
+
+export const addTfIdfVectorsDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const tfidfResult = await addAllTfIdfVectors();
+  return tfidfResult;
 }

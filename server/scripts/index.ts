@@ -8,6 +8,10 @@ export {
 
 export { addAllProfessors, resetProfessors } from './populate-professors';
 
-export { addAllProcessedDescriptions, addIdfVector } from './populate-recdata';
+export {
+  addAllProcessedDescriptions,
+  addIdfVector,
+  addAllTfIdfVectors,
+} from './populate-recdata';
 
 export { findAllSemesters } from './utils';

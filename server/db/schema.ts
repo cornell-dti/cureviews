@@ -160,7 +160,7 @@ const RecommendationMetadataSchema = new Schema({
   classSub: { type: String },
   classNum: { type: String },
   processedDescription: { type: String },
-  tfidfVector: { type: Map, of: Number },
+  tfidfVector: { type: Object },
 });
 
 interface RecommendationMetadataDocument extends mongoose.Document {
@@ -168,7 +168,7 @@ interface RecommendationMetadataDocument extends mongoose.Document {
   classSub: string;
   classNum: string;
   processedDescription: string;
-  tfidfVector: Map<string, number>;
+  tfidfVector: Object;
 }
 
 export const RecommendationMetadata = mongoose.model<RecommendationMetadataDocument>(
