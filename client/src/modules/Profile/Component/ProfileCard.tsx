@@ -4,7 +4,7 @@ import styles from '../Styles/ProfileCard.module.css'
 
 type ProfileCardProps = {
   title: string
-  value: string
+  value: number
   image: any
 }
 

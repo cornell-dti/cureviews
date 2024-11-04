@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 
 import axios from 'axios'
 
-import { toast, ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import WriteReviewIcon from '../../../assets/icons/write.svg'
 
@@ -36,18 +36,25 @@ export const Course = () => {
   const { number, subject, input } = useParams<any>()
 
   const [selectedClass, setSelectedClass] = useState<Class>()
-  const [courseReviews, setCourseReviews] = useState<Review[]>()
+  const [courseReviews, setCourseReviews] = useState<Review[]>([])
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
   const [scrolled, setScrolled] = useState(false)
 
-  const { isLoggedIn, token } = useAuthOptionalLogin()
+  const { token } = useAuthOptionalLogin()
 
   /**
-   * Arrow functions for sorting reviews
+   * Sorts reviews based on descending likes.
    */
-  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0)
+  const sortByLikes = (a: Review, b: Review) =>
+    (b.likes || 0) - (a.likes || 0);
+
+  /**
+   * Sorts reviews based on descending date.
+   */
   const sortByDate = (a: Review, b: Review) =>
-    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1
+    b.date instanceof Date && a.date instanceof Date
+      ? b.date.getTime() - a.date.getTime()
+      : -1;
 
   /**
    * Update state to conditionally render sticky bottom-right review button
@@ -98,76 +105,14 @@ export const Course = () => {
   }, [number, subject])
 
   /**
-   * Checks if there is a review stored in Session (i.e. this redirected from
-   * auth)
-   */
-  useEffect(() => {
-    /**
-     * Submit review and clear session storage
-     */
-    async function submitReview(review: NewReview, courseId: string) {
-      try {
-        const response = await axios.post('/api/reviews/post', {
-          token: token,
-          review: review,
-          courseId: courseId,
-        })
-
-        clearSessionReview()
-        if (response.status === 200) {
-          toast.success(
-            'Thanks for reviewing! New reviews are updated every 24 hours.'
-          )
-        } else {
-          toast.error('An error occurred, please try again.')
-        }
-      } catch (e) {
-        clearSessionReview()
-        toast.error('An error occurred, please try again.')
-      }
-    }
-
-    const sessionReview = Session.get('review')
-    const sessionCourseId = Session.get('courseId')
-    if (
-      sessionReview !== undefined &&
-      sessionReview !== '' &&
-      sessionCourseId !== undefined &&
-      sessionCourseId !== '' &&
-      isLoggedIn
-    ) {
-      submitReview(sessionReview, sessionCourseId)
-    }
-  }, [isLoggedIn, token])
-
-  /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
-    const value = event.target.value
-    const currentReviews = courseReviews && [...courseReviews]
+    const value = event.target.value;
     if (value === 'helpful') {
-      currentReviews?.sort(sortByLikes)
+      setCourseReviews([...courseReviews].sort(sortByLikes));
     } else if (value === 'recent') {
-      currentReviews?.sort(sortByDate)
-    }
-    setCourseReviews(currentReviews)
-  }
-
-  /**
-   * Attempts to report review, and filters out the reported review locally
-   * @param reviewId - id of review to report
-   */
-  async function reportReview(reviewId: string) {
-    try {
-      const response = await axios.post('/api/reviews/report', { id: reviewId })
-      if (response.status === 200) {
-        setCourseReviews(
-          courseReviews?.filter((element) => element._id !== reviewId)
-        )
-      }
-    } catch (e) {
-      toast.error('Failed to report review.')
+      setCourseReviews([...courseReviews].sort(sortByDate));
     }
   }
 
@@ -291,6 +236,7 @@ export const Course = () => {
           </div>
           <div className={styles.reviews}>
             <CourseReviews
+              key={courseReviews[0] ? courseReviews[0]._id : 1}
               reviews={courseReviews}
               isPreview={false}
               isProfile={false}

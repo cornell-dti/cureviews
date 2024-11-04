@@ -38,17 +38,17 @@ const Profile = () => {
   const profilePicture: string = randomPicture(netId);
 
   /**
-   * Sorts reviews based on ascending likes.
+   * Sorts reviews based on descending likes.
    */
   const sortByLikes = (a: ReviewType, b: ReviewType) =>
     (b.likes || 0) - (a.likes || 0);
 
   /**
-   * Sorts reviews based on ascending date.
+   * Sorts reviews based on descending date.
    */
   const sortByDate = (a: ReviewType, b: ReviewType) =>
     b.date instanceof Date && a.date instanceof Date
-      ? a.date.getTime() - b.date.getTime()
+      ? b.date.getTime() - a.date.getTime()
       : -1;
 
   /**
@@ -182,7 +182,7 @@ const Profile = () => {
           <div className={styles.usersection}>
             <UserInfo
               profilePicture={profilePicture}
-              reviewsHelpful={upvoteCount}
+              upvoteCount={upvoteCount}
               reviewsTotal={reviewsLeft}
               netId={netId}
               signOut={signOut}
@@ -213,14 +213,14 @@ const Profile = () => {
                   pendingReviews={pendingReviews}
                 />
                 <PastReviews
-                  key={approvedReviews[0]._id}
+                  key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                   pastReviews={approvedReviews}
                 />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
               <PastReviews
-                key={approvedReviews[0]._id}
+                key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                 pastReviews={approvedReviews}
               />
             )}
