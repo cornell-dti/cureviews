@@ -65,10 +65,12 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
   }
 
   useEffect(() => {
-    const signIn = (redirectFrom: string) => {
-      Session.setPersistent({ redirectFrom: redirectFrom })
+    
+    const signIn = (_redirectFrom: string) => {
+      Session.setPersistent({ redirectFrom: _redirectFrom })
       history.push('/login')
     }
+
     const authToken = getAuthToken();
     async function getEmail() {
       if (!authToken || authToken === '') {

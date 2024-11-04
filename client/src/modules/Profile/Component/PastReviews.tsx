@@ -1,17 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-import styles from '../Styles/PastReviews.module.css'
+import styles from '../Styles/PastReviews.module.css';
 
-import { Review as ReviewType } from 'common'
-import CourseReviews from '../../Course/Components/CourseReviews'
+import { Review as ReviewType } from 'common';
+import CourseReviews from '../../Course/Components/CourseReviews';
 
 type PastReviewsType = {
-  pastReviews: ReviewType[]
-}
+  pastReviews: ReviewType[];
+};
 const PastReviews = ({ pastReviews }: PastReviewsType) => {
   return (
     <>
-      <div className={styles.header}>Past Reviews ({pastReviews?.length})</div>
+      <div className={styles.header}>
+        Approved Reviews ({pastReviews?.length})
+      </div>
       <div className={styles.reviewcards}>
         <CourseReviews
           reviews={pastReviews}
@@ -20,7 +22,7 @@ const PastReviews = ({ pastReviews }: PastReviewsType) => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export { PastReviews }
+export { PastReviews };
