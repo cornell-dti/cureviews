@@ -57,6 +57,47 @@ export const Course = () => {
       : -1;
 
   /**
+   * Sorts reviews based on ascending alphabetical order.
+   */
+  const sortByProf = (a: Review, b: Review) => {
+    let valA = 'Not Listed';
+    let valB = 'Not Listed';
+
+    if (a.professors) {
+      const profsA = a.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed')
+      valA = profsA.length > 0
+        ? profsA.sort()[0]
+        : 'Not Listed'
+    } else {
+      return 1
+    }
+    if (b.professors) {
+      const profsB = b.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed')
+      valB = profsB.length > 0
+        ? profsB.sort()[0]
+        : 'Not Listed'
+    } else {
+      return 1
+    }
+
+    if (valA === 'Not Listed') {
+      return 1
+    } else if (valB === 'Not Listed') {
+      return 1
+    }
+    
+    if (valA < valB) {
+      return -1
+    } else if (valB < valA) {
+      return 1
+    }
+
+    return 0
+  }
+
+  /**
    * Update state to conditionally render sticky bottom-right review button
    */
   useEffect(() => {
@@ -113,6 +154,8 @@ export const Course = () => {
       setCourseReviews([...courseReviews].sort(sortByLikes));
     } else if (value === 'recent') {
       setCourseReviews([...courseReviews].sort(sortByDate));
+    } else if (value === 'professor') {
+      setCourseReviews([...courseReviews].sort(sortByProf));
     }
   }
 
@@ -231,12 +274,13 @@ export const Course = () => {
               >
                 <option value="helpful">Most Helpful</option>
                 <option value="recent">Recent</option>
+                <option value="professor">Professor</option>
               </select>
             </div>
           </div>
           <div className={styles.reviews}>
             <CourseReviews
-              key={courseReviews[0] ? courseReviews[0]._id : 1}
+              key={courseReviews ? courseReviews[0]._id : 1}
               reviews={courseReviews}
               isPreview={false}
               isProfile={false}

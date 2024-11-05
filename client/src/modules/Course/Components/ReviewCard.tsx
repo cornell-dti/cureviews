@@ -115,7 +115,7 @@ export default function ReviewCard({
     let professornames = ''
     if (_review.professors && _review.professors.length > 0)
       professornames += _review.professors.join(', ')
-    else professornames += 'N/A'
+    else professornames += 'Not Listed'
 
     if (isProfile) {
       return (
