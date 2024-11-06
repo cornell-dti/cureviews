@@ -12,7 +12,10 @@ export interface Class {
   classProfessors?: string[];
   classRating?: number;
   classWorkload?: number;
-  classDifficulty?: number; // the average difficulty rating from reviews
+  classDifficulty?: number;
+  classSummary?: string;
+  summaryTags?: Map<string, [string, string]>;
+  summaryFreshness?: number;
 }
 
 export interface Student {

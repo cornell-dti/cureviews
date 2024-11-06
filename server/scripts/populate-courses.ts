@@ -6,11 +6,9 @@
 import axios from 'axios';
 import shortid from 'shortid';
 import { ScrapingSubject, ScrapingClass } from './types';
-import { Reviews, Classes, Professors, Subjects } from '../db/schema';
+import { Classes, Professors, Subjects } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
-import { CourseIdRequestType } from '../src/course/course.type';
-import { findReviewCrossListOR } from '../src/utils';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
