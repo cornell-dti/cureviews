@@ -1,10 +1,8 @@
 import {
   findPendingReviews,
   findReportedReviews,
-  findAllReviewsAfterDate,
   removeReviewById,
   updateReviewVisibility,
-  findStudentById,
   updateCourseMetrics,
   findReviewCounts,
   createCourseCSV,
@@ -17,8 +15,6 @@ import {
   AdminAddSemesterType,
   AdminPendingReviewType,
   AdminReviewVisibilityType,
-  RaffleWinnerRequestType,
-  ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
   VerifyManageAdminType,
@@ -43,22 +39,6 @@ import {
   addAllDescriptions,
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
-
-/**
- * Reports a review by setting its visibility to only admin and updating reported count.
- * Will also update all course metrics accordingly.
- *
- * @param {string} id: Mongo-generated id of review
- * @returns true if operation was successful, false otherwise
- */
-export const reportReview = async ({ id }: ReportReviewRequestType) => {
-  try {
-    await updateReviewVisibility(id, 1, 0);
-    return updateCourseMetricsFromReview(id);
-  } catch (err) {
-    return false;
-  }
-};
 
 /**
  * Verifies that the token passed in an admin.
