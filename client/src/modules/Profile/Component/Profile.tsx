@@ -29,7 +29,6 @@ const Profile = () => {
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [approvedReviews, setApprovedReviews] = useState<ReviewType[]>([]);
 
-  const [reviewCount, setReviewCount] = useState(0);
   const [upvoteCount, setUpvoteCount] = useState(0);
 
   const { isLoggedIn, token, netId, isAuthenticating, signOut } =
@@ -92,16 +91,6 @@ const Profile = () => {
     return 0
   }
 
-  // async function getReviewsTotal() {
-  //     const response = await axios.post('/api/profiles/count-reviews', {
-  //       netId,
-  //     });
-  //     if (response.status === 200) {
-  //       const userReviewCount = response.data.result;
-  //       setReviewCount(userReviewCount + 1);
-  //     }
-  // }
-
   /**
    * Hook that handles
    * 1. Get + Set reviews
@@ -141,7 +130,6 @@ const Profile = () => {
     // Only update reviews if we have a given user's netId + they are no longer authenticating.
     if (netId && !isAuthenticating) {
       getReviews();
-      // getReviewsTotal();
       getReviewsHelpful();
     }
   }, [netId, isAuthenticating]);
@@ -230,7 +218,7 @@ const Profile = () => {
             <UserInfo
               profilePicture={profilePicture}
               upvoteCount={upvoteCount}
-              reviewsTotal={reviewCount}
+              reviewsTotal={pendingReviews.length + approvedReviews.length}
               netId={netId}
               signOut={signOut}
             />
@@ -238,7 +226,7 @@ const Profile = () => {
 
           <div className={styles.reviewsection}>
             <div className={styles.bar}>
-              <h2>My Reviews ({reviewCount})</h2>
+              <h2>My Reviews ({pendingReviews.length + approvedReviews.length})</h2>
               <div>
                 <label htmlFor="sort-reviews-by">Sort By:</label>
                 <select
