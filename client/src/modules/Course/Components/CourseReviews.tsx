@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -21,6 +21,10 @@ const CourseReviews = ({
   token,
 }: CourseReviewsProps) => {
   const [visibleReviews, setVisibleReviews] = useState(reviews)
+
+  useEffect(() => {
+    setVisibleReviews(reviews)
+  }, [reviews])
 
   /**
    * Attempts to report review, and filters out the reported review locally

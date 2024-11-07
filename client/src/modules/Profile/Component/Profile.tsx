@@ -51,7 +51,7 @@ const Profile = () => {
       : -1;
 
   /**
-   * Sorts reviews based on ascending alphabetical order.
+   * Sorts reviews based on ascending alphabetical order of professor name.
    */
   const sortByProf = (a: ReviewType, b: ReviewType) => {
     let valA = 'Not Listed';
@@ -79,7 +79,7 @@ const Profile = () => {
     if (valA === 'Not Listed') {
       return 1
     } else if (valB === 'Not Listed') {
-      return 1
+      return -1
     }
     
     if (valA < valB) {

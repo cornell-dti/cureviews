@@ -57,7 +57,7 @@ export const Course = () => {
       : -1;
 
   /**
-   * Sorts reviews based on ascending alphabetical order.
+   * Sorts reviews based on ascending alphabetical order of professor name.
    */
   const sortByProf = (a: Review, b: Review) => {
     let valA = 'Not Listed';
@@ -85,7 +85,7 @@ export const Course = () => {
     if (valA === 'Not Listed') {
       return 1
     } else if (valB === 'Not Listed') {
-      return 1
+      return -1
     }
     
     if (valA < valB) {
@@ -155,7 +155,9 @@ export const Course = () => {
     } else if (value === 'recent') {
       setCourseReviews([...courseReviews].sort(sortByDate));
     } else if (value === 'professor') {
+      console.log(courseReviews)
       setCourseReviews([...courseReviews].sort(sortByProf));
+      console.log(courseReviews)
     }
   }
 
