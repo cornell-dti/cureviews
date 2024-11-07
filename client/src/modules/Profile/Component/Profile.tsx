@@ -112,7 +112,6 @@ const Profile = () => {
         setPendingReviews(_pendingReviews);
         setApprovedReviews(_approvedReviews.sort(sortByLikes));
         setLoading(false);
-        setReviewCount(_pendingReviews.length + _approvedReviews.length)
       }
     }
   
