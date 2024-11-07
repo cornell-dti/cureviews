@@ -32,7 +32,7 @@ export default function ReviewCard({
   isPreview,
   isProfile,
   reportHandler
-}: ReviewProps): JSX.Element {
+}: ReviewProps): React.JSX.Element {
   const { isLoggedIn, signIn } = useAuthOptionalLogin();
   const location = useLocation();
 
@@ -63,7 +63,7 @@ export default function ReviewCard({
       signIn('path:' + location.pathname);
     }
 
-    setLiked((liked) => !liked);
+    setLiked((isLiked) => !isLiked);
 
     const response = await axios.post(`/api/reviews/update-liked`, {
       id: _review._id,

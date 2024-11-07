@@ -104,9 +104,9 @@ export const SearchBar = ({
     }
   };
 
-  const checkForCourseMatch = (query: string) => {
+  const checkForCourseMatch = (searchQuery: string) => {
     let isMatch = false;
-    let querySplit = query.toLowerCase().split(' ');
+    let querySplit = searchQuery.toLowerCase().split(' ');
     let queryNum = '';
     let querySub = '';
     if (querySplit.length === 2) {
@@ -130,23 +130,23 @@ export const SearchBar = ({
     // Reset index, enter, mouse, and selected
     setNewSearchState();
     // trim the input to remove trailing spaces
-    let userInput = event.target.value.trim();
+    let newUserInput = event.target.value.trim();
 
     // This is used to make "cs2110" and "cs 2110" equivalent
-    if (userInput && userInput.split(' ').length === 1) {
-      userInput = userInput.replace(/(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/gi, ' ');
+    if (newUserInput && newUserInput.split(' ').length === 1) {
+      newUserInput = newUserInput.replace(/(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/gi, ' ');
     }
 
     // only sets the index after key pressed
-    if (checkForCourseMatch(userInput)) {
+    if (checkForCourseMatch(newUserInput)) {
       // If input is exact match to a class,
       //  highlight this class by setting index to index of this class
       //  in search results dropdown
       setIndex(subjects.length + 1);
     }
-    setQuery(userInput);
+    setQuery(newUserInput);
 
-    Session.setPersistent({ 'last-search': userInput });
+    Session.setPersistent({ 'last-search': newUserInput });
   };
 
   /** Render the search results from querying  */

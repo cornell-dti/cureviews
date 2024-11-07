@@ -63,6 +63,7 @@ const FilteredResult = ({
     } else if (sortBy === 'work') {
       return 'Workload';
     }
+    return '';
   }
 
   let theClass = course;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -43,7 +43,7 @@ export const Admin = () => {
   };
   const [updatingField, setUpdatingField] = useState<string>('');
 
-  const [addSemester, setAddSemester] = useState('');
+  const [addSemester] = useState('');
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
 
   const { isLoggedIn, token, isAuthenticating } =
@@ -327,7 +327,7 @@ export const Admin = () => {
    * If this is the user's second click, call addAllCourses above to initiaize
    * the local database
    */
-  function renderInitButton(doubleClick: boolean) {
+  function renderInitButton() {
     // Offer button to edit database
     if (doubleClick) {
       return (
@@ -358,12 +358,12 @@ export const Admin = () => {
     }
   }
 
-  function renderAdmin(token: string) {
+  function renderAdmin(userToken: string) {
     return (
       <div className={styles.adminWrapper}>
         <div className="headInfo">
           <h1>Admin Interface</h1>
-          <Stats token={token} />
+          <Stats token={userToken} />
           <div className={styles.semesterUpdate}>
             <h2>Admin tools</h2>
             <div className="" role="group">
@@ -413,14 +413,14 @@ export const Admin = () => {
               >
                 Update Subjects
               </button>
-              {renderInitButton(doubleClick)}
+              {renderInitButton()}
             </div>
           </div>
 
           <ManageAdminModal
             open={isAdminModalOpen}
             setOpen={setIsAdminModalOpen}
-            token={token}
+            token={userToken}
           />
 
           <div>{successMessages[updated]}</div>

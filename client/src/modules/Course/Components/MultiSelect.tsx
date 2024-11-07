@@ -28,7 +28,7 @@ const MultiSelect = ({
 
   const handleSelect = (option: string) => {
     if (value.includes(option)) {
-      onChange(value.filter((selected) => selected !== option));
+      onChange(value.filter((selection) => selection !== option));
     } else {
       onChange([...value, option]);
     }
@@ -49,12 +49,12 @@ const MultiSelect = ({
     >
       <div className={styles.values}>
         {value.length > 0 ? (
-          value.map((selected) => (
-            <div className={styles.value} key={selected}>
+          value.map((selection) => (
+            <div className={styles.value} key={selection}>
               {' '}
-              {selected}{' '}
+              {selection}{' '}
               <img
-                onClick={() => handleDelete(selected)}
+                onClick={() => handleDelete(selection)}
                 src={closeIcon}
                 alt="close"
               />

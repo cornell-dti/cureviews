@@ -28,9 +28,9 @@ const ManageAdminModal = ({ token, open, setOpen }: Props) => {
       const response = await axios.post('/api/admin/users/get', {
         token: token
       });
-      const admins = response.data.result;
+      const adminUsers = response.data.result;
       if (response.status === 200) {
-        setAdmins(admins);
+        setAdmins(adminUsers);
       }
     }
     getAdmins();

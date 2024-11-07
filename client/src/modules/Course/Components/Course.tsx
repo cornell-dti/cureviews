@@ -65,7 +65,7 @@ export const Course = () => {
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
-    async function updateCurrentClass(number: number, subject: string) {
+    async function updateCurrentClass() {
       try {
         const response = await axios.post(`/api/courses/get-by-info`, {
           number,
@@ -94,7 +94,7 @@ export const Course = () => {
         setPageStatus(PageStatus.Error);
       }
     }
-    updateCurrentClass(number, subject);
+    updateCurrentClass();
   }, [number, subject]);
 
   /**
@@ -113,7 +113,6 @@ export const Course = () => {
           courseId: courseId
         });
 
-        clearSessionReview();
         if (response.status === 200) {
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
@@ -122,7 +121,6 @@ export const Course = () => {
           toast.error('An error occurred, please try again.');
         }
       } catch (e) {
-        clearSessionReview();
         toast.error('An error occurred, please try again.');
       }
     }

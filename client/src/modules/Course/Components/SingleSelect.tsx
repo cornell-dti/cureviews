@@ -25,8 +25,8 @@ const SingleSelect = ({
     setOpen(!open);
   };
 
-  const handleSelect = (selected: string) => {
-    onChange(selected);
+  const handleSelect = (selection: string) => {
+    onChange(selection);
 
     setOpen(false);
   };

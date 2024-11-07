@@ -41,15 +41,15 @@ const UpdateReview = ({
 
   getCourse();
 
-  function renderButtons(review: any) {
-    const reported = review.reported;
+  function renderButtons(adminReview: any) {
+    const reported = adminReview.reported;
     if (reported === 1) {
       return (
         <div className="">
           <button
             type="button"
             className={styles.approvebutton}
-            onClick={() => unReportHandler(review)}
+            onClick={() => unReportHandler(adminReview)}
           >
             {' '}
             Restore Review
@@ -57,7 +57,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.removebutton}
-            onClick={() => removeHandler(review, false)}
+            onClick={() => removeHandler(adminReview, false)}
           >
             {' '}
             Remove Review
@@ -70,7 +70,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.approvebutton}
-            onClick={() => approveHandler(review)}
+            onClick={() => approveHandler(adminReview)}
           >
             {' '}
             Confirm Review
@@ -78,7 +78,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.removebutton}
-            onClick={() => removeHandler(review, true)}
+            onClick={() => removeHandler(adminReview, true)}
           >
             {' '}
             Remove Review

@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from '../Styles/Stats.module.css';
 
 type StatsProps = {
-  token: string;
+  token?: string;
 };
 
 const Stats = ({ token }: StatsProps) => {
