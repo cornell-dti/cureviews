@@ -50,6 +50,7 @@
 
   background: var(--clr-blue-400);
   color: var(--clr-white);
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

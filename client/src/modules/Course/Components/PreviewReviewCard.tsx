@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
-import { Review as ReviewType } from 'common'
+import { Review as ReviewType } from 'common';
 
-import styles from '../Styles/Review.module.css'
-import previewstyle from '../Styles/PreviewCard.module.css'
+import styles from '../Styles/Review.module.css';
+import previewstyle from '../Styles/PreviewCard.module.css';
 
-import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils'
+import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 // use review.visible for pending
 
 type ReviewProps = {
-  review: ReviewType
-  isPreview: boolean
-  isProfile: boolean
-}
+  review: ReviewType;
+  isPreview: boolean;
+  isProfile: boolean;
+};
 
 /**
   A Preview Review Component.
@@ -39,25 +39,25 @@ export default function PreviewReviewCard({
   isPreview,
   isProfile,
 }: ReviewProps): React.JSX.Element {
-  const { isLoggedIn } = useAuthOptionalLogin()
-  const pending = isPreview && isProfile
-  const [liked, setLiked] = useState<boolean>(false)
-  const _review = review
+  const { isLoggedIn } = useAuthOptionalLogin();
+  const pending = isPreview && isProfile;
+  const [liked, setLiked] = useState<boolean>(false);
+  const _review = review;
 
-  const [courseTitle, setCourseTitle] = useState<string>('')
-  const [courseSub, setCourseSub] = useState<string>('')
-  const [courseNum, setCourseNum] = useState<string>('')
+  const [courseTitle, setCourseTitle] = useState<string>('');
+  const [courseSub, setCourseSub] = useState<string>('');
+  const [courseNum, setCourseNum] = useState<string>('');
 
   /** Turns our date objects into a string form to render. */
   function dateToString() {
-    if (!_review.date) return ''
+    if (!_review.date) return '';
 
-    const date = new Date(_review.date)
-    let reviewYear = String(date.getFullYear()).substring(2)
-    let reviewMonth = date.getMonth() + 1
-    let reviewDay = date.getDate()
+    const date = new Date(_review.date);
+    let reviewYear = String(date.getFullYear()).substring(2);
+    let reviewMonth = date.getMonth() + 1;
+    let reviewDay = date.getDate();
 
-    return reviewMonth + '/' + reviewDay + '/' + reviewYear
+    return reviewMonth + '/' + reviewDay + '/' + reviewYear;
   }
 
   /**
@@ -67,16 +67,17 @@ export default function PreviewReviewCard({
     async function updateCourse() {
       const response = await axios.post(`/api/courses/get-by-id`, {
         courseId: _review.class,
-      })
-      const course = response.data.result
-
-      setCourseTitle(course.classTitle)
-      setCourseSub(course.classSub)
-      setCourseNum(course.classNum)
+      });
+      const course = response.data.result;
+      if (course) {
+        setCourseTitle(course.classTitle);
+        setCourseSub(course.classSub);
+        setCourseNum(course.classNum);
+      }
     }
 
-    if (isProfile) updateCourse()
-  }, [_review, isProfile])
+    if (isProfile) updateCourse();
+  }, [_review, isProfile]);
 
   /**
    * Initial call to check
@@ -88,21 +89,21 @@ export default function PreviewReviewCard({
       const response = await axios.post('/api/reviews/user-liked', {
         id: _review._id,
         token: getAuthToken(),
-      })
+      });
 
-      setLiked(response.data.hasLiked)
+      setLiked(response.data.hasLiked);
     }
 
-    if (isLoggedIn) updateLiked()
-  }, [_review, isLoggedIn])
+    if (isLoggedIn) updateLiked();
+  }, [_review, isLoggedIn]);
 
   /** Renders course name as well if on profile page */
   function TitleAndProfessor() {
     // list of professors (name1, name2, ..)
-    let professornames = ''
+    let professornames = '';
     if (_review.professors && _review.professors.length > 0)
-      professornames += _review.professors.join(', ')
-    else professornames += 'N/A'
+      professornames += _review.professors.join(', ');
+    else professornames += 'N/A';
 
     if (isProfile) {
       return (
@@ -116,21 +117,21 @@ export default function PreviewReviewCard({
               professornames}
           </div>
         </>
-      )
+      );
     } else {
       return (
         <div>
           Professor <span className={styles.bold}>{professornames}</span>
         </div>
-      )
+      );
     }
   }
 
   /* SEE MORE -> SEE LESS logic for lengthier reviews */
-  const [expand, setExpand] = useState(false)
-  const [seeMoreButton, setSeeMoreButton] = useState(false)
+  const [expand, setExpand] = useState(false);
+  const [seeMoreButton, setSeeMoreButton] = useState(false);
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
 
   /* BUG (?) 
     TODO: click read more -> shrink page -> "see less" option is gone. 
@@ -139,16 +140,16 @@ export default function PreviewReviewCard({
   useEffect(() => {
     function handleResize() {
       if (ref.current) {
-        setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight)
+        setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight);
       }
     }
-    handleResize()
+    handleResize();
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   /**
    * CSS ORDER LAYOUT:
@@ -228,5 +229,5 @@ export default function PreviewReviewCard({
         )}
       </div>
     </div>
-  )
+  );
 }

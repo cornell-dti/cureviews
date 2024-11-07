@@ -11,7 +11,7 @@ type CourseReviewsProps = {
   reviews: readonly Review[]
   isPreview: boolean
   isProfile: boolean
-  token: string | null
+  token?: string | null
 }
 
 const CourseReviews = ({
@@ -20,24 +20,27 @@ const CourseReviews = ({
   isProfile,
   token,
 }: CourseReviewsProps) => {
-
   const [visibleReviews, setVisibleReviews] = useState(reviews)
 
   /**
    * Attempts to report review, and filters out the reported review locally
    * @param reviewId: _id of review to report
    */
-    async function reportReview(reviewId: string) {
-      const response = await axios.post('/api/reviews/report', { token: token, id: reviewId })
-      if (response.status === 200) {
-        const updated = reviews.filter((rev) => rev._id !== reviewId);
-        setVisibleReviews(updated)
-        toast.success("Thank you. We'll check if this review meets our guidelines."
-        )
-      } else {
-        toast.error('An error occurred. Please try again.')
-      }
+  async function reportReview(reviewId: string) {
+    const response = await axios.post('/api/reviews/report', {
+      token: token,
+      id: reviewId,
+    })
+    if (response.status === 200) {
+      const updated = reviews.filter((rev) => rev._id !== reviewId)
+      setVisibleReviews(updated)
+      toast.success(
+        "Thank you. We'll check if this review meets our guidelines."
+      )
+    } else {
+      toast.error('An error occurred. Please try again.')
     }
+  }
 
   // isPreview and isProfile => PENDING review
   // !isPreview and isProfile => PROFILE regular review

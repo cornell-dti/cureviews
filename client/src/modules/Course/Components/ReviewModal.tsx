@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 import MultiSelect from './MultiSelect'
 import SingleSelect from './SingleSelect'
@@ -10,16 +11,18 @@ import closeIcon from '../../../assets/icons/X.svg'
 
 // Data
 import majors from '../../Globals/majors'
+import AnonymousWarning from './AnonymousWarning'
+import { useAuthOptionalLogin } from '../../../auth/auth_utils'
 
 const ReviewModal = ({
   open,
-  setOpen,
+  setReviewOpen,
   submitReview,
   professorOptions,
 }: Modal) => {
   // Modal Logic
   function closeModal() {
-    setOpen(false)
+    setReviewOpen(false)
   }
   // Content & Options
   const placeholdertext =
@@ -53,6 +56,11 @@ const ReviewModal = ({
   const [difficulty, setDifficulty] = useState<number>(3)
   const [workload, setWorkload] = useState<number>(3)
 
+  const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false)
+  const [noReviews, setNoReviews] = useState<boolean>(false)
+
+  const {isLoggedIn, netId, signIn} = useAuthOptionalLogin()
+
   const [valid, setValid] = useState<Valid>({
     professor: false,
     major: false,
@@ -66,7 +74,22 @@ const ReviewModal = ({
   }, [professorOptions])
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text)
+    if (isLoggedIn) {getNoReviews()}
   }, [valid])
+
+  /**
+   * Determines if the current user has no reviews, so they should receive
+   * the anonymous modal
+   */
+  async function getNoReviews() {
+    const response = await axios.post('/api/profiles/count-reviews', {
+        netId,
+    })
+    const res = response.data
+    if (response.status === 200) {
+      setNoReviews(res.result === 0)
+    }
+  }
 
   function onProfessorChange(newSelectedProfessors: string[]) {
     setSelectedProfessors(newSelectedProfessors)
@@ -101,6 +124,7 @@ const ReviewModal = ({
     return false
   }
 
+  // Called by onSubmitReview if the user should not see anonymous
   function handleSubmitReview() {
     if (validReview()) {
       const newReview: NewReview = {
@@ -114,7 +138,31 @@ const ReviewModal = ({
         major: selectedMajors,
       }
       submitReview(newReview)
-    } else return
+    }
+  }
+
+  // Handle click of submit button
+  function onSubmitReview() {
+    if (!noReviews && isLoggedIn) {
+      handleSubmitReview()
+      signIn('profile')
+    } else {
+      handleSubmitReview()
+      setAnonymousOpen(true)
+      setReviewOpen(false)
+    }
+  }
+
+  if (!open && anonymousOpen) {
+    return (
+      <div className = {styles.modalbg}>
+        <div className = {styles.modal}>
+          <AnonymousWarning
+            open = {anonymousOpen}
+          />
+        </div>
+      </div>
+    )
   }
 
   if (!open) {
@@ -180,13 +228,13 @@ const ReviewModal = ({
               options={majorOptions}
               value={selectedMajors}
               onChange={onMajorChange}
-              placeholder="Underwater Basket Weaving"
+              placeholder="Select Major"
             />
             <SingleSelect
               options={gradeoptions}
               value={selectedGrade}
               onChange={onGradeChange}
-              placeholder="B+"
+              placeholder="Grade Received"
             />
           </div>
           <div className={styles.textcol}>
@@ -198,20 +246,12 @@ const ReviewModal = ({
               id="review-content"
               placeholder={placeholdertext}
             ></textarea>
-            <div className={styles.tags}>
-              <span role="img" aria-label="tags-coming-soon">
-                {' '}
-                👀{' '}
-              </span>
-              coming soon ...
-            </div>
             <button
               className={styles.submitbutton}
-              onClick={handleSubmitReview}
+              onClick={() => {onSubmitReview()}}
               disabled={!allowSubmit}
             >
-              {' '}
-              Submit Review{' '}
+              Submit Review
             </button>
           </div>
         </div>
@@ -222,7 +262,7 @@ const ReviewModal = ({
 
 type Modal = {
   open: boolean
-  setOpen: (open: boolean) => void
+  setReviewOpen: (open: boolean) => void
   submitReview: (review: NewReview) => void
   professorOptions: string[]
 }

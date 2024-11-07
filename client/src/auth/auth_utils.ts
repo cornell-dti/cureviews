@@ -64,10 +64,12 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
   }
 
   useEffect(() => {
-    const signIn = (redirectFrom: string) => {
-      Session.setPersistent({ redirectFrom: redirectFrom })
+    
+    const signIn = (_redirectFrom: string) => {
+      Session.setPersistent({ redirectFrom: _redirectFrom })
       history.push('/login')
     }
+
     const authToken = getAuthToken();
     async function getEmail() {
       if (!authToken || authToken === '') {
@@ -134,11 +136,14 @@ export function useAuthOptionalLogin(): {
           setNetId(email.substring(0, email.lastIndexOf('@')));
         }
       }
+    }
+
+    if (authToken && authToken !== '') {
+      getEmail().catch(e => console.log('[ERROR] Get Email in useAuthOptionalLogin(): ', e));
       setToken(authToken)
       setIsLoggedIn(true)
     }
     getEmail().catch(e => e);
-
   }, [])
 
   const signIn = (redirectFrom: string) => {
