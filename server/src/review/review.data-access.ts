@@ -49,6 +49,10 @@ export const findClassReviews = async (courseId: string) => {
 export const insertReview = async (review: Review) => {
   const newReview = new Reviews(review);
   await newReview.save();
+
+  const userId = newReview.user;
+  const pendingReviews = await Reviews.find({ user: userId, visible: 0, reported: 0}).exec();
+  return pendingReviews
 };
 
 export const updateReviewLikedBy = async (

@@ -280,7 +280,6 @@ export const Course = () => {
           </div>
           <div className={styles.reviews}>
             <CourseReviews
-              key={courseReviews ? courseReviews[0]._id : 1}
               reviews={courseReviews}
               isPreview={false}
               isProfile={false}

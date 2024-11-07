@@ -29,7 +29,7 @@ const Profile = () => {
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [approvedReviews, setApprovedReviews] = useState<ReviewType[]>([]);
 
-  const [reviewsLeft, setReviewsLeft] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
   const [upvoteCount, setUpvoteCount] = useState(0);
 
   const { isLoggedIn, token, netId, isAuthenticating, signOut } =
@@ -92,6 +92,16 @@ const Profile = () => {
     return 0
   }
 
+  // async function getReviewsTotal() {
+  //     const response = await axios.post('/api/profiles/count-reviews', {
+  //       netId,
+  //     });
+  //     if (response.status === 200) {
+  //       const userReviewCount = response.data.result;
+  //       setReviewCount(userReviewCount + 1);
+  //     }
+  // }
+
   /**
    * Hook that handles
    * 1. Get + Set reviews
@@ -108,38 +118,30 @@ const Profile = () => {
         const _approvedReviews = _reviews.filter(function (review: ReviewType) {
           return review.visible;
         });
-
+  
         setReviews(_reviews);
         setPendingReviews(_pendingReviews);
         setApprovedReviews(_approvedReviews.sort(sortByLikes));
         setLoading(false);
+        setReviewCount(_pendingReviews.length + _approvedReviews.length)
       }
     }
-
-    async function getReviewsTotal() {
-      const response = await axios.post('/api/profiles/count-reviews', {
-        netId,
-      });
-      if (response.status === 200) {
-        const userTotalReviewCount = response.data.result;
-        setReviewsLeft(userTotalReviewCount);
-      }
-    }
-
+  
     async function getReviewsHelpful() {
       const response = await axios.post('/api/profiles/get-likes', {
         netId,
       });
-
+  
       if (response.status === 200) {
         const userTotalUpvotes = response.data.result;
         setUpvoteCount(userTotalUpvotes);
       }
     }
-    // only update reviews if we have a given user's netId + they are no longer authenticating.
+
+    // Only update reviews if we have a given user's netId + they are no longer authenticating.
     if (netId && !isAuthenticating) {
       getReviews();
-      getReviewsTotal();
+      // getReviewsTotal();
       getReviewsHelpful();
     }
   }, [netId, isAuthenticating]);
@@ -175,6 +177,8 @@ const Profile = () => {
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           );
+          const pending = response.data.result
+          setPendingReviews(pending);
         } else {
           toast.error('An error occurred, please try again.');
         }
@@ -226,7 +230,7 @@ const Profile = () => {
             <UserInfo
               profilePicture={profilePicture}
               upvoteCount={upvoteCount}
-              reviewsTotal={reviewsLeft}
+              reviewsTotal={reviewCount}
               netId={netId}
               signOut={signOut}
             />
@@ -234,7 +238,7 @@ const Profile = () => {
 
           <div className={styles.reviewsection}>
             <div className={styles.bar}>
-              <h2>My Reviews ({reviews?.length})</h2>
+              <h2>My Reviews ({reviewCount})</h2>
               <div>
                 <label htmlFor="sort-reviews-by">Sort By:</label>
                 <select
@@ -251,19 +255,18 @@ const Profile = () => {
             {reviews.length > 0 && pendingReviews.length > 0 && (
               <>
                 <PendingReviews
+                  key={pendingReviews.length}
                   hide={hidePastReviews}
                   setHide={setHidePastReviews}
                   pendingReviews={pendingReviews}
                 />
                 <PastReviews
-                  key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                   pastReviews={approvedReviews}
                 />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
               <PastReviews
-                key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                 pastReviews={approvedReviews}
               />
             )}
