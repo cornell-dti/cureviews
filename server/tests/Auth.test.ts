@@ -1,3 +1,5 @@
+import { expect, test, describe, vi, beforeAll, afterAll } from 'vitest'
+
 import axios from "axios";
 
 import { testPort, testServer } from "./mocks/MockServer";
@@ -5,6 +7,9 @@ import { testStudents } from "./mocks/InitMockDb";
 import { Students } from "../db/schema";
 import { mockVerificationTicket } from "./mocks/MockAuth";
 import { Auth } from "../src/auth/auth";
+
+const INVALID_ADMIN_TOKEN = 'fakeTokencv4620'
+const VALID_ADMIN_TOKEN = 'fakeTokenDti1'
 
 beforeAll(async () => {
   await testServer.setUpDB(
@@ -21,11 +26,11 @@ afterAll(async () => {
   await mockVerificationTicket.mockRestore();
 });
 
-describe("auth functionality works", () => {
-  it("insertUser", async () => {
-    const getInvalidTokenMock = jest
+describe("Auth functionality unit tests", () => {
+  test("Insert a user works correctly", async () => {
+    const getInvalidTokenMock = vi
       .spyOn(Auth.prototype, "getToken")
-      .mockImplementation(() => "fakeTokencv4620");
+      .mockImplementation(() => INVALID_ADMIN_TOKEN);
 
     const user1 = {
       _id: "Irrelevant",
@@ -33,7 +38,7 @@ describe("auth functionality works", () => {
       lastName: "Vanderbilt",
       netId: "cv4620",
       affiliation: null,
-      token: "fakeTokencv4620",
+      token: INVALID_ADMIN_TOKEN,
       privilege: "regular",
     };
 
@@ -50,21 +55,26 @@ describe("auth functionality works", () => {
     getInvalidTokenMock.mockRestore();
   });
 
-  it("tokenIsAdmin-works", async () => {
+  test("tokenIsAdmin works correctly", async () => {
+    const getInvalidTokenMock = vi
+    .spyOn(Auth.prototype, "getToken")
+    .mockImplementation(() => INVALID_ADMIN_TOKEN);
+
     const failRes = await axios.post(
       `http://localhost:${testPort}/api/admin/token/validate`,
-      { token: "fakeTokencv4620" },
+      { token: INVALID_ADMIN_TOKEN },
     );
 
     expect(failRes.data.result).toEqual(false);
+    await getInvalidTokenMock.mockRestore();
 
-    const getValidTokenMock = jest
+    const getValidTokenMock = vi
       .spyOn(Auth.prototype, "getToken")
-      .mockImplementation(() => "fakeTokenDti1");
+      .mockImplementation(() => VALID_ADMIN_TOKEN);
 
     const successRes = await axios.post(
-      `http://localhost:${testPort}/api/tokenIsAdmin`,
-      { token: "fakeTokenDti1" },
+      `http://localhost:${testPort}/api/admin/token/validate`,
+      { token: VALID_ADMIN_TOKEN },
     );
 
     expect(successRes.data.result).toEqual(true);

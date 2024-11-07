@@ -31,12 +31,10 @@ export default class TestingServer {
     subjects: Subject[] = [],
   ) => {
     // setup db
-    const mongoUri = await this.mongoServer.getUri();
-    await mongoose.connect(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    });
+    await this.mongoServer.start();
+
+    const mongoUri = this.mongoServer.getUri();
+    await mongoose.connect(mongoUri);
 
     await mongoose.connection.collections.classes.createIndex({
       classFull: 'text',
