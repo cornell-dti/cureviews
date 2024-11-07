@@ -182,8 +182,8 @@ const Profile = () => {
           <div className={styles.usersection}>
             <UserInfo
               profilePicture={profilePicture}
-              reviewsHelpful={upvoteCount}
-              reviewsTotal={reviewsLeft}
+              upvoteCount={upvoteCount}
+              reviewsLeft={reviewsLeft}
               netId={netId}
               signOut={signOut}
             />
@@ -213,14 +213,14 @@ const Profile = () => {
                   pendingReviews={pendingReviews}
                 />
                 <PastReviews
-                  key={approvedReviews[0]._id}
+                  key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                   pastReviews={approvedReviews}
                 />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
               <PastReviews
-                key={approvedReviews[0]._id}
+                key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                 pastReviews={approvedReviews}
               />
             )}
