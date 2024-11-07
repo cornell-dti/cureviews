@@ -1,10 +1,8 @@
-import { expect, test, describe } from 'vitest'
-import { beforeAll, afterAll } from 'vitest'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 
 import axios from 'axios';
 
 import { testClasses, testReviews, testStudents } from './mocks/InitMockDb';
-import { mockVerificationTicket } from './mocks/MockAuth';
 
 import { testServer, testPort } from './mocks/MockServer';
 import { Reviews, Students } from '../db/schema';

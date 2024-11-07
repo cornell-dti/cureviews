@@ -1,5 +1,5 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import express from 'express';
 import { Student, Class, Professor, Review, Subject } from 'common';
 import * as http from 'http';

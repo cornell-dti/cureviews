@@ -1,5 +1,4 @@
-import { expect, test, describe } from 'vitest'
-import { beforeAll, afterAll } from 'vitest'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 
 import axios from "axios";
 
@@ -8,6 +7,8 @@ import { Reviews, Students } from "../db/schema";
 import { testClasses, testReviews } from "./mocks/InitMockDb";
 import { testServer, testPort } from "./mocks/MockServer";
 import { mockVerificationTicket, getValidTokenMock } from "./mocks/MockAuth";
+
+const VALID_ADMIN_TOKEN = 'fakeTokenDti1'
 
 beforeAll(async () => {
   // get mongoose all set up
@@ -21,7 +22,6 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // await mockVerifyToken.mockRestore();
   await mockVerificationTicket.mockRestore();
   await getValidTokenMock.mockRestore();
   await testServer.shutdownTestingServer();
@@ -46,7 +46,7 @@ describe("Review functionality unit tests", () => {
       {
         courseId: "oH37S3mJ4eAsktypy",
         review: reviewToInsert,
-        token: "fakeTokenDti1",
+        token: VALID_ADMIN_TOKEN,
       },
     );
     expect(res.status).toBe(200);
@@ -63,7 +63,7 @@ describe("Review functionality unit tests", () => {
   test("Like and dislike correctly increments and decrements", async () => {
     const res1 = await axios.post(
       `http://localhost:${testPort}/api/reviews/update-liked`,
-      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
+      { id: "4Y8k7DnX3PLNdwRPr", token: VALID_ADMIN_TOKEN },
     );
 
     expect(res1.status).toBe(200);
@@ -72,7 +72,7 @@ describe("Review functionality unit tests", () => {
 
     const res2 = await axios.post(
       `http://localhost:${testPort}/api/reviews/update-liked`,
-      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
+      { id: "4Y8k7DnX3PLNdwRPr", token: VALID_ADMIN_TOKEN },
     );
 
     const reviewDisliked = await Reviews.findOne({ _id: "4Y8k7DnX3PLNdwRPr" });
@@ -83,7 +83,7 @@ describe("Review functionality unit tests", () => {
   test("Reporting a review works correctly", async () => {
     const res1 = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/report`,
-      { id: "4Y8k7DnX3PLNdwRPr", token: "fakeTokenDti1" },
+      { id: "4Y8k7DnX3PLNdwRPr", token: VALID_ADMIN_TOKEN },
     );
 
     expect(res1.status).toBe(200);
