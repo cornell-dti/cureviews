@@ -1,4 +1,4 @@
-import joi from "joi";
+import joi from 'joi';
 
 type CourseEntity = {
   courseId: string;
@@ -25,7 +25,7 @@ export class Course {
     const searchSchema = joi.object({
       courseId: joi.string().alphanum().required(),
       subject: joi.string().required(),
-      courseNumber: joi.number().required(),
+      courseNumber: joi.number().required()
     });
 
     const { error } = searchSchema.validate(this);

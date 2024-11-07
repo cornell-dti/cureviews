@@ -1,20 +1,20 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
 
 /* Importing Pages */
-import { Home } from './modules/Home'
-import { Course } from './modules/Course'
-import { Profile } from './modules/Profile'
-import { Admin } from './modules/Admin'
+import { Home } from './modules/Home';
+import { Course } from './modules/Course';
+import { Profile } from './modules/Profile';
+import { Admin } from './modules/Admin';
 
 /* Importing Helpers */
-import { Login } from './modules/Login'
-import { Results } from './modules/Results'
-import { NotFound } from './modules/NotFound'
-import { AuthRedirect } from './modules/AuthRedirect'
+import { Login } from './modules/Login';
+import { Results } from './modules/Results';
+import { NotFound } from './modules/NotFound';
+import { AuthRedirect } from './modules/AuthRedirect';
 
 /* Styling */
-import './index.css'
+import './index.css';
 
 /**
   A router is generated using the react-router-dom library.
@@ -26,18 +26,18 @@ import './index.css'
 const App = () => {
   return (
     <Router>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/admin" component={Admin} />
-          <Route exact path="/course/:subject/:number" component={Course} />
-          <Route exact path="/auth" component={AuthRedirect} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/results/:type/:input" component={Results} />
-          <Route exact path="/profile" component={Profile} />
-          <Route component={NotFound} />
-        </Switch>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/admin" component={Admin} />
+        <Route exact path="/course/:subject/:number" component={Course} />
+        <Route exact path="/auth" component={AuthRedirect} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/results/:type/:input" component={Results} />
+        <Route exact path="/profile" component={Profile} />
+        <Route component={NotFound} />
+      </Switch>
     </Router>
-  )
-}
+  );
+};
 
-export default App
+export default App;

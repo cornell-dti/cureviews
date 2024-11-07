@@ -1,21 +1,21 @@
-import React from 'react'
+import React from 'react';
 
-import { Review as ReviewType } from 'common'
-import styles from '../Styles/PendingReviews.module.css'
-import CourseReviews from '../../Course/Components/CourseReviews'
+import { Review as ReviewType } from 'common';
+import styles from '../Styles/PendingReviews.module.css';
+import CourseReviews from '../../Course/Components/CourseReviews';
 
-import DropdownIcon from '../../../assets/icons/dropdownicon.svg'
+import DropdownIcon from '../../../assets/icons/dropdownicon.svg';
 
 type PendingReviewsProps = {
-  pendingReviews: ReviewType[]
-  hide: boolean
-  setHide: React.Dispatch<React.SetStateAction<boolean>>
-}
+  pendingReviews: ReviewType[];
+  hide: boolean;
+  setHide: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const PendingReviews = ({
   pendingReviews,
   hide,
-  setHide,
+  setHide
 }: PendingReviewsProps) => {
   return (
     <>
@@ -41,7 +41,7 @@ const PendingReviews = ({
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export { PendingReviews }
+export { PendingReviews };

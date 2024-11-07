@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-import { Class, Student, Subject, Review, Professor } from "common";
+import mongoose, { Schema } from 'mongoose';
+import { Class, Student, Subject, Review, Professor } from 'common';
 
 /*
 
@@ -31,10 +31,10 @@ const ClassSchema = new Schema<ClassDocument>({
   classProfessors: { type: [String] }, // list of professors that have taught the course over past semesters
   classRating: { type: Number }, // the average class rating from reviews
   classWorkload: { type: Number }, // the average workload rating from reviews
-  classDifficulty: { type: Number }, // the average difficulty rating from reviews
+  classDifficulty: { type: Number } // the average difficulty rating from reviews
 });
 
-export const Classes = mongoose.model<ClassDocument>("classes", ClassSchema);
+export const Classes = mongoose.model<ClassDocument>('classes', ClassSchema);
 /* # Users collection.
    # Holds data about each user. Data is collected via Cornell net-id login.
 */
@@ -52,11 +52,11 @@ const StudentSchema = new Schema<StudentDocument>({
   token: { type: String }, // random token generated during login process
   privilege: { type: String }, // user privilege level. Takes values "regular" | "admin"
   reviews: { type: [String] }, // the reviews that this user has posted.
-  likedReviews: { type: [String] },
+  likedReviews: { type: [String] }
 });
 export const Students = mongoose.model<StudentDocument>(
-  "students",
-  StudentSchema,
+  'students',
+  StudentSchema
 );
 
 /* # Subjects Collection
@@ -71,11 +71,11 @@ export interface SubjectDocument extends mongoose.Document, Subject {
 const SubjectSchema = new Schema<SubjectDocument>({
   _id: { type: String }, // overwritten _id field to play nice with our old db
   subShort: { type: String }, // subject, like "PHIL" or "CS"
-  subFull: { type: String }, // subject full name, like 'Computer Science'
+  subFull: { type: String } // subject full name, like 'Computer Science'
 });
 export const Subjects = mongoose.model<SubjectDocument>(
-  "subjects",
-  SubjectSchema,
+  'subjects',
+  SubjectSchema
 );
 
 /* # Reviews Collection.
@@ -104,12 +104,12 @@ const ReviewSchema = new Schema<ReviewDocument>({
   likedBy: { type: [String] },
   isCovid: { type: Boolean },
   grade: { type: String },
-  major: { type: [String] },
+  major: { type: [String] }
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature
 });
-export const Reviews = mongoose.model<ReviewDocument>("reviews", ReviewSchema);
+export const Reviews = mongoose.model<ReviewDocument>('reviews', ReviewSchema);
 
 /* # Professors collection.
    # Holds data about each professor.
@@ -123,11 +123,11 @@ const ProfessorSchema = new Schema<ProfessorDocument>({
   _id: { type: String }, // mongo-generated random id for this document
   fullName: { type: String }, // the full name of the professor
   courses: { type: [String] }, // a list of the ids all the courses
-  major: { type: String }, // professor affliation by probable major
+  major: { type: String } // professor affliation by probable major
 });
 export const Professors = mongoose.model<ProfessorDocument>(
-  "professors",
-  ProfessorSchema,
+  'professors',
+  ProfessorSchema
 );
 
 /* # Validation Collection.
@@ -136,7 +136,7 @@ export const Professors = mongoose.model<ProfessorDocument>(
 */
 const ValidationSchema = new Schema({
   _id: { type: String }, // mongo-generated random id for this document
-  adminPass: { type: String }, // admin password to validate against
+  adminPass: { type: String } // admin password to validate against
 });
 
 interface ValidationDocument extends mongoose.Document {
@@ -145,6 +145,6 @@ interface ValidationDocument extends mongoose.Document {
 }
 
 export const Validation = mongoose.model<ValidationDocument>(
-  "validation",
-  ValidationSchema,
+  'validation',
+  ValidationSchema
 );

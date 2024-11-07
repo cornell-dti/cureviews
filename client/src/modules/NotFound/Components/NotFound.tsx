@@ -1,5 +1,5 @@
-import React from 'react'
-import styles from '../NotFound.module.css'
+import React from 'react';
+import styles from '../NotFound.module.css';
 
 const NotFound = () => {
   return (
@@ -20,7 +20,7 @@ const NotFound = () => {
         <div className={styles.notFoundText}>Oops! Page Not Found :(</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export { NotFound }
+export { NotFound };

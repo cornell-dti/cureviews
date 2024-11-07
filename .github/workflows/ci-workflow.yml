@@ -12,8 +12,10 @@ jobs:
           node-version: 18
       - name: Install
         run: yarn
-      - name: Run Linter
+      - name: Lint
         run: yarn lint
+      - name: Format
+        run: yarn format:check
       - name: Build Server
         run: yarn workspace server build
       - name: Build Website Bundle

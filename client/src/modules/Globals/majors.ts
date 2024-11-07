@@ -71,7 +71,7 @@ const majors = [
   'Textile science',
   'Religion/religious studies',
   'German studies',
-  'Economics',
-]
+  'Economics'
+];
 
-export default majors
+export default majors;

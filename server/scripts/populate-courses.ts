@@ -18,7 +18,7 @@ import { addStudentReview } from '../src/review/review.controller';
  * @returns true if operation was successful, false otherwise
  */
 export const addAllCrossList = async (
-  semesters: string[],
+  semesters: string[]
 ): Promise<boolean> => {
   for (const semester in semesters) {
     const result = await addCrossList(semesters[semester]);
@@ -43,7 +43,7 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
   try {
     const result = await axios.get(
       `https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semester}`,
-      { timeout: 30000 },
+      { timeout: 30000 }
     );
 
     if (result.status !== 200) {
@@ -59,7 +59,7 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
       // for each subject, get all classes in that subject for this semester
       const result2 = await axios.get(
         `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${parent.value}`,
-        { timeout: 30000 },
+        { timeout: 30000 }
       );
       if (result2.status !== 200) {
         console.log('Error in addCrossList: 2');
@@ -72,13 +72,13 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
         try {
           const check = await Classes.findOne({
             classSub: courses[course].subject.toLowerCase(),
-            classNum: courses[course].catalogNbr,
+            classNum: courses[course].catalogNbr
           }).exec();
           console.log(
             courses[course].subject.toLowerCase() +
-            // eslint-disable-next-line operator-linebreak
-            ' ' +
-            courses[course].catalogNbr,
+              // eslint-disable-next-line operator-linebreak
+              ' ' +
+              courses[course].catalogNbr
           );
           console.log(check);
           const crossList = courses[course].enrollGroups[0].simpleCombinations;
@@ -89,7 +89,7 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
                   console.log(crossListedCourse);
                   const dbCourse = await Classes.findOne({
                     classSub: crossListedCourse.subject.toLowerCase(),
-                    classNum: crossListedCourse.catalogNbr,
+                    classNum: crossListedCourse.catalogNbr
                   }).exec();
 
                   // Added the following check because MUSIC 2340
@@ -101,18 +101,18 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
                   }
                   return null;
                 })
-                .filter((courseId) => courseId !== null),
+                .filter((courseId) => courseId !== null)
             );
 
             console.log(
-              `${courses[course].subject} ${courses[course].catalogNbr}`,
+              `${courses[course].subject} ${courses[course].catalogNbr}`
             );
 
             console.log(crossListIDs);
             if (!crossListIDs.includes(null)) {
               await Classes.updateOne(
                 { _id: check._id },
-                { $set: { crossList: crossListIDs } },
+                { $set: { crossList: crossListIDs } }
               );
             }
           }
@@ -141,17 +141,17 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
 export const fetchClassesForSubject = async (
   endpoint: string,
   semester: string,
-  subject: ScrapingSubject,
+  subject: ScrapingSubject
 ): Promise<ScrapingClass[] | null> => {
   try {
     const result = await axios.get(
       `${endpoint}search/classes.json?roster=${semester}&subject=${subject.value}`,
-      { timeout: 10000 },
+      { timeout: 10000 }
     );
 
     if (result.status !== 200 || result.data.status !== 'success') {
       console.log(
-        `Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`,
+        `Error fetching subject ${semester}-${subject.value} classes! HTTP: ${result.statusText} SERV: ${result.data.status}`
       );
       return null;
     }
@@ -172,7 +172,7 @@ export const fetchClassesForSubject = async (
  */
 export const addNewSemester = async (
   endpoint: string,
-  semester: string,
+  semester: string
 ): Promise<boolean> => {
   const subjects = await fetchSubjects(endpoint, semester);
   if (!subjects) {
@@ -182,7 +182,7 @@ export const addNewSemester = async (
   const v1 = await Promise.all(
     subjects.map(async (subject) => {
       const subjectIfExists = await Subjects.findOne({
-        subShort: subject.value.toLowerCase(),
+        subShort: subject.value.toLowerCase()
       }).exec();
 
       if (!subjectIfExists) {
@@ -190,7 +190,7 @@ export const addNewSemester = async (
         const res = await new Subjects({
           _id: shortid.generate(),
           subShort: subject.value.toLowerCase(),
-          subFull: subject.descrformal,
+          subFull: subject.descrformal
         })
           .save()
           .catch((err) => {
@@ -205,7 +205,7 @@ export const addNewSemester = async (
       }
 
       return true;
-    }),
+    })
   ).catch((err) => null);
 
   if (!v1) {
@@ -223,7 +223,7 @@ export const addNewSemester = async (
       const result = await fetchAddClassesForSubject(
         subject,
         endpoint,
-        semester,
+        semester
       );
 
       // skip if something went wrong fetching classes
@@ -233,7 +233,7 @@ export const addNewSemester = async (
       }
 
       return result;
-    }),
+    })
   ).catch((err) => false);
 
   return true;
@@ -250,12 +250,12 @@ export const addNewSemester = async (
 export const fetchAddClassesForSubject = async (
   subject: ScrapingSubject,
   endpoint: string,
-  semester: string,
+  semester: string
 ): Promise<boolean> => {
   const classes: ScrapingClass[] | null = await fetchClassesForSubject(
     endpoint,
     semester,
-    subject,
+    subject
   );
 
   // skip if something went wrong fetching classes
@@ -268,7 +268,7 @@ export const fetchAddClassesForSubject = async (
     classes.map(async (course) => {
       const classExists = await Classes.findOne({
         classSub: course.subject.toLowerCase(),
-        classNum: course.catalogNbr,
+        classNum: course.catalogNbr
       }).exec();
 
       const professors = extractProfessors(course);
@@ -284,28 +284,30 @@ export const fetchAddClassesForSubject = async (
               $setOnInsert: {
                 fullName: `${p.firstName} ${p.lastName}`,
                 _id: shortid.generate(),
-                major: 'None' /* TODO: change? */,
-              },
+                major: 'None' /* TODO: change? */
+              }
             },
-            { upsert: true, new: true },
+            { upsert: true, new: true }
           );
 
           return courseProfessors.fullName;
-        }),
+        })
       ).catch((err) => {
         console.log(err);
         return [];
       });
 
       console.log(
-        `Extracted professors from course ${course.subject.toUpperCase()}${course.catalogNbr
-        }....`,
+        `Extracted professors from course ${course.subject.toUpperCase()}${
+          course.catalogNbr
+        }....`
       );
 
       if (!classExists) {
         console.log(
-          `Course ${course.subject.toUpperCase()}${course.catalogNbr
-          } does not exist, adding to database...`,
+          `Course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } does not exist, adding to database...`
         );
 
         const regex = new RegExp('^[0-9]+$');
@@ -315,13 +317,14 @@ export const fetchAddClassesForSubject = async (
             classSub: course.subject.toLowerCase(),
             classNum: course.catalogNbr,
             classTitle: course.titleLong,
-            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${course.titleLong
-              }`,
+            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${
+              course.titleLong
+            }`,
             classSems: [semester],
             classProfessors: profs,
             classRating: 0,
             classWorkload: 0,
-            classDifficulty: 0,
+            classDifficulty: 0
           };
 
           const saveNewClass = await new Classes(newClass)
@@ -331,26 +334,29 @@ export const fetchAddClassesForSubject = async (
             });
 
           console.log(
-            `Saved new course ${course.subject.toUpperCase()}${course.catalogNbr
-            } to database...`,
+            `Saved new course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            } to database...`
           );
 
           profs.forEach(async (p) => {
             await Professors.findOneAndUpdate(
               { fullName: p },
-              { $addToSet: { courses: newClass._id } },
+              { $addToSet: { courses: newClass._id } }
             );
           });
 
           console.log(
-            `Adding course ${course.subject.toUpperCase()}${course.catalogNbr
-            } to professors' courses...`,
+            `Adding course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            } to professors' courses...`
           );
 
           if (!saveNewClass) {
             console.log(
-              `Saving new course ${course.subject.toUpperCase()}${course.catalogNbr
-              } failed!`,
+              `Saving new course ${course.subject.toUpperCase()}${
+                course.catalogNbr
+              } failed!`
             );
           }
         }
@@ -362,8 +368,9 @@ export const fetchAddClassesForSubject = async (
             : classExists.classSems;
 
         console.log(
-          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${course.catalogNbr
-          }...`,
+          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          }...`
         );
 
         // Compute the new set of professors for this class
@@ -378,13 +385,14 @@ export const fetchAddClassesForSubject = async (
         });
 
         console.log(
-          `Added professors to course ${course.subject.toUpperCase()}${course.catalogNbr
-          }...`,
+          `Added professors to course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          }...`
         );
 
         const updateClassInfo = await Classes.updateOne(
           { _id: classExists._id },
-          { $set: { classSems, classProfessors } },
+          { $set: { classSems, classProfessors } }
         )
           .exec()
           .catch((err) => {
@@ -392,37 +400,40 @@ export const fetchAddClassesForSubject = async (
           });
 
         console.log(
-          `Updated course information with recent semester and professors...`,
+          `Updated course information with recent semester and professors...`
         );
 
         classProfessors.forEach(async (p) => {
           await Professors.findOneAndUpdate(
             { fullName: p },
-            { $addToSet: { courses: classExists._id } },
+            { $addToSet: { courses: classExists._id } }
           ).catch((err) => console.log(err));
         });
 
         console.log(
-          `Added course ${course.subject.toUpperCase()}${course.catalogNbr
-          } to professors' course list...`,
+          `Added course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          } to professors' course list...`
         );
 
         if (!updateClassInfo) {
           console.log(
-            `Failed to update course ${course.subject.toUpperCase()}${course.catalogNbr
-            }!`,
+            `Failed to update course ${course.subject.toUpperCase()}${
+              course.catalogNbr
+            }!`
           );
         }
 
         console.log(
-          `Successfully updated course ${course.subject.toUpperCase()}${course.catalogNbr
-          }!`,
+          `Successfully updated course ${course.subject.toUpperCase()}${
+            course.catalogNbr
+          }!`
         );
       }
-    }),
+    })
   ).catch((err) => {
     console.log(
-      `An error occurred while added new courses for subject ${subject}: ${err}`,
+      `An error occurred while added new courses for subject ${subject}: ${err}`
     );
     return false;
   });
@@ -439,7 +450,7 @@ export const fetchAddClassesForSubject = async (
  */
 export const addAllCourses = async (
   endpoint: string,
-  semesters: string[],
+  semesters: string[]
 ): Promise<boolean> => {
   await Promise.all(
     semesters.map(async (semester) => {
@@ -450,7 +461,7 @@ export const addAllCourses = async (
       }
 
       return result;
-    }),
+    })
   );
   console.log('Finished addAllCourses');
   return true;
@@ -460,28 +471,28 @@ export const addAllCourses = async (
  * Helper function that removes invalid entries from the database based on the updated Course API
  * @param course the course that includes an invalid entry
  * @param semester the invalid semester, must exist in the classSems list of course
- * 
+ *
  * @returns true if operation was successful, false otherwise
  */
 const removeInvalidSem = async (course, semester): Promise<boolean> => {
   try {
-    const semesters = (course.classSems).filter(sem => sem !== semester);
+    const semesters = course.classSems.filter((sem) => sem !== semester);
     const courseId = course._id;
     await Classes.updateOne(
       { _id: courseId },
-      { $set: { classSems: semesters } },
+      { $set: { classSems: semesters } }
     );
     return true;
   } catch (err) {
-    console.log(`Error occurred in removing invalid entry in database: ${err}`)
+    console.log(`Error occurred in removing invalid entry in database: ${err}`);
   }
   return false;
-}
+};
 
 /**
  * Helper function that removes a course from the database
  * @param course the course that is being removed
- * 
+ *
  * @returns true if operation was successful, false otherwise
  */
 const removeCourse = async (course): Promise<boolean> => {
@@ -491,21 +502,25 @@ const removeCourse = async (course): Promise<boolean> => {
     const courseId = course._id;
     const result = await Classes.deleteOne({ _id: courseId });
     if (result.deletedCount === 1) {
-      console.log(`Course ${subject} ${num} successfully removed from database.`);
+      console.log(
+        `Course ${subject} ${num} successfully removed from database.`
+      );
       return true;
     } else {
       console.log(`Course ${subject} ${num} was not found in the database.`);
     }
   } catch (err) {
-    console.log(`Failed to remove course ${subject} ${num} from database due to ${err}.`);
+    console.log(
+      `Failed to remove course ${subject} ${num} from database due to ${err}.`
+    );
   }
   return false;
-}
+};
 
 /**
  * Adds all course descriptions for the most recent semester from Course API to each class in Course database.
  * Called after adding all new courses and professors for a new semester.
- * 
+ *
  * @returns true if operation was successful, false otherwise
  */
 export const addAllDescriptions = async (): Promise<boolean> => {
@@ -519,11 +534,11 @@ export const addAllDescriptions = async (): Promise<boolean> => {
   } catch (err) {
     console.log(`Error in adding descriptions: ${err}`);
   }
-}
+};
 
 /**
  * Retrieves course description from Course API and adds course description field in Course database
- * 
+ *
  * @param {string} semester: course roster semester for most recent offering of course
  * @param {string} courseId: course ID of class stored in Course database
  * @returns true if operation was successful, false otherwise
@@ -551,21 +566,26 @@ export const addCourseDescription = async (course): Promise<boolean> => {
       const courses = result.data.data.classes;
       for (const c of courses) {
         if (c.catalogNbr === courseNum) {
-          const description = c.description && c.description !== null ? c.description : c.titleLong;
+          const description =
+            c.description && c.description !== null
+              ? c.description
+              : c.titleLong;
           await Classes.updateOne(
             { _id: courseId },
-            { $set: { classDescription: description } },
+            { $set: { classDescription: description } }
           );
           return true;
         }
       }
       removeInvalidSem(course, semester);
     } catch (err) {
-      console.log(`Semester ${semester} for course subject ${subject} not in Course API`);
+      console.log(
+        `Semester ${semester} for course subject ${subject} not in Course API`
+      );
       removeInvalidSem(course, semester);
     }
   }
   removeCourse(course);
   console.log(`Error in adding description to course ${subject} ${courseNum}`);
   return false;
-}
+};

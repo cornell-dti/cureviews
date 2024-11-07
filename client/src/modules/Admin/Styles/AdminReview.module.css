@@ -1,39 +1,39 @@
 .approvebutton {
-    background-color: var(--clr-green-200);
-    color: var(--clr-white);
-    font-size: var(--font-small-size);
-    border-radius: 5px;
-    margin-top: 5px;
-    margin-right: 2px;
-    padding: 5px 6px;
-    cursor: pointer;
+  background-color: var(--clr-green-200);
+  color: var(--clr-white);
+  font-size: var(--font-small-size);
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-right: 2px;
+  padding: 5px 6px;
+  cursor: pointer;
 }
 
 .removebutton {
-    background-color: var(--clr-red-200);
-    color: var(--clr-white);
-    font-size: var(--font-small-size);
-    border-radius: 5px;
-    margin-top: 5px;
-    margin-right: 2px;
-    padding: 5px 6px;
-    cursor: pointer;
+  background-color: var(--clr-red-200);
+  color: var(--clr-white);
+  font-size: var(--font-small-size);
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-right: 2px;
+  padding: 5px 6px;
+  cursor: pointer;
 }
 
 .pendingreview {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px;
-    flex: 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  flex: 1;
 }
 
 .reviewinfo {
-    text-indent: 10px;
+  text-indent: 10px;
 }
 
 .titleinfo {
-    font-size: var(--font-p-size);
-    font-weight: var(--semi-bold-weight);
-    color: var(--clr-gray-300)
+  font-size: var(--font-p-size);
+  font-weight: var(--semi-bold-weight);
+  color: var(--clr-gray-300);
 }

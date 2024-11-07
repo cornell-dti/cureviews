@@ -1,4 +1,4 @@
-import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest';
 
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ beforeAll(async () => {
     testStudents,
     testClasses,
     undefined,
-    undefined,
+    undefined
   );
 });
 
@@ -27,7 +27,7 @@ describe('Profile functionality unit tests', () => {
     const netId = 'cv4620';
     const res = await axios.post(
       `http://localhost:${testPort}/api/profiles/count-reviews`,
-      { netId },
+      { netId }
     );
 
     const student = await Students.findOne({ netId });
@@ -42,8 +42,8 @@ describe('Profile functionality unit tests', () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/profiles/count-reviews`,
       {
-        netId: 'hu33',
-      },
+        netId: 'hu33'
+      }
     );
 
     expect(res.status).toBe(200);
@@ -53,7 +53,7 @@ describe('Profile functionality unit tests', () => {
   test('Counting the number of likes that student "cv4620" got on their reviews', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/profiles/get-likes`,
-      { netId: 'cv4620' },
+      { netId: 'cv4620' }
     );
 
     const testGetTotalLikes = 7;
@@ -65,7 +65,7 @@ describe('Profile functionality unit tests', () => {
   test('Counting the number of likes of a student that does not exist', async () => {
     const res = await axios
       .post(`http://localhost:${testPort}/api/profiles/get-likes`, {
-        netId: 'myl39',
+        netId: 'myl39'
       })
       .catch((e) => e);
     expect(res.response.status).toBe(404);
@@ -75,8 +75,8 @@ describe('Profile functionality unit tests', () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/profiles/get-likes`,
       {
-        netId: 'dhs234',
-      },
+        netId: 'dhs234'
+      }
     );
 
     expect(res.status).toBe(200);
@@ -87,7 +87,7 @@ describe('Profile functionality unit tests', () => {
     const netId = 'cv4620';
     const res = await axios.post(
       `http://localhost:${testPort}/api/profiles/get-reviews`,
-      { netId },
+      { netId }
     );
     const student = await Students.findOne({ netId });
     const studentReviews = await Reviews.find({ user: student?._id });

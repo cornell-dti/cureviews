@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import styles from '../Styles/NoReviews.module.css'
+import styles from '../Styles/NoReviews.module.css';
 
 const NoReviews = () => {
   return (
@@ -15,7 +15,7 @@ const NoReviews = () => {
         <img src="/noReviews.svg" alt="No Reviews" height="100%"></img>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export { NoReviews }
+export { NoReviews };

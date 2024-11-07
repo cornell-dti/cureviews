@@ -37,7 +37,7 @@ type ReviewProps = {
 export default function PreviewReviewCard({
   review,
   isPreview,
-  isProfile,
+  isProfile
 }: ReviewProps): React.JSX.Element {
   const { isLoggedIn } = useAuthOptionalLogin();
   const pending = isPreview && isProfile;
@@ -66,7 +66,7 @@ export default function PreviewReviewCard({
   useEffect(() => {
     async function updateCourse() {
       const response = await axios.post(`/api/courses/get-by-id`, {
-        courseId: _review.class,
+        courseId: _review.class
       });
       const course = response.data.result;
       if (course) {
@@ -88,7 +88,7 @@ export default function PreviewReviewCard({
     async function updateLiked() {
       const response = await axios.post('/api/reviews/user-liked', {
         id: _review._id,
-        token: getAuthToken(),
+        token: getAuthToken()
       });
 
       setLiked(response.data.hasLiked);

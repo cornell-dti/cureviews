@@ -8,7 +8,7 @@ import axios from 'axios';
 export async function findAllSemesters(): Promise<string[]> {
   let response = await axios.get(
     'https://classes.cornell.edu/api/2.0/config/rosters.json',
-    { timeout: 30000 },
+    { timeout: 30000 }
   );
   if (response.status !== 200) {
     return [];

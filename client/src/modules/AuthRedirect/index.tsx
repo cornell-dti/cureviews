@@ -1,1 +1,1 @@
-export { AuthRedirect } from './Components/AuthRedirect'
+export { AuthRedirect } from './Components/AuthRedirect';

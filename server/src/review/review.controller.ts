@@ -11,7 +11,7 @@ import {
   updateStudentLikedReviews,
   updateStudentReviews,
   updateReviewLikes,
-  hideReportedReview,
+  hideReportedReview
 } from './review.data-access';
 import {
   InsertReviewType,
@@ -20,7 +20,7 @@ import {
   AddStudentReviewType,
   VerifyAuthType,
   VerifyStudentType,
-  SetReviewReportedType,
+  SetReviewReportedType
 } from './review.type';
 
 export const verifyToken = async ({ auth }: VerifyAuthType) => {
@@ -50,7 +50,7 @@ export const verifyToken = async ({ auth }: VerifyAuthType) => {
 export const setStudentLikedReviews = async ({
   netId,
   reviewId,
-  liked,
+  liked
 }: SetStudentLikedReviewsType) => {
   try {
     await updateStudentLikedReviews(netId, reviewId, liked);
@@ -63,7 +63,7 @@ export const setStudentLikedReviews = async ({
 
 export const addStudentReview = async ({
   netId,
-  reviewId,
+  reviewId
 }: AddStudentReviewType) => {
   try {
     const student = await findStudent(netId);
@@ -84,7 +84,7 @@ export const addStudentReview = async ({
 
 export const checkStudentHasLiked = async ({
   auth,
-  reviewId,
+  reviewId
 }: ReviewLikesType) => {
   const verified = await verifyToken({ auth });
 
@@ -112,7 +112,7 @@ export const checkStudentHasLiked = async ({
 
 export const updateStudentLiked = async ({
   auth,
-  reviewId,
+  reviewId
 }: ReviewLikesType) => {
   const verified = await verifyToken({ auth });
 
@@ -139,7 +139,7 @@ export const updateStudentLiked = async ({
     const result = await setStudentLikedReviews({
       netId,
       reviewId: review._id,
-      liked: false,
+      liked: false
     });
 
     if (!result) {
@@ -148,7 +148,11 @@ export const updateStudentLiked = async ({
 
     await updateReviewLikedBy(reviewId, student._id, false);
   } else {
-    await setStudentLikedReviews({ netId, reviewId: review._id, liked: true });
+    await setStudentLikedReviews({
+      netId,
+      reviewId: review._id,
+      liked: true
+    });
 
     await updateReviewLikedBy(reviewId, student._id, true);
   }
@@ -163,7 +167,7 @@ export const updateStudentLiked = async ({
 export const insertNewReview = async ({
   auth,
   courseId,
-  review,
+  review
 }: InsertReviewType) => {
   const verified = await verifyToken({ auth });
 
@@ -199,7 +203,7 @@ export const insertNewReview = async ({
       isCovid: review.isCovid,
       user: student._id,
       grade: review.grade,
-      major: review.major,
+      major: review.major
     });
 
     await insertReview(newReview);
@@ -220,7 +224,7 @@ export const insertNewReview = async ({
 
 export const setReviewReported = async ({
   auth,
-  reviewId,
+  reviewId
 }: SetReviewReportedType) => {
   const verified = await verifyToken({ auth });
 

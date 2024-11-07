@@ -1,7 +1,7 @@
-import React from 'react'
-import '../Styles/Course.css'
-import { Redirect } from 'react-router'
-import { Class } from 'common'
+import React from 'react';
+import '../Styles/Course.css';
+import { Redirect } from 'react-router';
+import { Class } from 'common';
 
 /*
   Course Component.
@@ -16,37 +16,40 @@ import { Class } from 'common'
 */
 
 type Props = {
-  course: Class
-  query?: string
-  active: boolean
-  enter: number
-  mouse: number
-}
+  course: Class;
+  query?: string;
+  active: boolean;
+  enter: number;
+  mouse: number;
+};
 
-const Course = ({course, query, active, enter, mouse}: Props) => {
-  let text: any = course.classSub.toUpperCase() + ' ' + course.classNum + ': ' + course.classTitle
+const Course = ({ course, query, active, enter, mouse }: Props) => {
+  let text: any =
+    course.classSub.toUpperCase() +
+    ' ' +
+    course.classNum +
+    ': ' +
+    course.classTitle;
 
   // if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
   if (active && enter === 1) {
     return (
       <Redirect
         push
-        to={`/course/${course.classSub.toUpperCase()}/${
-          course.classNum
-        }`}
+        to={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}
       ></Redirect>
-    )
+    );
   }
 
   // check if a query was provided, if so underline parts of the class name
   if (query) {
-    const textLowerCase = text.toLowerCase()
-    const queryLowerCase = query.toLowerCase()
-    const queryIndex = textLowerCase.indexOf(queryLowerCase)
+    const textLowerCase = text.toLowerCase();
+    const queryLowerCase = query.toLowerCase();
+    const queryIndex = textLowerCase.indexOf(queryLowerCase);
 
     if (queryIndex !== -1) {
-      const startIndex = queryIndex
-      const endIndex = startIndex + queryLowerCase.length
+      const startIndex = queryIndex;
+      const endIndex = startIndex + queryLowerCase.length;
       text = (
         <span className="ellipsis">
           {text.substring(0, startIndex)}
@@ -55,7 +58,7 @@ const Course = ({course, query, active, enter, mouse}: Props) => {
           </span>
           {text.substring(endIndex)}
         </span>
-      )
+      );
     } else {
       // based on search technique in server/publications, results without a contains match
       // must be of the form "CS21" or "CS 21". The subject must be a 'match', as well as some
@@ -64,14 +67,13 @@ const Course = ({course, query, active, enter, mouse}: Props) => {
       // substring of query after the subject, without trailing spaces
       const queryWithoutSubject = queryLowerCase
         .substring(course.classSub.length)
-        .trim()
+        .trim();
       // search substring of text after subject for substring of query.
-      const textWithoutSubject =
-        course.classNum + ': ' + course.classTitle
+      const textWithoutSubject = course.classNum + ': ' + course.classTitle;
       const startIndex = textWithoutSubject
         .toLowerCase()
-        .indexOf(queryWithoutSubject)
-      const endIndex = startIndex + queryWithoutSubject.length
+        .indexOf(queryWithoutSubject);
+      const endIndex = startIndex + queryWithoutSubject.length;
 
       // underline the subject and any other matching text
       text = (
@@ -83,7 +85,7 @@ const Course = ({course, query, active, enter, mouse}: Props) => {
           </span>
           {textWithoutSubject.substring(endIndex)}
         </span>
-      )
+      );
     }
   }
 
@@ -94,14 +96,10 @@ const Course = ({course, query, active, enter, mouse}: Props) => {
     // if the mouse leaves the list element, highlighting by arrow key continues but from the first element
     <a
       className={
-        active && mouse !== 1
-          ? 'active-class resultbutton'
-          : 'resultbutton'
+        active && mouse !== 1 ? 'active-class resultbutton' : 'resultbutton'
       }
       id={course.classSub.toUpperCase() + '_' + course.classNum}
-      href={`/course/${course.classSub.toUpperCase()}/${
-        course.classNum
-      }`}
+      href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}
       data-cy={`search-result-${course.classSub.toLowerCase()}-${
         course.classNum
       }`}
@@ -109,7 +107,7 @@ const Course = ({course, query, active, enter, mouse}: Props) => {
       <p className="result-label-course">Course</p>
       <p className="result-text">{text}</p>
     </a>
-  )
-}
+  );
+};
 
-export default Course
+export default Course;

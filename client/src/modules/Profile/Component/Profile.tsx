@@ -58,7 +58,9 @@ const Profile = () => {
    */
   useEffect(() => {
     async function getReviews() {
-      const response = await axios.post(`/api/profiles/get-reviews`, { netId });
+      const response = await axios.post(`/api/profiles/get-reviews`, {
+        netId
+      });
       const _reviews = response.data.result;
       if (_reviews) {
         const _pendingReviews = _reviews.filter(function (review: ReviewType) {
@@ -77,7 +79,7 @@ const Profile = () => {
 
     async function getReviewsTotal() {
       const response = await axios.post('/api/profiles/count-reviews', {
-        netId,
+        netId
       });
       if (response.status === 200) {
         const userTotalReviewCount = response.data.result;
@@ -87,7 +89,7 @@ const Profile = () => {
 
     async function getReviewsHelpful() {
       const response = await axios.post('/api/profiles/get-likes', {
-        netId,
+        netId
       });
 
       if (response.status === 200) {
@@ -126,7 +128,7 @@ const Profile = () => {
         const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
-          courseId: courseId,
+          courseId: courseId
         });
 
         clearSessionReview();

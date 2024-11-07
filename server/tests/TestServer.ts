@@ -28,7 +28,7 @@ export default class TestingServer {
     students: Student[] = [],
     classes: Class[] = [],
     professors: Professor[] = [],
-    subjects: Subject[] = [],
+    subjects: Subject[] = []
   ) => {
     // setup db
     await this.mongoServer.start();
@@ -37,13 +37,13 @@ export default class TestingServer {
     await mongoose.connect(mongoUri);
 
     await mongoose.connection.collections.classes.createIndex({
-      classFull: 'text',
+      classFull: 'text'
     });
     await mongoose.connection.collections.subjects.createIndex({
-      subShort: 'text',
+      subShort: 'text'
     });
     await mongoose.connection.collections.professors.createIndex({
-      fullName: 'text',
+      fullName: 'text'
     });
 
     // add classes, reviews, etc... to db collections
@@ -56,7 +56,7 @@ export default class TestingServer {
     await Promise.all(subjects.map(async (c) => await new Subjects(c).save()));
 
     await Promise.all(
-      professors.map(async (c) => await new Professors(c).save()),
+      professors.map(async (c) => await new Professors(c).save())
     );
   };
 

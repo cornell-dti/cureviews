@@ -1,4 +1,4 @@
-import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest';
 
 // Set up fake endpoints to query
 import express from 'express';
@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import { Subjects, Classes, Professors } from '../db/schema';
 import {
   addNewSemester,
-  fetchAddClassesForSubject,
+  fetchAddClassesForSubject
 } from '../scripts/populate-courses';
 import { fetchSubjects } from '../scripts/populate-subjects';
 
@@ -29,7 +29,7 @@ beforeAll(async () => {
   await new Subjects({
     _id: 'some id',
     subShort: 'gork',
-    subFull: 'Study of Angry Fungi',
+    subFull: 'Study of Angry Fungi'
   }).save();
 
   await new Classes({
@@ -42,7 +42,7 @@ beforeAll(async () => {
     classProfessors: ['Prof. Thraka'],
     classRating: 5,
     classWorkload: 5,
-    classDifficulty: 5,
+    classDifficulty: 5
   }).save();
 
   // We need to pretend to have access to a cornell classes endpoint
@@ -56,7 +56,7 @@ beforeAll(async () => {
     // Maybe fix in the future?
     if (!req.originalUrl.includes('FA20')) {
       res.send({
-        status: 'failure',
+        status: 'failure'
       });
     }
 
@@ -67,15 +67,15 @@ beforeAll(async () => {
           {
             descr: 'Study of Fungi',
             descrformal: 'The Study of Fungi',
-            value: 'gork',
+            value: 'gork'
           },
           {
             descr: 'Study of Space',
             descrformal: 'The Study of Where No One has Gone Before',
-            value: 'fedn',
-          },
-        ],
-      },
+            value: 'fedn'
+          }
+        ]
+      }
     });
   });
 
@@ -85,7 +85,7 @@ beforeAll(async () => {
     // see above
     if (!req.originalUrl.includes('gork')) {
       return res.send({
-        status: 'failure',
+        status: 'failure'
       });
     }
 
@@ -106,14 +106,17 @@ beforeAll(async () => {
                     meetings: [
                       {
                         instructors: [
-                          { firstName: 'Prof.', lastName: 'Thraka' },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
+                          {
+                            firstName: 'Prof.',
+                            lastName: 'Thraka'
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             junk: 'nada',
@@ -128,18 +131,24 @@ beforeAll(async () => {
                     meetings: [
                       {
                         instructors: [
-                          { firstName: 'Prof.', lastName: 'Thraka' },
-                          { firstName: 'Prof.', lastName: 'Urgok' },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
+                          {
+                            firstName: 'Prof.',
+                            lastName: 'Thraka'
+                          },
+                          {
+                            firstName: 'Prof.',
+                            lastName: 'Urgok'
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     });
   });
 });
@@ -153,10 +162,10 @@ afterAll(async () => {
 describe('Database initialization and scraping functionality unit tests', () => {
   test('Database initialization works', async () => {
     expect((await Subjects.findOne({ subShort: 'gork' }))?.subShort).toBe(
-      'gork',
+      'gork'
     );
     expect(
-      (await Classes.findOne({ classSub: 'gork', classNum: '1110' }))?.classSub,
+      (await Classes.findOne({ classSub: 'gork', classNum: '1110' }))?.classSub
     ).toBe('gork');
   });
 
@@ -178,10 +187,10 @@ describe('Database initialization and scraping functionality unit tests', () => 
     const response = await fetchAddClassesForSubject(
       {
         descrformal: 'The Study of Angry Fungi',
-        value: 'gork',
+        value: 'gork'
       },
       testingEndpoint,
-      'FA20',
+      'FA20'
     );
 
     expect(response).toBe(true);
@@ -190,10 +199,10 @@ describe('Database initialization and scraping functionality unit tests', () => 
     const nil = await fetchAddClassesForSubject(
       {
         descrformal: 'The Study of Where No One has Gone Before',
-        value: 'fedn',
+        value: 'fedn'
       },
       testingEndpoint,
-      'FA20',
+      'FA20'
     );
     expect(nil).toBeTruthy();
   });
@@ -204,12 +213,15 @@ describe('Database initialization and scraping functionality unit tests', () => 
 
     // did it add the fedn subject?
     expect((await Subjects.findOne({ subShort: 'fedn' }).exec())?.subFull).toBe(
-      'The Study of Where No One has Gone Before',
+      'The Study of Where No One has Gone Before'
     );
 
     // did it update the semesters on gork 1110?
     // notice the .lean(), which changes some of the internals of what mongo returns
-    const class1 = await Classes.findOne({ classSub: 'gork', classNum: '1110' })
+    const class1 = await Classes.findOne({
+      classSub: 'gork',
+      classNum: '1110'
+    })
       .lean()
       .exec();
     expect(class1?.classSems).toStrictEqual(['FA19', 'FA20']);
@@ -217,7 +229,7 @@ describe('Database initialization and scraping functionality unit tests', () => 
     // did it add the gork 2110 Class?
     const class2 = await Classes.findOne({
       classSub: 'gork',
-      classNum: '2110',
+      classNum: '2110'
     }).exec();
     expect(class2?.classTitle).toBe('Advanced Study of Angry Fungi');
 

@@ -4,7 +4,7 @@ import { ProfileInfoRequestType } from './profile.type';
 import { findStudent } from '../utils';
 
 export const getStudentReviewIds = async ({
-  netId,
+  netId
 }: ProfileInfoRequestType) => {
   const student = await findStudent(netId);
   if (!student) return null;
@@ -12,7 +12,7 @@ export const getStudentReviewIds = async ({
 };
 
 export const getTotalLikesByNetId = async ({
-  netId,
+  netId
 }: ProfileInfoRequestType) => {
   let totalLikes = 0;
   const reviewDocs = await getStudentReviewDocs({ netId });
@@ -31,7 +31,7 @@ export const getTotalLikesByNetId = async ({
 };
 
 export const getStudentReviewDocs = async ({
-  netId,
+  netId
 }: ProfileInfoRequestType) => {
   const student = await findStudent(netId);
 

@@ -1,65 +1,65 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
-import axios from 'axios'
+import axios from 'axios';
 
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import WriteReviewIcon from '../../../assets/icons/write.svg'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import WriteReviewIcon from '../../../assets/icons/write.svg';
 
-import { courseVisited } from './Feedback'
-import Navbar from '../../Globals/Navbar'
-import Loading from '../../Globals/Loading'
+import { courseVisited } from './Feedback';
+import Navbar from '../../Globals/Navbar';
+import Loading from '../../Globals/Loading';
 
-import styles from '../Styles/Course.module.css'
-import { lastOfferedSems } from 'common/CourseCard'
+import styles from '../Styles/Course.module.css';
+import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from './Gauge'
-import CourseReviews from './CourseReviews'
+import Gauge from './Gauge';
+import CourseReviews from './CourseReviews';
 
-import type { NewReview } from '../../../types'
+import type { NewReview } from '../../../types';
 
-import { Class, Review } from 'common'
-import { Session } from '../../../session-store'
+import { Class, Review } from 'common';
+import { Session } from '../../../session-store';
 
-import { useAuthOptionalLogin } from '../../../auth/auth_utils'
+import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
-import ReviewModal from './ReviewModal'
+import ReviewModal from './ReviewModal';
 
 enum PageStatus {
   Loading,
   Success,
-  Error,
+  Error
 }
 
 export const Course = () => {
-  const { number, subject, input } = useParams<any>()
+  const { number, subject, input } = useParams<any>();
 
-  const [selectedClass, setSelectedClass] = useState<Class>()
-  const [courseReviews, setCourseReviews] = useState<Review[]>()
-  const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
-  const [scrolled, setScrolled] = useState(false)
+  const [selectedClass, setSelectedClass] = useState<Class>();
+  const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
+  const [scrolled, setScrolled] = useState(false);
 
-  const { isLoggedIn, token } = useAuthOptionalLogin()
+  const { isLoggedIn, token } = useAuthOptionalLogin();
 
   /**
    * Arrow functions for sorting reviews
    */
-  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0)
+  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
   const sortByDate = (a: Review, b: Review) =>
-    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1
+    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
 
   /**
    * Update state to conditionally render sticky bottom-right review button
    */
   useEffect(() => {
     function handleScroll() {
-      setScrolled(window.scrollY >= 240)
+      setScrolled(window.scrollY >= 240);
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   /**
    * Fetches current course info and reviews and updates UI state
@@ -69,33 +69,33 @@ export const Course = () => {
       try {
         const response = await axios.post(`/api/courses/get-by-info`, {
           number,
-          subject: subject,
-        })
+          subject: subject
+        });
 
-        const course = response.data.result
+        const course = response.data.result;
         if (course) {
-          setSelectedClass(course)
+          setSelectedClass(course);
 
           // After getting valid course info, fetch reviews
           const reviewsResponse = await axios.post('/api/courses/get-reviews', {
-            courseId: course._id,
-          })
-          const reviews = reviewsResponse.data.result
+            courseId: course._id
+          });
+          const reviews = reviewsResponse.data.result;
           // Convert date field of Review to JavaScript Date object
-          reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
-          reviews.sort(sortByLikes)
-          setCourseReviews(reviews)
+          reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
+          reviews.sort(sortByLikes);
+          setCourseReviews(reviews);
 
-          setPageStatus(PageStatus.Success)
+          setPageStatus(PageStatus.Success);
         } else {
-          setPageStatus(PageStatus.Error)
+          setPageStatus(PageStatus.Error);
         }
       } catch (e) {
-        setPageStatus(PageStatus.Error)
+        setPageStatus(PageStatus.Error);
       }
     }
-    updateCurrentClass(number, subject)
-  }, [number, subject])
+    updateCurrentClass(number, subject);
+  }, [number, subject]);
 
   /**
    * Checks if there is a review stored in Session (i.e. this redirected from
@@ -110,25 +110,25 @@ export const Course = () => {
         const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
-          courseId: courseId,
-        })
+          courseId: courseId
+        });
 
-        clearSessionReview()
+        clearSessionReview();
         if (response.status === 200) {
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
-          )
+          );
         } else {
-          toast.error('An error occurred, please try again.')
+          toast.error('An error occurred, please try again.');
         }
       } catch (e) {
-        clearSessionReview()
-        toast.error('An error occurred, please try again.')
+        clearSessionReview();
+        toast.error('An error occurred, please try again.');
       }
     }
 
-    const sessionReview = Session.get('review')
-    const sessionCourseId = Session.get('courseId')
+    const sessionReview = Session.get('review');
+    const sessionCourseId = Session.get('courseId');
     if (
       sessionReview !== undefined &&
       sessionReview !== '' &&
@@ -136,22 +136,22 @@ export const Course = () => {
       sessionCourseId !== '' &&
       isLoggedIn
     ) {
-      submitReview(sessionReview, sessionCourseId)
+      submitReview(sessionReview, sessionCourseId);
     }
-  }, [isLoggedIn, token])
+  }, [isLoggedIn, token]);
 
   /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
-    const value = event.target.value
-    const currentReviews = courseReviews && [...courseReviews]
+    const value = event.target.value;
+    const currentReviews = courseReviews && [...courseReviews];
     if (value === 'helpful') {
-      currentReviews?.sort(sortByLikes)
+      currentReviews?.sort(sortByLikes);
     } else if (value === 'recent') {
-      currentReviews?.sort(sortByDate)
+      currentReviews?.sort(sortByDate);
     }
-    setCourseReviews(currentReviews)
+    setCourseReviews(currentReviews);
   }
 
   /**
@@ -160,14 +160,16 @@ export const Course = () => {
    */
   async function reportReview(reviewId: string) {
     try {
-      const response = await axios.post('/api/reviews/report', { id: reviewId })
+      const response = await axios.post('/api/reviews/report', {
+        id: reviewId
+      });
       if (response.status === 200) {
         setCourseReviews(
           courseReviews?.filter((element) => element._id !== reviewId)
-        )
+        );
       }
     } catch (e) {
-      toast.error('Failed to report review.')
+      toast.error('Failed to report review.');
     }
   }
 
@@ -176,17 +178,17 @@ export const Course = () => {
    */
   function onSubmitReview(review: NewReview) {
     Session.setPersistent({
-      review: review,
-    })
+      review: review
+    });
     Session.setPersistent({
-      review_major: selectedClass?.classSub.toUpperCase(),
-    })
-    Session.setPersistent({ review_num: selectedClass?.classNum })
-    Session.setPersistent({ courseId: selectedClass?._id })
-   }
+      review_major: selectedClass?.classSub.toUpperCase()
+    });
+    Session.setPersistent({ review_num: selectedClass?.classNum });
+    Session.setPersistent({ courseId: selectedClass?._id });
+  }
 
   /** Modal Open and Close Logic */
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false);
   /**
    * Error page
    */
@@ -205,14 +207,14 @@ export const Course = () => {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   /**
    * Successful render =>
    */
   if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
-    courseVisited(selectedClass?.classSub, selectedClass?.classNum)
+    courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
       <div className={`${styles.page}`}>
         <ToastContainer
@@ -316,8 +318,8 @@ export const Course = () => {
           }
         />
       </div>
-    )
+    );
   }
 
-  return <Loading />
-}
+  return <Loading />;
+};

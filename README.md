@@ -37,14 +37,14 @@ A web app for Cornell students to read and write reviews for Cornell classes, al
       OPENAI_API_KEY=see-notion-page
    ```
 
-   *This would be only the staging DB, only Leads have access to production.*
+   _This would be only the staging DB, only Leads have access to production._
 
 3. Now that you have the database configured, make sure you have [Yarn](https://classic.yarnpkg.com/) installed.
 4. Start the local environments.
 
    ```bash
    # At Root (./cureviews/):
-   yarn # installs dependencies in package.json & lock file 
+   yarn # installs dependencies in package.json & lock file
    ```
 
    ```bash
