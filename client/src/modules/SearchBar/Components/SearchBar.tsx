@@ -134,7 +134,10 @@ export const SearchBar = ({
 
     // This is used to make "cs2110" and "cs 2110" equivalent
     if (newUserInput && newUserInput.split(' ').length === 1) {
-      newUserInput = newUserInput.replace(/(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/gi, ' ');
+      newUserInput = newUserInput.replace(
+        /(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/gi,
+        ' '
+      );
     }
 
     // only sets the index after key pressed

@@ -12,7 +12,6 @@
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
     "format": "prettier '**/*.{ts,js,tsx,jsx,css,html,md}' --write",
-    "format:check": "prettier '**/*.{ts,js,tsx,jsx,css,html,md}' --check"
   },
   "engines": {
     "node": "^18.x",

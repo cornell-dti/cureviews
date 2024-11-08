@@ -228,7 +228,7 @@ const ReviewModal = ({
               options={majorOptions}
               value={selectedMajors}
               onChange={onMajorChange}
-              placeholder="Select Major"
+              placeholder="Major"
             />
             <SingleSelect
               options={gradeoptions}
