@@ -23,7 +23,18 @@ export const Admin = () => {
   const [doubleClick, setDoubleClick] = useState<boolean>(false)
 
   const [updating, setUpdating] = useState<boolean>(false);
-  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description' | 'processed' | 'idf' | 'tfidf';
+  type updatedStates =
+    'empty' |
+    'semester' |
+    'profsReset' |
+    'profsUpdate' |
+    'subjects' |
+    'database' |
+    'description' |
+    'processed' |
+    'idf' |
+    'tfidf' |
+    'similarity';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
     'empty': '',
@@ -36,6 +47,7 @@ export const Admin = () => {
     'processed': "Processed course descriptino data successfully added",
     'idf': "IDF vector data successfully added",
     'tfidf': "TF-IDF vector data successfully added",
+    'similarity': "Similarity data successfully added",
   };
   const [updatingField, setUpdatingField] = useState<string>("");
 
@@ -329,6 +341,20 @@ export const Admin = () => {
     }
   }
 
+  async function updateSimilarityData() {
+    console.log('Updatng course similarity data')
+    setUpdating(true)
+    setUpdatingField("course similarity data")
+    const response = await axios.post('/api/admin/rec/similarity', { token: token });
+    if (response.status === 200) {
+      console.log('Updated course similarity data')
+      setUpdating(false)
+      setUpdated('similarity')
+    } else {
+      console.log('Error at updateSimilarityData')
+    }
+  }
+
   /**
    * Handle the first click to the "Initialize Database" button. Show an alert
    * and update state to remember the next click will be a double click.
@@ -456,6 +482,14 @@ export const Admin = () => {
                 onClick={() => updateTfIdfVectors()}
               >
                 Update TF-IDF Vectors
+              </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateSimilarityData()}
+              >
+                Update Similarity Data
               </button>
               {renderInitButton(doubleClick)}
             </div>

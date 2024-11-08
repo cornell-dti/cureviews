@@ -63,6 +63,7 @@ export const idf = (terms, words) => {
  */
 export const tfidf = (terms, idf) => {
   let d = {};
+  const termCount = terms.length;
   // tf
   for (const term of terms) {
     if (!d[term]) {
@@ -72,10 +73,8 @@ export const tfidf = (terms, idf) => {
   }
   // idf
   for (const term in d) {
-    if (idf && idf[term] === undefined) {
-      idf[term] = 1;
-    }
-    d[term] *= idf[term];
+    let normalize = d[term] / termCount;
+    d[term] *= normalize * (idf[term] || 1);
   }
   return d;
 }

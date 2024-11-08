@@ -120,6 +120,7 @@ export const getSimilarity = async () => {
   const allTerms = [...new Set(processedDescriptions.flat())];
   const idfValues = idf(allTerms, processedDescriptions);
   const tfidfVectors = processedDescriptions.map(terms => tfidf(terms, idfValues));
+  console.log(tfidfVectors)
 
   const topSimilarities = {};
 

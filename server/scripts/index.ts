@@ -4,6 +4,7 @@ export {
   addNewSemester,
   addAllCourses,
   addAllDescriptions,
+  addAllSimilarityData,
 } from './populate-courses';
 
 export { addAllProfessors, resetProfessors } from './populate-professors';

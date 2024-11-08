@@ -6,9 +6,10 @@
 import axios from 'axios';
 import shortid from 'shortid';
 import { ScrapingSubject, ScrapingClass } from './types';
-import { Classes, Professors, Subjects } from '../db/schema';
+import { Classes, Professors, Subjects, RecommendationMetadata } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
+import { cosineSimilarity } from '../src/course/course.recalgo';
 import { addStudentReview } from '../src/review/review.controller';
 
 /**
@@ -570,31 +571,69 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   return false;
 }
 
-// export const addAllSimilarityData = async (): Promise<boolean> => {
-//   try {
-//     const courses = await Classes.find().exec();
-//     if (courses) {
-//       for (const course of courses) {
-//         await addSimilarityData(courses, course);
-//       }
-//     }
-//     return true;
-//   } catch (err) {
-//     console.log(`Error in adding similarity data: ${err}`);
-//   }
-// }
+export const addAllSimilarityData = async (): Promise<boolean> => {
+  try {
+    const courses = await Classes.find().exec();
+    if (courses) {
+      for (const course of courses) {
+        await addSimilarityData(courses, course);
+      }
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding similarity data: ${err}`);
+  }
+}
 
-// const addSimilarityData = async (courses, course): Promise<boolean> => {
-//   try {
-//     const courseId = course._id;
-//     const description = course.classDescription;
-//     for (const c of courses) {
-//       if (c._id !== courseId) {
+const addSimilarityData = async (courses, course): Promise<boolean> => {
+  const courseId = course._id;
+  const subject = course.classSub;
+  const num = course.classNum;
+  try {
+    const similarities = [];
+    const tfidf = await RecommendationMetadata.findOne({ _id: courseId }).exec();
+    for (const c of courses) {
+      if (c._id !== courseId && c.classRating !== 0) {
+        const compTfidf = await RecommendationMetadata.findOne({ _id: c._id }).exec();
+        const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
+        if (cos < 1) {
+          const rating = threshold(course.classRating, c.classRating);
+          const workload = threshold(course.classWorkload, c.classWorkload);;
+          const difficulty = threshold(course.classDifficulty, c.classDifficulty);;
+          similarities.push({
+            className: c.classTitle,
+            classSub: c.classSub,
+            classNum: c.classNum,
+            tags: [`${rating} rating`, `${workload} workload`, `${difficulty} difficulty`],
+            similarityScore: cos
+          });
+        }
+      }
+    }
+    const topSimilarities = similarities
+      .sort((a, b) => b.similarityScore - a.similarityScore)
+      .slice(0, 5);
 
-//       }
-//     }
-//     return true;
-//   } catch (err) {
+    console.log(`${subject} ${num}`);
 
-//   }
-// }
+    const res = await Classes.updateOne(
+      { _id: courseId },
+      { $set: { recommendations: topSimilarities } }
+    );
+    if (!res) {
+      throw new Error();
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding similarity data for ${subject} ${num}: ${err}`);
+  }
+}
+
+const threshold = (a, b) => {
+  if (b - a >= 0.5) {
+    return 'higher';
+  } if (b - a <= -0.5) {
+    return 'lower';
+  }
+  return 'similar';
+}

@@ -89,12 +89,12 @@ export const addAllTfIdfVectors = async (): Promise<boolean> => {
 
 const addTfIdfVector = async (course, idfVector): Promise<boolean> => {
   const courseId = course._id;
-  const description = (course.processedDescription).split(' ');
+  const description = course.processedDescription.split(' ');
   const subject = course.classSub;
   const num = course.classNum;
   try {
     console.log(`${subject} ${num}`)
-    const tfidfVector = description.map(terms => tfidf(terms, idfVector));
+    const tfidfVector = tfidf(description, idfVector);
     const res = await RecommendationMetadata.updateOne(
       { _id: courseId },
       { $set: { tfidfVector: tfidfVector } });

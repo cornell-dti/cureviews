@@ -44,6 +44,7 @@ import {
   addAllProcessedDescriptions,
   addIdfVector,
   addAllTfIdfVectors,
+  addAllSimilarityData
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
@@ -451,4 +452,14 @@ export const addTfIdfVectorsDb = async ({ auth }: VerifyAdminType) => {
 
   const tfidfResult = await addAllTfIdfVectors();
   return tfidfResult;
+}
+
+export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const similarityResult = await addAllSimilarityData();
+  return similarityResult;
 }

@@ -33,6 +33,15 @@ const ClassSchema = new Schema<ClassDocument>({
   classRating: { type: Number }, // the average class rating from reviews
   classWorkload: { type: Number }, // the average workload rating from reviews
   classDifficulty: { type: Number }, // the average difficulty rating from reviews
+  recommendations: [
+    {
+      className: { type: String },
+      classSub: { type: String },
+      classNum: { type: Number },
+      tags: { type: [String] }, // array of tags, like ['overall rating', 'workload', 'difficulty']
+      similarityScore: { type: Number }
+    }
+  ]
 });
 
 export const Classes = mongoose.model<ClassDocument>("classes", ClassSchema);
