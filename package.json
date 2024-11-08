@@ -11,7 +11,7 @@
     "cypress:open": "cypress open",
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
-    "format": "prettier '**/*.{ts,js,tsx,jsx,css,html,md}' --write",
+    "format": "prettier '**/*.{ts,js,tsx,jsx,css,html,md}' --write"
   },
   "engines": {
     "node": "^18.x",
