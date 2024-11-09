@@ -424,6 +424,13 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
   return descriptionResult;
 }
 
+/**
+ * Adds all processed course descriptions to the recommendations metadata database 
+ * after standardizing and removing irrelevant words from course descriptions.
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const addProcessedDescriptionsDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
@@ -434,6 +441,12 @@ export const addProcessedDescriptionsDb = async ({ auth }: VerifyAdminType) => {
   return descriptionResult;
 }
 
+/**
+ * Adds IDF Vector of all processed course descriptions to Global Metadata database
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const addIdfVectorDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
@@ -444,6 +457,12 @@ export const addIdfVectorDb = async ({ auth }: VerifyAdminType) => {
   return idfResult;
 }
 
+/**
+ * Adds all TF-IDF Vectors for each course to the recommendations metadata database
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const addTfIdfVectorsDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
@@ -454,6 +473,12 @@ export const addTfIdfVectorsDb = async ({ auth }: VerifyAdminType) => {
   return tfidfResult;
 }
 
+/**
+ * Adds all similarity data to the Course database, consisting of tags and top 5 similar courses
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {

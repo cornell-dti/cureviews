@@ -571,6 +571,12 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   return false;
 }
 
+/**
+ * Adds all course similarity data to Course database. Called after populating 
+ * database with necessary metadata information.
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
 export const addAllSimilarityData = async (): Promise<boolean> => {
   try {
     const courses = await Classes.find().exec();
@@ -585,6 +591,13 @@ export const addAllSimilarityData = async (): Promise<boolean> => {
   }
 }
 
+/**
+ * Adds the top 5 similar courses to a given course using the cosine similarity algorithm for sorting.
+ * 
+ * @param courses the list of all courses in the Course database
+ * @param course specific course stored in Course database
+ * @returns true if operation was successful, false otherwise
+ */
 const addSimilarityData = async (courses, course): Promise<boolean> => {
   const courseId = course._id;
   const subject = course.classSub;

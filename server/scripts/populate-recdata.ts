@@ -1,6 +1,12 @@
 import { Classes, RecommendationMetadata, GlobalMetadata } from '../db/schema';
 import { preprocess, idf, tfidf } from '../src/course/course.recalgo';
 
+/**
+ * Adds the processed descriptions for all classes in the Course database to the 
+ * Recommendations Metadata database
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
 export const addAllProcessedDescriptions = async (): Promise<boolean> => {
   try {
     const courses = await Classes.find().exec();
@@ -15,6 +21,13 @@ export const addAllProcessedDescriptions = async (): Promise<boolean> => {
   }
 }
 
+/**
+ * Retrieves course description from Course database, preprocesses it, and adds 
+ * it to the Recommendations Metadata database
+ * 
+ * @param course the course that the processed description is being added to
+ * @returns true if operation was successful, false otherwise
+ */
 const addProcessedDescription = async (course): Promise<boolean> => {
   const courseId = course._id;
   const description = course.classDescription;
@@ -51,6 +64,11 @@ const addProcessedDescription = async (course): Promise<boolean> => {
   }
 }
 
+/**
+ * Adds the inverse document frequency (IDF) vector to the Global Metadata database
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
 export const addIdfVector = async (): Promise<boolean> => {
   try {
     const metadata = await RecommendationMetadata.find().exec();
@@ -71,6 +89,12 @@ export const addIdfVector = async (): Promise<boolean> => {
   }
 }
 
+/**
+ * Adds all TF-IDF Vectors to the Recommendations Metadata database. Called after 
+ * adding the IDF vector to the Global Metadata database.
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
 export const addAllTfIdfVectors = async (): Promise<boolean> => {
   try {
     const courses = await RecommendationMetadata.find().exec();
@@ -87,6 +111,15 @@ export const addAllTfIdfVectors = async (): Promise<boolean> => {
   }
 }
 
+/**
+ * Calculates the TF-IDF vector for a given course based on the overall IDF vector 
+ * and the course's processed description. Adds vector to the Recommendations 
+ * Metadata database.
+ * 
+ * @param course the course that the TF-IDF vector is being added to
+ * @param idfVector the IDF Vector from the Global Metadata database
+ * @returns true if operation was successful, false otherwise
+ */
 const addTfIdfVector = async (course, idfVector): Promise<boolean> => {
   const courseId = course._id;
   const description = course.processedDescription.split(' ');
