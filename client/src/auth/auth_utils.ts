@@ -12,7 +12,6 @@ import axios from 'axios'
 export const setAuthToken = (token: string) => {
   Session.setPersistent({ token: token })
   if (Session.get('token') !== token) {
-    console.log('Error saving token to session')
     return false
   }
   return true
@@ -88,7 +87,7 @@ export function useAuthMandatoryLogin(redirectFrom: string): {
       }
     }
 
-    getEmail().catch((e) => console.log("[ERROR] Failed in authMandatoryLogin: ", e.response))
+    getEmail().catch((e) => e)
     setToken(authToken)
     setIsAuthenticating(false)
     setIsLoggedIn(true)
@@ -128,10 +127,14 @@ export function useAuthOptionalLogin(): {
   useEffect(() => {
     const authToken = getAuthToken();
     async function getEmail() {
-      const response = await axios.post('/api/auth/get-email', { token: authToken });
-      if (response.status === 200) {
-        const email = response.data.result;
-        setNetId(email.substring(0, email.lastIndexOf('@')));
+      if (authToken && authToken !== '') {
+        const response = await axios.post('/api/auth/get-email', {
+          token: authToken,
+        });
+        if (response.status === 200) {
+          const email = response.data.result;
+          setNetId(email.substring(0, email.lastIndexOf('@')));
+        }
       }
     }
 
@@ -140,6 +143,7 @@ export function useAuthOptionalLogin(): {
       setToken(authToken)
       setIsLoggedIn(true)
     }
+    getEmail().catch(e => e);
   }, [])
 
   const signIn = (redirectFrom: string) => {

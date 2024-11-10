@@ -88,16 +88,7 @@ export default class PreviewCard extends Component {
               topReview: {},
               numReviews: 0,
             })
-            // eslint-disable-next-line no-console
-            console.log(
-              `No professor reviews for course by id = ${this.props.course._id}}`
-            )
           }
-        } else {
-          // eslint-disable-next-line no-console
-          console.log(
-            `Unable to find reviews by course by id = ${this.props.course._id}`
-          )
         }
       })
   }

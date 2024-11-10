@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import eslint from 'vite-plugin-eslint'
+import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
     build: {
@@ -18,6 +18,13 @@ export default defineConfig({
           changeOrigin: true,
           secure: false,
         },
+      },
+    },
+    test: {
+      clearMocks: true,
+      pool: 'thread',
+      poolOptions: {
+        singleThread: true,
       },
     }
 });

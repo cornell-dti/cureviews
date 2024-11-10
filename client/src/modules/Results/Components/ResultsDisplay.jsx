@@ -285,7 +285,7 @@ export default class ResultsDisplay extends Component {
   }
   
   getSubjectOptions(inputValue, callback) {
-    console.log('Deprecated functionality')
+    console.log()
   }
 
   setShowFilterPopup() {

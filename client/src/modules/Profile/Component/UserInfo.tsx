@@ -30,7 +30,7 @@ const UserInfo = ({
       <div className={styles.statssection}>
         <ProfileCard
           title="Reviews"
-          value={reviewsTotal}
+          value={reviewsLeft}
           image="/total_reviews_icon.svg"
         />
         <ProfileCard
