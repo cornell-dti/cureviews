@@ -32,7 +32,7 @@ reviewRouter.post('/post', async (req, res) => {
 
     return res.status(200).json({
       message: 'Successfully inserted new review!',
-      result,
+      result: result
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

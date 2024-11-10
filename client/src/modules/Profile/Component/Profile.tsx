@@ -29,7 +29,6 @@ const Profile = () => {
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [approvedReviews, setApprovedReviews] = useState<ReviewType[]>([]);
 
-  const [reviewsLeft, setReviewsLeft] = useState(0);
   const [upvoteCount, setUpvoteCount] = useState(0);
 
   const { isLoggedIn, token, netId, isAuthenticating, signOut } =
@@ -38,18 +37,59 @@ const Profile = () => {
   const profilePicture: string = randomPicture(netId);
 
   /**
-   * Sorts reviews based on ascending likes.
+   * Sorts reviews based on descending likes.
    */
   const sortByLikes = (a: ReviewType, b: ReviewType) =>
     (b.likes || 0) - (a.likes || 0);
 
   /**
-   * Sorts reviews based on ascending date.
+   * Sorts reviews based on descending date.
    */
   const sortByDate = (a: ReviewType, b: ReviewType) =>
     b.date instanceof Date && a.date instanceof Date
-      ? a.date.getTime() - b.date.getTime()
+      ? b.date.getTime() - a.date.getTime()
       : -1;
+
+  /**
+   * Sorts reviews based on ascending alphabetical order of professor name.
+   */
+  const sortByProf = (a: ReviewType, b: ReviewType) => {
+    let valA = 'Not Listed';
+    let valB = 'Not Listed';
+
+    if (a.professors) {
+      const profsA = a.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed')
+      valA = profsA.length > 0
+        ? profsA.sort()[0]
+        : 'Not Listed'
+    } else {
+      return 1
+    }
+    if (b.professors) {
+      const profsB = b.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed')
+      valB = profsB.length > 0
+        ? profsB.sort()[0]
+        : 'Not Listed'
+    } else {
+      return 1
+    }
+
+    if (valA === 'Not Listed') {
+      return 1
+    } else if (valB === 'Not Listed') {
+      return -1
+    }
+    
+    if (valA < valB) {
+      return -1
+    } else if (valB < valA) {
+      return 1
+    }
+
+    return 0
+  }
 
   /**
    * Hook that handles
@@ -67,38 +107,28 @@ const Profile = () => {
         const _approvedReviews = _reviews.filter(function (review: ReviewType) {
           return review.visible;
         });
-
+  
         setReviews(_reviews);
         setPendingReviews(_pendingReviews);
         setApprovedReviews(_approvedReviews.sort(sortByLikes));
         setLoading(false);
       }
     }
-
-    async function getReviewsTotal() {
-      const response = await axios.post('/api/profiles/count-reviews', {
-        netId,
-      });
-      if (response.status === 200) {
-        const userTotalReviewCount = response.data.result;
-        setReviewsLeft(userTotalReviewCount);
-      }
-    }
-
+  
     async function getReviewsHelpful() {
       const response = await axios.post('/api/profiles/get-likes', {
         netId,
       });
-
+  
       if (response.status === 200) {
         const userTotalUpvotes = response.data.result;
         setUpvoteCount(userTotalUpvotes);
       }
     }
-    // only update reviews if we have a given user's netId + they are no longer authenticating.
+
+    // Only update reviews if we have a given user's netId + they are no longer authenticating.
     if (netId && !isAuthenticating) {
       getReviews();
-      getReviewsTotal();
       getReviewsHelpful();
     }
   }, [netId, isAuthenticating]);
@@ -134,6 +164,8 @@ const Profile = () => {
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           );
+          const pending = response.data.result
+          setPendingReviews(pending);
         } else {
           toast.error('An error occurred, please try again.');
         }
@@ -162,6 +194,8 @@ const Profile = () => {
       setApprovedReviews([...approvedReviews].sort(sortByLikes));
     } else if (value === 'recent') {
       setApprovedReviews([...approvedReviews].sort(sortByDate));
+    } else if (value === 'professor') {
+      setApprovedReviews([...approvedReviews].sort(sortByProf))
     }
   }
 
@@ -183,7 +217,7 @@ const Profile = () => {
             <UserInfo
               profilePicture={profilePicture}
               upvoteCount={upvoteCount}
-              reviewsLeft={reviewsLeft}
+              reviewsTotal={pendingReviews.length + approvedReviews.length}
               netId={netId}
               signOut={signOut}
             />
@@ -191,7 +225,7 @@ const Profile = () => {
 
           <div className={styles.reviewsection}>
             <div className={styles.bar}>
-              <h2>My Reviews ({reviews?.length})</h2>
+              <h2>My Reviews ({pendingReviews.length + approvedReviews.length})</h2>
               <div>
                 <label htmlFor="sort-reviews-by">Sort By:</label>
                 <select
@@ -208,19 +242,18 @@ const Profile = () => {
             {reviews.length > 0 && pendingReviews.length > 0 && (
               <>
                 <PendingReviews
+                  key={pendingReviews.length}
                   hide={hidePastReviews}
                   setHide={setHidePastReviews}
                   pendingReviews={pendingReviews}
                 />
                 <PastReviews
-                  key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                   pastReviews={approvedReviews}
                 />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
               <PastReviews
-                key={approvedReviews[0] ? approvedReviews[0]._id : 1}
                 pastReviews={approvedReviews}
               />
             )}

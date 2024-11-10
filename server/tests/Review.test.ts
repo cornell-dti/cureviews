@@ -82,7 +82,7 @@ describe("Review functionality unit tests", () => {
 
   test("Reporting a review works correctly", async () => {
     const res1 = await axios.post(
-      `http://localhost:${testPort}/api/admin/reviews/report`,
+      `http://localhost:${testPort}/api/reviews/report`,
       { id: "4Y8k7DnX3PLNdwRPr", token: VALID_ADMIN_TOKEN },
     );
 

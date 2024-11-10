@@ -4,7 +4,7 @@ import ProfileCard from './ProfileCard'
 
 type UserInfoProps = {
   profilePicture: string
-  reviewsLeft: number
+  reviewsTotal: number
   upvoteCount: number
   netId: string
   signOut: () => void
@@ -13,7 +13,7 @@ type UserInfoProps = {
 const UserInfo = ({
   profilePicture,
   upvoteCount,
-  reviewsLeft,
+  reviewsTotal,
   netId,
   signOut,
 }: UserInfoProps) => {
