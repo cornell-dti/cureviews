@@ -22,6 +22,10 @@ const CourseReviews = ({
 }: CourseReviewsProps) => {
   const [visibleReviews, setVisibleReviews] = useState(reviews);
 
+  useEffect(() => {
+    setVisibleReviews(reviews)
+  }, [reviews])
+
   /**
    * Attempts to report review, and filters out the reported review locally
    * @param reviewId: _id of review to report

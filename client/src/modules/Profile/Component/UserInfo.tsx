@@ -4,16 +4,16 @@ import ProfileCard from './ProfileCard';
 
 type UserInfoProps = {
   profilePicture: string;
-  reviewsLeft: number;
+  reviewsTotal: number;
   upvoteCount: number;
   netId: string;
   signOut: () => void;
-};
+}
 
 const UserInfo = ({
   profilePicture,
   upvoteCount,
-  reviewsLeft,
+  reviewsTotal,
   netId,
   signOut
 }: UserInfoProps) => {
@@ -30,7 +30,7 @@ const UserInfo = ({
       <div className={styles.statssection}>
         <ProfileCard
           title="Reviews"
-          value={reviewsLeft}
+          value={reviewsTotal}
           image="/total_reviews_icon.svg"
         />
         <ProfileCard

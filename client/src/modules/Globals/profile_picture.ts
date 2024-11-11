@@ -20,5 +20,5 @@ function hashCode(netId: string) {
 }
 
 export function randomPicture(netId: string) {
-  return profilePictures[hashCode(netId) % profilePictures.length];
+  return profilePictures[Math.abs(hashCode(netId) % profilePictures.length)];
 }

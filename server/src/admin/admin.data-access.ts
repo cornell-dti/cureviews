@@ -3,11 +3,6 @@ import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
 import { UpdateCourseMetrics } from './admin.type';
 import { findCourseById } from '../course/course.data-access';
 
-export const findStudentById = async (id: string) => {
-  const student = await Students.findOne({ _id: id }).exec();
-  return student;
-};
-
 export const updateCourseMetrics = async (
   review: ReviewDocument,
   state: UpdateCourseMetrics
@@ -98,11 +93,6 @@ export const createCourseCSV = async () => {
   });
 
   return csv;
-};
-
-// eslint-disable-next-line arrow-body-style
-export const findAllReviewsAfterDate = async (date: Date) => {
-  return Reviews.find({ date: { $gte: date }, reported: 0 });
 };
 
 export const removeReviewById = async (reviewId: string) => {

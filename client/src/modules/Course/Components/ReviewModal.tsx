@@ -70,8 +70,11 @@ const ReviewModal = ({
   const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
 
   useEffect(() => {
-    professorOptions.push('Not Listed');
-  }, [professorOptions]);
+    if (!professorOptions.includes('Not Listed')) {
+      professorOptions.push('Not Listed');
+    }
+  }, [professorOptions])
+
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
     if (isLoggedIn) {

@@ -20,7 +20,8 @@ import {
   AddStudentReviewType,
   VerifyAuthType,
   VerifyStudentType,
-  SetReviewReportedType
+  SetReviewReportedType,
+  GetPendingReviewsType,
 } from './review.type';
 
 export const verifyToken = async ({ auth }: VerifyAuthType) => {
@@ -206,10 +207,10 @@ export const insertNewReview = async ({
       major: review.major
     });
 
-    await insertReview(newReview);
+    const pendingReviews = await insertReview(newReview);
     await addStudentReview({ netId, reviewId: newReview.getReviewId() });
 
-    return newReview;
+    return pendingReviews;
   } catch (err) {
     return null;
   }

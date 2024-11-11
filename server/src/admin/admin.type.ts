@@ -6,10 +6,6 @@ export interface UpdateCourseMetrics {
   diff: number | null;
 }
 
-export interface ReportReviewRequestType {
-  id: string;
-}
-
 export interface AdminReviewRequestType {
   token: string;
   review: AdminReviewType;
@@ -36,10 +32,6 @@ export interface VerifyAdminType {
 export interface VerifyManageAdminType {
   auth: Auth;
   id: string;
-}
-
-export interface RaffleWinnerRequestType {
-  startDate: string;
 }
 
 export interface AdminReviewVisibilityType {

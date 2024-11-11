@@ -48,6 +48,10 @@ export interface InsertReviewType {
   review: ReviewRequestType;
 }
 
+export interface GetPendingReviewsType {
+  auth: Auth;
+}
+
 export interface ReviewLikesType {
   auth: Auth;
   reviewId: string;

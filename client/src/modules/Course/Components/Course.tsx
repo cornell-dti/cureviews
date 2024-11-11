@@ -43,11 +43,61 @@ export const Course = () => {
   const { isLoggedIn, token } = useAuthOptionalLogin();
 
   /**
-   * Arrow functions for sorting reviews
+   * Sorts reviews based on descending likes.
+   */
+  const sortByLikes = (a: Review, b: Review) =>
+    (b.likes || 0) - (a.likes || 0);
+
+  /**
+   * Sorts reviews based on descending date.
    */
   const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
+
   const sortByDate = (a: Review, b: Review) =>
-    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1;
+    b.date instanceof Date && a.date instanceof Date
+      ? b.date.getTime() - a.date.getTime()
+      : -1;
+
+  /**
+   * Sorts reviews based on ascending alphabetical order of professor name.
+   */
+  const sortByProf = (a: Review, b: Review) => {
+    let valA = 'Not Listed';
+    let valB = 'Not Listed';
+
+    if (a.professors) {
+      const profsA = a.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed');
+      valA = profsA.length > 0
+        ? profsA.sort()[0]
+        : 'Not Listed';
+    } else {
+      return 1;
+    }
+    if (b.professors) {
+      const profsB = b.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed');
+      valB = profsB.length > 0
+        ? profsB.sort()[0]
+        : 'Not Listed';
+    } else {
+      return 1;
+    }
+
+    if (valA === 'Not Listed') {
+      return 1;
+    } else if (valB === 'Not Listed') {
+      return -1;
+    }
+    
+    if (valA < valB) {
+      return -1;
+    } else if (valB < valA) {
+      return 1;
+    }
+
+    return 0;
+  }
 
   /**
    * Update state to conditionally render sticky bottom-right review button
@@ -97,77 +147,16 @@ export const Course = () => {
     updateCurrentClass();
   }, [number, subject]);
 
-  /**
-   * Checks if there is a review stored in Session (i.e. this redirected from
-   * auth)
-   */
-  useEffect(() => {
-    /**
-     * Submit review and clear session storage
-     */
-    async function submitReview(review: NewReview, courseId: string) {
-      try {
-        const response = await axios.post('/api/reviews/post', {
-          token: token,
-          review: review,
-          courseId: courseId
-        });
-
-        if (response.status === 200) {
-          toast.success(
-            'Thanks for reviewing! New reviews are updated every 24 hours.'
-          );
-        } else {
-          toast.error('An error occurred, please try again.');
-        }
-      } catch (e) {
-        toast.error('An error occurred, please try again.');
-      }
-    }
-
-    const sessionReview = Session.get('review');
-    const sessionCourseId = Session.get('courseId');
-    if (
-      sessionReview !== undefined &&
-      sessionReview !== '' &&
-      sessionCourseId !== undefined &&
-      sessionCourseId !== '' &&
-      isLoggedIn
-    ) {
-      submitReview(sessionReview, sessionCourseId);
-    }
-  }, [isLoggedIn, token]);
-
-  /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
-    const currentReviews = courseReviews && [...courseReviews];
     if (value === 'helpful') {
-      currentReviews?.sort(sortByLikes);
+      setCourseReviews([...courseReviews].sort(sortByLikes));
     } else if (value === 'recent') {
-      currentReviews?.sort(sortByDate);
-    }
-    setCourseReviews(currentReviews);
-  }
-
-  /**
-   * Attempts to report review, and filters out the reported review locally
-   * @param reviewId - id of review to report
-   */
-  async function reportReview(reviewId: string) {
-    try {
-      const response = await axios.post('/api/reviews/report', {
-        id: reviewId
-      });
-      if (response.status === 200) {
-        setCourseReviews(
-          courseReviews?.filter((element) => element._id !== reviewId)
-        );
-      }
-    } catch (e) {
-      toast.error('Failed to report review.');
+      setCourseReviews([...courseReviews].sort(sortByDate));
+    } else if (value === 'professor') {
+      setCourseReviews([...courseReviews].sort(sortByProf));
     }
   }
 
@@ -286,6 +275,7 @@ export const Course = () => {
               >
                 <option value="helpful">Most Helpful</option>
                 <option value="recent">Recent</option>
+                <option value="professor">Professor</option>
               </select>
             </div>
           </div>

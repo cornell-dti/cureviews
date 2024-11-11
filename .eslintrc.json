@@ -29,7 +29,6 @@
     "consistent-return": "warn",
     "guard-for-in": "warn",
     "import/extensions": "off",
-    "new-cap": "warn",
     "no-await-in-loop": "warn",
     "no-continue": "off",
     "no-nested-ternary": "off",

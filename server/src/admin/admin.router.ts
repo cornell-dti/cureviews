@@ -6,7 +6,6 @@ import {
   AdminRequestType,
   AdminUserRequestType,
   AdminAddSemesterRequestType,
-  ReportReviewRequestType
 } from './admin.type';
 import {
   getPendingReviews,
@@ -21,7 +20,6 @@ import {
   initAllDb,
   addNewSemDb,
   verifyTokenAdmin,
-  reportReview,
   getAdminUsers,
   removeAdmin,
   addAdmin,
@@ -107,30 +105,6 @@ adminRouter.post('/reviews/approve-all', async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
-  }
-});
-
-/** Reachable at POST /api/admin/reviews/report
- * @body id: a review's id field
- * Reports a review, removing it from public visibility
- */
-adminRouter.post('/reviews/report', async (req, res) => {
-  try {
-    const { id }: ReportReviewRequestType = req.body;
-    const result = await reportReview({ id });
-    if (!result) {
-      return res.status(400).json({
-        error: `Review with id: ${id} unable to be reported.`
-      });
-    }
-
-    return res
-      .status(200)
-      .json({ message: `Review with id: ${id} successfully reported.` });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ error: `Internal Server Error: ${err.message}` });
   }
 });
 
