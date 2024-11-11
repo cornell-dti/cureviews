@@ -104,7 +104,7 @@ const Profile = () => {
       const _reviews = response.data.result;
       if (_reviews) {
         const _pendingReviews = _reviews.filter(function (review: ReviewType) {
-          return !review.visible;
+          return !review.visible && !review.reported;
         });
         const _approvedReviews = _reviews.filter(function (review: ReviewType) {
           return review.visible;

@@ -51,8 +51,6 @@ export const Course = () => {
   /**
    * Sorts reviews based on descending date.
    */
-  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
-
   const sortByDate = (a: Review, b: Review) =>
     b.date instanceof Date && a.date instanceof Date
       ? b.date.getTime() - a.date.getTime()
@@ -147,6 +145,7 @@ export const Course = () => {
     updateCurrentClass();
   }, [number, subject]);
 
+  /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
