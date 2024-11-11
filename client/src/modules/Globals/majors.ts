@@ -79,4 +79,4 @@ const majors = [
     'Viticulture and Enology'
 ]
 
-export default majors
+export default majors;

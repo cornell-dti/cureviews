@@ -1,44 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 // CSS FILES
-import styles from '../Styles/Select.module.css'
-import closeIcon from '../../../assets/icons/X.svg'
-import dropdownIcon from '../../../assets/icons/dropdownicon.svg'
+import styles from '../Styles/Select.module.css';
+import closeIcon from '../../../assets/icons/X.svg';
+import dropdownIcon from '../../../assets/icons/dropdownicon.svg';
 
 const MultiSelect = ({
   value,
   options,
   placeholder,
-  onChange,
+  onChange
 }: SelectProps) => {
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(0)
-  const [open, setOpen] = useState<boolean>(false)
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
+  const [open, setOpen] = useState<boolean>(false);
 
   // helpers
 
   const selected = (option: string) => {
-    return value.includes(option)
-  }
+    return value.includes(option);
+  };
 
   // logic controls:
 
   const handleDropdown = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   const handleSelect = (option: string) => {
     if (value.includes(option)) {
-      onChange(value.filter((selected) => selected !== option))
+      onChange(value.filter((selection) => selection !== option));
     } else {
-      onChange([...value, option])
+      onChange([...value, option]);
     }
 
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const handleDelete = (option: string) => {
-    onChange(value.filter((opt: string) => opt !== option))
-  }
+    onChange(value.filter((opt: string) => opt !== option));
+  };
 
   return (
     <div
@@ -49,12 +49,12 @@ const MultiSelect = ({
     >
       <div className={styles.values}>
         {value.length > 0 ? (
-          value.map((selected) => (
-            <div className={styles.value} key={selected}>
+          value.map((selection) => (
+            <div className={styles.value} key={selection}>
               {' '}
-              {selected}{' '}
+              {selection}{' '}
               <img
-                onClick={() => handleDelete(selected)}
+                onClick={() => handleDelete(selection)}
                 src={closeIcon}
                 alt="close"
               />
@@ -78,8 +78,8 @@ const MultiSelect = ({
               } ${index === highlightedIndex && styles.highlighted}`}
               key={option}
               onClick={(e) => {
-                e.stopPropagation()
-                handleSelect(option)
+                e.stopPropagation();
+                handleSelect(option);
               }}
               onMouseEnter={() => setHighlightedIndex(index)}
             >
@@ -90,14 +90,14 @@ const MultiSelect = ({
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
 type SelectProps = {
-  options: string[]
-  placeholder: string
-  value: string[]
-  onChange: (selectedOptions: string[]) => void
-}
+  options: string[];
+  placeholder: string;
+  value: string[];
+  onChange: (selectedOptions: string[]) => void;
+};
 
-export default MultiSelect
+export default MultiSelect;

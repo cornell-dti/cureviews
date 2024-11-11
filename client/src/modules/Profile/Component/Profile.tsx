@@ -98,11 +98,13 @@ const Profile = () => {
    */
   useEffect(() => {
     async function getReviews() {
-      const response = await axios.post(`/api/profiles/get-reviews`, { netId });
+      const response = await axios.post(`/api/profiles/get-reviews`, {
+        netId
+      });
       const _reviews = response.data.result;
       if (_reviews) {
         const _pendingReviews = _reviews.filter(function (review: ReviewType) {
-          return !review.visible;
+          return !review.visible && !review.reported;
         });
         const _approvedReviews = _reviews.filter(function (review: ReviewType) {
           return review.visible;
@@ -114,10 +116,10 @@ const Profile = () => {
         setLoading(false);
       }
     }
-  
+    
     async function getReviewsHelpful() {
       const response = await axios.post('/api/profiles/get-likes', {
-        netId,
+        netId
       });
   
       if (response.status === 200) {
@@ -156,7 +158,7 @@ const Profile = () => {
         const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
-          courseId: courseId,
+          courseId: courseId
         });
 
         clearSessionReview();

@@ -1,17 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import styles from '../Styles/RatingInput.module.css'
+import React, { useEffect, useMemo, useState } from 'react';
+import styles from '../Styles/RatingInput.module.css';
 
 type RatingInputProps = {
-  name: string
-  label: string
-  value: number
-  setValue: any
-  maxRating: number
-  minLabel?: string
-  maxLabel?: string
-  className?: string
-  isOverall: boolean
-}
+  name: string;
+  label: string;
+  value: number;
+  setValue: any;
+  maxRating: number;
+  minLabel?: string;
+  maxLabel?: string;
+  className?: string;
+  isOverall: boolean;
+};
 
 /**
  * This component allows users to input ratings up to `maxRating` using their
@@ -27,38 +27,38 @@ export default function RatingInput({
   minLabel,
   maxLabel,
   className,
-  isOverall,
+  isOverall
 }: RatingInputProps) {
-  const [hoverIndex, setHoverIndex] = useState(value - 1)
-  const [color, setColor] = useState<string>('')
+  const [hoverIndex, setHoverIndex] = useState(value - 1);
+  const [color, setColor] = useState<string>('');
 
   const buttonRefs = useMemo(
     () => Array.from({ length: maxRating }).map(() => React.createRef<any>()),
     [maxRating]
-  )
+  );
 
   const getColor = (index: number) => {
     if (0 <= index && index < 3) {
-      return isOverall ? 'Red' : 'Green'
+      return isOverall ? 'Red' : 'Green';
     } else if (3 <= index && index < 4) {
-      return 'Yellow'
+      return 'Yellow';
     } else {
-      return isOverall ? 'Green' : 'Red'
+      return isOverall ? 'Green' : 'Red';
     }
-  }
+  };
 
   useEffect(() => {
-    setHoverIndex(value - 1)
-    setColor(getColor(value))
-  }, [value])
+    setHoverIndex(value - 1);
+    setColor(getColor(value));
+  }, [value]);
 
   function handleKeyDown({ key }: any) {
     if (key === 'ArrowLeft' && hoverIndex >= 1) {
-      buttonRefs[hoverIndex - 1].current.focus()
+      buttonRefs[hoverIndex - 1].current.focus();
     }
 
     if (key === 'ArrowRight' && hoverIndex < maxRating - 1) {
-      buttonRefs[hoverIndex + 1].current.focus()
+      buttonRefs[hoverIndex + 1].current.focus();
     }
   }
 
@@ -71,24 +71,24 @@ export default function RatingInput({
             className={styles.ratingUnit}
             key={`${name}-${i}`}
             onMouseEnter={() => {
-              setHoverIndex(i)
-              setColor(getColor(i + 1))
+              setHoverIndex(i);
+              setColor(getColor(i + 1));
             }}
             onMouseLeave={() => {
-              setHoverIndex(value - 1)
-              setColor(getColor(value))
+              setHoverIndex(value - 1);
+              setColor(getColor(value));
             }}
           >
             <button
               ref={buttonRefs[i]}
               className={styles.ratingButton}
               onClick={() => {
-                setValue(i + 1)
-                setColor(getColor(i + 1))
+                setValue(i + 1);
+                setColor(getColor(i + 1));
               }}
               onFocus={() => {
-                setValue(i + 1)
-                setColor(getColor(i + 1))
+                setValue(i + 1);
+                setColor(getColor(i + 1));
               }}
               tabIndex={-1}
             >
@@ -115,5 +115,5 @@ export default function RatingInput({
         <label htmlFor={`${name}-${maxRating - 1}`}>{maxLabel}</label>
       </div>
     </div>
-  )
+  );
 }

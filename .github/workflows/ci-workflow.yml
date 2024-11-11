@@ -12,7 +12,7 @@ jobs:
           node-version: 18
       - name: Install
         run: yarn
-      - name: Run Linter
+      - name: Lint
         run: yarn lint
       - name: Build Server
         run: yarn workspace server build

@@ -14,17 +14,17 @@ import { Subjects } from '../db/schema';
  */
 export const fetchSubjects = async (
   endpoint: string,
-  semester: string,
+  semester: string
 ): Promise<ScrapingSubject[] | null> => {
   try {
     const result = await axios.get(
       `${endpoint}config/subjects.json?roster=${semester}`,
-      { timeout: 10000 },
+      { timeout: 10000 }
     );
 
     if (result.status !== 200 || result.data.status !== 'success') {
       console.log(
-        `Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`,
+        `Error fetching ${semester} subjects! HTTP: ${result.statusText} SERV: ${result.data.status}`
       );
       return null;
     }
@@ -32,7 +32,10 @@ export const fetchSubjects = async (
     const { subjects } = result.data.data;
     return subjects;
   } catch (err) {
-    console.error(`Failed to retrieve subjects for semester ${semester}: `, err);
+    console.error(
+      `Failed to retrieve subjects for semester ${semester}: `,
+      err
+    );
     return null;
   }
 };
@@ -47,7 +50,7 @@ export const fetchSubjects = async (
  */
 export const fetchAddSubjects = async (
   endpoint: string,
-  semesters: string[],
+  semesters: string[]
 ): Promise<boolean> => {
   for (const semester of semesters) {
     const subjects = await fetchSubjects(endpoint, semester);
@@ -59,14 +62,14 @@ export const fetchAddSubjects = async (
     await Promise.all(
       subjects.map(async (subject) => {
         const subjectExists = await Subjects.findOne({
-          subShort: subject.value.toLowerCase(),
+          subShort: subject.value.toLowerCase()
         }).exec();
 
         if (!subjectExists) {
           const res = await new Subjects({
             _id: shortid.generate(),
             subShort: subject.value.toLowerCase(),
-            subFull: subject.descrformal,
+            subFull: subject.descrformal
           })
             .save()
             .catch((err) => {
@@ -91,7 +94,7 @@ export const fetchAddSubjects = async (
             return false;
           });
         }
-      }),
+      })
     );
 
     return true;

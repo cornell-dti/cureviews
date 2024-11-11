@@ -1,7 +1,7 @@
-import React from 'react'
-import '../Styles/Course.css'
-import { Redirect } from 'react-router'
-import { Subject } from 'common'
+import React from 'react';
+import '../Styles/Course.css';
+import { Redirect } from 'react-router';
+import { Subject } from 'common';
 
 /*
   Subject Component.
@@ -11,16 +11,16 @@ import { Subject } from 'common'
 */
 
 type Props = {
-  subject: Subject
-  query?: string //optional
-  active: boolean
-  enter: 1 | 0
-  mouse: 1 | 0
-}
+  subject: Subject;
+  query?: string; //optional
+  active: boolean;
+  enter: 1 | 0;
+  mouse: 1 | 0;
+};
 
-const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
+const SubjectResult = ({ subject, query, active, enter, mouse }: Props) => {
   // generate full human-readable name of class
-  const fullSubjectName = subject.subFull
+  const fullSubjectName = subject.subFull;
 
   // if the element is highlighted and the enter key was pressed, create a Redirect component to go to the class
   if (active && enter === 1) {
@@ -29,7 +29,7 @@ const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
         push
         to={`/results/major/${subject.subShort.toUpperCase()}`}
       ></Redirect>
-    )
+    );
   }
 
   // return classname as a list element
@@ -40,16 +40,14 @@ const SubjectResult = ({subject, query, active, enter, mouse}: Props) => {
     <a
       data-cy={`search-result-${subject.subShort.toLowerCase()}`}
       className={
-        active && mouse !== 1
-          ? 'active-class resultbutton'
-          : 'resultbutton'
+        active && mouse !== 1 ? 'active-class resultbutton' : 'resultbutton'
       }
       href={`/results/major/${subject.subShort.toUpperCase()}`}
     >
       <p className="result-label-subject">Major</p>
       <p className="result-text">{fullSubjectName}</p>
     </a>
-  )
-}
+  );
+};
 
-export default SubjectResult
+export default SubjectResult;

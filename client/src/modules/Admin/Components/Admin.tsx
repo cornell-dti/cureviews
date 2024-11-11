@@ -1,62 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import axios from 'axios'
+import axios from 'axios';
 
-import { Review } from 'common'
+import { Review } from 'common';
 
-import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
+import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 
-import UpdateReview from './AdminReview'
-import Stats from './Stats'
-import ManageAdminModal from './ManageAdminModal'
+import UpdateReview from './AdminReview';
+import Stats from './Stats';
+import ManageAdminModal from './ManageAdminModal';
 
-import styles from '../Styles/Admin.module.css'
-import Loading from '../../Globals/Loading'
+import styles from '../Styles/Admin.module.css';
+import Loading from '../../Globals/Loading';
 
 /** Admin Page
  * Approve new reviews, see stats, and import new semester courses & Profs.
  */
 export const Admin = () => {
-  const [pendingReviews, setPendingReviews] = useState<Review[]>([])
-  const [reportedReviews, setReportedReviews] = useState<Review[]>([])
-  const [doubleClick, setDoubleClick] = useState<boolean>(false)
+  const [pendingReviews, setPendingReviews] = useState<Review[]>([]);
+  const [reportedReviews, setReportedReviews] = useState<Review[]>([]);
+  const [doubleClick, setDoubleClick] = useState<boolean>(false);
 
   const [updating, setUpdating] = useState<boolean>(false);
-  type updatedStates = 'empty' | 'semester' | 'profsReset' | 'profsUpdate' | 'subjects' | 'database' | 'description';
+  type updatedStates =
+    | 'empty'
+    | 'semester'
+    | 'profsReset'
+    | 'profsUpdate'
+    | 'subjects'
+    | 'database'
+    | 'description';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
-    'empty': '',
-    'semester': "New semester data successfully added",
-    'profsReset': "Professor data successfully reset to empty",
-    'profsUpdate': "Professor data successfully updated",
-    'subjects': "Subject full name data successfully updated",
-    'database': "Database successfully initialized",
-    'description': "Course description data successfully added"
+    empty: '',
+    semester: 'New semester data successfully added',
+    profsReset: 'Professor data successfully reset to empty',
+    profsUpdate: 'Professor data successfully updated',
+    subjects: 'Subject full name data successfully updated',
+    database: 'Database successfully initialized',
+    description: 'Course description data successfully added'
   };
-  const [updatingField, setUpdatingField] = useState<string>("");
+  const [updatingField, setUpdatingField] = useState<string>('');
 
-  const [addSemester, setAddSemester] = useState('')
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
+  const [addSemester] = useState('');
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
 
-  const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
-  const [loading, setLoading] = useState(true)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const { isLoggedIn, token, isAuthenticating } =
+    useAuthMandatoryLogin('admin');
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     async function confirmAdmin() {
       const response = await axios.post(`/api/admin/token/validate`, {
-        token: token,
-      })
-      const userIsAdmin = response.data.result
-      setIsAdmin(userIsAdmin)
-      setLoading(false)
+        token: token
+      });
+      const userIsAdmin = response.data.result;
+      setIsAdmin(userIsAdmin);
+      setLoading(false);
     }
 
     if (isLoggedIn) {
-      confirmAdmin()
+      confirmAdmin();
     }
-  }, [isLoggedIn, token, isAuthenticating])
+  }, [isLoggedIn, token, isAuthenticating]);
 
   /**
    * Accesses the database and fetches all reviews. Called when admin page loads, and
@@ -66,20 +74,20 @@ export const Admin = () => {
   useEffect(() => {
     async function loadReviews() {
       const pending = await axios.post('/api/admin/reviews/get-pending', {
-        token: token,
-      })
+        token: token
+      });
       if (pending.status === 200) {
-        setPendingReviews(pending.data.result)
+        setPendingReviews(pending.data.result);
       }
       const reported = await axios.post('/api/admin/reviews/get-reported', {
         token: token
-      })
+      });
       if (reported.status === 200) {
         setReportedReviews(reported.data.result);
       }
     }
-    loadReviews()
-  }, [token, isAuthenticating])
+    loadReviews();
+  }, [token, isAuthenticating]);
 
   /**
    * Helper function to remove a review from a list of reviews and
@@ -87,9 +95,9 @@ export const Admin = () => {
    */
   function removeReviewFromList(reviewToRemove: Review, reviews: Review[]) {
     reviews = reviews.filter((review: Review) => {
-      return review && review._id !== reviewToRemove._id
-    })
-    return reviews
+      return review && review._id !== reviewToRemove._id;
+    });
+    return reviews;
   }
 
   /**
@@ -99,12 +107,15 @@ export const Admin = () => {
   async function approveReview(review: Review) {
     const response = await axios.post('/api/admin/reviews/approve', {
       review: review,
-      token: token,
-    })
+      token: token
+    });
 
     if (response.status === 200) {
-      const updatedPendingReviews = removeReviewFromList(review, pendingReviews)
-      setPendingReviews(updatedPendingReviews)
+      const updatedPendingReviews = removeReviewFromList(
+        review,
+        pendingReviews
+      );
+      setPendingReviews(updatedPendingReviews);
     }
   }
 
@@ -116,25 +127,25 @@ export const Admin = () => {
     try {
       const response = await axios.post('/api/admin/reviews/remove', {
         review: review,
-        token: token,
-      })
+        token: token
+      });
       if (response.status === 200) {
         if (isUnapproved) {
           const updatedUnapprovedReviews = removeReviewFromList(
             review,
             pendingReviews
-          )
-          setPendingReviews(updatedUnapprovedReviews)
+          );
+          setPendingReviews(updatedUnapprovedReviews);
         } else {
           const updatedReportedReviews = removeReviewFromList(
             review,
             reportedReviews
-          )
-          setReportedReviews(updatedReportedReviews)
+          );
+          setReportedReviews(updatedReportedReviews);
         }
       }
     } catch (e) {
-      alert(`Unable to remove review ${e}`)
+      alert(`Unable to remove review ${e}`);
     }
   }
 
@@ -142,11 +153,13 @@ export const Admin = () => {
    * Call when admin would like to mass-approve all of the currently pending reviews.
    */
   async function approveAllReviews(reviews: Review[]) {
-    const response = await axios.post('/api/admin/reviews/approve/all', { token: token })
+    const response = await axios.post('/api/admin/reviews/approve/all', {
+      token: token
+    });
     if (response.status === 200) {
-      setPendingReviews([])
+      setPendingReviews([]);
     } else {
-      alert('Could not approve all reviews')
+      alert('Could not approve all reviews');
     }
   }
 
@@ -157,12 +170,15 @@ export const Admin = () => {
   async function unReportReview(review: Review) {
     const response = await axios.post('/api/admin/reviews/restore', {
       review: review,
-      token: token,
-    })
+      token: token
+    });
 
     if (response.status === 200) {
-      const updatedReportedReviews = removeReviewFromList(review, reportedReviews)
-      setReportedReviews(updatedReportedReviews)
+      const updatedReportedReviews = removeReviewFromList(
+        review,
+        reportedReviews
+      );
+      setReportedReviews(updatedReportedReviews);
     }
   }
 
@@ -172,21 +188,21 @@ export const Admin = () => {
    * Should run once a semester, when new classes are added to the roster.
    */
   async function addNewSem(semester: string) {
-    console.log('Adding new semester...')
-    setUpdating(true)
-    setUpdatingField("new semester")
+    console.log('Adding new semester...');
+    setUpdating(true);
+    setUpdatingField('new semester');
     //wz
     const response = await axios.post('/api/admin/semester/add', {
       semester,
-      token: token,
-    })
+      token: token
+    });
     const result = response.data.result;
     if (result === true) {
-      console.log('New Semester Added')
-      setUpdating(false)
-      setUpdated('semester')
+      console.log('New Semester Added');
+      setUpdating(false);
+      setUpdated('semester');
     } else {
-      console.log('Unable to add new semester!')
+      console.log('Unable to add new semester!');
     }
   }
 
@@ -198,16 +214,18 @@ export const Admin = () => {
   // NOTE: requires an initialize flag to ensure the function is only run on
   // a button click without this, it will run every time this component is created.
   async function addAllCourses() {
-    console.log('Initializing database')
-    setUpdating(true)
-    setUpdatingField("all database")
+    console.log('Initializing database');
+    setUpdating(true);
+    setUpdatingField('all database');
     //wz
-    const response = await axios.post('/api/admin/db/initialize', { token: token });
+    const response = await axios.post('/api/admin/db/initialize', {
+      token: token
+    });
     if (response.status === 200) {
-      setUpdating(false)
-      setUpdated('database')
+      setUpdating(false);
+      setUpdated('database');
     } else {
-      console.log('Error at dbInit')
+      console.log('Error at dbInit');
     }
   }
 
@@ -216,54 +234,60 @@ export const Admin = () => {
    * when clicking the "Update Professors" button
    */
   async function updateProfessors() {
-    console.log('Updating professors')
-    setUpdating(true)
-    setUpdatingField("professors")
+    console.log('Updating professors');
+    setUpdating(true);
+    setUpdatingField('professors');
     //wz
-    const response = await axios.post('/api/admin/professors/add', { token: token });
+    const response = await axios.post('/api/admin/professors/add', {
+      token: token
+    });
     if (response.status === 200) {
-      console.log('Updated the professors')
-      setUpdating(false)
-      setUpdated('profsUpdate')
+      console.log('Updated the professors');
+      setUpdating(false);
+      setUpdated('profsUpdate');
     } else {
-      console.log('Error at setProfessors')
+      console.log('Error at setProfessors');
     }
   }
 
   /**
-   * Call when admin wants to reset all professors in classes when clicking the 
+   * Call when admin wants to reset all professors in classes when clicking the
    * "Reset Professors" button
    */
   async function resetProfessors() {
-    console.log('Setting the professors to an empty array')
-    setUpdating(true)
-    setUpdatingField("professors to empty arrays")
+    console.log('Setting the professors to an empty array');
+    setUpdating(true);
+    setUpdatingField('professors to empty arrays');
     // wz
-    const response = await axios.post('/api/admin/professors/reset', { token: token });
+    const response = await axios.post('/api/admin/professors/reset', {
+      token: token
+    });
     if (response.status === 200) {
-      console.log('Reset all the professors to empty arrays')
-      setUpdating(false)
-      setUpdated('profsReset')
+      console.log('Reset all the professors to empty arrays');
+      setUpdating(false);
+      setUpdated('profsReset');
     } else {
-      console.log('Error at resetProfessors')
+      console.log('Error at resetProfessors');
     }
   }
 
   /**
-   * Call when user selects "Update Descriptions" button. Scrapes the Course API 
+   * Call when user selects "Update Descriptions" button. Scrapes the Course API
    * to retrieve course description and stores them in the Course database.
-  */
+   */
   async function updateDescriptions() {
-    console.log('Updating course descriptions')
-    setUpdating(true)
-    setUpdatingField("course descriptions")
-    const response = await axios.post('/api/admin/course/desc', { token: token });
+    console.log('Updating course descriptions');
+    setUpdating(true);
+    setUpdatingField('course descriptions');
+    const response = await axios.post('/api/admin/course/desc', {
+      token: token
+    });
     if (response.status === 200) {
-      console.log('Updated all course descriptions')
-      setUpdating(false)
-      setUpdated('description')
+      console.log('Updated all course descriptions');
+      setUpdating(false);
+      setUpdated('description');
     } else {
-      console.log('Error at updateDescriptions')
+      console.log('Error at updateDescriptions');
     }
   }
 
@@ -273,8 +297,10 @@ export const Admin = () => {
    */
   async function updateSubjects() {
     setUpdating(true);
-    setUpdatingField("subjects");
-    const response = await axios.post('/api/admin/subjects/update', { token: token });
+    setUpdatingField('subjects');
+    const response = await axios.post('/api/admin/subjects/update', {
+      token: token
+    });
     if (response.status === 200) {
       console.log('Updated all subject names');
       setUpdating(false);
@@ -291,8 +317,8 @@ export const Admin = () => {
   function firstClickHandler() {
     alert(
       '<div><h1>Warning!</h1><p>Clicking again will reset all data in the database. Are you sure you want to do this?</p></div>'
-    )
-    setDoubleClick(true)
+    );
+    setDoubleClick(true);
   }
 
   /**
@@ -301,7 +327,7 @@ export const Admin = () => {
    * If this is the user's second click, call addAllCourses above to initiaize
    * the local database
    */
-  function renderInitButton(doubleClick: boolean) {
+  function renderInitButton() {
     // Offer button to edit database
     if (doubleClick) {
       return (
@@ -315,7 +341,7 @@ export const Admin = () => {
             Initialize Database
           </button>
         </div>
-      )
+      );
     } else {
       // Offer button that gives alert and saves next click as a double click (in local state)
       return (
@@ -328,17 +354,16 @@ export const Admin = () => {
             Initialize Database
           </button>
         </div>
-      )
+      );
     }
   }
 
-
-  function renderAdmin(token: string) {
+  function renderAdmin(userToken: string) {
     return (
       <div className={styles.adminWrapper}>
         <div className="headInfo">
           <h1>Admin Interface</h1>
-          <Stats token={token} />
+          <Stats token={userToken} />
           <div className={styles.semesterUpdate}>
             <h2>Admin tools</h2>
             <div className="" role="group">
@@ -388,19 +413,17 @@ export const Admin = () => {
               >
                 Update Subjects
               </button>
-              {renderInitButton(doubleClick)}
+              {renderInitButton()}
             </div>
           </div>
 
           <ManageAdminModal
             open={isAdminModalOpen}
             setOpen={setIsAdminModalOpen}
-            token={token}
+            token={userToken}
           />
 
-          <div>
-            {successMessages[updated]}
-          </div>
+          <div>{successMessages[updated]}</div>
 
           <div hidden={!updating} className="">
             <p>Updating {updatingField} in the Course database.</p>
@@ -427,7 +450,7 @@ export const Admin = () => {
                   approveHandler={approveReview}
                   unReportHandler={approveReview}
                 />
-              )
+              );
             })}
           </div>
           <br></br>
@@ -443,23 +466,23 @@ export const Admin = () => {
                   approveHandler={approveReview}
                   unReportHandler={unReportReview}
                 />
-              )
+              );
             })}
           </div>
         </div>
-      </div >
-    )
+      </div>
+    );
   }
 
   function adminLogin() {
     if (loading) {
-      return <Loading />
+      return <Loading />;
     } else if (isLoggedIn && token && isAdmin) {
-      return renderAdmin(token)
+      return renderAdmin(token);
     } else {
-      return <Redirect to="/" />
+      return <Redirect to="/" />;
     }
   }
 
-  return adminLogin()
-}
+  return adminLogin();
+};

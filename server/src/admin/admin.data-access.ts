@@ -5,7 +5,7 @@ import { findCourseById } from '../course/course.data-access';
 
 export const updateCourseMetrics = async (
   review: ReviewDocument,
-  state: UpdateCourseMetrics,
+  state: UpdateCourseMetrics
 ) => {
   await Classes.updateOne(
     { _id: review.class },
@@ -18,9 +18,9 @@ export const updateCourseMetrics = async (
         classWorkload:
           state.workload !== null && !isNaN(state.workload)
             ? state.workload
-            : null,
-      },
-    },
+            : null
+      }
+    }
   );
 };
 
@@ -31,7 +31,7 @@ export const findPendingReviews = async () =>
   await Reviews.find(
     { visible: 0, reported: 0 },
     {},
-    { sort: { date: -1 }, limit: 700 },
+    { sort: { date: -1 }, limit: 700 }
   ).exec();
 
 /*
@@ -41,50 +41,59 @@ export const findReportedReviews = async () =>
   await Reviews.find(
     { visible: 0, reported: 1 },
     {},
-    { sort: { date: -1 }, limit: 700 },
+    { sort: { date: -1 }, limit: 700 }
   ).exec();
 
 /*
  * Function to count reviews by approved, pending, and reported and return the values.
  */
 export const findReviewCounts = async () => {
-  const approvedCount = await Reviews.countDocuments({ visible: 1 }).exec()
-  const pendingCount = await Reviews.countDocuments({ visible: 0, reported: 0 }).exec()
-  const reportedCount = await Reviews.countDocuments({ visible: 0, reported: 1 }).exec()
+  const approvedCount = await Reviews.countDocuments({ visible: 1 }).exec();
+  const pendingCount = await Reviews.countDocuments({
+    visible: 0,
+    reported: 0
+  }).exec();
+  const reportedCount = await Reviews.countDocuments({
+    visible: 0,
+    reported: 1
+  }).exec();
   const result = {
     approved: approvedCount,
     pending: pendingCount,
     reported: reportedCount
-  }
-  return result
-}
+  };
+  return result;
+};
 
 /*
  * Function to count the number of approved reviews per class in the database.
  * Count per class is mapped to a CSV string format.
  */
 export const createCourseCSV = async () => {
-  const approvedReviews = await Reviews.find({ visible: 1 }).exec()
-  let csv = 'Class,Number of Reviews\n'
+  const approvedReviews = await Reviews.find({ visible: 1 }).exec();
+  let csv = 'Class,Number of Reviews\n';
 
-  const revsPerCourse: Map<string, number> = new Map()
-  await Promise.all(approvedReviews.map(async review => {
-    const course = await findCourseById(review.class)
-    const title = await course.classSub.toUpperCase() + ' ' + course.classNum
+  const revsPerCourse: Map<string, number> = new Map();
+  await Promise.all(
+    approvedReviews.map(async (review) => {
+      const course = await findCourseById(review.class);
+      const title =
+        (await course.classSub.toUpperCase()) + ' ' + course.classNum;
 
-    if (revsPerCourse.has(title)) {
-      await revsPerCourse.set(title, revsPerCourse.get(title) + 1)
-    } else {
-      await revsPerCourse.set(title, 1)
-    }
-  }))
+      if (revsPerCourse.has(title)) {
+        await revsPerCourse.set(title, revsPerCourse.get(title) + 1);
+      } else {
+        await revsPerCourse.set(title, 1);
+      }
+    })
+  );
 
   revsPerCourse.forEach((count, courseTitle) => {
-    csv += courseTitle + ',' + count + '\n'
-  })
+    csv += courseTitle + ',' + count + '\n';
+  });
 
-  return csv
-}
+  return csv;
+};
 
 export const removeReviewById = async (reviewId: string) => {
   await Reviews.deleteOne({ _id: reviewId });
@@ -93,13 +102,16 @@ export const removeReviewById = async (reviewId: string) => {
 export const updateReviewVisibility = async (
   reviewId: string,
   reported: number,
-  visible: number,
+  visible: number
 ) => {
   await Reviews.updateOne({ _id: reviewId }, { $set: { visible, reported } });
 };
 
 export const approveAllReviews = async () => {
-  await Reviews.updateMany({ visible: 0, reported: 0 }, { $set: { visible: 1 } });
+  await Reviews.updateMany(
+    { visible: 0, reported: 0 },
+    { $set: { visible: 1 } }
+  );
 };
 
 /*
@@ -109,16 +121,22 @@ export const approveAllReviews = async () => {
  */
 
 export const findAdminUsers = async () => {
-  const adminUsers = await Students.find({ privilege: "admin" }).exec()
-  return adminUsers
-}
+  const adminUsers = await Students.find({ privilege: 'admin' }).exec();
+  return adminUsers;
+};
 
 export const removeAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'regular'} }).exec()
-  return res
-}
+  const res = await Students.updateOne(
+    { netId: id },
+    { $set: { privilege: 'regular' } }
+  ).exec();
+  return res;
+};
 
 export const grantAdminPrivilege = async (id: string) => {
-  const res = await Students.updateOne({ netId: id }, { $set: {privilege: 'admin'} }).exec()
-  return res
-}
+  const res = await Students.updateOne(
+    { netId: id },
+    { $set: { privilege: 'admin' } }
+  ).exec();
+  return res;
+};

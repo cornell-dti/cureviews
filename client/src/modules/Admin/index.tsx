@@ -1,1 +1,1 @@
-export { Admin } from './Components/Admin'
+export { Admin } from './Components/Admin';

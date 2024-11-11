@@ -1,44 +1,44 @@
 import dotenv from 'dotenv';
-import OpenAI from "openai";
-import { Reviews } from "../../db/schema";
-import { Classes } from "../../db/schema";
+import OpenAI from 'openai';
+import { Reviews } from '../../db/schema';
+import { Classes } from '../../db/schema';
 
 import { CourseIdRequestType } from '../course/course.type';
 import { findReviewCrossListOR } from '../utils';
 
-
 /* <=== Helper Functions ===> */
 
-/** findCourseById 
- * 
- * @param courseId 
- * @returns a Class object that matches the courseId  
+/** findCourseById
+ *
+ * @param courseId
+ * @returns a Class object that matches the courseId
  */
-export const findCourseById = async (courseId: string) => await Classes.findOne({ _id: courseId }).exec();
-
+export const findCourseById = async (courseId: string) =>
+  await Classes.findOne({ _id: courseId }).exec();
 
 dotenv.config();
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY
 });
 
-/** generateTags. 
- * 
- * Takes in all reviews from a course as text and 
+/** generateTags.
+ *
+ * Takes in all reviews from a course as text and
  * generates 5 tags for those reviews describing lectures, assignments, professor,
  * skill, and resources as well as the corresponding connotation of that tag.
  * @params a string that combines all reviews from a course
- * @returns a dictionary containing 
+ * @returns a dictionary containing
  * Summary: 50 word summary of all reviews,
  * Tags: array of nouns, adjectives, and their corresponding connotations describing
  * in that order, ex: ["Lectures", "Entertaining", "Positive"]
  */
 async function generateTags(text: string) {
   const completion = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: 'gpt-3.5-turbo',
     messages: [
       {
-        role: "system", content: `
+        role: 'system',
+        content: `
           You are given a collection of course reviews provided where each review is separated by a /. You
           will then complete two tasks. First you should generate a 50 word summary of all reviews. Then 
           should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
@@ -54,27 +54,27 @@ async function generateTags(text: string) {
           Resources: [adjective] (positive/negative/neutral)'.
         `
       },
-      { role: "user", content: text }
-    ],
+      { role: 'user', content: text }
+    ]
   });
   const response = completion.choices[0].message.content;
   const summaryMatch = response.match(/Summary: ([\s\S]*?)(?=Tags)/);
-  const summary = summaryMatch ? summaryMatch[1].trim() : "";
+  const summary = summaryMatch ? summaryMatch[1].trim() : '';
   const tagsMatch = response.match(/Tags:\s*([\s\S]*)/);
-  const tags = tagsMatch ? tagsMatch[1] : "";
+  const tags = tagsMatch ? tagsMatch[1] : '';
 
-  const tagsArray = tags.split(',').map(item => {
+  const tagsArray = tags.split(',').map((item) => {
     const match = item.match(/(\w+): (.+) \((.+)\)/);
     if (match) {
-      const category = match[1].trim();       // e.g., "Lectures"
-      const adjective = match[2].trim();      // e.g., "engaging"
-      const connotation = match[3].trim();    // e.g., "positive"
+      const category = match[1].trim(); // e.g., "Lectures"
+      const adjective = match[2].trim(); // e.g., "engaging"
+      const connotation = match[3].trim(); // e.g., "positive"
       return [category, adjective, connotation];
     } else {
-      console.error("Unexpected format: ", item);
-      return ["", "", ""];
+      console.error('Unexpected format: ', item);
+      return ['', '', ''];
     }
-  })
+  });
   return {
     summary: summary,
     tags: tagsArray
@@ -82,8 +82,8 @@ async function generateTags(text: string) {
 }
 
 /** getCoursesWithMinReviews.
- * 
- *  Create summaries for courses that have at least a certain number of reviews. 
+ *
+ *  Create summaries for courses that have at least a certain number of reviews.
  * Takes in `min` number of reviews and returns the a list of course IDs that have at least that number of reviews.
  * @params min count of reviews that a course
  * @returns coursesIDs[] with at least min reviews
@@ -92,7 +92,7 @@ async function getCoursesWithMinReviews(minimum) {
   const courses = await Reviews.aggregate([
     {
       $group: {
-        _id: "$class",
+        _id: '$class',
         reviewCount: { $sum: 1 }
       }
     },
@@ -100,22 +100,22 @@ async function getCoursesWithMinReviews(minimum) {
     {
       $project: {
         _id: 0,
-        classId: "$_id"
+        classId: '$_id'
       }
     }
   ]);
 
-  const courseIds = courses.map(course => course.classId);
+  const courseIds = courses.map((course) => course.classId);
   return courseIds;
 }
 
 /**
- * getReviewsPerCourse. 
- * 
- * Gets all reviews from a course that will be used 
+ * getReviewsPerCourse.
+ *
+ * Gets all reviews from a course that will be used
  * to generate the summary for a course
  * @param courseId takes in the courseID of a course that we need to generate a summary for
- * @returns a single string of all reviews for that course concatenated 
+ * @returns a single string of all reviews for that course concatenated
  */
 const getReviewsPerCourse = async ({ courseId }: CourseIdRequestType) => {
   const course = await getCourseById({ courseId });
@@ -129,20 +129,23 @@ const getReviewsPerCourse = async ({ courseId }: CourseIdRequestType) => {
 
     const reviews = await findReviewCrossListOR(crossListOR);
     if (reviews.length === 0) {
-      return "No reviews available";
+      return 'No reviews available';
     }
 
     // Sanitize reviews and join them into a single string separated by '/'
-    const reviewTexts = reviews.map(review => {
-      return review.text ? review.text.replace(/\/+/g, ' ') : "No review text";
-    }).join(' / ');
+    const reviewTexts = reviews
+      .map((review) => {
+        return review.text
+          ? review.text.replace(/\/+/g, ' ')
+          : 'No review text';
+      })
+      .join(' / ');
 
     return reviewTexts;
   } else {
-    return "Course not found";
+    return 'Course not found';
   }
 };
-
 
 const getCourseById = async ({ courseId }: CourseIdRequestType) => {
   // check: make sure course id is valid and non-malicious
@@ -171,7 +174,7 @@ export const getCrossListOR = (course) => {
 
   if (crossList !== undefined && crossList.length > 0) {
     const crossListOR = crossList.map((cID) => ({
-      class: cID,
+      class: cID
     }));
 
     crossListOR.push({ class: courseId });
@@ -181,9 +184,13 @@ export const getCrossListOR = (course) => {
 
   return [
     {
-      class: courseId,
-    },
+      class: courseId
+    }
   ];
 };
 
-export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, generateTags } 
+export {
+  getCoursesWithMinReviews,
+  getReviewsPerCourse as getReviewsForSummary,
+  generateTags
+};

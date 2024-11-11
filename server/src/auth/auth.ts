@@ -46,7 +46,7 @@ export class Auth {
 
       const ticket = await Auth.CLIENT.verifyIdToken({
         idToken: this.token,
-        audience: Auth.AUDIENCE,
+        audience: Auth.AUDIENCE
       });
 
       return ticket.getPayload();
@@ -64,7 +64,7 @@ export class Auth {
       token: joi
         .string()
         .regex(new RegExp(/^(?=.*[A-Z0-9])/i))
-        .required(),
+        .required()
     });
 
     const { error } = tokenSchema.validate(this);

@@ -1,11 +1,13 @@
-import { Classes } from "../../db/schema";
+import { Classes } from '../../db/schema';
 
-export const findCourseById = async (courseId: string) => await Classes.findOne({ _id: courseId }).exec();
+export const findCourseById = async (courseId: string) =>
+  await Classes.findOne({ _id: courseId }).exec();
 
 export const findCourseByInfo = async (
   courseNumber: string,
-  courseSubject: string,
-) => await Classes.findOne({
-  classSub: courseSubject,
-  classNum: courseNumber,
-}).exec();
+  courseSubject: string
+) =>
+  await Classes.findOne({
+    classSub: courseSubject,
+    classNum: courseNumber
+  }).exec();

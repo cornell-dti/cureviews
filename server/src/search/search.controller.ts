@@ -6,7 +6,7 @@ import {
   findProfessors,
   findSubjects,
   findCourseWithinSubject,
-  findCourseProfessor,
+  findCourseProfessor
 } from './search.data-access';
 import { SearchQueryType } from './search.type';
 
@@ -60,7 +60,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       if (subject.length > 0) {
         const coursesWithinSubject = await findCourseWithinSubject(
           strBeforeSpace,
-          strAfterSpace,
+          strAfterSpace
         );
 
         return new Set(coursesWithinSubject);
@@ -78,7 +78,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
       if (subject.length > 0) {
         const result = await findCourseWithinSubject(
           strBeforeDigit,
-          strAfterDigit,
+          strAfterDigit
         );
 
         return new Set(result);
@@ -90,15 +90,15 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
 };
 
 const courseSlicing = (sorted, searchType: string) => {
-  if (sorted && searchType === "search" && sorted.length > 5) {
+  if (sorted && searchType === 'search' && sorted.length > 5) {
     return sorted.slice(0, 5);
   }
 
-  if (sorted && searchType === "results" && sorted.length > 200) {
+  if (sorted && searchType === 'results' && sorted.length > 200) {
     return sorted.slice(0, 200);
   }
   return sorted;
-}
+};
 
 /**
  * Searches database for all relevant courses based on query.
@@ -108,7 +108,10 @@ const courseSlicing = (sorted, searchType: string) => {
  * @param searchType: string that represents a search or result return
  * @returns list of courses if operation was successful, null otherwise.
  */
-export const searchCourses = async ({ search }: SearchQueryType, searchType: string) => {
+export const searchCourses = async (
+  { search }: SearchQueryType,
+  searchType: string
+) => {
   try {
     const fullSearch = await fullCourseSearch({ search });
     const sorted = Array.from(fullSearch).sort(courseSort(search.getQuery()));
@@ -119,7 +122,10 @@ export const searchCourses = async ({ search }: SearchQueryType, searchType: str
   }
 };
 
-export const searchCoursesByProfessor = async ({ search }: SearchQueryType, searchType: string) => {
+export const searchCoursesByProfessor = async (
+  { search }: SearchQueryType,
+  searchType: string
+) => {
   try {
     const courses = await search.searchQuery(findCourseProfessor);
     const sorted = Array.from(courses).sort(courseSort(search.getQuery()));
@@ -130,7 +136,10 @@ export const searchCoursesByProfessor = async ({ search }: SearchQueryType, sear
   }
 };
 
-export const searchCoursesBySubject = async ({ search }: SearchQueryType, searchType: string) => {
+export const searchCoursesBySubject = async (
+  { search }: SearchQueryType,
+  searchType: string
+) => {
   try {
     const courses = await search.searchQuery(findCourseSubject);
     const sorted = Array.from(courses).sort(courseSort(search.getQuery()));

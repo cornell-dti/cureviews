@@ -1,13 +1,13 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-import { SearchBar } from '../SearchBar'
-import ProfileDropdown from './ProfileDropdown'
+import { SearchBar } from '../SearchBar';
+import ProfileDropdown from './ProfileDropdown';
 
-import { useAuthOptionalLogin } from '../../auth/auth_utils'
-import { Session } from '../../session-store'
+import { useAuthOptionalLogin } from '../../auth/auth_utils';
+import { Session } from '../../session-store';
 
-import styles from './Styles/NavBar.module.css'
+import styles from './Styles/NavBar.module.css';
 
 /*
   Navbar Component. Short description if needed.
@@ -23,29 +23,29 @@ import styles from './Styles/NavBar.module.css'
 */
 
 type NavbarProps = {
-  userInput: string
-}
+  userInput: string;
+};
 
 export default function Navbar({ userInput }: NavbarProps) {
-  const { netId, signIn, signOut } = useAuthOptionalLogin()
-  const location = useLocation()
+  const { netId, signIn, signOut } = useAuthOptionalLogin();
+  const location = useLocation();
 
   /** Show Profile DropDown  */
   function displayButton() {
-    const token = Session.get('token')
+    const token = Session.get('token');
     return (
       <ProfileDropdown
         netId={`${netId}`}
         isLoggedIn={token}
         signOut={() => {
           if (['/profile'].includes(location.pathname)) {
-            signOut('/')
+            signOut('/');
           }
-          signOut()
+          signOut();
         }}
         signIn={signIn}
       />
-    )
+    );
   }
 
   return (
@@ -64,5 +64,5 @@ export default function Navbar({ userInput }: NavbarProps) {
         {displayButton()}
       </div>
     </div>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import React from 'react'
-import styles from '../Styles/Results.module.css'
+import React from 'react';
+import styles from '../Styles/Results.module.css';
 
-type Props = any
+type Props = any;
 
 const FilterPopup = (props: Props) => {
   return (
@@ -17,14 +17,11 @@ const FilterPopup = (props: Props) => {
           {props.renderCheckboxes('levels')}
         </div>
       </div>
-      <button
-        className={styles.donebutton}
-        onClick={props.setShowFilterPopup}
-      >
+      <button className={styles.donebutton} onClick={props.setShowFilterPopup}>
         Done
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default FilterPopup
+export default FilterPopup;

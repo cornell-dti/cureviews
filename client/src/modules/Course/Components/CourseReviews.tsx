@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import ReviewCard from './ReviewCard'
-import PreviewReviewCard from './PreviewReviewCard'
-import { Review } from 'common'
+import ReviewCard from './ReviewCard';
+import PreviewReviewCard from './PreviewReviewCard';
+import { Review } from 'common';
 
 type CourseReviewsProps = {
-  reviews: readonly Review[]
-  isPreview: boolean
-  isProfile: boolean
-  token?: string | null
-}
+  reviews: readonly Review[];
+  isPreview: boolean;
+  isProfile: boolean;
+  token?: string | null;
+};
 
 const CourseReviews = ({
   reviews,
   isPreview,
   isProfile,
-  token,
+  token
 }: CourseReviewsProps) => {
-  const [visibleReviews, setVisibleReviews] = useState(reviews)
+  const [visibleReviews, setVisibleReviews] = useState(reviews);
 
   useEffect(() => {
     setVisibleReviews(reviews)
@@ -33,16 +33,16 @@ const CourseReviews = ({
   async function reportReview(reviewId: string) {
     const response = await axios.post('/api/reviews/report', {
       token: token,
-      id: reviewId,
-    })
+      id: reviewId
+    });
     if (response.status === 200) {
-      const updated = reviews.filter((rev) => rev._id !== reviewId)
-      setVisibleReviews(updated)
+      const updated = reviews.filter((rev) => rev._id !== reviewId);
+      setVisibleReviews(updated);
       toast.success(
         "Thank you. We'll check if this review meets our guidelines."
-      )
+      );
     } else {
-      toast.error('An error occurred. Please try again.')
+      toast.error('An error occurred. Please try again.');
     }
   }
 
@@ -62,7 +62,7 @@ const CourseReviews = ({
           />
         ))}
       </div>
-    )
+    );
   } else if (!isPreview && isProfile) {
     /* PROFILE PAST REVIEWS PREVIEWS */
     return (
@@ -76,7 +76,7 @@ const CourseReviews = ({
           />
         ))}
       </div>
-    )
+    );
   } else if (isPreview && !isProfile) {
     /* SEARCH RESULTS */
     return (
@@ -90,7 +90,7 @@ const CourseReviews = ({
           />
         ))}
       </div>
-    )
+    );
   } else
     return (
       <div data-cy={`course-reviews`}>
@@ -104,7 +104,7 @@ const CourseReviews = ({
           />
         ))}
       </div>
-    )
-}
+    );
+};
 
-export default CourseReviews
+export default CourseReviews;

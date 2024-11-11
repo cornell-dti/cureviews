@@ -1,20 +1,20 @@
-import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest';
 
 import axios from 'axios';
 
 import { Classes, Reviews } from '../db/schema';
 
 import { testServer, testPort } from './mocks/MockServer';
-import { mockVerificationTicket } from "./mocks/MockAuth";
+import { mockVerificationTicket } from './mocks/MockAuth';
 import { testClasses, testStudents, testReviews } from './mocks/InitMockDb';
 
-const VALID_ADMIN_TOKEN = 'fakeTokenDti1'
+const VALID_ADMIN_TOKEN = 'fakeTokenDti1';
 
 const getAverageDifficultyFromReview = async (review) => {
   const reviews = await Reviews.find({
     class: review?.class,
     visible: 1,
-    reported: 0,
+    reported: 0
   });
 
   let totalSum = 0;
@@ -33,7 +33,7 @@ beforeAll(async () => {
     testStudents,
     testClasses,
     undefined,
-    undefined,
+    undefined
   );
 });
 
@@ -46,11 +46,14 @@ describe('Admin functionality unit tests', () => {
   test('Fetching pending reviews works', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/get-pending`,
-      { token: VALID_ADMIN_TOKEN },
+      { token: VALID_ADMIN_TOKEN }
     );
     const ids = res.data.result.map((i) => i._id);
-    const pendingReview = await Reviews.findOne({ visible: 0, reported: 0 })
-    const pendingId = pendingReview?._id
+    const pendingReview = await Reviews.findOne({
+      visible: 0,
+      reported: 0
+    });
+    const pendingId = pendingReview?._id;
 
     expect(ids.includes(pendingId)).toBeTruthy();
   });
@@ -58,13 +61,13 @@ describe('Admin functionality unit tests', () => {
   test('Make review visible will not make a reported review visible', async () => {
     const pendingReportedReview = await Reviews.findOne({
       visible: 0,
-      reported: 1,
+      reported: 1
     });
 
     const res = await axios
       .post(`http://localhost:${testPort}/api/admin/reviews/approve`, {
         review: pendingReportedReview,
-        token: VALID_ADMIN_TOKEN,
+        token: VALID_ADMIN_TOKEN
       })
       .catch((e) => e);
 
@@ -72,11 +75,14 @@ describe('Admin functionality unit tests', () => {
   });
 
   test('Approving a review works correctly', async () => {
-    const pendingReview = await Reviews.findOne({ visible: 0, reported: 0 });
+    const pendingReview = await Reviews.findOne({
+      visible: 0,
+      reported: 0
+    });
 
     const res = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/approve`,
-      { review: pendingReview, token: VALID_ADMIN_TOKEN },
+      { review: pendingReview, token: VALID_ADMIN_TOKEN }
     );
 
     expect(res.status).toEqual(200);
@@ -89,14 +95,17 @@ describe('Admin functionality unit tests', () => {
   });
 
   test('Restoring a review (undoing a report) works correctly', async () => {
-    const reportedReview = await Reviews.findOne({ visible: 0, reported: 1 });
+    const reportedReview = await Reviews.findOne({
+      visible: 0,
+      reported: 1
+    });
 
     const res = await axios.post(
       `http://localhost:${testPort}/api/admin/reviews/restore`,
       {
         review: reportedReview,
-        token: VALID_ADMIN_TOKEN,
-      },
+        token: VALID_ADMIN_TOKEN
+      }
     );
 
     expect(res.status).toEqual(200);
@@ -110,12 +119,15 @@ describe('Admin functionality unit tests', () => {
   });
 
   test('Removing a review works correctly', async () => {
-    const reportedReview = await Reviews.findOne({ visible: 0, reported: 1 });
+    const reportedReview = await Reviews.findOne({
+      visible: 0,
+      reported: 1
+    });
 
     const res = await axios
       .post(`http://localhost:${testPort}/api/admin/reviews/remove`, {
         review: reportedReview,
-        token: VALID_ADMIN_TOKEN,
+        token: VALID_ADMIN_TOKEN
       })
       .catch((e) => e);
     expect(res.status).toEqual(200);
