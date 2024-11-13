@@ -187,25 +187,26 @@ export const Admin = () => {
    * course API for new classes and updates classes existing in the database.
    * Should run once a semester, when new classes are added to the roster.
    */
-  async function addNewSem(semesters: string[]) {
+  async function addNewSemesters(semesters: string[]) {
     console.log('Adding new semester...');
+    setUpdating(true);
+    setUpdatingField('new semesters');
     //wz
     for (const semester of semesters) {
-      setUpdating(true);
-      setUpdatingField('new semester');
       const response = await axios.post('/api/admin/semester/add', {
         semester,
         token: token
       });
       const result = response.data.result;
-      if (result === true) {
-        console.log(`New Semester ${semester} Added`);
-        setUpdating(false);
-        setUpdated('semester');
+      if (!result) {
+        console.error(`Unable to add new semester ${semester}!`);
+        continue;
       } else {
-        console.log(`Unable to add new semester ${semester}!`);
+        console.log(`New Semester ${semester} Added`);
       }
     }
+    setUpdating(false);
+    setUpdated('semester');
   }
 
   // Call when user selects "Initialize Database" button. Scrapes the Cornell
@@ -379,7 +380,7 @@ export const Admin = () => {
                 disabled={updating}
                 type="button"
                 className={styles.adminButtons}
-                onClick={() => addNewSem(addSemester)}
+                onClick={() => addNewSemesters(addSemester)}
               >
                 Add New Semester
               </button>
