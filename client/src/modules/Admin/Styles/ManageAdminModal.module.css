@@ -1,68 +1,68 @@
 .modalbg {
-    width: 100vw;
-    min-height: 100vh;
-    height: auto;
-  
-    z-index: 200;
-  
-    position: fixed;
-    top: 0;
-    left: 0;
-  
-    backdrop-filter: blur(3px);
-    background-color: rgba(0, 0, 0, 0.2);
-  
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-  
-    overflow: hidden;
+  width: 100vw;
+  min-height: 100vh;
+  height: auto;
+
+  z-index: 200;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+
+  overflow: hidden;
 }
 
 .modal {
-    width: 80%;
-    max-width: 900px;
-    max-height: 564px;
-    place-self: center;
-  
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
-  
-    z-index: 201;
-    padding: 32px;
-    box-shadow: inset;
-  
-    position: relative;
-    top: 0;
-    overflow-y: auto;
+  width: 80%;
+  max-width: 900px;
+  max-height: 564px;
+  place-self: center;
+
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+
+  z-index: 201;
+  padding: 32px;
+  box-shadow: inset;
+
+  position: relative;
+  top: 0;
+  overflow-y: auto;
 }
 
 .closeButton {
-    cursor: pointer;
-    position: absolute;
-    top: 32px;
-    right: 32px;
+  cursor: pointer;
+  position: absolute;
+  top: 32px;
+  right: 32px;
 }
 
 .addAdmin {
-    display: flex;
-    padding: 2px;
-    border-bottom: 2px solid #ccc;
+  display: flex;
+  padding: 2px;
+  border-bottom: 2px solid #ccc;
 }
 
 .addAdminButton {
-    background-color: var(--clr-blue-300);
-    color: var(--clr-white);
-    font-size: var(--font-small-size);
-    border-radius: 5px;
-    margin-left: auto;
-    padding: 3px 7px;
-    cursor: pointer;
+  background-color: var(--clr-blue-300);
+  color: var(--clr-white);
+  font-size: var(--font-small-size);
+  border-radius: 5px;
+  margin-left: auto;
+  padding: 3px 7px;
+  cursor: pointer;
 }
 
 .textInputBox {
-    border-radius: 10px;
-    border: 0.5px solid #65acff;
-    padding: 3px 7px;
+  border-radius: 10px;
+  border: 0.5px solid #65acff;
+  padding: 3px 7px;
 }

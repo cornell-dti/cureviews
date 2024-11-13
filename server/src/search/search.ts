@@ -44,7 +44,7 @@ export class Search {
       query: joi
         .string()
         .regex(new RegExp(/^(?=.*[A-Z0-9])/i))
-        .required(),
+        .required()
     });
 
     const { error } = searchSchema.validate(this);

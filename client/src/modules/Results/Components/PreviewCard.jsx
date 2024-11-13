@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import axios from 'axios'
-import { lastOfferedSems } from 'common/CourseCard'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from '../../Course/Components/Gauge'
-import ReviewCard from '../../Course/Components/ReviewCard'
+import Gauge from '../../Course/Components/Gauge';
+import ReviewCard from '../../Course/Components/ReviewCard';
 
-import styles from '../Styles/CoursePreview.module.css'
-const Review = ReviewCard
+import styles from '../Styles/CoursePreview.module.css';
+const Review = ReviewCard;
 
 /*
   Preview Card component.
@@ -18,7 +18,7 @@ const Review = ReviewCard
 
 export default class PreviewCard extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     // Set gauge values
     this.state = {
       id: this.props.course._id,
@@ -30,21 +30,21 @@ export default class PreviewCard extends Component {
       workloadColor: 'E64458',
       topReview: {},
       numReviews: 0,
-      topReviewLikes: 0,
-    }
+      topReviewLikes: 0
+    };
 
-    this.updateColors = this.updateColors.bind(this)
-    this.updateTopReview = this.updateTopReview.bind(this)
-    this.updateGauges = this.updateGauges.bind(this)
+    this.updateColors = this.updateColors.bind(this);
+    this.updateTopReview = this.updateTopReview.bind(this);
+    this.updateGauges = this.updateGauges.bind(this);
   }
 
   componentDidMount() {
-    this.updateGauges()
+    this.updateGauges();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      this.updateGauges()
+      this.updateGauges();
     }
   }
 
@@ -61,96 +61,89 @@ export default class PreviewCard extends Component {
           : '-',
         workload: Number(this.props.course.classWorkload)
           ? this.props.course.classWorkload
-          : '-',
+          : '-'
       },
       () => this.updateColors()
-    )
+    );
   }
 
   // Updates the top review to be the one with the most likes
   updateTopReview() {
     axios
-      .post(`/api/courses/get-reviews`, { courseId: this.props.course._id })
+      .post(`/api/courses/get-reviews`, {
+        courseId: this.props.course._id
+      })
       .then((response) => {
-        const reviews = response.data.result
+        const reviews = response.data.result;
         if (reviews) {
           if (reviews.length > 0) {
             reviews.sort((a, b) =>
               (a.likes ? a.likes : 0) < (b.likes ? b.likes : 0) ? 1 : -1
-            )
+            );
             this.setState({
               topReview: reviews[0],
               topReviewLikes: reviews[0].likes ? reviews[0].likes : 0, //Account for undefined likes in review obj
-              numReviews: reviews.length,
-            })
+              numReviews: reviews.length
+            });
           } else {
             this.setState({
               topReview: {},
-              numReviews: 0,
-            })
-            // eslint-disable-next-line no-console
-            console.log(
-              `No professor reviews for course by id = ${this.props.course._id}}`
-            )
+              numReviews: 0
+            });
           }
-        } else {
-          // eslint-disable-next-line no-console
-          console.log(
-            `Unable to find reviews by course by id = ${this.props.course._id}`
-          )
         }
-      })
+      });
   }
 
   // Updates the colors of the metrics
   updateColors() {
     if (3.0 <= this.state.rating && this.state.rating < 4.0) {
       this.setState({
-        ratingColor: '#f9cc30',
-      })
+        ratingColor: '#f9cc30'
+      });
     } else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
       this.setState({
-        ratingColor: '#53B277',
-      })
+        ratingColor: '#53B277'
+      });
     } else {
       this.setState({
-        ratingColor: '#E64458',
-      })
+        ratingColor: '#E64458'
+      });
     }
 
     if (0 < this.state.diff && this.state.diff < 3.0) {
       this.setState({
-        diffColor: '#53B277',
-      })
+        diffColor: '#53B277'
+      });
     } else if (3.0 <= this.state.diff && this.state.diff < 4.0) {
       this.setState({
-        diffColor: '#f9cc30',
-      })
+        diffColor: '#f9cc30'
+      });
     } else {
       this.setState({
-        diffColor: '#E64458',
-      })
+        diffColor: '#E64458'
+      });
     }
 
     if (0 < this.state.workload && this.state.workload < 3.0) {
       this.setState({
-        workloadColor: '#53B277',
-      })
+        workloadColor: '#53B277'
+      });
     } else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
       this.setState({
-        workloadColor: '#f9cc30',
-      })
+        workloadColor: '#f9cc30'
+      });
     } else {
       this.setState({
-        workloadColor: '#E64458',
-      })
+        workloadColor: '#E64458'
+      });
     }
-    this.updateTopReview()
+    this.updateTopReview();
   }
 
   render() {
-    let theClass = this.props.course
-    const offered = lastOfferedSems(theClass)
+    let theClass = this.props.course;
+    const offered = lastOfferedSems(theClass);
     return (
       <div className="">
         <div className="">
@@ -238,11 +231,11 @@ export default class PreviewCard extends Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 
 // takes in the database object representing this review
 PreviewCard.propTypes = {
-  course: PropTypes.object.isRequired,
-}
+  course: PropTypes.object.isRequired
+};

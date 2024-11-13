@@ -1,10 +1,10 @@
 // @ts-nocheck
 // The existing code is problematic...
 
-import React, { Component } from 'react'
-import { GoogleLogin } from 'react-google-login'
+import React, { Component } from 'react';
+import { GoogleLogin } from 'react-google-login';
 
-import { Session } from '../../../session-store'
+import { Session } from '../../../session-store';
 
 /*
   Google Login C Component. Specific to this project.
@@ -17,45 +17,45 @@ import { Session } from '../../../session-store'
 */
 
 type Props = {
-  readonly executeLogin: boolean
-  readonly waitTime: number
-  readonly redirectFrom?: string
-}
+  readonly executeLogin: boolean;
+  readonly waitTime: number;
+  readonly redirectFrom?: string;
+};
 
 export default class CUreviewsGoogleLogin extends Component<
   Props,
   { lastVerification: number }
 > {
   constructor(props: Props) {
-    super(props)
+    super(props);
 
     this.state = {
-      lastVerification: new Date().getTime() - 5000,
-    }
+      lastVerification: new Date().getTime() - 5000
+    };
 
     //Save redirect page
     //Will be either "admin" or "course"
     if (this.props.redirectFrom) {
-      this.saveRedirectToSession(this.props.redirectFrom)
+      this.saveRedirectToSession(this.props.redirectFrom);
     }
   }
 
   //Using meteor session to save the redirect page to Session
   saveRedirectToSession = (from: string) => {
-    Session.setPersistent({ redirectFrom: from })
+    Session.setPersistent({ redirectFrom: from });
     if (Session.get('redirectFrom') !== from) {
-      console.log('Error saving redirectFrom to session')
-      return 0
+      console.log('Error saving redirectFrom to session');
+      return 0;
     }
-    return 1
-  }
+    return 1;
+  };
 
   getRedirectURI = () => {
     if (window.location.host.includes('localhost')) {
-      return 'http://' + window.location.host + '/auth/'
+      return 'http://' + window.location.host + '/auth/';
     }
-    return 'https://' + window.location.host + '/auth/'
-  }
+    return 'https://' + window.location.host + '/auth/';
+  };
 
   render() {
     return (
@@ -70,7 +70,7 @@ export default class CUreviewsGoogleLogin extends Component<
               Math.abs(this.state.lastVerification - new Date().getTime()) >
                 5000
                 ? setTimeout(function () {
-                    renderProps.onClick()
+                    renderProps.onClick();
                   }, this.props.waitTime)
                 : 1}
             </script>
@@ -79,6 +79,6 @@ export default class CUreviewsGoogleLogin extends Component<
           redirectUri={this.getRedirectURI()}
         />
       </div>
-    )
+    );
   }
 }

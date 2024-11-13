@@ -1,173 +1,161 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
-import axios from 'axios'
+import axios from 'axios';
 
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import WriteReviewIcon from '../../../assets/icons/write.svg'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import WriteReviewIcon from '../../../assets/icons/write.svg';
 
-import { courseVisited } from './Feedback'
-import Navbar from '../../Globals/Navbar'
-import Loading from '../../Globals/Loading'
+import { courseVisited } from './Feedback';
+import Navbar from '../../Globals/Navbar';
+import Loading from '../../Globals/Loading';
 
-import styles from '../Styles/Course.module.css'
-import { lastOfferedSems } from 'common/CourseCard'
+import styles from '../Styles/Course.module.css';
+import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from './Gauge'
-import CourseReviews from './CourseReviews'
+import Gauge from './Gauge';
+import CourseReviews from './CourseReviews';
 
-import type { NewReview } from '../../../types'
+import type { NewReview } from '../../../types';
 
-import { Class, Review } from 'common'
-import { Session } from '../../../session-store'
+import { Class, Review } from 'common';
+import { Session } from '../../../session-store';
 
-import { useAuthOptionalLogin } from '../../../auth/auth_utils'
+import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
-import ReviewModal from './ReviewModal'
+import ReviewModal from './ReviewModal';
 
 enum PageStatus {
   Loading,
   Success,
-  Error,
+  Error
 }
 
 export const Course = () => {
-  const { number, subject, input } = useParams<any>()
+  const { number, subject, input } = useParams<any>();
 
-  const [selectedClass, setSelectedClass] = useState<Class>()
-  const [courseReviews, setCourseReviews] = useState<Review[]>()
-  const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading)
-  const [scrolled, setScrolled] = useState(false)
+  const [selectedClass, setSelectedClass] = useState<Class>();
+  const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
+  const [scrolled, setScrolled] = useState(false);
 
-  const { isLoggedIn, token } = useAuthOptionalLogin()
+  const { isLoggedIn, token } = useAuthOptionalLogin();
 
   /**
-   * Arrow functions for sorting reviews
+   * Sorts reviews based on descending likes.
    */
-  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0)
+  const sortByLikes = (a: Review, b: Review) =>
+    (b.likes || 0) - (a.likes || 0);
+
+  /**
+   * Sorts reviews based on descending date.
+   */
   const sortByDate = (a: Review, b: Review) =>
-    !!b.date ? (!!a.date ? b.date.getTime() - a.date.getTime() : -1) : 1
+    b.date instanceof Date && a.date instanceof Date
+      ? b.date.getTime() - a.date.getTime()
+      : -1;
+
+  /**
+   * Sorts reviews based on ascending alphabetical order of professor name.
+   */
+  const sortByProf = (a: Review, b: Review) => {
+    let valA = 'Not Listed';
+    let valB = 'Not Listed';
+
+    if (a.professors) {
+      const profsA = a.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed');
+      valA = profsA.length > 0
+        ? profsA.sort()[0]
+        : 'Not Listed';
+    } else {
+      return 1;
+    }
+    if (b.professors) {
+      const profsB = b.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed');
+      valB = profsB.length > 0
+        ? profsB.sort()[0]
+        : 'Not Listed';
+    } else {
+      return 1;
+    }
+
+    if (valA === 'Not Listed') {
+      return 1;
+    } else if (valB === 'Not Listed') {
+      return -1;
+    }
+    
+    if (valA < valB) {
+      return -1;
+    } else if (valB < valA) {
+      return 1;
+    }
+
+    return 0;
+  }
 
   /**
    * Update state to conditionally render sticky bottom-right review button
    */
   useEffect(() => {
     function handleScroll() {
-      setScrolled(window.scrollY >= 240)
+      setScrolled(window.scrollY >= 240);
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   /**
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
-    async function updateCurrentClass(number: number, subject: string) {
+    async function updateCurrentClass() {
       try {
         const response = await axios.post(`/api/courses/get-by-info`, {
           number,
-          subject: subject,
-        })
+          subject: subject
+        });
 
-        const course = response.data.result
+        const course = response.data.result;
         if (course) {
-          setSelectedClass(course)
+          setSelectedClass(course);
 
           // After getting valid course info, fetch reviews
           const reviewsResponse = await axios.post('/api/courses/get-reviews', {
-            courseId: course._id,
-          })
-          const reviews = reviewsResponse.data.result
+            courseId: course._id
+          });
+          const reviews = reviewsResponse.data.result;
           // Convert date field of Review to JavaScript Date object
-          reviews.map((r: Review) => (r.date = r.date && new Date(r.date)))
-          reviews.sort(sortByLikes)
-          setCourseReviews(reviews)
+          reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
+          reviews.sort(sortByLikes);
+          setCourseReviews(reviews);
 
-          setPageStatus(PageStatus.Success)
+          setPageStatus(PageStatus.Success);
         } else {
-          setPageStatus(PageStatus.Error)
+          setPageStatus(PageStatus.Error);
         }
       } catch (e) {
-        setPageStatus(PageStatus.Error)
+        setPageStatus(PageStatus.Error);
       }
     }
-    updateCurrentClass(number, subject)
-  }, [number, subject])
-
-  /**
-   * Checks if there is a review stored in Session (i.e. this redirected from
-   * auth)
-   */
-  useEffect(() => {
-    /**
-     * Submit review and clear session storage
-     */
-    async function submitReview(review: NewReview, courseId: string) {
-      try {
-        const response = await axios.post('/api/reviews/post', {
-          token: token,
-          review: review,
-          courseId: courseId,
-        })
-
-        clearSessionReview()
-        if (response.status === 200) {
-          toast.success(
-            'Thanks for reviewing! New reviews are updated every 24 hours.'
-          )
-        } else {
-          toast.error('An error occurred, please try again.')
-        }
-      } catch (e) {
-        clearSessionReview()
-        toast.error('An error occurred, please try again.')
-      }
-    }
-
-    const sessionReview = Session.get('review')
-    const sessionCourseId = Session.get('courseId')
-    if (
-      sessionReview !== undefined &&
-      sessionReview !== '' &&
-      sessionCourseId !== undefined &&
-      sessionCourseId !== '' &&
-      isLoggedIn
-    ) {
-      submitReview(sessionReview, sessionCourseId)
-    }
-  }, [isLoggedIn, token])
+    updateCurrentClass();
+  }, [number, subject]);
 
   /**
    * Sorts reviews based on selected filter
    */
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
-    const value = event.target.value
-    const currentReviews = courseReviews && [...courseReviews]
+    const value = event.target.value;
     if (value === 'helpful') {
-      currentReviews?.sort(sortByLikes)
+      setCourseReviews([...courseReviews].sort(sortByLikes));
     } else if (value === 'recent') {
-      currentReviews?.sort(sortByDate)
-    }
-    setCourseReviews(currentReviews)
-  }
-
-  /**
-   * Attempts to report review, and filters out the reported review locally
-   * @param reviewId - id of review to report
-   */
-  async function reportReview(reviewId: string) {
-    try {
-      const response = await axios.post('/api/reviews/report', { id: reviewId })
-      if (response.status === 200) {
-        setCourseReviews(
-          courseReviews?.filter((element) => element._id !== reviewId)
-        )
-      }
-    } catch (e) {
-      toast.error('Failed to report review.')
+      setCourseReviews([...courseReviews].sort(sortByDate));
+    } else if (value === 'professor') {
+      setCourseReviews([...courseReviews].sort(sortByProf));
     }
   }
 
@@ -176,17 +164,17 @@ export const Course = () => {
    */
   function onSubmitReview(review: NewReview) {
     Session.setPersistent({
-      review: review,
-    })
+      review: review
+    });
     Session.setPersistent({
-      review_major: selectedClass?.classSub.toUpperCase(),
-    })
-    Session.setPersistent({ review_num: selectedClass?.classNum })
-    Session.setPersistent({ courseId: selectedClass?._id })
-   }
+      review_major: selectedClass?.classSub.toUpperCase()
+    });
+    Session.setPersistent({ review_num: selectedClass?.classNum });
+    Session.setPersistent({ courseId: selectedClass?._id });
+  }
 
   /** Modal Open and Close Logic */
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false);
   /**
    * Error page
    */
@@ -205,14 +193,14 @@ export const Course = () => {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   /**
    * Successful render =>
    */
   if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
-    courseVisited(selectedClass?.classSub, selectedClass?.classNum)
+    courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
       <div className={`${styles.page}`}>
         <ToastContainer
@@ -286,6 +274,7 @@ export const Course = () => {
               >
                 <option value="helpful">Most Helpful</option>
                 <option value="recent">Recent</option>
+                <option value="professor">Professor</option>
               </select>
             </div>
           </div>
@@ -316,8 +305,8 @@ export const Course = () => {
           }
         />
       </div>
-    )
+    );
   }
 
-  return <Loading />
-}
+  return <Loading />;
+};

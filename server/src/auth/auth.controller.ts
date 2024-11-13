@@ -27,7 +27,7 @@ export const insertUser = async ({ token }: TokenPayloadType) => {
           netId: token.email.replace('@cornell.edu', ''),
           affiliation: '',
           token: '',
-          privilege: 'regular',
+          privilege: 'regular'
         };
 
         await insertNewStudent(newStudent);

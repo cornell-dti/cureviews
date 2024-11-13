@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 // CSS FILES
-import styles from '../Styles/Select.module.css'
-import dropdownIcon from '../../../assets/icons/dropdownicon.svg'
+import styles from '../Styles/Select.module.css';
+import dropdownIcon from '../../../assets/icons/dropdownicon.svg';
 
 const SingleSelect = ({
   value,
   options,
   placeholder,
-  onChange,
+  onChange
 }: SelectProps) => {
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(0)
-  const [open, setOpen] = useState<boolean>(false)
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
+  const [open, setOpen] = useState<boolean>(false);
 
   // helpers
 
   const selected = (option: string) => {
-    return value.includes(option)
-  }
+    return value.includes(option);
+  };
 
   // logic controls:
 
   const handleDropdown = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
-  const handleSelect = (selected: string) => {
-    onChange(selected)
+  const handleSelect = (selection: string) => {
+    onChange(selection);
 
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <div
@@ -59,8 +59,8 @@ const SingleSelect = ({
               } ${index === highlightedIndex && styles.highlighted}`}
               key={option}
               onClick={(e) => {
-                e.stopPropagation()
-                handleSelect(option)
+                e.stopPropagation();
+                handleSelect(option);
               }}
               onMouseEnter={() => setHighlightedIndex(index)}
             >
@@ -71,14 +71,14 @@ const SingleSelect = ({
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
 type SelectProps = {
-  options: string[]
-  placeholder: string
-  value: string
-  onChange: (selectedOptions: string) => void
-}
+  options: string[];
+  placeholder: string;
+  value: string;
+  onChange: (selectedOptions: string) => void;
+};
 
-export default SingleSelect
+export default SingleSelect;

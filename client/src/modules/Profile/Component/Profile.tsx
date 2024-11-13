@@ -1,129 +1,148 @@
-import React, { useEffect, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import axios from 'axios'
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { Session } from '../../../session-store'
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Session } from '../../../session-store';
 
-import { Review as ReviewType } from 'common'
+import { Review as ReviewType } from 'common';
 
-import Navbar from '../../Globals/Navbar'
-import Loading from '../../Globals/Loading'
+import Navbar from '../../Globals/Navbar';
+import Loading from '../../Globals/Loading';
 
-import { UserInfo } from './UserInfo'
-import { NoReviews } from './NoReviews'
-import { PendingReviews } from './PendingReviews'
-import type { NewReview } from '../../../types'
+import { UserInfo } from './UserInfo';
+import { NoReviews } from './NoReviews';
+import { PendingReviews } from './PendingReviews';
+import { PastReviews } from './PastReviews';
+import type { NewReview } from '../../../types';
 
-import { useAuthMandatoryLogin } from '../../../auth/auth_utils'
-import { randomPicture } from '../../Globals/profile_picture'
+import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
+import { randomPicture } from '../../Globals/profile_picture';
 
-
-import styles from '../Styles/Profile.module.css'
-import { PastReviews } from './PastReviews'
+import styles from '../Styles/Profile.module.css';
 
 const Profile = () => {
-  const [loading, setLoading] = useState(true)
-  const [hide, setHide] = useState(false)
-  const [reviews, setReviews] = useState<ReviewType[]>([])
-  const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([])
-  const [pastReviews, setPastReviews] = useState<ReviewType[]>([])
+  const [loading, setLoading] = useState(true);
+  const [hidePastReviews, setHidePastReviews] = useState(false);
+  const [reviews, setReviews] = useState<ReviewType[]>([]);
+  const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
+  const [approvedReviews, setApprovedReviews] = useState<ReviewType[]>([]);
 
-  const [reviewsTotal, setReviewsTotal] = useState('0')
-  const [reviewsHelpful, setReviewsHelpful] = useState('0')
+  const [upvoteCount, setUpvoteCount] = useState(0);
 
   const { isLoggedIn, token, netId, isAuthenticating, signOut } =
-    useAuthMandatoryLogin('profile')
+    useAuthMandatoryLogin('profile');
 
-  const profilePicture: string = randomPicture(netId)
-
-  /**
-   * Retrieves the total reviews that a student has made
-   */
-  async function getReviewsTotal() {
-    const response = await axios.post('/api/profiles/count-reviews', {
-      netId,
-    })
-
-    const res = response.data
-    if (response.status === 200) {
-      setReviewsTotal(res.result)
-    }
-  }
+  const profilePicture: string = randomPicture(netId);
 
   /**
-   * Retrieves the number of reviews that the student has made that have been upvoted
-   */
-  async function getReviewsHelpful() {
-    const response = await axios.post('/api/profiles/get-likes', {
-      netId,
-    })
-
-    const res = response.data
-    if (response.status === 200) {
-      setReviewsHelpful(res.result)
-    }
-  }
-
-  /**
-   * Arrow functions for sorting reviews
+   * Sorts reviews based on descending likes.
    */
   const sortByLikes = (a: ReviewType, b: ReviewType) =>
-    (b.likes || 0) - (a.likes || 0)
+    (b.likes || 0) - (a.likes || 0);
+
+  /**
+   * Sorts reviews based on descending date.
+   */
   const sortByDate = (a: ReviewType, b: ReviewType) =>
     b.date instanceof Date && a.date instanceof Date
       ? b.date.getTime() - a.date.getTime()
-      : -1
+      : -1;
 
-  useEffect(() => {
-    if (token) {
-      axios.post('/api/auth/new-user', { token })
+  /**
+   * Sorts reviews based on ascending alphabetical order of professor name.
+   */
+  const sortByProf = (a: ReviewType, b: ReviewType) => {
+    let valA = 'Not Listed';
+    let valB = 'Not Listed';
+
+    if (a.professors) {
+      const profsA = a.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed')
+      valA = profsA.length > 0
+        ? profsA.sort()[0]
+        : 'Not Listed'
+    } else {
+      return 1
     }
-  }, [token])
+    if (b.professors) {
+      const profsB = b.professors.filter((prof : String) =>
+        prof && prof !== 'Not Listed')
+      valB = profsB.length > 0
+        ? profsB.sort()[0]
+        : 'Not Listed'
+    } else {
+      return 1
+    }
 
+    if (valA === 'Not Listed') {
+      return 1
+    } else if (valB === 'Not Listed') {
+      return -1
+    }
+    
+    if (valA < valB) {
+      return -1
+    } else if (valB < valA) {
+      return 1
+    }
+
+    return 0
+  }
+
+  /**
+   * Hook that handles
+   * 1. Get + Set reviews
+   * 2. Get + Set review + upvote counts for user
+   */
   useEffect(() => {
     async function getReviews() {
-      const response = await axios.post(`/api/profiles/get-reviews`, { netId })
-      const reviews = response.data.result
-      const pendingReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 0
-      })
-      const pastReviews = reviews.filter(function (review: ReviewType) {
-        return review.visible === 1
-      })
-
-      reviews?.sort(sortByLikes)
-      setReviews(reviews)
-      setPendingReviews(pendingReviews)
-      setPastReviews(pastReviews)
-      setLoading(false)
+      const response = await axios.post(`/api/profiles/get-reviews`, {
+        netId
+      });
+      const _reviews = response.data.result;
+      if (_reviews) {
+        const _pendingReviews = _reviews.filter(function (review: ReviewType) {
+          return !review.visible && !review.reported;
+        });
+        const _approvedReviews = _reviews.filter(function (review: ReviewType) {
+          return review.visible;
+        });
+  
+        setReviews(_reviews);
+        setPendingReviews(_pendingReviews);
+        setApprovedReviews(_approvedReviews.sort(sortByLikes));
+        setLoading(false);
+      }
+    }
+    
+    async function getReviewsHelpful() {
+      const response = await axios.post('/api/profiles/get-likes', {
+        netId
+      });
+  
+      if (response.status === 200) {
+        const userTotalUpvotes = response.data.result;
+        setUpvoteCount(userTotalUpvotes);
+      }
     }
 
-    getReviews()
-  }, [netId])
-
-  useEffect(() => {
-    const pendingReviews = reviews.filter(function (review: ReviewType) {
-      return review.visible === 0
-    })
-    const pastReviews = reviews.filter(function (review: ReviewType) {
-      return review.visible === 1
-    })
-    setReviews(reviews)
-    setPendingReviews(pendingReviews)
-    setPastReviews(pastReviews)
-    setLoading(false)
-  }, [reviews])
+    // Only update reviews if we have a given user's netId + they are no longer authenticating.
+    if (netId && !isAuthenticating) {
+      getReviews();
+      getReviewsHelpful();
+    }
+  }, [netId, isAuthenticating]);
 
   /**
    * Clear review stored in session storage
    */
   function clearSessionReview() {
-    Session.setPersistent({ review: '' })
-    Session.setPersistent({ review_major: '' })
-    Session.setPersistent({ review_num: '' })
-    Session.setPersistent({ courseId: '' })
+    Session.setPersistent({ review: '' });
+    Session.setPersistent({ review_major: '' });
+    Session.setPersistent({ review_num: '' });
+    Session.setPersistent({ courseId: '' });
   }
 
   /**
@@ -139,25 +158,27 @@ const Profile = () => {
         const response = await axios.post('/api/reviews/post', {
           token: token,
           review: review,
-          courseId: courseId,
-        })
+          courseId: courseId
+        });
 
-        clearSessionReview()
+        clearSessionReview();
         if (response.status === 200) {
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
-          )
+          );
+          const pending = response.data.result
+          setPendingReviews(pending);
         } else {
-          toast.error('An error occurred, please try again.')
+          toast.error('An error occurred, please try again.');
         }
       } catch (e) {
-        clearSessionReview()
-        toast.error('An error occurred, please try again.')
+        clearSessionReview();
+        toast.error('An error occurred, please try again.');
       }
     }
 
-    const sessionReview = Session.get('review')
-    const sessionCourseId = Session.get('courseId')
+    const sessionReview = Session.get('review');
+    const sessionCourseId = Session.get('courseId');
     if (
       sessionReview !== undefined &&
       sessionReview !== '' &&
@@ -165,23 +186,20 @@ const Profile = () => {
       sessionCourseId !== '' &&
       isLoggedIn
     ) {
-      submitReview(sessionReview, sessionCourseId)
+      submitReview(sessionReview, sessionCourseId);
     }
-  }, [isLoggedIn, token])
+  }, [isLoggedIn, token]);
 
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
-    const value = event.target.value
-    const currentReviews = reviews && [...reviews]
+    const value = event.target.value;
     if (value === 'helpful') {
-      currentReviews?.sort(sortByLikes)
+      setApprovedReviews([...approvedReviews].sort(sortByLikes));
     } else if (value === 'recent') {
-      currentReviews?.sort(sortByDate)
+      setApprovedReviews([...approvedReviews].sort(sortByDate));
+    } else if (value === 'professor') {
+      setApprovedReviews([...approvedReviews].sort(sortByProf))
     }
-    setReviews(currentReviews)
   }
-
-  getReviewsTotal()
-  getReviewsHelpful()
 
   if (!loading && isLoggedIn) {
     return (
@@ -200,8 +218,8 @@ const Profile = () => {
           <div className={styles.usersection}>
             <UserInfo
               profilePicture={profilePicture}
-              reviewsHelpful={reviewsHelpful}
-              reviewsTotal={reviewsTotal}
+              upvoteCount={upvoteCount}
+              reviewsTotal={pendingReviews.length + approvedReviews.length}
               netId={netId}
               signOut={signOut}
             />
@@ -209,7 +227,7 @@ const Profile = () => {
 
           <div className={styles.reviewsection}>
             <div className={styles.bar}>
-              <h2>My Reviews ({reviews?.length})</h2>
+              <h2>My Reviews ({pendingReviews.length + approvedReviews.length})</h2>
               <div>
                 <label htmlFor="sort-reviews-by">Sort By:</label>
                 <select
@@ -226,25 +244,30 @@ const Profile = () => {
             {reviews.length > 0 && pendingReviews.length > 0 && (
               <>
                 <PendingReviews
-                  hide={hide}
-                  setHide={setHide}
+                  key={pendingReviews.length}
+                  hide={hidePastReviews}
+                  setHide={setHidePastReviews}
                   pendingReviews={pendingReviews}
                 />
-                <PastReviews pastReviews={pastReviews} />
+                <PastReviews
+                  pastReviews={approvedReviews}
+                />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
-              <PastReviews pastReviews={pastReviews} />
+              <PastReviews
+                pastReviews={approvedReviews}
+              />
             )}
           </div>
         </div>
       </div>
-    )
+    );
   } else if (!loading && !token && !isAuthenticating) {
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
-  return <Loading />
-}
+  return <Loading />;
+};
 
-export { Profile }
+export { Profile };

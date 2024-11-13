@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import styles from '../Styles/ProfileCard.module.css'
+import styles from '../Styles/ProfileCard.module.css';
 
 type ProfileCardProps = {
-  title: string
-  value: string
-  image: any
-}
+  title: string;
+  value: number;
+  image: any;
+};
 
 /**
   Profile Component.
@@ -25,7 +25,7 @@ const ProfileCard = ({ title, value, image }: ProfileCardProps) => {
         <img className={styles.img} src={image} alt="total reviews icon" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileCard
+export default ProfileCard;

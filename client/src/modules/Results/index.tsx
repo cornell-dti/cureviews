@@ -1,1 +1,1 @@
-export { Results } from './Components/Results'
+export { Results } from './Components/Results';

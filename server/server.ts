@@ -20,7 +20,7 @@ function setup() {
   const port = process.env.PORT || 8080;
 
   app.get('*', (_, response) =>
-    response.sendFile(path.join(__dirname, '../../client/build/index.html')),
+    response.sendFile(path.join(__dirname, '../../client/build/index.html'))
   );
 
   app.use(express.json());

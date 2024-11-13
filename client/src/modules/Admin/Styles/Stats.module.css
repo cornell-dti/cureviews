@@ -1,16 +1,16 @@
 .diagnosticbox {
-    border: 2px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px;
-    flex: 1;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  flex: 1;
 }
 
 .stats {
-    text-indent: 10px;
+  text-indent: 10px;
 }
 
 .downloadButton {
-    cursor: pointer;
-    text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
 }

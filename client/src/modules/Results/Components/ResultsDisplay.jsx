@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import FilteredResult from './FilteredResult.tsx'
-import PreviewCard from './PreviewCard.jsx'
-import FilterPopup from './FilterPopup'
-import Loading from '../../Globals/Loading'
+import FilteredResult from './FilteredResult.tsx';
+import PreviewCard from './PreviewCard.jsx';
+import FilterPopup from './FilterPopup';
+import Loading from '../../Globals/Loading';
 
-import FilterIcon from '../../../assets/icons/filtericon.svg'
+import FilterIcon from '../../../assets/icons/filtericon.svg';
 
-import styles from '../Styles/Results.module.css'
+import styles from '../Styles/Results.module.css';
 
 /*
   ResultsDisplay Component.a
@@ -23,7 +23,7 @@ import styles from '../Styles/Results.module.css'
 
 export default class ResultsDisplay extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       courseList: this.props.courses,
       cardCourse: this.props.courses[0],
@@ -36,24 +36,24 @@ export default class ResultsDisplay extends Component {
         2000: true,
         3000: true,
         4000: true,
-        '5000+': true,
+        '5000+': true
       },
       filterMap: this.getInitialFilterMap(), // key value pair name:checked
       filteredItems: this.props.courses,
       fullscreen: false,
       transformGauges: false,
-      showFilterPopup: false,
-    }
-    this.previewHandler = this.previewHandler.bind(this)
-    this.sortBy = this.sortBy.bind(this)
-    this.getSubjectOptions = this.getSubjectOptions.bind(this)
-    this.renderCheckboxes = this.renderCheckboxes.bind(this)
-    this.filterClasses = this.filterClasses.bind(this)
-    this.getInitialFilterMap = this.getInitialFilterMap.bind(this)
-    this.sort = this.sort.bind(this)
-    this.setShowFilterPopup = this.setShowFilterPopup.bind(this)
-    this.scrollReviews = this.scrollReviews.bind(this)
-    this.toggleFullscreen = this.toggleFullscreen.bind(this)
+      showFilterPopup: false
+    };
+    this.previewHandler = this.previewHandler.bind(this);
+    this.sortBy = this.sortBy.bind(this);
+    this.getSubjectOptions = this.getSubjectOptions.bind(this);
+    this.renderCheckboxes = this.renderCheckboxes.bind(this);
+    this.filterClasses = this.filterClasses.bind(this);
+    this.getInitialFilterMap = this.getInitialFilterMap.bind(this);
+    this.sort = this.sort.bind(this);
+    this.setShowFilterPopup = this.setShowFilterPopup.bind(this);
+    this.scrollReviews = this.scrollReviews.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -65,15 +65,15 @@ export default class ResultsDisplay extends Component {
         {
           courseList: this.props.courses,
           relevantCourseList: this.props.courses,
-          cardCourse: this.props.courses[0],
+          cardCourse: this.props.courses[0]
         },
         () => this.filterClasses()
-      )
+      );
     }
     if (prevProps.userInput !== this.props.userInput) {
       this.setState({ filterMap: this.getInitialFilterMap() }, () =>
         this.filterClasses()
-      )
+      );
     }
   }
 
@@ -86,89 +86,89 @@ export default class ResultsDisplay extends Component {
           ['2000', true],
           ['3000', true],
           ['4000', true],
-          ['5000+', true],
-        ]),
+          ['5000+', true]
+        ])
       ],
       [
         'semesters',
         new Map([
           ['Fall', true],
-          ['Spring', true],
-        ]),
+          ['Spring', true]
+        ])
       ],
-      ['subjects', []],
-    ])
+      ['subjects', []]
+    ]);
   }
 
   /**
    * Handles selecting different sort filters
    */
   handleSelect = (event) => {
-    let opt = event.target.value
-    this.setState({ selected: opt }, () => this.sort())
-  }
+    let opt = event.target.value;
+    this.setState({ selected: opt }, () => this.sort());
+  };
 
   /**
    * Helper function to sort()
    */
   sortBy(courseList, sortByField, fieldDefault, increasing) {
     courseList = courseList.sort((a, b) => {
-      let first = Number(b[sortByField]) || fieldDefault
-      let second = Number(a[sortByField]) || fieldDefault
+      let first = Number(b[sortByField]) || fieldDefault;
+      let second = Number(a[sortByField]) || fieldDefault;
 
       if (first === second) {
-        return a.classNum - b.classNum
+        return a.classNum - b.classNum;
       } else {
         if (increasing) {
-          return first - second
+          return first - second;
         } else {
-          return second - first
+          return second - first;
         }
       }
-    })
+    });
     this.setState({
       filteredItems: courseList,
       cardCourse: courseList[0],
-      activeCard: 0,
-    })
+      activeCard: 0
+    });
   }
 
   /**
    * Sorts list of class results by category selected in this.state.selected
    */
   sort() {
-    let availableClasses
+    let availableClasses;
     if (this.state.filteredItems.length === 0) {
-      availableClasses = this.state.courseList
+      availableClasses = this.state.courseList;
     } else {
-      availableClasses = this.state.filteredItems
+      availableClasses = this.state.filteredItems;
     }
 
     if (this.state.selected === 'relevance') {
-      this.sortBy(availableClasses, 'score', 0, true)
+      this.sortBy(availableClasses, 'score', 0, true);
     } else if (this.state.selected === 'rating') {
-      this.sortBy(availableClasses, 'classRating', 0, true)
+      this.sortBy(availableClasses, 'classRating', 0, true);
     } else if (this.state.selected === 'diff') {
       this.sortBy(
         availableClasses,
         'classDifficulty',
         Number.MAX_SAFE_INTEGER,
         false
-      )
+      );
     } else if (this.state.selected === 'work') {
       this.sortBy(
         availableClasses,
         'classWorkload',
         Number.MAX_SAFE_INTEGER,
         false
-      )
+      );
     }
   }
 
   filterClasses() {
     let semesters = Array.from(
       this.state.filterMap.get('semesters').keys()
-    ).filter((semester) => this.state.filterMap.get('semesters').get(semester))
+    ).filter((semester) => this.state.filterMap.get('semesters').get(semester));
 
     let filteredItems = this.state.courseList.filter((course) =>
       semesters.some((semester) =>
@@ -176,46 +176,46 @@ export default class ResultsDisplay extends Component {
           element.includes(semester.slice(0, 2).toUpperCase())
         )
       )
-    )
+    );
 
     let levels = Array.from(this.state.filterMap.get('levels').keys()).filter(
       (level) => this.state.filterMap.get('levels').get(level)
-    )
+    );
     filteredItems = filteredItems.filter((course) =>
       levels.some((level) =>
         level === '5000+'
           ? course.classNum.slice(0, 1) >= '5'
           : course.classNum.slice(0, 1) === level.slice(0, 1)
       )
-    )
+    );
 
-    let subjectsObjects = this.state.filterMap.get('subjects')
+    let subjectsObjects = this.state.filterMap.get('subjects');
     if (subjectsObjects && subjectsObjects.length > 0) {
       filteredItems = filteredItems.filter((course) =>
         subjectsObjects.some(
           (subjectObject) =>
             course.classSub.toUpperCase() === subjectObject.value
         )
-      )
+      );
     }
 
-    this.setState({ filteredItems: filteredItems }, () => this.sort())
+    this.setState({ filteredItems: filteredItems }, () => this.sort());
   }
 
   /**
    * Updates the list of filtered items when filters are checked/unchecked
    */
   checkboxOnChange = (e) => {
-    const group = e.target.getAttribute('group')
-    const name = e.target.name
-    const checked = e.target.checked
+    const group = e.target.getAttribute('group');
+    const name = e.target.name;
+    const checked = e.target.checked;
 
-    let newFilterMap = this.state.filterMap
+    let newFilterMap = this.state.filterMap;
 
-    newFilterMap.get(group).set(name, checked)
+    newFilterMap.get(group).set(name, checked);
 
-    this.setState({ filterMap: newFilterMap }, () => this.filterClasses())
-  }
+    this.setState({ filterMap: newFilterMap }, () => this.filterClasses());
+  };
 
   /**
    * Updates the displayed PreviewCard to the correct [course]
@@ -224,9 +224,9 @@ export default class ResultsDisplay extends Component {
   previewHandler(course, index) {
     this.setState({
       cardCourse: course,
-      activeCard: index,
-    })
-    this.setState({ transformGauges: false })
+      activeCard: index
+    });
+    this.setState({ transformGauges: false });
   }
 
   computeHeight() {
@@ -234,7 +234,7 @@ export default class ResultsDisplay extends Component {
       window.innerWidth ||
       document.documentElement.clientWidth ||
       document.body.clientWidth
-    )
+    );
   }
 
   /**
@@ -244,7 +244,7 @@ export default class ResultsDisplay extends Component {
   renderResults() {
     const items = this.state.filteredItems.length
       ? this.state.filteredItems
-      : this.state.courseList
+      : this.state.courseList;
 
     return items.map((result, index) => (
       <div
@@ -262,13 +262,13 @@ export default class ResultsDisplay extends Component {
           sortBy={this.state.selected}
         />
       </div>
-    ))
+    ));
   }
 
   renderCheckboxes(group) {
-    let groupList = Array.from(this.state.filterMap.get(group).keys())
+    let groupList = Array.from(this.state.filterMap.get(group).keys());
     return groupList.map((name, index) => (
-      <div className = {styles.filterlabel}>
+      <div className={styles.filterlabel}>
         <label className={styles.filterlabel}>
           <input
             className={styles.filterlabel}
@@ -281,28 +281,28 @@ export default class ResultsDisplay extends Component {
           {name}
         </label>
       </div>
-    ))
+    ));
   }
-  
+
   getSubjectOptions(inputValue, callback) {
-    console.log('Deprecated functionality')
+    console.log();
   }
 
   setShowFilterPopup() {
-    this.setState({ showFilterPopup: !this.state.showFilterPopup })
+    this.setState({ showFilterPopup: !this.state.showFilterPopup });
   }
 
   scrollReviews(e) {
-    const currentScrollY = e.target.scrollTop
+    const currentScrollY = e.target.scrollTop;
     if (currentScrollY > 80) {
-      this.setState({ transformGauges: true })
+      this.setState({ transformGauges: true });
     } else {
-      this.setState({ transformGauges: false })
+      this.setState({ transformGauges: false });
     }
   }
 
   toggleFullscreen() {
-    this.setState({ fullscreen: false })
+    this.setState({ fullscreen: false });
   }
 
   render() {
@@ -345,7 +345,8 @@ export default class ResultsDisplay extends Component {
                     ? this.state.courseList.length
                     : this.state.filteredItems.length}
                 </b>{' '}
-                courses for &quot;{this.props.userInput}&quot;
+                courses for &quot;{this.props.userInput}
+                &quot;
               </div>
 
               <div className={styles.bar}>
@@ -387,16 +388,17 @@ export default class ResultsDisplay extends Component {
                   </div>
                 </div>
                 <div className={styles.preview}>
-                  <PreviewCard 
+                  <PreviewCard
                     course={this.state.cardCourse}
-                    transformGauges = {this.state.transformGauges} />
+                    transformGauges={this.state.transformGauges}
+                  />
                 </div>
               </div>
             </div>
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 
@@ -404,5 +406,5 @@ ResultsDisplay.propTypes = {
   courses: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
-  userInput: PropTypes.string.isRequired,
-}
+  userInput: PropTypes.string.isRequired
+};

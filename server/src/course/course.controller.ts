@@ -23,7 +23,7 @@ export const getCrossListOR = (course) => {
   if (crossList !== undefined && crossList.length > 0) {
     // format each courseid into an object to input to the find's '$or' search
     const crossListOR = crossList.map((cID) => ({
-      class: cID,
+      class: cID
     }));
 
     crossListOR.push({ class: courseId });
@@ -33,8 +33,8 @@ export const getCrossListOR = (course) => {
 
   return [
     {
-      class: courseId,
-    },
+      class: courseId
+    }
   ];
 };
 
@@ -50,14 +50,14 @@ export const getCourseById = async ({ courseId }: CourseIdRequestType) => {
 
 export const getCourseByInfo = async ({
   number,
-  subject,
+  subject
 }: CourseInfoRequestType) => {
   const course = await findCourseByInfo(number, subject.toLowerCase());
   return course;
 };
 
 export const getReviewsCrossListOR = async ({
-  courseId,
+  courseId
 }: CourseIdRequestType) => {
   const course = await getCourseById({ courseId });
 

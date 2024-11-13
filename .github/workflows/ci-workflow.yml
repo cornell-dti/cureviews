@@ -12,7 +12,7 @@ jobs:
           node-version: 18
       - name: Install
         run: yarn
-      - name: Run Linter
+      - name: Lint
         run: yarn lint
       - name: Build Server
         run: yarn workspace server build
@@ -21,3 +21,5 @@ jobs:
         run: CI=false yarn workspace client build
       - name: Test
         run: yarn workspace server test
+        env:
+          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"

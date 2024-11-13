@@ -1,21 +1,21 @@
-import React from 'react'
-import styles from '../Styles/UserInfo.module.css'
-import ProfileCard from './ProfileCard'
+import React from 'react';
+import styles from '../Styles/UserInfo.module.css';
+import ProfileCard from './ProfileCard';
 
 type UserInfoProps = {
-  profilePicture: string
-  reviewsTotal: string
-  reviewsHelpful: string
-  netId: string
-  signOut: () => void
+  profilePicture: string;
+  reviewsTotal: number;
+  upvoteCount: number;
+  netId: string;
+  signOut: () => void;
 }
 
 const UserInfo = ({
   profilePicture,
-  reviewsHelpful,
+  upvoteCount,
   reviewsTotal,
   netId,
-  signOut,
+  signOut
 }: UserInfoProps) => {
   return (
     <div className={styles.container}>
@@ -35,7 +35,7 @@ const UserInfo = ({
         />
         <ProfileCard
           title="Upvotes"
-          value={reviewsHelpful}
+          value={upvoteCount}
           image="/helpful_review_icon.svg"
         ></ProfileCard>
       </div>
@@ -43,7 +43,7 @@ const UserInfo = ({
         Log Out
       </button>
     </div>
-  )
-}
+  );
+};
 
-export { UserInfo }
+export { UserInfo };

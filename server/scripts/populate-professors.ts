@@ -12,7 +12,7 @@ import { Classes } from '../db/schema';
 
 export function isInstructorEqual(
   a: ScrapingInstructor,
-  b: ScrapingInstructor,
+  b: ScrapingInstructor
 ) {
   return a.firstName === b.firstName && a.lastName === b.lastName;
 }
@@ -24,10 +24,10 @@ export function isInstructorEqual(
  * @returns list of unique professors
  */
 export const extractProfessors = (
-  course: ScrapingClass,
+  course: ScrapingClass
 ): ScrapingInstructor[] => {
   const raw = course.enrollGroups.map(
-    (e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors)),
+    (e) => e.classSections.map((s) => s.meetings.map((m) => m.instructors))
     // eslint-disable-next-line function-paren-newline
   );
   // flatmap does not work :(
@@ -58,7 +58,7 @@ export const extractProfessors = (
  * @returns true if operation was successful, false otherwise
  */
 export const addAllProfessors = async (
-  semesters: string[],
+  semesters: string[]
 ): Promise<boolean> => {
   // You just want to go through all the classes in the Classes database and update the Professors field
   // Don't want to go through the semesters
@@ -70,7 +70,7 @@ export const addAllProfessors = async (
     try {
       await axios.get(
         `https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`,
-        { timeout: 30000 },
+        { timeout: 30000 }
       );
     } catch (error) {
       console.log('Error in updateProfessors: 1');
@@ -79,7 +79,7 @@ export const addAllProfessors = async (
     }
     const result = await axios.get(
       `https://classes.cornell.edu/api/2.0/config/subjects.json?roster=${semesters[semester]}`,
-      { timeout: 30000 },
+      { timeout: 30000 }
     );
     // console.log(result)
     if (result.status !== 200) {
@@ -97,7 +97,7 @@ export const addAllProfessors = async (
         try {
           await axios.get(
             `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`,
-            { timeout: 30000 },
+            { timeout: 30000 }
           );
         } catch (error) {
           console.log('Error in updateProfessors: 3');
@@ -106,7 +106,7 @@ export const addAllProfessors = async (
         }
         const result2 = await axios.get(
           `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semesters[semester]}&subject=${parent.value}`,
-          { timeout: 30000 },
+          { timeout: 30000 }
         );
         if (result2.status !== 200) {
           console.log('Error in updateProfessors: 4');
@@ -121,7 +121,7 @@ export const addAllProfessors = async (
           try {
             const matchedCourse = await Classes.findOne({
               classSub: courses[course].subject.toLowerCase(),
-              classNum: courses[course].catalogNbr,
+              classNum: courses[course].catalogNbr
             }).exec();
             if (matchedCourse) {
               console.log(courses[course].subject);
@@ -169,13 +169,13 @@ export const addAllProfessors = async (
 
               await Classes.updateOne(
                 { _id: matchedCourse._id },
-                { $set: { classProfessors: oldProfessors } },
+                { $set: { classProfessors: oldProfessors } }
               ).exec();
             }
           } catch (error) {
             console.log('Error in updateProfessors: 5');
             console.log(
-              `Error on course ${courses[course].subject} ${courses[course].catalogNbr}`,
+              `Error on course ${courses[course].subject} ${courses[course].catalogNbr}`
             );
             console.log(error);
 
@@ -198,7 +198,7 @@ export const addAllProfessors = async (
  */
 export const resetProfessors = async (
   endpoint: string,
-  semesters: string[],
+  semesters: string[]
 ): Promise<boolean> => {
   console.log('Resetting professors...');
   try {
@@ -215,7 +215,7 @@ export const resetProfessors = async (
                 try {
                   const matchedCourse = await Classes.findOne({
                     classSub: course.subject.toLowerCase(),
-                    classNum: course.catalogNbr,
+                    classNum: course.catalogNbr
                   }).exec();
 
                   console.log(matchedCourse);
@@ -223,12 +223,12 @@ export const resetProfessors = async (
                   if (matchedCourse) {
                     await Classes.findOneAndUpdate(
                       { _id: matchedCourse._id },
-                      { $set: { classProfessors: [] } },
+                      { $set: { classProfessors: [] } }
                     ).exec();
                   }
 
                   console.log(
-                    `Reset professors for course ${course.subject}${course.catalogNbr}...`,
+                    `Reset professors for course ${course.subject}${course.catalogNbr}...`
                   );
                 } catch (err) {
                   console.log(err);
@@ -242,7 +242,7 @@ export const resetProfessors = async (
         } else {
           return false;
         }
-      }),
+      })
     );
 
     return true;

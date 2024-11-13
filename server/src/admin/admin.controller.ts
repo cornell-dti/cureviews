@@ -1,34 +1,30 @@
 import {
   findPendingReviews,
   findReportedReviews,
-  findAllReviewsAfterDate,
   removeReviewById,
   updateReviewVisibility,
-  findStudentById,
   updateCourseMetrics,
   findReviewCounts,
   createCourseCSV,
   findAdminUsers,
   removeAdminPrivilege,
   grantAdminPrivilege,
-  approveAllReviews,
+  approveAllReviews
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
   AdminPendingReviewType,
   AdminReviewVisibilityType,
-  RaffleWinnerRequestType,
-  ReportReviewRequestType,
   UpdateCourseMetrics,
   VerifyAdminType,
-  VerifyManageAdminType,
+  VerifyManageAdminType
 } from './admin.type';
 
 import {
   findStudent,
   findReview,
   getReviewsCrossListOR,
-  getCourseById,
+  getCourseById
 } from '../utils';
 import { COURSE_API_BASE_URL } from '../utils/constants';
 
@@ -49,22 +45,6 @@ import {
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
 /**
- * Reports a review by setting its visibility to only admin and updating reported count.
- * Will also update all course metrics accordingly.
- *
- * @param {string} id: Mongo-generated id of review
- * @returns true if operation was successful, false otherwise
- */
-export const reportReview = async ({ id }: ReportReviewRequestType) => {
-  try {
-    await updateReviewVisibility(id, 1, 0);
-    return updateCourseMetricsFromReview(id);
-  } catch (err) {
-    return false;
-  }
-};
-
-/**
  * Verifies that the token passed in an admin.
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
@@ -78,7 +58,7 @@ export const verifyTokenAdmin = async ({ auth }: VerifyAdminType) => {
       const ticket = await auth.getVerificationTicket();
       if (ticket && ticket.email) {
         const user = await findStudent(
-          ticket.email.replace('@cornell.edu', ''),
+          ticket.email.replace('@cornell.edu', '')
         );
         if (user) {
           return user.privilege === 'admin';
@@ -105,7 +85,7 @@ export const editReviewVisibility = async ({
   reviewId,
   auth,
   visibility,
-  reported,
+  reported
 }: AdminReviewVisibilityType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
@@ -121,7 +101,7 @@ export const approveReviews = async ({ auth }: VerifyAdminType) => {
   if (userIsAdmin) {
     return approveAllReviews();
   }
-}
+};
 
 /**
  * Removes a review from db by mongo generated id.
@@ -132,7 +112,7 @@ export const approveReviews = async ({ auth }: VerifyAdminType) => {
  */
 export const removePendingReview = async ({
   reviewId,
-  auth,
+  auth
 }: AdminPendingReviewType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
 
@@ -188,7 +168,7 @@ export const getReviewCounts = async ({ auth }: VerifyAdminType) => {
     const counts = findReviewCounts();
     return counts;
   }
-}
+};
 
 /**
  * Gets CSV text string of all reviews that are approved, sorted by class.
@@ -202,7 +182,7 @@ export const getCourseCSV = async ({ auth }: VerifyAdminType) => {
     const csv = await createCourseCSV();
     return csv;
   }
-}
+};
 
 /**
  * Gets all users with admin privilege.
@@ -216,7 +196,7 @@ export const getAdminUsers = async ({ auth }: VerifyAdminType) => {
     const admins = await findAdminUsers();
     return admins;
   }
-}
+};
 
 /**
  * Removes a user's admin privilege by id. Assumes that the user is already in the
@@ -232,7 +212,7 @@ export const removeAdmin = async ({ auth, id }: VerifyManageAdminType) => {
     const res = await removeAdminPrivilege(id);
     return res;
   }
-}
+};
 
 /**
  * Grants a user admin privilege by updating them if they are in the database.
@@ -247,7 +227,7 @@ export const addAdmin = async ({ auth, id }: VerifyManageAdminType) => {
     let res = await grantAdminPrivilege(id);
     return res;
   }
-}
+};
 
 /**
  * Updated all professors in the database by scraping through the Cornell course API.
@@ -284,7 +264,9 @@ export const resetAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
-export const updateDatabaseCourseFullSubjectName = async ({ auth }: VerifyAdminType) => {
+export const updateDatabaseCourseFullSubjectName = async ({
+  auth
+}: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -294,7 +276,7 @@ export const updateDatabaseCourseFullSubjectName = async ({ auth }: VerifyAdminT
   const result = await fetchAddSubjects(COURSE_API_BASE_URL, semesters);
 
   return result;
-}
+};
 
 /**
  * Helper function to get metrics associated with a course
@@ -348,7 +330,9 @@ export const updateCourseMetricsFromReview = async (reviewId: string) => {
     const course = await getCourseById({ courseId: review.class });
 
     if (course) {
-      const reviews = await getReviewsCrossListOR({ courseId: course._id });
+      const reviews = await getReviewsCrossListOR({
+        courseId: course._id
+      });
 
       const state: UpdateCourseMetrics = getMetricValues(reviews);
       await updateCourseMetrics(review, state);
@@ -410,7 +394,7 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
 
 /**
  * Adds all course descriptions to the database after updating the courses for the most recent semester.
- * 
+ *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */

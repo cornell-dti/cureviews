@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import MultiSelect from './MultiSelect'
-import SingleSelect from './SingleSelect'
-import RatingInput from './RatingInput'
+import MultiSelect from './MultiSelect';
+import SingleSelect from './SingleSelect';
+import RatingInput from './RatingInput';
 
 // CSS FILES
-import styles from '../Styles/ReviewModal.module.css'
-import closeIcon from '../../../assets/icons/X.svg'
+import styles from '../Styles/ReviewModal.module.css';
+import closeIcon from '../../../assets/icons/X.svg';
 
 // Data
-import majors from '../../Globals/majors'
-import AnonymousWarning from './AnonymousWarning'
-import { useAuthOptionalLogin } from '../../../auth/auth_utils'
+import majors from '../../Globals/majors';
+import AnonymousWarning from './AnonymousWarning';
+import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 const ReviewModal = ({
   open,
   setReviewOpen,
   submitReview,
-  professorOptions,
+  professorOptions
 }: Modal) => {
   // Modal Logic
   function closeModal() {
-    setReviewOpen(false)
+    setReviewOpen(false);
   }
   // Content & Options
   const placeholdertext =
-    'What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?'
+    'What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?';
 
-  const majorOptions: string[] = majors
+  const majorOptions: string[] = majors;
 
   const gradeoptions = [
     'A+',
@@ -43,39 +43,44 @@ const ReviewModal = ({
     'D+',
     'D',
     'D-',
-    'F',
-  ]
+    'F'
+  ];
 
   // Form & Review Content State
-  const [selectedProfessors, setSelectedProfessors] = useState<string[]>([])
-  const [selectedMajors, setSelectedMajors] = useState<string[]>([])
-  const [selectedGrade, setSelectedGrade] = useState<string>('')
-  const [reviewText, setReviewText] = useState<string>('')
+  const [selectedProfessors, setSelectedProfessors] = useState<string[]>([]);
+  const [selectedMajors, setSelectedMajors] = useState<string[]>([]);
+  const [selectedGrade, setSelectedGrade] = useState<string>('');
+  const [reviewText, setReviewText] = useState<string>('');
 
-  const [overall, setOverall] = useState<number>(3)
-  const [difficulty, setDifficulty] = useState<number>(3)
-  const [workload, setWorkload] = useState<number>(3)
+  const [overall, setOverall] = useState<number>(3);
+  const [difficulty, setDifficulty] = useState<number>(3);
+  const [workload, setWorkload] = useState<number>(3);
 
-  const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false)
-  const [noReviews, setNoReviews] = useState<boolean>(false)
+  const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false);
+  const [noReviews, setNoReviews] = useState<boolean>(false);
 
-  const {isLoggedIn, netId, signIn} = useAuthOptionalLogin()
+  const { isLoggedIn, netId, signIn } = useAuthOptionalLogin();
 
   const [valid, setValid] = useState<Valid>({
     professor: false,
     major: false,
     grade: false,
-    text: false,
-  })
-  const [allowSubmit, setAllowSubmit] = useState<boolean>(false)
+    text: false
+  });
+  const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
 
   useEffect(() => {
-    professorOptions.push('Not Listed')
+    if (!professorOptions.includes('Not Listed')) {
+      professorOptions.push('Not Listed');
+    }
   }, [professorOptions])
+
   useEffect(() => {
-    setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text)
-    if (isLoggedIn) {getNoReviews()}
-  }, [valid])
+    setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
+    if (isLoggedIn) {
+      getNoReviews();
+    }
+  }, [valid]);
 
   /**
    * Determines if the current user has no reviews, so they should receive
@@ -83,45 +88,45 @@ const ReviewModal = ({
    */
   async function getNoReviews() {
     const response = await axios.post('/api/profiles/count-reviews', {
-        netId,
-    })
-    const res = response.data
+      netId
+    });
+    const res = response.data;
     if (response.status === 200) {
-      setNoReviews(res.result === 0)
+      setNoReviews(res.result === 0);
     }
   }
 
   function onProfessorChange(newSelectedProfessors: string[]) {
-    setSelectedProfessors(newSelectedProfessors)
+    setSelectedProfessors(newSelectedProfessors);
     if (newSelectedProfessors.length > 0)
-      setValid({ ...valid, professor: true })
-    else setValid({ ...valid, professor: false })
+      setValid({ ...valid, professor: true });
+    else setValid({ ...valid, professor: false });
   }
 
   function onMajorChange(newSelectedMajors: string[]) {
-    setSelectedMajors(newSelectedMajors)
-    if (newSelectedMajors.length > 0) setValid({ ...valid, major: true })
-    else setValid({ ...valid, major: false })
+    setSelectedMajors(newSelectedMajors);
+    if (newSelectedMajors.length > 0) setValid({ ...valid, major: true });
+    else setValid({ ...valid, major: false });
   }
 
   function onGradeChange(newSelectedGrade: string) {
-    setSelectedGrade(newSelectedGrade)
-    if (newSelectedGrade !== '') setValid({ ...valid, grade: true })
-    else setValid({ ...valid, grade: false })
+    setSelectedGrade(newSelectedGrade);
+    if (newSelectedGrade !== '') setValid({ ...valid, grade: true });
+    else setValid({ ...valid, grade: false });
   }
 
   function onReviewTextChange(newText: string) {
-    setReviewText(newText)
-    if (newText !== '') setValid({ ...valid, text: true })
-    else setValid({ ...valid, text: false })
+    setReviewText(newText);
+    if (newText !== '') setValid({ ...valid, text: true });
+    else setValid({ ...valid, text: false });
   }
 
   // Handle Submission
   function validReview(): boolean {
-    const professorChosen = selectedProfessors.length > 0
-    const textWritten = reviewText.length > 5
-    if (professorChosen && textWritten) return true
-    return false
+    const professorChosen = selectedProfessors.length > 0;
+    const textWritten = reviewText.length > 5;
+    if (professorChosen && textWritten) return true;
+    return false;
   }
 
   // Called by onSubmitReview if the user should not see anonymous
@@ -135,38 +140,36 @@ const ReviewModal = ({
         text: reviewText,
         isCovid: false,
         grade: selectedGrade,
-        major: selectedMajors,
-      }
-      submitReview(newReview)
+        major: selectedMajors
+      };
+      submitReview(newReview);
     }
   }
 
   // Handle click of submit button
   function onSubmitReview() {
     if (!noReviews && isLoggedIn) {
-      handleSubmitReview()
-      signIn('profile')
+      handleSubmitReview();
+      signIn('profile');
     } else {
-      handleSubmitReview()
-      setAnonymousOpen(true)
-      setReviewOpen(false)
+      handleSubmitReview();
+      setAnonymousOpen(true);
+      setReviewOpen(false);
     }
   }
 
   if (!open && anonymousOpen) {
     return (
-      <div className = {styles.modalbg}>
-        <div className = {styles.modal}>
-          <AnonymousWarning
-            open = {anonymousOpen}
-          />
+      <div className={styles.modalbg}>
+        <div className={styles.modal}>
+          <AnonymousWarning open={anonymousOpen} />
         </div>
       </div>
-    )
+    );
   }
 
   if (!open) {
-    return <></>
+    return <></>;
   }
 
   return (
@@ -228,7 +231,7 @@ const ReviewModal = ({
               options={majorOptions}
               value={selectedMajors}
               onChange={onMajorChange}
-              placeholder="Select Major"
+              placeholder="Major"
             />
             <SingleSelect
               options={gradeoptions}
@@ -248,7 +251,9 @@ const ReviewModal = ({
             ></textarea>
             <button
               className={styles.submitbutton}
-              onClick={() => {onSubmitReview()}}
+              onClick={() => {
+                onSubmitReview();
+              }}
               disabled={!allowSubmit}
             >
               Submit Review
@@ -257,32 +262,32 @@ const ReviewModal = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 type Modal = {
-  open: boolean
-  setReviewOpen: (open: boolean) => void
-  submitReview: (review: NewReview) => void
-  professorOptions: string[]
-}
+  open: boolean;
+  setReviewOpen: (open: boolean) => void;
+  submitReview: (review: NewReview) => void;
+  professorOptions: string[];
+};
 
 type NewReview = {
-  text: string
-  rating: number
-  difficulty: number
-  workload: number
-  professors: string[]
-  isCovid: boolean
-  grade: string
-  major: string[]
-}
+  text: string;
+  rating: number;
+  difficulty: number;
+  workload: number;
+  professors: string[];
+  isCovid: boolean;
+  grade: string;
+  major: string[];
+};
 
 type Valid = {
-  professor: boolean
-  major: boolean
-  grade: boolean
-  text: boolean
-}
+  professor: boolean;
+  major: boolean;
+  grade: boolean;
+  text: boolean;
+};
 
-export default ReviewModal
+export default ReviewModal;

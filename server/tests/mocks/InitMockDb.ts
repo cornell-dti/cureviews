@@ -4,18 +4,18 @@ export const testSubjects: Subject[] = [
   {
     _id: 'newSubject1',
     subShort: 'MORK',
-    subFull: 'Study of Angry Fungi',
+    subFull: 'Study of Angry Fungi'
   },
   {
     _id: 'angry subject',
     subShort: 'MAD',
-    subFull: 'The Study of Anger Issues',
+    subFull: 'The Study of Anger Issues'
   },
   {
     _id: 'federation subject',
     subShort: 'FEDN',
-    subFull: 'The Study of Where No Man Has Gone Before!',
-  },
+    subFull: 'The Study of Where No Man Has Gone Before!'
+  }
 ];
 
 export const testStudents: Student[] = [
@@ -28,7 +28,7 @@ export const testStudents: Student[] = [
     token: '',
     privilege: 'regular',
     reviews: [],
-    likedReviews: [],
+    likedReviews: []
   },
   {
     _id: 'Irrelevant2',
@@ -39,7 +39,7 @@ export const testStudents: Student[] = [
     token: 'fakeTokenDti1',
     privilege: 'admin',
     reviews: [],
-    likedReviews: [],
+    likedReviews: []
   },
   {
     _id: 'bleh',
@@ -53,9 +53,9 @@ export const testStudents: Student[] = [
       '4Y8k7DnX3PLNdwRPr',
       '4Y8k7DnX3PLNdwRPq',
       '3yMwTbiyd4MZLPQJF',
-      '52x7j6tkXHxvrZizx',
+      '52x7j6tkXHxvrZizx'
     ],
-    likedReviews: [],
+    likedReviews: []
   },
   {
     _id: 'test1',
@@ -66,8 +66,8 @@ export const testStudents: Student[] = [
     token: 'fakeTokencv4620',
     privilege: 'regular',
     reviews: [],
-    likedReviews: [],
-  },
+    likedReviews: []
+  }
 ];
 
 export const testReviews: Review[] = [
@@ -80,7 +80,7 @@ export const testReviews: Review[] = [
     visible: 0,
     reported: 1,
     likes: 2,
-    likedBy: ['user1234', 'user0'],
+    likedBy: ['user1234', 'user0']
   },
   {
     _id: '4Y8k7DnX3PLNdwRPq',
@@ -90,7 +90,7 @@ export const testReviews: Review[] = [
     class: 'oH37S3mJ4eAsktypy',
     visible: 1,
     reported: 0,
-    likedBy: [],
+    likedBy: []
   },
   {
     _id: '3yMwTbiyd4MZLPQJF',
@@ -102,7 +102,7 @@ export const testReviews: Review[] = [
     visible: 0,
     reported: 0,
     likes: 0,
-    likedBy: [],
+    likedBy: []
   },
   {
     _id: '52x7j6tkXHxvrZizx',
@@ -114,8 +114,8 @@ export const testReviews: Review[] = [
     visible: 0,
     reported: 1,
     likes: 5,
-    likedBy: [],
-  },
+    likedBy: []
+  }
 ];
 
 export const testProfessors: Professor[] = [
@@ -123,14 +123,14 @@ export const testProfessors: Professor[] = [
     _id: 'prof_1',
     fullName: 'Gazghul Thraka',
     courses: ['newCourse1', 'newCourse2'],
-    major: 'mork',
+    major: 'mork'
   },
   {
     _id: 'prof_2',
     fullName: 'Jean-Luc Picard',
     courses: [],
-    major: 'fedn',
-  },
+    major: 'fedn'
+  }
 ];
 
 export const testClasses: Class[] = [
@@ -157,13 +157,13 @@ export const testClasses: Class[] = [
       'SU18',
       'SP19',
       'FA19',
-      'SU19',
+      'SU19'
     ],
     crossList: [],
     classProfessors: ['John Foster', 'Michael Clarkson'],
     classDifficulty: 2.9,
     classRating: undefined,
-    classWorkload: 3,
+    classWorkload: 3
   },
   {
     _id: 'oH37S3mJ4eAsktypy',
@@ -188,7 +188,7 @@ export const testClasses: Class[] = [
       'SU18',
       'SP19',
       'FA19',
-      'SU19',
+      'SU19'
     ],
     crossList: ['q75SxmqkTFEfaJwZ3'],
     classProfessors: [
@@ -203,11 +203,11 @@ export const testClasses: Class[] = [
       'Adrian Sampson',
       'Natacha Crooks',
       'Anne Bracy',
-      'Michael Clarkson',
+      'Michael Clarkson'
     ],
     classDifficulty: 2.9,
     classRating: undefined,
-    classWorkload: 3,
+    classWorkload: 3
   },
   {
     _id: 'newCourse1',
@@ -221,7 +221,7 @@ export const testClasses: Class[] = [
     classWorkload: 2,
     classDifficulty: 3,
     classPrereq: [],
-    crossList: [],
+    crossList: []
   },
   {
     _id: 'newCourse2',
@@ -235,7 +235,7 @@ export const testClasses: Class[] = [
     classRating: 3,
     classWorkload: 4,
     classDifficulty: 5,
-    crossList: [],
+    crossList: []
   },
   {
     _id: 'newCourse3',
@@ -249,6 +249,6 @@ export const testClasses: Class[] = [
     classRating: 3,
     classWorkload: 5,
     classDifficulty: 5,
-    crossList: [],
-  },
+    crossList: []
+  }
 ];

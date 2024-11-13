@@ -1,4 +1,4 @@
-import joi from "joi";
+import joi from 'joi';
 
 type ReviewEntity = {
   class: string;
@@ -64,7 +64,7 @@ export class Review {
     user: userId,
     grade,
     major,
-    class: courseId,
+    class: courseId
   }: ReviewEntity) {
     this._id = _id;
     this.text = text;
@@ -108,7 +108,7 @@ export class Review {
       isCovid: joi.boolean().required(),
       user: joi.string().required(),
       grade: joi.optional(),
-      major: joi.optional(),
+      major: joi.optional()
     });
 
     const { error } = searchSchema.validate(this);
