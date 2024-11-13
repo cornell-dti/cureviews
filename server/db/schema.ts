@@ -35,6 +35,7 @@ const ClassSchema = new Schema<ClassDocument>({
   classDifficulty: { type: Number }, // the average difficulty rating from reviews
   recommendations: [
     {
+      _id: { type: String },
       className: { type: String },
       classSub: { type: String },
       classNum: { type: Number },

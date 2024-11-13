@@ -62,6 +62,7 @@ export interface Professor {
 }
 
 interface Recommendation {
+  readonly _id: string;
   className: string;
   classSub: string;
   classNum: number;

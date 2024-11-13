@@ -606,7 +606,7 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
     const similarities = [];
     const tfidf = await RecommendationMetadata.findOne({ _id: courseId }).exec();
     for (const c of courses) {
-      if (c._id !== courseId && c.classRating !== 0) {
+      if (c._id !== courseId && !c.crossList.includes(courseId) && c.classRating !== null) {
         const compTfidf = await RecommendationMetadata.findOne({ _id: c._id }).exec();
         const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
         if (cos < 1) {
@@ -614,6 +614,7 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
           const workload = threshold(course.classWorkload, c.classWorkload);;
           const difficulty = threshold(course.classDifficulty, c.classDifficulty);;
           similarities.push({
+            _id: c._id,
             className: c.classTitle,
             classSub: c.classSub,
             classNum: c.classNum,
