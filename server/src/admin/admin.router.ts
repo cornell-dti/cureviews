@@ -27,9 +27,6 @@ import {
   addAdmin,
   approveReviews,
   addCourseDescriptionsDb,
-  addProcessedDescriptionsDb,
-  addIdfVectorDb,
-  addTfIdfVectorsDb,
   addSimilarityDb
 } from './admin.controller';
 
@@ -508,72 +505,6 @@ adminRouter.post('/db/initialize', async (req, res) => {
     return res
       .status(400)
       .json({ error: 'Error adding all professors and all courses' });
-  } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}` });
-  }
-});
-
-adminRouter.post('/rec/desc', async (req, res) => {
-  const { token }: AdminRequestType = req.body;
-  try {
-    const auth = new Auth({ token });
-    const result = await addProcessedDescriptionsDb({ auth });
-    console.log(result)
-
-    if (result) {
-      res.status(200);
-      res.set('Connection', 'close');
-      res.json({ message: 'Processed course descriptions added!' });
-      return res;
-    }
-
-    return res
-      .status(400)
-      .json({ error: 'Processed course descriptions were unable to be added!' });
-  } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}` });
-  }
-});
-
-adminRouter.post('/rec/idf', async (req, res) => {
-  const { token }: AdminRequestType = req.body;
-  try {
-    const auth = new Auth({ token });
-    const result = await addIdfVectorDb({ auth });
-    console.log(result)
-
-    if (result) {
-      res.status(200);
-      res.set('Connection', 'close');
-      res.json({ message: 'IDF vector added!' });
-      return res;
-    }
-
-    return res
-      .status(400)
-      .json({ error: 'IDF vector was unable to be added!' });
-  } catch (err) {
-    return res.status(500).json({ error: `Internal Server Error: ${err}` });
-  }
-});
-
-adminRouter.post('/rec/tfidf', async (req, res) => {
-  const { token }: AdminRequestType = req.body;
-  try {
-    const auth = new Auth({ token });
-    const result = await addTfIdfVectorsDb({ auth });
-    console.log(result)
-
-    if (result) {
-      res.status(200);
-      res.set('Connection', 'close');
-      res.json({ message: 'TF-IDF vectors added!' });
-      return res;
-    }
-
-    return res
-      .status(400)
-      .json({ error: 'TF-IDF vectors were unable to be added!' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

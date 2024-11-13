@@ -425,55 +425,6 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
 }
 
 /**
- * Adds all processed course descriptions to the recommendations metadata database 
- * after standardizing and removing irrelevant words from course descriptions.
- * 
- * @param {Auth} auth: Object that represents the authentication of a request being passed in.
- * @returns true if operation was successful, false if operations was not successful, null if token not admin
- */
-export const addProcessedDescriptionsDb = async ({ auth }: VerifyAdminType) => {
-  const userIsAdmin = verifyTokenAdmin({ auth });
-  if (!userIsAdmin) {
-    return null;
-  }
-
-  const descriptionResult = await addAllProcessedDescriptions();
-  return descriptionResult;
-}
-
-/**
- * Adds IDF Vector of all processed course descriptions to Global Metadata database
- * 
- * @param {Auth} auth: Object that represents the authentication of a request being passed in.
- * @returns true if operation was successful, false if operations was not successful, null if token not admin
- */
-export const addIdfVectorDb = async ({ auth }: VerifyAdminType) => {
-  const userIsAdmin = verifyTokenAdmin({ auth });
-  if (!userIsAdmin) {
-    return null;
-  }
-
-  const idfResult = await addIdfVector();
-  return idfResult;
-}
-
-/**
- * Adds all TF-IDF Vectors for each course to the recommendations metadata database
- * 
- * @param {Auth} auth: Object that represents the authentication of a request being passed in.
- * @returns true if operation was successful, false if operations was not successful, null if token not admin
- */
-export const addTfIdfVectorsDb = async ({ auth }: VerifyAdminType) => {
-  const userIsAdmin = verifyTokenAdmin({ auth });
-  if (!userIsAdmin) {
-    return null;
-  }
-
-  const tfidfResult = await addAllTfIdfVectors();
-  return tfidfResult;
-}
-
-/**
  * Adds all similarity data to the Course database, consisting of tags and top 5 similar courses
  * 
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
@@ -485,6 +436,16 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
     return null;
   }
 
-  const similarityResult = await addAllSimilarityData();
-  return similarityResult;
+  const descriptionResult = await addAllProcessedDescriptions();
+  if (descriptionResult) {
+    const idfResult = await addIdfVector();
+    if (idfResult) {
+      const tfidfResult = await addAllTfIdfVectors();
+      if (tfidfResult) {
+        const similarityResult = await addAllSimilarityData();
+        return similarityResult;
+      }
+    }
+  }
+  return false;
 }

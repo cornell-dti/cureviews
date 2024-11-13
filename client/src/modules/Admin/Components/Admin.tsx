@@ -299,48 +299,6 @@ export const Admin = () => {
     }
   }
 
-  async function updateProcessedDescriptions() {
-    console.log('Updating processed course descriptions')
-    setUpdating(true)
-    setUpdatingField("processed course descriptions")
-    const response = await axios.post('/api/admin/rec/desc', { token: token });
-    if (response.status === 200) {
-      console.log('Updated all processed course descriptions')
-      setUpdating(false)
-      setUpdated('processed')
-    } else {
-      console.log('Error at updateProcessedDescriptions')
-    }
-  }
-
-  async function updateIdfVector() {
-    console.log('Updatng IDF vector')
-    setUpdating(true)
-    setUpdatingField("IDF vector")
-    const response = await axios.post('/api/admin/rec/idf', { token: token });
-    if (response.status === 200) {
-      console.log('Updated IDF vector')
-      setUpdating(false)
-      setUpdated('idf')
-    } else {
-      console.log('Error at updateIdfVector')
-    }
-  }
-
-  async function updateTfIdfVectors() {
-    console.log('Updatng TF-IDF vectors')
-    setUpdating(true)
-    setUpdatingField("TF-IDF vectors")
-    const response = await axios.post('/api/admin/rec/tfidf', { token: token });
-    if (response.status === 200) {
-      console.log('Updated TF-IDF vectors')
-      setUpdating(false)
-      setUpdated('tfidf')
-    } else {
-      console.log('Error at updateTfIdfVectors')
-    }
-  }
-
   async function updateSimilarityData() {
     console.log('Updatng course similarity data')
     setUpdating(true)
@@ -458,30 +416,6 @@ export const Admin = () => {
                 onClick={() => updateSubjects()}
               >
                 Update Subjects
-              </button>
-              <button
-                disabled={updating}
-                type="button"
-                className={styles.adminButtons}
-                onClick={() => updateProcessedDescriptions()}
-              >
-                Update Processed Descriptions
-              </button>
-              <button
-                disabled={updating}
-                type="button"
-                className={styles.adminButtons}
-                onClick={() => updateIdfVector()}
-              >
-                Update IDF Vector
-              </button>
-              <button
-                disabled={updating}
-                type="button"
-                className={styles.adminButtons}
-                onClick={() => updateTfIdfVectors()}
-              >
-                Update TF-IDF Vectors
               </button>
               <button
                 disabled={updating}
