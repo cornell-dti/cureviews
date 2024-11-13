@@ -43,7 +43,7 @@ export const Admin = () => {
   };
   const [updatingField, setUpdatingField] = useState<string>('');
 
-  const [addSemester] = useState('');
+  const [addSemester] = useState(['FA24', 'SP25']);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
 
   const { isLoggedIn, token, isAuthenticating } =
@@ -187,22 +187,24 @@ export const Admin = () => {
    * course API for new classes and updates classes existing in the database.
    * Should run once a semester, when new classes are added to the roster.
    */
-  async function addNewSem(semester: string) {
+  async function addNewSem(semesters: string[]) {
     console.log('Adding new semester...');
-    setUpdating(true);
-    setUpdatingField('new semester');
     //wz
-    const response = await axios.post('/api/admin/semester/add', {
-      semester,
-      token: token
-    });
-    const result = response.data.result;
-    if (result === true) {
-      console.log('New Semester Added');
-      setUpdating(false);
-      setUpdated('semester');
-    } else {
-      console.log('Unable to add new semester!');
+    for (const semester of semesters) {
+      setUpdating(true);
+      setUpdatingField('new semester');
+      const response = await axios.post('/api/admin/semester/add', {
+        semester,
+        token: token
+      });
+      const result = response.data.result;
+      if (result === true) {
+        console.log(`New Semester ${semester} Added`);
+        setUpdating(false);
+        setUpdated('semester');
+      } else {
+        console.log(`Unable to add new semester ${semester}!`);
+      }
     }
   }
 
