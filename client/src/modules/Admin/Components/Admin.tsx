@@ -31,6 +31,7 @@ export const Admin = () => {
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false)
   const [isUpdatingAI, setIsUpdatingAI] = useState(false);
   const [updateStatusAI, setUpdateStatusAI] = useState(0);
+  const [incompleteSummaries, setIncompleteSummaries] = useState('');
 
   const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin')
   const [loading, setLoading] = useState(true)
@@ -237,26 +238,22 @@ export const Admin = () => {
     })
   }
 
-  // Call when user selects "Sumarize Reviews" button. Calls endpoint to generate
+  // Call when user selects "Sumarize Reviews" button. Calls endpoint to generate 
   // summaries and tags using AI for all courses with a freshness above a certain
-  // threshold, then updates those courses to include these new summaries and tags. 
-  function summarizeReviews() {
+  // threshold, then updates those courses to include these new summaries and tags.
+  async function summarizeReviews() {
     console.log('Updating all courses with AI');
-    if (isUpdatingAI) {
-      return;
-    }
     setIsUpdatingAI(true);
     setUpdateStatusAI(1);
 
-    axios.post('/api/ai/update-all-courses')
-      .then((response) => {
-        setUpdateStatusAI(2);
-      })
-      .catch((error) => {
-        setUpdateStatusAI(-1);
-      }).finally(() => {
-        setIsUpdatingAI(false);
-      });
+    try {
+      await axios.post('/api/ai/summarize-courses');
+      setUpdateStatusAI(2);
+    } catch (error) {
+      setUpdateStatusAI(-1);
+    } finally {
+      setIsUpdatingAI(false);
+    }
   }
 
 

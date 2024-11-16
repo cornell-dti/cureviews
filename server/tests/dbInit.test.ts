@@ -164,10 +164,14 @@ describe('db init and scraping functionality unit tests', () => {
   // Does fetching the subjects collection work as expected?
   it('fetching-roster-works', async () => {
     const response = await fetchSubjects(testingEndpoint, 'FA20');
-    expect(response?.length).toBe(2);
-    expect(response[0].descrformal).toBe('The Study of Fungi');
-    expect(response[0].value).toBe('gork');
-    expect(response[1].value).toBe('fedn');
+    if (response) {
+      expect(response.length).toBe(2);
+      expect(response[0].descrformal).toBe('The Study of Fungi');
+      expect(response[0].value).toBe('gork');
+      expect(response[1].value).toBe('fedn');
+    } else {
+      throw new Error('Expected response to be non-null');
+    }
 
     // No data for FA19!
     const nil = await fetchSubjects(testingEndpoint, 'FA19');

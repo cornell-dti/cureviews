@@ -39,7 +39,7 @@ async function summarize(text: string) {
     messages: [
       {
         role: "system", content: `
-          You are given a collection of course reviews provided where each review is separated by a /. You
+          You are given a collection of college course reviews where each review is separated by a /. You
           will then complete two tasks. First you should generate a 50 word summary of all reviews. Then 
           you should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
           along with their connotations (positive, negative, neutral). Please only pick one adjective for each.
@@ -109,7 +109,21 @@ const updateCourseWithAI = async (courseId: string) => {
       { $set: { classSummary: summary, classTags: tags, freshness: 0 } }
     );
 
-    console.log(`Course ${courseId} updated successfully with summary and tags.`);
+    const course = await Classes.findOne({ _id: courseId })
+    const courseName = course.classSub.toUpperCase() + ' ' + course.classNum;
+    if (!summary || summary === "Summary not generated.") {
+      console.log(`Summary missing for course ${courseId}`);
+      return false;
+    }
+
+    const requiredTags = ["Lectures", "Assignments", "Professor", "Skills", "Resources"];
+    const missingTags = requiredTags.filter(tag => !(tag in tags));
+
+    if (missingTags.length > 0) {
+      console.log(`Missing tags for course ${courseId}: ${missingTags.join(", ")}`);
+      return false;
+    }
+    console.log(`Course ${courseName} updated successfully with summary and tags.`);
     return true;
   } catch (error) {
     console.error(`Error updating course with summary and tags: ${error.message}`);

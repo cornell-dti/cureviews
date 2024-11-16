@@ -11,28 +11,29 @@ aiRouter.use(express.json());
  * returns a message summarizing how many courses were updated successfully
  * and how many failed.
  */
-aiRouter.post('/update-all-courses', async (req, res) => {
+aiRouter.post('/summarize-courses', async (req, res) => {
   try {
     const minReviews = 3;
     //get all courses with at least minimum reviews (will be changed later to check for freshness as well)
     const courseIds = await getCoursesWithMinReviews(minReviews);
+    const results = { success: [], incomplete: [] };
     if (!courseIds || courseIds.length === 0) {
-      return res.status(404).json({ error: `No courses found with at least ${minReviews} reviews.` });
+      return res.json({ message: `No courses found with at least ${minReviews} reviews.`, results });
     }
-    const results = { success: [], failed: [] };
-
+    const limitedCourseIds = courseIds.slice(0, 20);
     //loop through each courseId and update
     for (const courseId of courseIds) {
       const success = await updateCourseWithAI(courseId);
       if (success) {
         results.success.push(courseId);
       } else {
-        results.failed.push(courseId);
+        results.incomplete.push(courseId);
       }
     }
 
     //show how many courses were updated successfully
-    const message = `Update completed. ${results.success.length} courses updated successfully. ${results.failed.length} courses failed to update.`;
+    console.log(`Incompletely updated courses:  ${results.incomplete}`);
+    const message = `Update completed.`;
     return res.status(200).json({ message, details: results });
 
   } catch (err) {
