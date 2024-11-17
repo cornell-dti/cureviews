@@ -4,12 +4,14 @@ import { getCoursesWithMinReviews, getReviewsForSummary, summarize, updateCourse
 const aiRouter = express.Router();
 aiRouter.use(express.json());
 
-/** Reachable at POST /api/ai/update-all-courses
+/** Reachable at POST /api/ai/summarize-courses
  * retrieves all course IDs with a minimum of 3 reviews,
  * and then attempts to update the classSummary, classTags, and freshness
- * for each course ID by calling updateCoursesWithAI.
- * returns a message summarizing how many courses were updated successfully
- * and how many failed.
+ * for each course ID by calling updateCoursesWithAI. Makes at most 3 attempts
+ * to summarize course IDs with incomplete summary or tags. 
+ * returns a message that update has been completed and returns results which
+ * shows the courses that were summarized completely and the courses that were
+ * not.
  */
 aiRouter.post('/summarize-courses', async (req, res) => {
   try {
@@ -39,7 +41,6 @@ aiRouter.post('/summarize-courses', async (req, res) => {
       currentIteration += 1;
     }
 
-    //show how many courses were updated successfully
     console.log(`Incompletely updated courses:  ${results.incomplete}`);
     const message = `Update completed.`;
     return res.status(200).json({ message, details: results });
@@ -51,7 +52,7 @@ aiRouter.post('/summarize-courses', async (req, res) => {
 
 /** Reachable at POST /api/ai/update-course-summary
  * @body a courseId
- * returns a message indicating whether classSumary, classTags, and freshness have
+ * returns a message indicating whether classSummary, classTags, and freshness have
  * been updated successfully for the given courseId
 */
 aiRouter.post('/update-course-summary', async (req, res) => {
@@ -71,7 +72,7 @@ aiRouter.post('/update-course-summary', async (req, res) => {
   }
 })
 
-/** Reachable at POST /api/ai/summarize-reviews
+/** Reachable at POST /api/ai/text/summarize-reviews
  * @body a block of text containing all reviews from a course
  * returns a dictionary containing the summary and tags created by OpenAI
 */

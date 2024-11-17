@@ -162,9 +162,9 @@ async function getCoursesWithMinReviews(minimum) {
 /** getCoursesWithMinFreshness.
  * 
  * Create summaries for courses that have at least a certain freshness (new reviews/total reviews). 
- * Takes in `min` number of reviews and returns the a list of course IDs that have at least that number of reviews.
- * @params min count of reviews that a course
- * @returns coursesIDs[] with at least min reviews
+ * Takes in `min` freshness and returns the a list of course IDs that have at least that freshness.
+ * @params min freshness that a course needs to have to be resummarized
+ * @returns coursesIDs[] with at least min freshness
  */
 async function getCoursesWithMinFreshness(minimum) {
   const courses = await Classes.aggregate([
