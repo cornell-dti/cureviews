@@ -37,7 +37,7 @@ const ClassSchema = new Schema<ClassDocument>({
     of: [{ type: String }, { type: String }], // tuple where first element is the adjective and second element is its connotation
     required: false
   }, // tags describing lectures, assignments, professors, skills, and resources
-  summaryFreshness: { type: Number, default: 0 } // number of reviews since last openAI call
+  summaryFreshness: { type: Number, default: 0 } // number of reviews since last openAI call divided by total course reviews
 });
 
 export const Classes = mongoose.model<ClassDocument>("classes", ClassSchema);
