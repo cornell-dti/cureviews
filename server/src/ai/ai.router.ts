@@ -1,6 +1,6 @@
 import express from 'express';
 import { CourseIdRequestType } from '../course/course.type';
-import { getCoursesWithMinReviews, getReviewsForSummary, summarize, updateCourseWithAI } from './ai.functions';
+import { getCoursesWithMinReviews, getReviewsForSummary, summarize, updateCourseWithAI, getCoursesWithMinFreshness } from './ai.functions';
 const aiRouter = express.Router();
 aiRouter.use(express.json());
 
@@ -14,21 +14,29 @@ aiRouter.use(express.json());
 aiRouter.post('/summarize-courses', async (req, res) => {
   try {
     const minReviews = 3;
-    //get all courses with at least minimum reviews (will be changed later to check for freshness as well)
+    //get all courses with at least minimum reviews (will be changed later to check for freshness)
+    // const minFreshness = 3
+    // const courseIds = await getCoursesWithMinFreshness(minFreshness);
     const courseIds = await getCoursesWithMinReviews(minReviews);
-    const results = { success: [], incomplete: [] };
+    const results = { success: [], incomplete: [...courseIds] };
     if (!courseIds || courseIds.length === 0) {
       return res.json({ message: `No courses found with at least ${minReviews} reviews.`, results });
     }
-    const limitedCourseIds = courseIds.slice(0, 20);
-    //loop through each courseId and update
-    for (const courseId of courseIds) {
-      const success = await updateCourseWithAI(courseId);
-      if (success) {
-        results.success.push(courseId);
-      } else {
-        results.incomplete.push(courseId);
+    let currentIteration = 0;
+    while (results.incomplete.length > 0 && currentIteration < 3) {
+      const nextIncomplete = [];
+
+      for (const courseId of results.incomplete) {
+        const success = await updateCourseWithAI(courseId);
+        if (success) {
+          results.success.push(courseId);
+        } else {
+          nextIncomplete.push(courseId);
+        }
       }
+
+      results.incomplete = nextIncomplete;
+      currentIteration += 1;
     }
 
     //show how many courses were updated successfully
@@ -109,7 +117,7 @@ aiRouter.post('/get-course-review-text', async (req, res) => {
 aiRouter.post('/courseids', async (req, res) => {
   try {
     const min = req.body.min;
-    const ids = await getCoursesWithMinReviews(min);
+    const ids = await getCoursesWithMinFreshness(min);
     if (ids === null) {
       return res.status(400).json({
         error: `No courses found with given minimum number of reviews`,

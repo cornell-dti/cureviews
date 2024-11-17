@@ -1,6 +1,11 @@
 import { Reviews, Classes, Students } from '../../db/schema';
 import { Review } from './review';
 
+export const getTotalReviewsForCourse = async (courseId: string) => {
+  const totalReviews = await Reviews.countDocuments({ class: courseId }).exec();
+  return totalReviews;
+};
+
 export const findReviewCrossListOR = async (crossListOR) => {
   const reviews = await Reviews.find(
     { visible: 1, reported: 0, $or: crossListOR },
@@ -50,9 +55,11 @@ export const insertReview = async (review: Review) => {
   const newReview = new Reviews(review);
   await newReview.save();
   const courseId = review['class'];
+  const totalReviews = await Reviews.countDocuments({ class: courseId }).exec();
+  const freshnessInc = 1 / totalReviews
   await Classes.updateOne(
     { _id: courseId },
-    { $inc: { freshness: 1 } }
+    { $inc: { freshness: freshnessInc } }
   );
 };
 

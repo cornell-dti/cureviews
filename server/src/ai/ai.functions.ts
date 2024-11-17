@@ -159,6 +159,28 @@ async function getCoursesWithMinReviews(minimum) {
   return courseIds;
 }
 
+/** getCoursesWithMinFreshness.
+ * 
+ * Create summaries for courses that have at least a certain freshness (new reviews/total reviews). 
+ * Takes in `min` number of reviews and returns the a list of course IDs that have at least that number of reviews.
+ * @params min count of reviews that a course
+ * @returns coursesIDs[] with at least min reviews
+ */
+async function getCoursesWithMinFreshness(minimum) {
+  const courses = await Classes.aggregate([
+    { $match: { summaryFreshness: { $gte: minimum } } },
+    {
+      $project: {
+        _id: 0,
+        classId: "$_id"
+      }
+    }
+  ]);
+
+  const courseIds = courses.map(course => course.classId);
+  return courseIds;
+}
+
 /**
  * getReviewsPerCourse. 
  * 
@@ -236,4 +258,4 @@ export const getCrossListOR = (course) => {
   ];
 };
 
-export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, summarize, updateCourseWithAI } 
+export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, summarize, updateCourseWithAI, getCoursesWithMinFreshness } 
