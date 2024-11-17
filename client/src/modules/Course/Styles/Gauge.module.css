@@ -6,6 +6,7 @@
   flex-direction: row;
   max-width: 160px;
   height: 80px;
+  align-items: center;
 }
 
 .textcolumn {
@@ -28,9 +29,10 @@
 }
 
 .circle {
-  height: 80px;
-  width: 100px;
+  height: 60px;
+  width: 70px;
   padding: 0 5px;
+  align-content: center;
 }
 
 .gaugeCircle {
