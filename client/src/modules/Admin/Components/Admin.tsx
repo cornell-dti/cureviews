@@ -24,22 +24,24 @@ export const Admin = () => {
 
   const [updating, setUpdating] = useState<boolean>(false);
   type updatedStates =
-    | 'empty'
-    | 'semester'
-    | 'profsReset'
-    | 'profsUpdate'
-    | 'subjects'
-    | 'database'
-    | 'description';
+    'empty' |
+    'semester' |
+    'profsReset' |
+    'professors' |
+    'subjects' |
+    'database' |
+    'description' |
+    'similarity';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
-    empty: '',
-    semester: 'New semester data successfully added',
-    profsReset: 'Professor data successfully reset to empty',
-    profsUpdate: 'Professor data successfully updated',
-    subjects: 'Subject full name data successfully updated',
-    database: 'Database successfully initialized',
-    description: 'Course description data successfully added'
+    'empty': '',
+    'semester': "New semester data successfully added",
+    'profsReset': "Professor data successfully reset to empty",
+    'professors': "Professor data successfully updated",
+    'subjects': "Subject full name data successfully updated",
+    'database': "Database successfully initialized",
+    'description': "Course description data successfully added",
+    'similarity': "Similarity data successfully added",
   };
   const [updatingField, setUpdatingField] = useState<string>('');
 
@@ -247,7 +249,7 @@ export const Admin = () => {
     if (response.status === 200) {
       console.log('Updated the professors');
       setUpdating(false);
-      setUpdated('profsUpdate');
+      setUpdated('professors');
     } else {
       console.log('Error at setProfessors');
     }
@@ -310,6 +312,20 @@ export const Admin = () => {
       setUpdated('subjects');
     } else {
       console.log('Error at updateSubjects');
+    }
+  }
+
+  async function updateSimilarityData() {
+    console.log('Updatng course similarity data')
+    setUpdating(true)
+    setUpdatingField("course similarity data")
+    const response = await axios.post('/api/admin/rec/similarity', { token: token });
+    if (response.status === 200) {
+      console.log('Updated course similarity data')
+      setUpdating(false)
+      setUpdated('similarity')
+    } else {
+      console.log('Error at updateSimilarityData')
     }
   }
 
@@ -416,9 +432,17 @@ export const Admin = () => {
               >
                 Update Subjects
               </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateSimilarityData()}
+              >
+                Update Similarity Data
+              </button>
               {renderInitButton()}
-            </div>
-          </div>
+            </div >
+          </div >
 
           <ManageAdminModal
             open={isAdminModalOpen}
@@ -432,7 +456,7 @@ export const Admin = () => {
             <p>Updating {updatingField} in the Course database.</p>
             <p>This process can take up to 15 minutes.</p>
           </div>
-        </div>
+        </div >
 
         <div className="StagedReviews">
           <h1>Pending Reviews</h1>
@@ -473,7 +497,7 @@ export const Admin = () => {
             })}
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 
