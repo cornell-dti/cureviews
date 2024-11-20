@@ -484,6 +484,10 @@ adminRouter.post('/db/initialize', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/admin/rec/similarity
+ * @body token: a session's current token
+ * Populates the course database with similarity data. For admins only
+ */
 adminRouter.post('/rec/similarity', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {

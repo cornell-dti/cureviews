@@ -27,7 +27,7 @@ export const Admin = () => {
     'empty' |
     'semester' |
     'profsReset' |
-    'profsUpdate' |
+    'professors' |
     'subjects' |
     'database' |
     'description' |
@@ -37,7 +37,7 @@ export const Admin = () => {
     'empty': '',
     'semester': "New semester data successfully added",
     'profsReset': "Professor data successfully reset to empty",
-    'profsUpdate': "Professor data successfully updated",
+    'professors': "Professor data successfully updated",
     'subjects': "Subject full name data successfully updated",
     'database': "Database successfully initialized",
     'description': "Course description data successfully added",
@@ -246,7 +246,7 @@ export const Admin = () => {
     if (response.status === 200) {
       console.log('Updated the professors');
       setUpdating(false);
-      setUpdated('profsUpdate');
+      setUpdated('professors');
     } else {
       console.log('Error at setProfessors');
     }
@@ -439,7 +439,7 @@ export const Admin = () => {
               </button>
               {renderInitButton()}
             </div >
-          </div >p[]
+          </div >
 
           <ManageAdminModal
             open={isAdminModalOpen}

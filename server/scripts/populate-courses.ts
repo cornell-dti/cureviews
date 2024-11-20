@@ -652,6 +652,7 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
   }
 }
 
+// threshold for tags
 const threshold = (a, b) => {
   if (b - a >= 0.5) {
     return 'higher';

@@ -70,7 +70,11 @@ courseRouter.post('/get-reviews', async (req, res) => {
   }
 });
 
-courseRouter.post('/getRecData', async (req, res) => {
+/** Reachable at POST /api/courses/get-rec-metadata
+ * @body number, subject: a course's subject and number field
+ * Gets the array of all recommendation metadata for a specified course
+ */
+courseRouter.post('/get-rec-metadata', async (req, res) => {
   try {
     const { number, subject }: CourseInfoRequestType = req.body;
     const course = await getRecommendationData({ number, subject });
@@ -89,7 +93,10 @@ courseRouter.post('/getRecData', async (req, res) => {
   }
 });
 
-courseRouter.post('/getGlobal', async (req, res) => {
+/** Reachable at POST /api/courses/get-global-metadata
+ * Gets the document containing all global metadata for courses
+ */
+courseRouter.post('/get-global-metadata', async (req, res) => {
   try {
     const global = await getGlobalMetadata();
 
@@ -101,23 +108,22 @@ courseRouter.post('/getGlobal', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/courses/getPreDesc
+/** Reachable at POST /api/courses/preprocess-desc
  * @body description: a course description
  * Gets the processed description to use for the similarity algorithm
  * Currently used for testing
 */
-courseRouter.post('/getPreDesc', async (req, res) => {
+courseRouter.post('/preprocess-desc', async (req, res) => {
   const { description }: CourseDescriptionRequestType = req.body;
   const processed = getProcessedDescription(description);
   return res.status(200).json({ result: processed });
 });
 
-/** Reachable at POST /api/courses/getSimilarity
- * @body courseId: a course's id field
- * Gets the array of the top 5 similar courses for the course with id = courseId
+/** Reachable at POST /api/courses/mock-similarity
+ * Gets the array of the top 5 similar courses
+ * Currently used for testing
 */
-courseRouter.post('/getSimilarity', async (req, res) => {
-  // const { courseId }: CourseIdRequestType = req.body;
+courseRouter.post('/mock-similarity', async (req, res) => {
   const similarity = await getSimilarity();
   return res.status(200).json({ result: similarity });
 });
