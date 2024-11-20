@@ -410,6 +410,7 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
 
 /**
  * Adds all similarity data to the Course database, consisting of tags and top 5 similar courses
+ * https://www.notion.so/Similar-Courses-Algorithm-13d0ad723ce18060b34eccc5385d08ca
  * 
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
