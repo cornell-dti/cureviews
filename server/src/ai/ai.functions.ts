@@ -21,27 +21,26 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-/** generateTags.
- *
- * Takes in all reviews from a course as text and
+/** summarize. 
+ * 
+ * Takes in all reviews from a course as text and 
  * generates 5 tags for those reviews describing lectures, assignments, professor,
  * skill, and resources as well as the corresponding connotation of that tag.
  * @params a string that combines all reviews from a course
- * @returns a dictionary containing
+ * @returns a dictionary containing 
  * Summary: 50 word summary of all reviews,
  * Tags: array of nouns, adjectives, and their corresponding connotations describing
  * in that order, ex: ["Lectures", "Entertaining", "Positive"]
  */
-async function generateTags(text: string) {
+async function summarize(text: string) {
   const completion = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: "gpt-3.5-turbo",
     messages: [
       {
-        role: 'system',
-        content: `
-          You are given a collection of course reviews provided where each review is separated by a /. You
+        role: "system", content: `
+          You are given a collection of college course reviews where each review is separated by a /. You
           will then complete two tasks. First you should generate a 50 word summary of all reviews. Then 
-          should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
+          you should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
           along with their connotations (positive, negative, neutral). Please only pick one adjective for each.
           
           Please provide the summary and tags in the following format:
@@ -54,32 +53,81 @@ async function generateTags(text: string) {
           Resources: [adjective] (positive/negative/neutral)'.
         `
       },
-      { role: 'user', content: text }
-    ]
+      { role: "user", content: text }
+    ],
   });
   const response = completion.choices[0].message.content;
   const summaryMatch = response.match(/Summary: ([\s\S]*?)(?=Tags)/);
-  const summary = summaryMatch ? summaryMatch[1].trim() : '';
+  const summary = summaryMatch ? summaryMatch[1].trim() : "Summary not found.";
   const tagsMatch = response.match(/Tags:\s*([\s\S]*)/);
-  const tags = tagsMatch ? tagsMatch[1] : '';
-
-  const tagsArray = tags.split(',').map((item) => {
+  const tags = tagsMatch ? tagsMatch[1] : "";
+  const tagsObject: { [key: string]: [string, string] } = {};
+  tags.split(',').forEach(item => {
     const match = item.match(/(\w+): (.+) \((.+)\)/);
     if (match) {
-      const category = match[1].trim(); // e.g., "Lectures"
-      const adjective = match[2].trim(); // e.g., "engaging"
-      const connotation = match[3].trim(); // e.g., "positive"
-      return [category, adjective, connotation];
+      const category = match[1].trim();
+      const adjective = match[2].trim();
+      const connotation = match[3].trim();
+      if (adjective !== "N/A" && connotation != "N/A") {
+        tagsObject[category] = [adjective, connotation];
+      }
     } else {
-      console.error('Unexpected format: ', item);
-      return ['', '', ''];
+      console.error("Unexpected format: ", item);
     }
   });
+
   return {
     summary: summary,
-    tags: tagsArray
+    tags: tagsObject
   };
 }
+
+/**
+ * updateCourseWithAI.
+ * 
+ * Takes in a courseId and uses that ID to get all reviews from a course to then
+ * generate a summary and 5 tags for those reviews. Then updates the classSummary
+ * and classTags fields in the database for the corresponding course with the 
+ * newly generated summary and tags. Also resets the freshness count for the course
+ * back to 0. Returns a boolean indicating the success of this update.
+ * @params a courseId in the form of a string
+ * @returns true if update was successful and false if something went wrong
+ * 
+ */
+const updateCourseWithAI = async (courseId: string) => {
+  try {
+    const courseReviews = await Reviews.find({ class: courseId }).exec();
+
+    const reviewsText = courseReviews.map(review => review.text || "").join(' / ');
+
+    const { summary, tags } = await summarize(reviewsText);
+
+    await Classes.updateOne(
+      { _id: courseId },
+      { $set: { classSummary: summary, classTags: tags, freshness: 0 } }
+    );
+
+    const course = await Classes.findOne({ _id: courseId })
+    const courseName = course.classSub.toUpperCase() + ' ' + course.classNum;
+    if (!summary || summary === "N/A") {
+      console.log(`Summary missing for course ${courseId}`);
+      return false;
+    }
+
+    const requiredTags = ["Lectures", "Assignments", "Professor", "Skills", "Resources"];
+    const missingTags = requiredTags.filter(tag => !(tag in tags));
+
+    if (missingTags.length > 0) {
+      console.log(`Missing tags for course ${courseId}: ${missingTags.join(", ")}`);
+      return false;
+    }
+    console.log(`Course ${courseName} updated successfully with summary and tags.`);
+    return true;
+  } catch (error) {
+    console.error(`Error updating course with summary and tags: ${error.message}`);
+    return false;
+  }
+};
 
 /** getCoursesWithMinReviews.
  *
@@ -108,6 +156,28 @@ async function getCoursesWithMinReviews(minimum) {
   const courseIds = courses.map((course) => course.classId);
   return courseIds;
 }
+
+/** getCoursesWithMinFreshness.
+ * 
+ * Create summaries for courses that have at least a certain freshness (new reviews/total reviews). 
+ * Takes in `min` freshness and returns the a list of course IDs that have at least that freshness.
+ * @params min freshness that a course needs to have to be resummarized
+ * @returns coursesIDs[] with at least min freshness
+ */
+async function getCoursesWithMinFreshness(minimum) {
+  const courses = await Classes.aggregate([
+    { $match: { summaryFreshness: { $gte: minimum } } },
+    {
+      $project: {
+        _id: 0,
+        classId: "$_id"
+      }
+    }
+  ]);
+  const courseIds = courses.map(course => course.classId);
+  return courseIds;
+}
+
 
 /**
  * getReviewsPerCourse.
@@ -189,8 +259,4 @@ export const getCrossListOR = (course) => {
   ];
 };
 
-export {
-  getCoursesWithMinReviews,
-  getReviewsPerCourse as getReviewsForSummary,
-  generateTags
-};
+export { getCoursesWithMinReviews, getReviewsPerCourse as getReviewsForSummary, summarize, updateCourseWithAI, getCoursesWithMinFreshness } 
