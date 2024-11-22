@@ -31,7 +31,17 @@ const ClassSchema = new Schema<ClassDocument>({
   classProfessors: { type: [String] }, // list of professors that have taught the course over past semesters
   classRating: { type: Number }, // the average class rating from reviews
   classWorkload: { type: Number }, // the average workload rating from reviews
-  classDifficulty: { type: Number } // the average difficulty rating from reviews
+  classDifficulty: { type: Number }, // the average difficulty rating from reviews
+  recommendations: [
+    {
+      _id: { type: String },
+      className: { type: String },
+      classSub: { type: String },
+      classNum: { type: Number },
+      tags: { type: [String] }, // array of tags, like ['overall rating', 'workload', 'difficulty']
+      similarityScore: { type: Number }
+    }
+  ]
 });
 
 export const Classes = mongoose.model<ClassDocument>('classes', ClassSchema);
@@ -147,4 +157,47 @@ interface ValidationDocument extends mongoose.Document {
 export const Validation = mongoose.model<ValidationDocument>(
   'validation',
   ValidationSchema
+);
+
+/**
+ * Course Recommendation Metadata Collection
+ * Stores course description preprocessing data and pre-computation steps for 
+ * similarity algorithm
+ */
+const RecommendationMetadataSchema = new Schema({
+  _id: { type: String },
+  classSub: { type: String },
+  classNum: { type: String },
+  processedDescription: { type: String },
+  tfidfVector: { type: Object },
+});
+
+interface RecommendationMetadataDocument extends mongoose.Document {
+  _id: string;
+  classSub: string;
+  classNum: string;
+  processedDescription: string;
+  tfidfVector: Object;
+}
+
+export const RecommendationMetadata = mongoose.model<RecommendationMetadataDocument>(
+  "recommendationMetadata",
+  RecommendationMetadataSchema,
+);
+
+/**
+ * Global Course Metadata Collection
+ * Stores global course data
+ */
+const GlobalMetadataSchema = new Schema({
+  idfVector: { type: Object }
+});
+
+interface GlobalMetadataDocument extends mongoose.Document {
+  idfVector: Object;
+}
+
+export const GlobalMetadata = mongoose.model<GlobalMetadataDocument>(
+  "globalnMetadata",
+  GlobalMetadataSchema,
 );

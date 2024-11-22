@@ -24,26 +24,28 @@ export const Admin = () => {
 
   const [updating, setUpdating] = useState<boolean>(false);
   type updatedStates =
-    | 'empty'
-    | 'semester'
-    | 'profsReset'
-    | 'profsUpdate'
-    | 'subjects'
-    | 'database'
-    | 'description';
+    'empty' |
+    'semester' |
+    'profsReset' |
+    'professors' |
+    'subjects' |
+    'database' |
+    'description' |
+    'similarity';
   const [updated, setUpdated] = useState<updatedStates>('empty');
   const successMessages = {
-    empty: '',
-    semester: 'New semester data successfully added',
-    profsReset: 'Professor data successfully reset to empty',
-    profsUpdate: 'Professor data successfully updated',
-    subjects: 'Subject full name data successfully updated',
-    database: 'Database successfully initialized',
-    description: 'Course description data successfully added'
+    'empty': '',
+    'semester': "New semester data successfully added",
+    'profsReset': "Professor data successfully reset to empty",
+    'professors': "Professor data successfully updated",
+    'subjects': "Subject full name data successfully updated",
+    'database': "Database successfully initialized",
+    'description': "Course description data successfully added",
+    'similarity': "Similarity data successfully added",
   };
   const [updatingField, setUpdatingField] = useState<string>('');
 
-  const [addSemester] = useState('');
+  const [addSemester] = useState(['FA24', 'SP25']);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
 
   const { isLoggedIn, token, isAuthenticating } =
@@ -187,23 +189,26 @@ export const Admin = () => {
    * course API for new classes and updates classes existing in the database.
    * Should run once a semester, when new classes are added to the roster.
    */
-  async function addNewSem(semester: string) {
+  async function addNewSemesters(semesters: string[]) {
     console.log('Adding new semester...');
     setUpdating(true);
-    setUpdatingField('new semester');
+    setUpdatingField('new semesters');
     //wz
-    const response = await axios.post('/api/admin/semester/add', {
-      semester,
-      token: token
-    });
-    const result = response.data.result;
-    if (result === true) {
-      console.log('New Semester Added');
-      setUpdating(false);
-      setUpdated('semester');
-    } else {
-      console.log('Unable to add new semester!');
+    for (const semester of semesters) {
+      const response = await axios.post('/api/admin/semester/add', {
+        semester,
+        token: token
+      });
+      const result = response.data.result;
+      if (!result) {
+        console.error(`Unable to add new semester ${semester}!`);
+        continue;
+      } else {
+        console.log(`New Semester ${semester} Added`);
+      }
     }
+    setUpdating(false);
+    setUpdated('semester');
   }
 
   // Call when user selects "Initialize Database" button. Scrapes the Cornell
@@ -244,7 +249,7 @@ export const Admin = () => {
     if (response.status === 200) {
       console.log('Updated the professors');
       setUpdating(false);
-      setUpdated('profsUpdate');
+      setUpdated('professors');
     } else {
       console.log('Error at setProfessors');
     }
@@ -307,6 +312,20 @@ export const Admin = () => {
       setUpdated('subjects');
     } else {
       console.log('Error at updateSubjects');
+    }
+  }
+
+  async function updateSimilarityData() {
+    console.log('Updatng course similarity data')
+    setUpdating(true)
+    setUpdatingField("course similarity data")
+    const response = await axios.post('/api/admin/rec/similarity', { token: token });
+    if (response.status === 200) {
+      console.log('Updated course similarity data')
+      setUpdating(false)
+      setUpdated('similarity')
+    } else {
+      console.log('Error at updateSimilarityData')
     }
   }
 
@@ -377,7 +396,7 @@ export const Admin = () => {
                 disabled={updating}
                 type="button"
                 className={styles.adminButtons}
-                onClick={() => addNewSem(addSemester)}
+                onClick={() => addNewSemesters(addSemester)}
               >
                 Add New Semester
               </button>
@@ -413,9 +432,17 @@ export const Admin = () => {
               >
                 Update Subjects
               </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateSimilarityData()}
+              >
+                Update Similarity Data
+              </button>
               {renderInitButton()}
-            </div>
-          </div>
+            </div >
+          </div >
 
           <ManageAdminModal
             open={isAdminModalOpen}
@@ -429,7 +456,7 @@ export const Admin = () => {
             <p>Updating {updatingField} in the Course database.</p>
             <p>This process can take up to 15 minutes.</p>
           </div>
-        </div>
+        </div >
 
         <div className="StagedReviews">
           <h1>Pending Reviews</h1>
@@ -470,7 +497,7 @@ export const Admin = () => {
             })}
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 

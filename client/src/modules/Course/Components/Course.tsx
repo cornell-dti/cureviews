@@ -64,7 +64,7 @@ export const Course = () => {
     let valB = 'Not Listed';
 
     if (a.professors) {
-      const profsA = a.professors.filter((prof : String) =>
+      const profsA = a.professors.filter((prof: String) =>
         prof && prof !== 'Not Listed');
       valA = profsA.length > 0
         ? profsA.sort()[0]
@@ -73,7 +73,7 @@ export const Course = () => {
       return 1;
     }
     if (b.professors) {
-      const profsB = b.professors.filter((prof : String) =>
+      const profsB = b.professors.filter((prof: String) =>
         prof && prof !== 'Not Listed');
       valB = profsB.length > 0
         ? profsB.sort()[0]
@@ -87,7 +87,7 @@ export const Course = () => {
     } else if (valB === 'Not Listed') {
       return -1;
     }
-    
+
     if (valA < valB) {
       return -1;
     } else if (valB < valA) {
@@ -218,75 +218,74 @@ export const Course = () => {
           {/* Course Name, Button + Gauges */}
           <div className={styles.leftPanel}>
             <div className={styles.classinfo}>
-                <h1
-                  data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
-                    selectedClass.classNum
+              <h1
+                data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
                   }`}
-                >
-                  {selectedClass.classTitle}
-                </h1>
-                <div className={styles.subtitle}>
-                  {selectedClass.classSub.toUpperCase() +
-                    ' ' +
-                    selectedClass.classNum +
-                    ', ' +
-                    lastOfferedSems(selectedClass)}
-                </div>
-                <button
-                  data-cy="leave-review-button"
-                  className={styles.reviewbutton}
-                  onClick={() => setOpen(true)}
-                >
-                  Leave a review
-                </button>
+              >
+                {selectedClass.classTitle}
+              </h1>
+              <div className={styles.subtitle}>
+                {selectedClass.classSub.toUpperCase() +
+                  ' ' +
+                  selectedClass.classNum +
+                  ', ' +
+                  lastOfferedSems(selectedClass)}
               </div>
-
-              <div className={styles.gauges}>
-                <Gauge
-                  rating={selectedClass.classRating}
-                  label="Overall"
-                  isOverall={true}
-                />
-                <Gauge
-                  rating={selectedClass.classDifficulty}
-                  label="Difficulty"
-                  isOverall={false}
-                />
-                <Gauge
-                  rating={selectedClass.classWorkload}
-                  label="Workload"
-                  isOverall={false}
-                />
-              </div>
+              <button
+                data-cy="leave-review-button"
+                className={styles.reviewbutton}
+                onClick={() => setOpen(true)}
+              >
+                Leave a review
+              </button>
             </div>
+
+            <div className={styles.gauges}>
+              <Gauge
+                rating={selectedClass.classRating}
+                label="Overall"
+                isOverall={true}
+              />
+              <Gauge
+                rating={selectedClass.classDifficulty}
+                label="Difficulty"
+                isOverall={false}
+              />
+              <Gauge
+                rating={selectedClass.classWorkload}
+                label="Workload"
+                isOverall={false}
+              />
+            </div>
+          </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}
             <div className={styles.reviewscontainer}>
-                <div className={styles.bar}>
-                  <h2>Past Reviews ({courseReviews?.length}) </h2>
-                  <div>
-                    <label htmlFor="sort-reviews">Sort by: </label>
-                    <select
-                      name="sort-reviews"
-                      id="sort-reviews"
-                      onChange={sortReviewsBy}
-                      className={styles.filtertext}
-                    >
-                      <option value="helpful">Most Helpful</option>
-                      <option value="recent">Recent</option>
-                      <option value="professor">Professor</option>
-                    </select>
-                  </div>
-                </div>
-                <div className={styles.reviews}>
-                  <CourseReviews
-                    reviews={courseReviews}
-                    isPreview={false}
-                    isProfile={false}
-                    token={token}
-                  />
+              <div className={styles.bar}>
+                <h2>Past Reviews ({courseReviews?.length}) </h2>
+                <div>
+                  <label htmlFor="sort-reviews">Sort by: </label>
+                  <select
+                    name="sort-reviews"
+                    id="sort-reviews"
+                    onChange={sortReviewsBy}
+                    className={styles.filtertext}
+                  >
+                    <option value="helpful">Most Helpful</option>
+                    <option value="recent">Recent</option>
+                    <option value="professor">Professor</option>
+                  </select>
                 </div>
               </div>
+              <div className={styles.reviews}>
+                <CourseReviews
+                  reviews={courseReviews}
+                  isPreview={false}
+                  isProfile={false}
+                  token={token}
+                />
+              </div>
+            </div>
           </div>`
         </div>
 
