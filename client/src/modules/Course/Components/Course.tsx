@@ -16,10 +16,11 @@ import { lastOfferedSems } from 'common/CourseCard';
 
 import Gauge from './Gauge';
 import CourseReviews from './CourseReviews';
+import SimilarCoursesCard from './SimilarCoursesCard';
 
 import type { NewReview } from '../../../types';
 
-import { Class, Review } from 'common';
+import { Class, Recommendation, Review } from 'common';
 import { Session } from '../../../session-store';
 
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
@@ -37,6 +38,7 @@ export const Course = () => {
 
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [similarCourses, setSimilarCourses] = useState<Recommendation[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
 
@@ -133,6 +135,11 @@ export const Course = () => {
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
           reviews.sort(sortByLikes);
           setCourseReviews(reviews);
+
+          const recommendations = course.recommendations;
+          if (recommendations) {
+            setSimilarCourses(recommendations);
+          }
 
           setPageStatus(PageStatus.Success);
         } else {
@@ -257,6 +264,26 @@ export const Course = () => {
                 isOverall={false}
               />
             </div>
+            <div className={styles.similarCoursesSection}>
+              <h2 className={styles.similarCoursesHeader}>
+                {/* <img style="width: 100%; height: 100%" src="https://via.placeholder.com/97x97" /> */}
+                Similar Courses
+              </h2>
+              <div className={styles.similarCoursesContainer}>
+                <div className={styles.SimilarCoursesCard}>
+                  {similarCourses?.map((course, index) => (
+                    <SimilarCoursesCard
+                      key={index}
+                      className={course.className}
+                      classSub={course.classSub}
+                      classNum={course.classNum}
+                      tags={course.tags}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}

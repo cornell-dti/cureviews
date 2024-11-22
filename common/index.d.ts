@@ -65,7 +65,7 @@ interface Recommendation {
   readonly _id: string;
   className: string;
   classSub: string;
-  classNum: number;
+  classNum: string;
   tags: string[];
   similarityScore: number;
 }
