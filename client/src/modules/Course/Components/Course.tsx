@@ -16,6 +16,7 @@ import { lastOfferedSems } from 'common/CourseCard';
 
 import Gauge from './Gauge';
 import CourseReviews from './CourseReviews';
+import recStyles from '../Styles/SimilarCourses.module.css';
 import SimilarCoursesCard from './SimilarCoursesCard';
 
 import type { NewReview } from '../../../types';
@@ -247,30 +248,30 @@ export const Course = () => {
               </button>
             </div>
 
-            <div className={styles.gauges}>
-              <Gauge
-                rating={selectedClass.classRating}
-                label="Overall"
-                isOverall={true}
-              />
-              <Gauge
-                rating={selectedClass.classDifficulty}
-                label="Difficulty"
-                isOverall={false}
-              />
-              <Gauge
-                rating={selectedClass.classWorkload}
-                label="Workload"
-                isOverall={false}
-              />
-            </div>
-            <div className={styles.similarCoursesSection}>
-              <h2 className={styles.similarCoursesHeader}>
-                {/* <img style="width: 100%; height: 100%" src="https://via.placeholder.com/97x97" /> */}
-                Similar Courses
-              </h2>
-              <div className={styles.similarCoursesContainer}>
-                <div className={styles.SimilarCoursesCard}>
+            <div className={styles.leftFeatures}>
+              <div className={styles.gauges}>
+                <Gauge
+                  rating={selectedClass.classRating}
+                  label="Overall"
+                  isOverall={true}
+                />
+                <Gauge
+                  rating={selectedClass.classDifficulty}
+                  label="Difficulty"
+                  isOverall={false}
+                />
+                <Gauge
+                  rating={selectedClass.classWorkload}
+                  label="Workload"
+                  isOverall={false}
+                />
+              </div>
+              <div className={recStyles.similarCoursesSection}>
+                <div className={recStyles.similarCoursesHeader}>
+                  {/* <img style="width: 100%; height: 100%" src="https://via.placeholder.com/97x97" /> */}
+                  Similar Courses
+                </div>
+                <div className={recStyles.similarCoursesContainer}>
                   {similarCourses?.map((course, index) => (
                     <SimilarCoursesCard
                       key={index}

@@ -26,6 +26,14 @@
   width: 40%;
 }
 
+.leftFeatures {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 36px;
+}
+
 .rightPanel {
   display: flex;
   width: 60%;
@@ -71,16 +79,16 @@
 
     padding: 3% 3% 1% 3%;
 
-    & > :first-child {
+    &> :first-child {
       flex: 0 0 35%;
     }
 
-    & > :nth-child(2) {
+    &> :nth-child(2) {
       flex: 1;
     }
   }
 
-  .overview > * {
+  .overview>* {
     justify-self: center;
   }
 
@@ -95,9 +103,11 @@
   .classinfo {
     padding-bottom: 50px;
   }
+
   .gauges {
     padding-bottom: 50px;
   }
+
   .subtitle {
     font-size: var(--font-sub-heading-size);
   }
@@ -167,20 +177,24 @@
 
   /* Change scrollbar track color (background) */
   ::-webkit-scrollbar-track {
-    background: #ececec; /* Change to your desired background color */
+    background: #ececec;
+    /* Change to your desired background color */
     border-radius: 13.573px;
   }
 
   /* Change scrollbar thumb color (the draggable part) */
   ::-webkit-scrollbar-thumb {
-    background: #807b7b; /* Change to your desired thumb color */
+    background: #807b7b;
+    /* Change to your desired thumb color */
     border-radius: 13.573px;
   }
 
   /* Change scrollbar width and height */
   ::-webkit-scrollbar {
-    width: 6px; /* Change to your desired width */
-    height: 10px; /* Change to your desired height */
+    width: 6px;
+    /* Change to your desired width */
+    height: 10px;
+    /* Change to your desired height */
   }
 }
 

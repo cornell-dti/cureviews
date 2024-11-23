@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import styles from '../Styles/SimilarCourses.module.css';
 
 type SimilarCourses = {
@@ -14,7 +14,6 @@ export default function SimilarCoursesCard({
   classNum,
   tags
 }: SimilarCourses): React.JSX.Element {
-
   const getTagStyling = (tag: string) => {
     if (tag.toLowerCase().includes('higher')) return styles.higher;
     if (tag.toLowerCase().includes('lower')) return styles.lower;
@@ -23,7 +22,13 @@ export default function SimilarCoursesCard({
   return (
     <div className={styles.card}>
       <div className={styles.metrics}>
-        <div className={styles.title}>{className}</div>
+        <a
+          href={`/course/${classSub.toUpperCase()}/${classNum
+            }`}
+          className={styles.title}
+        >
+          {className}
+        </a>
         <div className={styles.subtitle}>
           {classSub.toUpperCase()} {classNum}
         </div>
@@ -31,7 +36,9 @@ export default function SimilarCoursesCard({
       <div className={styles.tags}>
         {tags.map((tag, index) => (
           <div key={index} className={`${styles.chip} ${getTagStyling(tag)}`}>
-            {tag}
+            {tag.split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}
           </div>
         ))}
       </div>
