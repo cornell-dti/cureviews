@@ -39,7 +39,8 @@ async function summarize(text: string) {
       {
         role: "system", content: `
           You are given a collection of college course reviews where each review is separated by a /. You
-          will then complete two tasks. First you should generate a 50 word summary of all reviews. Then 
+          will then complete two tasks. First you should generate a 50 word summary of all reviews. 
+          Please do not add any intro or conclusion to the summary you generate. Then 
           you should create 5 adjectives describing the lectures, assignments, professor, skills, and resources,
           along with their connotations (positive, negative, neutral). Please only pick one adjective for each.
           

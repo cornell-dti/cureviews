@@ -27,7 +27,7 @@ aiRouter.post('/summarize-courses', async (req, res) => {
       return res.json({ message: `No courses found with at least ${minReviews} reviews.`, results });
     }
     let currentIteration = 0;
-    let counter = 0;
+    // let counter = 0;
     while (results.incomplete.length > 0 && currentIteration < 3) {
       const nextIncomplete = [];
 
@@ -38,15 +38,15 @@ aiRouter.post('/summarize-courses', async (req, res) => {
         } else {
           nextIncomplete.push(courseId);
         }
-        counter += 1;
-        if (counter == 5) {
-          break;
-        }
+        // counter += 1;
+        // if (counter == 5) {
+        //   break;
+        // }
       }
 
       results.incomplete = nextIncomplete;
       currentIteration += 1;
-      break;
+      // break;
     }
 
     console.log(`Incompletely updated courses:  ${results.incomplete}`);
