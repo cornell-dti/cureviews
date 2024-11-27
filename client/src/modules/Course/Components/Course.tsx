@@ -263,7 +263,7 @@ export const Course = () => {
             {/* Reviews Displaying */}
             <div className={styles.reviewscontainer}>
                 <div className={styles.bar}>
-                  <h2>Past Reviews ({courseReviews?.length}) </h2>
+                  <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
                   <div>
                     <label htmlFor="sort-reviews">Sort by: </label>
                     <select

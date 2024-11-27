@@ -6,17 +6,16 @@
   display: flex;
   flex-flow: column nowrap;
   width: 100%;
-  min-height: 3000px;
+  height: 100%
 }
 
 .courseContent {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
-  align-content: center;
-  padding-top: 63px;
-  column-gap: 4%;
-  padding-left: 4%;
+  justify-content: center;
+  align-items: flex-start;
+  
+  padding: 63px 48px;
   width: 100%;
 }
 
@@ -24,21 +23,14 @@
   display: flex;
   flex-flow: column nowrap;
   width: 40%;
+  padding-right: 24px;
 }
 
 .rightPanel {
   display: flex;
+  flex-flow: column nowrap;
   width: 60%;
-}
-
-.overview {
-  display: grid;
-  place-self: center;
-  grid-template-columns: 100%;
-  grid-gap: 20px;
-  width: 100%;
-  max-width: 1440px;
-  padding: 5% 5%;
+  padding-left: 24px
 }
 
 .classinfo {
@@ -92,12 +84,29 @@
 
 /* Mobile-Only */
 @media only screen and (max-width: 768px) {
+  .courseContent {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    padding: 24px 48px;
+    }
+  
+  .leftPanel {
+    width: 100%;
+  }
+
+  .rightPanel {
+    width: 100%;
+  }
+
   .classinfo {
-    padding-bottom: 50px;
+    padding-bottom: 24px;
   }
-  .gauges {
-    padding-bottom: 50px;
+
+  .gauges{
+    padding-bottom: 24px;;
   }
+
   .subtitle {
     font-size: var(--font-sub-heading-size);
   }
@@ -133,22 +142,23 @@
   width: 100%;
   max-width: 1440px;
   height: 100%;
-
-  padding: 5% 2%;
-
-  place-self: center;
+  max-height: 963px;
+  
   display: flex;
   flex-flow: column nowrap;
 }
 
 .bar {
   width: 100%;
-  max-width: 1006px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  padding-bottom: 50px;
+  padding-bottom: 24px;
   margin: 0 auto;
+}
+
+.title {
+  color: var(--clr-gray-300);
 }
 
 .filtertext {
@@ -157,7 +167,6 @@
 
 .reviews {
   width: 100%;
-  padding: 0 20px;
   display: flex;
   flex-flow: column nowrap;
   overflow-y: scroll;
@@ -205,6 +214,10 @@
 @media only screen and (max-width: 768px) {
   .reviewscontainer {
     padding: 5%;
+  }
+
+  .rightPanel {
+    padding-left: 0px;
   }
 }
 
