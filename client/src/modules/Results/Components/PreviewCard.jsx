@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from '../../Course/Components/Gauge';
+import Gauges from '../../Course/Components/Gauges';
 import ReviewCard from '../../Course/Components/ReviewCard';
 
 import styles from '../Styles/CoursePreview.module.css';
@@ -33,7 +33,6 @@ export default class PreviewCard extends Component {
       topReviewLikes: 0
     };
 
-    this.updateColors = this.updateColors.bind(this);
     this.updateTopReview = this.updateTopReview.bind(this);
     this.updateGauges = this.updateGauges.bind(this);
   }
@@ -63,8 +62,8 @@ export default class PreviewCard extends Component {
           ? this.props.course.classWorkload
           : '-'
       },
-      () => this.updateColors()
     );
+    this.updateTopReview();
   }
 
   // Updates the top review to be the one with the most likes
@@ -95,52 +94,6 @@ export default class PreviewCard extends Component {
       });
   }
 
-  // Updates the colors of the metrics
-  updateColors() {
-    if (3.0 <= this.state.rating && this.state.rating < 4.0) {
-      this.setState({
-        ratingColor: '#f9cc30'
-      });
-    } else if (4.0 <= this.state.rating && this.state.rating <= 5.0) {
-      this.setState({
-        ratingColor: '#53B277'
-      });
-    } else {
-      this.setState({
-        ratingColor: '#E64458'
-      });
-    }
-
-    if (0 < this.state.diff && this.state.diff < 3.0) {
-      this.setState({
-        diffColor: '#53B277'
-      });
-    } else if (3.0 <= this.state.diff && this.state.diff < 4.0) {
-      this.setState({
-        diffColor: '#f9cc30'
-      });
-    } else {
-      this.setState({
-        diffColor: '#E64458'
-      });
-    }
-
-    if (0 < this.state.workload && this.state.workload < 3.0) {
-      this.setState({
-        workloadColor: '#53B277'
-      });
-    } else if (3.0 <= this.state.workload && this.state.workload < 4.0) {
-      this.setState({
-        workloadColor: '#f9cc30'
-      });
-    } else {
-      this.setState({
-        workloadColor: '#E64458'
-      });
-    }
-    this.updateTopReview();
-  }
-
   render() {
     let theClass = this.props.course;
     const offered = lastOfferedSems(theClass);
@@ -165,71 +118,55 @@ export default class PreviewCard extends Component {
           </div>
         </div>
 
-        {!this.props.transformGauges && (
-          <div className={styles.gauges}>
-            <Gauge
-              rating={parseFloat(this.state.rating)}
-              label="Overall"
-              isOverall={true}
-            />
-            <Gauge
-              rating={parseFloat(this.state.diff)}
-              label="Difficulty"
-              isOverall={false}
-            />
-            <Gauge
-              rating={parseFloat(this.state.workload)}
-              label="Workload"
-              isOverall={false}
-            />
-          </div>
-        )}
-
+        <Gauges 
+          overall={parseFloat(this.state.rating)}
+          difficulty={parseFloat(this.state.diff)}
+          workload={parseFloat(this.state.workload)}
+        />
+        
         {this.state.numReviews !== 0 && (
           <div className={styles.topreview}>Top Review</div>
         )}
 
-        {!this.props.transformGauges && (
-          <div className={styles.columns}>
-            {/*If class has review show top review and link*/}
-            {this.state.numReviews !== 0 && (
-              <Review
-                key={this.state.topReview._id}
-                review={this.state.topReview}
-                reportHandler={this.reportHandler}
-                isPreview={true}
-                isProfile={false}
-              />
-            )}
+        <div className={styles.columns}>
+          {/*If class has review show top review and link*/}
+          {this.state.numReviews !== 0 && (
+            <Review
+              key={this.state.topReview._id}
+              review={this.state.topReview}
+              reportHandler={this.reportHandler}
+              isPreview={true}
+              isProfile={false}
+            />
+          )}
 
-            {this.state.numReviews !== 0 && this.state.numReviews > 1 && (
-              <a
-                className={styles.reviewsbutton}
-                href={`/course/${theClass.classSub.toUpperCase()}/${
-                  theClass.classNum
-                }`}
-              >
-                See {this.state.numReviews} more review
-                {this.state.numReviews > 1 ? 's' : ''}
-              </a>
-            )}
+          {this.state.numReviews !== 0 && this.state.numReviews > 1 && (
+            <a
+              className={styles.reviewsbutton}
+              href={`/course/${theClass.classSub.toUpperCase()}/${
+                theClass.classNum
+              }`}
+            >
+              See {this.state.numReviews} more review
+              {this.state.numReviews > 1 ? 's' : ''}
+            </a>
+          )}
 
-            {/*If class has 0 reviews text and button*/}
-            {this.state.numReviews === 0 && (
-              <div className={styles.noreviews}>No reviews yet</div>
-            )}
-            {(this.state.numReviews === 0 || this.state.numReviews === 1) && (
-              <a
-                className={styles.reviewsbutton}
-                href={`/course/${theClass.classSub.toUpperCase()}/${
-                  theClass.classNum
-                }`}
-              >
-                Leave a Review
-              </a>
-            )}
-          </div>
-        )}
+          {/*If class has 0 reviews text and button*/}
+          {this.state.numReviews === 0 && (
+            <div className={styles.noreviews}>No reviews yet</div>
+          )}
+          {(this.state.numReviews === 0 || this.state.numReviews === 1) && (
+            <a
+              className={styles.reviewsbutton}
+              href={`/course/${theClass.classSub.toUpperCase()}/${
+                theClass.classNum
+              }`}
+            >
+              Leave a Review
+            </a>
+          )}
+        </div>
       </div>
     );
   }

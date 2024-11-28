@@ -43,13 +43,39 @@
     flex-flow: column nowrap;
     justify-content: center;
     height: 82px;
-    gap: 24px;
+    gap: 20px;
+}
+
+.horizontal {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.category {
+    min-width: 60px;
 }
 
 .bars {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 14px;
+    justify-content: center;
+    gap: 5px;
+}
+  
+.bar {
+    height: 8px;
+    width: 40px;
+    border-radius: 4px;
+    background-color: var(--clr-gray-200);
+
+    display: flex;
+}
+
+.ratingNum {
+    font-size: 20px;
+    font-weight: 590;
 }

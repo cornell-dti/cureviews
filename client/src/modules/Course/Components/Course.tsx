@@ -36,7 +36,7 @@ export const Course = () => {
   const { number, subject, input } = useParams<any>();
 
   const [selectedClass, setSelectedClass] = useState<Class>();
-  const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [courseReviews, setCourseReviews] = useState<Review[]>([]);
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
 

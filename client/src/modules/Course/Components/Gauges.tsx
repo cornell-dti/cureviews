@@ -20,10 +20,10 @@ type GaugesProps = {
 }
 
 const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
-    const [stars, setStars] = useState([])
-    const [overallEmote, setOverallEmote] = useState();
-    const [difficultyEmote, setDifficultyEmote] = useState();
-    const [workloadEmote, setWorkloadEmote] = useState();
+    const [stars, setStars] = useState<any[]>([])
+    const [overallEmote, setOverallEmote] = useState<any>();
+    const [difficultyEmote, setDifficultyEmote] = useState<any>();
+    const [workloadEmote, setWorkloadEmote] = useState<any>();
 
     useEffect(() => {
         if (overall) {
@@ -61,19 +61,54 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
             }
         } else {
             setStars([Gray, Gray, Gray, Gray, Gray])
+            setOverallEmote(undefined)
         }
     }, [overall])
+
+    useEffect(() => {
+        if (difficulty) {
+            if (0 <= difficulty && difficulty < 3) {
+                setDifficultyEmote(SadFace)
+            } else if (3 <= difficulty && difficulty < 3.8) {
+                setDifficultyEmote(MehFace)
+            } else {
+                setDifficultyEmote(HappyFace)
+            }
+        } else {
+            setDifficultyEmote(undefined)
+        }
+    }, [difficulty])
+
+    useEffect(() => {
+        if (workload) {
+            if (0 <= workload && workload < 3) {
+                setWorkloadEmote(SadFace)
+            } else if (3 <= workload && workload < 3.8) {
+                setWorkloadEmote(MehFace)
+            } else {
+                setWorkloadEmote(HappyFace)
+            }
+        } else {
+            setWorkloadEmote(undefined)
+        }
+    }, [workload])
 
     return (
         <div className={styles.container}>
             <div className={styles.overall}>
                 <div className={styles.overallScore}>
-                    {overall ? overall.toPrecision(2) : "0.0"}
-                    <img src={overallEmote}/>
+                    {overall ? overall.toPrecision(2) : "--"}
+                    <img
+                        src={overallEmote}
+                        alt='overall-rating-emote'
+                    />
                 </div>
                 <div className={styles.stars}>
                     {stars.map((star) => {
-                        return <img src={star}></img>
+                        return <img 
+                                src={star}
+                                alt="rating-star"
+                                />
                     })}
                 </div>
                 <div>
@@ -81,21 +116,35 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                 </div>
             </div>
             <div className={styles.ratings}>
-                <div className={styles.bars}>
-                    <div> Difficulty </div>
-                    <div>
-                        Bars
+                <div className={styles.horizontal}>
+                    <div className={styles.category}> Difficulty </div>
+                    <div className={styles.bars}>
+                        <div className={styles.bar}/>
+                        <div className={styles.bar}/>
+                        <div className={styles.bar}/>
+                        <div className={styles.bar}/>
+                        <div className={styles.bar}/>
                     </div>
-                    <div> {difficulty ? difficulty.toPrecision(2) : "0.0"} </div>
-                    <img src={difficultyEmote}/>
+                    <div className={styles.ratingNum}> {difficulty ? difficulty.toPrecision(2) : "-"} </div>
+                    <img
+                        src={difficultyEmote}
+                        alt="difficulty-rating-emote"
+                    />
                 </div>
-                <div className={styles.bars}>
-                    <div> Workload </div>
-                    <div>
-                        Bars
+                <div className={styles.horizontal}>
+                    <div className={styles.category}> Workload </div>
+                    <div className={styles.bars}>
+                        <span className={styles.bar}/>
+                        <span className={styles.bar}/>
+                        <span className={styles.bar}/>
+                        <span className={styles.bar}/>
+                        <span className={styles.bar}/>
                     </div>
-                    <div> {workload ? workload.toPrecision(2) : "0.0"} </div>
-                    <img src={workloadEmote}/>
+                    <div className={styles.ratingNum}> {workload ? workload.toPrecision(2) : "-"} </div>
+                    <img
+                        src={workloadEmote}
+                        alt="workload-rating-emote"
+                    />
                 </div>
             </div>
         </div>
