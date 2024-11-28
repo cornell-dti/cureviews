@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 12px;
+    gap: 24px;
+
+    border-radius: 8px;
+    background: #FFF;
+}
+
+.overall {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.overallScore {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.stars {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 4px;
+
+    padding-bottom: 8px
+}
+
+.ratings {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    height: 82px;
+    gap: 24px;
+}
+
+.bars {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}

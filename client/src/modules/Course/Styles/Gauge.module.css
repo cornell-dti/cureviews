@@ -1,7 +1,6 @@
 @import '../../../index.css';
 
 .container {
-  /* background: pink; */
   display: flex;
   flex-direction: row;
   max-width: 160px;

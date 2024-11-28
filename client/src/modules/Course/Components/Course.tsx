@@ -14,7 +14,7 @@ import Loading from '../../Globals/Loading';
 import styles from '../Styles/Course.module.css';
 import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from './Gauge';
+import Gauges from './Gauges';
 import CourseReviews from './CourseReviews';
 
 import type { NewReview } from '../../../types';
@@ -240,24 +240,11 @@ export const Course = () => {
                   Leave a review
                 </button>
               </div>
-
-              <div className={styles.gauges}>
-                <Gauge
-                  rating={selectedClass.classRating}
-                  label="Overall"
-                  isOverall={true}
-                />
-                <Gauge
-                  rating={selectedClass.classDifficulty}
-                  label="Difficulty"
-                  isOverall={false}
-                />
-                <Gauge
-                  rating={selectedClass.classWorkload}
-                  label="Workload"
-                  isOverall={false}
-                />
-              </div>
+              <Gauges
+                overall={selectedClass.classRating}
+                difficulty={selectedClass.classDifficulty}
+                workload={selectedClass.classWorkload} 
+              />
             </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}

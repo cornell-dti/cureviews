@@ -1,5 +1,3 @@
-/* @import '../../../index.css'; */
-
 /* Top Section of Page (Name, Button, Gauges) */
 .page {
   background: var(--clr-blue-100);
@@ -93,10 +91,16 @@
   
   .leftPanel {
     width: 100%;
+    padding-right: 0px;
   }
 
   .rightPanel {
     width: 100%;
+    padding-left: 0px;
+  }
+
+  .reviewscontainer {
+    padding: 5%;
   }
 
   .classinfo {
@@ -208,17 +212,6 @@
 
 .hide {
   display: none;
-}
-
-/* Mobile-Only */
-@media only screen and (max-width: 768px) {
-  .reviewscontainer {
-    padding: 5%;
-  }
-
-  .rightPanel {
-    padding-left: 0px;
-  }
 }
 
 /* <=== ERROR page ===> */
