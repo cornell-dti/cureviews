@@ -24,6 +24,10 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
     const [overallEmote, setOverallEmote] = useState<any>();
     const [difficultyEmote, setDifficultyEmote] = useState<any>();
     const [workloadEmote, setWorkloadEmote] = useState<any>();
+    const [difficultyColor, setDifficultyColor] = useState<string>('#ECECEC');
+    const [workloadColor, setWorkloadColor] = useState<string>('#ECECEC');
+    const [difficultyBars, setDifficultyBars] = useState<string[]>([]);
+    const [workloadBars, setWorkloadBars] = useState<string[]>([]);
 
     useEffect(() => {
         if (overall) {
@@ -69,13 +73,24 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         if (difficulty) {
             if (0 <= difficulty && difficulty < 3) {
                 setDifficultyEmote(SadFace)
+                setDifficultyColor('#FF756C')
             } else if (3 <= difficulty && difficulty < 3.8) {
                 setDifficultyEmote(MehFace)
+                setDifficultyColor('#F8CC30')
             } else {
                 setDifficultyEmote(HappyFace)
+                setDifficultyColor('#5EB734')
             }
+            setDifficultyBars([
+                (Math.min(difficulty, 1) * 100).toFixed(0) + '%',
+                (Math.min(difficulty - 1, 1) * 100).toFixed(0) + '%',
+                (Math.min(difficulty - 2, 1) * 100).toFixed(0) + '%',
+                (Math.min(difficulty - 3, 1) * 100).toFixed(0) + '%',
+                (Math.min(difficulty - 4, 1) * 100).toFixed(0) + '%'
+            ])
         } else {
             setDifficultyEmote(undefined)
+            setDifficultyBars(['0%', '0%', '0%', '0%', '0%'])
         }
     }, [difficulty])
 
@@ -83,13 +98,24 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         if (workload) {
             if (0 <= workload && workload < 3) {
                 setWorkloadEmote(SadFace)
+                setWorkloadColor('#FF756C')
             } else if (3 <= workload && workload < 3.8) {
                 setWorkloadEmote(MehFace)
+                setWorkloadColor('#F8CC30')
             } else {
                 setWorkloadEmote(HappyFace)
+                setWorkloadColor('#5EB734')
             }
+            setWorkloadBars([
+                (Math.min(workload, 1) * 100).toFixed(0) + '%',
+                (Math.min(workload - 1, 1) * 100).toFixed(0) + '%',
+                (Math.min(workload - 2, 1) * 100).toFixed(0) + '%',
+                (Math.min(workload - 3, 1) * 100).toFixed(0) + '%',
+                (Math.min(workload - 4, 1) * 100).toFixed(0) + '%'
+            ])
         } else {
             setWorkloadEmote(undefined)
+            setWorkloadBars(['0%', '0%', '0%', '0%', '0%'])
         }
     }, [workload])
 
@@ -98,17 +124,11 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
             <div className={styles.overall}>
                 <div className={styles.overallScore}>
                     {overall ? overall.toPrecision(2) : "--"}
-                    <img
-                        src={overallEmote}
-                        alt='overall-rating-emote'
-                    />
+                    <img src={overallEmote}/>
                 </div>
                 <div className={styles.stars}>
                     {stars.map((star) => {
-                        return <img 
-                                src={star}
-                                alt="rating-star"
-                                />
+                        return <img src={star}/>
                     })}
                 </div>
                 <div>
@@ -119,32 +139,26 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                 <div className={styles.horizontal}>
                     <div className={styles.category}> Difficulty </div>
                     <div className={styles.bars}>
-                        <div className={styles.bar}/>
-                        <div className={styles.bar}/>
-                        <div className={styles.bar}/>
-                        <div className={styles.bar}/>
-                        <div className={styles.bar}/>
+                        {difficultyBars.map((percent) => {
+                            return <div className={styles.bar}
+                                        style={{background: 'linear-gradient(to right, '+ difficultyColor + ' ' + percent + ', var(--clr-gray-200) 0%)'}}
+                                    />
+                        })}
                     </div>
                     <div className={styles.ratingNum}> {difficulty ? difficulty.toPrecision(2) : "-"} </div>
-                    <img
-                        src={difficultyEmote}
-                        alt="difficulty-rating-emote"
-                    />
+                    <img src={difficultyEmote}/>
                 </div>
                 <div className={styles.horizontal}>
                     <div className={styles.category}> Workload </div>
                     <div className={styles.bars}>
-                        <span className={styles.bar}/>
-                        <span className={styles.bar}/>
-                        <span className={styles.bar}/>
-                        <span className={styles.bar}/>
-                        <span className={styles.bar}/>
+                        {workloadBars.map((percent) => {
+                            return <div className={styles.bar}
+                                        style={{background: 'linear-gradient(to right, '+ difficultyColor + ' ' + percent + ', var(--clr-gray-200) 0%)'}}
+                                    />
+                        })}
                     </div>
                     <div className={styles.ratingNum}> {workload ? workload.toPrecision(2) : "-"} </div>
-                    <img
-                        src={workloadEmote}
-                        alt="workload-rating-emote"
-                    />
+                    <img src={workloadEmote}/>
                 </div>
             </div>
         </div>

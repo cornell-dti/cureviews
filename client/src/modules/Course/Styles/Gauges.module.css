@@ -1,3 +1,8 @@
+:root {
+    --difficulty-color: #FF756C;
+    --workload-color: #F8CC30;
+}
+
 .container {
     display: flex;
     flex-flow: row nowrap;
@@ -70,9 +75,10 @@
     height: 8px;
     width: 40px;
     border-radius: 4px;
-    background-color: var(--clr-gray-200);
 
     display: flex;
+    background: var(--clr-gray-200);
+    overflow: hidden;
 }
 
 .ratingNum {
