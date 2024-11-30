@@ -3,6 +3,10 @@
     --workload-color: #F8CC30;
 }
 
+.centered {
+    text-align: center;
+}
+
 .container {
     display: flex;
     flex-flow: row nowrap;
@@ -14,6 +18,7 @@
 
     border-radius: 8px;
     background: #FFF;
+    overflow: hidden;
 }
 
 .overall {
@@ -30,7 +35,7 @@
     align-items: center;
     gap: 8px;
 
-    font-size: 48px;
+    font-size: 40px;
     font-weight: 700;
 }
 
@@ -73,15 +78,69 @@
   
 .bar {
     height: 8px;
-    width: 40px;
+    min-width: 40px;
     border-radius: 4px;
 
-    display: flex;
     background: var(--clr-gray-200);
-    overflow: hidden;
 }
 
 .ratingNum {
     font-size: 20px;
     font-weight: 590;
+}
+
+@media only screen and (max-width: 1512px) {
+    .container {
+        gap: 8px;
+    }
+
+    .overallScore {
+        font-size: 28px;
+        gap: 4px;
+    }
+
+    .centered {
+        font-size: 12px;
+    }
+    
+    .category {
+        font-size: 12px;
+        min-width: 52px;
+    }
+
+    .emote {
+        width: 18px;
+        height: 18px;
+    }
+
+    .stars {
+        gap: 1px;
+
+    }
+
+    .star {
+        width: 15px;
+        height: 15px;
+    }
+
+    .horizontal {
+        gap: 6px;
+    }
+
+    .ratingNum {
+        font-size: 14px;
+        font-weight: 590;
+    }
+
+    .bars {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    .bar {
+        min-width: 20px;
+    }
 }

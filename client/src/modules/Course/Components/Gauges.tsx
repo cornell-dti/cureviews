@@ -124,14 +124,14 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
             <div className={styles.overall}>
                 <div className={styles.overallScore}>
                     {overall ? overall.toPrecision(2) : "--"}
-                    <img src={overallEmote}/>
+                    <img src={overallEmote} className={styles.emote}/>
                 </div>
                 <div className={styles.stars}>
                     {stars.map((star) => {
-                        return <img src={star}/>
+                        return <img src={star} className={styles.star}/>
                     })}
                 </div>
-                <div>
+                <div className={styles.centered}>
                     Overall Satisfaction
                 </div>
             </div>
@@ -146,19 +146,19 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                         })}
                     </div>
                     <div className={styles.ratingNum}> {difficulty ? difficulty.toPrecision(2) : "-"} </div>
-                    <img src={difficultyEmote}/>
+                    <img src={difficultyEmote} className={styles.emote}/>
                 </div>
                 <div className={styles.horizontal}>
                     <div className={styles.category}> Workload </div>
                     <div className={styles.bars}>
                         {workloadBars.map((percent) => {
                             return <div className={styles.bar}
-                                        style={{background: 'linear-gradient(to right, '+ difficultyColor + ' ' + percent + ', var(--clr-gray-200) 0%)'}}
+                                        style={{background: 'linear-gradient(to right, '+ workloadColor + ' ' + percent + ', var(--clr-gray-200) 0%)'}}
                                     />
                         })}
                     </div>
                     <div className={styles.ratingNum}> {workload ? workload.toPrecision(2) : "-"} </div>
-                    <img src={workloadEmote}/>
+                    <img src={workloadEmote} className={styles.emote}/>
                 </div>
             </div>
         </div>

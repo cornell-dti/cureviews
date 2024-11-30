@@ -188,7 +188,7 @@ export const Course = () => {
           <h2> Sorry, looks like this course does not exist. </h2>
           <h2> Try searching for another course! </h2>
           <div>
-            If you think we made a mistake, please contact @cureviews.dti on
+            If you think we made a mistake, please contact @cureviews on
             instagram.
           </div>
         </div>
