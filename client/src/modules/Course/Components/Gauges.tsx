@@ -21,10 +21,8 @@ type GaugesProps = {
 
 const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
     const [stars, setStars] = useState<any[]>([])
-    const [overallEmote, setOverallEmote] = useState<any>();
     const [difficultyEmote, setDifficultyEmote] = useState<any>();
     const [workloadEmote, setWorkloadEmote] = useState<any>();
-    const [overallHover, setOverallHover] = useState<string>();
     const [difficultyHover, setDifficultyHover] = useState<string>();
     const [workloadHover, setWorkloadHover] = useState<string>();
     const [difficultyColor, setDifficultyColor] = useState<string>('#ECECEC');
@@ -32,11 +30,14 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
     const [difficultyBars, setDifficultyBars] = useState<string[]>([]);
     const [workloadBars, setWorkloadBars] = useState<string[]>([]);
 
+    const red = '#FF756C';
+    const yellow = '#F8CC30';
+    const green = '#5EB734';
+
     useEffect(() => {
+        // Higher overall scores are more positive
         if (overall) {
             if (0 <= overall && overall < 3) {
-                setOverallEmote(SadFace)
-                setOverallHover('Not the best')
                 if (overall < 0.25) {
                     setStars([Gray, Gray, Gray, Gray, Gray])
                 } else if (0.25 <= overall && overall < 0.8) {
@@ -51,16 +52,12 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                     setStars([Red, Red, RedHalf, Gray, Gray])
                 }
             } else if (3 <= overall && overall < 3.8) {
-                setOverallEmote(MehFace)
-                setOverallHover('Mediocre')
                 if (overall < 3.25) {
                     setStars([Yellow, Yellow, Yellow, Gray, Gray])
                 } else {
                     setStars([Yellow, Yellow, Yellow, YellowHalf, Gray])
                 }
             } else {
-                setOverallEmote(HappyFace)
-                setOverallHover('Great course')
                 if (overall < 4.25) {
                     setStars([Green, Green, Green, Green, Gray])
                 } else if (overall < 4.8) {
@@ -71,24 +68,24 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
             }
         } else {
             setStars([Gray, Gray, Gray, Gray, Gray])
-            setOverallEmote(undefined)
         }
     }, [overall])
 
     useEffect(() => {
+        // Higher difficulty scores are more negative
         if (difficulty) {
             if (0 <= difficulty && difficulty < 3) {
-                setDifficultyEmote(SadFace)
-                setDifficultyHover('Challenging')
-                setDifficultyColor('#FF756C')
+                setDifficultyEmote(HappyFace)
+                setDifficultyHover('Super easy')
+                setDifficultyColor(green)
             } else if (3 <= difficulty && difficulty < 3.8) {
                 setDifficultyEmote(MehFace)
                 setDifficultyHover('Doable')
-                setDifficultyColor('#F8CC30')
+                setDifficultyColor(yellow)
             } else {
-                setDifficultyEmote(HappyFace)
-                setDifficultyHover('Super easy')
-                setDifficultyColor('#5EB734')
+                setDifficultyEmote(SadFace)
+                setDifficultyHover('Challenging')
+                setDifficultyColor(red)
             }
             setDifficultyBars([
                 (Math.min(difficulty, 1) * 100).toFixed(0) + '%',
@@ -100,23 +97,25 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         } else {
             setDifficultyEmote(undefined)
             setDifficultyBars(['0%', '0%', '0%', '0%', '0%'])
+            setDifficultyHover('')
         }
     }, [difficulty])
 
     useEffect(() => {
+        // Higher workload scores are more negative
         if (workload) {
             if (0 <= workload && workload < 3) {
-                setWorkloadEmote(SadFace)
-                setWorkloadHover('Lots of work')
-                setWorkloadColor('#FF756C')
+                setWorkloadEmote(HappyFace)
+                setWorkloadHover('Super light')
+                setWorkloadColor(green)
             } else if (3 <= workload && workload < 3.8) {
                 setWorkloadEmote(MehFace)
                 setWorkloadHover('Manageable')
-                setWorkloadColor('#F8CC30')
+                setWorkloadColor(yellow)
             } else {
-                setWorkloadEmote(HappyFace)
-                setWorkloadHover('Super light')
-                setWorkloadColor('#5EB734')
+                setWorkloadEmote(SadFace)
+                setWorkloadHover('Lots of work')
+                setWorkloadColor(red)
             }
             setWorkloadBars([
                 (Math.min(workload, 1) * 100).toFixed(0) + '%',
@@ -128,6 +127,7 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         } else {
             setWorkloadEmote(undefined)
             setWorkloadBars(['0%', '0%', '0%', '0%', '0%'])
+            setWorkloadHover('')
         }
     }, [workload])
 
@@ -136,14 +136,10 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
             <div className={styles.overall}>
                 <div className={styles.overallScore}>
                     {overall ? overall.toPrecision(2) : "--"}
-                    <img src={overallEmote}
-                         className={styles.emote}
-                         title={overallHover}
-                    />
                 </div>
                 <div className={styles.stars}>
                     {stars.map((star) => {
-                        return <img src={star} className={styles.star}/>
+                        return <img src={star} className={styles.star} alt=''/>
                     })}
                 </div>
                 <div className={styles.centered}>
@@ -165,6 +161,7 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                     <img src={difficultyEmote}
                          className={styles.emote}
                          title={difficultyHover}
+                         alt={difficultyHover}
                     />
                 </div>
                 <div className={styles.horizontal}>
@@ -181,6 +178,7 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                     <img src={workloadEmote}
                          className={styles.emote}
                          title={workloadHover}
+                         alt={workloadHover}
                     />
                 </div>
             </div>
