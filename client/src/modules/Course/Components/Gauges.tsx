@@ -24,6 +24,9 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
     const [overallEmote, setOverallEmote] = useState<any>();
     const [difficultyEmote, setDifficultyEmote] = useState<any>();
     const [workloadEmote, setWorkloadEmote] = useState<any>();
+    const [overallHover, setOverallHover] = useState<string>();
+    const [difficultyHover, setDifficultyHover] = useState<string>();
+    const [workloadHover, setWorkloadHover] = useState<string>();
     const [difficultyColor, setDifficultyColor] = useState<string>('#ECECEC');
     const [workloadColor, setWorkloadColor] = useState<string>('#ECECEC');
     const [difficultyBars, setDifficultyBars] = useState<string[]>([]);
@@ -33,6 +36,7 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         if (overall) {
             if (0 <= overall && overall < 3) {
                 setOverallEmote(SadFace)
+                setOverallHover('Not the best')
                 if (overall < 0.25) {
                     setStars([Gray, Gray, Gray, Gray, Gray])
                 } else if (0.25 <= overall && overall < 0.8) {
@@ -48,6 +52,7 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                 }
             } else if (3 <= overall && overall < 3.8) {
                 setOverallEmote(MehFace)
+                setOverallHover('Mediocre')
                 if (overall < 3.25) {
                     setStars([Yellow, Yellow, Yellow, Gray, Gray])
                 } else {
@@ -55,6 +60,7 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                 }
             } else {
                 setOverallEmote(HappyFace)
+                setOverallHover('Great course')
                 if (overall < 4.25) {
                     setStars([Green, Green, Green, Green, Gray])
                 } else if (overall < 4.8) {
@@ -73,12 +79,15 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         if (difficulty) {
             if (0 <= difficulty && difficulty < 3) {
                 setDifficultyEmote(SadFace)
+                setDifficultyHover('Challenging')
                 setDifficultyColor('#FF756C')
             } else if (3 <= difficulty && difficulty < 3.8) {
                 setDifficultyEmote(MehFace)
+                setDifficultyHover('Doable')
                 setDifficultyColor('#F8CC30')
             } else {
                 setDifficultyEmote(HappyFace)
+                setDifficultyHover('Super easy')
                 setDifficultyColor('#5EB734')
             }
             setDifficultyBars([
@@ -98,12 +107,15 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
         if (workload) {
             if (0 <= workload && workload < 3) {
                 setWorkloadEmote(SadFace)
+                setWorkloadHover('Lots of work')
                 setWorkloadColor('#FF756C')
             } else if (3 <= workload && workload < 3.8) {
                 setWorkloadEmote(MehFace)
+                setWorkloadHover('Manageable')
                 setWorkloadColor('#F8CC30')
             } else {
                 setWorkloadEmote(HappyFace)
+                setWorkloadHover('Super light')
                 setWorkloadColor('#5EB734')
             }
             setWorkloadBars([
@@ -124,7 +136,10 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
             <div className={styles.overall}>
                 <div className={styles.overallScore}>
                     {overall ? overall.toPrecision(2) : "--"}
-                    <img src={overallEmote} className={styles.emote}/>
+                    <img src={overallEmote}
+                         className={styles.emote}
+                         title={overallHover}
+                    />
                 </div>
                 <div className={styles.stars}>
                     {stars.map((star) => {
@@ -141,24 +156,32 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                     <div className={styles.bars}>
                         {difficultyBars.map((percent) => {
                             return <div className={styles.bar}
-                                        style={{background: 'linear-gradient(to right, '+ difficultyColor + ' ' + percent + ', var(--clr-gray-200) 0%)'}}
+                                        style={{background: 'linear-gradient(to right, '+ difficultyColor +
+                                                ' ' + percent + ', var(--clr-gray-200) 0%)'}}
                                     />
                         })}
                     </div>
                     <div className={styles.ratingNum}> {difficulty ? difficulty.toPrecision(2) : "-"} </div>
-                    <img src={difficultyEmote} className={styles.emote}/>
+                    <img src={difficultyEmote}
+                         className={styles.emote}
+                         title={difficultyHover}
+                    />
                 </div>
                 <div className={styles.horizontal}>
                     <div className={styles.category}> Workload </div>
                     <div className={styles.bars}>
                         {workloadBars.map((percent) => {
                             return <div className={styles.bar}
-                                        style={{background: 'linear-gradient(to right, '+ workloadColor + ' ' + percent + ', var(--clr-gray-200) 0%)'}}
+                                        style={{background: 'linear-gradient(to right, '+ workloadColor +
+                                                ' ' + percent + ', var(--clr-gray-200) 0%)'}}
                                     />
                         })}
                     </div>
                     <div className={styles.ratingNum}> {workload ? workload.toPrecision(2) : "-"} </div>
-                    <img src={workloadEmote} className={styles.emote}/>
+                    <img src={workloadEmote}
+                         className={styles.emote}
+                         title={workloadHover}
+                    />
                 </div>
             </div>
         </div>
