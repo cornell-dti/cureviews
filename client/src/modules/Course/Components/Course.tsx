@@ -274,7 +274,7 @@ export const Course = () => {
                   />
                 </div>
               </div>
-          </div>`
+          </div>
         </div>
 
         {/* Fixed Bottom-Right Review Button */}
