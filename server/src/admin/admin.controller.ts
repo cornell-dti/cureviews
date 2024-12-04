@@ -36,7 +36,11 @@ import {
   addAllCrossList,
   addCrossList,
   addNewSemester,
-  addAllDescriptions
+  addAllDescriptions,
+  addAllProcessedDescriptions,
+  addIdfVector,
+  addAllTfIdfVectors,
+  addAllSimilarityData
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
 
@@ -402,4 +406,31 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
 
   const descriptionResult = await addAllDescriptions();
   return descriptionResult;
-};
+}
+
+/**
+ * Adds all similarity data to the Course database, consisting of tags and top 5 similar courses
+ * https://www.notion.so/Similar-Courses-Algorithm-13d0ad723ce18060b34eccc5385d08ca
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
+export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  const descriptionResult = await addAllProcessedDescriptions();
+  if (descriptionResult) {
+    const idfResult = await addIdfVector();
+    if (idfResult) {
+      const tfidfResult = await addAllTfIdfVectors();
+      if (tfidfResult) {
+        const similarityResult = await addAllSimilarityData();
+        return similarityResult;
+      }
+    }
+  }
+  return false;
+}

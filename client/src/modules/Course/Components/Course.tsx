@@ -64,7 +64,7 @@ export const Course = () => {
     let valB = 'Not Listed';
 
     if (a.professors) {
-      const profsA = a.professors.filter((prof : String) =>
+      const profsA = a.professors.filter((prof: String) =>
         prof && prof !== 'Not Listed');
       valA = profsA.length > 0
         ? profsA.sort()[0]
@@ -73,7 +73,7 @@ export const Course = () => {
       return 1;
     }
     if (b.professors) {
-      const profsB = b.professors.filter((prof : String) =>
+      const profsB = b.professors.filter((prof: String) =>
         prof && prof !== 'Not Listed');
       valB = profsB.length > 0
         ? profsB.sort()[0]
@@ -87,7 +87,7 @@ export const Course = () => {
     } else if (valB === 'Not Listed') {
       return -1;
     }
-    
+
     if (valA < valB) {
       return -1;
     } else if (valB < valA) {
