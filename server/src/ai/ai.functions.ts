@@ -105,7 +105,7 @@ const updateCourseWithAI = async (courseId: string) => {
 
     await Classes.updateOne(
       { _id: courseId },
-      { $set: { classSummary: summary, classTags: tags, freshness: 0 } }
+      { $set: { classSummary: summary, summaryTags: tags, summaryFreshness: 0 } }
     );
 
     const course = await Classes.findOne({ _id: courseId })
