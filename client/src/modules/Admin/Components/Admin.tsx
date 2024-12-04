@@ -460,7 +460,7 @@ export const Admin = () => {
                 Summarize Reviews
               </button>
               <button
-                disabled={disableInit}
+                disabled={updating}
                 type="button"
                 className={styles.adminButtons}
                 onClick={() => updateSimilarityData()}
