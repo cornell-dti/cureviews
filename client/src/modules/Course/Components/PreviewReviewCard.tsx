@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { Review as ReviewType } from 'common';
 
-import styles from '../Styles/Review.module.css';
+import styles from '../Styles/ReviewCard.module.css';
 import previewstyle from '../Styles/PreviewCard.module.css';
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils';

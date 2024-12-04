@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import axios from 'axios';
 
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import WriteReviewIcon from '../../../assets/icons/write.svg';
 
@@ -14,7 +14,7 @@ import Loading from '../../Globals/Loading';
 import styles from '../Styles/Course.module.css';
 import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from './Gauge';
+import Gauges from './Gauges';
 import CourseReviews from './CourseReviews';
 
 import type { NewReview } from '../../../types';
@@ -36,11 +36,11 @@ export const Course = () => {
   const { number, subject, input } = useParams<any>();
 
   const [selectedClass, setSelectedClass] = useState<Class>();
-  const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [courseReviews, setCourseReviews] = useState<Review[]>([]);
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
 
-  const { isLoggedIn, token } = useAuthOptionalLogin();
+  const { token } = useAuthOptionalLogin();
 
   /**
    * Sorts reviews based on descending likes.
@@ -188,7 +188,7 @@ export const Course = () => {
           <h2> Sorry, looks like this course does not exist. </h2>
           <h2> Try searching for another course! </h2>
           <div>
-            If you think we made a mistake, please contact @cureviews.dti on
+            If you think we made a mistake, please contact @cureviews on
             instagram.
           </div>
         </div>
@@ -202,7 +202,7 @@ export const Course = () => {
   if (pageStatus === PageStatus.Success && !!selectedClass && !!courseReviews) {
     courseVisited(selectedClass?.classSub, selectedClass?.classNum);
     return (
-      <div className={`${styles.page}`}>
+      <div className={styles.page}>
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -214,77 +214,67 @@ export const Course = () => {
         />
 
         <Navbar userInput={input} />
-
-        {/* Course Name, Button + Gauges */}
-        <div className={styles.overview}>
-          <div className={styles.classinfo}>
-            <h1
-              data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
-                }`}
-            >
-              {selectedClass.classTitle}
-            </h1>
-            <div className={styles.subtitle}>
-              {selectedClass.classSub.toUpperCase() +
-                ' ' +
-                selectedClass.classNum +
-                ', ' +
-                lastOfferedSems(selectedClass)}
+        <div className={styles.courseContent}>
+          {/* Course Name, Button + Gauges */}
+          <div className={styles.leftPanel}>
+            <div className={styles.classinfo}>
+                <h1
+                  data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
+                    selectedClass.classNum
+                  }`}
+                >
+                  {selectedClass.classTitle}
+                </h1>
+                <div className={styles.subtitle}>
+                  {selectedClass.classSub.toUpperCase() +
+                    ' ' +
+                    selectedClass.classNum +
+                    ', ' +
+                    lastOfferedSems(selectedClass)}
+                </div>
+                <button
+                  data-cy="leave-review-button"
+                  className={styles.reviewbutton}
+                  onClick={() => setOpen(true)}
+                >
+                  Leave a review
+                </button>
+              </div>
+              <Gauges
+                overall={selectedClass.classRating}
+                difficulty={selectedClass.classDifficulty}
+                workload={selectedClass.classWorkload} 
+              />
             </div>
-            <button
-              data-cy="leave-review-button"
-              className={styles.reviewbutton}
-              onClick={() => setOpen(true)}
-            >
-              Leave a review
-            </button>
-          </div>
-
-          <div className={styles.gauges}>
-            <Gauge
-              rating={selectedClass.classRating}
-              label="Overall"
-              isOverall={true}
-            />
-            <Gauge
-              rating={selectedClass.classDifficulty}
-              label="Difficulty"
-              isOverall={false}
-            />
-            <Gauge
-              rating={selectedClass.classWorkload}
-              label="Workload"
-              isOverall={false}
-            />
-          </div>
-        </div>
-
-        {/* Reviews Displaying */}
-        <div className={styles.reviewscontainer}>
-          <div className={styles.bar}>
-            <h2>Past Reviews ({courseReviews?.length}) </h2>
-            <div>
-              <label htmlFor="sort-reviews">Sort by: </label>
-              <select
-                name="sort-reviews"
-                id="sort-reviews"
-                onChange={sortReviewsBy}
-                className={styles.filtertext}
-              >
-                <option value="helpful">Most Helpful</option>
-                <option value="recent">Recent</option>
-                <option value="professor">Professor</option>
-              </select>
-            </div>
-          </div>
-          <div className={styles.reviews}>
-            <CourseReviews
-              reviews={courseReviews}
-              isPreview={false}
-              isProfile={false}
-              token={token}
-            />
-          </div>
+          <div className={styles.rightPanel}>
+            {/* Reviews Displaying */}
+            <div className={styles.reviewscontainer}>
+                <div className={styles.bar}>
+                  <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
+                  <div>
+                    <label htmlFor="sort-reviews">Sort by: </label>
+                    <select
+                      name="sort-reviews"
+                      id="sort-reviews"
+                      onChange={sortReviewsBy}
+                      className={styles.filtertext}
+                    >
+                      <option value="helpful">Most Helpful</option>
+                      <option value="recent">Recent</option>
+                      <option value="professor">Professor</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.reviews}>
+                  <CourseReviews
+                    reviews={courseReviews}
+                    isPreview={false}
+                    isProfile={false}
+                    token={token}
+                  />
+                </div>
+              </div>
+          </div>`
         </div>
 
         {/* Fixed Bottom-Right Review Button */}

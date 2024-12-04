@@ -7,7 +7,7 @@ import { Review } from 'common';
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 
-import UpdateReview from './AdminReview';
+import UpdateReview from './AdminReview.js';
 import Stats from './Stats';
 import ManageAdminModal from './ManageAdminModal';
 
