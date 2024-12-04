@@ -24,7 +24,8 @@ import {
   removeAdmin,
   addAdmin,
   approveReviews,
-  addCourseDescriptionsDb
+  addCourseDescriptionsDb,
+  addSimilarityDb
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -478,6 +479,32 @@ adminRouter.post('/db/initialize', async (req, res) => {
     return res
       .status(400)
       .json({ error: 'Error adding all professors and all courses' });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+/** Reachable at POST /api/admin/rec/similarity
+ * @body token: a session's current token
+ * Populates the course database with similarity data. For admins only
+ */
+adminRouter.post('/rec/similarity', async (req, res) => {
+  const { token }: AdminRequestType = req.body;
+  try {
+    const auth = new Auth({ token });
+    const result = await addSimilarityDb({ auth });
+    console.log(result)
+
+    if (result) {
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ message: 'Similarity data added!' });
+      return res;
+    }
+
+    return res
+      .status(400)
+      .json({ error: 'Similarity data was unable to be added!' });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }

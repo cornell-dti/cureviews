@@ -6,3 +6,7 @@ export interface CourseInfoRequestType {
 export interface CourseIdRequestType {
   courseId: string;
 }
+
+export interface CourseDescriptionRequestType {
+  description: string;
+}

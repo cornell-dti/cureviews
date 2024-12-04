@@ -268,7 +268,7 @@ export const Admin = () => {
     if (response.status === 200) {
       console.log('Updated the professors');
       setUpdating(false);
-      setUpdated('profsUpdate');
+      setUpdated('professors');
     } else {
       console.log('Error at setProfessors');
     }
@@ -331,6 +331,20 @@ export const Admin = () => {
       setUpdated('subjects');
     } else {
       console.log('Error at updateSubjects');
+    }
+  }
+
+  async function updateSimilarityData() {
+    console.log('Updatng course similarity data')
+    setUpdating(true)
+    setUpdatingField("course similarity data")
+    const response = await axios.post('/api/admin/rec/similarity', { token: token });
+    if (response.status === 200) {
+      console.log('Updated course similarity data')
+      setUpdating(false)
+      setUpdated('similarity')
+    } else {
+      console.log('Error at updateSimilarityData')
     }
   }
 
@@ -445,9 +459,17 @@ export const Admin = () => {
               >
                 Summarize Reviews
               </button>
+              <button
+                disabled={disableInit}
+                type="button"
+                className={styles.adminButtons}
+                onClick={() => updateSimilarityData()}
+              >
+                Update Similarity Data
+              </button>
               {renderInitButton()}
-            </div>
-          </div>
+            </div >
+          </div >
 
           <ManageAdminModal
             open={isAdminModalOpen}
@@ -461,7 +483,7 @@ export const Admin = () => {
             <p>Updating {updatingField} in the Course database.</p>
             <p>This process can take up to 15 minutes.</p>
           </div>
-        </div>
+        </div >
 
         <div className="StagedReviews">
           <h1>Pending Reviews</h1>
@@ -502,7 +524,7 @@ export const Admin = () => {
             })}
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 

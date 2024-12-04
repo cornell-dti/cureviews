@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { CourseIdRequestType, CourseInfoRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR } from './course.controller';
+import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
+import { getCourseByInfo, getReviewsCrossListOR, getRecommendationData, getProcessedDescription, getSimilarity, getGlobalMetadata } from './course.controller';
 
 import { getCourseById } from '../utils';
 
@@ -68,4 +68,62 @@ courseRouter.post('/get-reviews', async (req, res) => {
       .status(500)
       .json({ error: `Internal Server Error: ${err.message}` });
   }
+});
+
+/** Reachable at POST /api/courses/get-rec-metadata
+ * @body number, subject: a course's subject and number field
+ * Gets the array of all recommendation metadata for a specified course
+ */
+courseRouter.post('/get-rec-metadata', async (req, res) => {
+  try {
+    const { number, subject }: CourseInfoRequestType = req.body;
+    const course = await getRecommendationData({ number, subject });
+
+    if (!course) {
+      return res.status(404).json({
+        error: `Recommendation data could not be found for ${subject} ${number}`,
+      });
+    }
+
+    return res.status(200).json({ result: course });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+/** Reachable at POST /api/courses/get-global-metadata
+ * Gets the document containing all global metadata for courses
+ */
+courseRouter.post('/get-global-metadata', async (req, res) => {
+  try {
+    const global = await getGlobalMetadata();
+
+    return res.status(200).json({ result: global });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+/** Reachable at POST /api/courses/preprocess-desc
+ * @body description: a course description
+ * Gets the processed description to use for the similarity algorithm
+ * Currently used for testing
+*/
+courseRouter.post('/preprocess-desc', async (req, res) => {
+  const { description }: CourseDescriptionRequestType = req.body;
+  const processed = getProcessedDescription(description);
+  return res.status(200).json({ result: processed });
+});
+
+/** Reachable at POST /api/courses/mock-similarity
+ * Gets the array of the top 5 similar courses
+ * Currently used for testing
+*/
+courseRouter.post('/mock-similarity', async (req, res) => {
+  const similarity = await getSimilarity();
+  return res.status(200).json({ result: similarity });
 });

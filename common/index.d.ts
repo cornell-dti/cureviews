@@ -17,6 +17,7 @@ export interface Class {
   classSummary?: string;
   summaryTags?: Map<string, [string, string]>;
   summaryFreshness?: number;
+  recommendations: Recommendation[];
 }
 
 export interface Student {
@@ -61,4 +62,13 @@ export interface Professor {
   readonly fullName: string;
   readonly courses: string[];
   readonly major: string;
+}
+
+interface Recommendation {
+  readonly _id: string;
+  className: string;
+  classSub: string;
+  classNum: number;
+  tags: string[];
+  similarityScore: number;
 }

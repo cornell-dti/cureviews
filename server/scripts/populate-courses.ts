@@ -6,9 +6,10 @@
 import axios from 'axios';
 import shortid from 'shortid';
 import { ScrapingSubject, ScrapingClass } from './types';
-import { Classes, Professors, Subjects } from '../db/schema';
+import { Classes, Professors, Subjects, RecommendationMetadata } from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
+import { cosineSimilarity } from '../src/course/course.recalgo';
 import { addStudentReview } from '../src/review/review.controller';
 
 /**
@@ -597,4 +598,86 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   removeCourse(course);
   console.log(`Error in adding description to course ${subject} ${courseNum}`);
   return false;
-};
+}
+
+/**
+ * Adds all course similarity data to Course database. Called after populating 
+ * database with necessary metadata information.
+ * 
+ * @returns true if operation was successful, false otherwise
+ */
+export const addAllSimilarityData = async (): Promise<boolean> => {
+  try {
+    const courses = await Classes.find().exec();
+    if (courses) {
+      for (const course of courses) {
+        await addSimilarityData(courses, course);
+      }
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding similarity data: ${err}`);
+  }
+}
+
+/**
+ * Adds the top 5 similar courses to a given course using the cosine similarity algorithm for sorting.
+ * 
+ * @param courses the list of all courses in the Course database
+ * @param course specific course stored in Course database
+ * @returns true if operation was successful, false otherwise
+ */
+const addSimilarityData = async (courses, course): Promise<boolean> => {
+  const courseId = course._id;
+  const subject = course.classSub;
+  const num = course.classNum;
+  try {
+    const similarities = [];
+    const tfidf = await RecommendationMetadata.findOne({ _id: courseId }).exec();
+    for (const c of courses) {
+      if (c._id !== courseId && !c.crossList.includes(courseId) && c.classRating !== null) {
+        const compTfidf = await RecommendationMetadata.findOne({ _id: c._id }).exec();
+        const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
+        if (cos < 1) {
+          const rating = threshold(course.classRating, c.classRating);
+          const workload = threshold(course.classWorkload, c.classWorkload);;
+          const difficulty = threshold(course.classDifficulty, c.classDifficulty);;
+          similarities.push({
+            _id: c._id,
+            className: c.classTitle,
+            classSub: c.classSub,
+            classNum: c.classNum,
+            tags: [`${rating} rating`, `${workload} workload`, `${difficulty} difficulty`],
+            similarityScore: cos
+          });
+        }
+      }
+    }
+    const topSimilarities = similarities
+      .sort((a, b) => b.similarityScore - a.similarityScore)
+      .slice(0, 5);
+
+    console.log(`${subject} ${num}`);
+
+    const res = await Classes.updateOne(
+      { _id: courseId },
+      { $set: { recommendations: topSimilarities } }
+    );
+    if (!res) {
+      throw new Error();
+    }
+    return true;
+  } catch (err) {
+    console.log(`Error in adding similarity data for ${subject} ${num}: ${err}`);
+  }
+}
+
+// threshold for tags
+const threshold = (a, b) => {
+  if (b - a >= 0.5) {
+    return 'higher';
+  } if (b - a <= -0.5) {
+    return 'lower';
+  }
+  return 'similar';
+}
