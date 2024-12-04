@@ -85,6 +85,10 @@
   font-size: 12px;
 }
 
+.overall {
+  border-color: #0076FF;
+}
+
 .higher {
   border-color: #ffa5a5;
 }

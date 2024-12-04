@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../Styles/SimilarCourses.module.css';
+import axios from 'axios';
+import { lastOfferedSems } from 'common/CourseCard';
 
 type SimilarCourses = {
   className: string;
@@ -14,11 +16,34 @@ export default function SimilarCoursesCard({
   classNum,
   tags
 }: SimilarCourses): React.JSX.Element {
+  const [classSems, setClassSems] = useState('');
   const getTagStyling = (tag: string) => {
+    if (tag.toLowerCase().includes('overall')) return styles.overall;
     if (tag.toLowerCase().includes('higher')) return styles.higher;
     if (tag.toLowerCase().includes('lower')) return styles.lower;
     return styles.similar;
   }
+
+  useEffect(() => {
+    const fetchClassSems = async () => {
+      try {
+        const response = await axios.post(`/api/courses/get-by-info`, {
+          number: classNum,
+          subject: classSub,
+        });
+
+        const course = response.data.result;
+        if (course) {
+          setClassSems(lastOfferedSems(course));
+        }
+      } catch (e) {
+        console.error('Unable to fetch class semesters');
+      }
+    };
+
+    fetchClassSems();
+  }, [classNum, classSub]);
+
   return (
     <div className={styles.card}>
       <div className={styles.metrics}>
@@ -30,7 +55,7 @@ export default function SimilarCoursesCard({
           {className}
         </a>
         <div className={styles.subtitle}>
-          {classSub.toUpperCase()} {classNum}
+          {classSub.toUpperCase()} {classNum}, {classSems}
         </div>
       </div>
       <div className={styles.tags}>
