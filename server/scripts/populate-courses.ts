@@ -11,6 +11,7 @@ import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
 import { cosineSimilarity } from '../src/course/course.recalgo';
 import { addStudentReview } from '../src/review/review.controller';
+import { ClassificationType } from 'typescript';
 
 /**
  * Adds all possible crosslisted classes retrieved from Course API to crosslisted list in Courses database for all semesters.
@@ -561,8 +562,9 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   const courseNum = course.classNum;
   const courseFromDb = await Classes.findOne({ _id: courseId }).exec();
   const checkDescription = courseFromDb.classDescription;
+  const checkTitle = courseFromDb.classTitle;
 
-  if (checkDescription && checkDescription !== null) {
+  if (checkDescription && checkDescription !== null && checkDescription.includes(checkTitle)) {
     console.log(`Already added description to ${subject} ${courseNum}`);
     return true;
   }
@@ -578,7 +580,7 @@ export const addCourseDescription = async (course): Promise<boolean> => {
         if (c.catalogNbr === courseNum) {
           const description =
             c.description && c.description !== null
-              ? c.description
+              ? `${c.titleLong}. ${c.description}`
               : c.titleLong;
           await Classes.updateOne(
             { _id: courseId },
@@ -635,11 +637,11 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
     const similarities = [];
     const tfidf = await RecommendationMetadata.findOne({ _id: courseId }).exec();
     for (const c of courses) {
-      if (c._id !== courseId && !c.crossList.includes(courseId) && c.classRating !== null) {
+      if (c._id !== courseId && !c.crossList.includes(courseId) && c.classRating !== null && c.classRating !== 0) {
         const compTfidf = await RecommendationMetadata.findOne({ _id: c._id }).exec();
         const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
         if (cos < 1) {
-          const rating = threshold(course.classRating, c.classRating);
+          const rating = c.classRating;
           const workload = threshold(course.classWorkload, c.classWorkload);;
           const difficulty = threshold(course.classDifficulty, c.classDifficulty);;
           similarities.push({
@@ -647,7 +649,7 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
             className: c.classTitle,
             classSub: c.classSub,
             classNum: c.classNum,
-            tags: [`${rating} rating`, `${workload} workload`, `${difficulty} difficulty`],
+            tags: [`Overall: ${rating}/5`, `${workload} workload`, `${difficulty} difficulty`],
             similarityScore: cos
           });
         }
