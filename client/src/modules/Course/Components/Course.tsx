@@ -266,11 +266,13 @@ export const Course = () => {
                 difficulty={selectedClass.classDifficulty}
                 workload={selectedClass.classWorkload}
               />
-              <SimilarCoursesSection
-                similarCourses={similarCourses}
-                bear={bear}
-                isVisible={screenWidth > 768}
-              />
+              {similarCourses && similarCourses.length > 0 && (
+                <SimilarCoursesSection
+                  similarCourses={similarCourses}
+                  bear={bear}
+                  isVisible={screenWidth > 768}
+                />
+              )}
 
             </div>
           </div>
@@ -302,11 +304,13 @@ export const Course = () => {
                 />
               </div>
             </div >
-            <SimilarCoursesSection
-              similarCourses={similarCourses}
-              bear={bear}
-              isVisible={screenWidth <= 768}
-            />
+            {similarCourses && similarCourses.length > 0 && (
+              <SimilarCoursesSection
+                similarCourses={similarCourses}
+                bear={bear}
+                isVisible={screenWidth <= 768}
+              />
+            )}
           </div >
         </div>
 
