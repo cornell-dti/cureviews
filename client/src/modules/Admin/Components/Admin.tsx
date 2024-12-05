@@ -7,7 +7,7 @@ import { Review } from 'common';
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 
-import UpdateReview from './AdminReview';
+import UpdateReview from './AdminReview.js';
 import Stats from './Stats';
 import ManageAdminModal from './ManageAdminModal';
 
@@ -24,24 +24,26 @@ export const Admin = () => {
 
   const [updating, setUpdating] = useState<boolean>(false);
   type updatedStates =
-    'empty' |
-    'semester' |
-    'profsReset' |
-    'professors' |
-    'subjects' |
-    'database' |
-    'description' |
-    'similarity';
+    | 'empty'
+    | 'semester'
+    | 'profsReset'
+    | 'profsUpdate'
+    | 'subjects'
+    | 'database'
+    | 'description'
+    | 'summarize'
+    | 'failure';
   const [updated, setUpdated] = useState<updatedStates>('empty');
-  const successMessages = {
-    'empty': '',
-    'semester': "New semester data successfully added",
-    'profsReset': "Professor data successfully reset to empty",
-    'professors': "Professor data successfully updated",
-    'subjects': "Subject full name data successfully updated",
-    'database': "Database successfully initialized",
-    'description': "Course description data successfully added",
-    'similarity': "Similarity data successfully added",
+  const messages = {
+    empty: '',
+    semester: 'New semester data successfully added',
+    profsReset: 'Professor data successfully reset to empty',
+    profsUpdate: 'Professor data successfully updated',
+    subjects: 'Subject full name data successfully updated',
+    database: 'Database successfully initialized',
+    description: 'Course description data successfully added',
+    summarize: 'All courses successfully summarized',
+    failure: 'API failed'
   };
   const [updatingField, setUpdatingField] = useState<string>('');
 
@@ -163,6 +165,23 @@ export const Admin = () => {
     } else {
       alert('Could not approve all reviews');
     }
+  }
+
+  // Call when user selects "Sumarize Reviews" button. Calls endpoint to generate 
+  // summaries and tags using AI for all courses with a freshness above a certain
+  // threshold, then updates those courses to include these new summaries and tags.
+  async function summarizeReviews() {
+    console.log('Updating all courses with AI');
+    setUpdating(true);
+    setUpdatingField('summarizing');
+    const response = await axios.post('/api/ai/summarize-courses');
+    if (response.status == 200) {
+      setUpdated('summarize');
+    }
+    else {
+      setUpdated('failure');
+    }
+    setUpdating(false);
   }
 
   /**
@@ -436,6 +455,14 @@ export const Admin = () => {
                 disabled={updating}
                 type="button"
                 className={styles.adminButtons}
+                onClick={() => summarizeReviews()}
+              >
+                Summarize Reviews
+              </button>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
                 onClick={() => updateSimilarityData()}
               >
                 Update Similarity Data
@@ -450,7 +477,7 @@ export const Admin = () => {
             token={userToken}
           />
 
-          <div>{successMessages[updated]}</div>
+          <div>{messages[updated]}</div>
 
           <div hidden={!updating} className="">
             <p>Updating {updatingField} in the Course database.</p>

@@ -14,7 +14,7 @@ import Loading from '../../Globals/Loading';
 import styles from '../Styles/Course.module.css';
 import { lastOfferedSems } from 'common/CourseCard';
 
-import Gauge from './Gauge';
+import Gauges from './Gauges';
 import CourseReviews from './CourseReviews';
 import SimilarCoursesSection from './SimilarCourses';
 
@@ -208,7 +208,7 @@ export const Course = () => {
           <h2> Sorry, looks like this course does not exist. </h2>
           <h2> Try searching for another course! </h2>
           <div>
-            If you think we made a mistake, please contact @cureviews.dti on
+            If you think we made a mistake, please contact @cureviews on
             instagram.
           </div>
         </div>
@@ -261,36 +261,24 @@ export const Course = () => {
             </div>
 
             <div className={styles.leftFeatures}>
-              <div className={styles.gauges}>
-                <Gauge
-                  rating={selectedClass.classRating}
-                  label="Overall"
-                  isOverall={true}
-                />
-                <Gauge
-                  rating={selectedClass.classDifficulty}
-                  label="Difficulty"
-                  isOverall={false}
-                />
-                <Gauge
-                  rating={selectedClass.classWorkload}
-                  label="Workload"
-                  isOverall={false}
-                />
-              </div>
+              <Gauges
+                overall={selectedClass.classRating}
+                difficulty={selectedClass.classDifficulty}
+                workload={selectedClass.classWorkload}
+              />
               <SimilarCoursesSection
                 similarCourses={similarCourses}
                 bear={bear}
                 isVisible={screenWidth > 768}
               />
-            </div>
 
+            </div>
           </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}
             <div className={styles.reviewscontainer}>
               <div className={styles.bar}>
-                <h2>Past Reviews ({courseReviews?.length}) </h2>
+                <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
                 <div>
                   <label htmlFor="sort-reviews">Sort by: </label>
                   <select
@@ -313,18 +301,18 @@ export const Course = () => {
                   token={token}
                 />
               </div>
-            </div>
+            </div >
             <SimilarCoursesSection
               similarCourses={similarCourses}
               bear={bear}
               isVisible={screenWidth <= 768}
             />
-          </div>`
+          </div >
         </div>
 
         {/* Fixed Bottom-Right Review Button */}
         <button
-          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton}`}
+          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
           onClick={() => setOpen(true)}
         >
           <img src={WriteReviewIcon} alt="write-new-review" />

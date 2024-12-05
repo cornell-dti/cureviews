@@ -1,0 +1,150 @@
+:root {
+    --difficulty-color: #FF756C;
+    --workload-color: #F8CC30;
+}
+
+.centered {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 12px;
+    gap: 30px;
+    width: 100%;
+
+    border-radius: 8px;
+    background: #FFF;
+    overflow: hidden;
+}
+
+.overall {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.overallScore {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.stars {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 3px;
+
+    width: 18px;
+
+    padding-bottom: 8px
+}
+
+.ratings {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    height: 82px;
+    gap: 20px;
+}
+
+.horizontal {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.category {
+    min-width: 62px;
+}
+
+.bars {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.bar {
+    height: 8px;
+    width: 20%;
+    min-width: 32px;
+    border-radius: 4px;
+
+    background: var(--clr-gray-200);
+}
+
+.ratingNum {
+    font-size: 20px;
+    font-weight: 590;
+}
+
+@media only screen and (max-width: 1216px) {
+    .container {
+        gap: 24px;
+    }
+
+    .overallScore {
+        font-size: 28px;
+        gap: 4px;
+    }
+
+    .centered {
+        font-size: 12px;
+    }
+
+    .category {
+        font-size: 12px;
+        min-width: 54px;
+    }
+
+    .emote {
+        width: 18px;
+        height: 18px;
+    }
+
+    .stars {
+        gap: 1px;
+
+    }
+
+    .star {
+        width: 15px;
+        height: 15px;
+    }
+
+    .horizontal {
+        gap: 6px;
+    }
+
+    .ratingNum {
+        font-size: 14px;
+        font-weight: 590;
+    }
+
+    .bars {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    .bar {
+        width: 30px;
+    }
+}
