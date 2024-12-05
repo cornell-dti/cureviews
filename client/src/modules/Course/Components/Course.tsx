@@ -16,8 +16,7 @@ import { lastOfferedSems } from 'common/CourseCard';
 
 import Gauge from './Gauge';
 import CourseReviews from './CourseReviews';
-import recStyles from '../Styles/SimilarCourses.module.css';
-import SimilarCoursesCard from './SimilarCoursesCard';
+import SimilarCoursesSection from './SimilarCourses';
 
 import type { NewReview } from '../../../types';
 
@@ -42,6 +41,9 @@ export const Course = () => {
   const [similarCourses, setSimilarCourses] = useState<Recommendation[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  const bear = '/profile_bear/profile_bear_white.svg';
 
   const { token } = useAuthOptionalLogin();
 
@@ -111,6 +113,16 @@ export const Course = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setScreenWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  })
 
   /**
    * Fetches current course info and reviews and updates UI state
@@ -266,23 +278,11 @@ export const Course = () => {
                   isOverall={false}
                 />
               </div>
-              <div className={recStyles.similarCoursesSection}>
-                <div className={recStyles.similarCoursesHeader}>
-                  {/* <img style="width: 100%; height: 100%" src="https://via.placeholder.com/97x97" /> */}
-                  Similar Courses
-                </div>
-                <div className={recStyles.similarCoursesContainer}>
-                  {similarCourses?.map((course, index) => (
-                    <SimilarCoursesCard
-                      key={index}
-                      className={course.className}
-                      classSub={course.classSub}
-                      classNum={course.classNum}
-                      tags={course.tags}
-                    />
-                  ))}
-                </div>
-              </div>
+              <SimilarCoursesSection
+                similarCourses={similarCourses}
+                bear={bear}
+                isVisible={screenWidth > 768}
+              />
             </div>
 
           </div>
@@ -314,6 +314,11 @@ export const Course = () => {
                 />
               </div>
             </div>
+            <SimilarCoursesSection
+              similarCourses={similarCourses}
+              bear={bear}
+              isVisible={screenWidth <= 768}
+            />
           </div>`
         </div>
 
