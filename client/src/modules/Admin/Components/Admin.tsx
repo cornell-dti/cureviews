@@ -31,6 +31,7 @@ export const Admin = () => {
     | 'subjects'
     | 'database'
     | 'description'
+    | 'similarity'
     | 'summarize'
     | 'failure';
   const [updated, setUpdated] = useState<updatedStates>('empty');
@@ -42,6 +43,7 @@ export const Admin = () => {
     subjects: 'Subject full name data successfully updated',
     database: 'Database successfully initialized',
     description: 'Course description data successfully added',
+    similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
     failure: 'API failed'
   };
@@ -59,7 +61,7 @@ export const Admin = () => {
    * Confirms if the logged-in user is an admin
    */
   useEffect(() => {
-    async function confirmAdmin() {
+    const confirmAdmin = async () => {
       const response = await axios.post(`/api/admin/token/validate`, {
         token: token
       });
@@ -79,7 +81,7 @@ export const Admin = () => {
    * pending (awaiting approval), and reported (hidden and awaiting approval)
    */
   useEffect(() => {
-    async function loadReviews() {
+    const loadReviews = async () => {
       const pending = await axios.post('/api/admin/reviews/get-pending', {
         token: token
       });
@@ -100,7 +102,7 @@ export const Admin = () => {
    * Helper function to remove a review from a list of reviews and
    * return the updated list
    */
-  function removeReviewFromList(reviewToRemove: Review, reviews: Review[]) {
+  const removeReviewFromList = (reviewToRemove: Review, reviews: Review[]) => {
     reviews = reviews.filter((review: Review) => {
       return review && review._id !== reviewToRemove._id;
     });
@@ -111,7 +113,7 @@ export const Admin = () => {
    * Call when user asks to approve a review. Accesses the Reviews database
    * and changes the review with this id to visible.
    */
-  async function approveReview(review: Review) {
+  const approveReview = async (review: Review) => {
     const response = await axios.post('/api/admin/reviews/approve', {
       review: review,
       token: token
@@ -130,7 +132,7 @@ export const Admin = () => {
    * Call when user asks to remove a review. Accesses the Reviews database
    * and deletes the review with this id.
    */
-  async function removeReview(review: Review, isUnapproved: boolean) {
+  const removeReview = async (review: Review, isUnapproved: boolean) => {
     try {
       const response = await axios.post('/api/admin/reviews/remove', {
         review: review,
@@ -159,7 +161,7 @@ export const Admin = () => {
   /**
    * Call when admin would like to mass-approve all of the currently pending reviews.
    */
-  async function approveAllReviews(reviews: Review[]) {
+  const approveAllReviews = async () => {
     const response = await axios.post('/api/admin/reviews/approve/all', {
       token: token
     });
@@ -170,10 +172,12 @@ export const Admin = () => {
     }
   }
 
-  // Call when user selects "Sumarize Reviews" button. Calls endpoint to generate 
-  // summaries and tags using AI for all courses with a freshness above a certain
-  // threshold, then updates those courses to include these new summaries and tags.
-  async function summarizeReviews() {
+  /**
+   * Call when user selects "Sumarize Reviews" button. Calls endpoint to generate 
+   * summaries and tags using AI for all courses with a freshness above a certain
+   * threshold, then updates those courses to include these new summaries and tags.
+   */
+  const summarizeReviews = async () => {
     console.log('Updating all courses with AI');
     setUpdating(true);
     setUpdatingField('summarizing');
@@ -191,7 +195,7 @@ export const Admin = () => {
    * Call when user asks to un-report a reported review. Accesses the Reviews database
    * and changes the reported flag for this review to false.
    */
-  async function unReportReview(review: Review) {
+  const unReportReview = async (review: Review) => {
     const response = await axios.post('/api/admin/reviews/restore', {
       review: review,
       token: token
@@ -211,7 +215,7 @@ export const Admin = () => {
    * course API for new classes and updates classes existing in the database.
    * Should run once a semester, when new classes are added to the roster.
    */
-  async function addNewSemesters(semesters: string[]) {
+  const addNewSemesters = async (semesters: string[]) => {
     console.log('Adding new semester...');
     setUpdating(true);
     setUpdatingField('new semesters');
@@ -233,14 +237,16 @@ export const Admin = () => {
     setUpdated('semester');
   }
 
-  // Call when user selects "Initialize Database" button. Scrapes the Cornell
-  // Course API to store all classes and subjects in the local database.
-  // Then, runs code to store id's of cross-listed classes against each class.
-  // Should only be run ONCE when the app is initialzied.
-  //
-  // NOTE: requires an initialize flag to ensure the function is only run on
-  // a button click without this, it will run every time this component is created.
-  async function addAllCourses() {
+  /**
+   * Call when user selects "Initialize Database" button. Scrapes the Cornell
+   * Course API to store all classes and subjects in the local database.
+   * Then, runs code to store id's of cross-listed classes against each class.
+   * Should only be run ONCE when the app is initialzied.
+   * 
+   * NOTE: requires an initialize flag to ensure the function is only run on
+   * a button click without this, it will run every time this component is created.
+   */
+  const addAllCourses = async () => {
     console.log('Initializing database');
     setUpdating(true);
     setUpdatingField('all database');
@@ -260,7 +266,7 @@ export const Admin = () => {
    * Call when admin wants to update professors for users to search through
    * when clicking the "Update Professors" button
    */
-  async function updateProfessors() {
+  const updateProfessors = async () => {
     console.log('Updating professors');
     setUpdating(true);
     setUpdatingField('professors');
@@ -281,7 +287,7 @@ export const Admin = () => {
    * Call when admin wants to reset all professors in classes when clicking the
    * "Reset Professors" button
    */
-  async function resetProfessors() {
+  const resetProfessors = async () => {
     console.log('Setting the professors to an empty array');
     setUpdating(true);
     setUpdatingField('professors to empty arrays');
@@ -302,7 +308,7 @@ export const Admin = () => {
    * Call when user selects "Update Descriptions" button. Scrapes the Course API
    * to retrieve course description and stores them in the Course database.
    */
-  async function updateDescriptions() {
+  const updateDescriptions = async () => {
     console.log('Updating course descriptions');
     setUpdating(true);
     setUpdatingField('course descriptions');
@@ -322,7 +328,7 @@ export const Admin = () => {
    * Call when admin wants to update the list of subjects users can search through
    * when clicking the "Update Subjects" button
    */
-  async function updateSubjects() {
+  const updateSubjects = async () => {
     setUpdating(true);
     setUpdatingField('subjects');
     const response = await axios.post('/api/admin/subjects/update', {
@@ -341,7 +347,7 @@ export const Admin = () => {
    * Call when admin wants to update the similar courses data when clicking the 
    * "Update Similarity Data" button
    */
-  async function updateSimilarityData() {
+  const updateSimilarityData = async () => {
     console.log('Updatng course similarity data')
     setUpdating(true)
     setUpdatingField("course similarity data")
@@ -359,7 +365,7 @@ export const Admin = () => {
    * Handle the first click to the "Initialize Database" button. Show an alert
    * and update state to remember the next click will be a double click.
    */
-  function firstClickHandler() {
+  const firstClickHandler = () => {
     alert(
       '<div><h1>Warning!</h1><p>Clicking again will reset all data in the database. Are you sure you want to do this?</p></div>'
     );
@@ -372,7 +378,7 @@ export const Admin = () => {
    * If this is the user's second click, call addAllCourses above to initiaize
    * the local database
    */
-  function renderInitButton() {
+  const renderInitButton = () => {
     // Offer button to edit database
     if (doubleClick) {
       return (
@@ -403,7 +409,7 @@ export const Admin = () => {
     }
   }
 
-  function renderAdmin(userToken: string) {
+  const renderAdmin = (userToken: string) => {
     return (
       <div className={styles.adminWrapper}>
         <div className="headInfo">
@@ -497,7 +503,7 @@ export const Admin = () => {
           <button
             type="button"
             className={styles.massApproveButton}
-            onClick={() => approveAllReviews(pendingReviews)}
+            onClick={() => approveAllReviews()}
           >
             Approve all pending reviews
           </button>
@@ -535,7 +541,7 @@ export const Admin = () => {
     );
   }
 
-  function adminLogin() {
+  const adminLogin = () => {
     if (loading) {
       return <Loading />;
     } else if (isLoggedIn && token && isAdmin) {
