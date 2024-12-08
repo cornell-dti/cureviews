@@ -43,8 +43,6 @@ export const Course = () => {
   const [scrolled, setScrolled] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
-  const bear = '/profile_bear/profile_bear_white.svg';
-
   const { token } = useAuthOptionalLogin();
 
   /**
@@ -114,6 +112,9 @@ export const Course = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /**
+   * Update screen width to conditionally render left/right panels
+   */
   useEffect(() => {
     function handleResize() {
       setScreenWidth(window.innerWidth);
@@ -150,9 +151,7 @@ export const Course = () => {
           setCourseReviews(reviews);
 
           const recommendations = course.recommendations;
-          if (recommendations) {
-            setSimilarCourses(recommendations);
-          }
+          setSimilarCourses(recommendations);
 
           setPageStatus(PageStatus.Success);
         } else {
@@ -259,22 +258,15 @@ export const Course = () => {
                 Leave a review
               </button>
             </div>
-
-            <div className={styles.leftFeatures}>
-              <Gauges
-                overall={selectedClass.classRating}
-                difficulty={selectedClass.classDifficulty}
-                workload={selectedClass.classWorkload}
-              />
-              {similarCourses && similarCourses.length > 0 && (
-                <SimilarCoursesSection
-                  similarCourses={similarCourses}
-                  bear={bear}
-                  isVisible={screenWidth > 768}
-                />
-              )}
-
-            </div>
+            <Gauges
+              overall={selectedClass.classRating}
+              difficulty={selectedClass.classDifficulty}
+              workload={selectedClass.classWorkload}
+            />
+            <SimilarCoursesSection
+              similarCourses={similarCourses}
+              isVisible={screenWidth > 768}
+            />
           </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}
@@ -304,13 +296,10 @@ export const Course = () => {
                 />
               </div>
             </div >
-            {similarCourses && similarCourses.length > 0 && (
-              <SimilarCoursesSection
-                similarCourses={similarCourses}
-                bear={bear}
-                isVisible={screenWidth <= 768}
-              />
-            )}
+            <SimilarCoursesSection
+              similarCourses={similarCourses}
+              isVisible={screenWidth <= 768}
+            />
           </div >
         </div>
 

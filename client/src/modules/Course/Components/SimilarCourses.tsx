@@ -2,23 +2,19 @@ import React from 'react';
 import { Recommendation } from 'common';
 import styles from '../Styles/SimilarCourses.module.css';
 import SimilarCoursesCard from './SimilarCoursesCard';
+import bear from '/profile_bear/profile_bear_white.svg';
 
 const SimilarCoursesSection = ({
   similarCourses,
-  bear,
   isVisible,
 }: {
   similarCourses: Recommendation[] | undefined;
-  bear: string;
   isVisible: boolean;
 }) => {
-  if (!isVisible) return null;
+  if (!isVisible || !similarCourses || similarCourses.length === 0) return null;
 
   return (
-    <div
-      className={styles.similarCoursesSection}
-      style={{ display: isVisible ? 'flex' : 'none' }}
-    >
+    <div className={styles.similarCoursesSection}>
       <div className={styles.similarCoursesHeader}>
         <div className={styles.bear}>
           <img src={bear} alt="Profile Bear" />

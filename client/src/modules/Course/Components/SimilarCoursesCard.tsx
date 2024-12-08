@@ -10,19 +10,20 @@ type SimilarCourses = {
   tags: string[];
 };
 
-export default function SimilarCoursesCard({
+const SimilarCoursesCard: React.FC<SimilarCourses> = ({
   className,
   classSub,
   classNum,
-  tags
-}: SimilarCourses): React.JSX.Element {
+  tags,
+}) => {
   const [classSems, setClassSems] = useState('');
+
   const getTagStyling = (tag: string) => {
     if (tag.toLowerCase().includes('overall')) return styles.overall;
     if (tag.toLowerCase().includes('higher')) return styles.higher;
     if (tag.toLowerCase().includes('lower')) return styles.lower;
     return styles.similar;
-  }
+  };
 
   useEffect(() => {
     const fetchClassSems = async () => {
@@ -48,8 +49,7 @@ export default function SimilarCoursesCard({
     <div className={styles.card}>
       <div className={styles.metrics}>
         <a
-          href={`/course/${classSub.toUpperCase()}/${classNum
-            }`}
+          href={`/course/${classSub.toUpperCase()}/${classNum}`}
           className={styles.title}
         >
           {className}
@@ -61,12 +61,15 @@ export default function SimilarCoursesCard({
       <div className={styles.tags}>
         {tags.map((tag, index) => (
           <div key={index} className={`${styles.chip} ${getTagStyling(tag)}`}>
-            {tag.split(' ')
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            {tag
+              .split(' ')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(' ')}
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default SimilarCoursesCard;
