@@ -16,10 +16,11 @@ import { lastOfferedSems } from 'common/CourseCard';
 
 import Gauges from './Gauges';
 import CourseReviews from './CourseReviews';
+import SimilarCoursesSection from './SimilarCourses';
 
 import type { NewReview } from '../../../types';
 
-import { Class, Review } from 'common';
+import { Class, Recommendation, Review } from 'common';
 import { Session } from '../../../session-store';
 
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
@@ -36,9 +37,11 @@ export const Course = () => {
   const { number, subject, input } = useParams<any>();
 
   const [selectedClass, setSelectedClass] = useState<Class>();
-  const [courseReviews, setCourseReviews] = useState<Review[]>([]);
+  const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [similarCourses, setSimilarCourses] = useState<Recommendation[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const { token } = useAuthOptionalLogin();
 
@@ -110,6 +113,19 @@ export const Course = () => {
   }, []);
 
   /**
+   * Update screen width to conditionally render left/right panels
+   */
+  useEffect(() => {
+    function handleResize() {
+      setScreenWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  })
+
+  /**
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
@@ -133,6 +149,9 @@ export const Course = () => {
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
           reviews.sort(sortByLikes);
           setCourseReviews(reviews);
+
+          const recommendations = course.recommendations;
+          setSimilarCourses(recommendations);
 
           setPageStatus(PageStatus.Success);
         } else {
@@ -218,68 +237,75 @@ export const Course = () => {
           {/* Course Name, Button + Gauges */}
           <div className={styles.leftPanel}>
             <div className={styles.classinfo}>
-                <h1
-                  data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
-                    selectedClass.classNum
+              <h1
+                data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
                   }`}
-                >
-                  {selectedClass.classTitle}
-                </h1>
-                <div className={styles.subtitle}>
-                  {selectedClass.classSub.toUpperCase() +
-                    ' ' +
-                    selectedClass.classNum +
-                    ', ' +
-                    lastOfferedSems(selectedClass)}
-                </div>
-                <button
-                  data-cy="leave-review-button"
-                  className={styles.reviewbutton}
-                  onClick={() => setOpen(true)}
-                >
-                  Leave a review
-                </button>
+              >
+                {selectedClass.classTitle}
+              </h1>
+              <div className={styles.subtitle}>
+                {selectedClass.classSub.toUpperCase() +
+                  ' ' +
+                  selectedClass.classNum +
+                  ', ' +
+                  lastOfferedSems(selectedClass)}
               </div>
-              <Gauges
-                overall={selectedClass.classRating}
-                difficulty={selectedClass.classDifficulty}
-                workload={selectedClass.classWorkload} 
-              />
+              <button
+                data-cy="leave-review-button"
+                className={styles.reviewbutton}
+                onClick={() => setOpen(true)}
+              >
+                Leave a review
+              </button>
             </div>
+            <Gauges
+              overall={selectedClass.classRating}
+              difficulty={selectedClass.classDifficulty}
+              workload={selectedClass.classWorkload}
+            />
+            <SimilarCoursesSection
+              similarCourses={similarCourses}
+              isVisible={screenWidth > 768}
+            />
+          </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}
             <div className={styles.reviewscontainer}>
-                <div className={styles.bar}>
-                  <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
-                  <div>
-                    <label htmlFor="sort-reviews">Sort by: </label>
-                    <select
-                      name="sort-reviews"
-                      id="sort-reviews"
-                      onChange={sortReviewsBy}
-                      className={styles.filtertext}
-                    >
-                      <option value="helpful">Most Helpful</option>
-                      <option value="recent">Recent</option>
-                      <option value="professor">Professor</option>
-                    </select>
-                  </div>
-                </div>
-                <div className={styles.reviews}>
-                  <CourseReviews
-                    reviews={courseReviews}
-                    isPreview={false}
-                    isProfile={false}
-                    token={token}
-                  />
+              <div className={styles.bar}>
+                <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
+                <div>
+                  <label htmlFor="sort-reviews">Sort by: </label>
+                  <select
+                    name="sort-reviews"
+                    id="sort-reviews"
+                    onChange={sortReviewsBy}
+                    className={styles.filtertext}
+                  >
+                    <option value="helpful">Most Helpful</option>
+                    <option value="recent">Recent</option>
+                    <option value="professor">Professor</option>
+                  </select>
                 </div>
               </div>
-          </div>
+              <div className={styles.reviews}>
+                <CourseReviews
+                  reviews={courseReviews}
+                  isPreview={false}
+                  isProfile={false}
+                  token={token}
+                />
+              </div>
+            </div >
+            <SimilarCoursesSection
+              similarCourses={similarCourses}
+              isVisible={screenWidth <= 768}
+            />
+          </div >
         </div>
 
         {/* Fixed Bottom-Right Review Button */}
         <button
-          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton}`}
+          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
           onClick={() => setOpen(true)}
         >
           <img src={WriteReviewIcon} alt="write-new-review" />

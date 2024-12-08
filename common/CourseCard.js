@@ -29,6 +29,11 @@ export function lastOfferedSems(theClass) {
   theClass.classSems.forEach((sem) => {
     offered.add(semAbbriviationToWord(sem.slice(0, -2)));
   });
-  // Array.from(offered).join(' ');
-  return Array.from(offered).join(', ');
+
+  const semOrder = ['Fall', 'Spring', 'Summer', 'Winter'];
+
+  const sortedSemesters = Array.from(offered).sort((a, b) => {
+    return semOrder.indexOf(a) - semOrder.indexOf(b);
+  });
+  return sortedSemesters.join(', ');
 }
