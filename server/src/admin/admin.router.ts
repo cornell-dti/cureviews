@@ -420,6 +420,10 @@ adminRouter.post('/professors/reset', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/admin/course/desc
+ * @body token: a session's current token
+ * Updates all courses in the db with their course descriptions. For admins only
+ */
 adminRouter.post('/course/desc', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
@@ -442,6 +446,10 @@ adminRouter.post('/course/desc', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/admin/subjects/update
+ * @body token: a session's current token
+ * Updates all subjects in the db with their full subject names. For admins only
+ */
 adminRouter.post('/subjects/update', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {

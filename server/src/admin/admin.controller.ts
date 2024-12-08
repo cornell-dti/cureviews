@@ -96,6 +96,11 @@ export const editReviewVisibility = async ({
   return false;
 };
 
+/**
+ * Approves all pending reviews
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
+ * @returns Result of the approval process or an error message.
+ */
 export const approveReviews = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
@@ -247,6 +252,12 @@ export const updateAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
   return result;
 };
 
+/**
+ * Resets all professor arrays in the database to empty arrays
+ * 
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in. 
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
 export const resetAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
