@@ -3,6 +3,11 @@ import { Classes, ReviewDocument, Reviews, Students } from '../../db/schema';
 import { UpdateCourseMetrics } from './admin.type';
 import { findCourseById } from '../course/course.data-access';
 
+/**
+ * Updates metrics for a course based on a recently written review
+ * @param review the review that was submitted by a user and approved by an admin
+ * @param state the updated metrics for the specified course
+ */
 export const updateCourseMetrics = async (
   review: ReviewDocument,
   state: UpdateCourseMetrics
@@ -25,7 +30,7 @@ export const updateCourseMetrics = async (
 };
 
 /*
- * Function to return all pending reviews in the database.
+ * Returns all pending reviews in the database
  */
 export const findPendingReviews = async () =>
   await Reviews.find(
@@ -35,7 +40,7 @@ export const findPendingReviews = async () =>
   ).exec();
 
 /*
- * Function to return all reported reviews in the database.
+ * Returns all reported reviews in the database
  */
 export const findReportedReviews = async () =>
   await Reviews.find(
@@ -45,7 +50,7 @@ export const findReportedReviews = async () =>
   ).exec();
 
 /*
- * Function to count reviews by approved, pending, and reported and return the values.
+ * Count reviews by approved, pending, and reported and return the total counts
  */
 export const findReviewCounts = async () => {
   const approvedCount = await Reviews.countDocuments({ visible: 1 }).exec();
@@ -66,7 +71,7 @@ export const findReviewCounts = async () => {
 };
 
 /*
- * Function to count the number of approved reviews per class in the database.
+ * Counts the number of approved reviews per class in the database.
  * Count per class is mapped to a CSV string format.
  */
 export const createCourseCSV = async () => {
@@ -95,10 +100,20 @@ export const createCourseCSV = async () => {
   return csv;
 };
 
+/**
+ * Removes pending review from website and database
+ * @param {string} reviewId: Mongo generated review id.
+ */
 export const removeReviewById = async (reviewId: string) => {
   await Reviews.deleteOne({ _id: reviewId });
 };
 
+/**
+ * Updates review visibility on website and profile page
+ * @param {string} reviewId: Mongo generated review id.
+ * @param {number} reported: 1 review was reported, 0 otherwise.
+ * @param {number} visible: 1 if want to set review to visible to public, 0 if review is only visible by admin.
+ */
 export const updateReviewVisibility = async (
   reviewId: string,
   reported: number,
@@ -107,6 +122,9 @@ export const updateReviewVisibility = async (
   await Reviews.updateOne({ _id: reviewId }, { $set: { visible, reported } });
 };
 
+/**
+ * Approves all pending reviews at once
+ */
 export const approveAllReviews = async () => {
   await Reviews.updateMany(
     { visible: 0, reported: 0 },
@@ -125,6 +143,11 @@ export const findAdminUsers = async () => {
   return adminUsers;
 };
 
+/**
+ * Removes admin privilege from a user
+ * @param id netid of user
+ * @returns result of the database operation
+ */
 export const removeAdminPrivilege = async (id: string) => {
   const res = await Students.updateOne(
     { netId: id },
@@ -133,6 +156,11 @@ export const removeAdminPrivilege = async (id: string) => {
   return res;
 };
 
+/**
+ * Gives a specified user admin privilege
+ * @param id netid of user
+ * @returns result of the database operation
+ */
 export const grantAdminPrivilege = async (id: string) => {
   const res = await Students.updateOne(
     { netId: id },
