@@ -55,6 +55,9 @@ export const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  /**
+   * Confirms if the logged-in user is an admin
+   */
   useEffect(() => {
     async function confirmAdmin() {
       const response = await axios.post(`/api/admin/token/validate`, {
@@ -334,6 +337,10 @@ export const Admin = () => {
     }
   }
 
+  /**
+   * Call when admin wants to update the similar courses data when clicking the 
+   * "Update Similarity Data" button
+   */
   async function updateSimilarityData() {
     console.log('Updatng course similarity data')
     setUpdating(true)
