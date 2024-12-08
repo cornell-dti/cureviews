@@ -3,7 +3,7 @@
   padding: 24px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 5px;
   border-radius: 10px;
   background: #FFF;
 }
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .bear-icon {
@@ -28,10 +28,10 @@
 .summary {
   font-size: 16px;
   line-height: 1.5;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-.tags-title {
+.tagsTitle {
   font-size: 18px;
   margin-bottom: 10px;
 }
@@ -43,13 +43,15 @@
 }
 
 .tag {
-  display: inline-block;
-  padding: 8px 12px;
+  font-size: 16px;
+  display: flex;
+  height: 25px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   border-radius: 16px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #333333;
-  background-color: #f9f9f9;
+  background: #FFF;
 }
 
 .positiveTag {
