@@ -16,7 +16,7 @@ const Stats = ({ token }: StatsProps) => {
       Fires on every render to check for approvals or removals of reviews
     */
   useEffect(() => {
-    async function getCounts() {
+    const getCounts = async () => {
       const response = await axios.post('/api/admin/reviews/count', {
         token: token
       });
@@ -34,7 +34,7 @@ const Stats = ({ token }: StatsProps) => {
       Function to download a file containing all reviewed classes in the database and their
       number of reviews
     */
-  async function downloadCSVFile() {
+  const downloadCSVFile = async () => {
     const element = document.createElement('a');
     let csv = '';
 

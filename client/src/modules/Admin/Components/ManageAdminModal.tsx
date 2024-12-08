@@ -16,7 +16,7 @@ const ManageAdminModal = ({ token, open, setOpen }: Props) => {
   const [admins, setAdmins] = useState<Student[]>([]);
   const [netId, setNetId] = useState<string>('');
 
-  function closeModal() {
+  const closeModal = () => {
     setOpen(false);
   }
 
@@ -24,7 +24,7 @@ const ManageAdminModal = ({ token, open, setOpen }: Props) => {
    * Endpoint to get all admins
    */
   useEffect(() => {
-    async function getAdmins() {
+    const getAdmins = async () => {
       const response = await axios.post('/api/admin/users/get', {
         token: token
       });
@@ -40,7 +40,7 @@ const ManageAdminModal = ({ token, open, setOpen }: Props) => {
    * Removes an admin from the list, giving that user 'regular' privilege
    * @param user assumes that this user already has admin privilege
    */
-  async function removeAdmin(user: Student) {
+  const removeAdmin = async (user: Student) => {
     const response = await axios.post('/api/admin/users/remove', {
       userId: user.netId,
       token: token
@@ -58,7 +58,7 @@ const ManageAdminModal = ({ token, open, setOpen }: Props) => {
    * Calls endpoint to add or update a user with admin privilege
    * @param _netId the user's net id
    */
-  async function addAdminByNetId(_netId: string) {
+  const addAdminByNetId = async (_netId: string) => {
     const response = await axios.post('/api/admin/users/add', {
       userId: _netId,
       token: token
@@ -69,7 +69,7 @@ const ManageAdminModal = ({ token, open, setOpen }: Props) => {
     }
   }
 
-  function onTextChange(newText: string) {
+  const onTextChange = (newText: string) => {
     setNetId(newText);
   }
 
