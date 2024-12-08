@@ -15,6 +15,7 @@ import styles from '../Styles/Course.module.css';
 import { lastOfferedSems } from 'common/CourseCard';
 
 import Gauges from './Gauges';
+import CornelliansSay from './CornelliansSay';
 import CourseReviews from './CourseReviews';
 
 import type { NewReview } from '../../../types';
@@ -218,62 +219,73 @@ export const Course = () => {
           {/* Course Name, Button + Gauges */}
           <div className={styles.leftPanel}>
             <div className={styles.classinfo}>
-                <h1
-                  data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
-                    selectedClass.classNum
+              <h1
+                data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
                   }`}
-                >
-                  {selectedClass.classTitle}
-                </h1>
-                <div className={styles.subtitle}>
-                  {selectedClass.classSub.toUpperCase() +
-                    ' ' +
-                    selectedClass.classNum +
-                    ', ' +
-                    lastOfferedSems(selectedClass)}
-                </div>
-                <button
-                  data-cy="leave-review-button"
-                  className={styles.reviewbutton}
-                  onClick={() => setOpen(true)}
-                >
-                  Leave a review
-                </button>
+              >
+                {selectedClass.classTitle}
+              </h1>
+              <div className={styles.subtitle}>
+                {selectedClass.classSub.toUpperCase() +
+                  ' ' +
+                  selectedClass.classNum +
+                  ', ' +
+                  lastOfferedSems(selectedClass)}
               </div>
-              <Gauges
-                overall={selectedClass.classRating}
-                difficulty={selectedClass.classDifficulty}
-                workload={selectedClass.classWorkload} 
-              />
+              <button
+                data-cy="leave-review-button"
+                className={styles.reviewbutton}
+                onClick={() => setOpen(true)}
+              >
+                Leave a review
+              </button>
             </div>
+            < Gauges
+              overall={selectedClass.classRating}
+              difficulty={selectedClass.classDifficulty}
+              workload={selectedClass.classWorkload}
+            />
+            <div>
+              {selectedClass?.classSummary && selectedClass?.summaryTags && (
+                <CornelliansSay
+                  classSummary={selectedClass.classSummary}
+                  summaryTags={
+                    selectedClass.summaryTags instanceof Map
+                      ? selectedClass.summaryTags
+                      : new Map(Object.entries(selectedClass.summaryTags))
+                  }
+                />
+              )}
+            </div>
+          </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}
             <div className={styles.reviewscontainer}>
-                <div className={styles.bar}>
-                  <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
-                  <div>
-                    <label htmlFor="sort-reviews">Sort by: </label>
-                    <select
-                      name="sort-reviews"
-                      id="sort-reviews"
-                      onChange={sortReviewsBy}
-                      className={styles.filtertext}
-                    >
-                      <option value="helpful">Most Helpful</option>
-                      <option value="recent">Recent</option>
-                      <option value="professor">Professor</option>
-                    </select>
-                  </div>
-                </div>
-                <div className={styles.reviews}>
-                  <CourseReviews
-                    reviews={courseReviews}
-                    isPreview={false}
-                    isProfile={false}
-                    token={token}
-                  />
+              <div className={styles.bar}>
+                <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
+                <div>
+                  <label htmlFor="sort-reviews">Sort by: </label>
+                  <select
+                    name="sort-reviews"
+                    id="sort-reviews"
+                    onChange={sortReviewsBy}
+                    className={styles.filtertext}
+                  >
+                    <option value="helpful">Most Helpful</option>
+                    <option value="recent">Recent</option>
+                    <option value="professor">Professor</option>
+                  </select>
                 </div>
               </div>
+              <div className={styles.reviews}>
+                <CourseReviews
+                  reviews={courseReviews}
+                  isPreview={false}
+                  isProfile={false}
+                  token={token}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
