@@ -34,7 +34,7 @@ const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
                 : styles.neutralTag
               }`}
           >
-            {category} {adjective}
+            {adjective} {category}
           </div>
         ))}
       </div>
