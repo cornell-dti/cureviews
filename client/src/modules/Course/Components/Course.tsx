@@ -246,6 +246,7 @@ export const Course = () => {
               workload={selectedClass.classWorkload}
             />
             <div>
+              {/* Check if course has a classSummary */}
               {selectedClass?.classSummary && selectedClass?.summaryTags && (
                 <CornelliansSay
                   classSummary={selectedClass.classSummary}

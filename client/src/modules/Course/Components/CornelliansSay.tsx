@@ -2,6 +2,10 @@ import React from 'react';
 import styles from '../Styles/CornelliansSay.module.css';
 import Bear from '/cornellians_say_bear.svg';
 
+/**
+ * Component for Cornellians Say. Only appears on courses that have at least 3 reviews
+ * and a valid summary generated.
+ */
 type SummaryProps = {
   classSummary: string;
   summaryTags: Map<string, [string, string]>;
@@ -16,10 +20,13 @@ const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
       </div>
       <p className={styles.summary}>{classSummary}</p>
       <h2 className={styles.tagsTitle}>Top Tags</h2>
+      {/* map each tag into a div displaying each key/category with its
+      corresponding adjective and applies the corresponding style for the
+      adjective's connotation */}
       <div className={styles.tagsContainer}>
         {Array.from(summaryTags.entries()).map(([category, [adjective, connotation]]) => (
           <div
-            key={category} // Use the category as the key
+            key={category}
             className={`${styles.tag} ${connotation === "positive"
               ? styles.positiveTag
               : connotation === "negative"
