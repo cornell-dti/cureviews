@@ -95,6 +95,7 @@
 @media only screen and (max-width: 1216px) {
     .container {
         gap: 24px;
+        flex-direction: column;
     }
 
     .overallScore {
@@ -128,11 +129,16 @@
 
     .horizontal {
         gap: 6px;
+        flex-direction: column;
     }
 
     .ratingNum {
         font-size: 14px;
         font-weight: 590;
+    }
+
+    .ratings {
+        height: auto;
     }
 
     .bars {
