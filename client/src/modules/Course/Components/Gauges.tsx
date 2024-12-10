@@ -157,12 +157,14 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                                     />
                         })}
                     </div>
-                    <div className={styles.ratingNum}> {difficulty ? difficulty.toPrecision(2) : "-"} </div>
-                    <img src={difficultyEmote}
-                         className={styles.emote}
-                         title={difficultyHover}
-                         alt={difficultyHover}
-                    />
+                    <div className={styles.responsiveLabel}>
+                        <div className={styles.ratingNum}> {difficulty ? difficulty.toPrecision(2) : "-"} </div>
+                        <img src={difficultyEmote}
+                            className={styles.emote}
+                            title={difficultyHover}
+                            alt={difficultyHover}
+                        />
+                    </div>
                 </div>
                 <div className={styles.horizontal}>
                     <div className={styles.category}> Workload </div>
@@ -174,12 +176,14 @@ const Gauges = ({overall, difficulty, workload}: GaugesProps) => {
                                     />
                         })}
                     </div>
-                    <div className={styles.ratingNum}> {workload ? workload.toPrecision(2) : "-"} </div>
-                    <img src={workloadEmote}
-                         className={styles.emote}
-                         title={workloadHover}
-                         alt={workloadHover}
-                    />
+                    <div className={styles.responsiveLabel}>
+                        <div className={styles.ratingNum}> {workload ? workload.toPrecision(2) : "-"} </div>
+                        <img src={workloadEmote}
+                            className={styles.emote}
+                            title={workloadHover}
+                            alt={workloadHover}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

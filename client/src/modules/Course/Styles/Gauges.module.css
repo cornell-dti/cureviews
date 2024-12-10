@@ -92,9 +92,15 @@
     font-weight: 590;
 }
 
-@media only screen and (max-width: 1216px) {
+.responsiveLabel {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+}
+
+@media only screen and (max-width: 1124px) {
     .container {
-        gap: 24px;
+        gap: 12px;
         flex-direction: column;
     }
 
@@ -139,6 +145,7 @@
 
     .ratings {
         height: auto;
+        gap: 12px;
     }
 
     .bars {
@@ -151,5 +158,11 @@
 
     .bar {
         width: 30px;
+    }
+
+    .responsiveLabel {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 10px;
     }
 }
