@@ -23,6 +23,10 @@ function setup() {
     response.sendFile(path.join(__dirname, '../../client/build/index.html'))
   );
 
+  app.post('/hi', (_, res) => {
+    res.send("hello")
+  })
+
   app.use(express.json());
 
   configure(app);

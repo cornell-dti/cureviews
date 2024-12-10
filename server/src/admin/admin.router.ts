@@ -25,7 +25,8 @@ import {
   addAdmin,
   approveReviews,
   addCourseDescriptionsDb,
-  addSimilarityDb
+  addSimilarityDb,
+  drawRaffle
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -517,3 +518,19 @@ adminRouter.post('/rec/similarity', async (req, res) => {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
 });
+
+
+/**
+ * Reachable at POST /api/admin/draw-raffle
+ */
+adminRouter.post('/draw-raffle', async (req, res) => {
+  try {
+    const { start } = req.body;
+    console.log('start', start);
+    const netid = await drawRaffle(start);
+    console.log(netid);
+    res.status(200).json({ netid: netid });
+  } catch (err) {
+    res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+})

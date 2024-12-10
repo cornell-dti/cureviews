@@ -27,7 +27,7 @@ export const Admin = () => {
     | 'empty'
     | 'semester'
     | 'profsReset'
-    | 'profsUpdate'
+    | 'professors'
     | 'subjects'
     | 'database'
     | 'description'
@@ -39,7 +39,7 @@ export const Admin = () => {
     empty: '',
     semester: 'New semester data successfully added',
     profsReset: 'Professor data successfully reset to empty',
-    profsUpdate: 'Professor data successfully updated',
+    professors: 'Professor data successfully updated',
     subjects: 'Subject full name data successfully updated',
     database: 'Database successfully initialized',
     description: 'Course description data successfully added',
@@ -50,6 +50,8 @@ export const Admin = () => {
   const [updatingField, setUpdatingField] = useState<string>('');
 
   const [addSemester] = useState(['FA24', 'SP25']);
+  const [raffleStartDate, setRaffleStartDate] = useState<string>('');
+  const [raffleWinner, setRaffleWinner] = useState<string>('');
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
 
   const { isLoggedIn, token, isAuthenticating } =
@@ -362,6 +364,28 @@ export const Admin = () => {
   }
 
   /**
+   * Call to draw a raffle winner for reviews submitted from a specified start date.
+   */
+  const drawRaffleWinner = async () => {
+    if (raffleStartDate === '') return
+    setUpdating(true);
+    const date = new Date(raffleStartDate);
+    const response = await axios.post('/api/admin/draw-raffle', { token: token, start: date });
+    if (response.status === 200) {
+      console.log(response.data.netid);
+      setRaffleWinner(response.data.netid);
+    } else {
+      setUpdated('failure');
+    }
+    setUpdating(false);
+  }
+
+  const handleRaffleDateChange = (e: React.ChangeEvent<HTMLInputElement>): void => { 
+    const date = e.target.value;
+    setRaffleStartDate(date);
+  }
+
+  /**
    * Handle the first click to the "Initialize Database" button. Show an alert
    * and update state to remember the next click will be a double click.
    */
@@ -480,8 +504,24 @@ export const Admin = () => {
               >
                 Update Similarity Data
               </button>
+              
               {renderInitButton()}
             </div >
+            <div> 
+              <br/>
+              <div>
+              Raffle Start Date: <input type='date' value={raffleStartDate || ''} onChange={handleRaffleDateChange} />
+              </div>
+              <button
+                disabled={updating}
+                type="button"
+                className={styles.adminButtons}
+                onClick={()=> drawRaffleWinner()}
+              > 
+                Draw Raffle Winner
+              </button>
+              <div> Winner: {raffleWinner && raffleWinner} </div>
+            </div>
           </div >
 
           <ManageAdminModal
