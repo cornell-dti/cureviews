@@ -15,6 +15,7 @@
 
     padding: 12px 12px;
     gap: 30px;
+    width: 100%;
 
     border-radius: 8px;
     background: #FFF;
@@ -77,7 +78,7 @@
     justify-content: center;
     gap: 3px;
 }
-  
+
 .bar {
     height: 8px;
     width: 20%;
@@ -112,7 +113,7 @@
     .centered {
         font-size: 12px;
     }
-    
+
     .category {
         font-size: 12px;
         min-width: 54px;
