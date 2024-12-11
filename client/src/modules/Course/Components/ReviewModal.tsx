@@ -43,7 +43,9 @@ const ReviewModal = ({
     'D+',
     'D',
     'D-',
-    'F'
+    'F',
+    'S',
+    'U',
   ];
 
   // Form & Review Content State

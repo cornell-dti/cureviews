@@ -27,7 +27,7 @@ const UpdateReview = ({
   const [shortName, setShortName] = useState<string>('');
   const [fullName, setFullName] = useState<string>('');
 
-  async function getCourse() {
+  const getCourse = async () => {
     const response = await axios.post(`/api/courses/get-by-id`, {
       courseId: review.class
     });
@@ -41,7 +41,7 @@ const UpdateReview = ({
 
   getCourse();
 
-  function renderButtons(adminReview: any) {
+  const renderButtons = (adminReview: any) => {
     const reported = adminReview.reported;
     if (reported === 1) {
       return (
