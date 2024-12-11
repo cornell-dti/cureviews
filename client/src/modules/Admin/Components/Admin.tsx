@@ -508,7 +508,8 @@ export const Admin = () => {
               {renderInitButton()}
             </div >
             <div> 
-              <br/>
+              <br />
+              <h2> Raffle </h2>
               <div>
               Raffle Start Date: <input type='date' value={raffleStartDate || ''} onChange={handleRaffleDateChange} />
               </div>
