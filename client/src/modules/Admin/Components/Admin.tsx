@@ -162,7 +162,7 @@ export const Admin = () => {
    * Call when admin would like to mass-approve all of the currently pending reviews.
    */
   const approveAllReviews = async () => {
-    const response = await axios.post('/api/admin/reviews/approve/all', {
+    const response = await axios.post('/api/admin/reviews/approve-all', {
       token: token
     });
     if (response.status === 200) {
