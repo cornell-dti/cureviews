@@ -46,6 +46,8 @@
   align-items: flex-start;
   gap: 16px;
   align-self: stretch;
+  max-height: calc(3 * 112px + 2 * 16px);
+  overflow-y: auto;
 }
 
 .card {
@@ -58,6 +60,22 @@
   border-radius: 10px;
   border: 1px solid #BFD9F6;
   background: #FFF;
+  width: calc(100% - 10px);
+}
+
+::-webkit-scrollbar-track {
+  background: #ffff;
+  border-radius: 13.573px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #807b7b;
+  border-radius: 13.573px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
 }
 
 .metrics {
