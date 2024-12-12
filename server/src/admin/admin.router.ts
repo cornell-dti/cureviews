@@ -526,9 +526,7 @@ adminRouter.post('/rec/similarity', async (req, res) => {
 adminRouter.post('/draw-raffle', async (req, res) => {
   try {
     const { start } = req.body;
-    console.log('start', start);
     const netid = await drawRaffle(start);
-    console.log(netid);
     res.status(200).json({ netid: netid });
   } catch (err) {
     res.status(500).json({ error: `Internal Server Error: ${err}` });

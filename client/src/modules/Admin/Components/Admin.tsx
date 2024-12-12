@@ -372,7 +372,6 @@ export const Admin = () => {
     const date = new Date(raffleStartDate);
     const response = await axios.post('/api/admin/draw-raffle', { token: token, start: date });
     if (response.status === 200) {
-      console.log(response.data.netid);
       setRaffleWinner(response.data.netid);
     } else {
       setUpdated('failure');
