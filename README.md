@@ -120,6 +120,18 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 
 ## Contributors
 
+### Fall 2024
+
+- **Megan Yap** - Product Manager
+- **Will Zhang** - Technical Product Manager
+- **Erica Lee** - Designer
+- **Renee Du** - Designer
+- **Helen Lei** - Developer
+- **Jacqueline Cai** - Developer
+- **Andrew Qian** - Developer
+- **Matthew Kim** - Developer
+- **Jaeyoung Lee** - Product Marketing Manager
+
 ### Spring 2024
 
 - **Jonathan Kim** - Product Manager
@@ -130,8 +142,8 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **Erica Lee** - Designer
 - **Julie Jeong** - Developer Advisor
 - **Helen Lei** - Developer
-- **Andrew Qian** - Developer
 - **Jacqueline Cai** - Developer
+- **Andrew Qian** - Developer
 - **Jaeyoung Lee** - Product Marketing Manager
 - **Harrison Chin** - Coach
 
