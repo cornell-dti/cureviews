@@ -14,30 +14,32 @@ const stemWord = (word) => {
   return word;
 }
 
+const cleanWords = (sentence: string, fillerWords: string[]) =>
+  sentence
+    .match(/\b\w+\b/g)
+    ?.map(word => {
+      let singularWord = stemWord(word.toLowerCase());
+      return fillerWords.includes(singularWord) ? '' : singularWord;
+    })
+    .filter(Boolean)
+    .join(' ');
+
 /**
  * Preprocesses the description to remove pluralities and unnecessary punctuation
  * @param description A course description that needs to be preprocessed
  * @returns The processed description for a course
  */
 export const preprocess = (description: string) => {
-  const sentences = description.match(/[^.!?]*[.!?]\s+[A-Z]/g) || [description];
   const fillerWords = ["and", "the", "to", "for", "with"];
+  const sentences = description.match(/[^.!?]+[.!?]*/g) || [description];
 
   const processedText = sentences.map(sentence => {
-    const words = sentence.match(/\b\w+\b/g) || [];
-    const cleanedWords = words.map(word => {
-      let singularWord = stemWord(word.toLowerCase());
-      fillerWords.forEach(filler => {
-        const regex = new RegExp(`\\b${filler}\\b`, 'g');
-        singularWord = singularWord.replace(regex, '');
-      });
-      return singularWord.replace(/[^\w\s]/g, '');
-    });
-    return cleanedWords.join(' ');
+    const cleaned = cleanWords(sentence, fillerWords);
+    return cleaned;
   });
-  return processedText.join('. ');
-}
 
+  return processedText.join('. ').trim();
+};
 
 /**
  * Calculates the inverse document frequency for the given terms
