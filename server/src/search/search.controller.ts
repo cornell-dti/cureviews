@@ -39,7 +39,7 @@ const fullCourseSearch = async ({ search }: SearchQueryType) => {
     // returns all courses taught by particular professor
     const coursesByProfessor = await search.searchQuery(findCourseProfessor);
     if (coursesByProfessor && coursesByProfessor.length > 0) {
-      return new Set(coursesByProfessor);
+      return new Set(coursesByProfessor.sort((a, b) => Number(a.classNum) - Number(b.classNum)));
     }
 
     // check if first digit is a number. Catches searchs like "1100"
