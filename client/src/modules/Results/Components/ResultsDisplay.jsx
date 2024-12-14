@@ -11,7 +11,7 @@ import FilterIcon from '../../../assets/icons/filtericon.svg';
 import styles from '../Styles/Results.module.css';
 
 /*
-  ResultsDisplay Component.a
+  ResultsDisplay Component.
 
   Used by Results component, renders filters,
   list of class objects (results), and PreviewCard.
@@ -28,7 +28,7 @@ export default class ResultsDisplay extends Component {
       courseList: this.props.courses,
       cardCourse: this.props.courses[0],
       activeCard: 0,
-      selected: props.type === 'major' ? 'rating' : 'relevance',
+      selected: 'relevance',
       filters: {
         Fall: true,
         Spring: true,
@@ -249,9 +249,8 @@ export default class ResultsDisplay extends Component {
     return items.map((result, index) => (
       <div
         className={styles.filteredresults}
-        data-cy={`results-display-${result.classSub.toLowerCase()}-${
-          result.classNum
-        }`}
+        data-cy={`results-display-${result.classSub.toLowerCase()}-${result.classNum
+          }`}
       >
         <FilteredResult
           key={index}
