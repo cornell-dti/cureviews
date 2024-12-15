@@ -46,12 +46,13 @@
   font-size: 16px;
   display: flex;
   height: 25px;
-  padding: 10px;
   justify-content: center;
   align-items: center;
   gap: 10px;
   border-radius: 16px;
   background: #FFF;
+  padding: 0 10px;
+  min-height: 25px;
 }
 
 .positiveTag {
