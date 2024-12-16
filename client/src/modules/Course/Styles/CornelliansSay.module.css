@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  border-radius: 10px;
+  background: #FFF;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.bear-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.summary {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.tagsTitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  font-size: 16px;
+  display: flex;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 16px;
+  background: #FFF;
+  padding: 0 10px;
+  min-height: 25px;
+}
+
+.positiveTag {
+  border: 1px solid #53b227;
+}
+
+.negativeTag {
+  border: 1px solid #ffa5a5;
+}
+
+.neutralTag {
+  border: 1px solid #f8cc30;
+}
