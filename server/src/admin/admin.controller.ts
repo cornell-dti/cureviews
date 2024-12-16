@@ -9,7 +9,10 @@ import {
   findAdminUsers,
   removeAdminPrivilege,
   grantAdminPrivilege,
-  approveAllReviews
+  approveAllReviews,
+  findReviewsByDate,
+  getCourseReviews,
+  findStudentByUser
 } from './admin.data-access';
 import {
   AdminAddSemesterType,
@@ -444,4 +447,70 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
     }
   }
   return false;
+}
+
+/* DRAWING RAFFLE WINNER CODE: */
+class RaffleMap<K, V> extends Map<K, V> {
+  constructor(private defaultFactory: () => V) {
+    super();
+  }
+
+  get(key: K): V {
+    if (!this.has(key)) {
+      this.set(key, this.defaultFactory());
+    }
+    return super.get(key);
+  }
+}
+
+interface DefaultRaffleValue {
+  entries: number;
+  reviews: number;
+  bonus: boolean;
+}
+
+/**
+ * 
+ * @param start date
+ * @returns student netid that won the raffle. [done without replacement/removal]
+ */
+export const drawRaffle = async (start: Date) => {
+  const raffleMap = new RaffleMap<string, DefaultRaffleValue>(() => ({ 'entries': 0, 'reviews': 0, 'bonus': false }));
+  const reviews = await findReviewsByDate(start);
+
+  // loop thru reviews and update number of entries
+  await Promise.all(reviews.map(async (review) => {
+    const reviews = await getCourseReviews(review.class);
+    const count = reviews.length;
+    const user = review.user;
+    const userValue = raffleMap.get(user);
+    userValue.reviews += 1;
+    if (userValue.reviews >= 5 && !userValue.bonus) {
+      userValue.entries += 5;
+      userValue.bonus = true;
+    }
+    if (count > 3) {
+      userValue.entries += 3;
+    } else {
+      userValue.entries += 1;
+    }
+    raffleMap.set(user, userValue);
+  }))
+
+  // draw a random winner
+  let totalEntries = 0;
+  raffleMap.forEach(values => totalEntries += values.entries);
+  const winningNumber = Math.random() * totalEntries;
+  let currentSum = 0;
+  let winner = ''
+  for (const [user, values] of raffleMap) {
+    currentSum += values.entries;
+    if (currentSum > winningNumber) {
+      winner = user;
+      break;
+    }
+  }
+  // return the students netid
+  const student = await findStudentByUser(winner);
+  return student.netId;
 }
