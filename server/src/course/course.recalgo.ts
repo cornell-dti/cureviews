@@ -30,7 +30,7 @@ const cleanWords = (sentence: string, fillerWords: string[]) =>
  * @returns The processed description for a course
  */
 export const preprocess = (description: string) => {
-  const fillerWords = ["and", "the", "to", "for", "with", "it", "you", "not", "but", "have", "been", "of", "all", "in", "your", "their", "do", "this", "a", "is", "be"];
+  const fillerWords = ["and", "the", "to", "for", "with", "it", "you", "not", "but", "have", "been", "of", "all", "in", "your", "their", "do", "this", "a", "is", "be", "will"];
   const sentences = description.match(/[^.!?]+[.!?]*/g) || [description];
 
   const processedText = sentences.map(sentence => {
