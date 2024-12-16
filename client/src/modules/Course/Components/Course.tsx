@@ -15,6 +15,7 @@ import styles from '../Styles/Course.module.css';
 import { lastOfferedSems } from 'common/CourseCard';
 
 import Gauges from './Gauges';
+import CornelliansSay from './CornelliansSay';
 import CourseReviews from './CourseReviews';
 import SimilarCoursesSection from './SimilarCourses';
 
@@ -258,15 +259,29 @@ export const Course = () => {
                 Leave a review
               </button>
             </div>
-            <Gauges
+            < Gauges
               overall={selectedClass.classRating}
               difficulty={selectedClass.classDifficulty}
               workload={selectedClass.classWorkload}
             />
+            {/* Check if course has a classSummary */}
+            {selectedClass?.classSummary && selectedClass?.summaryTags && (
+              <CornelliansSay
+                classSummary={selectedClass.classSummary}
+                summaryTags={
+                  selectedClass.summaryTags instanceof Map
+                    ? selectedClass.summaryTags
+                    : new Map(Object.entries(selectedClass.summaryTags))
+                }
+              />
+            )}
             <SimilarCoursesSection
               similarCourses={similarCourses}
               isVisible={screenWidth > 768}
             />
+            {/* <div>
+              
+            </div> */}
           </div>
           <div className={styles.rightPanel}>
             {/* Reviews Displaying */}
@@ -301,15 +316,15 @@ export const Course = () => {
               isVisible={screenWidth <= 768}
             />
           </div >
-        </div>
+        </div >
 
         {/* Fixed Bottom-Right Review Button */}
-        <button
+        < button
           className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
           onClick={() => setOpen(true)}
         >
           <img src={WriteReviewIcon} alt="write-new-review" />
-        </button>
+        </button >
 
         <ReviewModal
           open={open}
@@ -319,7 +334,7 @@ export const Course = () => {
             selectedClass.classProfessors ? selectedClass.classProfessors : []
           }
         />
-      </div>
+      </div >
     );
   }
 
