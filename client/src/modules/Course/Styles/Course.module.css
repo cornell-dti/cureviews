@@ -22,7 +22,9 @@
   flex-flow: column nowrap;
   width: 40%;
   padding-right: 24px;
-  gap: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
 }
 
 .rightPanel {
@@ -34,7 +36,6 @@
 
 .classinfo {
   width: 100%;
-  padding-bottom: 24px;
 }
 
 .gauges {
@@ -110,7 +111,6 @@
 
   .gauges {
     padding-bottom: 24px;
-    ;
   }
 
   .subtitle {
