@@ -93,7 +93,8 @@ export default class ResultsDisplay extends Component {
         'semesters',
         new Map([
           ['Fall', true],
-          ['Spring', true]
+          ['Spring', true],
+          ['Summer', true]
         ])
       ],
       ['subjects', []]
@@ -138,6 +139,7 @@ export default class ResultsDisplay extends Component {
    */
   sort() {
     let availableClasses;
+
     if (this.state.filteredItems.length === 0) {
       availableClasses = this.state.courseList;
     } else {
