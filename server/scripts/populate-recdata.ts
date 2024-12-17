@@ -9,6 +9,7 @@ import { preprocess, idf, tfidf } from '../src/course/course.recalgo';
  */
 export const addAllProcessedDescriptions = async (): Promise<boolean> => {
   try {
+    console.log("adding processed descriptions");
     const courses = await Classes.find().exec();
     if (courses) {
       for (const course of courses) {
@@ -35,7 +36,6 @@ const addProcessedDescription = async (course): Promise<boolean> => {
   const subject = course.classSub;
   const num = course.classNum;
   try {
-    console.log(`${subject} ${num}: ${processed}`)
     const rec = await RecommendationMetadata.findOne({ _id: courseId });
     if (rec) {
       await RecommendationMetadata.updateOne(
@@ -58,6 +58,7 @@ const addProcessedDescription = async (course): Promise<boolean> => {
         throw new Error();
       }
     }
+    console.log(`${subject} ${num}`);
     return true;
   } catch (err) {
     console.log(`Error in adding processed description for ${subject} ${num}: ${err}`);
@@ -71,10 +72,12 @@ const addProcessedDescription = async (course): Promise<boolean> => {
  */
 export const addIdfVector = async (): Promise<boolean> => {
   try {
+    console.log("adding idf vector");
     const metadata = await RecommendationMetadata.find().exec();
     const descriptions = metadata.map(course => course.processedDescription.split(' '));
     const allTerms = [...new Set(descriptions.flat())];
     const idfValues = idf(allTerms, descriptions);
+    await GlobalMetadata.deleteMany({});
     const res = await new GlobalMetadata({
       idfVector: idfValues
     }).save();
@@ -97,6 +100,7 @@ export const addIdfVector = async (): Promise<boolean> => {
  */
 export const addAllTfIdfVectors = async (): Promise<boolean> => {
   try {
+    console.log("adding tfidf vectors");
     const courses = await RecommendationMetadata.find().exec();
     const global = await GlobalMetadata.findOne().exec();
     const idfVector = global.idfVector;
