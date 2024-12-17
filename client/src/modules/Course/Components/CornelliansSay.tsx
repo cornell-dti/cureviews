@@ -12,6 +12,9 @@ type SummaryProps = {
 }
 const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
   const summaryTagsMap = new Map(Object.entries(summaryTags));
+  const capitalizeFirstLetter = (word: string) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -34,7 +37,7 @@ const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
                 : styles.neutralTag
               }`}
           >
-            {adjective} {category}
+            {capitalizeFirstLetter(adjective)} {category}
           </div>
         ))}
       </div>
