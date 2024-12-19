@@ -65,7 +65,7 @@ export default class ResultsDisplay extends Component {
         {
           courseList: this.props.courses,
           relevantCourseList: this.props.courses,
-          cardCourse: this.props.courses[0]
+          cardCourse: this.props.courses[0] || null
         },
         () => this.filterClasses()
       );
@@ -138,13 +138,7 @@ export default class ResultsDisplay extends Component {
    * Sorts list of class results by category selected in this.state.selected
    */
   sort() {
-    let availableClasses;
-
-    if (this.state.filteredItems.length === 0) {
-      availableClasses = this.state.courseList;
-    } else {
-      availableClasses = this.state.filteredItems;
-    }
+    const availableClasses = this.state.filteredItems;
 
     if (this.state.selected === 'relevance') {
       this.sortBy(availableClasses, 'score', 0, true);
@@ -201,7 +195,10 @@ export default class ResultsDisplay extends Component {
       );
     }
 
-    this.setState({ filteredItems: filteredItems }, () => this.sort());
+    this.setState({
+      filteredItems: filteredItems,
+      cardCourse: filteredItems[0] || null
+    }, () => this.sort());
   }
 
   /**
@@ -244,9 +241,7 @@ export default class ResultsDisplay extends Component {
    * The original list as FilteredResult components otherwise
    */
   renderResults() {
-    const items = this.state.filteredItems.length
-      ? this.state.filteredItems
-      : this.state.courseList;
+    const items = this.state.filteredItems;
 
     return items.map((result, index) => (
       <div
@@ -310,92 +305,80 @@ export default class ResultsDisplay extends Component {
     return (
       <div className={styles.container}>
         <h1> Search Results </h1>
-        {/* Case where results are still being loaded */}
-        {this.props.loading === true && <Loading />}
-        {/* Case where no results returned */}
-        {this.state.courseList.length === 0 && this.props.loading === false && (
-          <div>
-            <img
-              src="/noResults.svg"
-              className={styles.noresultimg}
-              alt="No class found"
-            />
-            <div>Sorry! No classes match your search.</div>
-          </div>
-        )}
-        {/* Case where results are returned (non-empty) */}
-        {this.state.courseList.length !== 0 && this.props.loading !== true && (
+        {this.props.loading ? (
+          <Loading />
+        ) : (
           <div className={styles.layout} data-cy="results-display">
-            <div className={styles.filtercol}>
-              <div className={styles.filtertext}>Filter</div>
-              <div>
-                <div className={styles.filtercategory}>Semester</div>
-                {this.renderCheckboxes('semesters')}
-              </div>
-              <div>
-                <div className={styles.filtercategory}>Level</div>
-                {this.renderCheckboxes('levels')}
-              </div>
-            </div>
 
-            <div className={styles.columns}>
-              <div>
-                We found{' '}
-                <b>
-                  {this.state.filteredItems.length === 0
-                    ? this.state.courseList.length
-                    : this.state.filteredItems.length}
-                </b>{' '}
-                courses for &quot;{this.props.userInput}
-                &quot;
-              </div>
-
-              <div className={styles.bar}>
+            <>
+              <div className={styles.filtercol}>
+                <div className={styles.filtertext}>Filter</div>
                 <div>
-                  <label>Sort By: </label>
-                  <select
-                    value={this.state.selected}
-                    className={styles.sortselector}
-                    onChange={(e) => this.handleSelect(e)}
-                  >
-                    <option value="relevance">Relevance</option>
-                    <option value="rating">Overall Rating</option>
-                    <option value="diff">Difficulty</option>
-                    <option value="work">Workload</option>
-                  </select>
+                  <div className={styles.filtercategory}>Semester</div>
+                  {this.renderCheckboxes('semesters')}
+                </div>
+                <div>
+                  <div className={styles.filtercategory}>Level</div>
+                  {this.renderCheckboxes('levels')}
+                </div>
+              </div>
+
+              <div className={styles.columns}>
+                <div>
+                  We found{' '}
+                  <b>{this.state.filteredItems.length}</b> courses for &quot;
+                  {this.props.userInput}&quot;
                 </div>
 
-                <button
-                  className={styles.filterbutton}
-                  onClick={this.setShowFilterPopup}
-                >
-                  Filter <img src={FilterIcon} alt="filter-icon" />
-                </button>
-              </div>
-              {this.state.showFilterPopup && (
-                <FilterPopup
-                  state={this.state}
-                  props={this.props}
-                  renderCheckboxes={this.renderCheckboxes}
-                  getSubjectOptions={this.getSubjectOptions}
-                  setShowFilterPopup={this.setShowFilterPopup}
-                />
-              )}
-
-              <div className={styles.layout}>
-                <div className={styles.list}>
-                  <div className={styles.resultslist}>
-                    <ul>{this.renderResults()}</ul>
+                <div className={styles.bar}>
+                  <div>
+                    <label>Sort By: </label>
+                    <select
+                      value={this.state.selected}
+                      className={styles.sortselector}
+                      onChange={(e) => this.handleSelect(e)}
+                    >
+                      <option value="relevance">Relevance</option>
+                      <option value="rating">Overall Rating</option>
+                      <option value="diff">Difficulty</option>
+                      <option value="work">Workload</option>
+                    </select>
                   </div>
+
+                  <button
+                    className={styles.filterbutton}
+                    onClick={this.setShowFilterPopup}
+                  >
+                    Filter <img src={FilterIcon} alt="filter-icon" />
+                  </button>
                 </div>
-                <div className={styles.preview}>
-                  <PreviewCard
-                    course={this.state.cardCourse}
-                    transformGauges={this.state.transformGauges}
+                {this.state.showFilterPopup && (
+                  <FilterPopup
+                    state={this.state}
+                    props={this.props}
+                    renderCheckboxes={this.renderCheckboxes}
+                    getSubjectOptions={this.getSubjectOptions}
+                    setShowFilterPopup={this.setShowFilterPopup}
                   />
-                </div>
+                )}
+
+                {this.state.filteredItems.length !== 0 && (
+                  <div className={styles.layout}>
+                    <div className={styles.list}>
+                      <div className={styles.resultslist}>
+                        <ul>{this.renderResults()}</ul>
+                      </div>
+                    </div>
+                    <div className={styles.preview}>
+                      <PreviewCard
+                        course={this.state.cardCourse}
+                        transformGauges={this.state.transformGauges}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            </>
           </div>
         )}
       </div>
