@@ -1,107 +1,89 @@
 .select {
   width: 100%;
   max-width: 456px;
-
   border: 1px solid var(--clr-blue-300);
   border-radius: 10px;
-  padding: 10px;
-
+  padding: 8px 10px;
   display: flex;
   align-items: center;
-  gap: 0.5em;
-
-  outline: none;
-
   position: relative;
-
+  outline: none;
   cursor: pointer;
 }
 
 .placeholder {
   color: rgb(161, 161, 161);
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 14px;
 }
 
 .values {
-  width: 100%;
+  flex: 1;
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.5em;
-  overflow-x: auto;
 }
 
-.single-value {
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
   font-size: 14px;
+  padding: 4px 0;
+  min-height: 24px;
 }
 
 .value {
   background: rgb(238, 238, 238);
-  padding: 6px;
+  padding: 6px 8px;
   border-radius: 4px;
-
   display: flex;
-  flex-flow: row nowrap;
+  align-items: center;
   gap: 8px;
-
   font-size: 14px;
 }
 
-.value > img {
+.value img {
   width: 10px;
-  /* margin-bottom: -1px; */
+  cursor: pointer;
 }
 
 .dropdownicon {
   margin-left: auto;
   width: 12px;
+  cursor: pointer;
 }
 
-.select:focus {
-  border: 3px solid var(--clr-blue-400);
-  padding: 8px;
+.select:focus-within {
+  border: 2px solid var(--clr-blue-400);
 }
 
 .options {
   display: flex;
-  flex-flow: column nowrap;
-
+  flex-direction: column;
   position: absolute;
   margin: 0;
   padding: 8px;
   list-style-type: none;
   max-height: 200px;
   overflow-y: auto;
-  border: 0.5px solid rgb(225, 225, 225);
-  border-radius: 4%;
+  border: 1px solid var(--clr-blue-300);
+  border-radius: 10px;
   width: 100%;
-  left: 0;
-  top: calc(100% + 0.55em);
+  top: calc(100% + 5px);
   background: #fff;
-  z-index: 101;
-}
-
-.gradeoptions {
-  display: flex;
-  flex-flow: column nowrap;
-
-  position: absolute;
-  margin: 0;
-  padding: 8px;
-  list-style-type: none;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 0.5px solid rgb(225, 225, 225);
-  border-radius: 4%;
-  width: 100%;
-  left: 0;
-  bottom: calc(100% + 0.55em);
-  background: #fff;
-  z-index: 101;
+  z-index: 10;
 }
 
 .option {
   padding: 0.8em 1em;
   cursor: pointer;
-
+  font-size: 14px;
   border-radius: 5px;
 }
 
@@ -111,4 +93,10 @@
 
 .option.highlighted {
   background-color: var(--clr-blue-200);
+}
+
+.noOptions {
+  padding: 0.8em 1em;
+  color: rgb(161, 161, 161);
+  text-align: center;
 }
