@@ -17,16 +17,19 @@
 }
 
 .values {
-  width: 100%;
+  flex: 1;
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: wrap;
   gap: 0.5em;
+  align-items: center;
   overflow-x: auto;
 }
 
 .searchInput {
+  flex: 1;
   border: none;
   outline: none;
+  min-width: 50px;
 }
 
 .searchInput::placeholder {
@@ -51,6 +54,7 @@
 
 .value>img {
   width: 10px;
+  cursor: pointer;
 }
 
 .dropdownicon {
