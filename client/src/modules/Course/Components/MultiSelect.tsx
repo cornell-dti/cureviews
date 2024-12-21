@@ -11,28 +11,24 @@ const MultiSelect = ({
   placeholder,
   onChange
 }: SelectProps) => {
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
-  // helpers
-
-  const selected = (option: string) => {
-    return value.includes(option);
-  };
-
-  // logic controls:
+  const filteredOptions = searchTerm.length !== 0
+    ? options.filter((option) =>
+      option.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    : options;
 
   const handleDropdown = () => {
     setOpen(!open);
   };
 
   const handleSelect = (option: string) => {
-    if (value.includes(option)) {
-      onChange(value.filter((selection) => selection !== option));
-    } else {
+    if (!value.includes(option)) {
       onChange([...value, option]);
     }
-
+    setSearchTerm('');
     setOpen(false);
   };
 
@@ -40,53 +36,69 @@ const MultiSelect = ({
     onChange(value.filter((opt: string) => opt !== option));
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (!open) setOpen(true);
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setOpen(false);
+    }
+  };
+
   return (
     <div
       className={styles.select}
       tabIndex={0}
-      onBlur={() => setOpen(false)}
+      onBlur={handleBlur}
       onClick={handleDropdown}
     >
       <div className={styles.values}>
-        {value.length > 0 ? (
-          value.map((selection) => (
-            <div className={styles.value} key={selection}>
-              {' '}
-              {selection}{' '}
-              <img
-                onClick={() => handleDelete(selection)}
-                src={closeIcon}
-                alt="close"
-              />
-            </div>
-          ))
-        ) : (
-          <div className={styles.placeholder}> {placeholder} </div>
-        )}
+        {value.map((selection) => (
+          <div className={styles.value} key={selection}>
+            {selection}
+            <img
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(selection);
+              }}
+              src={closeIcon}
+              alt="close"
+            />
+          </div>
+        ))}
+        <input
+          type="text"
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={handleInputChange}
+          placeholder={value.length === 0 ? placeholder : ''}
+        />
         <img
           className={styles.dropdownicon}
           src={dropdownIcon}
-          alt="drop-down-icon"
+          alt="dropdown"
         />
       </div>
       {open && (
         <ul className={styles.options}>
-          {options.map((option, index) => (
-            <li
-              className={`${styles.option} ${
-                selected(option) && styles.selected
-              } ${index === highlightedIndex && styles.highlighted}`}
-              key={option}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSelect(option);
-              }}
-              onMouseEnter={() => setHighlightedIndex(index)}
-            >
-              {' '}
-              {option}{' '}
-            </li>
-          ))}
+          {filteredOptions.length > 0 ? (
+            filteredOptions.map((option) => (
+              <li
+                className={styles.option}
+                key={option}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelect(option);
+                }}
+              >
+                {option}
+              </li>
+            ))
+          ) : (
+            <li className={styles.noOptions}>No options found</li>
+          )}
         </ul>
       )}
     </div>
