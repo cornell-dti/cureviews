@@ -243,6 +243,7 @@ const ReviewModal = ({
             />
           </div>
           <div className={styles.textcol}>
+            <p className={styles.anonymouslabel}>Don't worry - all your reviews are anonymous!</p>
             <textarea
               className={styles.textinputbox}
               value={reviewText}

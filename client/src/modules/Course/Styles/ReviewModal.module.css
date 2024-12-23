@@ -119,6 +119,15 @@
   place-self: center;
 }
 
+.anonymouslabel {
+  display: flex;
+  width: 100%;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--clr-blue-300);
+  margin-bottom: -1em;
+}
+
 .textinputbox {
   width: 100%;
   height: 100%;
