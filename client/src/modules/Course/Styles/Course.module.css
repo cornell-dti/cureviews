@@ -167,6 +167,13 @@
   color: var(--clr-gray-300);
 }
 
+.select-container {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 8px;
+}
+
 .filtertext {
   color: var(--clr-blue-400);
 }

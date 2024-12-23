@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
 import axios from 'axios';
@@ -43,6 +43,9 @@ export const Course = () => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [visibleCourseReviews, setVisibleCourseReviews] = useState<Review[]>([]);
+  const pastProfs = useRef<Set<string>>(new Set<string>());
+  const selectedProf = useRef<string>("none");
 
   const { token } = useAuthOptionalLogin();
 
@@ -150,6 +153,17 @@ export const Course = () => {
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
           reviews.sort(sortByLikes);
           setCourseReviews(reviews);
+          setVisibleCourseReviews(reviews);
+
+          reviews.map((r: Review) =>
+            r.professors
+              ? r.professors.map(
+                (p: string) => pastProfs.current.add(p)
+              ) : undefined
+          );
+          course.classProfessors.map((p: string) =>
+            pastProfs.current.add(p)
+          );
 
           const recommendations = course.recommendations;
           setSimilarCourses(recommendations);
@@ -171,12 +185,28 @@ export const Course = () => {
   function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
     if (value === 'helpful') {
-      setCourseReviews([...courseReviews].sort(sortByLikes));
+      setVisibleCourseReviews([...visibleCourseReviews].sort(sortByLikes));
     } else if (value === 'recent') {
-      setCourseReviews([...courseReviews].sort(sortByDate));
+      setVisibleCourseReviews([...visibleCourseReviews].sort(sortByDate));
     } else if (value === 'professor') {
-      setCourseReviews([...courseReviews].sort(sortByProf));
+      setVisibleCourseReviews([...visibleCourseReviews].sort(sortByProf));
     }
+  }
+
+  /**
+   * Filters reviews based on selected professor
+   */
+  function filterByProf(event: React.ChangeEvent<HTMLSelectElement>) {
+    const value = event.target.value;
+    if (value === 'none') {
+      setVisibleCourseReviews([...courseReviews])
+    } else {
+      setVisibleCourseReviews(
+        [...courseReviews]
+          .filter((r: Review) => r.professors?.includes(value))
+      );
+    }
+    selectedProf.current = value;
   }
 
   /**
@@ -239,8 +269,9 @@ export const Course = () => {
           <div className={styles.leftPanel}>
             <div className={styles.classinfo}>
               <h1
-                data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${selectedClass.classNum
-                  }`}
+                data-cy={`course-title-${selectedClass.classSub.toLowerCase()}-${
+                  selectedClass.classNum
+                }`}
               >
                 {selectedClass.classTitle}
               </h1>
@@ -259,7 +290,7 @@ export const Course = () => {
                 Leave a review
               </button>
             </div>
-            < Gauges
+            <Gauges
               overall={selectedClass.classRating}
               difficulty={selectedClass.classDifficulty}
               workload={selectedClass.classWorkload}
@@ -284,47 +315,71 @@ export const Course = () => {
             </div> */}
           </div>
           <div className={styles.rightPanel}>
-            {/* Reviews Displaying */}
             <div className={styles.reviewscontainer}>
               <div className={styles.bar}>
-                <h2 className={styles.title}>Past Reviews ({courseReviews?.length}) </h2>
-                <div>
-                  <label htmlFor="sort-reviews">Sort by: </label>
-                  <select
-                    name="sort-reviews"
-                    id="sort-reviews"
-                    onChange={sortReviewsBy}
-                    className={styles.filtertext}
-                  >
-                    <option value="helpful">Most Helpful</option>
-                    <option value="recent">Recent</option>
-                    <option value="professor">Professor</option>
-                  </select>
+                <h2 className={styles.title}>
+                  Past Reviews (
+                  {selectedProf.current !== 'none'
+                    ? visibleCourseReviews.length + ' of '
+                    : ''}
+                  {courseReviews.length}){' '}
+                </h2>
+                <div style={{ display: 'flex', gap: '2rem' }}>
+                  <div className={styles.selectContainer}>
+                    <label htmlFor="sort-reviews">Sort by: </label>
+                    <select
+                      name="sort-reviews"
+                      id="sort-reviews"
+                      onChange={sortReviewsBy}
+                      className={styles.filtertext}
+                    >
+                      <option value="helpful">Most Helpful</option>
+                      <option value="recent">Recent</option>
+                      <option value="professor">Professor Name</option>
+                    </select>
+                  </div>
+                  <div className={styles.selectContainer}>
+                    <label htmlFor="filter-by-prof">
+                      Filter by professor:{' '}
+                    </label>
+                    <select
+                      name="filter-by-prof"
+                      id="filter-by-prof"
+                      onChange={filterByProf}
+                      className={styles.filtertext}
+                    >
+                      <option value="none">None</option>
+                      {[...pastProfs.current]
+                        .sort()
+                        ?.filter((o) => o !== 'Not Listed')
+                        .map((o) => <option value={o}>{o}</option>)}
+                    </select>
+                  </div>
                 </div>
               </div>
               <div className={styles.reviews}>
                 <CourseReviews
-                  reviews={courseReviews}
+                  reviews={visibleCourseReviews}
                   isPreview={false}
                   isProfile={false}
                   token={token}
                 />
               </div>
-            </div >
+            </div>
             <SimilarCoursesSection
               similarCourses={similarCourses}
               isVisible={screenWidth <= 768}
             />
-          </div >
-        </div >
+          </div>
+        </div>
 
         {/* Fixed Bottom-Right Review Button */}
-        < button
+        <button
           className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
           onClick={() => setOpen(true)}
         >
           <img src={WriteReviewIcon} alt="write-new-review" />
-        </button >
+        </button>
 
         <ReviewModal
           open={open}
@@ -334,7 +389,7 @@ export const Course = () => {
             selectedClass.classProfessors ? selectedClass.classProfessors : []
           }
         />
-      </div >
+      </div>
     );
   }
 
