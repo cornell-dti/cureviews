@@ -310,9 +310,6 @@ export const Course = () => {
               similarCourses={similarCourses}
               isVisible={screenWidth > 768}
             />
-            {/* <div>
-              
-            </div> */}
           </div>
           <div className={styles.rightPanel}>
             <div className={styles.reviewscontainer}>
@@ -324,8 +321,8 @@ export const Course = () => {
                     : ''}
                   {courseReviews.length}){' '}
                 </h2>
-                <div style={{ display: 'flex', gap: '2rem' }}>
-                  <div className={styles.selectContainer}>
+                <div>
+                  <div className={styles['select-container']}>
                     <label htmlFor="sort-reviews">Sort by: </label>
                     <select
                       name="sort-reviews"
@@ -335,10 +332,10 @@ export const Course = () => {
                     >
                       <option value="helpful">Most Helpful</option>
                       <option value="recent">Recent</option>
-                      <option value="professor">Professor Name</option>
+                      {selectedProf.current === "none" && <option value="professor">Professor Name</option>}
                     </select>
                   </div>
-                  <div className={styles.selectContainer}>
+                  <div className={styles['select-container']}>
                     <label htmlFor="filter-by-prof">
                       Filter by professor:{' '}
                     </label>
