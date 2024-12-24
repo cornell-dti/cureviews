@@ -121,11 +121,12 @@
 
 .anonymouslabel {
   display: flex;
-  width: 100%;
   font-size: 1em;
   font-weight: 500;
   color: var(--clr-blue-300);
-  margin-bottom: -1em;
+  margin-top: -1em;
+  margin-bottom: -1.5em;
+  text-align: center;
 }
 
 .textinputbox {

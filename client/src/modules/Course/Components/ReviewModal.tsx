@@ -11,7 +11,7 @@ import closeIcon from '../../../assets/icons/X.svg';
 
 // Data
 import majors from '../../Globals/majors';
-import AnonymousWarning from './AnonymousWarning';
+import LoginModal from './LoginModal';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 const ReviewModal = ({
@@ -58,7 +58,7 @@ const ReviewModal = ({
   const [difficulty, setDifficulty] = useState<number>(3);
   const [workload, setWorkload] = useState<number>(3);
 
-  const [anonymousOpen, setAnonymousOpen] = useState<boolean>(false);
+  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
   const [noReviews, setNoReviews] = useState<boolean>(false);
 
   const { isLoggedIn, netId, signIn } = useAuthOptionalLogin();
@@ -79,24 +79,7 @@ const ReviewModal = ({
 
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
-    if (isLoggedIn) {
-      getNoReviews();
-    }
   }, [valid]);
-
-  /**
-   * Determines if the current user has no reviews, so they should receive
-   * the anonymous modal
-   */
-  async function getNoReviews() {
-    const response = await axios.post('/api/profiles/count-reviews', {
-      netId
-    });
-    const res = response.data;
-    if (response.status === 200) {
-      setNoReviews(res.result === 0);
-    }
-  }
 
   function onProfessorChange(newSelectedProfessors: string[]) {
     setSelectedProfessors(newSelectedProfessors);
@@ -131,7 +114,7 @@ const ReviewModal = ({
     return false;
   }
 
-  // Called by onSubmitReview if the user should not see anonymous
+  // Called by onSubmitReview if the user should not see modal
   function handleSubmitReview() {
     if (validReview()) {
       const newReview: NewReview = {
@@ -155,16 +138,16 @@ const ReviewModal = ({
       signIn('profile');
     } else {
       handleSubmitReview();
-      setAnonymousOpen(true);
+      setLoginModalOpen(true);
       setReviewOpen(false);
     }
   }
 
-  if (!open && anonymousOpen) {
+  if (!open && loginModalOpen && !isLoggedIn) {
     return (
       <div className={styles.modalbg}>
         <div className={styles.modal}>
-          <AnonymousWarning open={anonymousOpen} />
+          <LoginModal open={loginModalOpen} />
         </div>
       </div>
     );
@@ -243,7 +226,6 @@ const ReviewModal = ({
             />
           </div>
           <div className={styles.textcol}>
-            <p className={styles.anonymouslabel}>Don't worry - all your reviews are anonymous!</p>
             <textarea
               className={styles.textinputbox}
               value={reviewText}
@@ -252,6 +234,9 @@ const ReviewModal = ({
               id="review-content"
               placeholder={placeholdertext}
             ></textarea>
+            <p className={styles.anonymouslabel}>
+              Don't worry - all your reviews are anonymous!
+            </p>
             <button
               className={styles.submitbutton}
               onClick={() => {
