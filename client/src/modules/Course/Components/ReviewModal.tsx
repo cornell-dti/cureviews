@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import MultiSelect from './MultiSelect';
 import SingleSelect from './SingleSelect';
@@ -59,9 +58,8 @@ const ReviewModal = ({
   const [workload, setWorkload] = useState<number>(3);
 
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
-  const [noReviews, setNoReviews] = useState<boolean>(false);
 
-  const { isLoggedIn, netId, signIn } = useAuthOptionalLogin();
+  const { isLoggedIn, signIn } = useAuthOptionalLogin();
 
   const [valid, setValid] = useState<Valid>({
     professor: false,
@@ -133,7 +131,7 @@ const ReviewModal = ({
 
   // Handle click of submit button
   function onSubmitReview() {
-    if (!noReviews && isLoggedIn) {
+    if (isLoggedIn) {
       handleSubmitReview();
       signIn('profile');
     } else {

@@ -1,10 +1,9 @@
 import React from 'react';
 
-import styles from '../Styles/AnonymousWarning.module.css';
+import styles from '../Styles/LoginModal.module.css';
 
 import Emoji from '../../../assets/img/you-got-this-emoji.png';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
-import { useHistory } from 'react-router-dom';
 
 type Props = {
   open: boolean;
