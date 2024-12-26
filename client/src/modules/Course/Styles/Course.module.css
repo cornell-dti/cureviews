@@ -170,13 +170,22 @@
 
 .select-container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
   vertical-align: middle;
+  gap: 8px;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
 .filtertext {
   color: var(--clr-blue-400);
+  flex: 1;
+  min-width: 0;
 }
 
 .reviews {

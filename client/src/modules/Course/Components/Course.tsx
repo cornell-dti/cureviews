@@ -315,42 +315,40 @@ export const Course = () => {
             <div className={styles.reviewscontainer}>
               <div className={styles.bar}>
                 <h2 className={styles.title}>
-                  Past Reviews (
-                  {selectedProf.current !== 'none'
-                    ? visibleCourseReviews.length + ' of '
-                    : ''}
-                  {courseReviews.length}){' '}
+                  Past Reviews ({visibleCourseReviews.length}){' '}
                 </h2>
                 <div>
                   <div className={styles['select-container']}>
-                    <label htmlFor="sort-reviews">Sort by: </label>
-                    <select
-                      name="sort-reviews"
-                      id="sort-reviews"
-                      onChange={sortReviewsBy}
-                      className={styles.filtertext}
-                    >
-                      <option value="helpful">Most Helpful</option>
-                      <option value="recent">Recent</option>
-                      {selectedProf.current === "none" && <option value="professor">Professor Name</option>}
-                    </select>
-                  </div>
-                  <div className={styles['select-container']}>
-                    <label htmlFor="filter-by-prof">
-                      Filter by professor:{' '}
-                    </label>
-                    <select
-                      name="filter-by-prof"
-                      id="filter-by-prof"
-                      onChange={filterByProf}
-                      className={styles.filtertext}
-                    >
-                      <option value="none">None</option>
-                      {[...pastProfs.current]
-                        .sort()
-                        ?.filter((o) => o !== 'Not Listed')
-                        .map((o) => <option value={o}>{o}</option>)}
-                    </select>
+                    <div className={styles['filter-container']}>
+                      <label htmlFor="sort-reviews" style={{whiteSpace: "nowrap"}}>Sort by: </label>
+                      <select
+                        name="sort-reviews"
+                        id="sort-reviews"
+                        onChange={sortReviewsBy}
+                        className={styles.filtertext}
+                      >
+                        <option value="helpful">Most Helpful</option>
+                        <option value="recent">Recent</option>
+                        {selectedProf.current === "none" && <option value="professor">Professor Name</option>}
+                      </select>
+                    </div>
+                    <div className={styles.filterContainer}>
+                      <label htmlFor="filter-by-prof" style={{whiteSpace: "nowrap"}}>
+                        Filter by professor:{' '}
+                      </label>
+                      <select
+                        name="filter-by-prof"
+                        id="filter-by-prof"
+                        onChange={filterByProf}
+                        className={styles.filtertext}
+                      >
+                        <option value="none">None</option>
+                        {[...pastProfs.current]
+                          .sort()
+                          ?.filter((o) => o !== 'Not Listed')
+                          .map((o) => <option value={o}>{o}</option>)}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
