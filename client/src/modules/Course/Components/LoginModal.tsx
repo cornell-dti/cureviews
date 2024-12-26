@@ -1,8 +1,6 @@
 import React from 'react';
-
 import styles from '../Styles/LoginModal.module.css';
-
-import Emoji from '../../../assets/img/you-got-this-emoji.png';
+import Emoji from '/login_modal_bear.svg';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 type Props = {
@@ -20,16 +18,14 @@ const LoginModal = ({ open }: Props) => {
    */
   return (
     <div className={styles.warningContainer}>
-      <div className={styles.emoji}>
-        <img
-          src={Emoji}
-          className="emoji"
-          alt="CUReviews Bear -- 'You got this!' emoji"
-        />
-      </div>
+      <img
+        src={Emoji}
+        className={styles.emoji}
+        alt="CUReviews Bear -- 'You got this!' emoji"
+      />
       <div className={styles.message}>
         <span className="line1">
-          Login to submit - your review will upload once you login!
+          Your review will upload once you login!
           <br />
         </span>{' '}
       </div>

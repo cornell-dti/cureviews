@@ -79,26 +79,26 @@ const ReviewModal = ({
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
   }, [valid]);
 
-  function onProfessorChange(newSelectedProfessors: string[]) {
+  const onProfessorChange = (newSelectedProfessors: string[]) => {
     setSelectedProfessors(newSelectedProfessors);
     if (newSelectedProfessors.length > 0)
       setValid({ ...valid, professor: true });
     else setValid({ ...valid, professor: false });
   }
 
-  function onMajorChange(newSelectedMajors: string[]) {
+  const onMajorChange = (newSelectedMajors: string[]) => {
     setSelectedMajors(newSelectedMajors);
     if (newSelectedMajors.length > 0) setValid({ ...valid, major: true });
     else setValid({ ...valid, major: false });
   }
 
-  function onGradeChange(newSelectedGrade: string) {
+  const onGradeChange = (newSelectedGrade: string) => {
     setSelectedGrade(newSelectedGrade);
     if (newSelectedGrade !== '') setValid({ ...valid, grade: true });
     else setValid({ ...valid, grade: false });
   }
 
-  function onReviewTextChange(newText: string) {
+  const onReviewTextChange = (newText: string) => {
     setReviewText(newText);
     if (newText !== '') setValid({ ...valid, text: true });
     else setValid({ ...valid, text: false });
