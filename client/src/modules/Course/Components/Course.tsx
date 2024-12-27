@@ -333,6 +333,9 @@ export const Course = () => {
           professorOptions={
             selectedClass.classProfessors ? selectedClass.classProfessors : []
           }
+          semsOffered={
+            selectedClass.classSems ? selectedClass.classSems : []
+          }
         />
       </div >
     );

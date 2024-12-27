@@ -121,7 +121,8 @@ const ReviewSchema = new Schema<ReviewDocument>({
   likedBy: { type: [String] },
   isCovid: { type: Boolean },
   grade: { type: String },
-  major: { type: [String] }
+  major: { type: [String] },
+  semester: { type: String },
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature

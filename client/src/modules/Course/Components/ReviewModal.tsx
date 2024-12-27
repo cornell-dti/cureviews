@@ -18,12 +18,14 @@ const ReviewModal = ({
   open,
   setReviewOpen,
   submitReview,
-  professorOptions
+  professorOptions,
+  semsOffered,
 }: Modal) => {
   // Modal Logic
   function closeModal() {
     setReviewOpen(false);
   }
+
   // Content & Options
   const placeholdertext =
     'What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?';
@@ -45,13 +47,14 @@ const ReviewModal = ({
     'D-',
     'F',
     'S',
-    'U',
+    'U'
   ];
 
   // Form & Review Content State
   const [selectedProfessors, setSelectedProfessors] = useState<string[]>([]);
   const [selectedMajors, setSelectedMajors] = useState<string[]>([]);
   const [selectedGrade, setSelectedGrade] = useState<string>('');
+  const [selectedSem, setSelectedSem] = useState<string>('');
   const [reviewText, setReviewText] = useState<string>('');
 
   const [overall, setOverall] = useState<number>(3);
@@ -65,20 +68,23 @@ const ReviewModal = ({
 
   const [valid, setValid] = useState<Valid>({
     professor: false,
+    semester: false,
     major: false,
     grade: false,
     text: false
   });
   const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
 
+  const SEMESTER_FORMAT: RegExp = new RegExp('^(SP|SU|WI|FA)\\d{2}$');
+
   useEffect(() => {
     if (!professorOptions.includes('Not Listed')) {
       professorOptions.push('Not Listed');
     }
-  }, [professorOptions])
+  }, [professorOptions]);
 
   useEffect(() => {
-    setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
+    setAllowSubmit(valid.professor && valid.semester && valid.major && valid.grade && valid.text);
     if (isLoggedIn) {
       getNoReviews();
     }
@@ -103,6 +109,12 @@ const ReviewModal = ({
     if (newSelectedProfessors.length > 0)
       setValid({ ...valid, professor: true });
     else setValid({ ...valid, professor: false });
+  }
+
+  function onSelectedSemChange(newSem: string) {
+    setSelectedSem(newSem);
+    if (SEMESTER_FORMAT.test(newSem)) setValid({ ...valid, semester: true });
+    else setValid({ ...valid, semester: false });
   }
 
   function onMajorChange(newSelectedMajors: string[]) {
@@ -142,7 +154,8 @@ const ReviewModal = ({
         text: reviewText,
         isCovid: false,
         grade: selectedGrade,
-        major: selectedMajors
+        major: selectedMajors,
+        semester: selectedSem
       };
       submitReview(newReview);
     }
@@ -229,17 +242,25 @@ const ReviewModal = ({
                 isOverall={false}
               />
             </div>
+            <div className={styles['sem-grade-selects']}>
+              <SingleSelect
+                options={semsOffered.toReversed()}
+                value={selectedSem}
+                onChange={onSelectedSemChange}
+                placeholder="Semester Taken"
+              />
+              <SingleSelect
+                options={gradeoptions}
+                value={selectedGrade}
+                onChange={onGradeChange}
+                placeholder="Grade Received"
+              />
+            </div>
             <MultiSelect
               options={majorOptions}
               value={selectedMajors}
               onChange={onMajorChange}
               placeholder="Major"
-            />
-            <SingleSelect
-              options={gradeoptions}
-              value={selectedGrade}
-              onChange={onGradeChange}
-              placeholder="Grade Received"
             />
           </div>
           <div className={styles.textcol}>
@@ -272,6 +293,7 @@ type Modal = {
   setReviewOpen: (open: boolean) => void;
   submitReview: (review: NewReview) => void;
   professorOptions: string[];
+  semsOffered: string[];
 };
 
 type NewReview = {
@@ -283,10 +305,12 @@ type NewReview = {
   isCovid: boolean;
   grade: string;
   major: string[];
+  semester: string;
 };
 
 type Valid = {
   professor: boolean;
+  semester: boolean;
   major: boolean;
   grade: boolean;
   text: boolean;

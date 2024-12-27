@@ -207,6 +207,12 @@ export default function ReviewCard({
                 ? _review.grade
                 : 'N/A'}
             </span>
+            {_review.semester ? (
+              <>
+                {' '} | {' '}
+                <span className={styles.bold}>{_review.semester}</span>
+              </>
+            ) : ''}
           </div>
           <div>
             Major{' '}

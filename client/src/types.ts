@@ -7,4 +7,5 @@ export type NewReview = {
   isCovid: boolean;
   grade: string;
   major: string[];
+  semester: string;
 };

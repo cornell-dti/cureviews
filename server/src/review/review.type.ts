@@ -35,6 +35,7 @@ interface ReviewRequestType {
   isCovid: boolean;
   grade: string;
   major: string[];
+  semester: string;
 }
 
 export interface ReviewLikesRequestType {

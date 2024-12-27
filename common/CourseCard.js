@@ -5,7 +5,7 @@
 /**
  * Helper function to convert semester abbreviations to a full word
  */
-export function semAbbriviationToWord(sem) {
+export function semAbbreviationToWord(sem) {
   switch (sem) {
     case 'SP':
       return 'Spring';
@@ -27,7 +27,7 @@ export function lastOfferedSems(theClass) {
   const offered = new Set();
 
   theClass.classSems.forEach((sem) => {
-    offered.add(semAbbriviationToWord(sem.slice(0, -2)));
+    offered.add(semAbbreviationToWord(sem.slice(0, -2)));
   });
 
   const semOrder = ['Fall', 'Spring', 'Summer', 'Winter'];
