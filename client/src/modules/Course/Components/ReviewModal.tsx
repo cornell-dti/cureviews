@@ -5,6 +5,8 @@ import MultiSelect from './MultiSelect';
 import SingleSelect from './SingleSelect';
 import RatingInput from './RatingInput';
 
+import { SEMESTER_FORMAT } from 'common/CourseCard'
+
 // CSS FILES
 import styles from '../Styles/ReviewModal.module.css';
 import closeIcon from '../../../assets/icons/X.svg';
@@ -13,6 +15,8 @@ import closeIcon from '../../../assets/icons/X.svg';
 import majors from '../../Globals/majors';
 import AnonymousWarning from './AnonymousWarning';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
+import { CURRENT_SEMESTER } from 'common/constants';
+import { compareWithCurrentSem } from 'common/CourseCard';
 
 const ReviewModal = ({
   open,
@@ -56,6 +60,7 @@ const ReviewModal = ({
   const [selectedGrade, setSelectedGrade] = useState<string>('');
   const [selectedSem, setSelectedSem] = useState<string>('');
   const [reviewText, setReviewText] = useState<string>('');
+  const [isCurrentSem, setIsCurrentSem] = useState<boolean>(false);
 
   const [overall, setOverall] = useState<number>(3);
   const [difficulty, setDifficulty] = useState<number>(3);
@@ -75,8 +80,6 @@ const ReviewModal = ({
   });
   const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
 
-  const SEMESTER_FORMAT: RegExp = new RegExp('^(SP|SU|WI|FA)\\d{2}$');
-
   useEffect(() => {
     if (!professorOptions.includes('Not Listed')) {
       professorOptions.push('Not Listed');
@@ -84,11 +87,15 @@ const ReviewModal = ({
   }, [professorOptions]);
 
   useEffect(() => {
-    setAllowSubmit(valid.professor && valid.semester && valid.major && valid.grade && valid.text);
+    setAllowSubmit(valid.professor && valid.semester && valid.major && (valid.grade !== isCurrentSem) && valid.text);
     if (isLoggedIn) {
       getNoReviews();
     }
   }, [valid]);
+
+  useEffect(() => {
+    if (isCurrentSem) onGradeChange('');
+  }, [isCurrentSem])
 
   /**
    * Determines if the current user has no reviews, so they should receive
@@ -112,9 +119,16 @@ const ReviewModal = ({
   }
 
   function onSelectedSemChange(newSem: string) {
-    setSelectedSem(newSem);
-    if (SEMESTER_FORMAT.test(newSem)) setValid({ ...valid, semester: true });
-    else setValid({ ...valid, semester: false });
+    if (newSem.includes("Current")) {
+      setIsCurrentSem(true);
+      setSelectedSem(newSem.substring(0,4));
+    } else {
+      setIsCurrentSem(false);
+      setSelectedSem(newSem)
+    }
+
+    let validSemFormat = SEMESTER_FORMAT.test(newSem.substring(0,4));
+    setValid({ ...valid, semester: validSemFormat });
   }
 
   function onMajorChange(newSelectedMajors: string[]) {
@@ -155,7 +169,8 @@ const ReviewModal = ({
         isCovid: false,
         grade: selectedGrade,
         major: selectedMajors,
-        semester: selectedSem
+        semester: selectedSem,
+        writtenDuringSemester: isCurrentSem,
       };
       submitReview(newReview);
     }
@@ -244,17 +259,24 @@ const ReviewModal = ({
             </div>
             <div className={styles['sem-grade-selects']}>
               <SingleSelect
-                options={semsOffered.toReversed()}
+                options={
+                  semsOffered
+                    .toReversed()
+                    .filter((sem) => compareWithCurrentSem(sem) <= 0)
+                    .map((sem) => sem === CURRENT_SEMESTER ? sem + " (Current)" : sem)
+                }
                 value={selectedSem}
                 onChange={onSelectedSemChange}
                 placeholder="Semester Taken"
               />
-              <SingleSelect
-                options={gradeoptions}
-                value={selectedGrade}
-                onChange={onGradeChange}
-                placeholder="Grade Received"
-              />
+              {!isCurrentSem &&
+                <SingleSelect
+                  options={gradeoptions}
+                  value={selectedGrade}
+                  onChange={onGradeChange}
+                  placeholder="Grade Received"
+                />
+              }
             </div>
             <MultiSelect
               options={majorOptions}
@@ -306,6 +328,7 @@ type NewReview = {
   grade: string;
   major: string[];
   semester: string;
+  writtenDuringSemester: boolean;
 };
 
 type Valid = {

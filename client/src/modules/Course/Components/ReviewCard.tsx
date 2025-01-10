@@ -3,10 +3,12 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import { Review as ReviewType } from 'common';
+import { convertSemAbbreviation } from 'common/CourseCard'
 
 import styles from '../Styles/ReviewCard.module.css';
 
 import { getAuthToken, useAuthOptionalLogin } from '../../../auth/auth_utils';
+import { isCurrentSem } from 'common/CourseCard';
 
 // use review.visible for pending
 
@@ -126,7 +128,11 @@ export default function ReviewCard({
               ' ' +
               courseNum?.toUpperCase() +
               ' | ' +
-              professornames}
+              professornames +
+              (_review.semester
+                ? ', ' + convertSemAbbreviation(_review.semester)
+                : '')
+            }
           </p>
         </>
       );
@@ -205,14 +211,9 @@ export default function ReviewCard({
             <span className={styles.bold}>
               {_review.grade && /^([^0-9]*)$/.test(_review.grade)
                 ? _review.grade
-                : 'N/A'}
+                : _review.writtenDuringSemester ? 'N/A (Review written during semester)' : 'N/A'
+              }
             </span>
-            {_review.semester ? (
-              <>
-                {' '} | {' '}
-                <span className={styles.bold}>{_review.semester}</span>
-              </>
-            ) : ''}
           </div>
           <div>
             Major{' '}

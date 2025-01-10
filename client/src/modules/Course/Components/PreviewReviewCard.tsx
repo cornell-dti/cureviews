@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import { Review as ReviewType } from 'common';
+import { convertSemAbbreviation } from 'common/CourseCard'
 
 import styles from '../Styles/ReviewCard.module.css';
 import previewstyle from '../Styles/PreviewCard.module.css';
@@ -114,7 +115,11 @@ export default function PreviewReviewCard({
               ' ' +
               courseNum?.toUpperCase() +
               ' | ' +
-              professornames}
+              professornames +
+              (_review.semester
+                ? ', ' + convertSemAbbreviation(_review.semester)
+                : '')
+            }
           </div>
         </>
       );
@@ -193,14 +198,9 @@ export default function PreviewReviewCard({
             <span className={styles.bold}>
               {_review.grade && /^([^0-9]*)$/.test(_review.grade)
                 ? _review.grade
-                : 'N/A'}
+                : _review.writtenDuringSemester ? 'N/A (Review written during semester)' : 'N/A'
+              }
             </span>
-            {_review.semester ? (
-              <>
-                {' '} | {' '}
-                <span className={styles.bold}>{_review.semester}</span>
-              </>
-            ) : ''}
           </div>
         </div>
         <div

@@ -21,6 +21,7 @@ import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 import { randomPicture } from '../../Globals/profile_picture';
 
 import styles from '../Styles/Profile.module.css';
+import { compareSems } from 'common/CourseCard';
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -90,6 +91,14 @@ const Profile = () => {
 
     return 0
   }
+
+  /**
+   * Sorts reviews based on descending semester.
+   */
+  const sortBySem = (a: ReviewType, b: ReviewType) =>
+    b.semester && a.semester
+      ? compareSems(a.semester,b.semester)
+      : sortByDate(a,b)
 
   /**
    * Hook that handles
@@ -198,6 +207,8 @@ const Profile = () => {
       setApprovedReviews([...approvedReviews].sort(sortByDate));
     } else if (value === 'professor') {
       setApprovedReviews([...approvedReviews].sort(sortByProf))
+    } else if (value === 'semester') {
+      setApprovedReviews([...approvedReviews].sort(sortBySem));
     }
   }
 
@@ -227,7 +238,9 @@ const Profile = () => {
 
           <div className={styles.reviewsection}>
             <div className={styles.bar}>
-              <h2>My Reviews ({pendingReviews.length + approvedReviews.length})</h2>
+              <h2>
+                My Reviews ({pendingReviews.length + approvedReviews.length})
+              </h2>
               <div>
                 <label htmlFor="sort-reviews-by">Sort By:</label>
                 <select
@@ -237,6 +250,8 @@ const Profile = () => {
                 >
                   <option value="helpful">Most Helpful</option>
                   <option value="recent">Recent</option>
+                  <option value="professor">Professor</option>
+                  <option value="semester">Semester</option>
                 </select>
               </div>
             </div>
@@ -249,15 +264,11 @@ const Profile = () => {
                   setHide={setHidePastReviews}
                   pendingReviews={pendingReviews}
                 />
-                <PastReviews
-                  pastReviews={approvedReviews}
-                />
+                <PastReviews pastReviews={approvedReviews} />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
-              <PastReviews
-                pastReviews={approvedReviews}
-              />
+              <PastReviews pastReviews={approvedReviews} />
             )}
           </div>
         </div>

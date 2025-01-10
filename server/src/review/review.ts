@@ -17,6 +17,7 @@ type ReviewEntity = {
   grade: string;
   major: string[];
   semester: string;
+  writtenDuringSemester: boolean;
 };
 
 export class Review {
@@ -52,6 +53,8 @@ export class Review {
 
   private semester: string;
 
+  private writtenDuringSemester: boolean;
+
   constructor({
     _id,
     text,
@@ -68,7 +71,8 @@ export class Review {
     grade,
     major,
     class: courseId,
-    semester
+    semester,
+    writtenDuringSemester
   }: ReviewEntity) {
     this._id = _id;
     this.text = text;
@@ -86,6 +90,7 @@ export class Review {
     this.major = major;
     this.class = courseId;
     this.semester = semester ? semester : "";
+    this.writtenDuringSemester = writtenDuringSemester
 
     this.validate();
   }
@@ -115,6 +120,7 @@ export class Review {
       grade: joi.optional(),
       major: joi.optional(),
       semester: joi.optional(),
+      writtenDuringSemester: joi.optional(),
     });
 
     const { error } = searchSchema.validate(this);

@@ -27,6 +27,7 @@ import { Session } from '../../../session-store';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 import ReviewModal from './ReviewModal';
+import { compareSems } from 'common/CourseCard';
 
 enum PageStatus {
   Loading,
@@ -100,6 +101,14 @@ export const Course = () => {
 
     return 0;
   }
+
+  /**
+   * Sorts reviews based on descending semester (or by date if not available).
+   */
+  const sortBySem = (a: Review, b: Review) =>
+    b.semester && a.semester
+      ? compareSems(a.semester,b.semester)
+      : sortByDate(a,b)
 
   /**
    * Update state to conditionally render sticky bottom-right review button
@@ -176,6 +185,8 @@ export const Course = () => {
       setCourseReviews([...courseReviews].sort(sortByDate));
     } else if (value === 'professor') {
       setCourseReviews([...courseReviews].sort(sortByProf));
+    } else if (value === 'semester') {
+      setCourseReviews([...courseReviews].sort(sortBySem));
     }
   }
 
@@ -299,6 +310,7 @@ export const Course = () => {
                     <option value="helpful">Most Helpful</option>
                     <option value="recent">Recent</option>
                     <option value="professor">Professor</option>
+                    <option value="semester">Semester</option>
                   </select>
                 </div>
               </div>

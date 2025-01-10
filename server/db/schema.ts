@@ -123,6 +123,7 @@ const ReviewSchema = new Schema<ReviewDocument>({
   grade: { type: String },
   major: { type: [String] },
   semester: { type: String },
+  writtenDuringSemester: { type: Boolean },
   // The following was a temporary field used to keep track of reviews for a contest
   // The full functional code for counting reviews can be found on the following branch:
   // review-counting-feature

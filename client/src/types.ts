@@ -8,4 +8,5 @@ export type NewReview = {
   grade: string;
   major: string[];
   semester: string;
+  writtenDuringSemester: boolean;
 };

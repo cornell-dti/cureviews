@@ -56,6 +56,7 @@ export interface Review {
   grade?: string;
   major?: string[];
   semester?: string;
+  writtenDuringSemester?: boolean;
 }
 
 export interface Professor {

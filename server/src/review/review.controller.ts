@@ -201,6 +201,7 @@ export const insertNewReview = async ({
       reported: 0,
       professors: review.professors,
       semester: review.semester,
+      writtenDuringSemester: review.writtenDuringSemester,
       likes: 0,
       isCovid: review.isCovid,
       user: student._id,

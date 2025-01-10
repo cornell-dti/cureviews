@@ -36,6 +36,7 @@ interface ReviewRequestType {
   grade: string;
   major: string[];
   semester: string;
+  writtenDuringSemester: boolean;
 }
 
 export interface ReviewLikesRequestType {
