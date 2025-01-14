@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Navbar from '../../Globals/Navbar';
-import ResultsDisplay from './ResultsDisplay.jsx';
+import ResultsDisplay from './ResultsDisplay.js';
 
 import styles from '../Styles/Results.module.css';
 
