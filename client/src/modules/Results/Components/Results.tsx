@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Navbar from '../../Globals/Navbar';
@@ -25,57 +25,39 @@ type ResultsLists = {
  * Results Component
  * Used to render the results page. Uses Navbar and ResultsDisplay components directly.
  */
-export class Results extends Component<ResultsProps, ResultsLists> {
-  constructor(props: ResultsProps) {
-    super(props);
-    this.state = {
-      courseList: [],
-      loading: true
-    };
+export const Results = ({match, history}: ResultsProps) => {
+  const [courseList, setCourseList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    this.updateResults = this.updateResults.bind(this);
-  }
-
-  async updateResults() {
+  const updateResults = async () => {
     const response = await axios.post(`/api/search/get-courses`, {
-      query: this.props.match.params.input.toLowerCase()
+      query: match.params.input.toLowerCase()
     });
-
     const courseList = response.data.result.courses;
-    this.setState({
-      courseList: !courseList.error && courseList.length > 0 ? courseList : [],
-      loading: false
-    });
+    setCourseList(!courseList.error && courseList.length > 0 ? courseList : []);
+    setLoading(false);
   }
 
-  componentDidUpdate(prevProps: ResultsProps) {
-    if (prevProps !== this.props) {
-      this.setState({
-        courseList: [],
-        loading: true
-      });
-      this.updateResults();
-    }
-  }
+  useEffect(() => {
+    setCourseList([]);
+    setLoading(true);
+    updateResults();
+  }, [match, history])
 
-  componentDidMount() {
-    this.updateResults();
-  }
+  const userInput = match.params.input.split('+').join(' ');
+  return (
+    <div className={styles.page}>
+      <Navbar userInput={userInput} />
 
-  render() {
-    const userInput = this.props.match.params.input.split('+').join(' ');
-    return (
-      <div className={styles.page}>
-        <Navbar userInput={userInput} />
-
-        <ResultsDisplay
-          courses={this.state.courseList}
-          history={this.props.history}
-          userInput={userInput}
-          loading={this.state.loading}
-          type={this.props.match.params.type}
-        />
-      </div>
-    );
-  }
+      <ResultsDisplay
+        courses={courseList}
+        // history={history}
+        userInput={userInput}
+        loading={loading}
+        type={match.params.type}
+      />
+    </div>
+  );
 }
+
+export default Results;

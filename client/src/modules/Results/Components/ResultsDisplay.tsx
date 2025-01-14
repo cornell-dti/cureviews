@@ -320,7 +320,7 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
               <div className={styles.preview}>
                 <PreviewCard
                   course={cardCourse}
-                  transformGauges={transformGauges}
+                  // transformGauges={transformGauges}
                 />
               </div>
             </div>
