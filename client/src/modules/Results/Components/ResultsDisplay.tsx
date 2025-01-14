@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import FilteredResult from './FilteredResult';
-import PreviewCard from './PreviewCard.jsx';
+import PreviewCard from './PreviewCard';
 import FilterPopup from './FilterPopup';
 import Loading from '../../Globals/Loading';
 
