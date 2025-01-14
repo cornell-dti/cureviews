@@ -211,7 +211,7 @@ export default function ReviewCard({
             <span className={styles.bold}>
               {_review.grade && /^([^0-9]*)$/.test(_review.grade)
                 ? _review.grade
-                : _review.writtenDuringSemester ? 'N/A (Review written during semester)' : 'N/A'
+                : _review.writtenDuringSemester ? 'Not sure yet' : 'N/A'
               }
             </span>
           </div>
