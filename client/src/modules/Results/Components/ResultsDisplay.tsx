@@ -21,19 +21,25 @@ import { Class } from 'common';
 
 */
 
-export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDisplayProps) => {
+export const ResultsDisplay = ({
+  courses,
+  loading,
+  type,
+  userInput
+}: ResultsDisplayProps) => {
   const [courseList, setCourseList] = useState(courses);
   const [filteredItems, setFilteredItems] = useState(courses);
   const [cardCourse, setCardCourse] = useState(courses[0]);
   const [activeCard, setActiveCard] = useState<number>(0);
 
-  type SortBy = 'relevance' | 'rating' | 'diff' | 'work'
+  type SortBy = 'relevance' | 'rating' | 'diff' | 'work';
   const [selected, setSelected] = useState<SortBy>(
     type === 'major' ? 'rating' : 'relevance'
   );
 
   const [transformGauges, setTransformGauges] = useState<boolean>(false);
   const [showFilterPopup, setShowFilterPopup] = useState<boolean>(false);
+  const [searchListViewEnabled, setSearchListViewEnabled] = useState<boolean>(true);
 
   type FilterValue = Map<string, boolean> | string[];
   type FilterMap = Map<string, FilterValue>;
@@ -76,7 +82,7 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
 
   useEffect(() => {
     sort(filteredItems);
-  }, [selected])
+  }, [selected]);
 
   /**
    * Handles selecting different sort filters
@@ -116,10 +122,18 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
    */
   const sort = (items: Array<any>) => {
     switch (selected) {
-      case 'relevance': sortBy(items, 'score', 0, true); break;
-      case 'rating': sortBy(items, 'classRating', 0, true); break;
-      case 'diff': sortBy(items, 'classDifficulty', Number.MAX_SAFE_INTEGER, false); break;
-      case 'work': sortBy(items, 'classDifficulty', 0, true); break;
+      case 'relevance':
+        sortBy(items, 'score', 0, true);
+        break;
+      case 'rating':
+        sortBy(items, 'classRating', 0, true);
+        break;
+      case 'diff':
+        sortBy(items, 'classDifficulty', Number.MAX_SAFE_INTEGER, false);
+        break;
+      case 'work':
+        sortBy(items, 'classDifficulty', 0, true);
+        break;
     }
   };
 
@@ -163,7 +177,7 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
 
     setFilteredItems(filtered);
     sort(filtered);
-  }
+  };
 
   /**
    * Updates the list of filtered items when filters are checked/unchecked
@@ -220,11 +234,13 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
         />
       </div>
     ));
-  }
+  };
 
   const renderCheckboxes = (group: string) => {
-    let groupList = Array.from((filterMap.get(group) as Map<string, boolean>).keys());
-    return groupList.map((name, index) => (
+    let groupList = Array.from(
+      (filterMap.get(group) as Map<string, boolean>).keys()
+    );
+    return groupList.map((name) => (
       <div className={styles.filterlabel}>
         <label className={styles.filterlabel}>
           <input
@@ -239,11 +255,11 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
         </label>
       </div>
     ));
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <h1> Search Results </h1>
+      {(loading || courseList.length === 0) && <h1> Search Results </h1>}
       {/* Case where results are still being loaded */}
       {loading && <Loading />}
       {/* Case where no results returned */}
@@ -260,76 +276,98 @@ export const ResultsDisplay = ({courses, loading, type, userInput}: ResultsDispl
       {/* Case where results are returned (non-empty) */}
       {courseList.length !== 0 && !loading && (
         <div className={styles.layout} data-cy="results-display">
-          <div className={styles.filtercol}>
-            <div className={styles.filtertext}>Filter</div>
-            <div>
-              <div className={styles.filtercategory}>Semester</div>
-              {renderCheckboxes('semesters')}
-            </div>
-            <div>
-              <div className={styles.filtercategory}>Level</div>
-              {renderCheckboxes('levels')}
+          <div className={styles.leftbar}>
+            <h1> Search Results </h1>
+            {/*<button*/}
+            {/*  className={styles.filterbutton}*/}
+            {/*  onClick={() => setSearchListViewEnabled(!searchListViewEnabled)}*/}
+            {/*>*/}
+            {/*  {searchListViewEnabled ? 'Hide' : 'View'} Search Results*/}
+            {/*</button>*/}
+            <div className={styles.filtersearch}>
+              <div className={styles.filtercol}>
+                <div className={styles.filtertext}>Filter</div>
+                <div>
+                  <div className={styles.filtercategory}>Semester</div>
+                  {renderCheckboxes('semesters')}
+                </div>
+                <div>
+                  <div className={styles.filtercategory}>Level</div>
+                  {renderCheckboxes('levels')}
+                </div>
+              </div>
+
+              <div className={styles.columns}>
+                {searchListViewEnabled && (
+                  <>
+                    <div>
+                      We found{' '}
+                      <b>
+                        {filteredItems.length === 0
+                          ? courseList.length
+                          : filteredItems.length}
+                      </b>{' '}
+                      courses for &quot;{userInput}
+                      &quot;
+                    </div>
+                    <div className={styles.filtersortbuttons}>
+                      <div className={styles.bar}>
+                        <div>
+                          <label>Sort By: </label>
+                          <select
+                            value={selected}
+                            className={styles.sortselector}
+                            onChange={(e) => handleSelect(e)}
+                          >
+                            <option value="relevance">Relevance</option>
+                            <option value="rating">Overall Rating</option>
+                            <option value="diff">Difficulty</option>
+                            <option value="work">Workload</option>
+                          </select>
+                        </div>
+
+                        <button
+                          className={styles.filterbutton}
+                          onClick={() => setShowFilterPopup(!showFilterPopup)}
+                        >
+                          Filter <img src={FilterIcon} alt="filter-icon" />
+                        </button>
+                      </div>
+                      {showFilterPopup && (
+                        <FilterPopup
+                          renderCheckboxes={renderCheckboxes}
+                          setShowFilterPopup={() =>
+                            setShowFilterPopup(!showFilterPopup)
+                          }
+                        />
+                      )}
+                    </div>
+                    <div className={styles.layout}>
+                      <div className={styles.list}>
+                        <div className={styles.resultslist}>
+                          <ul>{renderResults()}</ul>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className={styles.columns}>
-            <div>
-              We found{' '}
-              <b>
-                {filteredItems.length === 0 ? courseList.length : filteredItems.length}
-              </b>{' '}
-              courses for &quot;{userInput}
-              &quot;
-            </div>
-
-            <div className={styles.bar}>
-              <div>
-                <label>Sort By: </label>
-                <select
-                  value={selected}
-                  className={styles.sortselector}
-                  onChange={(e) => handleSelect(e)}
-                >
-                  <option value="relevance">Relevance</option>
-                  <option value="rating">Overall Rating</option>
-                  <option value="diff">Difficulty</option>
-                  <option value="work">Workload</option>
-                </select>
-              </div>
-
-              <button
-                className={styles.filterbutton}
-                onClick={() => setShowFilterPopup(!showFilterPopup)}
-              >
-                Filter <img src={FilterIcon} alt="filter-icon" />
-              </button>
-            </div>
-            {showFilterPopup && (
-              <FilterPopup
-                renderCheckboxes={renderCheckboxes}
-                setShowFilterPopup={() => setShowFilterPopup(!showFilterPopup)}
+          <div className={styles.preview}>
+            <div className={styles.previewcard}>
+              <PreviewCard
+                course={cardCourse}
+                // transformGauges={transformGauges}
               />
-            )}
-
-            <div className={styles.layout}>
-              <div className={styles.list}>
-                <div className={styles.resultslist}>
-                  <ul>{renderResults()}</ul>
-                </div>
-              </div>
-              <div className={styles.preview}>
-                <PreviewCard
-                  course={cardCourse}
-                  // transformGauges={transformGauges}
-                />
-              </div>
             </div>
           </div>
         </div>
       )}
     </div>
   );
-}
+};
 
 interface ResultsDisplayProps {
   courses: Array<Class>;

@@ -9,6 +9,8 @@ import ReviewCard from '../../Course/Components/ReviewCard';
 import styles from '../Styles/CoursePreview.module.css';
 import { Class } from 'common';
 
+import Bear from '/surprised_bear.svg';
+
 const Review = ReviewCard;
 
 export const PreviewCard = ({ course }: PreviewCardProps) => {
@@ -21,12 +23,12 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
   const [topReviewLikes, setTopReviewLikes] = useState(0);
 
   useEffect(() => {
-    updateGauges();
+    if (course) {
+      updateGauges();
+    }
   }, [course]);
 
   const updateGauges = () => {
-    if (!course) return;
-
     setId(course._id);
     setRating(course.classRating ? String(course.classRating) : '-');
     setDiff(course.classDifficulty ? String(course.classDifficulty) : '-');
@@ -35,10 +37,8 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
   };
 
   const updateTopReview = () => {
-    if (!id) return;
-
     axios
-      .post(`/api/courses/get-reviews`, { courseId: id })
+      .post(`/api/courses/get-reviews`, { courseId: course._id })
       .then((response) => {
         const reviews = response.data.result;
         if (reviews && reviews.length > 0) {
@@ -62,15 +62,21 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
 
   const offered = lastOfferedSems(course);
   return (
-    <div>
+    <div className={styles.container}>
       <div>
         <div className={styles.coursetitle}>
-          <a href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}>
+          <a
+            href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}
+          >
             {course.classTitle}
           </a>
         </div>
         <div className={styles.subtitle}>
-          {course.classSub.toUpperCase() + ' ' + course.classNum + ', ' + offered}
+          {course.classSub.toUpperCase() +
+            ' ' +
+            course.classNum +
+            ', ' +
+            offered}
         </div>
       </div>
 
@@ -94,14 +100,27 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
         )}
 
         {numReviews !== 0 && numReviews > 1 && (
-          <a className={styles.reviewsbutton} href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}>
+          <a
+            className={styles.reviewsbutton}
+            href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}
+          >
             See {numReviews} more review{numReviews > 1 ? 's' : ''}
           </a>
         )}
 
-        {numReviews === 0 && <div className={styles.noreviews}>No reviews yet</div>}
+        {numReviews === 0 && (
+          <>
+            <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
+            <div className={styles.noreviews}>
+              No reviews yet! Why not be the first?
+            </div>
+          </>
+        )}
         {(numReviews === 0 || numReviews === 1) && (
-          <a className={styles.reviewsbutton} href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}>
+          <a
+            className={styles.reviewsbutton}
+            href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}
+          >
             Leave a Review
           </a>
         )}
