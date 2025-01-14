@@ -76,7 +76,11 @@ const FilteredResult = ({
       }}
     >
       <div className="">
-        <h1 className={styles.title}>{theClass.classTitle}</h1>
+        <h1 className={styles.title}>
+          <a href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}>
+            {theClass.classTitle}
+          </a>
+        </h1>
         <h2 className={styles.subtitle}>
           {theClass.classSub.toUpperCase() +
             ' ' +
