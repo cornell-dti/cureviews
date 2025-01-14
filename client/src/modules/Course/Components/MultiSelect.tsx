@@ -9,7 +9,8 @@ const MultiSelect = ({
   value,
   options,
   placeholder,
-  onChange
+  onChange,
+  appearFromTop=false
 }: SelectProps) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
@@ -82,7 +83,7 @@ const MultiSelect = ({
         />
       </div>
       {open && (
-        <ul className={styles.options}>
+        <ul className={appearFromTop ? styles.gradeoptions : styles.options}>
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (
               <li
@@ -110,6 +111,7 @@ type SelectProps = {
   placeholder: string;
   value: string[];
   onChange: (selectedOptions: string[]) => void;
+  appearFromTop?: boolean;
 };
 
 export default MultiSelect;
