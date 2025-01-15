@@ -263,12 +263,7 @@ export const ResultsDisplay = ({
 
   return (
     <div className={styles.container}>
-      {loading && (
-        <>
-          <h1> Search Results </h1>
-          <Loading />
-        </>
-      )}
+      {loading && <Loading/>}
       {/* Case where results are returned, even if zero */}
       {!loading && (
         <div className={styles.layout} data-cy="results-display">
