@@ -18,46 +18,48 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
   const [rating, setRating] = useState('-');
   const [diff, setDiff] = useState('-');
   const [workload, setWorkload] = useState('-');
-  const [topReview, setTopReview] = useState<ReviewType | {}>();
+  const [topReview, setTopReview] = useState<ReviewType | {} | null>(null);
   const [numReviews, setNumReviews] = useState(0);
   const [topReviewLikes, setTopReviewLikes] = useState(0);
   const [offered, setOffered] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (course) {
-      updateGauges();
-    }
+    setLoading(true);
+    updateCourseInfo();
+    // only set loading to false when top review information has been obtained
+    setLoading(topReview === null);
+  }, []);
+
+  useEffect(() => {
+    updateCourseInfo();
   }, [course]);
 
-  const updateGauges = () => {
+  const updateCourseInfo = () => {
     if (course) {
       setId(course._id);
       setRating(course.classRating ? String(course.classRating) : '-');
       setDiff(course.classDifficulty ? String(course.classDifficulty) : '-');
       setWorkload(course.classWorkload ? String(course.classWorkload) : '-');
-      updateTopReview();
-    }
-  };
 
-  const updateTopReview = () => {
-    axios
-      .post(`/api/courses/get-reviews`, { courseId: course ? course._id : id })
-      .then((response) => {
-        const reviews = response.data.result;
-        if (reviews && reviews.length > 0) {
-          reviews.sort((a: ReviewType, b: ReviewType) =>
-            (a.likes || 0) < (b.likes || 0) ? 1 : -1
-          );
-          setTopReview(reviews[0]);
-          setTopReviewLikes(reviews[0].likes || 0);
-          setNumReviews(reviews.length);
-          setOffered(lastOfferedSems(course));
-        } else {
-          setTopReview({});
-          setNumReviews(0);
-        }
-      });
-  };
+      axios.post(`/api/courses/get-reviews`, { courseId: course ? course._id : id })
+        .then((response) => {
+          const reviews = response.data.result;
+          if (reviews && reviews.length > 0) {
+            reviews.sort((a: ReviewType, b: ReviewType) =>
+              (a.likes || 0) < (b.likes || 0) ? 1 : -1
+            );
+            setTopReview(reviews[0]);
+            setTopReviewLikes(reviews[0].likes || 0);
+            setNumReviews(reviews.length);
+            setOffered(lastOfferedSems(course));
+          } else {
+            setTopReview({});
+            setNumReviews(0);
+          }
+        });
+    }
+  }
 
   if (!course) {
     // Return fallback if course is undefined
@@ -113,7 +115,7 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
           </a>
         )}
 
-        {numReviews === 0 && topReview !== undefined && (
+        {numReviews === 0 && !loading && (
           <>
             <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
             <div className={styles.noreviews}>

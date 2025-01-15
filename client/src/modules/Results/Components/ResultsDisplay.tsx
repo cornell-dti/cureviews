@@ -263,13 +263,13 @@ export const ResultsDisplay = ({
 
   return (
     <div className={styles.container}>
-      {loading && <Loading/>}
+      {loading && <Loading />}
       {/* Case where results are returned, even if zero */}
       {!loading && (
         <div className={styles.layout} data-cy="results-display">
           {/* Case where no results returned */}
           <div className={styles.leftbar}>
-            <h1> Search Results </h1>
+            {courseList.length !== 0 && <h1> Search Results </h1>}
             {/*<button*/}
             {/*  className={styles.filterbutton}*/}
             {/*  onClick={() => setSearchListViewEnabled(!searchListViewEnabled)}*/}
@@ -277,24 +277,27 @@ export const ResultsDisplay = ({
             {/*  {searchListViewEnabled ? 'Hide' : 'View'} Search Results*/}
             {/*</button>*/}
             <div className={styles.filtersearch}>
-              <div className={styles.filtercol}>
-                <div className={styles.filtertext}>Filter</div>
-                <div>
-                  <div className={styles.filtercategory}>Semester</div>
-                  {renderCheckboxes('semesters')}
+              {courseList.length !== 0 && (
+                <div className={styles.filtercol}>
+                  <div className={styles.filtertext}>Filter</div>
+                  <div>
+                    <div className={styles.filtercategory}>Semester</div>
+                    {renderCheckboxes('semesters')}
+                  </div>
+                  <div>
+                    <div className={styles.filtercategory}>Level</div>
+                    {renderCheckboxes('levels')}
+                  </div>
                 </div>
-                <div>
-                  <div className={styles.filtercategory}>Level</div>
-                  {renderCheckboxes('levels')}
-                </div>
-              </div>
+              )}
 
               {filteredItems.length !== 0 && (
                 <div className={styles.columns}>
                   {searchListViewEnabled && (
                     <>
                       <div>
-                        We found <b>{filteredItems.length}</b> courses for &quot;
+                        We found <b>{filteredItems.length}</b> courses for
+                        &quot;
                         {userInput}
                         &quot;
                       </div>
@@ -339,9 +342,9 @@ export const ResultsDisplay = ({
                       </div>
                     </>
                   )}
-              </div>
+                </div>
               )}
-              {filteredItems.length === 0 && (
+              {filteredItems.length === 0 && courseList.length !== 0 && (
                 <div className={styles.columns}>
                   {searchListViewEnabled && (
                     <>
@@ -372,8 +375,11 @@ export const ResultsDisplay = ({
 
           {filteredItems.length === 0 && (
             <div className={styles.noitems}>
-              <img src={Bear} alt="Bear Icon" className={styles.bearicon}/>
-              <div>No classes found. Try searching something else or switching up the filters!</div>
+              <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
+              <div>
+                No classes found. Try searching something else
+                {courseList.length !== 0 ? " or switching up the filters!" : "!"}
+              </div>
               {/*  <img*/}
               {/*    src="/noResults.svg"*/}
               {/*    className={styles.noresultimg}*/}
