@@ -33,8 +33,8 @@ export const Results = ({match, history}: ResultsProps) => {
     const response = await axios.post(`/api/search/get-courses`, {
       query: match.params.input.toLowerCase()
     });
-    const courseList = response.data.result.courses;
-    setCourseList(!courseList.error && courseList.length > 0 ? courseList : []);
+    const list = response.data.result.courses;
+    setCourseList(!list.error && list.length > 0 ? list : []);
     setLoading(false);
   }
 

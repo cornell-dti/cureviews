@@ -9,6 +9,7 @@ import FilterIcon from '../../../assets/icons/filtericon.svg';
 
 import styles from '../Styles/Results.module.css';
 import { Class } from 'common';
+import Bear from '/surprised_bear.svg';
 
 /*
   ResultsDisplay Component.a
@@ -101,6 +102,7 @@ export const ResultsDisplay = ({
     fieldDefault: number,
     increasing: boolean
   ) => {
+    if (courseList.length === 0) return;
     const sorted = [...courseList].sort((a, b) => {
       const first = Number(b[sortByField]) || fieldDefault;
       const second = Number(a[sortByField]) || fieldDefault;
@@ -215,25 +217,27 @@ export const ResultsDisplay = ({
    * The original list as FilteredResult components otherwise
    */
   const renderResults = () => {
-    const items = filteredItems.length ? filteredItems : courseList;
-
-    return items.map((result, index) => (
-      <div
-        className={styles.filteredresults}
-        data-cy={`results-display-${result.classSub.toLowerCase()}-${
-          result.classNum
-        }`}
-      >
-        <FilteredResult
-          key={index}
-          index={index}
-          selected={index === activeCard}
-          course={result}
-          previewHandler={previewHandler}
-          sortBy={selected}
-        />
-      </div>
-    ));
+    if (filteredItems.length === 0) {
+      return <></>
+    } else {
+      return filteredItems.map((result, index) => (
+        <div
+          className={styles.filteredresults}
+          data-cy={`results-display-${result.classSub.toLowerCase()}-${
+            result.classNum
+          }`}
+        >
+          <FilteredResult
+            key={index}
+            index={index}
+            selected={index === activeCard}
+            course={result}
+            previewHandler={previewHandler}
+            sortBy={selected}
+          />
+        </div>
+      ));
+    }
   };
 
   const renderCheckboxes = (group: string) => {
@@ -259,23 +263,16 @@ export const ResultsDisplay = ({
 
   return (
     <div className={styles.container}>
-      {(loading || courseList.length === 0) && <h1> Search Results </h1>}
-      {/* Case where results are still being loaded */}
-      {loading && <Loading />}
-      {/* Case where no results returned */}
-      {courseList.length === 0 && !loading && (
-        <div>
-          <img
-            src="/noResults.svg"
-            className={styles.noresultimg}
-            alt="No class found"
-          />
-          <div>Sorry! No classes match your search.</div>
-        </div>
+      {loading && (
+        <>
+          <h1> Search Results </h1>
+          <Loading />
+        </>
       )}
-      {/* Case where results are returned (non-empty) */}
-      {courseList.length !== 0 && !loading && (
+      {/* Case where results are returned, even if zero */}
+      {!loading && (
         <div className={styles.layout} data-cy="results-display">
+          {/* Case where no results returned */}
           <div className={styles.leftbar}>
             <h1> Search Results </h1>
             {/*<button*/}
@@ -297,72 +294,110 @@ export const ResultsDisplay = ({
                 </div>
               </div>
 
-              <div className={styles.columns}>
-                {searchListViewEnabled && (
-                  <>
-                    <div>
-                      We found{' '}
-                      <b>
-                        {filteredItems.length === 0
-                          ? courseList.length
-                          : filteredItems.length}
-                      </b>{' '}
-                      courses for &quot;{userInput}
-                      &quot;
-                    </div>
-                    <div className={styles.filtersortbuttons}>
-                      <div className={styles.bar}>
-                        <div>
-                          <label>Sort By: </label>
-                          <select
-                            value={selected}
-                            className={styles.sortselector}
-                            onChange={(e) => handleSelect(e)}
-                          >
-                            <option value="relevance">Relevance</option>
-                            <option value="rating">Overall Rating</option>
-                            <option value="diff">Difficulty</option>
-                            <option value="work">Workload</option>
-                          </select>
-                        </div>
+              {filteredItems.length !== 0 && (
+                <div className={styles.columns}>
+                  {searchListViewEnabled && (
+                    <>
+                      <div>
+                        We found <b>{filteredItems.length}</b> courses for &quot;
+                        {userInput}
+                        &quot;
+                      </div>
+                      <div className={styles.filtersortbuttons}>
+                        <div className={styles.bar}>
+                          <div>
+                            <label>Sort By: </label>
+                            <select
+                              value={selected}
+                              className={styles.sortselector}
+                              onChange={(e) => handleSelect(e)}
+                            >
+                              <option value="relevance">Relevance</option>
+                              <option value="rating">Overall Rating</option>
+                              <option value="diff">Difficulty</option>
+                              <option value="work">Workload</option>
+                            </select>
+                          </div>
 
-                        <button
-                          className={styles.filterbutton}
-                          onClick={() => setShowFilterPopup(!showFilterPopup)}
-                        >
-                          Filter <img src={FilterIcon} alt="filter-icon" />
-                        </button>
+                          <button
+                            className={styles.filterbutton}
+                            onClick={() => setShowFilterPopup(!showFilterPopup)}
+                          >
+                            Filter <img src={FilterIcon} alt="filter-icon" />
+                          </button>
+                        </div>
+                        {showFilterPopup && (
+                          <FilterPopup
+                            renderCheckboxes={renderCheckboxes}
+                            setShowFilterPopup={() =>
+                              setShowFilterPopup(!showFilterPopup)
+                            }
+                          />
+                        )}
                       </div>
-                      {showFilterPopup && (
-                        <FilterPopup
-                          renderCheckboxes={renderCheckboxes}
-                          setShowFilterPopup={() =>
-                            setShowFilterPopup(!showFilterPopup)
-                          }
-                        />
-                      )}
-                    </div>
-                    <div className={styles.layout}>
-                      <div className={styles.list}>
-                        <div className={styles.resultslist}>
-                          <ul>{renderResults()}</ul>
+                      <div className={styles.layout}>
+                        <div className={styles.list}>
+                          <div className={styles.resultslist}>
+                            <ul>{renderResults()}</ul>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+              </div>
+              )}
+              {filteredItems.length === 0 && (
+                <div className={styles.columns}>
+                  {searchListViewEnabled && (
+                    <>
+                      <div className={styles.filtersortbuttons}>
+                        <div className={styles.bar}>
+                          <button
+                            className={styles.filterbutton}
+                            onClick={() => setShowFilterPopup(!showFilterPopup)}
+                          >
+                            Filter <img src={FilterIcon} alt="filter-icon" />
+                          </button>
+                        </div>
+                        {showFilterPopup && (
+                          <FilterPopup
+                            renderCheckboxes={renderCheckboxes}
+                            setShowFilterPopup={() =>
+                              setShowFilterPopup(!showFilterPopup)
+                            }
+                          />
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {filteredItems.length === 0 && (
+            <div className={styles.noitems}>
+              <img src={Bear} alt="Bear Icon" className={styles.bearicon}/>
+              <div>No classes found. Try searching something else or switching up the filters!</div>
+              {/*  <img*/}
+              {/*    src="/noResults.svg"*/}
+              {/*    className={styles.noresultimg}*/}
+              {/*    alt="No class found"*/}
+              {/*  />*/}
+              {/*  <div>Sorry! No classes match your search.</div>*/}
+            </div>
+          )}
+
+          {filteredItems.length !== 0 && (
+            <div className={styles.preview}>
+              <div className={styles.previewcard}>
+                <PreviewCard
+                  course={cardCourse}
+                  // transformGauges={transformGauges}
+                />
               </div>
             </div>
-          </div>
-
-          <div className={styles.preview}>
-            <div className={styles.previewcard}>
-              <PreviewCard
-                course={cardCourse}
-                // transformGauges={transformGauges}
-              />
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

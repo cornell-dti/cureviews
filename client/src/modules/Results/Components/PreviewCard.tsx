@@ -21,6 +21,7 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
   const [topReview, setTopReview] = useState<ReviewType | {}>();
   const [numReviews, setNumReviews] = useState(0);
   const [topReviewLikes, setTopReviewLikes] = useState(0);
+  const [offered, setOffered] = useState('');
 
   useEffect(() => {
     if (course) {
@@ -29,16 +30,18 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
   }, [course]);
 
   const updateGauges = () => {
-    setId(course._id);
-    setRating(course.classRating ? String(course.classRating) : '-');
-    setDiff(course.classDifficulty ? String(course.classDifficulty) : '-');
-    setWorkload(course.classWorkload ? String(course.classWorkload) : '-');
-    updateTopReview();
+    if (course) {
+      setId(course._id);
+      setRating(course.classRating ? String(course.classRating) : '-');
+      setDiff(course.classDifficulty ? String(course.classDifficulty) : '-');
+      setWorkload(course.classWorkload ? String(course.classWorkload) : '-');
+      updateTopReview();
+    }
   };
 
   const updateTopReview = () => {
     axios
-      .post(`/api/courses/get-reviews`, { courseId: course._id })
+      .post(`/api/courses/get-reviews`, { courseId: course ? course._id : id })
       .then((response) => {
         const reviews = response.data.result;
         if (reviews && reviews.length > 0) {
@@ -48,6 +51,7 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
           setTopReview(reviews[0]);
           setTopReviewLikes(reviews[0].likes || 0);
           setNumReviews(reviews.length);
+          setOffered(lastOfferedSems(course));
         } else {
           setTopReview({});
           setNumReviews(0);
@@ -57,10 +61,11 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
 
   if (!course) {
     // Return fallback if course is undefined
-    return <></>;
+    return (
+      <></>
+    );
   }
 
-  const offered = lastOfferedSems(course);
   return (
     <div className={styles.container}>
       <div>
@@ -108,7 +113,7 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
           </a>
         )}
 
-        {numReviews === 0 && (
+        {numReviews === 0 && topReview !== undefined && (
           <>
             <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
             <div className={styles.noreviews}>
