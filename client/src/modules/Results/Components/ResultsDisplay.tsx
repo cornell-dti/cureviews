@@ -71,13 +71,19 @@ export const ResultsDisplay = ({
 
   useEffect(() => {
     setCourseList(courses);
+    setCardCourse(courses[0] || {});
+    setFilteredItems(courses);
+    setFilterMap(getInitialFilterMap());
     filterClasses();
   }, [courses, loading, type, userInput, courseList]);
 
   useEffect(() => {
-    setFilterMap(getInitialFilterMap());
     filterClasses();
-  }, [userInput]);
+  }, [filterMap]);
+
+  useEffect(() => {
+    sort(filteredItems);
+  }, [selected]);
 
   /**
    * Handles selecting different sort filters
@@ -171,6 +177,7 @@ export const ResultsDisplay = ({
       );
     }
 
+    setFilteredItems(filtered);
     sort(filtered);
   };
 
