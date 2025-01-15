@@ -269,7 +269,7 @@ export const ResultsDisplay = ({
           <div className={styles.layout} data-cy="results-display">
             {/* Case where no results returned */}
             <div className={styles.leftbar}>
-              {courseList.length !== 0 && <h1> Search Results </h1>}
+              {courseList.length !== 0 && <h1 className={styles.header}> Search Results </h1>}
               {/*<button*/}
               {/*  className={styles.filterbutton}*/}
               {/*  onClick={() => setSearchListViewEnabled(!searchListViewEnabled)}*/}

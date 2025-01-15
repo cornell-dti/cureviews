@@ -22,8 +22,9 @@ html {
   flex-flow: column nowrap;
 }
 
-.leftbar > h1 {
+.header {
   width: 100%;
+  white-space: nowrap;
   margin-bottom: 30px;
 }
 
@@ -191,7 +192,7 @@ html {
     padding: 36px 25px;
   }
 
-  .leftbar > h1 {
+  .header {
     margin-bottom: 10px;
   }
 
