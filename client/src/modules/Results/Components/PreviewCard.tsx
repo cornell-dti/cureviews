@@ -24,19 +24,8 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
   const [offered, setOffered] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(true);
-    updateCourseInfo();
-    // only set loading to false when top review information has been obtained
-    setLoading(topReview === null);
-  }, []);
-
-  useEffect(() => {
-    updateCourseInfo();
-  }, [course]);
-
   const updateCourseInfo = () => {
-    if (course) {
+    if (course && course._id !== id) {
       setId(course._id);
       setRating(course.classRating ? String(course.classRating) : '-');
       setDiff(course.classDifficulty ? String(course.classDifficulty) : '-');
@@ -57,18 +46,22 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
             setTopReview({});
             setNumReviews(0);
           }
+          setLoading(false);
         });
     }
   }
 
-  if (!course) {
-    // Return fallback if course is undefined
-    return (
-      <></>
-    );
-  }
+  useEffect(() => {
+    setLoading(true);
+  }, []);
 
-  return (
+  useEffect(() => {
+    updateCourseInfo();
+  }, [course, updateCourseInfo]);
+
+  if (!course) return (<></>);
+
+  return !loading && (
     <div className={styles.container}>
       <div>
         <div className={styles.coursetitle}>
@@ -115,7 +108,7 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
           </a>
         )}
 
-        {numReviews === 0 && !loading && (
+        {numReviews === 0 && (
           <>
             <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
             <div className={styles.noreviews}>
@@ -128,7 +121,7 @@ export const PreviewCard = ({ course }: PreviewCardProps) => {
             className={styles.reviewsbutton}
             href={`/course/${course.classSub.toUpperCase()}/${course.classNum}`}
           >
-            Leave a Review
+            View course page
           </a>
         )}
       </div>

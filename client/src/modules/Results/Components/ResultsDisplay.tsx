@@ -71,18 +71,13 @@ export const ResultsDisplay = ({
 
   useEffect(() => {
     setCourseList(courses);
-    setCardCourse(courses[0] || {});
-    setFilteredItems(courses);
-    setFilterMap(getInitialFilterMap());
-  }, [courses, userInput]);
-
-  useEffect(() => {
     filterClasses();
-  }, [filterMap]);
+  }, [courses, loading, type, userInput, courseList]);
 
   useEffect(() => {
-    sort(filteredItems);
-  }, [selected]);
+    setFilterMap(getInitialFilterMap());
+    filterClasses();
+  }, [userInput]);
 
   /**
    * Handles selecting different sort filters
@@ -176,7 +171,6 @@ export const ResultsDisplay = ({
       );
     }
 
-    setFilteredItems(filtered);
     sort(filtered);
   };
 
@@ -377,8 +371,8 @@ export const ResultsDisplay = ({
               <div className={styles.noitems}>
                 <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
                 <div>
-                  No classes found. Try searching something else
-                  {courseList.length !== 0 ? " or switching up the filters!" : "!"}
+                  No classes found. Try another search
+                  {courseList.length !== 0 ? " or switch up the filters!" : "!"}
                 </div>
               </div>
             )}
