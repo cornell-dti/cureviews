@@ -64,8 +64,7 @@ export const ResultsDisplay = ({
         ])
       ],
       [
-        'subjects',
-        [] // Correctly type this as a string array.
+        'subjects', []
       ]
     ]);
   const [filterMap, setFilterMap] = useState<FilterMap>(getInitialFilterMap());
@@ -262,146 +261,142 @@ export const ResultsDisplay = ({
   };
 
   return (
-    <div className={styles.container}>
+    <>
       {loading && <Loading />}
-      {/* Case where results are returned, even if zero */}
-      {!loading && (
-        <div className={styles.layout} data-cy="results-display">
-          {/* Case where no results returned */}
-          <div className={styles.leftbar}>
-            {courseList.length !== 0 && <h1> Search Results </h1>}
-            {/*<button*/}
-            {/*  className={styles.filterbutton}*/}
-            {/*  onClick={() => setSearchListViewEnabled(!searchListViewEnabled)}*/}
-            {/*>*/}
-            {/*  {searchListViewEnabled ? 'Hide' : 'View'} Search Results*/}
-            {/*</button>*/}
-            <div className={styles.filtersearch}>
-              {courseList.length !== 0 && (
-                <div className={styles.filtercol}>
-                  <div className={styles.filtertext}>Filter</div>
-                  <div>
-                    <div className={styles.filtercategory}>Semester</div>
-                    {renderCheckboxes('semesters')}
+      <div className={styles.container}>
+        {/* Case where results are returned, even if zero */}
+        {!loading && (
+          <div className={styles.layout} data-cy="results-display">
+            {/* Case where no results returned */}
+            <div className={styles.leftbar}>
+              {courseList.length !== 0 && <h1> Search Results </h1>}
+              {/*<button*/}
+              {/*  className={styles.filterbutton}*/}
+              {/*  onClick={() => setSearchListViewEnabled(!searchListViewEnabled)}*/}
+              {/*>*/}
+              {/*  {searchListViewEnabled ? 'Hide' : 'View'} Search Results*/}
+              {/*</button>*/}
+              <div className={styles.filtersearch}>
+                {courseList.length !== 0 && (
+                  <div className={styles.filtercol}>
+                    <div className={styles.filtertext}>Filter</div>
+                    <div>
+                      <div className={styles.filtercategory}>Semester</div>
+                      {renderCheckboxes('semesters')}
+                    </div>
+                    <div>
+                      <div className={styles.filtercategory}>Level</div>
+                      {renderCheckboxes('levels')}
+                    </div>
                   </div>
-                  <div>
-                    <div className={styles.filtercategory}>Level</div>
-                    {renderCheckboxes('levels')}
-                  </div>
-                </div>
-              )}
+                )}
 
-              {filteredItems.length !== 0 && (
-                <div className={styles.columns}>
-                  {searchListViewEnabled && (
-                    <>
-                      <div>
-                        We found <b>{filteredItems.length}</b> courses for
-                        &quot;
-                        {userInput}
-                        &quot;
-                      </div>
-                      <div className={styles.filtersortbuttons}>
-                        <div className={styles.bar}>
-                          <div>
-                            <label>Sort By: </label>
-                            <select
-                              value={selected}
-                              className={styles.sortselector}
-                              onChange={(e) => handleSelect(e)}
+                {filteredItems.length !== 0 && (
+                  <div className={styles.columns}>
+                    {searchListViewEnabled && (
+                      <>
+                        <div>
+                          We found <b>{filteredItems.length}</b> courses for
+                          &quot;
+                          {userInput}
+                          &quot;
+                        </div>
+                        <div className={styles.filtersortbuttons}>
+                          <div className={styles.bar}>
+                            <div>
+                              <label>Sort By: </label>
+                              <select
+                                value={selected}
+                                className={styles.sortselector}
+                                onChange={(e) => handleSelect(e)}
+                              >
+                                <option value="relevance">Relevance</option>
+                                <option value="rating">Overall Rating</option>
+                                <option value="diff">Difficulty</option>
+                                <option value="work">Workload</option>
+                              </select>
+                            </div>
+
+                            <button
+                              className={styles.filterbutton}
+                              onClick={() => setShowFilterPopup(!showFilterPopup)}
                             >
-                              <option value="relevance">Relevance</option>
-                              <option value="rating">Overall Rating</option>
-                              <option value="diff">Difficulty</option>
-                              <option value="work">Workload</option>
-                            </select>
+                              Filter <img src={FilterIcon} alt="filter-icon" />
+                            </button>
                           </div>
-
-                          <button
-                            className={styles.filterbutton}
-                            onClick={() => setShowFilterPopup(!showFilterPopup)}
-                          >
-                            Filter <img src={FilterIcon} alt="filter-icon" />
-                          </button>
+                          {showFilterPopup && (
+                            <FilterPopup
+                              renderCheckboxes={renderCheckboxes}
+                              setShowFilterPopup={() =>
+                                setShowFilterPopup(!showFilterPopup)
+                              }
+                            />
+                          )}
                         </div>
-                        {showFilterPopup && (
-                          <FilterPopup
-                            renderCheckboxes={renderCheckboxes}
-                            setShowFilterPopup={() =>
-                              setShowFilterPopup(!showFilterPopup)
-                            }
-                          />
-                        )}
-                      </div>
-                      <div className={styles.layout}>
-                        <div className={styles.list}>
-                          <div className={styles.resultslist}>
-                            <ul>{renderResults()}</ul>
+                        <div className={styles.layout}>
+                          <div className={styles.list}>
+                            <div className={styles.resultslist}>
+                              <ul>{renderResults()}</ul>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
-              {filteredItems.length === 0 && courseList.length !== 0 && (
-                <div className={styles.columns}>
-                  {searchListViewEnabled && (
-                    <>
-                      <div className={styles.filtersortbuttons}>
-                        <div className={styles.bar}>
-                          <button
-                            className={styles.filterbutton}
-                            onClick={() => setShowFilterPopup(!showFilterPopup)}
-                          >
-                            Filter <img src={FilterIcon} alt="filter-icon" />
-                          </button>
+                      </>
+                    )}
+                  </div>
+                )}
+                {filteredItems.length === 0 && courseList.length !== 0 && (
+                  <div className={styles.columns}>
+                    {searchListViewEnabled && (
+                      <>
+                        <div className={styles.filtersortbuttons}>
+                          <div className={styles.bar}>
+                            <button
+                              className={styles.filterbutton}
+                              onClick={() => setShowFilterPopup(!showFilterPopup)}
+                            >
+                              Filter <img src={FilterIcon} alt="filter-icon" />
+                            </button>
+                          </div>
+                          {showFilterPopup && (
+                            <FilterPopup
+                              renderCheckboxes={renderCheckboxes}
+                              setShowFilterPopup={() =>
+                                setShowFilterPopup(!showFilterPopup)
+                              }
+                            />
+                          )}
                         </div>
-                        {showFilterPopup && (
-                          <FilterPopup
-                            renderCheckboxes={renderCheckboxes}
-                            setShowFilterPopup={() =>
-                              setShowFilterPopup(!showFilterPopup)
-                            }
-                          />
-                        )}
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
+
+            {filteredItems.length === 0 && (
+              <div className={styles.noitems}>
+                <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
+                <div>
+                  No classes found. Try searching something else
+                  {courseList.length !== 0 ? " or switching up the filters!" : "!"}
+                </div>
+              </div>
+            )}
+
+            {filteredItems.length !== 0 && (
+              <div className={styles.preview}>
+                <div className={styles.previewcard}>
+                  <PreviewCard
+                    course={cardCourse}
+                    // transformGauges={transformGauges}
+                  />
+                </div>
+              </div>
+            )}
           </div>
-
-          {filteredItems.length === 0 && (
-            <div className={styles.noitems}>
-              <img src={Bear} alt="Bear Icon" className={styles.bearicon} />
-              <div>
-                No classes found. Try searching something else
-                {courseList.length !== 0 ? " or switching up the filters!" : "!"}
-              </div>
-              {/*  <img*/}
-              {/*    src="/noResults.svg"*/}
-              {/*    className={styles.noresultimg}*/}
-              {/*    alt="No class found"*/}
-              {/*  />*/}
-              {/*  <div>Sorry! No classes match your search.</div>*/}
-            </div>
-          )}
-
-          {filteredItems.length !== 0 && (
-            <div className={styles.preview}>
-              <div className={styles.previewcard}>
-                <PreviewCard
-                  course={cardCourse}
-                  // transformGauges={transformGauges}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
