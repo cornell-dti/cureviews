@@ -64,9 +64,17 @@ const UserInfo = ({
         src={profilePicture}
         alt="user profile bear"
       />
-      <div className={styles.netid}>{netId}</div>
-      {userMajors.length > 0 &&
-        'Major' + (userMajors.length > 1 ? 's' : '') + ': ' + userMajors.join(', ')}
+      <div>
+        <div className={styles.netid}>
+          <span className={styles.bold}>{netId}</span>
+          {userMajors.length > 0 && " is studying"}
+          <p className={styles.bold}>
+            {userMajors.join(', ').replace(/(, )(?!.*\1)/,
+              (userMajors.length > 2 ? ', and ' : ' and ')
+            )}
+          </p>
+        </div>
+      </div>
       <div className={styles.subtitle}>User Statistics</div>
       <div className={styles.statssection}>
         <ProfileCard
@@ -81,15 +89,14 @@ const UserInfo = ({
         ></ProfileCard>
       </div>
       {!showMajorUpdate && (
-        <button
-          className={styles.btn}
-          onClick={() => setShowMajorUpdate(true)}
-        >
-          {userMajors.length === 0 ? "Set your major(s)" : "Update your major(s)"}
+        <button className={styles.btn} onClick={() => setShowMajorUpdate(true)}>
+          {userMajors.length === 0
+            ? 'Set your major(s)'
+            : 'Update your major(s)'}
         </button>
       )}
       {showMajorUpdate && (
-        <div>
+        <div className={styles.majorcard}>
           <MultiSelect
             options={majorOptions}
             value={selectedMajors}
@@ -102,12 +109,17 @@ const UserInfo = ({
               className={styles.btn}
               onClick={updateMajors}
               disabled={!validMajor}
-              title={validMajor ? "" : "Majors have not been changed"}
+              title={validMajor ? '' : "You've already selected these majors!"}
             >
-              {(selectedMajors.length === 0 && validMajor) ? "Submit (clear)" : "Submit"}
+              {selectedMajors.length === 0 && validMajor
+                ? 'Submit (clear)'
+                : 'Submit'}
             </button>
-            <button className={styles.btn} onClick={() => setShowMajorUpdate(false)}>
-              Close menu
+            <button
+              className={styles.btn}
+              onClick={() => setShowMajorUpdate(false)}
+            >
+              Cancel
             </button>
           </div>
         </div>

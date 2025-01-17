@@ -235,6 +235,12 @@ const ReviewModal = ({
                 isOverall={false}
               />
             </div>
+            <SingleSelect
+              options={gradeoptions}
+              value={selectedGrade}
+              onChange={onGradeChange}
+              placeholder="Grade Received"
+            />
             {!loadingMajors && (!isLoggedIn || userMajors.length === 0) && (
               <MultiSelect
                 options={majorOptions}
@@ -244,12 +250,6 @@ const ReviewModal = ({
                 placeholder="Major"
               />
             )}
-            <SingleSelect
-              options={gradeoptions}
-              value={selectedGrade}
-              onChange={onGradeChange}
-              placeholder="Grade Received"
-            />
           </div>
           <div className={styles.textcol}>
             <textarea

@@ -29,10 +29,20 @@
   text-align: center;
 }
 
+.bold {
+  font-weight: 700;
+}
+
 .netid {
   text-align: center;
   color: var(--clr-gray-300);
-  font-size: 0.85em;
+  font-size: 1em;
+}
+
+.majorcard {
+  background: var(--clr-gray-100);
+  border-radius: 10px;
+  padding: 12px;
 }
 
 .statssection {
