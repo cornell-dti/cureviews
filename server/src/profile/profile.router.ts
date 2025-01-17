@@ -120,7 +120,6 @@ profileRouter.post('/get-majors', async (req, res) => {
  */
 profileRouter.post('/set-majors', async (req, res) => {
   try {
-    console.log(req.body)
     const { netId, majors }: ProfileMajorPostType = req.body;
     const profile: Profile = new Profile({ netId });
 

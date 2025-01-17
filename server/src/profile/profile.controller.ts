@@ -41,9 +41,7 @@ export const getStudentReviewDocs = async ({ netId }: ProfileInfoRequestType) =>
   return reviews.filter((review) => review !== null);
 };
 
-export const getStudentMajors = async ({
-                                             netId
-                                           }: ProfileInfoRequestType) => {
+export const getStudentMajors = async ({ netId }: ProfileInfoRequestType) => {
   const student = await findStudent(netId);
 
   if (!student) {

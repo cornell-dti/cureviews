@@ -11,7 +11,6 @@ type UserInfoProps = {
   reviewsTotal: number;
   upvoteCount: number;
   netId: string;
-  majors: string[];
   signOut: () => void;
 }
 
