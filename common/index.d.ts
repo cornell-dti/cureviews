@@ -30,6 +30,7 @@ export interface Student {
   readonly privilege: string; // user privilege level
   reviews: string[];
   likedReviews: string[];
+  majors?: string[];
 }
 
 export interface Subject {

@@ -3,10 +3,11 @@ import express from 'express';
 import { Profile } from './profile';
 
 import {
+  getStudentMajors,
   getStudentReviewDocs,
-  getTotalLikesByNetId
+  getTotalLikesByNetId, setStudentMajors
 } from './profile.controller';
-import { ProfileInfoRequestType } from './profile.type';
+import { ProfileInfoRequestType, ProfileMajorPostType } from './profile.type';
 
 export const profileRouter = express.Router();
 
@@ -81,6 +82,59 @@ profileRouter.post('/get-reviews', async (req, res) => {
     }
 
     return res.status(200).json({ result: reviews });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+
+/** Reachable at POST /api/profiles/get-majors
+ * @body netId: a user's netId
+ * Gets the array of major(s) attached to the user with the given netId
+ */
+profileRouter.post('/get-majors', async (req, res) => {
+  try {
+    const { netId }: ProfileInfoRequestType = req.body;
+    const profile: Profile = new Profile({ netId });
+
+    const validNetId: string = profile.getNetId();
+    const majors = await getStudentMajors({ netId: validNetId });
+
+    if (!majors) {
+      return res.status(200).json({ result: [] });
+    }
+
+    return res.status(200).json({ majors });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${err.message}` });
+  }
+});
+
+/** Reachable at POST /api/profiles/set-majors
+ * @body netId: a user's netId
+ * @body majors: a list of new majors to attach to user
+ */
+profileRouter.post('/set-majors', async (req, res) => {
+  try {
+    console.log(req.body)
+    const { netId, majors }: ProfileMajorPostType = req.body;
+    const profile: Profile = new Profile({ netId });
+
+    const validNetId: string = profile.getNetId();
+    const success: boolean = await setStudentMajors({ netId: validNetId, majors });
+
+    if (!success) {
+      return res.status(404).json({
+        error: `Failed to update majors of student with netId: ${netId}. No student found.`,
+      });
+    }
+
+    return res.status(200).json({ message: "Majors updated successfully." });
+
   } catch (err) {
     return res
       .status(500)
