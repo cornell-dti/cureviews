@@ -3,6 +3,7 @@ import styles from '../Styles/UserInfo.module.css';
 import ProfileCard from './ProfileCard';
 import MultiSelect from '../../Course/Components/MultiSelect';
 import allMajors from '../../Globals/majors';
+import formatList from 'common/formatList'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -68,9 +69,7 @@ const UserInfo = ({
           <span className={styles.bold}>{netId}</span>
           {userMajors.length > 0 && " is studying"}
           <p className={styles.bold}>
-            {userMajors.join(', ').replace(/(, )(?!.*\1)/,
-              (userMajors.length > 2 ? ', and ' : ' and ')
-            )}
+            {formatList(userMajors)}
           </p>
         </div>
       </div>

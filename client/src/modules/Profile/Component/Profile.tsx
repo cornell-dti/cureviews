@@ -19,6 +19,7 @@ import type { NewReview } from '../../../types';
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 import { randomPicture } from '../../Globals/profile_picture';
+import formatList from 'common/formatList'
 
 import styles from '../Styles/Profile.module.css';
 
@@ -137,10 +138,8 @@ const Profile = () => {
           JSON.stringify(oldMajors) !== JSON.stringify(review.major)) {
           toast.info('Your major has been changed ' +
             (oldMajors.length !== 0 && 'from ')
-            + oldMajors.join(',') + ' to '
-            + review.major.join(', ').replace(/(, )(?!.*\1)/,
-                (review.major.length > 2 ? ', and ' : ' and ')
-              ) + "."
+            + formatList(oldMajors) + ' to '
+            + formatList(review.major) + "."
           )
         }
       }
