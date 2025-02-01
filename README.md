@@ -9,14 +9,9 @@
   - [Dependencies \& Libraries](#dependencies--libraries)
   - [Screenshots](#screenshots)
   - [Contributors](#contributors)
-    - [Spring 2024](#spring-2024)
-    - [Fall 2023](#fall-2023)
-    - [2022 - 2023](#2022---2023)
-    - [2021 - 2022](#2021---2022)
-    - [2021-2020](#2021-2020)
-    - [2019-2020](#2019-2020)
-    - [2018-2019](#2018-2019)
-    - [2017-2018](#2017-2018)
+    - [Spring 2025](#spring-2025)
+    - [Fall 2024](#fall-2024)
+    - [Past semesters](#past-semesters)
 
 ## About
 
@@ -119,6 +114,12 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 ![Leave a Review](./.github/make-review-ss.png)
 
 ## Contributors
+### Spring 2025
+
+- **Andrew Qian** - Technical Product Manager
+- **Helen Lei** - Developer
+- **Matthew Kim** - Developer
+- **Cynthia Lan** - Product Marketing Manager
 
 ### Fall 2024
 
@@ -132,93 +133,41 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **Matthew Kim** - Developer
 - **Jaeyoung Lee** - Product Marketing Manager
 
-### Spring 2024
+### Past semesters
 
-- **Jonathan Kim** - Product Manager
-- **Megan Yap** - Associate Product Manager
-- **Will Zhang** - Technical Product Manager
-- **Andrea Thia** - Designer
-- **Valerie Wong** - Designer
-- **Erica Lee** - Designer
-- **Julie Jeong** - Developer Advisor
-- **Helen Lei** - Developer
-- **Jacqueline Cai** - Developer
-- **Andrew Qian** - Developer
-- **Jaeyoung Lee** - Product Marketing Manager
-- **Harrison Chin** - Coach
+- **Jonathan Kim** - Product Manager (FA23, SP24)
+- **Tina Ou** - Product Manager (2021-2023)
+- **Angela Chen** - Product Manager (2020)
+- **Adam Masters** - Product Manager (2018-2019)
+- **Jessica Prague** - Designer (2017), Product Manager (2018)
+- **Brooke Docherty** - Product Manager (2017)
+- **Divyansha Sehgal** - Product Manager (2017)
+- **Maywa Padungrat** - Designer (2021), Associate Product Manager (2022)
+- **Andrea Thia** - Designer (FA23, SP24)
+- **Valerie Wong** - Designer (SP24)
+- **Larrisa Chen** - Designer (2021)
+- **Erin Chen** - Designer (2020)
+- **Flora Liu** - Designer (2020)
+- **Erin Chen** - Designer (2018)
+- **Jesse Mansoor** - Designer (2017-2018)
+- **Michelle Li** - Developer (2021), Technical Product Manager (2022), Developer Advisor (FA23)
+- **Akash Aryal** - Developer (2019-2020), Technical Product Manager (2021)
+- **Julian Londono** - Developer (2017), Product Manager (2018), Technical Product Manager (2019-2020)
+- **Luis Hoderlein** - Developer (2019), Technical Product Manager (2020)
+- **Julie Jeong** - Developer (2020-2022), Developer Advisor (SP24)
+- **Harrison Chin** - Developer (FA23)
+- **Samuel Yeboah** - Developer (FA23)
+- **Jack Farley** - Developer (2021-2023)
+- **Ankit Lakkapragada** - Developer (2021-2023)
+- **Andrew Gao** - Developer (2021)
+- **Dray Farley** - Developer (2018-2020)
+- **Tanay Menezes** - Developer (2020)
+- **Jessica Chen** - Developer (2017-2019)
+- **Bryan Graeser** - Developer (2018)
+- **Vinisha Mittal** - Developer (2017
+- **Miranda Yu** - Product Marketing Manager (2022)
 
-### Fall 2023
-
-- **Jonathan Kim** - Product Manager
-- **Will Zhang** - Technical Product Manager
-- **Michelle Li** - Developer Advisor
-- **Harrison Chin** - Developer
-- **Samuel Yeboah** - Developer
-- **Helen Lei** - Developer
-- **Andrea Thia** - Designer
-
-### 2022 - 2023
-
-- **Tina Ou** - Product Manager
-- **Maywa Padungrat** - Associate Product Manager
-- **Michelle Li** - Technical Product Manager
-- **Jack Farley** - Developer
-- **Ankit Lakkapragada** - Developer
-- **Miranda Yu** - Product Marketing Manager
-
-### 2021 - 2022
-
-- **Tina Ou** - Product Manager
-- **Akash Aryal** - Technical Product Manager
-- **Andrew Gao** - Developer
-- **Julie Jeong** - Developer
-- **Jack Farley** - Developer
-- **Michelle Li** - Developer
-- **Ankit Lakkapragada** - Developer
-- **Maywa Padungrat** - Product Designer
-- **Larrisa Chen** - Product Designer
-
-### 2021-2020
-
-- **Angela Chen** - Product Manager
-- **Julian Londono** - Technical Project Manager
-- **Luis Hoderlein** - Technical Project Manager
-- **Dray Farley** - Developer
-- **Akash Aryal** - Developer
-- **Julie Jeong** - Developer
-- **Tanay Menezes** - Developer
-
-### 2019-2020
-
-- **Julian Londono** - Technical Project Manager
-- **Adam Masters** - Product Manager
-- **Jessica Chen** - Developer
-- **Dray Farley** - Developer
-- **Akash Aryal** - Developer
-- **Luis Hoderlein** - Developer
-- **Erin Chen** - Designer
-- **Flora Liu** - Designer
-
-### 2018-2019
-
-- **Julian Londono** - Project Manager
-- **Adam Masters** - Project Manager (in transition)
-- **Jessica Prague** - Project Manager
-- **Jessica Chen** - Developer
-- **Dray Farley** - Developer
-- **Bryan Graeser** - Developer
-- **Erin Chen** - Designer
-- **Jesse Mansoor** - Designer
-
-### 2017-2018
-
-- **Brooke Docherty** - Product Manager
-- **Divyansha Sehgal** - Product Manager
-- **Jessica Chen** - Developer
-- **Julian Londono** - Developer
-- **Vinisha Mittal** - Developer
-- **Jesse Mansoor** - Designer
-- **Jessica Prague** - Designer
+  
 
 We are a team within **Cornell Digital Tech Innovation**. For more information, see our website [here](https://cornelldti.org/).
 <img src="./client/src/assets/img/dti-text-white-logo.png">
