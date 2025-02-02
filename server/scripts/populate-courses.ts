@@ -610,6 +610,7 @@ export const addCourseDescription = async (course): Promise<boolean> => {
  */
 export const addAllSimilarityData = async (): Promise<boolean> => {
   try {
+    console.log("adding similarity data");
     const courses = await Classes.find().exec();
     if (courses) {
       for (const course of courses) {
@@ -637,7 +638,21 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
     const similarities = [];
     const tfidf = await RecommendationMetadata.findOne({ _id: courseId }).exec();
     for (const c of courses) {
-      if (c._id !== courseId && !c.crossList.includes(courseId) && c.classRating !== null && c.classRating !== 0) {
+      let crossList = false;
+      for (const crosslist of c.crossList) {
+        if (similarities.some(sim => sim._id === crosslist)) {
+          crossList = true;
+          break;
+        }
+      }
+      if (
+        c._id !== courseId &&
+        !c.crossList.includes(courseId) &&
+        c.classRating &&
+        c.classRating !== null &&
+        c.classRating !== 0 &&
+        !crossList
+      ) {
         const compTfidf = await RecommendationMetadata.findOne({ _id: c._id }).exec();
         const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
         if (cos < 1) {
