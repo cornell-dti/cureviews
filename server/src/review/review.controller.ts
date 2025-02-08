@@ -11,7 +11,7 @@ import {
   updateStudentLikedReviews,
   updateStudentReviews,
   updateReviewLikes,
-  hideReportedReview
+  hideReportedReview, updateStudentMajors
 } from './review.data-access';
 import {
   InsertReviewType,
@@ -73,6 +73,13 @@ export const addStudentReview = async ({
     }
 
     const { reviews } = student;
+
+    const review = await findReview(reviewId);
+    if (student.majors !== review.major) {
+      if (review.major && review.major.length !== 0) {
+        await updateStudentMajors(netId, review.major);
+      }
+    }
 
     const newReviews = reviews ? reviews.concat([reviewId]) : [reviewId];
     await updateStudentReviews(netId, newReviews);

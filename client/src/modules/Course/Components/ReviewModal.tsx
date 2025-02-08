@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import MultiSelect from './MultiSelect';
 import SingleSelect from './SingleSelect';
@@ -14,11 +15,11 @@ import LoginModal from './LoginModal';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 const ReviewModal = ({
-  open,
-  setReviewOpen,
-  submitReview,
-  professorOptions
-}: Modal) => {
+                       open,
+                       setReviewOpen,
+                       submitReview,
+                       professorOptions
+                     }: Modal) => {
   // Modal Logic
   function closeModal() {
     setReviewOpen(false);
@@ -59,7 +60,9 @@ const ReviewModal = ({
 
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
 
-  const { isLoggedIn, signIn } = useAuthOptionalLogin();
+  const [userMajors, setUserMajors] = useState<string[]>([]);
+  const [loadingMajors, setLoadingMajors] = useState<boolean>(true);
+  const { isLoggedIn, netId, signIn } = useAuthOptionalLogin();
 
   const [valid, setValid] = useState<Valid>({
     professor: false,
@@ -70,6 +73,18 @@ const ReviewModal = ({
   const [allowSubmit, setAllowSubmit] = useState<boolean>(false);
 
   useEffect(() => {
+    setLoadingMajors(true)
+    if (isLoggedIn) {
+      getUserMajors();
+    } else {
+      setLoadingMajors(false)
+    }
+    if (!isLoggedIn || userMajors.length === 0) {
+      setValid({ ...valid, major: true });
+    }
+  }, [isLoggedIn, open]);
+
+  useEffect(() => {
     if (!professorOptions.includes('Not Listed')) {
       professorOptions.push('Not Listed');
     }
@@ -78,6 +93,16 @@ const ReviewModal = ({
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
   }, [valid]);
+
+  const getUserMajors = async () => {
+    const response = await axios.post('/api/profiles/get-majors', {
+      netId
+    })
+    if (response.status === 200) {
+      setUserMajors(response.data.majors)
+      setLoadingMajors(false)
+    }
+  }
 
   const onProfessorChange = (newSelectedProfessors: string[]) => {
     setSelectedProfessors(newSelectedProfessors);
@@ -123,7 +148,7 @@ const ReviewModal = ({
         text: reviewText,
         isCovid: false,
         grade: selectedGrade,
-        major: selectedMajors
+        major: selectedMajors ? selectedMajors : [],
       };
       submitReview(newReview);
     }
@@ -210,18 +235,21 @@ const ReviewModal = ({
                 isOverall={false}
               />
             </div>
-            <MultiSelect
-              options={majorOptions}
-              value={selectedMajors}
-              onChange={onMajorChange}
-              placeholder="Major"
-            />
             <SingleSelect
               options={gradeoptions}
               value={selectedGrade}
               onChange={onGradeChange}
               placeholder="Grade Received"
             />
+            {!loadingMajors && (!isLoggedIn || userMajors.length === 0) && (
+              <MultiSelect
+                options={majorOptions}
+                value={selectedMajors}
+                onChange={onMajorChange}
+                preselectedOptions={userMajors}
+                placeholder="Major"
+              />
+            )}
           </div>
           <div className={styles.textcol}>
             <textarea

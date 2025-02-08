@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
@@ -19,6 +19,7 @@ import type { NewReview } from '../../../types';
 
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 import { randomPicture } from '../../Globals/profile_picture';
+import formatList from 'common/formatList'
 
 import styles from '../Styles/Profile.module.css';
 
@@ -29,6 +30,7 @@ const Profile = () => {
   const [pendingReviews, setPendingReviews] = useState<ReviewType[]>([]);
   const [approvedReviews, setApprovedReviews] = useState<ReviewType[]>([]);
 
+  const savedSessionReview = useRef<NewReview | null>(null);
   const [upvoteCount, setUpvoteCount] = useState(0);
 
   const { isLoggedIn, token, netId, isAuthenticating, signOut } =
@@ -128,10 +130,26 @@ const Profile = () => {
       }
     }
 
+    const checkForUpdatedMajor = async (review: NewReview) => {
+      const getMajorsReq = await axios.post('/api/profiles/get-majors', { netId })
+      if (getMajorsReq.status === 200) {
+        const oldMajors = getMajorsReq.data.majors
+        if (oldMajors && review &&
+          JSON.stringify(oldMajors) !== JSON.stringify(review.major)) {
+          toast.info('Your major has been changed ' +
+            (oldMajors.length !== 0 && 'from ')
+            + formatList(oldMajors) + ' to '
+            + formatList(review.major) + "."
+          )
+        }
+      }
+    }
+
     // Only update reviews if we have a given user's netId + they are no longer authenticating.
     if (netId && !isAuthenticating) {
       getReviews();
       getReviewsHelpful();
+      if (savedSessionReview.current) checkForUpdatedMajor(savedSessionReview.current)
     }
   }, [netId, isAuthenticating]);
 
@@ -186,6 +204,7 @@ const Profile = () => {
       sessionCourseId !== '' &&
       isLoggedIn
     ) {
+      savedSessionReview.current = sessionReview;
       submitReview(sessionReview, sessionCourseId);
     }
   }, [isLoggedIn, token]);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // CSS FILES
 import styles from '../Styles/Select.module.css';
@@ -9,10 +9,17 @@ const MultiSelect = ({
   value,
   options,
   placeholder,
-  onChange
+  onChange,
+  preselectedOptions,
 }: SelectProps) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (preselectedOptions) {
+      onChange(preselectedOptions);
+    }
+  }, [preselectedOptions]);
 
   const filteredOptions = searchTerm.length !== 0
     ? options.filter((option) =>
@@ -110,6 +117,7 @@ type SelectProps = {
   placeholder: string;
   value: string[];
   onChange: (selectedOptions: string[]) => void;
+  preselectedOptions?: string[];
 };
 
 export default MultiSelect;

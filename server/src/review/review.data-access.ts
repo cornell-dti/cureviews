@@ -23,6 +23,13 @@ export const updateStudentReviews = async (
   await Students.updateOne({ netId }, { $set: { reviews: newReviews } }).exec();
 };
 
+export const updateStudentMajors = async (
+  netId: string,
+  majors: string[]
+) => {
+  await Students.updateOne({ netId }, { $set: { majors } }).exec();
+};
+
 export const updateStudentLikedReviews = async (
   netId: string,
   reviewId: string,
