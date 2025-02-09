@@ -20,14 +20,6 @@
 }
 
 .sidebar li:hover {
-  color: #0076FF;
-  /* Light blue */
+  color: #B6D8FF;
   background: rgba(255, 255, 255, 0.2);
-}
-
-.sidebar li.active {
-  background: white;
-  color: #2563eb;
-  /* Blue text */
-  font-weight: bold;
 }
