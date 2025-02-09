@@ -34,6 +34,9 @@ export const Admin = () => {
 
   if (loading) return <Loading />;
 
+  /** 
+   * If user is not an admin, redirect back to homepage. 
+   * */
   if (!isLoggedIn || !token || !isAdmin) {
     return <Redirect to="/" />;
   }
