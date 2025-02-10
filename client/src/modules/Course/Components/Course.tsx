@@ -105,7 +105,7 @@ export const Course = () => {
    * Update state to conditionally render sticky bottom-right review button
    */
   useEffect(() => {
-    function handleScroll() {
+    const handleScroll = () => {
       setScrolled(window.scrollY >= 240);
     }
 
@@ -117,7 +117,7 @@ export const Course = () => {
    * Update screen width to conditionally render left/right panels
    */
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       setScreenWidth(window.innerWidth);
     }
     window.addEventListener('resize', handleResize);
@@ -130,7 +130,7 @@ export const Course = () => {
    * Fetches current course info and reviews and updates UI state
    */
   useEffect(() => {
-    async function updateCurrentClass() {
+    const updateCurrentClass = async () => {
       try {
         const response = await axios.post(`/api/courses/get-by-info`, {
           number,
@@ -168,7 +168,7 @@ export const Course = () => {
   /**
    * Sorts reviews based on selected filter
    */
-  function sortReviewsBy(event: React.ChangeEvent<HTMLSelectElement>) {
+  const sortReviewsBy = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (value === 'helpful') {
       setCourseReviews([...courseReviews].sort(sortByLikes));
@@ -182,7 +182,7 @@ export const Course = () => {
   /**
    * Save review information to session storage and begin redirect to auth
    */
-  function onSubmitReview(review: NewReview) {
+  const onSubmitReview = (review: NewReview) => {
     Session.setPersistent({
       review: review
     });

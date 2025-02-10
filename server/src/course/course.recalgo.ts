@@ -14,6 +14,9 @@ const stemWord = (word) => {
   return word;
 }
 
+/**
+ * Removes filler words from a course description
+ */
 const cleanWords = (sentence: string, fillerWords: string[]) =>
   sentence
     .match(/\b\w+\b/g)

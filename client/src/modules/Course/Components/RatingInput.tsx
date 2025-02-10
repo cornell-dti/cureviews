@@ -18,7 +18,7 @@ type RatingInputProps = {
  * pointer or arrow keys. It is controlled with `value` and `setValue` and
  * renders the value with "pills."
  */
-export default function RatingInput({
+const RatingInput = ({
   name,
   label,
   value,
@@ -28,7 +28,7 @@ export default function RatingInput({
   maxLabel,
   className,
   isOverall
-}: RatingInputProps) {
+}: RatingInputProps) => {
   const [hoverIndex, setHoverIndex] = useState(value - 1);
   const [color, setColor] = useState<string>('');
 
@@ -52,7 +52,7 @@ export default function RatingInput({
     setColor(getColor(value));
   }, [value]);
 
-  function handleKeyDown({ key }: any) {
+  const handleKeyDown = ({ key }: any) => {
     if (key === 'ArrowLeft' && hoverIndex >= 1) {
       buttonRefs[hoverIndex - 1].current.focus();
     }
@@ -94,14 +94,12 @@ export default function RatingInput({
             >
               <div
                 className={`${styles.ratingButtonPill}
-                  ${
-                    i >= value &&
-                    i < hoverIndex + 1 &&
-                    styles['ratingButtonPillHover' + color]
+                  ${i >= value &&
+                  i < hoverIndex + 1 &&
+                  styles['ratingButtonPillHover' + color]
                   }
-                  ${
-                    i < hoverIndex + 1 &&
-                    styles['ratingButtonPillSelected' + color]
+                  ${i < hoverIndex + 1 &&
+                  styles['ratingButtonPillSelected' + color]
                   }
                 `}
               />
@@ -117,3 +115,5 @@ export default function RatingInput({
     </div>
   );
 }
+
+export default RatingInput;
