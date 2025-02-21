@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import Reviews from './Pages/Reviews/Reviews';
 import ManageAdmins from './Pages/ManageAdmins/ManageAdmins';
 import AdminSidebar from './Components/AdminSidebar';
-import TopBar from "./Components/AdminTopBar";
 import styles from './Styles/NewAdmin.module.css';
 import { useAuthMandatoryLogin } from '../../auth/auth_utils';
 import axios from 'axios';
