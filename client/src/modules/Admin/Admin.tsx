@@ -8,6 +8,7 @@ import styles from './Styles/NewAdmin.module.css';
 import { useAuthMandatoryLogin } from '../../auth/auth_utils';
 import axios from 'axios';
 import Loading from '../Globals/Loading';
+import Navbar from '../Globals/Navbar';
 
 export const Admin = () => {
   const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin');
@@ -54,7 +55,7 @@ export const Admin = () => {
 
   return (
     <div className={styles.adminLayout}>
-      <TopBar />
+      <Navbar userInput={''} showSearchBar={false} />
       <div className={styles.contentWrapper}>
         <AdminSidebar setCurrentPage={setCurrentPage} />
         <div className={styles.mainContent}>{renderPage()}</div>

@@ -8,6 +8,10 @@
   z-index: 10;
 }
 
+.withBorder {
+  border-bottom: 1px solid #B6D8FF;
+}
+
 .navbar {
   width: 100%;
 
@@ -32,4 +36,8 @@
 .searchbar {
   /* width: calc(100% - 50px); */
   width: 100%;
+}
+
+.profileDropdown {
+  margin-left: auto;
 }
