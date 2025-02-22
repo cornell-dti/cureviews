@@ -1,5 +1,4 @@
 import React from 'react';
-import './Reviews.module.css';
 
 const ReviewFilters = () => {
   return (

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Review } from 'common';
 import UpdateReview from './UpdateReviews';
 import ReviewFilters from './ReviewFilters';
-import styles from './Reviews.module.css';
+import styles from '../Styles/AdminReview.module.css';
 
 type Props = {
   token: string;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from '../../Styles/AdminReview.module.css';
+import styles from '../Styles/AdminReview.module.css';
 
 type Props = {
   review: any;

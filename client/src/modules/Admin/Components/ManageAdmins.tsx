@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './ManageAdmins.module.css';
+import styles from '../Styles/ManageAdmins.module.css';
 
 import { Student } from 'common';
 import AdminUser from './AdminUser';
