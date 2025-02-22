@@ -3,11 +3,13 @@ import { Redirect } from 'react-router-dom';
 import Reviews from './Pages/Reviews/Reviews';
 import ManageAdmins from './Pages/ManageAdmins/ManageAdmins';
 import AdminSidebar from './Components/AdminSidebar';
+import DeveloperTools from './Components/Developer';
 import styles from './Styles/NewAdmin.module.css';
 import { useAuthMandatoryLogin } from '../../auth/auth_utils';
 import axios from 'axios';
 import Loading from '../Globals/Loading';
 import Navbar from '../Globals/Navbar';
+import Stats from './Components/Stats';
 
 export const Admin = () => {
   const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin');
@@ -47,6 +49,10 @@ export const Admin = () => {
         return <Reviews token={token} />;
       case 'admins':
         return <ManageAdmins token={token} />;
+      case 'developer':
+        return <DeveloperTools token={token} />;
+      case 'analytics':
+        return <Stats token={token} />
       default:
         return <Reviews token={token} />;
     }
