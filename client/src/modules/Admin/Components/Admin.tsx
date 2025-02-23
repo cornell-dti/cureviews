@@ -62,7 +62,7 @@ export const Admin = () => {
     <div className={styles.adminLayout}>
       <Navbar userInput={''} showSearchBar={false} />
       <div className={styles.contentWrapper}>
-        <AdminSidebar setCurrentPage={setCurrentPage} />
+        <AdminSidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
         <div className={styles.mainContent}>{renderPage()}</div>
       </div>
     </div>

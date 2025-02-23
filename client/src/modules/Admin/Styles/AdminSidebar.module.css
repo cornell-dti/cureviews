@@ -1,8 +1,8 @@
 .sidebar {
-  width: 250px;
+  width: 180px;
   background-color: white;
   padding: 20px;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #B6D8FF;
 }
 
 .sidebar ul {
@@ -10,16 +10,24 @@
   padding: 0;
 }
 
-.sidebar li {
+.active {
   padding: 12px 15px;
   font-size: 16px;
   font-weight: bold;
-  color: #807B7B;
-  cursor: pointer;
+  color: rgba(0, 118, 255, 0.55);
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.inactive {
+  padding: 12px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(128, 123, 123, 0.70);
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .sidebar li:hover {
-  color: #B6D8FF;
-  background: rgba(255, 255, 255, 0.2);
+  color: rgba(0, 118, 255, 0.55);
 }
