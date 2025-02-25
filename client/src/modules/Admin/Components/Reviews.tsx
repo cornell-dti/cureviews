@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Review } from 'common';
-import UpdateReview from './UpdateReviews';
+import AdminReview from './AdminReview';
 import styles from '../Styles/AdminReview.module.css';
 
 type Props = {
@@ -72,7 +72,7 @@ const Reviews = ({ token }: Props) => {
     <div className={styles.reviewsList}>
       {reviews.length > 0 ? (
         reviews.map((review) => (
-          <UpdateReview
+          <AdminReview
             key={review._id}
             review={review}
             approveHandler={category === 'pending' ? approveReview : undefined}

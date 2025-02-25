@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import Reviews from './Reviews';
-import ManageAdmins from './ManageAdmins';
+import ManageAdmins from './AdminUsers';
 import AdminSidebar from './AdminSidebar';
-import DeveloperTools from './Developer';
+import DeveloperTools from './DevTools';
 import styles from '../Styles/NewAdmin.module.css';
 import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 import axios from 'axios';

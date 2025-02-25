@@ -19,8 +19,8 @@ const AdminSidebar = ({ currentPage, setCurrentPage }: SidebarProps) => {
   const menuItems = [
     { key: 'reviews', label: 'Reviews' },
     { key: 'analytics', label: 'Analytics' },
-    { key: 'admins', label: 'Admin' },
-    { key: 'developer', label: 'Developer' }
+    { key: 'admins', label: 'Admin Users' },
+    { key: 'developer', label: 'Dev Tools' }
   ];
 
   return (
