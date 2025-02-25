@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../Styles/AdminReview.module.css';
+import { Review } from 'common';
 
 type Props = {
-  review: any;
-  approveHandler: (arg1: any) => any;
-  removeHandler: (arg1: any, arg2: any) => any;
-  unReportHandler: (arg1: any) => any;
+  review: Review;
+  approveHandler?: (review: Review) => void;
+  removeHandler?: (review: Review, isUnapproved: boolean) => void;
+  unReportHandler?: (review: Review) => void;
 };
 
 /*
@@ -49,7 +50,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.approvebutton}
-            onClick={() => unReportHandler(adminReview)}
+            onClick={() => unReportHandler?.(adminReview)}
           >
             {' '}
             Restore Review
@@ -57,7 +58,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.removebutton}
-            onClick={() => removeHandler(adminReview, false)}
+            onClick={() => removeHandler?.(adminReview, false)}
           >
             {' '}
             Remove Review
@@ -70,7 +71,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.approvebutton}
-            onClick={() => approveHandler(adminReview)}
+            onClick={() => approveHandler?.(adminReview)}
           >
             {' '}
             Confirm Review
@@ -78,7 +79,7 @@ const UpdateReview = ({
           <button
             type="button"
             className={styles.removebutton}
-            onClick={() => removeHandler(adminReview, true)}
+            onClick={() => removeHandler?.(adminReview, true)}
           >
             {' '}
             Remove Review

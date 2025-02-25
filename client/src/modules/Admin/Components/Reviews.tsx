@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Review } from 'common';
 import UpdateReview from './UpdateReviews';
-import ReviewFilters from './ReviewFilters';
 import styles from '../Styles/AdminReview.module.css';
 
 type Props = {
   token: string;
 };
 
+type ReviewCategory = 'pending' | 'reported' | 'approved';
+
 const Reviews = ({ token }: Props) => {
+  const [activeTab, setActiveTab] = useState<ReviewCategory>('pending');
   const [pendingReviews, setPendingReviews] = useState<Review[]>([]);
   const [reportedReviews, setReportedReviews] = useState<Review[]>([]);
 
@@ -66,37 +68,65 @@ const Reviews = ({ token }: Props) => {
     }
   };
 
+  const renderReviews = (reviews: Review[], category: ReviewCategory) => (
+    <div className={styles.reviewsList}>
+      {reviews.length > 0 ? (
+        reviews.map((review) => (
+          <UpdateReview
+            key={review._id}
+            review={review}
+            approveHandler={category === 'pending' ? approveReview : undefined}
+            removeHandler={(r) => removeReview(r, category === 'pending')}
+            unReportHandler={category === 'reported' ? unReportReview : undefined}
+          />
+        ))
+      ) : (
+        <p className={styles.noReviews}>No reviews available in this category.</p>
+      )}
+    </div>
+  );
+
   return (
     <div className={styles.reviewsPage}>
       <h1>Reviews Dashboard</h1>
-      <ReviewFilters />
+      <div className={styles.content}>
+        <div className={styles.tabs}>
+          <button
+            className={`${styles.tabButton} ${activeTab === 'pending' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('pending')}
+          >
+            <div className={styles.tabContent}>
+              <span>Pending Reviews</span>
+              {pendingReviews.length > 0 && <span className={styles.badge}>{pendingReviews.length}</span>}
+            </div>
+            <div className={styles.underline} />
+          </button>
 
-      {/* ✅ Render Pending Reviews */}
-      <div className="pending-reviews">
-        <h2>Pending Reviews</h2>
-        {pendingReviews.map(review => (
-          <UpdateReview
-            key={review._id}
-            review={review}
-            approveHandler={approveReview}
-            removeHandler={removeReview}
-            unReportHandler={unReportReview}
-          />
-        ))}
-      </div>
+          <button
+            className={`${styles.tabButton} ${activeTab === 'approved' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('approved')}
+          >
+            <div className={styles.tabContent}>
+              <span>Recently Approved</span>
+              {/* {approvedReviews.length > 0 && <span className={styles.badge}>{approvedReviews.length}</span>} */}
+            </div>
+            <div className={styles.underline} />
+          </button>
 
-      {/* ✅ Render Reported Reviews */}
-      <div className="reported-reviews">
-        <h2>Reported Reviews</h2>
-        {reportedReviews.map(review => (
-          <UpdateReview
-            key={review._id}
-            review={review}
-            approveHandler={approveReview}
-            removeHandler={removeReview}
-            unReportHandler={unReportReview}
-          />
-        ))}
+          <button
+            className={`${styles.tabButton} ${activeTab === 'reported' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('reported')}
+          >
+            <div className={styles.tabContent}>
+              <span>Reported Reviews</span>
+              {reportedReviews.length > 0 && <span className={styles.badge}>{reportedReviews.length}</span>}
+            </div>
+            <div className={styles.underline} />
+          </button>
+        </div>
+        {activeTab === 'pending' && renderReviews(pendingReviews, 'pending')}
+        {/* {activeTab === 'approved' && renderReviews(approvedReviews, 'approved')} */}
+        {activeTab === 'reported' && renderReviews(reportedReviews, 'reported')}
       </div>
     </div>
   );
