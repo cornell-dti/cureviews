@@ -61,6 +61,10 @@
   align-items: center;
 }
 
+.tabButton:hover .underline {
+  background-color: #ABD2FF;
+}
+
 .tabContent {
   display: flex;
   align-items: center;
@@ -88,7 +92,7 @@
 }
 
 .activeTab .underline {
-  background-color: #2f80ed;
+  background-color: #0076FF;
 }
 
 .reviewsList {
