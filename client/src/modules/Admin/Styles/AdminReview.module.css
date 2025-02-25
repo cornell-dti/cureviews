@@ -1,23 +1,152 @@
-.approvebutton {
-  background-color: var(--clr-green-200);
-  color: var(--clr-white);
-  font-size: var(--font-small-size);
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-right: 2px;
-  padding: 5px 6px;
-  cursor: pointer;
+/* Review Card */
+.reviewCard {
+  background-color: white;
+  border: 1px solid #d6e6ff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.removebutton {
-  background-color: var(--clr-red-200);
-  color: var(--clr-white);
-  font-size: var(--font-small-size);
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-right: 2px;
-  padding: 5px 6px;
+/* Header Section */
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.reviewDate {
+  font-weight: 700;
+  color: #2f80ed;
+  font-size: 14px;
+  width: 100px;
+  /* Keeps date aligned */
+}
+
+.reviewTitle {
+  flex: 1;
+  text-align: left;
+  margin-left: 12px;
+}
+
+.courseLink {
+  font-weight: 700;
+  font-size: 16px;
+  color: #2f80ed;
+  text-decoration: none;
+}
+
+.courseLink:hover {
+  text-decoration: underline;
+}
+
+.professor {
+  font-size: 14px;
+  color: #6e6e6e;
+  margin-top: 4px;
+}
+
+.professorName {
+  font-weight: 600;
+  color: #333;
+}
+
+.reviewMajor {
+  font-size: 14px;
+  color: #6e6e6e;
+  white-space: nowrap;
+}
+
+.majorText {
+  font-weight: 700;
+}
+
+/* Ratings and Review Text Layout */
+.reviewContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.reviewRatings {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #333;
+  min-width: 120px;
+}
+
+.reviewRatings p {
+  margin: 0;
+}
+
+.reviewText {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #000;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #d3d3d3;
+  margin: 8px 0;
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.approveButton,
+.removeButton,
+.restoreButton {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.approveButton,
+.restoreButton {
+  background-color: #4AA91E;
+  color: white;
+}
+
+.approveButton:hover,
+.restoreButton:hover {
+  background-color: #43a047;
+}
+
+.removeButton {
+  background-color: #BE4138;
+  color: white;
+}
+
+.removeButton:hover {
+  background-color: #b03e32;
 }
 
 .pendingreview {
