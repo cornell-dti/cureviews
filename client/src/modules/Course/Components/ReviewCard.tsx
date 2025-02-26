@@ -114,7 +114,7 @@ const ReviewCard = ({
     // list of professors (name1, name2, ..)
     let professornames = '';
     if (_review.professors && _review.professors.length > 0)
-      professornames += _review.professors.join(', ');
+      professornames += _review.professors.sort().join(', ');
     else professornames += 'N/A';
 
     if (isProfile) {

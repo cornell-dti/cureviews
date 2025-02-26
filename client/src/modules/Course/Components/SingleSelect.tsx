@@ -8,7 +8,8 @@ const SingleSelect = ({
   value,
   options,
   placeholder,
-  onChange
+  onChange,
+  appearFromTop=true
 }: SelectProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
@@ -51,7 +52,7 @@ const SingleSelect = ({
         />
       </div>
       {open && (
-        <ul className={styles.gradeoptions}>
+        <ul className={appearFromTop ? styles.gradeoptions : styles.options}>
           {options.map((option, index) => (
             <li
               className={`${styles.option} ${
@@ -79,6 +80,7 @@ type SelectProps = {
   placeholder: string;
   value: string;
   onChange: (selectedOptions: string) => void;
+  appearFromTop?: boolean;
 };
 
 export default SingleSelect;

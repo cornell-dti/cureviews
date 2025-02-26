@@ -210,6 +210,7 @@ const ReviewModal = ({
               value={selectedMajors}
               onChange={onMajorChange}
               placeholder="Major"
+              appearFromTop={true}
             />
             <SingleSelect
               options={gradeoptions}

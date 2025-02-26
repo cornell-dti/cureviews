@@ -98,22 +98,22 @@ const PreviewReviewCard = ({
   }, [_review, isLoggedIn]);
 
   /** Renders course name as well if on profile page */
-  const TitleAndProfessor = React.memo(() => {
-    let professornames = _review.professors?.join(', ') || 'Not Listed';
+const TitleAndProfessor = React.memo(() => {
+  let professornames = _review.professors?.sort().join(', ') || 'Not Listed';
 
-    return isProfile ? (
-      <>
-        <div className={previewstyle.coursetitle}>{courseTitle}</div>
-        <div className={previewstyle.classprofessor}>
-          {courseSub?.toUpperCase() + ' ' + courseNum?.toUpperCase() + ' | ' + professornames}
-        </div>
-      </>
-    ) : (
-      <div>
-        Professor <span className={styles.bold}>{professornames}</span>
+  return isProfile ? (
+    <>
+      <div className={previewstyle.coursetitle}>{courseTitle}</div>
+      <div className={previewstyle.classprofessor}>
+        {courseSub?.toUpperCase() + ' ' + courseNum?.toUpperCase() + ' | ' + professornames}
       </div>
-    );
-  });
+    </>
+  ) : (
+    <div>
+      Professor <span className={styles.bold}>{professornames}</span>
+    </div>
+  );
+});
 
   /* SEE MORE -> SEE LESS logic for lengthier reviews */
   const [expand, setExpand] = useState(false);
