@@ -27,12 +27,12 @@ type ReviewProps = {
   - report button
   - like button
 */
-export default function ReviewCard({
+const ReviewCard = ({
   review,
   isPreview,
   isProfile,
   reportHandler
-}: ReviewProps): React.JSX.Element {
+}: ReviewProps): React.JSX.Element => {
   const { isLoggedIn, signIn } = useAuthOptionalLogin();
   const location = useLocation();
 
@@ -44,7 +44,7 @@ export default function ReviewCard({
   const [courseNum, setCourseNum] = useState<string>('');
 
   /** Turns our date objects into a string form to render. */
-  function dateToString() {
+  const dateToString = () => {
     if (!_review.date) return '';
 
     const date = new Date(_review.date);
@@ -58,7 +58,7 @@ export default function ReviewCard({
   /**
    * Shows user liked the review and updates DB count.
    */
-  async function likeReview() {
+  const likeReview = async () => {
     if (!isLoggedIn) {
       signIn('path:' + location.pathname);
     }
@@ -77,7 +77,7 @@ export default function ReviewCard({
    * Fetch the course information.
    */
   useEffect(() => {
-    async function updateCourse() {
+    const updateCourse = async () => {
       const response = await axios.post(`/api/courses/get-by-id`, {
         courseId: _review.class
       });
@@ -97,7 +97,7 @@ export default function ReviewCard({
    * 2. IF logged in user has liked the review or not and updates @liked state.
    */
   useEffect(() => {
-    async function updateLiked() {
+    const updateLiked = async () => {
       const response = await axios.post('/api/reviews/user-liked', {
         id: _review._id,
         token: getAuthToken()
@@ -110,7 +110,7 @@ export default function ReviewCard({
   }, [_review, isLoggedIn]);
 
   /** Renders course name as well if on profile page */
-  function TitleAndProfessor() {
+  const TitleAndProfessor = () => {
     // list of professors (name1, name2, ..)
     let professornames = '';
     if (_review.professors && _review.professors.length > 0)
@@ -150,7 +150,7 @@ export default function ReviewCard({
     Fix the logic to not do this? 
    */
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       if (ref.current) {
         setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight);
       }
@@ -213,10 +213,10 @@ export default function ReviewCard({
             <span className={styles.bold}>
               {_review.major && _review.major.length !== 0
                 ? _review.major.map((major, index) => (
-                    <span key={index}>
-                      {index > 0 && ', '} {major}
-                    </span>
-                  ))
+                  <span key={index}>
+                    {index > 0 && ', '} {major}
+                  </span>
+                ))
                 : 'N/A'}
             </span>
           </div>
@@ -271,3 +271,5 @@ export default function ReviewCard({
     </div>
   );
 }
+
+export default ReviewCard;
