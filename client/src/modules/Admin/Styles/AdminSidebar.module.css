@@ -1,0 +1,33 @@
+.sidebar {
+  width: 180px;
+  background-color: white;
+  padding: 20px;
+  border-right: 1px solid #B6D8FF;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.active {
+  padding: 12px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(0, 118, 255, 0.55);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inactive {
+  padding: 12px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(128, 123, 123, 0.70);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sidebar li:hover {
+  color: rgba(0, 118, 255, 0.55);
+}
