@@ -3,9 +3,9 @@ on: pull_request
 
 jobs:
   warn-big-diff:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: cornell-dti/big-diff-warning@master
+      - uses: actions/checkout@main
+      - uses: cornell-dti/big-diff-warning@main
         env:
           BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"
