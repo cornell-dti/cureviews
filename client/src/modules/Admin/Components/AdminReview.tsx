@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../Styles/AdminReview.module.css';
+import { Review } from 'common';
+import check from '../../../assets/icons/ic_round-check.svg';
+import trash from '../../../assets/icons/Vector.svg';
 
 type Props = {
-  review: any;
-  approveHandler: (arg1: any) => any;
-  removeHandler: (arg1: any, arg2: any) => any;
-  unReportHandler: (arg1: any) => any;
+  review: Review;
+  approveHandler?: (review: Review) => void;
+  removeHandler?: (review: Review, isUnapproved: boolean) => void;
+  unReportHandler?: (review: Review) => void;
 };
-
-/*
-  Update Review Component.
-
-  Simple styling component that renders a single review (an li element)
-  to show on the Admin interface. Admin-visible reviews will be of 2 types:
-  - Unapproved: new reviews needing approval
-  - Reported: reviews that have been reported and require admin undo
-*/
 
 const UpdateReview = ({
   review,
@@ -27,84 +21,113 @@ const UpdateReview = ({
   const [shortName, setShortName] = useState<string>('');
   const [fullName, setFullName] = useState<string>('');
 
-  const getCourse = async () => {
-    const response = await axios.post(`/api/courses/get-by-id`, {
-      courseId: review.class
-    });
+  useEffect(() => {
+    const getCourse = async () => {
+      try {
+        const response = await axios.post(`/api/courses/get-by-id`, {
+          courseId: review.class
+        });
+        const course = response.data.result;
+        if (course) {
+          setShortName(`${course.classSub.toUpperCase()} ${course.classNum}`);
+          setFullName(course.classTitle);
+        }
+      } catch (error) {
+        console.error('Error fetching course:', error);
+      }
+    };
 
-    const course = response.data.result;
-    if (course) {
-      setShortName(course.classSub.toUpperCase() + ' ' + course.classNum);
-      setFullName(course.classTitle);
-    }
-  }
+    getCourse();
+  }, [review.class]);
 
-  getCourse();
-
-  const renderButtons = (adminReview: any) => {
-    const reported = adminReview.reported;
-    if (reported === 1) {
-      return (
-        <div className="">
-          <button
-            type="button"
-            className={styles.approvebutton}
-            onClick={() => unReportHandler(adminReview)}
-          >
-            {' '}
-            Restore Review
-          </button>
-          <button
-            type="button"
-            className={styles.removebutton}
-            onClick={() => removeHandler(adminReview, false)}
-          >
-            {' '}
-            Remove Review
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="">
-          <button
-            type="button"
-            className={styles.approvebutton}
-            onClick={() => approveHandler(adminReview)}
-          >
-            {' '}
-            Confirm Review
-          </button>
-          <button
-            type="button"
-            className={styles.removebutton}
-            onClick={() => removeHandler(adminReview, true)}
-          >
-            {' '}
-            Remove Review
-          </button>
-        </div>
-      );
-    }
-  }
-  return (
-    <div id={review._id} className={styles.pendingreview}>
-      <div className={styles.titleinfo}>
-        <h4 className="">
-          Course: {shortName}, {fullName}
-        </h4>
-        <p>{review.date}</p>
+  const renderButtons = (adminReview: Review) => {
+    return adminReview.reported === 1 ? (
+      <div className={styles.buttonGroup}>
+        <button
+          type="button"
+          className={styles.restoreButton}
+          onClick={() => unReportHandler?.(adminReview)}
+        >
+          <img src={check} alt="Approve" className={styles.icon} />
+          Restore Review
+        </button>
+        <button
+          type="button"
+          className={styles.removeButton}
+          onClick={() => removeHandler?.(adminReview, false)}
+        >
+          <img src={trash} alt="Remove" className={styles.icon} />
+          Remove Review
+        </button>
       </div>
-      <div className={styles.reviewinfo}>
-        <p>Professor(s): {review.professors}</p>
-        <p>Overall Rating: {review.rating}</p>
-        <p>Difficulty: {review.difficulty}</p>
-        <p>Workload: {review.workload}</p>
-        <br></br>
+    ) : (
+      <div className={styles.buttonGroup}>
+        <button
+          type="button"
+          className={styles.approveButton}
+          onClick={() => approveHandler?.(adminReview)}
+        >
+          <img src={check} alt="Approve" className={styles.icon} />
+          Confirm Review
+        </button>
+        <button
+          type="button"
+          className={styles.removeButton}
+          onClick={() => removeHandler?.(adminReview, true)}
+        >
+          <img src={trash} alt="Remove" className={styles.icon} />
+          Remove Review
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div id={review._id} className={styles.reviewCard}>
+      {/* Header */}
+      <div className={styles.reviewHeader}>
+        <span className={styles.reviewDate}>
+          {review.date ? new Date(review.date).toLocaleDateString() : 'No Date'}
+        </span>
+        <div className={styles.reviewTitle}>
+          <a href="#" className={styles.courseLink}>{shortName}, {fullName}</a>
+          <p className={styles.professor}>
+            Professor <span className={styles.professorName}>{review.professors}</span>
+          </p>
+        </div>
+        <p className={styles.reviewMajor}>
+          Major <span className={styles.majorText}>
+            {Array.isArray(review.major)
+              ? review.major.join(', ')
+              : (typeof review.major === 'string') ? (review.major as string).split(/[\s,;]+/).join(', ') : 'N/A'}
+          </span>
+        </p>
+
+
+      </div>
+
+      {/* Ratings */}
+      <div className={styles.reviewRatings}>
+        <p><strong>Overall:</strong> {review.rating}</p>
+        <p><strong>Difficulty:</strong> {review.difficulty}</p>
+        <p><strong>Workload:</strong> {review.workload}</p>
+      </div>
+
+      {/* Review Text */}
+      <div className={styles.reviewText}>
         <p>{review.text}</p>
       </div>
-      <div className="">{renderButtons(review)}</div>
+
+      {/* Divider */}
+      <hr className={styles.divider} />
+
+      {/* Buttons */}
+      {renderButtons(review)}
     </div>
   );
 };
+
 export default UpdateReview;
+
+
+

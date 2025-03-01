@@ -30,7 +30,7 @@ const CourseReviews = ({
    * Attempts to report review, and filters out the reported review locally
    * @param reviewId: _id of review to report
    */
-  async function reportReview(reviewId: string) {
+  const reportReview = async (reviewId: string) => {
     const response = await axios.post('/api/reviews/report', {
       token: token,
       id: reviewId

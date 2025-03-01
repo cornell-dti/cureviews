@@ -24,9 +24,10 @@ import styles from './Styles/NavBar.module.css';
 
 type NavbarProps = {
   userInput: string;
+  showSearchBar?: boolean;
 };
 
-export default function Navbar({ userInput }: NavbarProps) {
+export default function Navbar({ userInput, showSearchBar = true }: NavbarProps) {
   const { netId, signIn, signOut } = useAuthOptionalLogin();
   const location = useLocation();
 
@@ -49,20 +50,24 @@ export default function Navbar({ userInput }: NavbarProps) {
   }
 
   return (
-    <div className={styles.navbarwrapper}>
-      <div className={styles.navbar}>
+    <div
+      className={`${styles.navbarwrapper} ${!showSearchBar ? styles.withBorder : ''}`}
+    ><div className={styles.navbar}>
         <a className="" href="/">
           <img src="/logo.svg" className={styles.logo} alt="CU Reviews Logo" />
         </a>
-        <div className={styles.searchbar}>
-          <SearchBar
-            userInput={userInput}
-            contrastingResultsBackground={true}
-            isInNavbar={true}
-          />
+        {showSearchBar && (
+          <div className={styles.searchbar}>
+            <SearchBar
+              userInput={userInput}
+              contrastingResultsBackground={true}
+              isInNavbar={true}
+            />
+          </div>
+        )}
+        <div className={styles.profileDropdown}>
+          {displayButton()}
         </div>
-        {displayButton()}
-      </div>
-    </div>
+      </div></div>
   );
 }

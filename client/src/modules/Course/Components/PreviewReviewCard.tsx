@@ -34,11 +34,11 @@ type ReviewProps = {
   - report button
   - like button
 */
-export default function PreviewReviewCard({
+const PreviewReviewCard = ({
   review,
   isPreview,
   isProfile
-}: ReviewProps): React.JSX.Element {
+}: ReviewProps): React.JSX.Element => {
   const { isLoggedIn } = useAuthOptionalLogin();
   const pending = isPreview && isProfile;
   const [liked, setLiked] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export default function PreviewReviewCard({
   const [courseNum, setCourseNum] = useState<string>('');
 
   /** Turns our date objects into a string form to render. */
-  function dateToString() {
+  const dateToString = () => {
     if (!_review.date) return '';
 
     const date = new Date(_review.date);
@@ -64,7 +64,7 @@ export default function PreviewReviewCard({
    * Fetch the course information.
    */
   useEffect(() => {
-    async function updateCourse() {
+    const updateCourse = async () => {
       const response = await axios.post(`/api/courses/get-by-id`, {
         courseId: _review.class
       });
@@ -85,7 +85,7 @@ export default function PreviewReviewCard({
    * 2. IF logged in user has liked the review or not and updates @liked state.
    */
   useEffect(() => {
-    async function updateLiked() {
+    const updateLiked = async () => {
       const response = await axios.post('/api/reviews/user-liked', {
         id: _review._id,
         token: getAuthToken()
@@ -98,34 +98,22 @@ export default function PreviewReviewCard({
   }, [_review, isLoggedIn]);
 
   /** Renders course name as well if on profile page */
-  function TitleAndProfessor() {
-    // list of professors (name1, name2, ..)
-    let professornames = '';
-    if (_review.professors && _review.professors.length > 0)
-      professornames += _review.professors.sort().join(', ');
-    else professornames += 'Not Listed';
+const TitleAndProfessor = React.memo(() => {
+  let professornames = _review.professors?.sort().join(', ') || 'Not Listed';
 
-    if (isProfile) {
-      return (
-        <>
-          <div className={previewstyle.coursetitle}>{courseTitle}</div>
-          <div className={previewstyle.classprofessor}>
-            {courseSub?.toUpperCase() +
-              ' ' +
-              courseNum?.toUpperCase() +
-              ' | ' +
-              professornames}
-          </div>
-        </>
-      );
-    } else {
-      return (
-        <div>
-          Professor <span className={styles.bold}>{professornames}</span>
-        </div>
-      );
-    }
-  }
+  return isProfile ? (
+    <>
+      <div className={previewstyle.coursetitle}>{courseTitle}</div>
+      <div className={previewstyle.classprofessor}>
+        {courseSub?.toUpperCase() + ' ' + courseNum?.toUpperCase() + ' | ' + professornames}
+      </div>
+    </>
+  ) : (
+    <div>
+      Professor <span className={styles.bold}>{professornames}</span>
+    </div>
+  );
+});
 
   /* SEE MORE -> SEE LESS logic for lengthier reviews */
   const [expand, setExpand] = useState(false);
@@ -138,7 +126,7 @@ export default function PreviewReviewCard({
     Fix the logic to not do this? 
    */
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       if (ref.current) {
         setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight);
       }
@@ -231,3 +219,5 @@ export default function PreviewReviewCard({
     </div>
   );
 }
+
+export default PreviewReviewCard;

@@ -20,7 +20,7 @@ const ReviewModal = ({
   professorOptions
 }: Modal) => {
   // Modal Logic
-  function closeModal() {
+  const closeModal = () => {
     setReviewOpen(false);
   }
   // Content & Options
@@ -105,15 +105,10 @@ const ReviewModal = ({
   }
 
   // Handle Submission
-  function validReview(): boolean {
-    const professorChosen = selectedProfessors.length > 0;
-    const textWritten = reviewText.length > 5;
-    if (professorChosen && textWritten) return true;
-    return false;
-  }
+  const validReview = (): boolean => selectedProfessors.length > 0 && reviewText.length > 5;
 
   // Called by onSubmitReview if the user should not see modal
-  function handleSubmitReview() {
+  const handleSubmitReview = () => {
     if (validReview()) {
       const newReview: NewReview = {
         rating: overall,
@@ -130,7 +125,7 @@ const ReviewModal = ({
   }
 
   // Handle click of submit button
-  function onSubmitReview() {
+  const onSubmitReview = () => {
     if (isLoggedIn) {
       handleSubmitReview();
       signIn('profile');

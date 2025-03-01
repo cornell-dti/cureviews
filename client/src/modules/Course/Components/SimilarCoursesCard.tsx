@@ -18,6 +18,10 @@ const SimilarCoursesCard: React.FC<SimilarCourses> = ({
 }) => {
   const [classSems, setClassSems] = useState('');
 
+  /* 
+  Retrieves styling based on comparison in rating, difficulty, and workload 
+  against target class
+  */
   const getTagStyling = (tag: string) => {
     if (tag.toLowerCase().includes('overall')) return styles.overall;
     if (tag.toLowerCase().includes('higher')) return styles.higher;

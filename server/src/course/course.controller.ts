@@ -9,7 +9,7 @@ import axios from 'axios';
  * Returns array of course ids that a given course is crosslisted with
  *
  * @param {string} reviewId: Mongo-generated id of review
- * @returns true if operation was successful, false otherwise
+ * @returns array of course ids
  */
 export const getCrossListOR = (course) => {
   if (!course) {
@@ -56,6 +56,12 @@ export const getCourseByInfo = async ({
   return course;
 };
 
+/**
+ * Returns array of reviews for all crosslisted classes of a given course
+ *
+ * @param {string} courseId: Mongo-generated id of course
+ * @returns array of reviews
+ */
 export const getReviewsCrossListOR = async ({
   courseId
 }: CourseIdRequestType) => {
@@ -95,11 +101,13 @@ export const getGlobalMetadata = async () => {
   return global;
 }
 
+// testing function for preprocessing
 export const getProcessedDescription = (text) => {
   const processed = preprocess(text);
   return processed;
 }
 
+// testing function for similarity algorithm
 export const getSimilarity = async () => {
   const result = await axios.get(
     `https://classes.cornell.edu/api/2.0/search/classes.json?roster=FA24&subject=CS`
