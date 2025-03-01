@@ -59,6 +59,7 @@ const majors = [
     'Linguistics',
     'Materials Science and Engineering',
     'Mathematics',
+    'MBA',
     'Mechanical Engineering',
     'Music',
     'Near Eastern Studies',
