@@ -168,7 +168,7 @@ export const Validation = mongoose.model<ValidationDocument>(
 
 /**
  * Course Recommendation Metadata Collection
- * Stores course description preprocessing data and pre-computation steps for 
+ * Stores course description preprocessing data and pre-computation steps for
  * similarity algorithm
  */
 const RecommendationMetadataSchema = new Schema({
@@ -176,7 +176,7 @@ const RecommendationMetadataSchema = new Schema({
   classSub: { type: String },
   classNum: { type: String },
   processedDescription: { type: String },
-  tfidfVector: { type: Object },
+  tfidfVector: { type: Object }
 });
 
 interface RecommendationMetadataDocument extends mongoose.Document {
@@ -187,10 +187,11 @@ interface RecommendationMetadataDocument extends mongoose.Document {
   tfidfVector: Object;
 }
 
-export const RecommendationMetadata = mongoose.model<RecommendationMetadataDocument>(
-  "recommendationMetadata",
-  RecommendationMetadataSchema,
-);
+export const RecommendationMetadata =
+  mongoose.model<RecommendationMetadataDocument>(
+    'recommendationMetadata',
+    RecommendationMetadataSchema
+  );
 
 /**
  * Global Course Metadata Collection
@@ -205,6 +206,6 @@ interface GlobalMetadataDocument extends mongoose.Document {
 }
 
 export const GlobalMetadata = mongoose.model<GlobalMetadataDocument>(
-  "globalnMetadata",
-  GlobalMetadataSchema,
+  'globalnMetadata',
+  GlobalMetadataSchema
 );

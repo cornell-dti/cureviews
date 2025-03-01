@@ -5,7 +5,7 @@
   align-items: flex-start;
   gap: 5px;
   border-radius: 10px;
-  background: #FFF;
+  background: #fff;
 }
 
 .header {
@@ -50,7 +50,7 @@
   align-items: center;
   gap: 10px;
   border-radius: 16px;
-  background: #FFF;
+  background: #fff;
   padding: 0 10px;
   min-height: 25px;
 }

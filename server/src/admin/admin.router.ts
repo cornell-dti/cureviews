@@ -5,7 +5,7 @@ import {
   AdminReviewRequestType,
   AdminRequestType,
   AdminUserRequestType,
-  AdminAddSemesterRequestType,
+  AdminAddSemesterRequestType
 } from './admin.type';
 import {
   getPendingReviews,
@@ -502,7 +502,7 @@ adminRouter.post('/rec/similarity', async (req, res) => {
   try {
     const auth = new Auth({ token });
     const result = await addSimilarityDb({ auth });
-    console.log(result)
+    console.log(result);
 
     if (result) {
       res.status(200);
@@ -519,7 +519,6 @@ adminRouter.post('/rec/similarity', async (req, res) => {
   }
 });
 
-
 /**
  * Reachable at POST /api/admin/draw-raffle
  */
@@ -531,4 +530,4 @@ adminRouter.post('/draw-raffle', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
-})
+});

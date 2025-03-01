@@ -10,16 +10,17 @@ const MultiSelect = ({
   options,
   placeholder,
   onChange,
-  appearFromTop=false
+  appearFromTop = false
 }: SelectProps) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
-  const filteredOptions = searchTerm.length !== 0
-    ? options.filter((option) =>
-      option.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    : options;
+  const filteredOptions =
+    searchTerm.length !== 0
+      ? options.filter((option) =>
+          option.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : options;
 
   const handleDropdown = () => {
     setOpen(!open);
