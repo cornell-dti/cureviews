@@ -10,7 +10,7 @@
     "prestart": "yarn build",
     "start": "nodemon server.ts",
     "heroku-start": "node dist/server.js",
-    "test": ":"
+    "test": "vitest --no-file-parallelism"
   },
   "dependencies": {
     "axios": "^0.21.2",
@@ -33,6 +33,6 @@
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.3",
     "@types/shortid": "^0.0.29",
-    "vitest": "^2.1.1"
+    "vitest": "2.1.9"
   }
 }
