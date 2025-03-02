@@ -1,7 +1,18 @@
 import express from 'express';
 
-import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR, getRecommendationData, getProcessedDescription, getSimilarity, getGlobalMetadata } from './course.controller';
+import {
+  CourseIdRequestType,
+  CourseInfoRequestType,
+  CourseDescriptionRequestType
+} from './course.type';
+import {
+  getCourseByInfo,
+  getReviewsCrossListOR,
+  getRecommendationData,
+  getProcessedDescription,
+  getSimilarity,
+  getGlobalMetadata
+} from './course.controller';
 
 import { getCourseById } from '../utils';
 
@@ -81,7 +92,7 @@ courseRouter.post('/get-rec-metadata', async (req, res) => {
 
     if (!course) {
       return res.status(404).json({
-        error: `Recommendation data could not be found for ${subject} ${number}`,
+        error: `Recommendation data could not be found for ${subject} ${number}`
       });
     }
 
@@ -112,7 +123,7 @@ courseRouter.post('/get-global-metadata', async (req, res) => {
  * @body description: a course description
  * Gets the processed description to use for the similarity algorithm
  * Currently used for testing
-*/
+ */
 courseRouter.post('/preprocess-desc', async (req, res) => {
   const { description }: CourseDescriptionRequestType = req.body;
   const processed = getProcessedDescription(description);
@@ -122,7 +133,7 @@ courseRouter.post('/preprocess-desc', async (req, res) => {
 /** Reachable at POST /api/courses/mock-similarity
  * Gets the array of the top 5 similar courses
  * Currently used for testing
-*/
+ */
 courseRouter.post('/mock-similarity', async (req, res) => {
   const similarity = await getSimilarity();
   return res.status(200).json({ result: similarity });

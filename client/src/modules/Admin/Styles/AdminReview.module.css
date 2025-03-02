@@ -131,7 +131,7 @@
 
 .approveButton,
 .restoreButton {
-  background-color: #4AA91E;
+  background-color: #4aa91e;
   color: white;
 }
 
@@ -141,7 +141,7 @@
 }
 
 .removeButton {
-  background-color: #BE4138;
+  background-color: #be4138;
   color: white;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .pendingreview {
-  border: 1px solid #B7D8FF;
+  border: 1px solid #b7d8ff;
   padding: 10px;
   border-radius: 5px;
   margin: 10px;
@@ -191,7 +191,7 @@
 }
 
 .tabButton:hover .underline {
-  background-color: #ABD2FF;
+  background-color: #abd2ff;
 }
 
 .tabContent {
@@ -221,7 +221,7 @@
 }
 
 .activeTab .underline {
-  background-color: #0076FF;
+  background-color: #0076ff;
 }
 
 .reviewsList {

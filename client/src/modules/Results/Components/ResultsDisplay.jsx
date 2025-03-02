@@ -195,10 +195,13 @@ export default class ResultsDisplay extends Component {
       );
     }
 
-    this.setState({
-      filteredItems: filteredItems,
-      cardCourse: filteredItems[0] || null
-    }, () => this.sort());
+    this.setState(
+      {
+        filteredItems: filteredItems,
+        cardCourse: filteredItems[0] || null
+      },
+      () => this.sort()
+    );
   }
 
   /**
@@ -246,8 +249,9 @@ export default class ResultsDisplay extends Component {
     return items.map((result, index) => (
       <div
         className={styles.filteredresults}
-        data-cy={`results-display-${result.classSub.toLowerCase()}-${result.classNum
-          }`}
+        data-cy={`results-display-${result.classSub.toLowerCase()}-${
+          result.classNum
+        }`}
       >
         <FilteredResult
           key={index}
@@ -309,7 +313,6 @@ export default class ResultsDisplay extends Component {
           <Loading />
         ) : (
           <div className={styles.layout} data-cy="results-display">
-
             <>
               <div className={styles.filtercol}>
                 <div className={styles.filtertext}>Filter</div>
@@ -325,8 +328,8 @@ export default class ResultsDisplay extends Component {
 
               <div className={styles.columns}>
                 <div>
-                  We found{' '}
-                  <b>{this.state.filteredItems.length}</b> courses for &quot;
+                  We found <b>{this.state.filteredItems.length}</b> courses for
+                  &quot;
                   {this.props.userInput}&quot;
                 </div>
 

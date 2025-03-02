@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  border-bottom: 1px solid #B6D8FF;
+  border-bottom: 1px solid #b6d8ff;
   top: 0;
   left: 0;
 }
@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border-right: 1px solid #B6D8FF;
+  border-right: 1px solid #b6d8ff;
   position: fixed;
   top: 70px;
   left: 0;
@@ -40,9 +40,8 @@
 .mainContent {
   flex: 1;
   overflow-y: auto;
-  background-color: #F4F9FF;
+  background-color: #f4f9ff;
   padding: 50px;
   padding-left: 100px;
   min-height: 100vh;
 }
-

@@ -1,169 +1,168 @@
 :root {
-    --difficulty-color: #FF756C;
-    --workload-color: #F8CC30;
+  --difficulty-color: #ff756c;
+  --workload-color: #f8cc30;
 }
 
 .centered {
-    text-align: center;
+  text-align: center;
 }
 
 .container {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
 
-    padding: 12px 12px;
-    gap: 30px;
-    width: 100%;
+  padding: 12px 12px;
+  gap: 30px;
+  width: 100%;
 
-    border-radius: 8px;
-    background: #FFF;
-    overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
 }
 
 .overall {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .overallScore {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 
-    font-size: 40px;
-    font-weight: 700;
+  font-size: 40px;
+  font-weight: 700;
 }
 
 .stars {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    gap: 3px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  gap: 3px;
 
-    width: 18px;
+  width: 18px;
 
-    padding-bottom: 8px
+  padding-bottom: 8px;
 }
 
 .ratings {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    height: 82px;
-    gap: 20px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  height: 82px;
+  gap: 20px;
 }
 
 .horizontal {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
 }
 
 .category {
-    min-width: 62px;
+  min-width: 62px;
 }
 
 .bars {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.bar {
+  height: 8px;
+  width: 20%;
+  min-width: 32px;
+  border-radius: 4px;
+
+  background: var(--clr-gray-200);
+}
+
+.ratingNum {
+  font-size: 20px;
+  font-weight: 590;
+}
+
+.responsiveLabel {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+}
+
+@media only screen and (max-width: 1124px) {
+  .container {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .overallScore {
+    font-size: 28px;
+    gap: 4px;
+  }
+
+  .centered {
+    font-size: 12px;
+  }
+
+  .category {
+    font-size: 12px;
+    min-width: 54px;
+  }
+
+  .emote {
+    width: 18px;
+    height: 18px;
+  }
+
+  .stars {
+    gap: 1px;
+  }
+
+  .star {
+    width: 15px;
+    height: 15px;
+  }
+
+  .horizontal {
+    gap: 6px;
+    flex-direction: column;
+  }
+
+  .ratingNum {
+    font-size: 14px;
+    font-weight: 590;
+  }
+
+  .ratings {
+    height: auto;
+    gap: 12px;
+  }
+
+  .bars {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: center;
-    gap: 3px;
-}
+    gap: 2px;
+  }
 
-.bar {
-    height: 8px;
-    width: 20%;
-    min-width: 32px;
-    border-radius: 4px;
+  .bar {
+    width: 30px;
+  }
 
-    background: var(--clr-gray-200);
-}
-
-.ratingNum {
-    font-size: 20px;
-    font-weight: 590;
-}
-
-.responsiveLabel {
+  .responsiveLabel {
     display: flex;
-    flex-direction: row;
-    gap: 14px;
-}
-
-@media only screen and (max-width: 1124px) {
-    .container {
-        gap: 12px;
-        flex-direction: column;
-    }
-
-    .overallScore {
-        font-size: 28px;
-        gap: 4px;
-    }
-
-    .centered {
-        font-size: 12px;
-    }
-
-    .category {
-        font-size: 12px;
-        min-width: 54px;
-    }
-
-    .emote {
-        width: 18px;
-        height: 18px;
-    }
-
-    .stars {
-        gap: 1px;
-
-    }
-
-    .star {
-        width: 15px;
-        height: 15px;
-    }
-
-    .horizontal {
-        gap: 6px;
-        flex-direction: column;
-    }
-
-    .ratingNum {
-        font-size: 14px;
-        font-weight: 590;
-    }
-
-    .ratings {
-        height: auto;
-        gap: 12px;
-    }
-
-    .bars {
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-    }
-
-    .bar {
-        width: 30px;
-    }
-
-    .responsiveLabel {
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 10px;
-    }
+    flex-flow: row nowrap;
+    gap: 10px;
+  }
 }

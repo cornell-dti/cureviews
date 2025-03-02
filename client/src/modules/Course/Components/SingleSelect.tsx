@@ -9,7 +9,7 @@ const SingleSelect = ({
   options,
   placeholder,
   onChange,
-  appearFromTop=true
+  appearFromTop = true
 }: SelectProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);

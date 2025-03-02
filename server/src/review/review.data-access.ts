@@ -50,13 +50,14 @@ export const insertReview = async (review: Review) => {
   const newReview = new Reviews(review);
   await newReview.save();
   const courseId = review['class'];
-  await Classes.updateOne(
-    { _id: courseId },
-    { $inc: { summaryFreshness: 1 } }
-  );
+  await Classes.updateOne({ _id: courseId }, { $inc: { summaryFreshness: 1 } });
   const userId = newReview.user;
-  const pendingReviews = await Reviews.find({ user: userId, visible: 0, reported: 0 }).exec();
-  return pendingReviews
+  const pendingReviews = await Reviews.find({
+    user: userId,
+    visible: 0,
+    reported: 0
+  }).exec();
+  return pendingReviews;
 };
 
 export const updateReviewLikedBy = async (

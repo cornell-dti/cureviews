@@ -21,7 +21,7 @@ import {
   VerifyAuthType,
   VerifyStudentType,
   SetReviewReportedType,
-  GetPendingReviewsType,
+  GetPendingReviewsType
 } from './review.type';
 
 export const verifyToken = async ({ auth }: VerifyAuthType) => {
