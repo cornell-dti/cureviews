@@ -240,12 +240,17 @@ const ReviewCard = ({
           <div> {dateToString()} </div>
           {!isPreview && (
             <div className={styles.reporthelpful}>
-              <button
+              
+              <div
                 className={styles.report}
                 onClick={() => reportHandler(_review._id)}
               >
+                <img
+                  src={'/report-flag.svg'}
+                  alt='Flag'
+                />
                 Report
-              </button>
+              </div>
 
               <div
                 className={`${styles.helpful} ${liked && styles.likedhelpful}`}
