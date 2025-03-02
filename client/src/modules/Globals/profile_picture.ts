@@ -1,12 +1,12 @@
 const profilePictures = [
-  '/profile_bear/profile_bear_dark_blue.svg',
-  '/profile_bear/profile_bear_light_blue.svg',
-  '/profile_bear/profile_bear_light_pink.svg',
-  '/profile_bear/profile_bear_mint.png',
-  '/profile_bear/profile_bear_orange.svg',
-  '/profile_bear/profile_bear_purple.svg',
-  '/profile_bear/profile_bear_red.svg',
-  '/profile_bear/profile_bear_yellow.svg'
+  '/profile-bears/profile_bear_dark_blue.svg',
+  '/profile-bears/profile_bear_light_blue.svg',
+  '/profile-bears/profile_bear_light_pink.svg',
+  '/profile-bears/profile_bear_mint.png',
+  '/profile-bears/profile_bear_orange.svg',
+  '/profile-bears/profile_bear_purple.svg',
+  '/profile-bears/profile_bear_red.svg',
+  '/profile-bears/profile_bear_yellow.svg'
 ];
 
 function hashCode(netId: string) {
