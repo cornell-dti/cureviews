@@ -11,7 +11,6 @@ type SummaryProps = {
   summaryTags: Map<string, [string, string]>;
 }
 const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
-  const summaryTagsMap = new Map(Object.entries(summaryTags));
   const capitalizeFirstLetter = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };

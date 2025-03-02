@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../Styles/Gauges.module.css';
 
-import HappyFace from '/gauges/gauge_icon_positive.svg';
-import MehFace from '/gauges/gauge_icon_neutral.svg';
-import SadFace from '/gauges/gauge_icon_negative.svg';
+import HappyFace from '/gauges/gauge-icon-positive.svg';
+import MehFace from '/gauges/gauge-icon-neutral.svg';
+import SadFace from '/gauges/gauge-icon-negative.svg';
 
-import Green from '/gauges/green_full_star.svg';
-import GreenHalf from '/gauges/green_half_star.svg';
-import Yellow from '/gauges/yellow_full_star.svg';
-import YellowHalf from '/gauges/yellow_half_star.svg';
-import Red from '/gauges/red_full_star.svg';
-import RedHalf from '/gauges/red_half_star.svg';
-import Gray from '/gauges/gray_star.svg';
+import Green from '/gauges/green-full-star.svg';
+import GreenHalf from '/gauges/green-half-star.svg';
+import Yellow from '/gauges/yellow-full-star.svg';
+import YellowHalf from '/gauges/yellow-half-star.svg';
+import Red from '/gauges/red-full-star.svg';
+import RedHalf from '/gauges/red-half-star.svg';
+import Gray from '/gauges/gray-star.svg';
 
 type GaugesProps = {
     overall: number | undefined;
