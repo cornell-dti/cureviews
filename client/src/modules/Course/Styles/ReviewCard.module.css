@@ -106,7 +106,7 @@
   display: flex;
   flex-flow: row nowrap;
   cursor: pointer;
-  gap: 6px;
+  gap: 8px;
 }
 
 .helpful {
