@@ -208,3 +208,88 @@ export const GlobalMetadata = mongoose.model<GlobalMetadataDocument>(
   "globalnMetadata",
   GlobalMetadataSchema,
 );
+
+/**
+ * Course Evaluation Collection
+ * Stores course evaluation data
+ */
+const CourseEvaluationSchema = new Schema({
+  _id: { type: String, required: true },
+  courseName: { type: String, required: true },
+  subject: { type: String, required: true },
+  courseNumber: { type: String, required: true },
+  semester: { type: String, required: true },
+  totalEvals: { type: Number, default: 0 },
+  courseOverall: { type: Number },
+  profTeachingSkill: { type: Number },
+  profKnowledge: { type: Number },
+  profClimate: { type: Number },
+  profOverall: { type: Number },
+  numA: { type: Number, default: 0 },
+  numB: { type: Number, default: 0 },
+  numC: { type: Number, default: 0 },
+  numD: { type: Number, default: 0 },
+  numF: { type: Number, default: 0 },
+  numS: { type: Number, default: 0 },
+  numU: { type: Number, default: 0 },
+  numGradeNA: { type: Number, default: 0 },
+  numFresh: { type: Number, default: 0 },
+  numSoph: { type: Number, default: 0 },
+  numJr: { type: Number, default: 0 },
+  numSr: { type: Number, default: 0 },
+  numAg: { type: Number, default: 0 },
+  numHumec: { type: Number, default: 0 },
+  numArch: { type: Number, default: 0 },
+  numILR: { type: Number, default: 0 },
+  numArts: { type: Number, default: 0 },
+  numEng: { type: Number, default: 0 },
+  numHotel: { type: Number, default: 0 },
+  numOther: { type: Number, default: 0 },
+  numMajorReq: { type: Number, default: 0 },
+  numReputation: { type: Number, default: 0 },
+  numInterest: { type: Number, default: 0 },
+  sentiments: { type: [[Number, Number]], default: [] }
+});
+
+interface CourseEvaluationDocument extends mongoose.Document {
+  _id: string,
+  courseName: string;
+  subject: string;
+  courseNumber: string;
+  semester: string;
+  totalEvals: number;
+  courseOverall: number;
+  profTeachingSkill: number;
+  profKnowledge: number;
+  profClimate: number;
+  profOverall: number;
+  numA: number;
+  numB: number;
+  numC: number;
+  numD: number;
+  numF: number;
+  numS: number;
+  numU: number;
+  numGradeNA: number;
+  numFresh: number;
+  numSoph: number;
+  numJr: number;
+  numSr: number;
+  numAg: number;
+  numHumec: number;
+  numArch: number;
+  numILR: number;
+  numArts: number;
+  numEng: number;
+  numHotel: number;
+  numOther: number;
+  numMajorReq: number;
+  numReputation: number;
+  numInterest: number;
+  sentiments: [number, number][];
+}
+
+export const CourseEvaluations = mongoose.model<CourseEvaluationDocument>(
+  "courseEvaluations",
+  CourseEvaluationSchema,
+);

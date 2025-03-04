@@ -6,7 +6,8 @@
     "lib": ["ES2017", "DOM"],
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "resolveJsonModule": true
   },
   "exclude": ["./tests/**/*"]
 }
