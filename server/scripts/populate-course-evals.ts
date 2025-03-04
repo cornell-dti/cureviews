@@ -1,4 +1,5 @@
-import courseData from './course_eval_data/test_data.json';
+import fs from 'fs'
+import { CourseEvaluations } from '../db/schema';
 
 // Given raw course evaluation data, return an object with its course code as the key
 // and merged course data from the course evaluations JSON file as an object value.
@@ -177,6 +178,49 @@ const mergeCourseEvaluations = (
   };
 };
 
+/**
+ * Adds all course eval data from a particular semester/web-scraping iteration
+ *
+ * @param {string} file: pathname of file to import
+ * @returns true if operation was successful, false otherwise
+ */
+export const addCourseEvalsFromJson = async (
+  file: string
+): Promise<boolean> => {
+  const data: CourseEvaluationsRaw = JSON.parse(fs.readFileSync(file, 'utf-8'))
+  const parsedData: CourseEvaluations = parseEval(data)
+
+  const v1 = await Promise.all(
+    Object.entries(parsedData)
+      .map(async ([_, value]) => {
+        const cEval = value
+        const cEvalIfExists = CourseEvaluations.findOne({
+          courseName: cEval.courseName
+        }).exec();
+
+        if (!cEvalIfExists) {
+          console.log(`Adding new course eval for course ${cEval.courseName}`)
+          const res = await new CourseEvaluations({
+            ...cEval
+          }).save().catch((err) => {
+            console.log(err);
+            return null;
+          });
+          // db operation was not successful
+          if (!res) {
+            throw new Error();
+          }
+        }
+        return true;
+      })).catch((_) => null);
+
+  if (!v1) {
+    console.log('Something went wrong while updating subjects!');
+    return false;
+  }
+    return v1;
+};
+
 interface CourseEvaluationRaw {
   courseName: string;
   semester: string;
@@ -273,27 +317,27 @@ interface CourseEvaluations {
   [key: string]: CourseEvaluation;
 }
 
-export const test = () => {
-  const evaluations: CourseEvaluations = parseEval(courseData);
-
-  Object.keys(evaluations).forEach((courseKey) => {
-    const courseEvaluation = evaluations[courseKey];
-
-    console.log(`Course Subject: ${courseEvaluation.subject}`);
-    console.log(`Course Number: ${courseEvaluation.courseNumber}`);
-    console.log(`Overall Course Rating: ${courseEvaluation.courseOverall}`);
-    console.log(
-      `Professor Teaching Skill: ${courseEvaluation.profTeachingSkill}`
-    );
-    console.log(
-      `Top sentiments: ${courseEvaluation.sentiments}`
-    )
-
-    console.log(`Total Students: ${courseEvaluation.totalEvals}\n`);
-  });
-};
-
-const args = process.argv.slice(2);
-if (args.length >= 0) {
-  test();
-}
+// export const test = () => {
+//   const evaluations: CourseEvaluations = parseEval(courseData);
+//
+//   Object.keys(evaluations).forEach((courseKey) => {
+//     const courseEvaluation = evaluations[courseKey];
+//
+//     console.log(`Course Subject: ${courseEvaluation.subject}`);
+//     console.log(`Course Number: ${courseEvaluation.courseNumber}`);
+//     console.log(`Overall Course Rating: ${courseEvaluation.courseOverall}`);
+//     console.log(
+//       `Professor Teaching Skill: ${courseEvaluation.profTeachingSkill}`
+//     );
+//     console.log(
+//       `Top sentiments: ${courseEvaluation.sentiments}`
+//     )
+//
+//     console.log(`Total Students: ${courseEvaluation.totalEvals}\n`);
+//   });
+// };
+//
+// const args = process.argv.slice(2);
+// if (args.length >= 0) {
+//   test();
+// }
