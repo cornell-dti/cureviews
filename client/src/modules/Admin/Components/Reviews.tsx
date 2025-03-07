@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Review } from 'common';
 import AdminReview from './AdminReview';
 import styles from '../Styles/AdminReview.module.css';
+import Dropdown from "./Dropdown";
 
 type Props = {
   token: string;
@@ -14,6 +15,8 @@ const Reviews = ({ token }: Props) => {
   const [activeTab, setActiveTab] = useState<ReviewCategory>('pending');
   const [pendingReviews, setPendingReviews] = useState<Review[]>([]);
   const [reportedReviews, setReportedReviews] = useState<Review[]>([]);
+  const [approvedReviews, setApprovedReviews] = useState<Review[]>([]);
+  const [timeFrame, setTimeFrame] = useState<number>(10);
 
   useEffect(() => {
     if (!token) return;
@@ -125,7 +128,11 @@ const Reviews = ({ token }: Props) => {
           </button>
         </div>
         {activeTab === 'pending' && renderReviews(pendingReviews, 'pending')}
-        {/* {activeTab === 'approved' && renderReviews(approvedReviews, 'approved')} */}
+        {activeTab === "approved" && (
+          <div className={styles.timeFrameSelector}>
+            <Dropdown selectedValue={timeFrame} onChange={setTimeFrame} />
+          </div>
+        )}
         {activeTab === 'reported' && renderReviews(reportedReviews, 'reported')}
       </div>
     </div>
