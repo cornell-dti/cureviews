@@ -4,19 +4,6 @@
   height: 100vh;
 }
 
-.topBar {
-  width: 100%;
-  height: 70px;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  border-bottom: 1px solid #B6D8FF;
-  top: 0;
-  left: 0;
-}
-
 .contentWrapper {
   display: flex;
   flex: 1;
@@ -44,5 +31,5 @@
   padding: 50px;
   padding-left: 100px;
   min-height: 100vh;
+  width: 50%;
 }
-
