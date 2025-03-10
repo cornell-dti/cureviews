@@ -6,6 +6,7 @@ import { reviewRouter } from './src/review';
 import { courseRouter } from './src/course';
 import { adminRouter } from './src/admin';
 import aiRouter from './src/ai/ai.router';
+import { courseEvalRouter } from './src/course-eval';
 
 export const configure = (app: Express) => {
   app.use('/api/admin', adminRouter);
@@ -15,4 +16,5 @@ export const configure = (app: Express) => {
   app.use('/api/reviews', reviewRouter);
   app.use('/api/courses', courseRouter);
   app.use('/api/ai', aiRouter);
+  app.use('/api/course-eval', courseEvalRouter)
 };

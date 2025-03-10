@@ -1,5 +1,7 @@
 import fs from 'fs'
 import { CourseEvaluations } from '../db/schema';
+import faCourseData from './course_eval_data/fa24_course-eval.json';
+import spCourseData from './course_eval_data/sp24_course-eval.json';
 
 // Given raw course evaluation data, return an object with its course code as the key
 // and merged course data from the course evaluations JSON file as an object value.
@@ -178,16 +180,17 @@ const mergeCourseEvaluations = (
   };
 };
 
+// shove this button somewhere in the admin page or something
+
 /**
  * Adds all course eval data from a particular semester/web-scraping iteration
  *
- * @param {string} file: pathname of file to import
  * @returns true if operation was successful, false otherwise
+ * @param data course eval json data
  */
 export const addCourseEvalsFromJson = async (
-  file: string
+  data: CourseEvaluationsRaw
 ): Promise<boolean> => {
-  const data: CourseEvaluationsRaw = JSON.parse(fs.readFileSync(file, 'utf-8'))
   const parsedData: CourseEvaluations = parseEval(data)
 
   const v1 = await Promise.all(
@@ -197,6 +200,10 @@ export const addCourseEvalsFromJson = async (
         const cEvalIfExists = CourseEvaluations.findOne({
           courseName: cEval.courseName
         }).exec();
+
+        console.log(`May or may not exist already: adding new course eval for course ${cEval.courseName}`)
+        console.log(cEval.subject)
+        console.log(cEval.courseNumber)
 
         if (!cEvalIfExists) {
           console.log(`Adding new course eval for course ${cEval.courseName}`)
@@ -219,6 +226,12 @@ export const addCourseEvalsFromJson = async (
     return false;
   }
     return v1;
+};
+
+export const addCurrCourseEvals = async () => {
+  await addCourseEvalsFromJson(faCourseData)
+  await addCourseEvalsFromJson(spCourseData)
+  return true
 };
 
 interface CourseEvaluationRaw {

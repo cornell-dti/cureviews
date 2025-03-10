@@ -166,7 +166,7 @@ export const fetchClassesForSubject = async (
 };
 
 /**
- * Adds all new subjects, courses, and updates professors for a particular semeester
+ * Adds all new subjects, courses, and updates professors for a particular semester
  *
  * @param {string} endpoint: base url for fetching courses in a particular subject from Course API
  * @param {string} semester: course roster semester for (i.e FA23)
