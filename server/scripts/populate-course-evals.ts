@@ -1,7 +1,7 @@
-import fs from 'fs'
 import { CourseEvaluations } from '../db/schema';
 import faCourseData from './course_eval_data/fa24_course-eval.json';
 import spCourseData from './course_eval_data/sp24_course-eval.json';
+import shortid from 'shortid';
 
 // Given raw course evaluation data, return an object with its course code as the key
 // and merged course data from the course evaluations JSON file as an object value.
@@ -21,6 +21,7 @@ const parseEval = (data: CourseEvaluationsRaw): CourseEvaluations => {
           key,
           {
             ...value,
+            _id: shortid.generate(),
             subject: value.courseName.split(' ')[0],
             courseNumber: value.courseName.split(' ')[1],
             courseOverall: parseFloat(value.courseOverall) || 0,
@@ -180,8 +181,6 @@ const mergeCourseEvaluations = (
   };
 };
 
-// shove this button somewhere in the admin page or something
-
 /**
  * Adds all course eval data from a particular semester/web-scraping iteration
  *
@@ -197,13 +196,10 @@ export const addCourseEvalsFromJson = async (
     Object.entries(parsedData)
       .map(async ([_, value]) => {
         const cEval = value
-        const cEvalIfExists = CourseEvaluations.findOne({
-          courseName: cEval.courseName
+        const cEvalIfExists = await CourseEvaluations.findOne({
+          subject: cEval.subject,
+          courseNumber: cEval.courseNumber
         }).exec();
-
-        console.log(`May or may not exist already: adding new course eval for course ${cEval.courseName}`)
-        console.log(cEval.subject)
-        console.log(cEval.courseNumber)
 
         if (!cEvalIfExists) {
           console.log(`Adding new course eval for course ${cEval.courseName}`)
@@ -290,6 +286,7 @@ interface CourseEvaluationsRaw {
 }
 
 interface CourseEvaluation {
+  _id: string;
   courseName: string;
   subject: string; // derived from courseName -- should be type Subject eventually
   courseNumber: string; // derived from courseName

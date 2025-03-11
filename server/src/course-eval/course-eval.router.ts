@@ -1,7 +1,5 @@
 import express from 'express';
 
-import { CourseEval } from './course-eval';
-
 import {
   getCourseEval,
 } from './course-eval.controller';
@@ -17,20 +15,11 @@ export const courseEvalRouter = express.Router();
 courseEvalRouter.post('/get-course-eval', async (req, res) => {
   try {
     const { classSub, classNum }: CourseEvalRequestType = req.body;
-    const courseEval: CourseEval = new CourseEval({ classSub, classNum });
-    console.log(classSub)
-    console.log(classNum)
-    const validClassSub: string = courseEval.getClassSub();
-    const validClassNum: string = courseEval.getClassNum();
-    console.log(validClassSub)
-    console.log(validClassNum)
 
     const courseEvalDoc = await getCourseEval({
-      classSub: validClassSub,
-      classNum: validClassNum,
+      classSub,
+      classNum,
     });
-
-    console.log(courseEvalDoc)
 
     if (courseEvalDoc === null) {
       return res.status(200).json({ result: 0 });

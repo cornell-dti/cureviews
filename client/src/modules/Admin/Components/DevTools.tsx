@@ -41,9 +41,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
     } finally {
       setUpdating(false);
     }
-
-    const resp2 = await axios.post("/api/course-eval/get-course-eval", { classSub: "VIEN", classNum: "4700" });
-    console.log(resp2);
   };
 
   const raffleHandler = async () => {
