@@ -203,8 +203,6 @@ export const addCourseEvalsFromJson = async (
 ): Promise<boolean> => {
   const parsedData: CourseEvaluations = parseEval(data)
 
-  await CourseEvaluations.deleteMany({})
-
   const v1 = await Promise.all(
     Object.entries(parsedData)
       .map(async ([_, value]) => {

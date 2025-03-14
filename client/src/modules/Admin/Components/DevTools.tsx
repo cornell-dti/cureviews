@@ -33,9 +33,8 @@ export default function AdminTools({ token }: AdminToolsProps) {
   const handleApiCall = async (endpoint: string, successState: keyof typeof messages) => {
     setUpdating(true)
     try {
-      const response = await axios.post(endpoint, { token });
-      if (response.status === 200) setUpdated(successState);
-      else setUpdated('failure');
+      await axios.post(endpoint, { token });
+      setUpdated(successState);
     } catch {
       setUpdated('failure');
     } finally {
