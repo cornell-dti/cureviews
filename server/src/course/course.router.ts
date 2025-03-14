@@ -1,7 +1,20 @@
 import express from 'express';
 
-import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR, getRecommendationData, getProcessedDescription, getSimilarity, getGlobalMetadata } from './course.controller';
+import {
+  CourseIdRequestType,
+  CourseInfoRequestType,
+  CourseDescriptionRequestType,
+  CourseEvalRequestType
+} from './course.type';
+import {
+  getCourseByInfo,
+  getReviewsCrossListOR,
+  getRecommendationData,
+  getProcessedDescription,
+  getSimilarity,
+  getGlobalMetadata,
+  getCourseEval
+} from './course.controller';
 
 import { getCourseById } from '../utils';
 
@@ -126,4 +139,30 @@ courseRouter.post('/preprocess-desc', async (req, res) => {
 courseRouter.post('/mock-similarity', async (req, res) => {
   const similarity = await getSimilarity();
   return res.status(200).json({ result: similarity });
+});
+
+/** Reachable at POST /api/courses/get-course-eval
+ * @body courseNumber: a course's number
+ * @body courseSubject: a course's subject code
+ * Gets the course evaluation object tied to the given course
+ */
+courseRouter.post('/get-course-eval', async (req, res) => {
+  try {
+    const { classSub, classNum }: CourseEvalRequestType = req.body;
+
+    const courseEvalDoc = await getCourseEval({
+      classSub,
+      classNum,
+    });
+
+    if (courseEvalDoc === null) {
+      return res.status(200).json({ result: 0 });
+    }
+
+    return res.status(200).json({ result: courseEvalDoc });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${error.message}` });
+  }
 });

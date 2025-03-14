@@ -376,11 +376,11 @@ adminRouter.post('/semester/add', async (req, res) => {
   }
 });
 
-/** Reachable at POST /api/admin/coures-eval/add
+/** Reachable at POST /api/admin/courses/add-course-evals
  * @body token: a session's current token
  * Adds all course evals to the db based on hard-coded JSON files. For admins only
  */
-adminRouter.post('/course-eval/add', async (req, res) => {
+adminRouter.post('/courses/add-course-evals', async (req, res) => {
   const { token }: AdminRequestType = req.body;
   try {
     const auth = new Auth({ token });

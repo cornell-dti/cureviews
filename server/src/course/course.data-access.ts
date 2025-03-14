@@ -1,4 +1,5 @@
 import { Classes, RecommendationMetadata, GlobalMetadata } from "../../db/schema";
+import { CourseEvaluations } from '../../db/schema';
 
 export const findCourseById = async (courseId: string) =>
   await Classes.findOne({ _id: courseId }).exec();
@@ -20,3 +21,6 @@ export const findRecommendationByInfo = async (
 }).exec();
 
 export const findGlobalMetadata = async () => await GlobalMetadata.find().exec();
+
+export const findCourseEval = async (subject: string, courseNumber: string) =>
+  await CourseEvaluations.findOne({ subject, courseNumber }).exec();

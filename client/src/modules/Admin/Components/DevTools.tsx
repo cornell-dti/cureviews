@@ -80,7 +80,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
           Add New Semester
         </button>
         <button
-          onClick={() => handleApiCall('/api/admin/course-eval/add', 'courseEval')}
+          onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
           disabled={updating}
           className={styles.adminButtons}
         >

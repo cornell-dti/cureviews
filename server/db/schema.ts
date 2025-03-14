@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Class, Student, Subject, Review, Professor } from 'common';
+import { Class, Student, Subject, Review, Professor, CourseEvaluation } from 'common';
 
 /*
 
@@ -251,7 +251,7 @@ const CourseEvaluationSchema = new Schema({
   sentiments: { type: [[Number, Number]], default: [] }
 });
 
-interface CourseEvaluationDocument extends mongoose.Document {
+interface CourseEvaluationDocument extends mongoose.Document, CourseEvaluation {
   _id: string,
   courseName: string;
   subject: string;

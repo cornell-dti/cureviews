@@ -1,5 +1,16 @@
-import { findCourseById, findCourseByInfo, findRecommendationByInfo, findGlobalMetadata } from './course.data-access';
-import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
+import {
+  findCourseById,
+  findCourseByInfo,
+  findRecommendationByInfo,
+  findGlobalMetadata,
+  findCourseEval
+} from './course.data-access';
+import {
+  CourseIdRequestType,
+  CourseInfoRequestType,
+  CourseDescriptionRequestType,
+  CourseEvalRequestType
+} from './course.type';
 import { preprocess, tfidf, cosineSimilarity, idf } from './course.recalgo';
 
 import { findReviewCrossListOR } from '../utils';
@@ -147,3 +158,10 @@ export const getSimilarity = async () => {
   }
   return topSimilarities;
 }
+
+export const getCourseEval =
+  async ({ classSub, classNum }: CourseEvalRequestType) => {
+    const courseEval = await findCourseEval(classSub, classNum);
+    if (!courseEval) return null;
+    return courseEval;
+};
