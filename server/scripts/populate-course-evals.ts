@@ -1,5 +1,5 @@
 import { CourseEvaluations } from '../db/schema';
-import courseData from './course_eval_data/fa_sp_24_course-eval.json';
+import courseData from './course_eval_data/fa_sp_24_course_eval.json';
 import shortid from 'shortid';
 import { CourseEvaluation } from 'common';
 
