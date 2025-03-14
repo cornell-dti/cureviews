@@ -302,28 +302,3 @@ interface CourseEvaluationsRaw {
 interface CourseEvaluations {
   [key: string]: CourseEvaluation;
 }
-
-// export const test = () => {
-//   const evaluations: CourseEvaluations = parseEval(courseData);
-//
-//   Object.keys(evaluations).forEach((courseKey) => {
-//     const courseEvaluation = evaluations[courseKey];
-//
-//     console.log(`Course Subject: ${courseEvaluation.subject}`);
-//     console.log(`Course Number: ${courseEvaluation.courseNumber}`);
-//     console.log(`Overall Course Rating: ${courseEvaluation.courseOverall}`);
-//     console.log(
-//       `Professor Teaching Skill: ${courseEvaluation.profTeachingSkill}`
-//     );
-//     console.log(
-//       `Top sentiments: ${courseEvaluation.sentiments}`
-//     )
-//
-//     console.log(`Total Students: ${courseEvaluation.totalEvals}\n`);
-//   });
-// };
-//
-// const args = process.argv.slice(2);
-// if (args.length >= 0) {
-//   test();
-// }
