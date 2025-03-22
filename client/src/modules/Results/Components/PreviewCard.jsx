@@ -49,20 +49,18 @@ export default class PreviewCard extends Component {
 
   // If the value of the metric is null, set the Gauge value to "-"
   updateGauges() {
-    this.setState(
-      {
-        id: this.props.course._id,
-        rating: Number(this.props.course.classRating)
-          ? this.props.course.classRating
-          : '-',
-        diff: Number(this.props.course.classDifficulty)
-          ? this.props.course.classDifficulty
-          : '-',
-        workload: Number(this.props.course.classWorkload)
-          ? this.props.course.classWorkload
-          : '-'
-      },
-    );
+    this.setState({
+      id: this.props.course._id,
+      rating: Number(this.props.course.classRating)
+        ? this.props.course.classRating
+        : '-',
+      diff: Number(this.props.course.classDifficulty)
+        ? this.props.course.classDifficulty
+        : '-',
+      workload: Number(this.props.course.classWorkload)
+        ? this.props.course.classWorkload
+        : '-'
+    });
     this.updateTopReview();
   }
 
@@ -118,12 +116,12 @@ export default class PreviewCard extends Component {
           </div>
         </div>
 
-        <Gauges 
+        <Gauges
           overall={parseFloat(this.state.rating)}
           difficulty={parseFloat(this.state.diff)}
           workload={parseFloat(this.state.workload)}
         />
-        
+
         {this.state.numReviews !== 0 && (
           <div className={styles.topreview}>Top Review</div>
         )}

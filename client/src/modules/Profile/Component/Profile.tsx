@@ -58,38 +58,36 @@ const Profile = () => {
     let valB = 'Not Listed';
 
     if (a.professors) {
-      const profsA = a.professors.filter((prof : String) =>
-        prof && prof !== 'Not Listed')
-      valA = profsA.length > 0
-        ? profsA.sort()[0]
-        : 'Not Listed'
+      const profsA = a.professors.filter(
+        (prof: String) => prof && prof !== 'Not Listed'
+      );
+      valA = profsA.length > 0 ? profsA.sort()[0] : 'Not Listed';
     } else {
-      return 1
+      return 1;
     }
     if (b.professors) {
-      const profsB = b.professors.filter((prof : String) =>
-        prof && prof !== 'Not Listed')
-      valB = profsB.length > 0
-        ? profsB.sort()[0]
-        : 'Not Listed'
+      const profsB = b.professors.filter(
+        (prof: String) => prof && prof !== 'Not Listed'
+      );
+      valB = profsB.length > 0 ? profsB.sort()[0] : 'Not Listed';
     } else {
-      return 1
+      return 1;
     }
 
     if (valA === 'Not Listed') {
-      return 1
+      return 1;
     } else if (valB === 'Not Listed') {
-      return -1
-    }
-    
-    if (valA < valB) {
-      return -1
-    } else if (valB < valA) {
-      return 1
+      return -1;
     }
 
-    return 0
-  }
+    if (valA < valB) {
+      return -1;
+    } else if (valB < valA) {
+      return 1;
+    }
+
+    return 0;
+  };
 
   /**
    * Hook that handles
@@ -109,19 +107,19 @@ const Profile = () => {
         const _approvedReviews = _reviews.filter(function (review: ReviewType) {
           return review.visible;
         });
-  
+
         setReviews(_reviews);
         setPendingReviews(_pendingReviews);
         setApprovedReviews(_approvedReviews.sort(sortByLikes));
         setLoading(false);
       }
     }
-    
+
     async function getReviewsHelpful() {
       const response = await axios.post('/api/profiles/get-likes', {
         netId
       });
-  
+
       if (response.status === 200) {
         const userTotalUpvotes = response.data.result;
         setUpvoteCount(userTotalUpvotes);
@@ -166,7 +164,7 @@ const Profile = () => {
           toast.success(
             'Thanks for reviewing! New reviews are updated every 24 hours.'
           );
-          const pending = response.data.result
+          const pending = response.data.result;
           setPendingReviews(pending);
         } else {
           toast.error('An error occurred, please try again.');
@@ -197,7 +195,7 @@ const Profile = () => {
     } else if (value === 'recent') {
       setApprovedReviews([...approvedReviews].sort(sortByDate));
     } else if (value === 'professor') {
-      setApprovedReviews([...approvedReviews].sort(sortByProf))
+      setApprovedReviews([...approvedReviews].sort(sortByProf));
     }
   }
 
@@ -227,7 +225,9 @@ const Profile = () => {
 
           <div className={styles.reviewsection}>
             <div className={styles.bar}>
-              <h2>My Reviews ({pendingReviews.length + approvedReviews.length})</h2>
+              <h2>
+                My Reviews ({pendingReviews.length + approvedReviews.length})
+              </h2>
               <div>
                 <label htmlFor="sort-reviews-by">Sort By:</label>
                 <select
@@ -249,15 +249,11 @@ const Profile = () => {
                   setHide={setHidePastReviews}
                   pendingReviews={pendingReviews}
                 />
-                <PastReviews
-                  pastReviews={approvedReviews}
-                />
+                <PastReviews pastReviews={approvedReviews} />
               </>
             )}
             {reviews.length > 0 && pendingReviews.length === 0 && (
-              <PastReviews
-                pastReviews={approvedReviews}
-              />
+              <PastReviews pastReviews={approvedReviews} />
             )}
           </div>
         </div>

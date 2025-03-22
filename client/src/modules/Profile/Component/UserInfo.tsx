@@ -8,7 +8,7 @@ type UserInfoProps = {
   upvoteCount: number;
   netId: string;
   signOut: () => void;
-}
+};
 
 const UserInfo = ({
   profilePicture,

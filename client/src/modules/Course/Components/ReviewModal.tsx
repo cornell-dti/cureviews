@@ -22,7 +22,7 @@ const ReviewModal = ({
   // Modal Logic
   const closeModal = () => {
     setReviewOpen(false);
-  }
+  };
   // Content & Options
   const placeholdertext =
     'What did you like and dislike about the course? How engaging were the lectures? What were your thoughts on the professor? Would you recommend this class?';
@@ -44,7 +44,7 @@ const ReviewModal = ({
     'D-',
     'F',
     'S',
-    'U',
+    'U'
   ];
 
   // Form & Review Content State
@@ -73,7 +73,7 @@ const ReviewModal = ({
     if (!professorOptions.includes('Not Listed')) {
       professorOptions.push('Not Listed');
     }
-  }, [professorOptions])
+  }, [professorOptions]);
 
   useEffect(() => {
     setAllowSubmit(valid.professor && valid.major && valid.grade && valid.text);
@@ -84,28 +84,29 @@ const ReviewModal = ({
     if (newSelectedProfessors.length > 0)
       setValid({ ...valid, professor: true });
     else setValid({ ...valid, professor: false });
-  }
+  };
 
   const onMajorChange = (newSelectedMajors: string[]) => {
     setSelectedMajors(newSelectedMajors);
     if (newSelectedMajors.length > 0) setValid({ ...valid, major: true });
     else setValid({ ...valid, major: false });
-  }
+  };
 
   const onGradeChange = (newSelectedGrade: string) => {
     setSelectedGrade(newSelectedGrade);
     if (newSelectedGrade !== '') setValid({ ...valid, grade: true });
     else setValid({ ...valid, grade: false });
-  }
+  };
 
   const onReviewTextChange = (newText: string) => {
     setReviewText(newText);
     if (newText !== '') setValid({ ...valid, text: true });
     else setValid({ ...valid, text: false });
-  }
+  };
 
   // Handle Submission
-  const validReview = (): boolean => selectedProfessors.length > 0 && reviewText.length > 5;
+  const validReview = (): boolean =>
+    selectedProfessors.length > 0 && reviewText.length > 5;
 
   // Called by onSubmitReview if the user should not see modal
   const handleSubmitReview = () => {
@@ -122,7 +123,7 @@ const ReviewModal = ({
       };
       submitReview(newReview);
     }
-  }
+  };
 
   // Handle click of submit button
   const onSubmitReview = () => {
@@ -134,7 +135,7 @@ const ReviewModal = ({
       setLoginModalOpen(true);
       setReviewOpen(false);
     }
-  }
+  };
 
   if (!open && loginModalOpen && !isLoggedIn) {
     return (

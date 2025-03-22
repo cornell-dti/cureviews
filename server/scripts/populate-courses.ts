@@ -6,7 +6,12 @@
 import axios from 'axios';
 import shortid from 'shortid';
 import { ScrapingSubject, ScrapingClass } from './types';
-import { Classes, Professors, Subjects, RecommendationMetadata } from '../db/schema';
+import {
+  Classes,
+  Professors,
+  Subjects,
+  RecommendationMetadata
+} from '../db/schema';
 import { extractProfessors } from './populate-professors';
 import { fetchSubjects } from './populate-subjects';
 import { cosineSimilarity } from '../src/course/course.recalgo';
@@ -78,9 +83,9 @@ export const addCrossList = async (semester: string): Promise<boolean> => {
           }).exec();
           console.log(
             courses[course].subject.toLowerCase() +
-            // eslint-disable-next-line operator-linebreak
-            ' ' +
-            courses[course].catalogNbr
+              // eslint-disable-next-line operator-linebreak
+              ' ' +
+              courses[course].catalogNbr
           );
           console.log(check);
           const crossList = courses[course].enrollGroups[0].simpleCombinations;
@@ -300,13 +305,15 @@ export const fetchAddClassesForSubject = async (
       });
 
       console.log(
-        `Extracted professors from course ${course.subject.toUpperCase()}${course.catalogNbr
+        `Extracted professors from course ${course.subject.toUpperCase()}${
+          course.catalogNbr
         }....`
       );
 
       if (!classExists) {
         console.log(
-          `Course ${course.subject.toUpperCase()}${course.catalogNbr
+          `Course ${course.subject.toUpperCase()}${
+            course.catalogNbr
           } does not exist, adding to database...`
         );
 
@@ -317,8 +324,9 @@ export const fetchAddClassesForSubject = async (
             classSub: course.subject.toLowerCase(),
             classNum: course.catalogNbr,
             classTitle: course.titleLong,
-            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${course.titleLong
-              }`,
+            classFull: `${course.subject.toUpperCase()} ${course.catalogNbr}: ${
+              course.titleLong
+            }`,
             classSems: [semester],
             classProfessors: profs,
             classRating: 0,
@@ -333,7 +341,8 @@ export const fetchAddClassesForSubject = async (
             });
 
           console.log(
-            `Saved new course ${course.subject.toUpperCase()}${course.catalogNbr
+            `Saved new course ${course.subject.toUpperCase()}${
+              course.catalogNbr
             } to database...`
           );
 
@@ -345,13 +354,15 @@ export const fetchAddClassesForSubject = async (
           });
 
           console.log(
-            `Adding course ${course.subject.toUpperCase()}${course.catalogNbr
+            `Adding course ${course.subject.toUpperCase()}${
+              course.catalogNbr
             } to professors' courses...`
           );
 
           if (!saveNewClass) {
             console.log(
-              `Saving new course ${course.subject.toUpperCase()}${course.catalogNbr
+              `Saving new course ${course.subject.toUpperCase()}${
+                course.catalogNbr
               } failed!`
             );
           }
@@ -384,7 +395,8 @@ export const fetchAddClassesForSubject = async (
         });
 
         console.log(
-          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${course.catalogNbr
+          `Added semester ${semester} to course semesters for ${course.subject.toUpperCase()}${
+            course.catalogNbr
           }...`
         );
 
@@ -400,7 +412,8 @@ export const fetchAddClassesForSubject = async (
         });
 
         console.log(
-          `Added professors to course ${course.subject.toUpperCase()}${course.catalogNbr
+          `Added professors to course ${course.subject.toUpperCase()}${
+            course.catalogNbr
           }...`
         );
 
@@ -425,19 +438,22 @@ export const fetchAddClassesForSubject = async (
         });
 
         console.log(
-          `Added course ${course.subject.toUpperCase()}${course.catalogNbr
+          `Added course ${course.subject.toUpperCase()}${
+            course.catalogNbr
           } to professors' course list...`
         );
 
         if (!updateClassInfo) {
           console.log(
-            `Failed to update course ${course.subject.toUpperCase()}${course.catalogNbr
+            `Failed to update course ${course.subject.toUpperCase()}${
+              course.catalogNbr
             }!`
           );
         }
 
         console.log(
-          `Successfully updated course ${course.subject.toUpperCase()}${course.catalogNbr
+          `Successfully updated course ${course.subject.toUpperCase()}${
+            course.catalogNbr
           }!`
         );
       }
@@ -564,7 +580,11 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   const checkDescription = courseFromDb.classDescription;
   const checkTitle = courseFromDb.classTitle;
 
-  if (checkDescription && checkDescription !== null && checkDescription.includes(checkTitle)) {
+  if (
+    checkDescription &&
+    checkDescription !== null &&
+    checkDescription.includes(checkTitle)
+  ) {
     console.log(`Already added description to ${subject} ${courseNum}`);
     return true;
   }
@@ -600,17 +620,17 @@ export const addCourseDescription = async (course): Promise<boolean> => {
   removeCourse(course);
   console.log(`Error in adding description to course ${subject} ${courseNum}`);
   return false;
-}
+};
 
 /**
- * Adds all course similarity data to Course database. Called after populating 
+ * Adds all course similarity data to Course database. Called after populating
  * database with necessary metadata information.
- * 
+ *
  * @returns true if operation was successful, false otherwise
  */
 export const addAllSimilarityData = async (): Promise<boolean> => {
   try {
-    console.log("adding similarity data");
+    console.log('adding similarity data');
     const courses = await Classes.find().exec();
     if (courses) {
       for (const course of courses) {
@@ -621,11 +641,11 @@ export const addAllSimilarityData = async (): Promise<boolean> => {
   } catch (err) {
     console.log(`Error in adding similarity data: ${err}`);
   }
-}
+};
 
 /**
  * Adds the top 5 similar courses to a given course using the cosine similarity algorithm for sorting.
- * 
+ *
  * @param courses the list of all courses in the Course database
  * @param course specific course stored in Course database
  * @returns true if operation was successful, false otherwise
@@ -636,11 +656,13 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
   const num = course.classNum;
   try {
     const similarities = [];
-    const tfidf = await RecommendationMetadata.findOne({ _id: courseId }).exec();
+    const tfidf = await RecommendationMetadata.findOne({
+      _id: courseId
+    }).exec();
     for (const c of courses) {
       let crossList = false;
       for (const crosslist of c.crossList) {
-        if (similarities.some(sim => sim._id === crosslist)) {
+        if (similarities.some((sim) => sim._id === crosslist)) {
           crossList = true;
           break;
         }
@@ -653,18 +675,27 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
         c.classRating !== 0 &&
         !crossList
       ) {
-        const compTfidf = await RecommendationMetadata.findOne({ _id: c._id }).exec();
+        const compTfidf = await RecommendationMetadata.findOne({
+          _id: c._id
+        }).exec();
         const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
         if (cos < 1) {
           const rating = c.classRating;
-          const workload = threshold(course.classWorkload, c.classWorkload);;
-          const difficulty = threshold(course.classDifficulty, c.classDifficulty);;
+          const workload = threshold(course.classWorkload, c.classWorkload);
+          const difficulty = threshold(
+            course.classDifficulty,
+            c.classDifficulty
+          );
           similarities.push({
             _id: c._id,
             className: c.classTitle,
             classSub: c.classSub,
             classNum: c.classNum,
-            tags: [`Overall: ${rating}/5`, `${workload} workload`, `${difficulty} difficulty`],
+            tags: [
+              `Overall: ${rating}/5`,
+              `${workload} workload`,
+              `${difficulty} difficulty`
+            ],
             similarityScore: cos
           });
         }
@@ -685,16 +716,19 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
     }
     return true;
   } catch (err) {
-    console.log(`Error in adding similarity data for ${subject} ${num}: ${err}`);
+    console.log(
+      `Error in adding similarity data for ${subject} ${num}: ${err}`
+    );
   }
-}
+};
 
 // threshold for tags
 const threshold = (a, b) => {
   if (b - a >= 0.5) {
     return 'higher';
-  } if (b - a <= -0.5) {
+  }
+  if (b - a <= -0.5) {
     return 'lower';
   }
   return 'similar';
-}
+};
