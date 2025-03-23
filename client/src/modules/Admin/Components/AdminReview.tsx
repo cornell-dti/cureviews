@@ -41,47 +41,64 @@ const UpdateReview = ({
   }, [review.class]);
 
   const renderButtons = (adminReview: Review) => {
-    return adminReview.reported === 1 ? (
-      <div className={styles.buttonGroup}>
-        <button
-          type="button"
-          className={styles.restoreButton}
-          onClick={() => unReportHandler?.(adminReview)}
-        >
-          <img src={check} alt="Approve" className={styles.icon} />
-          Restore Review
-        </button>
-        <button
-          type="button"
-          className={styles.removeButton}
-          onClick={() => removeHandler?.(adminReview, false)}
-        >
-          <img src={trash} alt="Remove" className={styles.icon} />
-          Remove Review
-        </button>
-      </div>
-    ) : (
-      <div className={styles.buttonGroup}>
-        <button
-          type="button"
-          className={styles.approveButton}
-          onClick={() => approveHandler?.(adminReview)}
-        >
-          <img src={check} alt="Approve" className={styles.icon} />
-          Confirm Review
-        </button>
-        <button
-          type="button"
-          className={styles.removeButton}
-          onClick={() => removeHandler?.(adminReview, true)}
-        >
-          <img src={trash} alt="Remove" className={styles.icon} />
-          Remove Review
-        </button>
-      </div>
-    );
-  };
+    // Don't show any buttons if no handlers are provided
+    if (!approveHandler && !removeHandler && !unReportHandler) return null;
 
+    if (adminReview.reported === 1 && unReportHandler) {
+      return (
+        <div className={styles.buttonGroup}>
+          <button
+            type="button"
+            className={styles.restoreButton}
+            onClick={() => unReportHandler(adminReview)}
+          >
+            <img src={check} alt="Approve" className={styles.icon} />
+            Restore Review
+          </button>
+          {removeHandler && (
+            <button
+              type="button"
+              className={styles.removeButton}
+              onClick={() => removeHandler(adminReview, false)}
+            >
+              <img src={trash} alt="Remove" className={styles.icon} />
+              Remove Review
+            </button>
+          )}
+        </div>
+      );
+    }
+
+    if (approveHandler || removeHandler) {
+      return (
+        <div className={styles.buttonGroup}>
+          {approveHandler && (
+            <button
+              type="button"
+              className={styles.approveButton}
+              onClick={() => approveHandler(adminReview)}
+            >
+              <img src={check} alt="Approve" className={styles.icon} />
+              Confirm Review
+            </button>
+          )}
+          {removeHandler && (
+            <button
+              type="button"
+              className={styles.removeButton}
+              onClick={() => removeHandler(adminReview, true)}
+            >
+              <img src={trash} alt="Remove" className={styles.icon} />
+              Remove Review
+            </button>
+          )}
+        </div>
+      );
+    }
+
+    return null;
+  };
+  const showButtons = !!(approveHandler || removeHandler || unReportHandler);
   return (
     <div id={review._id} className={styles.reviewCard}>
       {/* Header */}
@@ -118,11 +135,12 @@ const UpdateReview = ({
         </div>
       </div>
 
-      {/* Divider */}
-      <hr className={styles.divider} />
-
-      {/* Buttons */}
-      {renderButtons(review)}
+      {showButtons && (
+        <>
+          <hr className={styles.divider} />
+          {renderButtons(review)}
+        </>
+      )}
     </div>
   );
 };

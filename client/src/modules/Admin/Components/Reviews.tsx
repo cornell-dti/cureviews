@@ -16,7 +16,7 @@ const Reviews = ({ token }: Props) => {
   const [pendingReviews, setPendingReviews] = useState<Review[]>([]);
   const [reportedReviews, setReportedReviews] = useState<Review[]>([]);
   const [approvedReviews, setApprovedReviews] = useState<Review[]>([]);
-  const [timeFrame, setTimeFrame] = useState<number>(10);
+  const [numReviews, setNumReviews] = useState<number>(10);
 
   useEffect(() => {
     if (!token) return;
@@ -33,6 +33,30 @@ const Reviews = ({ token }: Props) => {
     };
     loadReviews();
   }, [token]);
+
+  useEffect(() => {
+    if (!token || activeTab !== "approved") return;
+
+    const loadApprovedReviews = async () => {
+      try {
+        const response = await axios.post("/api/admin/reviews/get-approved", {
+          token,
+          limit: numReviews,
+        });
+
+        if (response.status === 200) {
+          setApprovedReviews(response.data.result);
+        }
+      } catch (error) {
+        console.error("Error fetching approved reviews", error);
+      }
+    };
+
+    loadApprovedReviews();
+  }, [token, activeTab, numReviews]);
+
+
+
 
   const approveReview = async (review: Review) => {
     try {
@@ -71,23 +95,28 @@ const Reviews = ({ token }: Props) => {
     }
   };
 
-  const renderReviews = (reviews: Review[], category: ReviewCategory) => (
-    <div className={styles.reviewsList}>
-      {reviews.length > 0 ? (
-        reviews.map((review) => (
-          <AdminReview
-            key={review._id}
-            review={review}
-            approveHandler={category === 'pending' ? approveReview : undefined}
-            removeHandler={(r) => removeReview(r, category === 'pending')}
-            unReportHandler={category === 'reported' ? unReportReview : undefined}
-          />
-        ))
-      ) : (
-        <p className={styles.noReviews}>No reviews available in this category.</p>
-      )}
-    </div>
-  );
+  const renderReviews = (reviews: Review[], category: ReviewCategory) => {
+    console.log(`Rendering ${category} reviews:`, reviews);
+
+    return (
+      <div className={styles.reviewsList}>
+        {reviews.length > 0 ? (
+          reviews.map((review) => (
+            <AdminReview
+              key={review._id}
+              review={review}
+              approveHandler={category === "pending" ? approveReview : undefined}
+              removeHandler={category === "pending" || category === "reported" ? (r) => removeReview(r, category === "pending") : undefined}
+              unReportHandler={category === "reported" ? unReportReview : undefined}
+            />
+          ))
+        ) : (
+          <p className={styles.noReviews}>No reviews available in this category.</p>
+        )}
+      </div>
+    );
+  };
+
 
   return (
     <div className={styles.reviewsPage}>
@@ -111,7 +140,6 @@ const Reviews = ({ token }: Props) => {
           >
             <div className={styles.tabContent}>
               <span>Recently Approved</span>
-              {/* {approvedReviews.length > 0 && <span className={styles.badge}>{approvedReviews.length}</span>} */}
             </div>
             <div className={styles.underline} />
           </button>
@@ -128,10 +156,14 @@ const Reviews = ({ token }: Props) => {
           </button>
         </div>
         {activeTab === 'pending' && renderReviews(pendingReviews, 'pending')}
-        {activeTab === "approved" && (
-          <div className={styles.timeFrameSelector}>
-            <Dropdown selectedValue={timeFrame} onChange={setTimeFrame} />
-          </div>
+        {activeTab === 'approved' && (
+          <>
+            <div className={styles.numReviewsSelector}>
+              <Dropdown selectedValue={numReviews} onChange={setNumReviews} />
+            </div>
+
+            {renderReviews(approvedReviews, 'approved')}
+          </>
         )}
         {activeTab === 'reported' && renderReviews(reportedReviews, 'reported')}
       </div>

@@ -33,7 +33,7 @@ const Dropdown: React.FC<CustomDropdownProps> = ({ selectedValue, onChange }) =>
       <button className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
         <div className={styles.dropdownContent}>
           <div className={styles.dropdownText}>
-            {options.find((o) => o.value === selectedValue)?.label || "Select Time Frame"}
+            {options.find((o) => o.value === selectedValue)?.label || "Select Review Limit"}
           </div>
           <img src={dropdownIcon} alt="Dropdown Arrow" className={styles.icon} />
         </div>
