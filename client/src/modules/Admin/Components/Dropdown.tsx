@@ -14,6 +14,13 @@ type CustomDropdownProps = {
   onChange: (value: number) => void;
 };
 
+/**
+ * Dropdown Component
+ *
+ * Component to filter x number of most recently approved reviews so that those
+ * x reviews will be displayed on the screen. Options for 5, 10, 20, and 30.
+ */
+
 const Dropdown: React.FC<CustomDropdownProps> = ({ selectedValue, onChange }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);

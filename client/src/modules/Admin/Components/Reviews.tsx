@@ -55,9 +55,6 @@ const Reviews = ({ token }: Props) => {
     loadApprovedReviews();
   }, [token, activeTab, numReviews]);
 
-
-
-
   const approveReview = async (review: Review) => {
     try {
       const response = await axios.post('/api/admin/reviews/approve', { review, token });

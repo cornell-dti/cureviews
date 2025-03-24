@@ -41,7 +41,6 @@ const UpdateReview = ({
   }, [review.class]);
 
   const renderButtons = (adminReview: Review) => {
-    // Don't show any buttons if no handlers are provided
     if (!approveHandler && !removeHandler && !unReportHandler) return null;
 
     if (adminReview.reported === 1 && unReportHandler) {
