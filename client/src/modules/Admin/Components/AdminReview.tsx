@@ -90,27 +90,37 @@ const UpdateReview = ({
           {review.date ? new Date(review.date).toLocaleDateString() : 'No Date'}
         </span>
         <div className={styles.reviewTitle}>
-          <a href="#" className={styles.courseLink}>{shortName}, {fullName}</a>
+          <a href="#" className={styles.courseLink}>
+            {shortName}, {fullName}
+          </a>
           <p className={styles.professor}>
-            Professor <span className={styles.professorName}>{review.professors}</span>
+            Professor{' '}
+            <span className={styles.professorName}>{review.professors}</span>
           </p>
         </div>
         <p className={styles.reviewMajor}>
-          Major <span className={styles.majorText}>
+          Major{' '}
+          <span className={styles.majorText}>
             {Array.isArray(review.major)
               ? review.major.join(', ')
-              : (typeof review.major === 'string') ? (review.major as string).split(/[\s,;]+/).join(', ') : 'N/A'}
+              : typeof review.major === 'string'
+                ? (review.major as string).split(/[\s,;]+/).join(', ')
+                : 'N/A'}
           </span>
         </p>
-
-
       </div>
 
       {/* Ratings */}
       <div className={styles.reviewRatings}>
-        <p><strong>Overall:</strong> {review.rating}</p>
-        <p><strong>Difficulty:</strong> {review.difficulty}</p>
-        <p><strong>Workload:</strong> {review.workload}</p>
+        <p>
+          <strong>Overall:</strong> {review.rating}
+        </p>
+        <p>
+          <strong>Difficulty:</strong> {review.difficulty}
+        </p>
+        <p>
+          <strong>Workload:</strong> {review.workload}
+        </p>
       </div>
 
       {/* Review Text */}
@@ -128,6 +138,3 @@ const UpdateReview = ({
 };
 
 export default UpdateReview;
-
-
-

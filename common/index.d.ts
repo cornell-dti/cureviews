@@ -72,7 +72,6 @@ interface Recommendation {
   tags: string[];
   similarityScore: number;
 }
-
 /** Processed course evaluation data for a single course. */
 interface CourseEvaluation {
   _id: string;

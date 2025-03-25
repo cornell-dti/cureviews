@@ -98,25 +98,24 @@ export const getReviewsCrossListOR = async ({
   return null;
 };
 
-export const getRecommendationData = async (
-  { number,
-    subject,
-  }: CourseInfoRequestType
-) => {
+export const getRecommendationData = async ({
+  number,
+  subject
+}: CourseInfoRequestType) => {
   const course = await findRecommendationByInfo(number, subject.toLowerCase());
   return course;
-}
+};
 
 export const getGlobalMetadata = async () => {
   const global = await findGlobalMetadata();
   return global;
-}
+};
 
 // testing function for preprocessing
 export const getProcessedDescription = (text) => {
   const processed = preprocess(text);
   return processed;
-}
+};
 
 // testing function for similarity algorithm
 export const getSimilarity = async () => {
@@ -127,14 +126,18 @@ export const getSimilarity = async () => {
   const csClasses = result.data.data.classes;
   let descriptions = [];
   for (const c of csClasses) {
-    descriptions.push(c.description)
+    descriptions.push(c.description);
   }
 
-  const processedDescriptions = descriptions.map(desc => preprocess(desc).split(' '));
+  const processedDescriptions = descriptions.map((desc) =>
+    preprocess(desc).split(' ')
+  );
   const allTerms = [...new Set(processedDescriptions.flat())];
   const idfValues = idf(allTerms, processedDescriptions);
-  const tfidfVectors = processedDescriptions.map(terms => tfidf(terms, idfValues));
-  console.log(tfidfVectors)
+  const tfidfVectors = processedDescriptions.map((terms) =>
+    tfidf(terms, idfValues)
+  );
+  console.log(tfidfVectors);
 
   const topSimilarities = {};
 

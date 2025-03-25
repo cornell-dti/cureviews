@@ -14,7 +14,7 @@ const SimilarCoursesCard: React.FC<SimilarCourses> = ({
   className,
   classSub,
   classNum,
-  tags,
+  tags
 }) => {
   const [classSems, setClassSems] = useState('');
 
@@ -34,7 +34,7 @@ const SimilarCoursesCard: React.FC<SimilarCourses> = ({
       try {
         const response = await axios.post(`/api/courses/get-by-info`, {
           number: classNum,
-          subject: classSub,
+          subject: classSub
         });
 
         const course = response.data.result;

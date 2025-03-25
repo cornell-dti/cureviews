@@ -25,13 +25,16 @@ export default function AdminTools({ token }: AdminToolsProps) {
     similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
     courseEval: 'Course evaluations successfully updated',
-    failure: 'API failed',
+    failure: 'API failed'
   };
 
   type UpdateStatus = keyof typeof messages;
 
-  const handleApiCall = async (endpoint: string, successState: keyof typeof messages) => {
-    setUpdating(true)
+  const handleApiCall = async (
+    endpoint: string,
+    successState: keyof typeof messages
+  ) => {
+    setUpdating(true);
     try {
       await axios.post(endpoint, { token });
       setUpdated(successState);
@@ -48,7 +51,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
     try {
       const response = await axios.post('/api/admin/draw-raffle', {
         token,
-        start: new Date(raffleStartDate),
+        start: new Date(raffleStartDate)
       });
       if (response.status === 200) setRaffleWinner(response.data.netid);
       else setUpdated('failure');
@@ -62,7 +65,9 @@ export default function AdminTools({ token }: AdminToolsProps) {
   const initDatabaseHandler = () => {
     if (doubleClick) handleApiCall('/api/admin/db/initialize', 'database');
     else {
-      alert('Warning! Clicking again will reset all data in the database. Are you sure?');
+      alert(
+        'Warning! Clicking again will reset all data in the database. Are you sure?'
+      );
       setDoubleClick(true);
     }
   };
