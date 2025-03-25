@@ -3,10 +3,10 @@ import styles from "../Styles/Dropdown.module.css";
 import dropdownIcon from '../../../assets/icons/dropdown2.svg';
 
 const options = [
-  { label: "Last 5 Reviews", value: 5 },
-  { label: "Last 10 Reviews", value: 10 },
-  { label: "Last 20 Reviews", value: 20 },
-  { label: "Last 30 Reviews", value: 30 },
+  { label: "Last 25 Reviews", value: 25 },
+  { label: "Last 50 Reviews", value: 50 },
+  { label: "Last 100 Reviews", value: 100 },
+  { label: "Last 200 Reviews", value: 200 },
 ];
 
 type CustomDropdownProps = {

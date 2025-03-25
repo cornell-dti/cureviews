@@ -108,8 +108,6 @@ const Reviews = ({ token }: Props) => {
   };
 
   const renderReviews = (reviews: Review[], category: ReviewCategory) => {
-    console.log(`Rendering ${category} reviews:`, reviews);
-
     return (
       <div className={styles.reviewsList}>
         {reviews.length > 0 ? (

@@ -52,7 +52,7 @@ export const findReportedReviews = async () =>
 /*
  * Returns all approved reviews in the database
  */
-export const findApprovedReviews = async (limit: number = 700) =>
+export const findApprovedReviews = async (limit: number = 250) =>
   await Reviews.find(
     { visible: 1, reported: 0 },
     {},
