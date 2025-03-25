@@ -24,6 +24,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
     description: 'Course description data successfully added',
     similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
+    courseEval: 'Course evaluations successfully updated',
     failure: 'API failed'
   };
 
@@ -35,9 +36,8 @@ export default function AdminTools({ token }: AdminToolsProps) {
   ) => {
     setUpdating(true);
     try {
-      const response = await axios.post(endpoint, { token });
-      if (response.status === 200) setUpdated(successState);
-      else setUpdated('failure');
+      await axios.post(endpoint, { token });
+      setUpdated(successState);
     } catch {
       setUpdated('failure');
     } finally {
@@ -82,6 +82,13 @@ export default function AdminTools({ token }: AdminToolsProps) {
           className={styles.adminButtons}
         >
           Add New Semester
+        </button>
+        <button
+          onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
+          disabled={updating}
+          className={styles.adminButtons}
+        >
+          Add Course Evaluations
         </button>
         <button
           onClick={() =>

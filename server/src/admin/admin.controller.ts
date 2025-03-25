@@ -46,6 +46,7 @@ import {
   addAllSimilarityData
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
+// import { addCurrCourseEvals } from '../../scripts/populate-course-evals';
 
 /**
  * Verifies that the token passed in an admin.
@@ -404,6 +405,23 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
 
   const result = await addCrossList(semester);
   return result;
+};
+
+/**
+ * Adds all course evals based on hard-coded files (since this operation won't happen often).
+ *
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
+export const addNewCourseEvals = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  // UNCOMMENT WHEN USING FUNCTION!!!!!!
+  // return await addCurrCourseEvals();
+
+  return false;
 };
 
 /**

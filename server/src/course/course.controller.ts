@@ -2,12 +2,14 @@ import {
   findCourseById,
   findCourseByInfo,
   findRecommendationByInfo,
-  findGlobalMetadata
+  findGlobalMetadata,
+  findCourseEval
 } from './course.data-access';
 import {
   CourseIdRequestType,
   CourseInfoRequestType,
-  CourseDescriptionRequestType
+  CourseDescriptionRequestType,
+  CourseEvalRequestType
 } from './course.type';
 import { preprocess, tfidf, cosineSimilarity, idf } from './course.recalgo';
 
@@ -158,4 +160,11 @@ export const getSimilarity = async () => {
       .slice(0, 5);
   }
   return topSimilarities;
+}
+
+export const getCourseEval =
+  async ({ classSub, classNum }: CourseEvalRequestType) => {
+    const courseEval = await findCourseEval(classSub, classNum);
+    if (!courseEval) return null;
+    return courseEval;
 };

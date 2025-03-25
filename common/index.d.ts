@@ -72,3 +72,41 @@ interface Recommendation {
   tags: string[];
   similarityScore: number;
 }
+/** Processed course evaluation data for a single course. */
+interface CourseEvaluation {
+  _id: string;
+  courseName: string;
+  subject: string; // derived from courseName -- should be type Subject eventually
+  courseNumber: string; // derived from courseName
+  semester: string;
+  totalEvals: number; // derived by summing over grade levels
+  courseOverall: number;
+  profTeachingSkill: number;
+  profKnowledge: number;
+  profClimate: number;
+  profOverall: number;
+  numA: number;
+  numB: number;
+  numC: number;
+  numD: number;
+  numF: number;
+  numS: number;
+  numU: number;
+  numGradeNA: number;
+  numFresh: number;
+  numSoph: number;
+  numJr: number;
+  numSr: number;
+  numAg: number;
+  numHumec: number;
+  numArch: number;
+  numILR: number;
+  numArts: number;
+  numEng: number;
+  numHotel: number;
+  numOther: number;
+  numMajorReq: number;
+  numReputation: number;
+  numInterest: number;
+  sentiments: [number, number][];
+}

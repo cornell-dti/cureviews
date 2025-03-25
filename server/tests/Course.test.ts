@@ -2,7 +2,7 @@ import { expect, test, describe, beforeAll, afterAll } from 'vitest';
 
 import axios from 'axios';
 
-import { testClasses, testReviews } from './mocks/InitMockDb';
+import { testClasses, testReviews, testCourseEvals } from './mocks/InitMockDb';
 import { testPort, testServer } from './mocks/MockServer';
 import { Reviews } from '../db/schema';
 
@@ -13,7 +13,8 @@ beforeAll(async () => {
     undefined,
     testClasses,
     undefined,
-    undefined
+    undefined,
+    testCourseEvals
   );
 });
 
@@ -134,4 +135,34 @@ describe('Course functionality unit tests', () => {
       classOfReviews.map((r) => '')
     );
   });
+  test('Getting course eval from course characteristics', async () => {
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/courses/get-course-eval`,
+      { classSub: 'AEM', classNum: '1200'}
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.data.result.courseOverall).toBe(4.5);
+    expect(res.data.result.numInterest).toBe(55);
+
+    const res2 = await axios.post(
+      `http://localhost:${testPort}/api/courses/get-course-eval`,
+      { classSub: 'BEE', classNum: '5330'}
+    );
+
+    expect(res2.status).toBe(200);
+    expect(res2.data.result.courseOverall).toBe(4.15);
+    expect(res2.data.result.numInterest).toBe(10);
+  });
+
+  test('Getting nonexistent course eval', async () => {
+    const res = await axios.post(
+      `http://localhost:${testPort}/api/courses/get-course-eval`,
+      { classSub: 'CS', classNum: '2110'}
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.data.result).toBe(0);
+  });
+
 });

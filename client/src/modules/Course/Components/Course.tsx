@@ -21,7 +21,7 @@ import SimilarCoursesSection from './SimilarCourses';
 
 import type { NewReview } from '../../../types';
 
-import { Class, Recommendation, Review } from 'common';
+import { Class, Recommendation, Review, CourseEvaluation } from 'common';
 import { Session } from '../../../session-store';
 
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
@@ -39,6 +39,7 @@ export const Course = () => {
 
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [courseEval, setCourseEval] = useState<CourseEvaluation>();
   const [similarCourses, setSimilarCourses] = useState<Recommendation[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
@@ -163,6 +164,12 @@ export const Course = () => {
 
           const recommendations = course.recommendations;
           setSimilarCourses(recommendations);
+
+          const courseEvalObject = await axios.post(
+            "/api/courses/get-course-eval",
+            { classSub: course.classSub.toUpperCase(), classNum: course.classNum }
+          )
+          setCourseEval(courseEvalObject.data.result === 0 ? null : courseEvalObject.data.result);
 
           setPageStatus(PageStatus.Success);
         } else {
