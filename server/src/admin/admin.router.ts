@@ -8,6 +8,7 @@ import {
   AdminAddSemesterRequestType
 } from './admin.type';
 import {
+  getApprovedReviews,
   getPendingReviews,
   getReportedReviews,
   getReviewCounts,
@@ -165,6 +166,33 @@ adminRouter.post('/reviews/remove', async (req, res) => {
     return res.status(400).json({
       error:
         'User does not have an authorized token (not an admin) or review was not found!'
+    });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+/** Reachable at POST /api/admin/reviews/get-approved
+ * @body token: a session's current token
+ * @body limit: number of approved reviews to fetch (default: 700)
+ * Gets all x most recently approved reviews and returns them in an array. For admins only
+ */
+adminRouter.post('/reviews/get-approved', async (req, res) => {
+  try {
+    const { token, limit }: AdminRequestType & { limit?: number } = req.body;
+    const auth = new Auth({ token });
+
+    const reviews = await getApprovedReviews({ auth, limit });
+
+    if (reviews === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved all approved reviews',
+      result: reviews
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });

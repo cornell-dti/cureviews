@@ -10,48 +10,37 @@
   gap: 16px;
 }
 
+.reviewContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
 /* Header Section */
 .reviewHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
 }
 
 .reviewDate {
-  font-weight: 700;
   color: #2f80ed;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 16px;
   width: 100px;
-  /* Keeps date aligned */
 }
 
 .reviewTitle {
   flex: 1;
   text-align: left;
-  margin-left: 12px;
+  margin-left: 64px;
 }
 
-.courseLink {
+.courseName {
   font-weight: 700;
   font-size: 16px;
   color: #2f80ed;
   text-decoration: none;
-}
-
-.courseLink:hover {
-  text-decoration: underline;
-}
-
-.professor {
-  font-size: 14px;
-  color: #6e6e6e;
-  margin-top: 4px;
-}
-
-.professorName {
-  font-weight: 600;
-  color: #333;
 }
 
 .reviewMajor {
@@ -65,24 +54,48 @@
 }
 
 /* Ratings and Review Text Layout */
-.reviewContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
 .reviewRatings {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   font-size: 14px;
   color: #333;
   min-width: 120px;
 }
 
 .reviewRatings p {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
   margin: 0;
+}
+
+.reviewRatings p strong {
+  text-align: left;
+  width: 60%;
+  display: inline-block;
+}
+
+.reviewRatings span {
+  font-weight: bold;
+  min-width: 30px;
+  text-align: right;
+}
+
+.reviewAndProf {
+  flex-direction: column;
+  margin-left: 32px;
+}
+
+.professor {
+  font-size: 14px;
+  color: #6e6e6e;
+}
+
+.professorName {
+  font-weight: 600;
+  color: #6e6e6e;
 }
 
 .reviewText {
@@ -90,13 +103,14 @@
   font-size: 15px;
   font-weight: 500;
   color: #000;
+  margin-top: 5px;
 }
 
 .divider {
   border: none;
   height: 1px;
   background-color: #d3d3d3;
-  margin: 8px 0;
+  margin: 2px 0;
 }
 
 /* Buttons */
@@ -117,8 +131,8 @@
 .approveButton,
 .removeButton,
 .restoreButton {
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 8px 12px;
+  font-size: 13px;
   font-weight: 600;
   border: none;
   border-radius: 10px;
@@ -161,6 +175,8 @@
 .reviewinfo {
   text-indent: 10px;
 }
+
+/*Overall Review Page */
 
 .titleinfo {
   font-size: var(--font-p-size);

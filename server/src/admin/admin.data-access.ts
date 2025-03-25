@@ -50,6 +50,16 @@ export const findReportedReviews = async () =>
   ).exec();
 
 /*
+ * Returns all approved reviews in the database
+ */
+export const findApprovedReviews = async (limit: number = 700) =>
+  await Reviews.find(
+    { visible: 1, reported: 0 },
+    {},
+    { sort: { date: -1 }, limit }
+  ).exec();
+
+/*
  * Count reviews by approved, pending, and reported and return the total counts
  */
 export const findReviewCounts = async () => {
