@@ -1,7 +1,20 @@
 import express from 'express';
 
-import { CourseIdRequestType, CourseInfoRequestType, CourseDescriptionRequestType } from './course.type';
-import { getCourseByInfo, getReviewsCrossListOR, getRecommendationData, getProcessedDescription, getSimilarity, getGlobalMetadata } from './course.controller';
+import {
+  CourseIdRequestType,
+  CourseInfoRequestType,
+  CourseDescriptionRequestType,
+  CourseEvalRequestType
+} from './course.type';
+import {
+  getCourseByInfo,
+  getReviewsCrossListOR,
+  getRecommendationData,
+  getProcessedDescription,
+  getSimilarity,
+  getGlobalMetadata,
+  getCourseEval
+} from './course.controller';
 
 import { getCourseById } from '../utils';
 
@@ -81,7 +94,7 @@ courseRouter.post('/get-rec-metadata', async (req, res) => {
 
     if (!course) {
       return res.status(404).json({
-        error: `Recommendation data could not be found for ${subject} ${number}`,
+        error: `Recommendation data could not be found for ${subject} ${number}`
       });
     }
 
@@ -112,7 +125,7 @@ courseRouter.post('/get-global-metadata', async (req, res) => {
  * @body description: a course description
  * Gets the processed description to use for the similarity algorithm
  * Currently used for testing
-*/
+ */
 courseRouter.post('/preprocess-desc', async (req, res) => {
   const { description }: CourseDescriptionRequestType = req.body;
   const processed = getProcessedDescription(description);
@@ -122,8 +135,34 @@ courseRouter.post('/preprocess-desc', async (req, res) => {
 /** Reachable at POST /api/courses/mock-similarity
  * Gets the array of the top 5 similar courses
  * Currently used for testing
-*/
+ */
 courseRouter.post('/mock-similarity', async (req, res) => {
   const similarity = await getSimilarity();
   return res.status(200).json({ result: similarity });
+});
+
+/** Reachable at POST /api/courses/get-course-eval
+ * @body courseNumber: a course's number
+ * @body courseSubject: a course's subject code
+ * Gets the course evaluation object tied to the given course
+ */
+courseRouter.post('/get-course-eval', async (req, res) => {
+  try {
+    const { classSub, classNum }: CourseEvalRequestType = req.body;
+
+    const courseEvalDoc = await getCourseEval({
+      classSub,
+      classNum,
+    });
+
+    if (courseEvalDoc === null) {
+      return res.status(200).json({ result: 0 });
+    }
+
+    return res.status(200).json({ result: courseEvalDoc });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: `Internal Server Error: ${error.message}` });
+  }
 });

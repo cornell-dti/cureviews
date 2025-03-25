@@ -5,7 +5,7 @@ import {
   AdminReviewRequestType,
   AdminRequestType,
   AdminUserRequestType,
-  AdminAddSemesterRequestType,
+  AdminAddSemesterRequestType
 } from './admin.type';
 import {
   getApprovedReviews,
@@ -27,7 +27,7 @@ import {
   approveReviews,
   addCourseDescriptionsDb,
   addSimilarityDb,
-  drawRaffle
+  drawRaffle, addNewCourseEvals
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -404,6 +404,37 @@ adminRouter.post('/semester/add', async (req, res) => {
   }
 });
 
+/** Reachable at POST /api/admin/courses/add-course-evals
+ * @body token: a session's current token
+ * Adds all course evals to the db based on hard-coded JSON files. For admins only
+ */
+adminRouter.post('/courses/add-course-evals', async (req, res) => {
+  const { token }: AdminRequestType = req.body;
+  try {
+    const auth = new Auth({ token });
+    const result = await addNewCourseEvals({ auth });
+
+    if (result === null) {
+      return res.status(401).json({
+        error: `User is unauthenticated and unauthorized as admin, please sign in.`
+      });
+    }
+
+    if (result) {
+      res.status(200);
+      res.set('Connection', 'close');
+      res.json({ result: true });
+      return res;
+    }
+
+    return res.status(400).json({
+      result: false
+    });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
 /** Reachable at POST /api/admin/professors/add
  * @body token: a session's current token
  * Adds all professors to the db for the given semester. For admins only
@@ -530,7 +561,7 @@ adminRouter.post('/rec/similarity', async (req, res) => {
   try {
     const auth = new Auth({ token });
     const result = await addSimilarityDb({ auth });
-    console.log(result)
+    console.log(result);
 
     if (result) {
       res.status(200);
@@ -547,7 +578,6 @@ adminRouter.post('/rec/similarity', async (req, res) => {
   }
 });
 
-
 /**
  * Reachable at POST /api/admin/draw-raffle
  */
@@ -559,4 +589,4 @@ adminRouter.post('/draw-raffle', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
-})
+});

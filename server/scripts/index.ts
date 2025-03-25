@@ -4,7 +4,7 @@ export {
   addNewSemester,
   addAllCourses,
   addAllDescriptions,
-  addAllSimilarityData,
+  addAllSimilarityData
 } from './populate-courses';
 
 export { addAllProfessors, resetProfessors } from './populate-professors';
@@ -12,7 +12,7 @@ export { addAllProfessors, resetProfessors } from './populate-professors';
 export {
   addAllProcessedDescriptions,
   addIdfVector,
-  addAllTfIdfVectors,
+  addAllTfIdfVectors
 } from './populate-recdata';
 
 export { findAllSemesters } from './utils';

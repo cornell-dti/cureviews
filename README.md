@@ -114,6 +114,7 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 ![Leave a Review](./.github/make-review-ss.png)
 
 ## Contributors
+
 ### Spring 2025
 
 - **Andrew Qian** - Technical Product Manager
@@ -166,8 +167,6 @@ You will probably need to run this for the `classes`, `subjects` and `reviews` c
 - **Bryan Graeser** - Developer (2018)
 - **Vinisha Mittal** - Developer (2017
 - **Miranda Yu** - Product Marketing Manager (2022)
-
-  
 
 We are a team within **Cornell Digital Tech Innovation**. For more information, see our website [here](https://cornelldti.org/).
 <img src="./client/src/assets/img/dti-text-white-logo.png">

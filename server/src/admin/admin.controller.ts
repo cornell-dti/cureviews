@@ -47,6 +47,7 @@ import {
   addAllSimilarityData
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
+// import { addCurrCourseEvals } from '../../scripts/populate-course-evals';
 
 /**
  * Verifies that the token passed in an admin.
@@ -274,8 +275,8 @@ export const updateAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
 
 /**
  * Resets all professor arrays in the database to empty arrays
- * 
- * @param {Auth} auth: Object that represents the authentication of a request being passed in. 
+ *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
 export const resetAllProfessorsDb = async ({ auth }: VerifyAdminType) => {
@@ -424,6 +425,23 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
 };
 
 /**
+ * Adds all course evals based on hard-coded files (since this operation won't happen often).
+ *
+ * @returns true if operation was successful, false if operations was not successful, null if token not admin
+ */
+export const addNewCourseEvals = async ({ auth }: VerifyAdminType) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
+  // UNCOMMENT WHEN USING FUNCTION!!!!!!
+  // return await addCurrCourseEvals();
+
+  return false;
+};
+
+/**
  * Adds all course descriptions to the database after updating the courses for the most recent semester.
  *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
@@ -437,12 +455,12 @@ export const addCourseDescriptionsDb = async ({ auth }: VerifyAdminType) => {
 
   const descriptionResult = await addAllDescriptions();
   return descriptionResult;
-}
+};
 
 /**
  * Adds all similarity data to the Course database, consisting of tags and top 5 similar courses
  * https://www.notion.so/Similar-Courses-Algorithm-13d0ad723ce18060b34eccc5385d08ca
- * 
+ *
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
@@ -464,7 +482,7 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
     }
   }
   return false;
-}
+};
 
 /* DRAWING RAFFLE WINNER CODE: */
 class RaffleMap<K, V> extends Map<K, V> {
@@ -487,39 +505,45 @@ interface DefaultRaffleValue {
 }
 
 /**
- * 
+ *
  * @param start date
  * @returns student netid that won the raffle. [done without replacement/removal]
  */
 export const drawRaffle = async (start: Date) => {
-  const raffleMap = new RaffleMap<string, DefaultRaffleValue>(() => ({ 'entries': 0, 'reviews': 0, 'bonus': false }));
+  const raffleMap = new RaffleMap<string, DefaultRaffleValue>(() => ({
+    entries: 0,
+    reviews: 0,
+    bonus: false
+  }));
   const reviews = await findReviewsByDate(start);
 
   // loop thru reviews and update number of entries
-  await Promise.all(reviews.map(async (review) => {
-    const reviews = await getCourseReviews(review.class);
-    const count = reviews.length;
-    const user = review.user;
-    const userValue = raffleMap.get(user);
-    userValue.reviews += 1;
-    if (userValue.reviews >= 5 && !userValue.bonus) {
-      userValue.entries += 5;
-      userValue.bonus = true;
-    }
-    if (count > 3) {
-      userValue.entries += 3;
-    } else {
-      userValue.entries += 1;
-    }
-    raffleMap.set(user, userValue);
-  }))
+  await Promise.all(
+    reviews.map(async (review) => {
+      const reviews = await getCourseReviews(review.class);
+      const count = reviews.length;
+      const user = review.user;
+      const userValue = raffleMap.get(user);
+      userValue.reviews += 1;
+      if (userValue.reviews >= 5 && !userValue.bonus) {
+        userValue.entries += 5;
+        userValue.bonus = true;
+      }
+      if (count > 3) {
+        userValue.entries += 3;
+      } else {
+        userValue.entries += 1;
+      }
+      raffleMap.set(user, userValue);
+    })
+  );
 
   // draw a random winner
   let totalEntries = 0;
-  raffleMap.forEach(values => totalEntries += values.entries);
+  raffleMap.forEach((values) => (totalEntries += values.entries));
   const winningNumber = Math.random() * totalEntries;
   let currentSum = 0;
-  let winner = ''
+  let winner = '';
   for (const [user, values] of raffleMap) {
     currentSum += values.entries;
     if (currentSum > winningNumber) {
@@ -530,4 +554,4 @@ export const drawRaffle = async (start: Date) => {
   // return the students netid
   const student = await findStudentByUser(winner);
   return student.netId;
-}
+};

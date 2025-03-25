@@ -10,3 +10,8 @@ export interface CourseIdRequestType {
 export interface CourseDescriptionRequestType {
   description: string;
 }
+
+export interface CourseEvalRequestType {
+  classSub: string;
+  classNum: string;
+}

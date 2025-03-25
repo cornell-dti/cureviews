@@ -66,14 +66,22 @@ const ManageAdmins = ({ token }: Props) => {
           onChange={(e) => setNetId(e.target.value)}
           placeholder="Enter user NetID"
         />
-        <button className={styles.addAdminButton} onClick={() => addAdminByNetId(netId)}>
+        <button
+          className={styles.addAdminButton}
+          onClick={() => addAdminByNetId(netId)}
+        >
           Add Administrator
         </button>
       </div>
 
       <div className={styles.adminList}>
         {admins.map((admin) => (
-          <AdminUser key={admin.netId} user={admin} token={token} removeHandler={removeAdmin} />
+          <AdminUser
+            key={admin.netId}
+            user={admin}
+            token={token}
+            removeHandler={removeAdmin}
+          />
         ))}
       </div>
     </div>

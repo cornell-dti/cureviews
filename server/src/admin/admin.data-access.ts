@@ -181,7 +181,7 @@ export const grantAdminPrivilege = async (id: string) => {
 
 /**
  * @param start date
- * @returns review objects that are from a start date. 
+ * @returns review objects that are from a start date.
  */
 export const findReviewsByDate = async (start: Date) => {
   const reviews = await Reviews.find(
@@ -191,14 +191,14 @@ export const findReviewsByDate = async (start: Date) => {
   ).exec();
 
   return reviews;
-}
+};
 
 export const getCourseReviews = async (courseId: string) => {
   const reviews = await Reviews.find({ class: courseId }).exec();
-  return reviews
-}
+  return reviews;
+};
 
 export const findStudentByUser = async (user: string) => {
   const student = await Students.findOne({ _id: user }).exec();
   return student;
-}
+};

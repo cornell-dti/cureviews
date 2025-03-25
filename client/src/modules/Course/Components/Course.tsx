@@ -21,7 +21,7 @@ import SimilarCoursesSection from './SimilarCourses';
 
 import type { NewReview } from '../../../types';
 
-import { Class, Recommendation, Review } from 'common';
+import { Class, Recommendation, Review, CourseEvaluation } from 'common';
 import { Session } from '../../../session-store';
 
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
@@ -39,21 +39,23 @@ export const Course = () => {
 
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [courseReviews, setCourseReviews] = useState<Review[]>();
+  const [courseEval, setCourseEval] = useState<CourseEvaluation>();
   const [similarCourses, setSimilarCourses] = useState<Recommendation[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [visibleCourseReviews, setVisibleCourseReviews] = useState<Review[]>([]);
+  const [visibleCourseReviews, setVisibleCourseReviews] = useState<Review[]>(
+    []
+  );
   const pastProfs = useRef<Set<string>>(new Set<string>());
-  const selectedProf = useRef<string>("none");
+  const selectedProf = useRef<string>('none');
 
   const { token } = useAuthOptionalLogin();
 
   /**
    * Sorts reviews based on descending likes.
    */
-  const sortByLikes = (a: Review, b: Review) =>
-    (b.likes || 0) - (a.likes || 0);
+  const sortByLikes = (a: Review, b: Review) => (b.likes || 0) - (a.likes || 0);
 
   /**
    * Sorts reviews based on descending date.
@@ -71,20 +73,18 @@ export const Course = () => {
     let valB = 'Not Listed';
 
     if (a.professors) {
-      const profsA = a.professors.filter((prof: String) =>
-        prof && prof !== 'Not Listed');
-      valA = profsA.length > 0
-        ? profsA.sort()[0]
-        : 'Not Listed';
+      const profsA = a.professors.filter(
+        (prof: String) => prof && prof !== 'Not Listed'
+      );
+      valA = profsA.length > 0 ? profsA.sort()[0] : 'Not Listed';
     } else {
       return 1;
     }
     if (b.professors) {
-      const profsB = b.professors.filter((prof: String) =>
-        prof && prof !== 'Not Listed');
-      valB = profsB.length > 0
-        ? profsB.sort()[0]
-        : 'Not Listed';
+      const profsB = b.professors.filter(
+        (prof: String) => prof && prof !== 'Not Listed'
+      );
+      valB = profsB.length > 0 ? profsB.sort()[0] : 'Not Listed';
     } else {
       return 1;
     }
@@ -102,7 +102,7 @@ export const Course = () => {
     }
 
     return 0;
-  }
+  };
 
   /**
    * Update state to conditionally render sticky bottom-right review button
@@ -110,7 +110,7 @@ export const Course = () => {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY >= 240);
-    }
+    };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -122,12 +122,12 @@ export const Course = () => {
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
-    }
+    };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  })
+  });
 
   /**
    * Fetches current course info and reviews and updates UI state
@@ -157,16 +157,19 @@ export const Course = () => {
 
           reviews.map((r: Review) =>
             r.professors
-              ? r.professors.map(
-                (p: string) => pastProfs.current.add(p)
-              ) : undefined
+              ? r.professors.map((p: string) => pastProfs.current.add(p))
+              : undefined
           );
-          course.classProfessors.map((p: string) =>
-            pastProfs.current.add(p)
-          );
+          course.classProfessors.map((p: string) => pastProfs.current.add(p));
 
           const recommendations = course.recommendations;
           setSimilarCourses(recommendations);
+
+          const courseEvalObject = await axios.post(
+            "/api/courses/get-course-eval",
+            { classSub: course.classSub.toUpperCase(), classNum: course.classNum }
+          )
+          setCourseEval(courseEvalObject.data.result === 0 ? null : courseEvalObject.data.result);
 
           setPageStatus(PageStatus.Success);
         } else {
@@ -175,7 +178,7 @@ export const Course = () => {
       } catch (e) {
         setPageStatus(PageStatus.Error);
       }
-    }
+    };
     updateCurrentClass();
   }, [number, subject]);
 
@@ -191,7 +194,7 @@ export const Course = () => {
     } else if (value === 'professor') {
       setVisibleCourseReviews([...visibleCourseReviews].sort(sortByProf));
     }
-  }
+  };
 
   /**
    * Filters reviews based on selected professor
@@ -199,11 +202,10 @@ export const Course = () => {
   function filterByProf(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
     if (value === 'none') {
-      setVisibleCourseReviews([...courseReviews])
+      setVisibleCourseReviews([...courseReviews]);
     } else {
       setVisibleCourseReviews(
-        [...courseReviews]
-          .filter((r: Review) => r.professors?.includes(value))
+        [...courseReviews].filter((r: Review) => r.professors?.includes(value))
       );
     }
     selectedProf.current = value;
@@ -221,7 +223,7 @@ export const Course = () => {
     });
     Session.setPersistent({ review_num: selectedClass?.classNum });
     Session.setPersistent({ courseId: selectedClass?._id });
-  }
+  };
 
   /** Modal Open and Close Logic */
   const [open, setOpen] = useState<boolean>(false);
@@ -320,7 +322,12 @@ export const Course = () => {
                 <div>
                   <div className={styles['select-container']}>
                     <div className={styles['filter-container']}>
-                      <label htmlFor="sort-reviews" style={{whiteSpace: "nowrap"}}>Sort by: </label>
+                      <label
+                        htmlFor="sort-reviews"
+                        style={{ whiteSpace: 'nowrap' }}
+                      >
+                        Sort by:{' '}
+                      </label>
                       <select
                         name="sort-reviews"
                         id="sort-reviews"
@@ -329,11 +336,16 @@ export const Course = () => {
                       >
                         <option value="helpful">Most Helpful</option>
                         <option value="recent">Recent</option>
-                        {selectedProf.current === "none" && <option value="professor">Professor Name</option>}
+                        {selectedProf.current === 'none' && (
+                          <option value="professor">Professor Name</option>
+                        )}
                       </select>
                     </div>
                     <div className={styles.filterContainer}>
-                      <label htmlFor="filter-by-prof" style={{whiteSpace: "nowrap"}}>
+                      <label
+                        htmlFor="filter-by-prof"
+                        style={{ whiteSpace: 'nowrap' }}
+                      >
                         Filter by professor:{' '}
                       </label>
                       <select

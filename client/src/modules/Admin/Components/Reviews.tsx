@@ -22,13 +22,17 @@ const Reviews = ({ token }: Props) => {
     if (!token) return;
     const loadReviews = async () => {
       try {
-        const pending = await axios.post('/api/admin/reviews/get-pending', { token });
+        const pending = await axios.post('/api/admin/reviews/get-pending', {
+          token
+        });
         if (pending.status === 200) setPendingReviews(pending.data.result);
 
-        const reported = await axios.post('/api/admin/reviews/get-reported', { token });
+        const reported = await axios.post('/api/admin/reviews/get-reported', {
+          token
+        });
         if (reported.status === 200) setReportedReviews(reported.data.result);
       } catch (error) {
-        console.error("Error loading reviews", error);
+        console.error('Error loading reviews', error);
       }
     };
     loadReviews();
@@ -57,38 +61,49 @@ const Reviews = ({ token }: Props) => {
 
   const approveReview = async (review: Review) => {
     try {
-      const response = await axios.post('/api/admin/reviews/approve', { review, token });
+      const response = await axios.post('/api/admin/reviews/approve', {
+        review,
+        token
+      });
       if (response.status === 200) {
-        setPendingReviews(pendingReviews.filter(r => r._id !== review._id));
+        setPendingReviews(pendingReviews.filter((r) => r._id !== review._id));
       }
     } catch (error) {
-      console.error("Failed to approve review", error);
+      console.error('Failed to approve review', error);
     }
   };
 
   const removeReview = async (review: Review, isUnapproved: boolean) => {
     try {
-      const response = await axios.post('/api/admin/reviews/remove', { review, token });
+      const response = await axios.post('/api/admin/reviews/remove', {
+        review,
+        token
+      });
       if (response.status === 200) {
         if (isUnapproved) {
-          setPendingReviews(pendingReviews.filter(r => r._id !== review._id));
+          setPendingReviews(pendingReviews.filter((r) => r._id !== review._id));
         } else {
-          setReportedReviews(reportedReviews.filter(r => r._id !== review._id));
+          setReportedReviews(
+            reportedReviews.filter((r) => r._id !== review._id)
+          );
         }
       }
     } catch (error) {
-      console.error("Failed to remove review", error);
+      console.error('Failed to remove review', error);
     }
   };
 
   const unReportReview = async (review: Review) => {
     try {
-      const response = await axios.post('/api/admin/reviews/restore', { review, token });
+      const response = await axios.post('/api/admin/reviews/restore', {
+        review,
+        token
+      });
       if (response.status === 200) {
-        setReportedReviews(reportedReviews.filter(r => r._id !== review._id));
+        setReportedReviews(reportedReviews.filter((r) => r._id !== review._id));
       }
     } catch (error) {
-      console.error("Failed to unreport review", error);
+      console.error('Failed to unreport review', error);
     }
   };
 
@@ -114,7 +129,6 @@ const Reviews = ({ token }: Props) => {
     );
   };
 
-
   return (
     <div className={styles.reviewsPage}>
       <h1>Reviews Dashboard</h1>
@@ -126,7 +140,9 @@ const Reviews = ({ token }: Props) => {
           >
             <div className={styles.tabContent}>
               <span>Pending Reviews</span>
-              {pendingReviews.length > 0 && <span className={styles.badge}>{pendingReviews.length}</span>}
+              {pendingReviews.length > 0 && (
+                <span className={styles.badge}>{pendingReviews.length}</span>
+              )}
             </div>
             <div className={styles.underline} />
           </button>
@@ -147,7 +163,9 @@ const Reviews = ({ token }: Props) => {
           >
             <div className={styles.tabContent}>
               <span>Reported Reviews</span>
-              {reportedReviews.length > 0 && <span className={styles.badge}>{reportedReviews.length}</span>}
+              {reportedReviews.length > 0 && (
+                <span className={styles.badge}>{reportedReviews.length}</span>
+              )}
             </div>
             <div className={styles.underline} />
           </button>

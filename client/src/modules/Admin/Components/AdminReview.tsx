@@ -145,6 +145,3 @@ const UpdateReview = ({
 };
 
 export default UpdateReview;
-
-
-

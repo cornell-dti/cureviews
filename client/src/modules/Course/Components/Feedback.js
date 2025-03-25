@@ -4,4 +4,4 @@ export const courseVisited = (classSub, classNum) => {
     eventCategory: 'Courses Visited',
     eventLabel: classSub + classNum
   });
-}
+};

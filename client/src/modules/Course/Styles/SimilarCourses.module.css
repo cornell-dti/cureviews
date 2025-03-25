@@ -6,7 +6,7 @@
   align-items: flex-start;
   gap: 16px;
   border-radius: 10px;
-  background: #FFF;
+  background: #fff;
 }
 
 .similarCoursesContent {
@@ -27,7 +27,7 @@
 
 .similarCoursesTitle {
   color: #000;
-  font-family: "SF Pro";
+  font-family: 'SF Pro';
   font-size: 24px;
   font-style: normal;
   font-weight: 590;
@@ -58,8 +58,8 @@
   gap: 8px;
   align-self: stretch;
   border-radius: 10px;
-  border: 1px solid #BFD9F6;
-  background: #FFF;
+  border: 1px solid #bfd9f6;
+  background: #fff;
   width: calc(100% - 10px);
 }
 
@@ -112,7 +112,7 @@
 }
 
 .overall {
-  border-color: #0076FF;
+  border-color: #0076ff;
 }
 
 .higher {

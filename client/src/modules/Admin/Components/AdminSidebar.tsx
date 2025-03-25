@@ -30,7 +30,9 @@ const AdminSidebar = ({ currentPage, setCurrentPage }: SidebarProps) => {
           <li
             key={item.key}
             onClick={() => setCurrentPage(item.key)}
-            className={currentPage === item.key ? styles.active : styles.inactive}
+            className={
+              currentPage === item.key ? styles.active : styles.inactive
+            }
           >
             {item.label}
           </li>

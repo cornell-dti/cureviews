@@ -52,7 +52,7 @@
   font-size: 14px;
 }
 
-.value>img {
+.value > img {
   width: 10px;
   cursor: pointer;
 }
