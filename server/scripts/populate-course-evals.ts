@@ -129,6 +129,7 @@ const mergeCourseLecEvaluations = (
     // discrepancies between the two evals (likely errors)
     // are overwritten here.
     ...eval1,
+    semester: eval1.semester + ", " + eval2.semester,
     courseOverall: weightedAvg(eval1.courseOverall, eval2.courseOverall, w1, w2),
     profTeachingSkill: weightedAvg(eval1.profTeachingSkill, eval2.profTeachingSkill, w1, w2),
     profKnowledge: weightedAvg(eval1.profKnowledge, eval2.profKnowledge, w1, w2),
@@ -203,6 +204,10 @@ export const addCourseEvalsFromJson = async (
 ): Promise<boolean> => {
   const parsedData: CourseEvaluations = parseEval(data)
 
+  // Uncomment if you want to reset and repopulate the database,
+  // instead of skipping over currently existing indices
+  // await CourseEvaluations.deleteMany({})
+
   const v1 = await Promise.all(
     Object.entries(parsedData)
       .map(async ([_, value]) => {
@@ -236,11 +241,12 @@ export const addCourseEvalsFromJson = async (
 };
 
 /** Adds course evaluations to database.
- *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!! */
-// export const addCurrCourseEvals = async () => {
-//   await addCourseEvalsFromJson(courseData)
-//   return true
-// };
+ *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!!
+ *  Also uncomment in admin.controller.ts */
+export const addCurrCourseEvals = async () => {
+  // await addCourseEvalsFromJson(courseData)
+  return true
+};
 
 /** Raw course evaluation data for a single course (e.g. as imported from web scraping). */
 interface CourseEvaluationRaw {
