@@ -2,7 +2,7 @@ import React from 'react';
 import { Recommendation } from 'common';
 import styles from '../Styles/SimilarCourses.module.css';
 import SimilarCoursesCard from './SimilarCoursesCard';
-import bear from '/profile_bear/profile_bear_white.svg';
+import bear from '/profile-bears/profile_bear_white.svg';
 
 const SimilarCoursesSection = ({
   similarCourses,
