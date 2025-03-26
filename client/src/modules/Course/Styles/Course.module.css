@@ -34,6 +34,53 @@
   padding-left: 24px
 }
 
+.tabs {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  padding-bottom: 24px;
+}
+
+.tabactivetitle {
+  color: var(--clr-blue-300);
+  width: 100%;
+  font-family: "SF Pro";
+  text-align: center;
+  font-weight: var(--semi-bold-weight);
+  font-size: 24px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.129px;
+  cursor: pointer;
+}
+
+.tabtitle {
+  color: var(--clr-gray-300);
+  width: 100%;
+  font-family: "SF Pro";
+  text-align: center;
+  font-weight: var(--semi-bold-weight);
+  font-size: 24px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.129px;
+  cursor: pointer;
+}
+
+.tabactiveline {
+  margin-top: 12px;
+  height: 2px;
+  width: 100%;
+  background-color: var(--clr-blue-300);
+}
+
+.tabline {
+  margin-top: 12px;
+  height: 2px;
+  width: 100%;
+  background-color: var(--clr-gray-300);
+}
+
 .classinfo {
   width: 100%;
 }

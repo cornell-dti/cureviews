@@ -27,6 +27,7 @@ import { Session } from '../../../session-store';
 import { useAuthOptionalLogin } from '../../../auth/auth_utils';
 
 import ReviewModal from './ReviewModal';
+import CourseEval from './CourseEval';
 
 enum PageStatus {
   Loading,
@@ -43,6 +44,7 @@ export const Course = () => {
   const [similarCourses, setSimilarCourses] = useState<Recommendation[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(PageStatus.Loading);
   const [scrolled, setScrolled] = useState(false);
+  const [reviewTabSelected, setReviewTabSelected] = useState(true);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [visibleCourseReviews, setVisibleCourseReviews] = useState<Review[]>([]);
   const pastProfs = useRef<Set<string>>(new Set<string>());
@@ -319,80 +321,121 @@ export const Course = () => {
             />
           </div>
           <div className={styles.rightPanel}>
-            <div className={styles.reviewscontainer}>
-              <div className={styles.bar}>
-                <h2 className={styles.title}>
-                  Past Reviews ({visibleCourseReviews.length}){' '}
-                </h2>
-                <div>
-                  <div className={styles['select-container']}>
-                    <div className={styles['filter-container']}>
-                      <label htmlFor="sort-reviews" style={{whiteSpace: "nowrap"}}>Sort by: </label>
-                      <select
-                        name="sort-reviews"
-                        id="sort-reviews"
-                        onChange={sortReviewsBy}
-                        className={styles.filtertext}
-                      >
-                        <option value="helpful">Most Helpful</option>
-                        <option value="recent">Recent</option>
-                        {selectedProf.current === "none" && <option value="professor">Professor Name</option>}
-                      </select>
-                    </div>
-                    <div className={styles.filterContainer}>
-                      <label htmlFor="filter-by-prof" style={{whiteSpace: "nowrap"}}>
-                        Filter by professor:{' '}
-                      </label>
-                      <select
-                        name="filter-by-prof"
-                        id="filter-by-prof"
-                        onChange={filterByProf}
-                        className={styles.filtertext}
-                      >
-                        <option value="none">None</option>
-                        {[...pastProfs.current]
-                          .sort()
-                          ?.filter((o) => o !== 'Not Listed')
-                          .map((o) => <option value={o}>{o}</option>)}
-                      </select>
+            <div className={styles.tabs}>
+              <button
+                className={
+                  reviewTabSelected ? styles.tabactivetitle : styles.tabtitle
+                }
+                onClick={() => setReviewTabSelected(true)}
+              >
+                Past Reviews ({visibleCourseReviews.length}){' '}
+                <div
+                  className={
+                    reviewTabSelected ? styles.tabactiveline : styles.tabline
+                  }
+                ></div>
+              </button>
+              <button
+                className={
+                  reviewTabSelected ? styles.tabtitle : styles.tabactivetitle
+                }
+                onClick={() => setReviewTabSelected(false)}
+              >
+                Course Evaluation Data{' '}
+                <div
+                  className={
+                    reviewTabSelected ? styles.tabline : styles.tabactiveline
+                  }
+                ></div>
+              </button>
+            </div>
+              {reviewTabSelected && (
+                <div className={styles.reviewscontainer}>
+                  <div className={styles.bar}>
+                    <div>
+                      <div className={styles['select-container']}>
+                        <div className={styles['filter-container']}>
+                          <label
+                            htmlFor="sort-reviews"
+                            style={{ whiteSpace: 'nowrap' }}
+                          >
+                            Sort by:{' '}
+                          </label>
+                          <select
+                            name="sort-reviews"
+                            id="sort-reviews"
+                            onChange={sortReviewsBy}
+                            className={styles.filtertext}
+                          >
+                            <option value="helpful">Most Helpful</option>
+                            <option value="recent">Recent</option>
+                            {selectedProf.current === 'none' && (
+                              <option value="professor">Professor Name</option>
+                            )}
+                          </select>
+                        </div>
+                        <div className={styles.filterContainer}>
+                          <label
+                            htmlFor="filter-by-prof"
+                            style={{ whiteSpace: 'nowrap' }}
+                          >
+                            Filter by professor:{' '}
+                          </label>
+                          <select
+                            name="filter-by-prof"
+                            id="filter-by-prof"
+                            onChange={filterByProf}
+                            className={styles.filtertext}
+                          >
+                            <option value="none">None</option>
+                            {[...pastProfs.current]
+                              .sort()
+                              ?.filter((o) => o !== 'Not Listed')
+                              .map((o) => <option value={o}>{o}</option>)}
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className={styles.reviews}>
-                <CourseReviews
-                  reviews={visibleCourseReviews}
-                  isPreview={false}
-                  isProfile={false}
-                  token={token}
-                />
-              </div>
-            </div>
-            <SimilarCoursesSection
-              similarCourses={similarCourses}
-              isVisible={screenWidth <= 768}
-            />
-          </div>
+                  <div className={styles.reviews}>
+                    <CourseReviews
+                      reviews={visibleCourseReviews}
+                      isPreview={false}
+                      isProfile={false}
+                      token={token}
+                    />
+                  </div>
+                </div>)}
+            {!reviewTabSelected && courseEval != null && (
+              <CourseEval courseEval={courseEval} />
+            )}
+          <SimilarCoursesSection
+            similarCourses={similarCourses}
+            isVisible={screenWidth <= 768}
+          />
         </div>
-
-        {/* Fixed Bottom-Right Review Button */}
-        <button
-          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
-          onClick={() => setOpen(true)}
-        >
-          <img src={WriteReviewIcon} alt="write-new-review" />
-        </button>
-
-        <ReviewModal
-          open={open}
-          setReviewOpen={setOpen}
-          submitReview={onSubmitReview}
-          professorOptions={
-            selectedClass.classProfessors ? selectedClass.classProfessors : []
-          }
-        />
       </div>
-    );
+
+  {/* Fixed Bottom-Right Review Button */
+  }
+    <button
+      className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
+      onClick={() => setOpen(true)}
+    >
+      <img src={WriteReviewIcon} alt="write-new-review" />
+    </button>
+
+    <ReviewModal
+      open={open}
+      setReviewOpen={setOpen}
+      submitReview={onSubmitReview}
+      professorOptions={
+        selectedClass.classProfessors ? selectedClass.classProfessors : []
+      }
+    />
+  </div>
+  )
+    ;
   }
 
   return <Loading />;
