@@ -409,6 +409,9 @@ export const Course = () => {
             {!reviewTabSelected && courseEval != null && (
               <CourseEval courseEval={courseEval} />
             )}
+            {!reviewTabSelected && courseEval === null && (
+              <p>NO COURSE EVAL DATA AVAILABLE!</p>
+            )}
           <SimilarCoursesSection
             similarCourses={similarCourses}
             isVisible={screenWidth <= 768}
