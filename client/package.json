@@ -24,9 +24,11 @@
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "axios": "^1.6.7",
+    "chart.js": "^4.4.8",
     "common": "0.0.1",
     "i": "^0.3.7",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.3.0",
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^18.3.1",
     "react-google-login": "^5.2.2",
