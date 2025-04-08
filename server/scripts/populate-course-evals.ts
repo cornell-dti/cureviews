@@ -23,6 +23,7 @@ const parseEval = (data: CourseEvaluationsRaw): CourseEvaluations => {
         _id: shortid.generate(),
         subject: courseNameSplit[0],
         courseNumber: courseNameSplit[1],
+        semester: value.semester.charAt(0).toUpperCase() + value.semester.slice(1).toLowerCase(),
         courseName: courseNameSplit[0] + " " + courseNameSplit[1],
         courseOverall: parseFloat(value.courseOverall) || 0,
         profTeachingSkill: parseFloat(value.profTeachingSkill) || 0,
@@ -129,7 +130,7 @@ const mergeCourseLecEvaluations = (
     // discrepancies between the two evals (likely errors)
     // are overwritten here.
     ...eval1,
-    semester: eval1.semester + ", " + eval2.semester,
+    semester: eval1.semester != eval2.semester ? (eval1.semester + ", " + eval2.semester) : eval1.semester,
     courseOverall: weightedAvg(eval1.courseOverall, eval2.courseOverall, w1, w2),
     profTeachingSkill: weightedAvg(eval1.profTeachingSkill, eval2.profTeachingSkill, w1, w2),
     profKnowledge: weightedAvg(eval1.profKnowledge, eval2.profKnowledge, w1, w2),
