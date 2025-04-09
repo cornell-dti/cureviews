@@ -263,8 +263,8 @@ export const SearchBar = ({
       return (
         <div>
           <ExactSearch />
-          <ProfessorsList />
           <SubjectsList />
+          <ProfessorsList />
           <CourseList />
         </div>
       );
