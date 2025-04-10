@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { CourseEvaluation } from 'common';
+import {CourseEvaluation} from 'common';
 import styles from '../Styles/CourseEval.module.css'
 import {
   Chart as ChartJS,
@@ -12,7 +12,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar, Pie } from 'react-chartjs-2';
+import {Bar, Pie} from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 
 type CourseEvalProps = {
   courseEval: CourseEvaluation;
@@ -28,47 +30,110 @@ ChartJS.register(
   Legend
 );
 
-const CourseEval = ({ courseEval }: CourseEvalProps) => {
+ChartJS.defaults.scale.grid.display = false;
+
+const CourseEval = ({courseEval}: CourseEvalProps) => {
   const [mappedSentiments, setMappedSentiments] = useState(
     mapSentiments(courseEval.sentiments)
   );
 
   useEffect(() => {
     setMappedSentiments(mapSentiments(courseEval.sentiments));
-    console.log(mappedSentiments);
   }, [courseEval]);
 
-  const horiz_options = {
+  const profChartOptions = {
     indexAxis: 'y' as const,
-    elements: {
-      bar: {
-        borderWidth: 2
-      }
-    },
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right' as const
+        display: false
       },
-      title: {
+      datalabels: {
         display: true,
-        text: 'Chart.js Horizontal Bar Chart'
+        anchor: 'end',
+        align: 'end',
+        clip: true,
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 30,
+        top: 10,
+        bottom: 10,
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        max: 5,
+        offset: true,
+        grid: {
+          display: false
+        },
+        ticks: {
+          display: false
+        },
+        border: {
+          display: false
+        }
+      },
+      y: {
+        position: 'right',
+        grid: {
+          display: false
+        },
+        offset: true,
+        ticks: {
+          crossAlign: 'far',
+          color: '#777777',
+          font: {
+            size: 14
+          }
+        },
+        border: {
+          display: false
+        }
       }
     }
   };
 
-  const vert_options = {
+  const gradeChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const
+        display: false
       },
-      title: {
+      datalabels: {
         display: true,
-        text: 'Chart.js Bar Chart'
+        anchor: 'end',
+        align: 'end',
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        offset: true,
+      },
+      y: {
+        display: false
       }
     }
   };
+
+  const pieOptions = {
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          usePointStyle: true,
+          boxHeight: 6,
+        },
+      }
+    }
+  }
 
   const profData = {
     labels: [
@@ -79,15 +144,16 @@ const CourseEval = ({ courseEval }: CourseEvalProps) => {
     ],
     datasets: [
       {
-        label: 'Dataset 1',
         data: [
           courseEval.profTeachingSkill,
           courseEval.profKnowledge,
           courseEval.profClimate,
           courseEval.profOverall
         ],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+        backgroundColor: '#75b944',
+        barThickness: 30,
+        borderRadius: 4,
+        borderSkipped: false
       }
     ]
   };
@@ -96,7 +162,6 @@ const CourseEval = ({ courseEval }: CourseEvalProps) => {
     labels: ['A', 'B', 'C', 'D', 'F', 'S', 'U', 'Declined'],
     datasets: [
       {
-        label: 'Dataset 1',
         data: [
           courseEval.numA,
           courseEval.numB,
@@ -107,8 +172,10 @@ const CourseEval = ({ courseEval }: CourseEvalProps) => {
           courseEval.numU,
           courseEval.numGradeNA
         ],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+        backgroundColor: '#75b944',
+        barThickness: 30,
+        borderRadius: 4,
+        borderSkipped: false
       }
     ]
   };
@@ -174,26 +241,33 @@ const CourseEval = ({ courseEval }: CourseEvalProps) => {
 
   return (
     <div>
-      <p>COURSE NAME: {courseEval.courseName}</p>
-      <p>EVAL SEMESTER: {courseEval.semester}</p>
-      <div className={styles.dashboardContainer}>
-        <div className={styles.professorRating}>
-          <Bar options={horiz_options} data={profData} />
+      <p>This course evaluation data is sourced from Cornell’s course evaluation database
+        from {courseEval.semester} and reflects feedback from {courseEval.totalEvals} student responses. It may
+        not fully capture the course experience for all students.</p>
+      <div className={styles.dashboard}>
+        <div className={`${styles.container} ${styles.professorRating}`}>
+          <h1>Professor Rating</h1>
+          <Bar options={profChartOptions} data={profData} plugins={[ChartDataLabels]}/>
         </div>
-        <div className={styles.topSentiments}>
-          <p>TOP SENTIMENTS: {mappedSentiments[0].join(', ')}.</p>
+        <div className={`${styles.container} ${styles.topSentiments}`}>
+          <h1>Top Sentiments</h1>
+          <p>{mappedSentiments[0].join(', ')}.</p>
         </div>
-        <div className={styles.gradeDistribution}>
-          <Bar options={vert_options} data={gradeData} />
+        <div className={`${styles.container} ${styles.gradeDistribution}`}>
+          <h1>Approximate Grade in Course</h1>
+          <Bar className={styles.bar} options={gradeChartOptions} data={gradeData} plugins={[ChartDataLabels]}/>
         </div>
-        <div className={styles.studentYear}>
-          <Pie data={yearData} />
+        <div className={`${styles.container} ${styles.studentYear}`}>
+          <h1>Student Year</h1>
+          <Pie options={pieOptions} data={yearData}/>
         </div>
-        <div className={styles.schoolCollege}>
-          <Pie data={collegeData} />
+        <div className={`${styles.container} ${styles.schoolCollege}`}>
+          <h1>School / College</h1>
+          <Pie options={pieOptions} data={collegeData}/>
         </div>
-        <div className={styles.reasonTaking}>
-          <p>REASONS FOR TAKING COURSE: {mappedSentiments[1].join(', ')}.</p>
+        <div className={`${styles.container} ${styles.reasonTaking}`}>
+          <h1>Reasons For Taking Course</h1>
+          <p>{mappedSentiments[1].join(', ')}.</p>
         </div>
       </div>
     </div>
