@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from '../Styles/ManageAdmins.module.css';
 
 import { Student } from 'common';
+import AddAdminModal from './AddAdminModal';
 import AdminUser from './AdminUser';
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 const ManageAdmins = ({ token }: Props) => {
   const [admins, setAdmins] = useState<Student[]>([]);
   const [netId, setNetId] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /**
    * Fetch all admins when the page loads
@@ -57,22 +59,25 @@ const ManageAdmins = ({ token }: Props) => {
 
   return (
     <div className={styles.adminPage}>
-      <h1>Manage Administrators</h1>
-
-      <div className={styles.addAdmin}>
-        <input
-          className={styles.textInputBox}
-          value={netId}
-          onChange={(e) => setNetId(e.target.value)}
-          placeholder="Enter user NetID"
-        />
-        <button
-          className={styles.addAdminButton}
-          onClick={() => addAdminByNetId(netId)}
-        >
-          Add Administrator
+      <div className={styles.adminHeader}>
+        <h1>Manage Administrators</h1>
+        <button className={styles.addAdminButtonTop} onClick={() => setIsModalOpen(true)}>
+          <span>＋</span> Add Admin
         </button>
       </div>
+
+      <AddAdminModal
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        token={token}
+        onSuccess={() => {
+          axios.post('/api/admin/users/get', { token }).then((response) => {
+            if (response.status === 200) {
+              setAdmins(response.data.result);
+            }
+          });
+        }}
+      />
 
       <div className={styles.adminList}>
         {admins.map((admin) => (

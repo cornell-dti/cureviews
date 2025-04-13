@@ -68,6 +68,7 @@ const StudentSchema = new Schema<StudentDocument>({
   affiliation: { type: String }, // user affliaition, like ENG or A&S
   token: { type: String }, // random token generated during login process
   privilege: { type: String }, // user privilege level. Takes values "regular" | "admin"
+  role: { type: String, enum: ['Designer', 'TPM', 'PMM', 'PM', 'Developer'], required: false },
   reviews: { type: [String] }, // the reviews that this user has posted.
   likedReviews: { type: [String] }
 });

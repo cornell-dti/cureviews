@@ -28,6 +28,7 @@ export interface Student {
   readonly affiliation: string;
   readonly token: string;
   readonly privilege: string; // user privilege level
+  readonly role?: string; // admin role, only exists if Student has admin privilege
   reviews: string[];
   likedReviews: string[];
 }
