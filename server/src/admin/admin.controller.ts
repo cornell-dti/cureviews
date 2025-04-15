@@ -471,16 +471,21 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
   }
 
   const descriptionResult = await addAllProcessedDescriptions();
-  if (descriptionResult) {
-    const idfResult = await addIdfVector();
-    if (idfResult) {
-      const tfidfResult = await addAllTfIdfVectors();
-      if (tfidfResult) {
-        const similarityResult = await addAllSimilarityData();
-        return similarityResult;
-      }
-    }
-  }
+  const idfResult = await addIdfVector();
+  const tfidfResult = await addAllTfIdfVectors();
+  const similarityResult = await addAllSimilarityData();
+  return similarityResult;
+  // const descriptionResult = await addAllProcessedDescriptions();
+  // if (descriptionResult) {
+  //   const idfResult = await addIdfVector();
+  //   if (idfResult) {
+  //     const tfidfResult = await addAllTfIdfVectors();
+  //     if (tfidfResult) {
+  //       const similarityResult = await addAllSimilarityData();
+  //       return similarityResult;
+  //     }
+  //   }
+  // }
   return false;
 };
 
