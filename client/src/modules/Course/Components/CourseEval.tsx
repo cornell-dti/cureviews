@@ -45,6 +45,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
     indexAxis: 'y' as const,
     responsive: true,
     maintainAspectRatio: false,
+    maxBarThickness: 25,
     plugins: {
       legend: {
         display: false
@@ -53,22 +54,27 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         display: true,
         anchor: 'end',
         align: 'end',
-        clip: true,
+        clip: false,
+        color: "#000",
+        font: {
+          size: 14,
+          weight: 600,
+          family: 'Arial',
+        },
+        padding: {
+          left: 20,
+        }
       }
     },
     layout: {
       padding: {
-        left: 10,
-        right: 30,
-        top: 10,
         bottom: 10,
       }
     },
     scales: {
       x: {
         beginAtZero: true,
-        max: 5,
-        offset: true,
+        max: 7,
         grid: {
           display: false
         },
@@ -87,9 +93,11 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         offset: true,
         ticks: {
           crossAlign: 'far',
-          color: '#777777',
+          color: '#807B7B',
           font: {
-            size: 14
+            size: 10,
+            weight: 400,
+            family: 'Arial',
           }
         },
         border: {
@@ -102,6 +110,11 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
   const gradeChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 20,
+      },
+    },
     plugins: {
       legend: {
         display: false
@@ -110,12 +123,24 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         display: true,
         anchor: 'end',
         align: 'end',
+        color: "#000",
+        font: {
+          size: 14,
+          weight: 600,
+          family: 'Arial',
+        },
       }
     },
     scales: {
       x: {
         beginAtZero: true,
         offset: true,
+        grid: {
+          display: false
+        },
+        border: {
+          display: false
+        },
       },
       y: {
         display: false
@@ -124,12 +149,14 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
   };
 
   const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'right',
         labels: {
           usePointStyle: true,
-          boxHeight: 6,
+          boxHeight: 8,
         },
       }
     }
@@ -150,7 +177,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           courseEval.profClimate,
           courseEval.profOverall
         ],
-        backgroundColor: '#75b944',
+        backgroundColor: '#53B227',
         barThickness: 30,
         borderRadius: 4,
         borderSkipped: false
@@ -192,18 +219,13 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           courseEval.numSr
         ],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)'
+          'rgba(245, 196, 217, 1)',
+          'rgba(255, 161, 100, 1)',
+          'rgba(154, 198, 247, 1)',
+          'rgba(209, 141, 238, 1)',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)'
-        ],
-        borderWidth: 1
+        borderColor: 'white',
+        borderWidth: 3
       }
     ]
   };
@@ -223,18 +245,16 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           courseEval.numILR
         ],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)'
+          'rgba(255, 165, 165, 1)',
+          'rgba(255, 161, 100, 1)',
+          'rgba(248, 204, 48, 1)',
+          'rgba(163, 199, 134, 1)',
+          'rgba(154, 198, 247, 1)',
+          'rgba(209, 141, 238, 1)',
+          'rgba(245, 196, 217, 1)',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)'
-        ],
-        borderWidth: 1
+        borderColor: 'white',
+        borderWidth: 3
       }
     ]
   }
@@ -247,27 +267,39 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
       <div className={styles.dashboard}>
         <div className={`${styles.container} ${styles.professorRating}`}>
           <h1>Professor Rating</h1>
-          <Bar options={profChartOptions} data={profData} plugins={[ChartDataLabels]}/>
+          <div style={{width:'100%', height:'100%'}}>
+            <Bar options={profChartOptions} data={profData} plugins={[ChartDataLabels]}/>
+          </div>
         </div>
         <div className={`${styles.container} ${styles.topSentiments}`}>
           <h1>Top Sentiments</h1>
-          <p>{mappedSentiments[0].join(', ')}.</p>
+          <div className={styles.textContainer}>
+            {mappedSentiments[0].map((statement) => <p>"{statement}"</p>)}
+          </div>
         </div>
         <div className={`${styles.container} ${styles.gradeDistribution}`}>
           <h1>Approximate Grade in Course</h1>
-          <Bar className={styles.bar} options={gradeChartOptions} data={gradeData} plugins={[ChartDataLabels]}/>
+          <div style={{width:'100%', height:'100%'}}>
+            <Bar className={styles.bar} options={gradeChartOptions} data={gradeData} plugins={[ChartDataLabels]}/>
+          </div>
         </div>
         <div className={`${styles.container} ${styles.studentYear}`}>
           <h1>Student Year</h1>
-          <Pie options={pieOptions} data={yearData}/>
+          <div style={{width:'90%', height:'90%'}}>
+            <Pie options={pieOptions} data={yearData}/>
+          </div>
         </div>
         <div className={`${styles.container} ${styles.schoolCollege}`}>
           <h1>School / College</h1>
-          <Pie options={pieOptions} data={collegeData}/>
+          <div style={{width:'90%', height:'90%'}}>
+            <Pie options={pieOptions} data={collegeData}/>
+          </div>
         </div>
         <div className={`${styles.container} ${styles.reasonTaking}`}>
           <h1>Reasons For Taking Course</h1>
-          <p>{mappedSentiments[1].join(', ')}.</p>
+          <div className={styles.textContainer}>
+            {mappedSentiments[1].map((statement) => <p>"{statement}"</p>)}
+          </div>
         </div>
       </div>
     </div>
@@ -307,7 +339,7 @@ const mapSentiments = (sentiments: [number, number][]) => {
 
   const topReasonsForTaking = reasonsForTakingBucket
     .sort(sortByScore)
-    .slice(0, 3);
+    .slice(0, 4);
 
   return [
     topSentiments.map((sentiment) => [
