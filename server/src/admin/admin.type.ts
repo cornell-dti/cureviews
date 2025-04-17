@@ -11,10 +11,12 @@ export interface AdminReviewRequestType {
   review: AdminReviewType;
 }
 
-export interface AdminUserRequestType {
+export type AdminUserRequestType = {
   token: string;
   userId: string;
-}
+  role: string;
+};
+
 
 interface AdminReviewType {
   _id: string;

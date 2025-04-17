@@ -12,6 +12,7 @@ export interface InsertStudentType {
   affiliation: string;
   token: string;
   privilege: string;
+  role?: string;
 }
 
 export interface TokenPayloadType {
