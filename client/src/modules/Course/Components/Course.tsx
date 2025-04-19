@@ -410,7 +410,8 @@ export const Course = () => {
               <CourseEval courseEval={courseEval} />
             )}
             {!reviewTabSelected && courseEval === null && (
-              <p>NO COURSE EVAL DATA AVAILABLE!</p>
+
+              <p className={styles.noEvalsTitle}>No course evaluation data available for this course.</p>
             )}
           <SimilarCoursesSection
             similarCourses={similarCourses}

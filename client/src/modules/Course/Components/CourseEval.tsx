@@ -199,7 +199,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           courseEval.numU,
           courseEval.numGradeNA
         ],
-        backgroundColor: '#75b944',
+        backgroundColor: '#53B227',
         barThickness: 30,
         borderRadius: 4,
         borderSkipped: false

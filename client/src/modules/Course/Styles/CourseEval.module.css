@@ -61,6 +61,7 @@
     line-height: 1.5;
     --bold-weight: bold;
     color: #333;
+    padding-bottom: 10px;
 }
 
 .gradeDistribution {

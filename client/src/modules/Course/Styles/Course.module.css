@@ -54,6 +54,28 @@
   cursor: pointer;
 }
 
+.noEvalsTitle {
+  /*text-align: center;*/
+
+  /*font-family: "SF Pro";*/
+  /*font-style: normal;*/
+  /*font-weight: 300;*/
+  /*font-size: var(--font-sub-heading-size);*/
+  /*line-height: 30px;*/
+  /*text-align: center;*/
+
+  /*color: var(--clr-black);*/
+  color: var(--clr-black);
+  width: 100%;
+  font-family: "SF Pro";
+  text-align: center;
+  font-weight: var(--semi-bold-weight);
+  font-size: 24px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: -0.129px;
+}
+
 .tabtitle {
   color: var(--clr-gray-300);
   width: 100%;
