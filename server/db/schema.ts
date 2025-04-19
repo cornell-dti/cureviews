@@ -1,5 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
-import { Class, Student, Subject, Review, Professor, CourseEvaluation } from 'common';
+import {
+  Class,
+  Student,
+  Subject,
+  Review,
+  Professor,
+  CourseEvaluation
+} from 'common';
 
 /*
 
@@ -253,7 +260,7 @@ const CourseEvaluationSchema = new Schema({
 });
 
 interface CourseEvaluationDocument extends mongoose.Document, CourseEvaluation {
-  _id: string,
+  _id: string;
   courseName: string;
   subject: string;
   courseNumber: string;
@@ -291,6 +298,6 @@ interface CourseEvaluationDocument extends mongoose.Document, CourseEvaluation {
 }
 
 export const CourseEvaluations = mongoose.model<CourseEvaluationDocument>(
-  "courseEvaluations",
-  CourseEvaluationSchema,
+  'courseEvaluations',
+  CourseEvaluationSchema
 );
