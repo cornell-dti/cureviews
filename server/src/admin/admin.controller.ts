@@ -143,7 +143,10 @@ export const removePendingReview = async ({
  * @param {number} limit: The number of approved reviews to retrieve.
  * @returns all number of approved review objects if operation was successful, null otherwise.
  */
-export const getApprovedReviews = async ({ auth, limit = 700 }: VerifyAdminType & { limit?: number }) => {
+export const getApprovedReviews = async ({
+  auth,
+  limit = 700
+}: VerifyAdminType & { limit?: number }) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     return findApprovedReviews(limit);

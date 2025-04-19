@@ -240,15 +240,11 @@ const ReviewCard = ({
           <div> {dateToString()} </div>
           {!isPreview && (
             <div className={styles.reporthelpful}>
-              
               <div
                 className={styles.report}
                 onClick={() => reportHandler(_review._id)}
               >
-                <img
-                  src={'/report-flag.svg'}
-                  alt='Flag'
-                />
+                <img src={'/report-flag.svg'} alt="Flag" />
                 Report
               </div>
 

@@ -678,26 +678,31 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
         const compTfidf = await RecommendationMetadata.findOne({
           _id: c._id
         }).exec();
-        const cos = cosineSimilarity(tfidf.tfidfVector, compTfidf.tfidfVector);
-        if (cos < 1) {
-          const rating = c.classRating;
-          const workload = threshold(course.classWorkload, c.classWorkload);
-          const difficulty = threshold(
-            course.classDifficulty,
-            c.classDifficulty
+        if (compTfidf.tfidfVector) {
+          const cos = cosineSimilarity(
+            tfidf.tfidfVector,
+            compTfidf.tfidfVector
           );
-          similarities.push({
-            _id: c._id,
-            className: c.classTitle,
-            classSub: c.classSub,
-            classNum: c.classNum,
-            tags: [
-              `Overall: ${rating}/5`,
-              `${workload} workload`,
-              `${difficulty} difficulty`
-            ],
-            similarityScore: cos
-          });
+          if (cos < 1) {
+            const rating = c.classRating;
+            const workload = threshold(course.classWorkload, c.classWorkload);
+            const difficulty = threshold(
+              course.classDifficulty,
+              c.classDifficulty
+            );
+            similarities.push({
+              _id: c._id,
+              className: c.classTitle,
+              classSub: c.classSub,
+              classNum: c.classNum,
+              tags: [
+                `Overall: ${rating}/5`,
+                `${workload} workload`,
+                `${difficulty} difficulty`
+              ],
+              similarityScore: cos
+            });
+          }
         }
       }
     }

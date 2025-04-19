@@ -27,7 +27,8 @@ import {
   approveReviews,
   addCourseDescriptionsDb,
   addSimilarityDb,
-  drawRaffle, addNewCourseEvals
+  drawRaffle,
+  addNewCourseEvals
 } from './admin.controller';
 
 export const adminRouter = express.Router();

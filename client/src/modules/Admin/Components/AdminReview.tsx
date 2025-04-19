@@ -106,11 +106,20 @@ const UpdateReview = ({
           {review.date ? new Date(review.date).toLocaleDateString() : 'No Date'}
         </span>
         <div className={styles.reviewTitle}>
-          <span className={styles.courseName}>{shortName}, {fullName}</span>
+          <span className={styles.courseName}>
+            {shortName}, {fullName}
+          </span>
         </div>
         <p className={styles.reviewMajor}>
           {review.major && review.major.length > 0 && (
-            <p className={styles.reviewMajor}>Major <span className={styles.majorText}>{Array.isArray(review.major) ? review.major.join(', ') : review.major}</span></p>
+            <p className={styles.reviewMajor}>
+              Major{' '}
+              <span className={styles.majorText}>
+                {Array.isArray(review.major)
+                  ? review.major.join(', ')
+                  : review.major}
+              </span>
+            </p>
           )}
         </p>
       </div>
@@ -118,15 +127,22 @@ const UpdateReview = ({
       <div className={styles.reviewContent}>
         {/* Ratings */}
         <div className={styles.reviewRatings}>
-          <p><strong>Overall:</strong> <span>{review.rating}</span></p>
-          <p><strong>Difficulty:</strong> <span>{review.difficulty}</span></p>
-          <p><strong>Workload:</strong> <span>{review.workload}</span></p>
+          <p>
+            <strong>Overall:</strong> <span>{review.rating}</span>
+          </p>
+          <p>
+            <strong>Difficulty:</strong> <span>{review.difficulty}</span>
+          </p>
+          <p>
+            <strong>Workload:</strong> <span>{review.workload}</span>
+          </p>
         </div>
 
         {/* Review Text */}
         <div className={styles.reviewAndProf}>
           <p className={styles.professor}>
-            Professor <span className={styles.professorName}>{review.professors}</span>
+            Professor{' '}
+            <span className={styles.professorName}>{review.professors}</span>
           </p>
           <div className={styles.reviewText}>
             <p>{review.text}</p>
