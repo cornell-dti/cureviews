@@ -678,7 +678,7 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
         const compTfidf = await RecommendationMetadata.findOne({
           _id: c._id
         }).exec();
-        if (compTfidf.tfidfVector) {
+        if (compTfidf && compTfidf.tfidfVector) {
           const cos = cosineSimilarity(
             tfidf.tfidfVector,
             compTfidf.tfidfVector
