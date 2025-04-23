@@ -321,125 +321,116 @@ export const Course = () => {
             />
           </div>
           <div className={styles.rightPanel}>
+            {/* Custom Tab Component Structure */}
             <div className={styles.tabs}>
               <button
-                className={
-                  reviewTabSelected ? styles.tabactivetitle : styles.tabtitle
-                }
+                className={reviewTabSelected ? styles.tabactivetitle : styles.tabtitle}
                 onClick={() => setReviewTabSelected(true)}
               >
-                Past Reviews ({visibleCourseReviews.length}){' '}
-                <div
-                  className={
-                    reviewTabSelected ? styles.tabactiveline : styles.tabline
-                  }
-                ></div>
+                Past Reviews ({visibleCourseReviews.length})
               </button>
-              <button
-                className={
-                  reviewTabSelected ? styles.tabtitle : styles.tabactivetitle
-                }
-                onClick={() => setReviewTabSelected(false)}
-              >
-                Course Evaluation Data{' '}
-                <div
-                  className={
-                    reviewTabSelected ? styles.tabline : styles.tabactiveline
-                  }
-                ></div>
-              </button>
+              {courseEval !== null && (
+                <button
+                  className={reviewTabSelected ? styles.tabtitle : styles.tabactivetitle}
+                  onClick={() => setReviewTabSelected(false)}
+                >
+                  Course Evaluation Data
+                </button>
+              )}
+
+              {/* Add a gray background line spanning the full width */}
+              <div className={styles.tabIndicator}></div>
+
+              {/* Add a blue active indicator that moves */}
+              <div className={`${styles.activeIndicator} ${reviewTabSelected ? styles.firstTab : styles.secondTab}`}></div>
             </div>
-              {reviewTabSelected && (
-                <div className={styles.reviewscontainer}>
-                  <div className={styles.bar}>
-                    <div>
-                      <div className={styles['select-container']}>
-                        <div className={styles['filter-container']}>
-                          <label
-                            htmlFor="sort-reviews"
-                            style={{ whiteSpace: 'nowrap' }}
-                          >
-                            Sort by:{' '}
-                          </label>
-                          <select
-                            name="sort-reviews"
-                            id="sort-reviews"
-                            onChange={sortReviewsBy}
-                            className={styles.filtertext}
-                          >
-                            <option value="helpful">Most Helpful</option>
-                            <option value="recent">Recent</option>
-                            {selectedProf.current === 'none' && (
-                              <option value="professor">Professor Name</option>
-                            )}
-                          </select>
-                        </div>
-                        <div className={styles.filterContainer}>
-                          <label
-                            htmlFor="filter-by-prof"
-                            style={{ whiteSpace: 'nowrap' }}
-                          >
-                            Filter by professor:{' '}
-                          </label>
-                          <select
-                            name="filter-by-prof"
-                            id="filter-by-prof"
-                            onChange={filterByProf}
-                            className={styles.filtertext}
-                          >
-                            <option value="none">None</option>
-                            {[...pastProfs.current]
-                              .sort()
-                              ?.filter((o) => o !== 'Not Listed')
-                              .map((o) => <option value={o}>{o}</option>)}
-                          </select>
-                        </div>
+            {reviewTabSelected && (
+              <div className={styles.reviewscontainer}>
+                <div className={styles.bar}>
+                  <div>
+                    <div className={styles['select-container']}>
+                      <div className={styles['filter-container']}>
+                        <label
+                          htmlFor="sort-reviews"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          Sort by:{' '}
+                        </label>
+                        <select
+                          name="sort-reviews"
+                          id="sort-reviews"
+                          onChange={sortReviewsBy}
+                          className={styles.filtertext}
+                        >
+                          <option value="helpful">Most Helpful</option>
+                          <option value="recent">Recent</option>
+                          {selectedProf.current === 'none' && (
+                            <option value="professor">Professor Name</option>
+                          )}
+                        </select>
+                      </div>
+                      <div className={styles.filterContainer}>
+                        <label
+                          htmlFor="filter-by-prof"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          Filter by professor:{' '}
+                        </label>
+                        <select
+                          name="filter-by-prof"
+                          id="filter-by-prof"
+                          onChange={filterByProf}
+                          className={styles.filtertext}
+                        >
+                          <option value="none">None</option>
+                          {[...pastProfs.current]
+                            .sort()
+                            ?.filter((o) => o !== 'Not Listed')
+                            .map((o) => <option value={o}>{o}</option>)}
+                        </select>
                       </div>
                     </div>
                   </div>
-                  <div className={styles.reviews}>
-                    <CourseReviews
-                      reviews={visibleCourseReviews}
-                      isPreview={false}
-                      isProfile={false}
-                      token={token}
-                    />
-                  </div>
-                </div>)}
+                </div>
+                <div className={styles.reviews}>
+                  <CourseReviews
+                    reviews={visibleCourseReviews}
+                    isPreview={false}
+                    isProfile={false}
+                    token={token}
+                  />
+                </div>
+              </div>)}
             {!reviewTabSelected && courseEval != null && (
               <CourseEval courseEval={courseEval} />
             )}
-            {!reviewTabSelected && courseEval === null && (
-
-              <p className={styles.noEvalsTitle}>No course evaluation data available for this course.</p>
-            )}
-          <SimilarCoursesSection
-            similarCourses={similarCourses}
-            isVisible={screenWidth <= 768}
-          />
+            <SimilarCoursesSection
+              similarCourses={similarCourses}
+              isVisible={screenWidth <= 768}
+            />
+          </div>
         </div>
+
+        {/* Fixed Bottom-Right Review Button */
+        }
+        <button
+          className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
+          onClick={() => setOpen(true)}
+        >
+          <img src={WriteReviewIcon} alt="write-new-review" />
+        </button>
+
+        <ReviewModal
+          open={open}
+          setReviewOpen={setOpen}
+          submitReview={onSubmitReview}
+          professorOptions={
+            selectedClass.classProfessors ? selectedClass.classProfessors : []
+          }
+        />
       </div>
-
-  {/* Fixed Bottom-Right Review Button */
-  }
-    <button
-      className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
-      onClick={() => setOpen(true)}
-    >
-      <img src={WriteReviewIcon} alt="write-new-review" />
-    </button>
-
-    <ReviewModal
-      open={open}
-      setReviewOpen={setOpen}
-      submitReview={onSubmitReview}
-      professorOptions={
-        selectedClass.classProfessors ? selectedClass.classProfessors : []
-      }
-    />
-  </div>
-  )
-    ;
+    )
+      ;
   }
 
   return <Loading />;

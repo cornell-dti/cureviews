@@ -261,7 +261,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
 
   return (
     <div>
-      <p>This course evaluation data is sourced from Cornell’s course evaluation database
+      <p className={styles.disclaimer}>This course evaluation data is sourced from Cornell’s course evaluation database
         from {courseEval.semester} and reflects feedback from {courseEval.totalEvals} student responses. It may
         not fully capture the course experience for all students.</p>
       <div className={styles.dashboard}>

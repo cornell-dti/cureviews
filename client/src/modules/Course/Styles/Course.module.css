@@ -34,73 +34,62 @@
   padding-left: 24px
 }
 
+/* Grid-based solution for consistent tab alignment */
+/* CSS for custom tab component */
 .tabs {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
   padding-bottom: 24px;
+  position: relative; /* For absolute positioning of the indicator */
+}
+
+.tabactivetitle, .tabtitle {
+  width: 100%;
+  font-family: "SF Pro";
+  text-align: center;
+  font-weight: var(--semi-bold-weight);
+  font-size: 24px;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: -0.129px;
+  cursor: pointer;
+  padding: 14px 0;
 }
 
 .tabactivetitle {
   color: var(--clr-blue-300);
-  width: 100%;
-  font-family: "SF Pro";
-  text-align: center;
-  font-weight: var(--semi-bold-weight);
-  font-size: 24px;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: -0.129px;
-  cursor: pointer;
-}
-
-.noEvalsTitle {
-  /*text-align: center;*/
-
-  /*font-family: "SF Pro";*/
-  /*font-style: normal;*/
-  /*font-weight: 300;*/
-  /*font-size: var(--font-sub-heading-size);*/
-  /*line-height: 30px;*/
-  /*text-align: center;*/
-
-  /*color: var(--clr-black);*/
-  color: var(--clr-black);
-  width: 100%;
-  font-family: "SF Pro";
-  text-align: center;
-  font-weight: var(--semi-bold-weight);
-  font-size: 24px;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: -0.129px;
 }
 
 .tabtitle {
   color: var(--clr-gray-300);
-  width: 100%;
-  font-family: "SF Pro";
-  text-align: center;
-  font-weight: var(--semi-bold-weight);
-  font-size: 24px;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: -0.129px;
-  cursor: pointer;
 }
 
-.tabactiveline {
-  margin-top: 12px;
+.tabIndicator {
+  position: absolute;
+  bottom: 24px;
   height: 2px;
-  width: 100%;
-  background-color: var(--clr-blue-300);
-}
-
-.tabline {
-  margin-top: 12px;
-  height: 2px;
-  width: 100%;
   background-color: var(--clr-gray-300);
+  width: 100%;
+}
+
+.activeIndicator {
+  position: absolute;
+  bottom: 24px;
+  height: 2px;
+  background-color: var(--clr-blue-300);
+  width: 50%;
+  transition: transform 0.3s ease;
+}
+
+/* Position for first tab selected */
+.activeIndicator.firstTab {
+  transform: translateX(-50%);
+}
+
+/* Position for second tab selected */
+.activeIndicator.secondTab {
+  transform: translateX(50%);
 }
 
 .classinfo {
@@ -153,6 +142,10 @@
 
 /* Mobile-Only */
 @media only screen and (max-width: 768px) {
+  .tabs {
+    padding-top: 20px;
+  }
+
   .courseContent {
     display: flex;
     flex-flow: column nowrap;

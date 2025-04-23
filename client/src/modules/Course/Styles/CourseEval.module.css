@@ -105,6 +105,16 @@
     }
 }
 
+.disclaimer {
+    color: #807B7B;
+    font-family: "SF Pro";
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.24px;
+}
+
 /* Chart containers */
 .container canvas {
     width: 100% !important;
