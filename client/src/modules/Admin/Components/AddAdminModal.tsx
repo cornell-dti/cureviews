@@ -40,10 +40,15 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token }: ModalProps) => {
     setError('');
   };
 
-  const addAdminByNetId = async (_netId: string, _role: string) => {
+  const addAdminByNetId = async (_netId: string, _role: string, _name: string) => {
+    const [_firstName, ...rest] = _name.trim().split(' ');
+    const _lastName = rest.join(' ');
+
     const response = await axios.post('/api/admin/users/add', {
       userId: _netId,
       role: _role,
+      firstName: _firstName,
+      lastName: _lastName,
       token: token
     });
 
@@ -52,7 +57,6 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token }: ModalProps) => {
     }
   };
 
-
   const handleSubmit = async () => {
     if (!valid) return;
 
@@ -60,7 +64,7 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token }: ModalProps) => {
     setError('');
 
     try {
-      await addAdminByNetId(netId, role);
+      await addAdminByNetId(netId, role, name);
       onSuccess();
       closeModal();
     } catch (err: any) {

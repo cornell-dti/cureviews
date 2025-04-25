@@ -246,16 +246,19 @@ export const removeAdmin = async ({ auth, id }: VerifyManageAdminType) => {
  * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @param {string} id: String identifying the user by netid
  * @param {string} role: Role to assign to the user (e.g., 'Designer', 'PM')
+ * @param {string} firstName: firstName to update the user with
+ * @param {string} lastName: lastName to update the user with
  * @returns The user with updated admin privilege if operation was successful, null otherwise
  */
-export const addAdmin = async ({ auth, id, role }: VerifyManageAdminType & { role: string }) => {
+export const addAdmin = async ({ auth, id, role, firstName, lastName }: VerifyManageAdminType & { role: string, firstName: string, lastName: string }) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
-    const res = await grantAdminPrivilege(id, role);
+    const res = await grantAdminPrivilege(id, role, firstName, lastName);
     return res;
   }
   return null;
 };
+
 
 /**
  * Updated all professors in the database by scraping through the Cornell course API.
