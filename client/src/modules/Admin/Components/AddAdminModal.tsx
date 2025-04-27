@@ -39,13 +39,12 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token, mode, initialValues }:
       setName(initialValues.name);
       setNetId(initialValues.netId);
       setRole(initialValues.role);
-      if (initialValues.name.trim() !== '' && initialValues.netId.trim() !== '' && initialValues.role) {
-        setValid(true);
-      } else {
-        setValid(false);
-      }
     }
   }, [initialValues, mode]);
+
+  useEffect(() => {
+    setValid(name.trim() !== '' && netId.trim() !== '' && role !== '');
+  }, [name, netId, role]);
 
   const closeModal = () => {
     setOpen(false);
