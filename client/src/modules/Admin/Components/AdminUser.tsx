@@ -1,19 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import DeleteAdminModal from './DeleteAdminModal';
+import AddAdminModal from './AddAdminModal';
 import styles from '../Styles/AdminUser.module.css';
+import axios from 'axios';
+
+type Role = 'Designer' | 'TPM' | 'PM' | 'PMM' | 'Developer';
 
 type Props = {
   user: {
     firstName: string;
     lastName: string;
     netId: string;
-    role?: string;
+    role?: Role;
     date?: Date;
   };
   token: string;
   removeHandler: (arg1: any) => any;
+  refreshAdmins: () => Promise<void>;
 };
-
 /**
  * AdminUser Component
  *
@@ -21,10 +25,11 @@ type Props = {
  * last name, NetID, and a button to remove the admin from the system.
  */
 
-const AdminUser = ({ user, token, removeHandler }: Props) => {
+const AdminUser = ({ user, token, removeHandler, refreshAdmins }: Props) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,7 +67,15 @@ const AdminUser = ({ user, token, removeHandler }: Props) => {
 
         {menuOpen && (
           <div className={styles.dropdownMenu}>
-            <div className={styles.dropdownItem}>Edit</div>
+            <div
+              className={styles.dropdownItem}
+              onClick={() => {
+                setEditModalOpen(true);
+                setMenuOpen(false);
+              }}
+            >
+              Edit
+            </div>
             <div
               className={styles.dropdownItem}
               onClick={() => {
@@ -84,7 +97,21 @@ const AdminUser = ({ user, token, removeHandler }: Props) => {
           setDeleteModalOpen(false);
         }}
       />
-
+      <AddAdminModal
+        open={editModalOpen}
+        setOpen={setEditModalOpen}
+        onSuccess={async () => {
+          await refreshAdmins();
+          setEditModalOpen(false);
+        }}
+        token={token}
+        mode="edit"
+        initialValues={{
+          name: `${user.firstName} ${user.lastName}`,
+          netId: user.netId,
+          role: (user.role as Role) ?? 'No Role'
+        }}
+      />
     </div>
   );
 };

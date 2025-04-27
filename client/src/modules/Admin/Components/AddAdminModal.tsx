@@ -10,6 +10,12 @@ type ModalProps = {
   setOpen: (open: boolean) => void;
   onSuccess: () => void;
   token: string;
+  mode: 'add' | 'edit';
+  initialValues?: {
+    name: string;
+    netId: string;
+    role: Role;
+  };
 };
 
 /**
@@ -20,17 +26,26 @@ type ModalProps = {
  * the given netid. 
  */
 
-const AddAdminModal = ({ open, setOpen, onSuccess, token }: ModalProps) => {
-  const [name, setName] = useState('');
-  const [netId, setNetId] = useState('');
-  const [role, setRole] = useState<Role | ''>('');
+const AddAdminModal = ({ open, setOpen, onSuccess, token, mode, initialValues }: ModalProps) => {
+  const [name, setName] = useState(initialValues?.name || '');
+  const [netId, setNetId] = useState(initialValues?.netId || '');
+  const [role, setRole] = useState<string | ''>(initialValues?.role || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [valid, setValid] = useState(false);
 
   useEffect(() => {
-    setValid(name.trim() !== '' && netId.trim() !== '' && role !== '');
-  }, [name, netId, role]);
+    if (initialValues && mode === 'edit') {
+      setName(initialValues.name);
+      setNetId(initialValues.netId);
+      setRole(initialValues.role);
+      if (initialValues.name.trim() !== '' && initialValues.netId.trim() !== '' && initialValues.role) {
+        setValid(true);
+      } else {
+        setValid(false);
+      }
+    }
+  }, [initialValues, mode]);
 
   const closeModal = () => {
     setOpen(false);
@@ -86,7 +101,9 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token }: ModalProps) => {
           alt="close-modal"
         />
 
-        <div className={styles.title}>Add New Admin</div>
+        <div className={styles.title}>
+          {mode === 'add' ? 'Add New Admin' : 'Edit Admin'}
+        </div>
 
         <div className={styles.content}>
           <div className={styles.formcol}>
@@ -133,7 +150,7 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token }: ModalProps) => {
               onClick={handleSubmit}
               disabled={!valid || loading}
             >
-              {loading ? 'Adding...' : 'Add Admin'}
+              {loading ? (mode === 'add' ? 'Adding...' : 'Saving...') : (mode === 'add' ? 'Add Admin' : 'Save Changes')}
             </button>
           </div>
         </div>

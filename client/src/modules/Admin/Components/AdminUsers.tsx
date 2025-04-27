@@ -6,6 +6,8 @@ import { Student } from 'common';
 import AddAdminModal from './AddAdminModal';
 import AdminUser from './AdminUser';
 
+type Role = 'Designer' | 'TPM' | 'PM' | 'PMM' | 'Developer';
+
 type Props = {
   token: string;
 };
@@ -57,6 +59,16 @@ const ManageAdmins = ({ token }: Props) => {
     }
   };
 
+  /**
+   * Updates page with new admin
+   */
+  const refreshAdmins = async () => {
+    const response = await axios.post('/api/admin/users/get', { token });
+    if (response.status === 200) {
+      setAdmins(response.data.result);
+    }
+  };
+
   return (
     <div className={styles.adminPage}>
       <div className={styles.adminHeader}>
@@ -70,6 +82,7 @@ const ManageAdmins = ({ token }: Props) => {
         open={isModalOpen}
         setOpen={setIsModalOpen}
         token={token}
+        mode="add"
         onSuccess={() => {
           axios.post('/api/admin/users/get', { token }).then((response) => {
             if (response.status === 200) {
@@ -91,9 +104,16 @@ const ManageAdmins = ({ token }: Props) => {
           {admins.map((admin) => (
             <AdminUser
               key={admin.netId}
-              user={admin}
+              user={{
+                firstName: admin.firstName,
+                lastName: admin.lastName,
+                netId: admin.netId,
+                role: admin.role as Role,
+                date: admin.date ? new Date(admin.date) : undefined,
+              }}
               token={token}
               removeHandler={removeAdmin}
+              refreshAdmins={refreshAdmins}
             />
           ))}
         </div>
