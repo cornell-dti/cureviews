@@ -53,7 +53,7 @@ const ManageAdmins = ({ token }: Props) => {
     });
 
     if (response.status === 200) {
-      console.log(`Successfully gave admin privilege to ${_netId}`);
+      console.log("Successfully gave admin privilege to ${ _netId }");
     }
   };
 
@@ -79,16 +79,26 @@ const ManageAdmins = ({ token }: Props) => {
         }}
       />
 
-      <div className={styles.adminList}>
-        {admins.map((admin) => (
-          <AdminUser
-            key={admin.netId}
-            user={admin}
-            token={token}
-            removeHandler={removeAdmin}
-          />
-        ))}
+      <div className={styles.adminTable}>
+        <div className={styles.tableHeader}>
+          <div className={styles.nameHeader}>Name</div>
+          <div className={styles.roleHeader}>Role</div>
+          <div className={styles.addedHeader}>Added</div>
+          <div className={styles.actionHeader}></div>
+        </div>
+
+        <div className={styles.adminList}>
+          {admins.map((admin) => (
+            <AdminUser
+              key={admin.netId}
+              user={admin}
+              token={token}
+              removeHandler={removeAdmin}
+            />
+          ))}
+        </div>
       </div>
+
     </div>
   );
 };

@@ -177,7 +177,7 @@ export const removeAdminPrivilege = async (id: string) => {
 export const grantAdminPrivilege = async (id: string, role: string, firstName: string, lastName: string) => {
   const res = await Students.updateOne(
     { netId: id },
-    { $set: { privilege: 'admin', role: role, firstName: firstName, lastName: lastName } }
+    { $set: { privilege: 'admin', role: role, firstName: firstName, lastName: lastName, date: new Date() } }
   ).exec();
   return res;
 };

@@ -13,6 +13,7 @@ export interface InsertStudentType {
   token: string;
   privilege: string;
   role?: string;
+  date?: Date;
 }
 
 export interface TokenPayloadType {

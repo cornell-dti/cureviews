@@ -2,7 +2,13 @@ import React from 'react';
 import styles from '../Styles/AdminUser.module.css';
 
 type Props = {
-  user: any;
+  user: {
+    firstName: string;
+    lastName: string;
+    netId: string;
+    role?: string;
+    date?: Date;
+  };
   token: string;
   removeHandler: (arg1: any) => any;
 };
@@ -16,16 +22,28 @@ type Props = {
 
 const AdminUser = ({ user, token, removeHandler }: Props) => {
   return (
-    <div className={styles.userEntry}>
-      {user.firstName} {user.lastName}, {user.netId}
-      <button
-        className={styles.removeButton}
-        onClick={() => removeHandler(user)}
-      >
-        Remove
-      </button>
+    <div className={styles.adminRow}>
+      <div className={styles.nameCol}>
+        <div className={styles.fullName}>{user.firstName} {user.lastName}</div>
+        <div className={styles.netId}>{user.netId}</div>
+      </div>
+
+      <div className={styles.roleCol}>
+        <span className={`${styles.roleBadge} ${styles[user.role?.toLowerCase() ?? 'default']}`}>
+          {user.role?.trim() ? user.role : 'No Role'}
+        </span>
+      </div>
+
+      <div className={styles.dateCol}>
+        {user.date ? new Date(user.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : ''}
+      </div>
+
+      <div className={styles.actionCol}>
+        <button className={styles.menuButton}>⋮</button>
+      </div>
     </div>
   );
 };
+
 
 export default AdminUser;

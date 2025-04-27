@@ -1,8 +1,12 @@
-.adminHeader {
-  display: flex;
-  justify-content: space-between;
+.tableHeader {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
   align-items: center;
-  margin-bottom: 1.5rem;
 }
 
 .addAdminButtonTop {
@@ -15,4 +19,29 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+}
+
+.adminTable {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  border: 0.75px solid rgba(0, 118, 255, 0.30);
+  overflow: hidden;
+  background-color: white;
+}
+
+
+.adminList {
+  display: flex;
+  flex-direction: column;
+}
+
+.adminHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
 }
