@@ -16,6 +16,7 @@ const ManageAdmins = ({ token }: Props) => {
   const [admins, setAdmins] = useState<Student[]>([]);
   const [netId, setNetId] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   /**
    * Fetch all admins when the page loads
@@ -93,6 +94,19 @@ const ManageAdmins = ({ token }: Props) => {
       />
 
       <div className={styles.adminTable}>
+        <div className={styles.searchFilterRow}>
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder="Search Name or Net ID"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className={styles.buttonGroup}>
+            <button className={styles.filterButton}>Filter</button>
+            <button className={styles.sortButton}>Sort</button>
+          </div>
+        </div>
         <div className={styles.tableHeader}>
           <div className={styles.nameHeader}>Name</div>
           <div className={styles.roleHeader}>Role</div>
@@ -101,21 +115,27 @@ const ManageAdmins = ({ token }: Props) => {
         </div>
 
         <div className={styles.adminList}>
-          {admins.map((admin) => (
-            <AdminUser
-              key={admin.netId}
-              user={{
-                firstName: admin.firstName,
-                lastName: admin.lastName,
-                netId: admin.netId,
-                role: admin.role as Role,
-                date: admin.date ? new Date(admin.date) : undefined,
-              }}
-              token={token}
-              removeHandler={removeAdmin}
-              refreshAdmins={refreshAdmins}
-            />
-          ))}
+          {admins
+            .filter(admin =>
+              `${admin.firstName} ${admin.lastName} ${admin.netId}`
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())
+            )
+            .map((admin) => (
+              <AdminUser
+                key={admin.netId}
+                user={{
+                  firstName: admin.firstName,
+                  lastName: admin.lastName,
+                  netId: admin.netId,
+                  role: admin.role as Role,
+                  date: admin.date ? new Date(admin.date) : undefined,
+                }}
+                token={token}
+                removeHandler={removeAdmin}
+                refreshAdmins={refreshAdmins}
+              />
+            ))}
         </div>
       </div>
 
