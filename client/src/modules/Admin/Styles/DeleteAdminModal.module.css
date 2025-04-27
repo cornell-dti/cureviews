@@ -1,0 +1,66 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.modal {
+  background: white;
+  padding: 20px 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  position: relative;
+}
+
+.modal h2 {
+  text-align: left;
+  margin-bottom: 16px;
+  font-weight: normal;
+}
+
+.modal p {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.closeButton {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.cancelButton {
+  padding: 10px 24px;
+  border: 1px solid #807B7B;
+  border-radius: 12px;
+  background: none;
+  color: #807B7B;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.confirmButton {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 12px;
+  background-color: #BE4138;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
