@@ -18,11 +18,13 @@ type Props = {
   removeHandler: (arg1: any) => any;
   refreshAdmins: () => Promise<void>;
 };
+
 /**
  * AdminUser Component
  *
  * Displays an individual admin user entry, including their first name,
- * last name, NetID, and a button to remove the admin from the system.
+ * last name, NetID, role, and date added/edited and a button to edit or
+ * remove the admin from the system.
  */
 
 const AdminUser = ({ user, token, removeHandler, refreshAdmins }: Props) => {
