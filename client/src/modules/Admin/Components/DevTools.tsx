@@ -18,12 +18,11 @@ export default function AdminTools({ token }: AdminToolsProps) {
     semester: 'New semester data successfully added',
     profsReset: 'Professor data successfully reset to empty',
     professors: 'Professor data successfully updated',
-    subjects: 'Subject full name data successfully updated',
     description: 'Course description data successfully added',
     similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
     courseEval: 'Course evaluations successfully updated',
-    failure: 'API failed'
+    failure: 'Endpoint times out on production. Check Heroku logs'
   };
 
   type UpdateStatus = keyof typeof messages;
@@ -64,26 +63,54 @@ export default function AdminTools({ token }: AdminToolsProps) {
     <div className={styles.adminWrapper}>
       <h1>Developer Tools</h1>
       <div className={styles.buttonGroup}>
-        <button
-          onClick={() => handleApiCall('/api/admin/semester/add', 'semester')}
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Add New Semester
-        </button>
+        For specific features:
         <button
           onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
           Add Course Evaluations
+        </button>
+        <button
+          onClick={() => handleApiCall('/api/admin/course/desc', 'description')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Update Course Descriptions for Similarity
+        </button>
+        <button
+          onClick={() =>
+            handleApiCall('/api/admin/rec/similarity', 'similarity')
+          }
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Generate Similar Courses
+        </button>
+        <button
+          onClick={() =>
+            handleApiCall('/api/ai/summarize-courses', 'summarize')
+          }
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Summarize Reviews (Cornellians Say)
+        </button>
+      </div>
+      <div className={styles.buttonGroup}>
+        <button
+          onClick={() => handleApiCall('/api/admin/semester/add', 'semester')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Add New Semester
         </button>
         <button
           onClick={() =>
             handleApiCall('/api/admin/professors/add', 'professors')
           }
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
           Update Professors
         </button>
@@ -92,44 +119,12 @@ export default function AdminTools({ token }: AdminToolsProps) {
             handleApiCall('/api/admin/professors/reset', 'profsReset')
           }
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
           Reset Professors
         </button>
-        <button
-          onClick={() => handleApiCall('/api/admin/course/desc', 'description')}
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Update Descriptions
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/admin/subjects/update', 'subjects')
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Update Subjects
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/ai/summarize-courses', 'summarize')
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Summarize Reviews
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/admin/rec/similarity', 'similarity')
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Update Similarity Data
-        </button>
+
+
       </div>
 
       <div className={styles.raffleSection}>
@@ -145,7 +140,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
         <button
           onClick={raffleHandler}
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
           Draw Raffle Winner
         </button>
