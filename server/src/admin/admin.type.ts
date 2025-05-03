@@ -14,7 +14,9 @@ export interface AdminReviewRequestType {
 export type AdminUserRequestType = {
   token: string;
   userId: string;
-  role: string;
+  role?: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 
