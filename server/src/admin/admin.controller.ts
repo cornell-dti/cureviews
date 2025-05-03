@@ -21,7 +21,8 @@ import {
   AdminReviewVisibilityType,
   UpdateCourseMetrics,
   VerifyAdminType,
-  VerifyManageAdminType
+  VerifyManageAdminType,
+  AddAdminParams
 } from './admin.type';
 
 import {
@@ -250,7 +251,13 @@ export const removeAdmin = async ({ auth, id }: VerifyManageAdminType) => {
  * @param {string} lastName: lastName to update the user with
  * @returns The user with updated admin privilege if operation was successful, null otherwise
  */
-export const addAdmin = async ({ auth, id, role, firstName, lastName }: VerifyManageAdminType & { role: string, firstName: string, lastName: string }) => {
+export const addAdmin = async ({
+  auth,
+  id,
+  role,
+  firstName,
+  lastName,
+}: AddAdminParams) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     const res = await grantAdminPrivilege(id, role, firstName, lastName);

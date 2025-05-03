@@ -36,6 +36,14 @@ export interface VerifyManageAdminType {
   id: string;
 }
 
+export interface AddAdminParams {
+  auth: Auth;
+  id: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+}
+
 export interface AdminReviewVisibilityType {
   reviewId: string;
   auth: Auth;

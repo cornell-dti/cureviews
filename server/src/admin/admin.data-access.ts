@@ -167,7 +167,8 @@ export const removeAdminPrivilege = async (id: string) => {
 };
 
 /**
- * Gives a specified user admin privilege, assigns a role, and updates name
+ * Gives a specified user admin privilege, assigns a role, and updates name.
+ * Users must be in the database already to grant admin privilege.
  * @param id netid of user
  * @param role role to assign (e.g., 'Designer', 'PM', 'Developer')
  * @param firstName first name to update
