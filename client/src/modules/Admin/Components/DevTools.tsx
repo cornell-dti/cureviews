@@ -22,7 +22,8 @@ export default function AdminTools({ token }: AdminToolsProps) {
     similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
     courseEval: 'Course evaluations successfully updated',
-    failure: 'Endpoint times out on production. Check Heroku logs'
+    subject: 'Full subject names successfully updated',
+    failure: 'API may have failed, but endpoints time out on production. Check Heroku logs'
   };
 
   type UpdateStatus = keyof typeof messages;
@@ -63,41 +64,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
     <div className={styles.adminWrapper}>
       <h1>Developer Tools</h1>
       <div className={styles.buttonGroup}>
-        For specific features:
-        <button
-          onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
-          disabled={updating}
-          className={styles.adminButton}
-        >
-          Add Course Evaluations
-        </button>
-        <button
-          onClick={() => handleApiCall('/api/admin/course/desc', 'description')}
-          disabled={updating}
-          className={styles.adminButton}
-        >
-          Update Course Descriptions for Similarity
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/admin/rec/similarity', 'similarity')
-          }
-          disabled={updating}
-          className={styles.adminButton}
-        >
-          Generate Similar Courses
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/ai/summarize-courses', 'summarize')
-          }
-          disabled={updating}
-          className={styles.adminButton}
-        >
-          Summarize Reviews (Cornellians Say)
-        </button>
-      </div>
-      <div className={styles.buttonGroup}>
+        For semesterly updates:
         <button
           onClick={() => handleApiCall('/api/admin/semester/add', 'semester')}
           disabled={updating}
@@ -123,34 +90,77 @@ export default function AdminTools({ token }: AdminToolsProps) {
         >
           Reset Professors
         </button>
-
-
       </div>
 
-      <div className={styles.raffleSection}>
-        <h2>Raffle</h2>
-        <label>
-          Raffle Start Date:
+      <div className={styles.buttonGroup}>
+        For specific features:
+        <button
+          onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Add Course Evals
+        </button>
+        <button
+          onClick={() => handleApiCall('/api/admin/subjects/update', 'subject')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Update Full Subject Names
+        </button>
+        <button
+          onClick={() => handleApiCall('/api/admin/course/desc', 'description')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Update Course Descriptions (Similarity)
+        </button>
+        <button
+          onClick={() =>
+            handleApiCall('/api/admin/rec/similarity', 'similarity')
+          }
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Generate Similar Courses
+        </button>
+        <button
+          onClick={() =>
+            handleApiCall('/api/ai/summarize-courses', 'summarize')
+          }
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Update Cornellians Say
+        </button>
+      </div>
+
+      <div className={styles.raffleTitle}>
+        <h2>Pick a raffle winner</h2>
+        <label className={styles.raffleSection}>
+          Select a raffle start date:
           <input
             type="date"
             value={raffleStartDate}
             onChange={(e) => setRaffleStartDate(e.target.value)}
+            className={styles.selectDate}
           />
+          <button
+            onClick={raffleHandler}
+            disabled={updating}
+            className={styles.adminButton}
+          >
+            Draw Raffle Winner
+          </button>
         </label>
-        <button
-          onClick={raffleHandler}
-          disabled={updating}
-          className={styles.adminButton}
-        >
-          Draw Raffle Winner
-        </button>
         {raffleWinner && <p>Winner: {raffleWinner}</p>}
       </div>
 
-      {updated !== 'empty' && (
-        <div className={styles.updateMessage}>{messages[updated]}</div>
-      )}
-      {updating && <p>Updating... Please wait.</p>}
+      <div className={styles.updateSection}>
+        {updating && <p>Updating... Please wait.</p>}
+        {updated !== 'empty' && <p>{messages[updated]}</p>}
+      </div>
+
     </div>
   );
 }

@@ -28,3 +28,27 @@
   cursor: pointer;
 }
 
+.raffleTitle {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  font-weight: var(--semi-bold-weight);
+}
+
+.raffleSection {
+  flex-direction: row;
+  gap: 8px;
+  font-weight: var(--semi-bold-weight);
+}
+
+.selectDate {
+  margin-left: 12px;
+  margin-right: 12px;
+  font-weight: var(--regular-weight);
+}
+
+.updateSection{
+  margin-top: 24px;
+  font-size: var(--font-medium-size)
+}
+
