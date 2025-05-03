@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import styles from '../Styles/Admin.module.css';
+import styles from '../Styles/DevTools.module.css';
 
 interface AdminToolsProps {
   token: string;
@@ -12,7 +12,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
   const [updated, setUpdated] = useState<UpdateStatus>('empty');
   const [raffleStartDate, setRaffleStartDate] = useState('');
   const [raffleWinner, setRaffleWinner] = useState('');
-  const [doubleClick, setDoubleClick] = useState(false);
 
   const messages = {
     empty: '',
@@ -20,7 +19,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
     profsReset: 'Professor data successfully reset to empty',
     professors: 'Professor data successfully updated',
     subjects: 'Subject full name data successfully updated',
-    database: 'Database successfully initialized',
     description: 'Course description data successfully added',
     similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
@@ -59,16 +57,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
       setUpdated('failure');
     } finally {
       setUpdating(false);
-    }
-  };
-
-  const initDatabaseHandler = () => {
-    if (doubleClick) handleApiCall('/api/admin/db/initialize', 'database');
-    else {
-      alert(
-        'Warning! Clicking again will reset all data in the database. Are you sure?'
-      );
-      setDoubleClick(true);
     }
   };
 
@@ -141,13 +129,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
           className={styles.adminButtons}
         >
           Update Similarity Data
-        </button>
-        <button
-          onClick={initDatabaseHandler}
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Initialize Database
         </button>
       </div>
 

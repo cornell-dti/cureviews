@@ -1,7 +1,3 @@
-.adminWrapper {
-  max-width: 1440px;
-  padding: 170px 170px;
-}
 
 .semesterUpdate {
   border: 2px solid #ccc;
@@ -15,20 +11,6 @@
   background-color: var(--clr-blue-300);
   color: var(--clr-white);
   font-weight: var(--semi-bold-weight);
-  font-size: var(--font-small-size);
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-right: 2px;
-  padding: 5px 6px;
-  cursor: pointer;
-}
-
-.massApproveButton {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 5px;
-  background-color: var(--clr-green-200);
-  color: var(--clr-white);
   font-size: var(--font-small-size);
   border-radius: 5px;
   margin-top: 5px;

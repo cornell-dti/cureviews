@@ -54,8 +54,6 @@ export const Admin = () => {
         return <ManageAdmins token={token} />;
       case 'developer':
         return <DeveloperTools token={token} />;
-      case 'analytics':
-        return <Stats token={token} />;
       default:
         return <Reviews token={token} />;
     }

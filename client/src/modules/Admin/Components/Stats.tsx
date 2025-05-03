@@ -57,7 +57,6 @@ const Stats = ({ token }: StatsProps) => {
 
   return (
     <div className={styles.diagnosticbox}>
-      <h2>Diagnostic information</h2>
       <div className={styles.stats}>
         <button className={styles.downloadButton} onClick={downloadCSVFile}>
           Download ApprovedReviewCount by Class

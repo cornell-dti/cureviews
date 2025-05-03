@@ -9,8 +9,8 @@ type SidebarProps = {
 /**
  * Sidebar Component
  *
- * Component to navigate the admin page. There are four pages reviews,
- * analytics, manage admins, and developer tools. Hovering over a page
+ * Component to navigate the admin page. There are three pages: reviews,
+ * manage admins, and developer tools. Hovering over a page
  * option changes the text to blue and the current selected page is highlighted
  * blue.
  */
@@ -18,7 +18,6 @@ type SidebarProps = {
 const AdminSidebar = ({ currentPage, setCurrentPage }: SidebarProps) => {
   const menuItems = [
     { key: 'reviews', label: 'Reviews' },
-    { key: 'analytics', label: 'Analytics' },
     { key: 'admins', label: 'Admin Users' },
     { key: 'developer', label: 'Dev Tools' }
   ];
