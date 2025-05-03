@@ -474,19 +474,14 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
   if (!userIsAdmin) {
     return null;
   }
-
-  const descriptionResult = await addAllProcessedDescriptions();
-  if (descriptionResult) {
-    const idfResult = await addIdfVector();
-    if (idfResult) {
-      const tfidfResult = await addAllTfIdfVectors();
-      if (tfidfResult) {
-        const similarityResult = await addAllSimilarityData();
-        return similarityResult;
-      }
-    }
-  }
-  return false;
+  
+  // UNCOMMENT IF YOU NEED TO PROCESS THESE, but likely not necessary
+  
+  // const descriptionResult = await addAllProcessedDescriptions();
+  // const idfResult = await addIdfVector();
+  // const tfidfResult = await addAllTfIdfVectors();
+  const similarityResult = await addAllSimilarityData();
+  return similarityResult;
 };
 
 /* DRAWING RAFFLE WINNER CODE: */

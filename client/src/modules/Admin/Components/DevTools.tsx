@@ -30,11 +30,12 @@ export default function AdminTools({ token }: AdminToolsProps) {
 
   const handleApiCall = async (
     endpoint: string,
-    successState: keyof typeof messages
+    successState: keyof typeof messages,
+    bodyParams?: Record<string, any>
   ) => {
     setUpdating(true);
     try {
-      await axios.post(endpoint, { token });
+      await axios.post(endpoint, { token, ...bodyParams });
       setUpdated(successState);
     } catch {
       setUpdated('failure');
@@ -66,7 +67,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
       <div className={styles.buttonGroup}>
         For semesterly updates:
         <button
-          onClick={() => handleApiCall('/api/admin/semester/add', 'semester')}
+          onClick={() => handleApiCall('/api/admin/semester/add', 'semester', {semester: '2025FA'})}
           disabled={updating}
           className={styles.adminButton}
         >
