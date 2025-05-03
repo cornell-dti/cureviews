@@ -167,17 +167,22 @@ export const removeAdminPrivilege = async (id: string) => {
 };
 
 /**
- * Gives a specified user admin privilege
+ * Gives a specified user admin privilege, assigns a role, and updates name.
+ * Users must be in the database already to grant admin privilege.
  * @param id netid of user
+ * @param role role to assign (e.g., 'Designer', 'PM', 'Developer')
+ * @param firstName first name to update
+ * @param lastName last name to update
  * @returns result of the database operation
  */
-export const grantAdminPrivilege = async (id: string) => {
+export const grantAdminPrivilege = async (id: string, role: string, firstName: string, lastName: string) => {
   const res = await Students.updateOne(
     { netId: id },
-    { $set: { privilege: 'admin' } }
+    { $set: { privilege: 'admin', role: role, firstName: firstName, lastName: lastName, date: new Date() } }
   ).exec();
   return res;
 };
+
 
 /**
  * @param start date

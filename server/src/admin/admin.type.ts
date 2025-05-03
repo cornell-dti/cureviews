@@ -11,10 +11,14 @@ export interface AdminReviewRequestType {
   review: AdminReviewType;
 }
 
-export interface AdminUserRequestType {
+export type AdminUserRequestType = {
   token: string;
   userId: string;
-}
+  role?: string;
+  firstName?: string;
+  lastName?: string;
+};
+
 
 interface AdminReviewType {
   _id: string;
@@ -32,6 +36,14 @@ export interface VerifyAdminType {
 export interface VerifyManageAdminType {
   auth: Auth;
   id: string;
+}
+
+export interface AddAdminParams {
+  auth: Auth;
+  id: string;
+  role: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface AdminReviewVisibilityType {

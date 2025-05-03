@@ -350,18 +350,21 @@ adminRouter.post('/users/remove', async (req, res) => {
 /** Reachable at POST /api/admin/users/add
  * @body token: a session's current token
  * @body userId: a user's _id field
+ * @body role: the role to assign to the new admin
+ * @body firstName: the first name to update the user with
+ * @body lastName: the last name to update the user with
  * Grants admin privilege to an existing user with netId = userId
  */
 adminRouter.post('/users/add', async (req, res) => {
-  const { token, userId }: AdminUserRequestType = req.body;
+  const { token, userId, role, firstName, lastName }: AdminUserRequestType = req.body;
 
   try {
     const auth = new Auth({ token });
-    const result = await addAdmin({ auth: auth, id: userId });
+    const result = await addAdmin({ auth, id: userId, role, firstName, lastName });
 
     if (result) {
       return res.status(200).json({
-        message: `Granted admin privilege to user with id ${userId}`
+        message: `Granted admin privilege to user with id ${userId}, role ${role}, and first name ${firstName}`
       });
     }
 
