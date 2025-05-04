@@ -27,7 +27,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
     failure: 'API may have failed, but endpoints time out on production. Check Heroku logs'
   };
 
-  const semesters = ['FA24', 'SP25', 'FA25', 'SP26', 'FA26', 'SP27', 'FA27', 'SP28'];
+  const semesters = ['FA21', 'SP22', 'FA22', 'SP23', 'FA23', 'SP24', 'FA24', 'SP25', 'FA25', 'SP26', 'FA26', 'SP27', 'FA27', 'SP28'];
 
   type UpdateStatus = keyof typeof messages;
 
