@@ -198,11 +198,19 @@ export const findReviewsByDate = async (start: Date) => {
   return reviews;
 };
 
+/**
+ * @param courseId string id
+ * @returns reviews for the course with courseId
+ */
 export const getCourseReviews = async (courseId: string) => {
   const reviews = await Reviews.find({ class: courseId }).exec();
   return reviews;
 };
 
+/**
+ * @param user student object id in database
+ * @returns the user with the given id
+ */
 export const findStudentByUser = async (user: string) => {
   const student = await Students.findOne({ _id: user }).exec();
   return student;

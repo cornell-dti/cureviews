@@ -696,9 +696,9 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
               classSub: c.classSub,
               classNum: c.classNum,
               tags: [
-                `Overall: ${rating}/5`,
-                `${workload} workload`,
-                `${difficulty} difficulty`
+                  `Overall: ${rating.toPrecision(2)}/5`,
+                  `${workload} workload`,
+                  `${difficulty} difficulty`
               ],
               similarityScore: cos
             });
