@@ -28,7 +28,7 @@
 }
 
 .dropdownText {
-  color: #807B7B;
+  color: #807b7b;
 }
 
 .dropdownMenu li {
@@ -63,11 +63,11 @@
 }
 
 .selected {
-  background: #D9EAFF;
+  background: #d9eaff;
   border-radius: 15px;
 }
 
 .dropdownItem:hover {
-  background: #D9EAFF;
+  background: #d9eaff;
   border-radius: 15px;
 }

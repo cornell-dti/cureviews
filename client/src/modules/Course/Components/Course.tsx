@@ -166,10 +166,17 @@ export const Course = () => {
           setSimilarCourses(recommendations);
 
           const courseEvalObject = await axios.post(
-            "/api/courses/get-course-eval",
-            { classSub: course.classSub.toUpperCase(), classNum: course.classNum }
-          )
-          setCourseEval(courseEvalObject.data.result === 0 ? null : courseEvalObject.data.result);
+            '/api/courses/get-course-eval',
+            {
+              classSub: course.classSub.toUpperCase(),
+              classNum: course.classNum
+            }
+          );
+          setCourseEval(
+            courseEvalObject.data.result === 0
+              ? null
+              : courseEvalObject.data.result
+          );
 
           setPageStatus(PageStatus.Success);
         } else {

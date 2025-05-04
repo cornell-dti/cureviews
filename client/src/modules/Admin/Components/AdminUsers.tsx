@@ -7,7 +7,6 @@ import AddAdminModal from './AddAdminModal';
 import AdminUser from './AdminUser';
 
 type Role = 'Designer' | 'TPM' | 'PM' | 'PMM' | 'Developer';
-type SortOption = 'name' | 'role' | 'date-latest' | 'date-earliest';
 
 type Props = {
   token: string;
@@ -60,20 +59,6 @@ const ManageAdmins = ({ token }: Props) => {
 
     if (response.status === 200) {
       setAdmins(admins.filter((admin) => admin.netId !== user.netId));
-    }
-  };
-
-  /**
-   * Add a new admin by NetID
-   */
-  const addAdminByNetId = async (_netId: string) => {
-    const response = await axios.post('/api/admin/users/add', {
-      userId: _netId,
-      token: token
-    });
-
-    if (response.status === 200) {
-      console.log("Successfully gave admin privilege to ${ _netId }");
     }
   };
 

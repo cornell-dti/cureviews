@@ -6,66 +6,70 @@ import { CourseEvaluation } from 'common';
 /** Given raw course evaluation data, return an object with its course code as the key
  * and merged course data from the course evaluations JSON file as an object value. */
 const parseEval = (data: CourseEvaluationsRaw): CourseEvaluations => {
-  const evals: CourseEvaluations = Object.entries(data)
-    .reduce<CourseEvaluations>((acc, [key, value]) => {
-      if (value.courseName.split(' ')[2] !== 'LEC') return acc;
+  const evals: CourseEvaluations = Object.entries(
+    data
+  ).reduce<CourseEvaluations>((acc, [key, value]) => {
+    if (value.courseName.split(' ')[2] !== 'LEC') return acc;
 
-      const numGradeNA = parseInt(value.numGradeNA, 10) || 0;
-      const numFresh = parseInt(value.numFresh, 10) || 0;
-      const numSoph = parseInt(value.numSoph, 10) || 0;
-      const numJr = parseInt(value.numJr, 10) || 0;
-      const numSr = parseInt(value.numSr, 10) || 0;
-      const totalEvals = numGradeNA + numFresh + numSoph + numJr + numSr;
-      const courseNameSplit = value.courseName.split(' ')
+    const numGradeNA = parseInt(value.numGradeNA, 10) || 0;
+    const numFresh = parseInt(value.numFresh, 10) || 0;
+    const numSoph = parseInt(value.numSoph, 10) || 0;
+    const numJr = parseInt(value.numJr, 10) || 0;
+    const numSr = parseInt(value.numSr, 10) || 0;
+    const totalEvals = numGradeNA + numFresh + numSoph + numJr + numSr;
+    const courseNameSplit = value.courseName.split(' ');
 
-      acc[key] = {
-        ...value,
-        _id: shortid.generate(),
-        subject: courseNameSplit[0],
-        courseNumber: courseNameSplit[1],
-        courseName: courseNameSplit[0] + " " + courseNameSplit[1],
-        courseOverall: parseFloat(value.courseOverall) || 0,
-        profTeachingSkill: parseFloat(value.profTeachingSkill) || 0,
-        profKnowledge: parseFloat(value.profKnowledge) || 0,
-        profClimate: parseFloat(value.profClimate) || 0,
-        profOverall: parseFloat(value.profOverall) || 0,
-        numA: parseInt(value.numA, 10) || 0,
-        numB: parseInt(value.numB, 10) || 0,
-        numC: parseInt(value.numC, 10) || 0,
-        numD: parseInt(value.numD, 10) || 0,
-        numF: parseInt(value.numF, 10) || 0,
-        numS: parseInt(value.numS, 10) || 0,
-        numU: parseInt(value.numU, 10) || 0,
-        numGradeNA: numGradeNA,
-        numFresh: numFresh,
-        numSoph: numSoph,
-        numJr: numJr,
-        numSr: numSr,
-        totalEvals: totalEvals,
-        numAg: parseInt(value.numAg, 10) || 0,
-        numHumec: parseInt(value.numHumec, 10) || 0,
-        numArch: parseInt(value.numArch, 10) || 0,
-        numILR: parseInt(value.numILR, 10) || 0,
-        numArts: parseInt(value.numArts, 10) || 0,
-        numEng: parseInt(value.numEng, 10) || 0,
-        numHotel: parseInt(value.numHotel, 10) || 0,
-        numOther: parseInt(value.numOther, 10) || 0,
-        numMajorReq: parseInt(value.numMajorReq, 10) || 0,
-        numReputation: parseInt(value.numReputation, 10) || 0,
-        numInterest: parseInt(value.numInterest, 10) || 0,
-        sentiments: [...Array(18).keys()].map(x =>
-          [x += 8, (parseFloat(value['statement' + x + 'Score']) || 0)]
-        ),
-      }
-      return acc
-    }, {})
+    acc[key] = {
+      ...value,
+      _id: shortid.generate(),
+      subject: courseNameSplit[0],
+      courseNumber: courseNameSplit[1],
+      courseName: courseNameSplit[0] + ' ' + courseNameSplit[1],
+      courseOverall: parseFloat(value.courseOverall) || 0,
+      profTeachingSkill: parseFloat(value.profTeachingSkill) || 0,
+      profKnowledge: parseFloat(value.profKnowledge) || 0,
+      profClimate: parseFloat(value.profClimate) || 0,
+      profOverall: parseFloat(value.profOverall) || 0,
+      numA: parseInt(value.numA, 10) || 0,
+      numB: parseInt(value.numB, 10) || 0,
+      numC: parseInt(value.numC, 10) || 0,
+      numD: parseInt(value.numD, 10) || 0,
+      numF: parseInt(value.numF, 10) || 0,
+      numS: parseInt(value.numS, 10) || 0,
+      numU: parseInt(value.numU, 10) || 0,
+      numGradeNA: numGradeNA,
+      numFresh: numFresh,
+      numSoph: numSoph,
+      numJr: numJr,
+      numSr: numSr,
+      totalEvals: totalEvals,
+      numAg: parseInt(value.numAg, 10) || 0,
+      numHumec: parseInt(value.numHumec, 10) || 0,
+      numArch: parseInt(value.numArch, 10) || 0,
+      numILR: parseInt(value.numILR, 10) || 0,
+      numArts: parseInt(value.numArts, 10) || 0,
+      numEng: parseInt(value.numEng, 10) || 0,
+      numHotel: parseInt(value.numHotel, 10) || 0,
+      numOther: parseInt(value.numOther, 10) || 0,
+      numMajorReq: parseInt(value.numMajorReq, 10) || 0,
+      numReputation: parseInt(value.numReputation, 10) || 0,
+      numInterest: parseInt(value.numInterest, 10) || 0,
+      sentiments: [...Array(18).keys()].map((x) => [
+        (x += 8),
+        parseFloat(value['statement' + x + 'Score']) || 0
+      ])
+    };
+    return acc;
+  }, {});
 
   // Merge objects with the same lecture
   const mergedLecEvals: CourseEvaluations = {};
   for (const [_, value] of Object.entries(evals)) {
     if (mergedLecEvals[value.courseName]) {
-      mergedLecEvals[value.courseName] =
-        mergeCourseLecEvaluations(mergedLecEvals[value.courseName], value);
+      mergedLecEvals[value.courseName] = mergeCourseLecEvaluations(
+        mergedLecEvals[value.courseName],
+        value
+      );
     } else {
       mergedLecEvals[value.courseName] = value;
     }
@@ -74,19 +78,23 @@ const parseEval = (data: CourseEvaluationsRaw): CourseEvaluations => {
   // Merge objects with the same course
   const mergedCourseEvals: CourseEvaluations = {};
   for (const [_, value] of Object.entries(mergedLecEvals)) {
-    const courseName = value.courseName.split(' ').slice(0, 2).join(' ')
+    const courseName = value.courseName.split(' ').slice(0, 2).join(' ');
     if (mergedCourseEvals[courseName]) {
-      mergedCourseEvals[courseName] = mergeCourseEvaluations(mergedCourseEvals[courseName], value);
+      mergedCourseEvals[courseName] = mergeCourseEvaluations(
+        mergedCourseEvals[courseName],
+        value
+      );
     } else {
       mergedCourseEvals[courseName] = value;
     }
   }
 
   const sortedSentimentEvals: CourseEvaluations = Object.fromEntries(
-    Object.entries(mergedCourseEvals)
-      .map(([key, value]): [string, CourseEvaluation] => {
-        return [key, sortTopStatements(value)]
-      })
+    Object.entries(mergedCourseEvals).map(
+      ([key, value]): [string, CourseEvaluation] => {
+        return [key, sortTopStatements(value)];
+      }
+    )
   );
 
   return sortedSentimentEvals;
@@ -94,20 +102,22 @@ const parseEval = (data: CourseEvaluationsRaw): CourseEvaluations => {
 
 /** Given two numbers and two corresponding weights, return the weighted average. */
 const weightedAvg = (
-  n1: number, n2: number, w1: number, w2: number
+  n1: number,
+  n2: number,
+  w1: number,
+  w2: number
 ): number => {
-  if (n1 == 0 || w1 == 0) return n2
-  if (n2 == 0 || w2 == 0) return n1
-  if (w1 + w2 <= 0) throw new Error('Invalid argument: negative weight')
-  return Math.floor((((n1 * w1) + (n2 * w2)) / (w1 + w2)) * 100) / 100
+  if (n1 == 0 || w1 == 0) return n2;
+  if (n2 == 0 || w2 == 0) return n1;
+  if (w1 + w2 <= 0) throw new Error('Invalid argument: negative weight');
+  return Math.floor(((n1 * w1 + n2 * w2) / (w1 + w2)) * 100) / 100;
 };
 
 /** Given a course evaluation, sort the sentiments array to be in order of
  * rating and return the modified eval. */
-const sortTopStatements = (
-  courseEval: CourseEvaluation
-): CourseEvaluation => {
-  return {...courseEval,
+const sortTopStatements = (courseEval: CourseEvaluation): CourseEvaluation => {
+  return {
+    ...courseEval,
     sentiments: courseEval.sentiments
       .map((x): [number, number] => [x[0], Math.floor(x[1] * 100) / 100])
       .sort((a, b) => b[1] - a[1])
@@ -129,18 +139,38 @@ const mergeCourseLecEvaluations = (
     // discrepancies between the two evals (likely errors)
     // are overwritten here.
     ...eval1,
-    courseOverall: weightedAvg(eval1.courseOverall, eval2.courseOverall, w1, w2),
-    profTeachingSkill: weightedAvg(eval1.profTeachingSkill, eval2.profTeachingSkill, w1, w2),
-    profKnowledge: weightedAvg(eval1.profKnowledge, eval2.profKnowledge, w1, w2),
+    courseOverall: weightedAvg(
+      eval1.courseOverall,
+      eval2.courseOverall,
+      w1,
+      w2
+    ),
+    profTeachingSkill: weightedAvg(
+      eval1.profTeachingSkill,
+      eval2.profTeachingSkill,
+      w1,
+      w2
+    ),
+    profKnowledge: weightedAvg(
+      eval1.profKnowledge,
+      eval2.profKnowledge,
+      w1,
+      w2
+    ),
     profClimate: weightedAvg(eval1.profClimate, eval2.profClimate, w1, w2),
     profOverall: weightedAvg(eval1.profOverall, eval2.profOverall, w1, w2),
     sentiments: eval1.sentiments.map((item, index) => {
       const statementNum = item[0];
       return [
         statementNum,
-        weightedAvg(eval1.sentiments[index][1], eval2.sentiments[index][1], w1, w2)
+        weightedAvg(
+          eval1.sentiments[index][1],
+          eval2.sentiments[index][1],
+          w1,
+          w2
+        )
       ];
-    }),
+    })
   };
 };
 
@@ -185,10 +215,13 @@ const mergeCourseEvaluations = (
       return [
         statementNum,
         weightedAvg(
-          eval1.sentiments[index][1], eval2.sentiments[index][1], totalEvals1, totalEvals2
+          eval1.sentiments[index][1],
+          eval2.sentiments[index][1],
+          totalEvals1,
+          totalEvals2
         )
       ];
-    }),
+    })
   };
 };
 
@@ -201,32 +234,34 @@ const mergeCourseEvaluations = (
 export const addCourseEvalsFromJson = async (
   data: CourseEvaluationsRaw
 ): Promise<boolean> => {
-  const parsedData: CourseEvaluations = parseEval(data)
+  const parsedData: CourseEvaluations = parseEval(data);
 
   const v1 = await Promise.all(
-    Object.entries(parsedData)
-      .map(async ([_, value]) => {
-        const cEval = value
-        const cEvalIfExists = await CourseEvaluations.findOne({
-          subject: cEval.subject,
-          courseNumber: cEval.courseNumber
-        }).exec();
+    Object.entries(parsedData).map(async ([_, value]) => {
+      const cEval = value;
+      const cEvalIfExists = await CourseEvaluations.findOne({
+        subject: cEval.subject,
+        courseNumber: cEval.courseNumber
+      }).exec();
 
-        if (!cEvalIfExists) {
-          console.log(`Adding new course eval for course ${cEval.courseName}`)
-          const res = await new CourseEvaluations({
-            ...cEval
-          }).save().catch((err) => {
+      if (!cEvalIfExists) {
+        console.log(`Adding new course eval for course ${cEval.courseName}`);
+        const res = await new CourseEvaluations({
+          ...cEval
+        })
+          .save()
+          .catch((err) => {
             console.log(err);
             return null;
           });
-          // db operation was not successful
-          if (!res) {
-            throw new Error();
-          }
+        // db operation was not successful
+        if (!res) {
+          throw new Error();
         }
-        return true;
-      })).catch((_) => null);
+      }
+      return true;
+    })
+  ).catch((_) => null);
 
   if (!v1) {
     console.log('Something went wrong while updating subjects!');

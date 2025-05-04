@@ -152,7 +152,7 @@ courseRouter.post('/get-course-eval', async (req, res) => {
 
     const courseEvalDoc = await getCourseEval({
       classSub,
-      classNum,
+      classNum
     });
 
     if (courseEvalDoc === null) {
