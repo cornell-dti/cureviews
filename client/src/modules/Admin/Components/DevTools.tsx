@@ -12,6 +12,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
   const [updated, setUpdated] = useState<UpdateStatus>('empty');
   const [raffleStartDate, setRaffleStartDate] = useState('');
   const [raffleWinner, setRaffleWinner] = useState('');
+  const [selectedSemester, setSelectedSemester] = useState('');
 
   const messages = {
     empty: '',
@@ -25,6 +26,8 @@ export default function AdminTools({ token }: AdminToolsProps) {
     subject: 'Full subject names successfully updated',
     failure: 'API may have failed, but endpoints time out on production. Check Heroku logs'
   };
+
+  const semesters = ['FA24', 'SP25', 'FA25', 'SP26', 'FA26', 'SP27', 'FA27', 'SP28'];
 
   type UpdateStatus = keyof typeof messages;
 
@@ -66,13 +69,27 @@ export default function AdminTools({ token }: AdminToolsProps) {
       <h1>Developer Tools</h1>
       <div className={styles.buttonGroup}>
         For semesterly updates:
-        <button
-          onClick={() => handleApiCall('/api/admin/semester/add', 'semester', {semester: 'FA25'})}
-          disabled={updating}
-          className={styles.adminButton}
-        >
-          Add New Semester
-        </button>
+        <div className={styles.semester}>
+          <button
+            onClick={() => {console.log(selectedSemester); handleApiCall('/api/admin/semester/add', 'semester', {semester: selectedSemester})}}
+            disabled={updating}
+            className={styles.adminButton}
+          >
+            Add New Semester
+          </button>
+          <select
+            value={selectedSemester}
+            onChange={(e) => {setSelectedSemester(e.target.value)}}
+            className={styles.semDropdown}
+            disabled={updating}
+          >
+            {semesters.map((sem) => (
+              <option key={sem} value={sem}>
+                {sem}
+              </option>
+            ))}
+          </select>
+        </div>
         <button
           onClick={() =>
             handleApiCall('/api/admin/professors/add', 'professors')
