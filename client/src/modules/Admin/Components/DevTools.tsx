@@ -67,7 +67,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
       <div className={styles.buttonGroup}>
         For semesterly updates:
         <button
-          onClick={() => handleApiCall('/api/admin/semester/add', 'semester', {semester: '2025FA'})}
+          onClick={() => handleApiCall('/api/admin/semester/add', 'semester', {semester: 'FA25'})}
           disabled={updating}
           className={styles.adminButton}
         >

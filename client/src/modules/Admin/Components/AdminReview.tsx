@@ -108,11 +108,11 @@ const UpdateReview = ({
         <div className={styles.reviewTitle}>
           <span className={styles.courseName}>{shortName}, {fullName}</span>
         </div>
-        <p className={styles.reviewMajor}>
+        <div className={styles.reviewMajor}>
           {review.major && review.major.length > 0 && (
             <p className={styles.reviewMajor}>Major <span className={styles.majorText}>{Array.isArray(review.major) ? review.major.join(', ') : review.major}</span></p>
           )}
-        </p>
+        </div>
       </div>
 
       <div className={styles.reviewContent}>

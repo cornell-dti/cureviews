@@ -382,6 +382,7 @@ adminRouter.post('/users/add', async (req, res) => {
  */
 adminRouter.post('/semester/add', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
+  console.log(semester);
   try {
     const auth = new Auth({ token });
     const result = await addNewSemDb({ auth, semester });
