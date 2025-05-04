@@ -442,7 +442,7 @@ adminRouter.post('/courses/add-course-evals', async (req, res) => {
 
 /** Reachable at POST /api/admin/professors/add
  * @body token: a session's current token
- * Adds all professors to the db for the given semester. For admins only
+ * Adds all professors to the db for all semesters. For admins only
  */
 adminRouter.post('/professors/add', async (req, res) => {
   const { token }: AdminRequestType = req.body;
@@ -462,7 +462,7 @@ adminRouter.post('/professors/add', async (req, res) => {
 
 /** Reachable at POST /api/admin/professors/reset
  * @body token: a session's current token
- * Resets all professors in the db for the given semester. For admins only
+ * Resets all professors in the db for all semesters. For admins only
  */
 adminRouter.post('/professors/reset', async (req, res) => {
   const { token }: AdminRequestType = req.body;
@@ -532,7 +532,8 @@ adminRouter.post('/subjects/update', async (req, res) => {
 
 /** Reachable at POST /api/admin/db/initialize
  * @body token: a session's current token
- * Initializes the database for the semester. For admins only
+ * Initializes the database for all semesters. For admins only
+ * DO NOT CALL IN PROD.
  */
 adminRouter.post('/db/initialize', async (req, res) => {
   const { token }: AdminRequestType = req.body;
