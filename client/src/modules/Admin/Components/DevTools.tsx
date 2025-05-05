@@ -80,31 +80,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
     <div className={styles.adminWrapper}>
       <h1>Developer Tools</h1>
       <div className={styles.buttonGroup}>
-        <button
-          onClick={() => handleApiCall('/api/admin/semester/add', 'semester')}
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Add New Semester
-        </button>
-        <button
-          onClick={() =>
-            handleCourseEvalApiCall('/api/admin/courses/add-course-evals', 'courseEval', false)
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Add Course Evaluations
-        </button>
-        <button
-          onClick={() =>
-            handleCourseEvalApiCall('/api/admin/courses/add-course-evals', 'courseEval', true)
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Delete and regenerate all Course Evaluations
-        </button>
         For semesterly updates:
         <div className={styles.semester}>
           <button
