@@ -10,7 +10,7 @@
 }
 
 .addAdminButtonTop {
-  background-color: #0076FF;
+  background-color: #0076ff;
   color: white;
   font-weight: 600;
   padding: 0.5rem 1rem;
@@ -27,7 +27,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  border: 0.75px solid rgba(0, 118, 255, 0.30);
+  border: 0.75px solid rgba(0, 118, 255, 0.3);
   background-color: white;
 }
 
@@ -188,7 +188,10 @@
   font-weight: 500;
   color: #0070f3;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
 }
 
 .filterButton:hover,

@@ -5,7 +5,8 @@ import {
   AdminReviewRequestType,
   AdminRequestType,
   AdminUserRequestType,
-  AdminAddSemesterRequestType, CourseEvalRequestType
+  AdminAddSemesterRequestType,
+  CourseEvalRequestType
 } from './admin.type';
 import {
   getApprovedReviews,
@@ -356,11 +357,18 @@ adminRouter.post('/users/remove', async (req, res) => {
  * Grants admin privilege to an existing user with netId = userId
  */
 adminRouter.post('/users/add', async (req, res) => {
-  const { token, userId, role, firstName, lastName }: AdminUserRequestType = req.body;
+  const { token, userId, role, firstName, lastName }: AdminUserRequestType =
+    req.body;
 
   try {
     const auth = new Auth({ token });
-    const result = await addAdmin({ auth, id: userId, role, firstName, lastName });
+    const result = await addAdmin({
+      auth,
+      id: userId,
+      role,
+      firstName,
+      lastName
+    });
 
     if (result) {
       return res.status(200).json({

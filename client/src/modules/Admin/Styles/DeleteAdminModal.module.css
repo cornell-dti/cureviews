@@ -47,10 +47,10 @@
 
 .cancelButton {
   padding: 10px 24px;
-  border: 1px solid #807B7B;
+  border: 1px solid #807b7b;
   border-radius: 12px;
   background: none;
-  color: #807B7B;
+  color: #807b7b;
   font-weight: bold;
   cursor: pointer;
 }
@@ -59,7 +59,7 @@
   padding: 10px 24px;
   border: none;
   border-radius: 12px;
-  background-color: #BE4138;
+  background-color: #be4138;
   color: white;
   font-weight: bold;
   cursor: pointer;

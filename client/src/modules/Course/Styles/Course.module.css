@@ -44,9 +44,10 @@
   position: relative; /* For absolute positioning of the indicator */
 }
 
-.tabactivetitle, .tabtitle {
+.tabactivetitle,
+.tabtitle {
   width: 100%;
-  font-family: "SF Pro";
+  font-family: 'SF Pro';
   text-align: center;
   font-weight: var(--semi-bold-weight);
   font-size: 24px;

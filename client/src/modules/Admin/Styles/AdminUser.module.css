@@ -10,7 +10,7 @@
 }
 
 .adminRow:hover {
-  background-color: #D9EAFF;
+  background-color: #d9eaff;
 }
 
 .nameCol {
@@ -39,22 +39,22 @@
 }
 
 .designer {
-  background-color: #E4DCF3;
+  background-color: #e4dcf3;
   color: black;
 }
 
 .pmm {
-  background-color: #F6DDD8;
+  background-color: #f6ddd8;
   color: black;
 }
 
 .pm {
-  background-color: #FBEFCC;
+  background-color: #fbefcc;
   color: black;
 }
 
 .tpm {
-  background-color: #DAEAE0;
+  background-color: #daeae0;
   color: black;
 }
 
@@ -113,5 +113,5 @@
 }
 
 .dropdownItem:hover {
-  background-color: #D9EAFF;
+  background-color: #d9eaff;
 }

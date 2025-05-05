@@ -326,14 +326,18 @@ export const Course = () => {
             {/* Custom Tab Component Structure */}
             <div className={styles.tabs}>
               <button
-                className={reviewTabSelected ? styles.tabactivetitle : styles.tabtitle}
+                className={
+                  reviewTabSelected ? styles.tabactivetitle : styles.tabtitle
+                }
                 onClick={() => setReviewTabSelected(true)}
               >
                 Past Reviews ({visibleCourseReviews.length})
               </button>
               {courseEval !== null && (
                 <button
-                  className={reviewTabSelected ? styles.tabtitle : styles.tabactivetitle}
+                  className={
+                    reviewTabSelected ? styles.tabtitle : styles.tabactivetitle
+                  }
                   onClick={() => setReviewTabSelected(false)}
                 >
                   Course Evaluation Data
@@ -344,7 +348,9 @@ export const Course = () => {
               <div className={styles.tabIndicator}></div>
 
               {/* Add a blue active indicator that moves */}
-              <div className={`${courseEval != null ? styles.activeIndicator : styles.noEvalsIndicator} ${reviewTabSelected ? styles.firstTab : styles.secondTab}`}></div>
+              <div
+                className={`${courseEval != null ? styles.activeIndicator : styles.noEvalsIndicator} ${reviewTabSelected ? styles.firstTab : styles.secondTab}`}
+              ></div>
             </div>
             {reviewTabSelected && (
               <div className={styles.reviewscontainer}>
@@ -402,7 +408,8 @@ export const Course = () => {
                     token={token}
                   />
                 </div>
-              </div>)}
+              </div>
+            )}
             {!reviewTabSelected && courseEval != null && (
               <CourseEval courseEval={courseEval} />
             )}
@@ -413,8 +420,7 @@ export const Course = () => {
           </div>
         </div>
 
-        {/* Fixed Bottom-Right Review Button */
-        }
+        {/* Fixed Bottom-Right Review Button */}
         <button
           className={`${!scrolled && styles.hide} ${styles.fixedreviewbutton} `}
           onClick={() => setOpen(true)}
@@ -431,8 +437,7 @@ export const Course = () => {
           }
         />
       </div>
-    )
-      ;
+    );
   }
 
   return <Loading />;

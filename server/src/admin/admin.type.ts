@@ -19,7 +19,6 @@ export type AdminUserRequestType = {
   lastName?: string;
 };
 
-
 interface AdminReviewType {
   _id: string;
   reported: number;

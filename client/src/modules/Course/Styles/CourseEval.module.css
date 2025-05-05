@@ -1,169 +1,169 @@
 /* Base styles for the course evaluation dashboard */
 .dashboard {
-    display: grid;
-    grid-template-areas:
-    "professorRating professorRating professorRating topSentiments topSentiments"
-    "gradeDistribution gradeDistribution gradeDistribution studentYear studentYear"
-    "schoolCollege schoolCollege reasonTaking reasonTaking reasonTaking"
-    "schoolCollege schoolCollege reasonTaking reasonTaking reasonTaking";
-    grid-template-rows: 250px 300px 150px 150px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
+  display: grid;
+  grid-template-areas:
+    'professorRating professorRating professorRating topSentiments topSentiments'
+    'gradeDistribution gradeDistribution gradeDistribution studentYear studentYear'
+    'schoolCollege schoolCollege reasonTaking reasonTaking reasonTaking'
+    'schoolCollege schoolCollege reasonTaking reasonTaking reasonTaking';
+  grid-template-rows: 250px 300px 150px 150px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
 /* Container styles */
 .container {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .professorRating {
-    width: 100%;
-    grid-area: professorRating;
+  width: 100%;
+  grid-area: professorRating;
 }
 
 .topSentiments {
-    grid-area: topSentiments;
+  grid-area: topSentiments;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+
+  .textContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 16px;
+    align-items: flex-start;
+    gap: 24px;
+    align-self: stretch;
+  }
 
-    .textContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-        align-self: stretch;
-    }
-
-    p {
-        color: #000;
-        font-family: "SF Pro";
-        font-size: 14px;
-        font-style: italic;
-        font-weight: 400;
-        line-height: 125%;
-    }
+  p {
+    color: #000;
+    font-family: 'SF Pro';
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 125%;
+  }
 }
 
 .container h1 {
-    top: 0;
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.5;
-    --bold-weight: bold;
-    color: #333;
-    padding-bottom: 10px;
+  top: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  --bold-weight: bold;
+  color: #333;
+  padding-bottom: 10px;
 }
 
 .gradeDistribution {
-    grid-area: gradeDistribution;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding-bottom: 10%;
+  grid-area: gradeDistribution;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 10%;
 }
 
 .studentYear {
-    grid-area: studentYear;
+  grid-area: studentYear;
 }
 
 .schoolCollege {
-    grid-area: schoolCollege;
+  grid-area: schoolCollege;
 }
 
 .reasonTaking {
-    grid-area: reasonTaking;
+  grid-area: reasonTaking;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+
+  .textContainer {
+    margin: 0 auto;
+    height: 90%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap:16px;
+    align-items: flex-start;
+    gap: 24px;
+  }
 
-    .textContainer {
-        margin: 0 auto;
-        height: 90%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-    }
-
-    p {
-        color: #000;
-        font-family: "SF Pro";
-        font-size: 14px;
-        font-style: italic;
-        font-weight: 400;
-        line-height: 125%;
-    }
+  p {
+    color: #000;
+    font-family: 'SF Pro';
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 125%;
+  }
 }
 
 .disclaimer {
-    color: #807B7B;
-    font-family: "SF Pro";
-    font-size: 12px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.24px;
+  color: #807b7b;
+  font-family: 'SF Pro';
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.24px;
 }
 
 /* Chart containers */
 .container canvas {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100%;
 }
 
 /* For smaller screens */
 @media (max-width: 992px) {
-    .dashboard {
-        grid-template-areas:
-      "professorRating professorRating professorRating"
-      "topSentiments topSentiments topSentiments"
-      "gradeDistribution gradeDistribution gradeDistribution"
-      "studentYear studentYear studentYear"
-      "schoolCollege schoolCollege schoolCollege"
-      "reasonTaking reasonTaking reasonTaking";
-        grid-template-rows: repeat(6, auto);
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 15px;
-    }
+  .dashboard {
+    grid-template-areas:
+      'professorRating professorRating professorRating'
+      'topSentiments topSentiments topSentiments'
+      'gradeDistribution gradeDistribution gradeDistribution'
+      'studentYear studentYear studentYear'
+      'schoolCollege schoolCollege schoolCollege'
+      'reasonTaking reasonTaking reasonTaking';
+    grid-template-rows: repeat(6, auto);
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+  }
 
-    .container {
-        min-height: 250px;
-    }
+  .container {
+    min-height: 250px;
+  }
 }
 
 /* For mobile screens */
 @media (max-width: 768px) {
-    .dashboard {
-        grid-template-areas:
-      "professorRating"
-      "topSentiments"
-      "gradeDistribution"
-      "studentYear"
-      "schoolCollege"
-      "reasonTaking";
-        grid-template-rows: repeat(6, auto);
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
+  .dashboard {
+    grid-template-areas:
+      'professorRating'
+      'topSentiments'
+      'gradeDistribution'
+      'studentYear'
+      'schoolCollege'
+      'reasonTaking';
+    grid-template-rows: repeat(6, auto);
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
 
-    .container {
-        min-height: 250px;
-        padding: 15px;
-    }
+  .container {
+    min-height: 250px;
+    padding: 15px;
+  }
 
-    .container h1 {
-        padding-bottom: 15px;
-    }
+  .container h1 {
+    padding-bottom: 15px;
+  }
 }
