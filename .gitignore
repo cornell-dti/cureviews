@@ -14,4 +14,4 @@ mongodb-binaries/
 mongo/
 *error.log
 debug.log
-server/scripts/course_eval_data/*
+# server/scripts/course_eval_data/*

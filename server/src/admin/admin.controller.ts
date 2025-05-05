@@ -48,7 +48,7 @@ import {
   addAllSimilarityData
 } from '../../scripts';
 import { fetchAddSubjects } from '../../scripts/populate-subjects';
-// import { addCurrCourseEvals } from '../../scripts/populate-course-evals';
+import { addCurrCourseEvals } from '../../scripts/populate-course-evals';
 
 /**
  * Verifies that the token passed in an admin.
@@ -451,7 +451,7 @@ export const addNewCourseEvals = async ({ auth }: VerifyAdminType, resetEvals: b
   }
 
   // UNCOMMENT WHEN USING FUNCTION!!!!!!
-  // return await addCurrCourseEvals(resetEvals);
+  return await addCurrCourseEvals();
 
   return false;
 };

@@ -1,5 +1,5 @@
 import { CourseEvaluations } from '../db/schema';
-// import courseData from './course_eval_data/fa_sp_24_course_eval.json';
+import courseData from './course_eval_data/fa_sp_24_course_eval.json';
 import shortid from 'shortid';
 import { CourseEvaluation } from 'common';
 
@@ -263,10 +263,9 @@ export const addCourseEvalsFromJson = async (
 };
 
 /** Adds course evaluations to database.
- *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!!
- *  Also uncomment in admin.controller.ts */
-export const addCurrCourseEvals = async (resetEvals: boolean) => {
-  // await addCourseEvalsFromJson(courseData, resetEvals)
+ *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!! */
+export const addCurrCourseEvals = async () => {
+  await addCourseEvalsFromJson(courseData)
   return true
 };
 
