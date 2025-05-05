@@ -444,14 +444,14 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
  *
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
-export const addNewCourseEvals = async ({ auth }: VerifyAdminType) => {
+export const addNewCourseEvals = async ({ auth }: VerifyAdminType, resetEvals: boolean) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
   }
 
   // UNCOMMENT WHEN USING FUNCTION!!!!!!
-  // return await addCurrCourseEvals();
+  // return await addCurrCourseEvals(resetEvals);
 
   return false;
 };

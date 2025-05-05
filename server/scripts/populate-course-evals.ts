@@ -19,48 +19,48 @@ const parseEval = (data: CourseEvaluationsRaw): CourseEvaluations => {
     const totalEvals = numGradeNA + numFresh + numSoph + numJr + numSr;
     const courseNameSplit = value.courseName.split(' ');
 
-    acc[key] = {
-      ...value,
-      _id: shortid.generate(),
-      subject: courseNameSplit[0],
-      courseNumber: courseNameSplit[1],
-      courseName: courseNameSplit[0] + ' ' + courseNameSplit[1],
-      courseOverall: parseFloat(value.courseOverall) || 0,
-      profTeachingSkill: parseFloat(value.profTeachingSkill) || 0,
-      profKnowledge: parseFloat(value.profKnowledge) || 0,
-      profClimate: parseFloat(value.profClimate) || 0,
-      profOverall: parseFloat(value.profOverall) || 0,
-      numA: parseInt(value.numA, 10) || 0,
-      numB: parseInt(value.numB, 10) || 0,
-      numC: parseInt(value.numC, 10) || 0,
-      numD: parseInt(value.numD, 10) || 0,
-      numF: parseInt(value.numF, 10) || 0,
-      numS: parseInt(value.numS, 10) || 0,
-      numU: parseInt(value.numU, 10) || 0,
-      numGradeNA: numGradeNA,
-      numFresh: numFresh,
-      numSoph: numSoph,
-      numJr: numJr,
-      numSr: numSr,
-      totalEvals: totalEvals,
-      numAg: parseInt(value.numAg, 10) || 0,
-      numHumec: parseInt(value.numHumec, 10) || 0,
-      numArch: parseInt(value.numArch, 10) || 0,
-      numILR: parseInt(value.numILR, 10) || 0,
-      numArts: parseInt(value.numArts, 10) || 0,
-      numEng: parseInt(value.numEng, 10) || 0,
-      numHotel: parseInt(value.numHotel, 10) || 0,
-      numOther: parseInt(value.numOther, 10) || 0,
-      numMajorReq: parseInt(value.numMajorReq, 10) || 0,
-      numReputation: parseInt(value.numReputation, 10) || 0,
-      numInterest: parseInt(value.numInterest, 10) || 0,
-      sentiments: [...Array(18).keys()].map((x) => [
-        (x += 8),
-        parseFloat(value['statement' + x + 'Score']) || 0
-      ])
-    };
-    return acc;
-  }, {});
+      acc[key] = {
+        ...value,
+        _id: shortid.generate(),
+        subject: courseNameSplit[0],
+        courseNumber: courseNameSplit[1],
+        semester: value.semester.charAt(0).toUpperCase() + value.semester.slice(1).toLowerCase(),
+        courseName: courseNameSplit[0] + " " + courseNameSplit[1],
+        courseOverall: parseFloat(value.courseOverall) || 0,
+        profTeachingSkill: parseFloat(value.profTeachingSkill) || 0,
+        profKnowledge: parseFloat(value.profKnowledge) || 0,
+        profClimate: parseFloat(value.profClimate) || 0,
+        profOverall: parseFloat(value.profOverall) || 0,
+        numA: parseInt(value.numA, 10) || 0,
+        numB: parseInt(value.numB, 10) || 0,
+        numC: parseInt(value.numC, 10) || 0,
+        numD: parseInt(value.numD, 10) || 0,
+        numF: parseInt(value.numF, 10) || 0,
+        numS: parseInt(value.numS, 10) || 0,
+        numU: parseInt(value.numU, 10) || 0,
+        numGradeNA: numGradeNA,
+        numFresh: numFresh,
+        numSoph: numSoph,
+        numJr: numJr,
+        numSr: numSr,
+        totalEvals: totalEvals,
+        numAg: parseInt(value.numAg, 10) || 0,
+        numHumec: parseInt(value.numHumec, 10) || 0,
+        numArch: parseInt(value.numArch, 10) || 0,
+        numILR: parseInt(value.numILR, 10) || 0,
+        numArts: parseInt(value.numArts, 10) || 0,
+        numEng: parseInt(value.numEng, 10) || 0,
+        numHotel: parseInt(value.numHotel, 10) || 0,
+        numOther: parseInt(value.numOther, 10) || 0,
+        numMajorReq: parseInt(value.numMajorReq, 10) || 0,
+        numReputation: parseInt(value.numReputation, 10) || 0,
+        numInterest: parseInt(value.numInterest, 10) || 0,
+        sentiments: [...Array(18).keys()].map(x =>
+          [x += 8, (parseFloat(value['statement' + x + 'Score']) || 0)]
+        ),
+      }
+      return acc
+    }, {})
 
   // Merge objects with the same lecture
   const mergedLecEvals: CourseEvaluations = {};
@@ -139,24 +139,10 @@ const mergeCourseLecEvaluations = (
     // discrepancies between the two evals (likely errors)
     // are overwritten here.
     ...eval1,
-    courseOverall: weightedAvg(
-      eval1.courseOverall,
-      eval2.courseOverall,
-      w1,
-      w2
-    ),
-    profTeachingSkill: weightedAvg(
-      eval1.profTeachingSkill,
-      eval2.profTeachingSkill,
-      w1,
-      w2
-    ),
-    profKnowledge: weightedAvg(
-      eval1.profKnowledge,
-      eval2.profKnowledge,
-      w1,
-      w2
-    ),
+    semester: eval1.semester != eval2.semester ? (eval1.semester + ", " + eval2.semester) : eval1.semester,
+    courseOverall: weightedAvg(eval1.courseOverall, eval2.courseOverall, w1, w2),
+    profTeachingSkill: weightedAvg(eval1.profTeachingSkill, eval2.profTeachingSkill, w1, w2),
+    profKnowledge: weightedAvg(eval1.profKnowledge, eval2.profKnowledge, w1, w2),
     profClimate: weightedAvg(eval1.profClimate, eval2.profClimate, w1, w2),
     profOverall: weightedAvg(eval1.profOverall, eval2.profOverall, w1, w2),
     sentiments: eval1.sentiments.map((item, index) => {
@@ -230,11 +216,17 @@ const mergeCourseEvaluations = (
  *
  * @returns true if operation was successful, false otherwise
  * @param data course eval json data
+ * @param resetEvals true if user wants to delete all existing
+ * course evals and regenerate them, false if user only
+ * wants to add new course evals
  */
 export const addCourseEvalsFromJson = async (
-  data: CourseEvaluationsRaw
+  data: CourseEvaluationsRaw,
+  resetEvals: boolean
 ): Promise<boolean> => {
   const parsedData: CourseEvaluations = parseEval(data);
+
+  if (resetEvals) await CourseEvaluations.deleteMany({})
 
   const v1 = await Promise.all(
     Object.entries(parsedData).map(async ([_, value]) => {
@@ -271,11 +263,12 @@ export const addCourseEvalsFromJson = async (
 };
 
 /** Adds course evaluations to database.
- *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!! */
-// export const addCurrCourseEvals = async () => {
-//   await addCourseEvalsFromJson(courseData)
-//   return true
-// };
+ *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!!
+ *  Also uncomment in admin.controller.ts */
+export const addCurrCourseEvals = async (resetEvals: boolean) => {
+  // await addCourseEvalsFromJson(courseData, resetEvals)
+  return true
+};
 
 /** Raw course evaluation data for a single course (e.g. as imported from web scraping). */
 interface CourseEvaluationRaw {
