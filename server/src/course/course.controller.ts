@@ -160,11 +160,13 @@ export const getSimilarity = async () => {
       .slice(0, 5);
   }
   return topSimilarities;
-}
+};
 
-export const getCourseEval =
-  async ({ classSub, classNum }: CourseEvalRequestType) => {
-    const courseEval = await findCourseEval(classSub, classNum);
-    if (!courseEval) return null;
-    return courseEval;
+export const getCourseEval = async ({
+  classSub,
+  classNum
+}: CourseEvalRequestType) => {
+  const courseEval = await findCourseEval(classSub, classNum);
+  if (!courseEval) return null;
+  return courseEval;
 };

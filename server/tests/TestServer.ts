@@ -1,9 +1,23 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import express from 'express';
-import { Student, Class, Professor, Review, Subject, CourseEvaluation } from 'common';
+import {
+  Student,
+  Class,
+  Professor,
+  Review,
+  Subject,
+  CourseEvaluation
+} from 'common';
 import * as http from 'http';
-import { Classes, Students, Subjects, Professors, Reviews, CourseEvaluations } from '../db/schema';
+import {
+  Classes,
+  Students,
+  Subjects,
+  Professors,
+  Reviews,
+  CourseEvaluations
+} from '../db/schema';
 import { configure } from '../endpoints';
 
 /**
@@ -29,7 +43,7 @@ export default class TestingServer {
     classes: Class[] = [],
     professors: Professor[] = [],
     subjects: Subject[] = [],
-    courseEvals: CourseEvaluation[] = [],
+    courseEvals: CourseEvaluation[] = []
   ) => {
     // setup db
     await this.mongoServer.start();
@@ -56,7 +70,9 @@ export default class TestingServer {
 
     await Promise.all(subjects.map(async (c) => await new Subjects(c).save()));
 
-    await Promise.all(courseEvals.map(async (c) => await new CourseEvaluations(c).save()));
+    await Promise.all(
+      courseEvals.map(async (c) => await new CourseEvaluations(c).save())
+    );
 
     await Promise.all(
       professors.map(async (c) => await new Professors(c).save())

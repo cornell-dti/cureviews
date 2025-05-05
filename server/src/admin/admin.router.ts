@@ -5,7 +5,7 @@ import {
   AdminReviewRequestType,
   AdminRequestType,
   AdminUserRequestType,
-  AdminAddSemesterRequestType
+  AdminAddSemesterRequestType, CourseEvalRequestType
 } from './admin.type';
 import {
   getApprovedReviews,
@@ -27,7 +27,8 @@ import {
   approveReviews,
   addCourseDescriptionsDb,
   addSimilarityDb,
-  drawRaffle, addNewCourseEvals
+  drawRaffle,
+  addNewCourseEvals
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -355,7 +356,7 @@ adminRouter.post('/users/remove', async (req, res) => {
  * Grants admin privilege to an existing user with netId = userId
  */
 adminRouter.post('/users/add', async (req, res) => {
-  const { token, userId, role, firstName, lastName }: AdminUserRequestType & { firstName: string, lastName: string } = req.body;
+  const { token, userId, role, firstName, lastName }: AdminUserRequestType = req.body;
 
   try {
     const auth = new Auth({ token });
@@ -413,10 +414,10 @@ adminRouter.post('/semester/add', async (req, res) => {
  * Adds all course evals to the db based on hard-coded JSON files. For admins only
  */
 adminRouter.post('/courses/add-course-evals', async (req, res) => {
-  const { token }: AdminRequestType = req.body;
+  const { token, resetEvals }: CourseEvalRequestType = req.body;
   try {
     const auth = new Auth({ token });
-    const result = await addNewCourseEvals({ auth });
+    const result = await addNewCourseEvals({ auth }, resetEvals);
 
     if (result === null) {
       return res.status(401).json({

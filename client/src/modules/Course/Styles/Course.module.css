@@ -34,6 +34,73 @@
   padding-left: 24px;
 }
 
+/* Grid-based solution for consistent tab alignment */
+/* CSS for custom tab component */
+.tabs {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  padding-bottom: 24px;
+  position: relative; /* For absolute positioning of the indicator */
+}
+
+.tabactivetitle, .tabtitle {
+  width: 100%;
+  font-family: "SF Pro";
+  text-align: center;
+  font-weight: var(--semi-bold-weight);
+  font-size: 24px;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: -0.129px;
+  cursor: pointer;
+  padding: 14px 0;
+}
+
+.tabactivetitle {
+  color: var(--clr-blue-300);
+}
+
+.tabtitle {
+  color: var(--clr-gray-300);
+}
+
+.tabIndicator {
+  position: absolute;
+  bottom: 24px;
+  height: 2px;
+  background-color: var(--clr-gray-300);
+  width: 100%;
+}
+
+.activeIndicator {
+  position: absolute;
+  bottom: 24px;
+  height: 2px;
+  background-color: var(--clr-blue-300);
+  transition: transform 0.3s ease;
+  width: 50%;
+}
+
+.noEvalsIndicator {
+  position: absolute;
+  bottom: 24px;
+  height: 2px;
+  background-color: var(--clr-blue-300);
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+/* Position for first tab selected */
+.activeIndicator.firstTab {
+  transform: translateX(-50%);
+}
+
+/* Position for second tab selected */
+.activeIndicator.secondTab {
+  transform: translateX(50%);
+}
+
 .classinfo {
   width: 100%;
 }
@@ -84,6 +151,10 @@
 
 /* Mobile-Only */
 @media only screen and (max-width: 768px) {
+  .tabs {
+    padding-top: 20px;
+  }
+
   .courseContent {
     display: flex;
     flex-flow: column nowrap;

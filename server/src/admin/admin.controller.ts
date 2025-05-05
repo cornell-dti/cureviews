@@ -21,7 +21,8 @@ import {
   AdminReviewVisibilityType,
   UpdateCourseMetrics,
   VerifyAdminType,
-  VerifyManageAdminType
+  VerifyManageAdminType,
+  AddAdminParams
 } from './admin.type';
 
 import {
@@ -143,7 +144,10 @@ export const removePendingReview = async ({
  * @param {number} limit: The number of approved reviews to retrieve.
  * @returns all number of approved review objects if operation was successful, null otherwise.
  */
-export const getApprovedReviews = async ({ auth, limit = 700 }: VerifyAdminType & { limit?: number }) => {
+export const getApprovedReviews = async ({
+  auth,
+  limit = 700
+}: VerifyAdminType & { limit?: number }) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     return findApprovedReviews(limit);
@@ -250,7 +254,13 @@ export const removeAdmin = async ({ auth, id }: VerifyManageAdminType) => {
  * @param {string} lastName: lastName to update the user with
  * @returns The user with updated admin privilege if operation was successful, null otherwise
  */
-export const addAdmin = async ({ auth, id, role, firstName, lastName }: VerifyManageAdminType & { role: string, firstName: string, lastName: string }) => {
+export const addAdmin = async ({
+  auth,
+  id,
+  role,
+  firstName,
+  lastName,
+}: AddAdminParams) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
     const res = await grantAdminPrivilege(id, role, firstName, lastName);
@@ -434,7 +444,7 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
  *
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
-export const addNewCourseEvals = async ({ auth }: VerifyAdminType) => {
+export const addNewCourseEvals = async ({ auth }: VerifyAdminType, resetEvals: boolean) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
@@ -473,8 +483,7 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
-  }
-  
+  }  
   // UNCOMMENT IF YOU NEED TO PROCESS THESE, but likely not necessary
   
   const descriptionResult = await addAllProcessedDescriptions();

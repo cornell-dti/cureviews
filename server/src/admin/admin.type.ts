@@ -14,7 +14,9 @@ export interface AdminReviewRequestType {
 export type AdminUserRequestType = {
   token: string;
   userId: string;
-  role: string;
+  role?: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 
@@ -27,6 +29,11 @@ export interface AdminRequestType {
   token: string;
 }
 
+export interface CourseEvalRequestType {
+  token: string;
+  resetEvals: boolean;
+}
+
 export interface VerifyAdminType {
   auth: Auth;
 }
@@ -34,6 +41,14 @@ export interface VerifyAdminType {
 export interface VerifyManageAdminType {
   auth: Auth;
   id: string;
+}
+
+export interface AddAdminParams {
+  auth: Auth;
+  id: string;
+  role: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface AdminReviewVisibilityType {

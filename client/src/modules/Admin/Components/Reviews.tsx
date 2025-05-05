@@ -40,20 +40,20 @@ const Reviews = ({ token }: Props) => {
   }, [token]);
 
   useEffect(() => {
-    if (!token || activeTab !== "approved") return;
+    if (!token || activeTab !== 'approved') return;
 
     const loadApprovedReviews = async () => {
       try {
-        const response = await axios.post("/api/admin/reviews/get-approved", {
+        const response = await axios.post('/api/admin/reviews/get-approved', {
           token,
-          limit: numReviews,
+          limit: numReviews
         });
 
         if (response.status === 200) {
           setApprovedReviews(response.data.result);
         }
       } catch (error) {
-        console.error("Error fetching approved reviews", error);
+        console.error('Error fetching approved reviews', error);
       }
     };
 
@@ -116,13 +116,23 @@ const Reviews = ({ token }: Props) => {
             <AdminReview
               key={review._id}
               review={review}
-              approveHandler={category === "pending" ? approveReview : undefined}
-              removeHandler={category === "pending" || category === "reported" ? (r) => removeReview(r, category === "pending") : undefined}
-              unReportHandler={category === "reported" ? unReportReview : undefined}
+              approveHandler={
+                category === 'pending' ? approveReview : undefined
+              }
+              removeHandler={
+                category === 'pending' || category === 'reported'
+                  ? (r) => removeReview(r, category === 'pending')
+                  : undefined
+              }
+              unReportHandler={
+                category === 'reported' ? unReportReview : undefined
+              }
             />
           ))
         ) : (
-          <p className={styles.noReviews}>No reviews available in this category.</p>
+          <p className={styles.noReviews}>
+            No reviews available in this category.
+          </p>
         )}
       </div>
     );
