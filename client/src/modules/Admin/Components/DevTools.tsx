@@ -47,18 +47,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
     }
   };
 
-  const handleCourseEvalApiCall = async (endpoint: string, successState: keyof typeof messages, resetEvals: boolean) => {
-    setUpdating(true)
-    try {
-      await axios.post(endpoint, { token, resetEvals });
-      setUpdated(successState);
-    } catch {
-      setUpdated('failure');
-    } finally {
-      setUpdating(false);
-    }
-  };
-
   const raffleHandler = async () => {
     if (!raffleStartDate) return;
     setUpdating(true);

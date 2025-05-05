@@ -14,7 +14,6 @@ type Props = {
 
 const ManageAdmins = ({ token }: Props) => {
   const [admins, setAdmins] = useState<Student[]>([]);
-  const [netId, setNetId] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);

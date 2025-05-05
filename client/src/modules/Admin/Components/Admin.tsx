@@ -9,7 +9,6 @@ import { useAuthMandatoryLogin } from '../../../auth/auth_utils';
 import axios from 'axios';
 import Loading from '../../Globals/Loading';
 import Navbar from '../../Globals/Navbar';
-import Stats from './Stats';
 
 export const Admin = () => {
   const { isLoggedIn, token, isAuthenticating } =

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import DeleteAdminModal from './DeleteAdminModal';
 import AddAdminModal from './AddAdminModal';
 import styles from '../Styles/AdminUser.module.css';
-import axios from 'axios';
 
 type Role = 'Designer' | 'TPM' | 'PM' | 'PMM' | 'Developer';
 
