@@ -265,7 +265,7 @@ export const addCourseEvalsFromJson = async (
 /** Adds course evaluations to database.
  *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!! */
 export const addCurrCourseEvals = async () => {
-  await addCourseEvalsFromJson(courseData)
+  await addCourseEvalsFromJson(courseData, true);
   return true
 };
 
