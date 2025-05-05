@@ -211,10 +211,10 @@ export const Course = () => {
   function filterByProf(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
     if (value === 'none') {
-      setVisibleCourseReviews([...courseReviews]);
+      setVisibleCourseReviews(courseReviews ? [...courseReviews] : []);
     } else {
       setVisibleCourseReviews(
-        [...courseReviews].filter((r: Review) => r.professors?.includes(value))
+        (courseReviews ? [...courseReviews] : []).filter((r: Review) => r.professors?.includes(value))
       );
     }
     selectedProf.current = value;

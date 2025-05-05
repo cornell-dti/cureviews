@@ -453,7 +453,7 @@ export const addNewCourseEvals = async (
   }
 
   // UNCOMMENT WHEN USING FUNCTION!!!!!!
-  return await addCurrCourseEvals();
+  // return await addCurrCourseEvals();
 
   return false;
 };
