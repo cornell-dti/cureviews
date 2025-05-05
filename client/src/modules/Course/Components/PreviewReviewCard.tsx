@@ -58,7 +58,7 @@ const PreviewReviewCard = ({
     let reviewDay = date.getDate();
 
     return reviewMonth + '/' + reviewDay + '/' + reviewYear;
-  }
+  };
 
   /**
    * Fetch the course information.
@@ -74,7 +74,7 @@ const PreviewReviewCard = ({
         setCourseSub(course.classSub);
         setCourseNum(course.classNum);
       }
-    }
+    };
 
     if (isProfile) updateCourse();
   }, [_review, isProfile]);
@@ -92,28 +92,32 @@ const PreviewReviewCard = ({
       });
 
       setLiked(response.data.hasLiked);
-    }
+    };
 
     if (isLoggedIn) updateLiked();
   }, [_review, isLoggedIn]);
 
   /** Renders course name as well if on profile page */
-const TitleAndProfessor = React.memo(() => {
-  let professornames = _review.professors?.sort().join(', ') || 'Not Listed';
+  const TitleAndProfessor = React.memo(() => {
+    let professornames = _review.professors?.sort().join(', ') || 'Not Listed';
 
-  return isProfile ? (
-    <>
-      <div className={previewstyle.coursetitle}>{courseTitle}</div>
-      <div className={previewstyle.classprofessor}>
-        {courseSub?.toUpperCase() + ' ' + courseNum?.toUpperCase() + ' | ' + professornames}
+    return isProfile ? (
+      <>
+        <div className={previewstyle.coursetitle}>{courseTitle}</div>
+        <div className={previewstyle.classprofessor}>
+          {courseSub?.toUpperCase() +
+            ' ' +
+            courseNum?.toUpperCase() +
+            ' | ' +
+            professornames}
+        </div>
+      </>
+    ) : (
+      <div>
+        Professor <span className={styles.bold}>{professornames}</span>
       </div>
-    </>
-  ) : (
-    <div>
-      Professor <span className={styles.bold}>{professornames}</span>
-    </div>
-  );
-});
+    );
+  });
 
   /* SEE MORE -> SEE LESS logic for lengthier reviews */
   const [expand, setExpand] = useState(false);
@@ -130,7 +134,7 @@ const TitleAndProfessor = React.memo(() => {
       if (ref.current) {
         setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight);
       }
-    }
+    };
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -218,6 +222,6 @@ const TitleAndProfessor = React.memo(() => {
       </div>
     </div>
   );
-}
+};
 
 export default PreviewReviewCard;

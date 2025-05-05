@@ -60,7 +60,7 @@ const RatingInput = ({
     if (key === 'ArrowRight' && hoverIndex < maxRating - 1) {
       buttonRefs[hoverIndex + 1].current.focus();
     }
-  }
+  };
 
   return (
     <div className={className} tabIndex={0} onKeyDown={handleKeyDown}>
@@ -94,12 +94,14 @@ const RatingInput = ({
             >
               <div
                 className={`${styles.ratingButtonPill}
-                  ${i >= value &&
-                  i < hoverIndex + 1 &&
-                  styles['ratingButtonPillHover' + color]
+                  ${
+                    i >= value &&
+                    i < hoverIndex + 1 &&
+                    styles['ratingButtonPillHover' + color]
                   }
-                  ${i < hoverIndex + 1 &&
-                  styles['ratingButtonPillSelected' + color]
+                  ${
+                    i < hoverIndex + 1 &&
+                    styles['ratingButtonPillSelected' + color]
                   }
                 `}
               />
@@ -114,6 +116,6 @@ const RatingInput = ({
       </div>
     </div>
   );
-}
+};
 
 export default RatingInput;

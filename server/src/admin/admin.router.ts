@@ -8,6 +8,7 @@ import {
   AdminAddSemesterRequestType, CourseEvalRequestType
 } from './admin.type';
 import {
+  getApprovedReviews,
   getPendingReviews,
   getReportedReviews,
   getReviewCounts,
@@ -26,7 +27,8 @@ import {
   approveReviews,
   addCourseDescriptionsDb,
   addSimilarityDb,
-  drawRaffle, addNewCourseEvals
+  drawRaffle,
+  addNewCourseEvals
 } from './admin.controller';
 
 export const adminRouter = express.Router();
@@ -165,6 +167,33 @@ adminRouter.post('/reviews/remove', async (req, res) => {
     return res.status(400).json({
       error:
         'User does not have an authorized token (not an admin) or review was not found!'
+    });
+  } catch (err) {
+    return res.status(500).json({ error: `Internal Server Error: ${err}` });
+  }
+});
+
+/** Reachable at POST /api/admin/reviews/get-approved
+ * @body token: a session's current token
+ * @body limit: number of approved reviews to fetch (default: 700)
+ * Gets all x most recently approved reviews and returns them in an array. For admins only
+ */
+adminRouter.post('/reviews/get-approved', async (req, res) => {
+  try {
+    const { token, limit }: AdminRequestType & { limit?: number } = req.body;
+    const auth = new Auth({ token });
+
+    const reviews = await getApprovedReviews({ auth, limit });
+
+    if (reviews === null) {
+      return res.status(400).json({
+        error: `User is not an admin.`
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved all approved reviews',
+      result: reviews
     });
   } catch (err) {
     return res.status(500).json({ error: `Internal Server Error: ${err}` });
@@ -321,18 +350,21 @@ adminRouter.post('/users/remove', async (req, res) => {
 /** Reachable at POST /api/admin/users/add
  * @body token: a session's current token
  * @body userId: a user's _id field
+ * @body role: the role to assign to the new admin
+ * @body firstName: the first name to update the user with
+ * @body lastName: the last name to update the user with
  * Grants admin privilege to an existing user with netId = userId
  */
 adminRouter.post('/users/add', async (req, res) => {
-  const { token, userId }: AdminUserRequestType = req.body;
+  const { token, userId, role, firstName, lastName }: AdminUserRequestType = req.body;
 
   try {
     const auth = new Auth({ token });
-    const result = await addAdmin({ auth: auth, id: userId });
+    const result = await addAdmin({ auth, id: userId, role, firstName, lastName });
 
     if (result) {
       return res.status(200).json({
-        message: `Granted admin privilege to user with id ${userId}`
+        message: `Granted admin privilege to user with id ${userId}, role ${role}, and first name ${firstName}`
       });
     }
 
@@ -351,6 +383,7 @@ adminRouter.post('/users/add', async (req, res) => {
  */
 adminRouter.post('/semester/add', async (req, res) => {
   const { semester, token }: AdminAddSemesterRequestType = req.body;
+  console.log(semester);
   try {
     const auth = new Auth({ token });
     const result = await addNewSemDb({ auth, semester });
@@ -409,7 +442,7 @@ adminRouter.post('/courses/add-course-evals', async (req, res) => {
 
 /** Reachable at POST /api/admin/professors/add
  * @body token: a session's current token
- * Adds all professors to the db for the given semester. For admins only
+ * Adds all professors to the db for all semesters. For admins only
  */
 adminRouter.post('/professors/add', async (req, res) => {
   const { token }: AdminRequestType = req.body;
@@ -429,7 +462,7 @@ adminRouter.post('/professors/add', async (req, res) => {
 
 /** Reachable at POST /api/admin/professors/reset
  * @body token: a session's current token
- * Resets all professors in the db for the given semester. For admins only
+ * Resets all professors in the db for all semesters. For admins only
  */
 adminRouter.post('/professors/reset', async (req, res) => {
   const { token }: AdminRequestType = req.body;
@@ -499,7 +532,8 @@ adminRouter.post('/subjects/update', async (req, res) => {
 
 /** Reachable at POST /api/admin/db/initialize
  * @body token: a session's current token
- * Initializes the database for the semester. For admins only
+ * Initializes the database for all semesters. For admins only
+ * DO NOT CALL IN PROD.
  */
 adminRouter.post('/db/initialize', async (req, res) => {
   const { token }: AdminRequestType = req.body;
@@ -533,7 +567,7 @@ adminRouter.post('/rec/similarity', async (req, res) => {
   try {
     const auth = new Auth({ token });
     const result = await addSimilarityDb({ auth });
-    console.log(result)
+    console.log(result);
 
     if (result) {
       res.status(200);
@@ -550,7 +584,6 @@ adminRouter.post('/rec/similarity', async (req, res) => {
   }
 });
 
-
 /**
  * Reachable at POST /api/admin/draw-raffle
  */
@@ -562,4 +595,4 @@ adminRouter.post('/draw-raffle', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: `Internal Server Error: ${err}` });
   }
-})
+});

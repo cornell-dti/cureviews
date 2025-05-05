@@ -1,5 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
-import { Class, Student, Subject, Review, Professor, CourseEvaluation } from 'common';
+import {
+  Class,
+  Student,
+  Subject,
+  Review,
+  Professor,
+  CourseEvaluation
+} from 'common';
 
 /*
 
@@ -68,6 +75,8 @@ const StudentSchema = new Schema<StudentDocument>({
   affiliation: { type: String }, // user affliaition, like ENG or A&S
   token: { type: String }, // random token generated during login process
   privilege: { type: String }, // user privilege level. Takes values "regular" | "admin"
+  role: { type: String, enum: ['Designer', 'TPM', 'PMM', 'PM', 'Developer'], required: false }, // role of admin, only exists in admin
+  date: { type: Date, required: false }, // date admin added/edited, only exists in admin
   reviews: { type: [String] }, // the reviews that this user has posted.
   likedReviews: { type: [String] }
 });
@@ -168,7 +177,7 @@ export const Validation = mongoose.model<ValidationDocument>(
 
 /**
  * Course Recommendation Metadata Collection
- * Stores course description preprocessing data and pre-computation steps for 
+ * Stores course description preprocessing data and pre-computation steps for
  * similarity algorithm
  */
 const RecommendationMetadataSchema = new Schema({
@@ -176,7 +185,7 @@ const RecommendationMetadataSchema = new Schema({
   classSub: { type: String },
   classNum: { type: String },
   processedDescription: { type: String },
-  tfidfVector: { type: Object },
+  tfidfVector: { type: Object }
 });
 
 interface RecommendationMetadataDocument extends mongoose.Document {
@@ -187,10 +196,11 @@ interface RecommendationMetadataDocument extends mongoose.Document {
   tfidfVector: Object;
 }
 
-export const RecommendationMetadata = mongoose.model<RecommendationMetadataDocument>(
-  "recommendationMetadata",
-  RecommendationMetadataSchema,
-);
+export const RecommendationMetadata =
+  mongoose.model<RecommendationMetadataDocument>(
+    'recommendationMetadata',
+    RecommendationMetadataSchema
+  );
 
 /**
  * Global Course Metadata Collection
@@ -205,8 +215,8 @@ interface GlobalMetadataDocument extends mongoose.Document {
 }
 
 export const GlobalMetadata = mongoose.model<GlobalMetadataDocument>(
-  "globalnMetadata",
-  GlobalMetadataSchema,
+  'globalnMetadata',
+  GlobalMetadataSchema
 );
 
 /**
@@ -252,7 +262,7 @@ const CourseEvaluationSchema = new Schema({
 });
 
 interface CourseEvaluationDocument extends mongoose.Document, CourseEvaluation {
-  _id: string,
+  _id: string;
   courseName: string;
   subject: string;
   courseNumber: string;
@@ -290,6 +300,6 @@ interface CourseEvaluationDocument extends mongoose.Document, CourseEvaluation {
 }
 
 export const CourseEvaluations = mongoose.model<CourseEvaluationDocument>(
-  "courseEvaluations",
-  CourseEvaluationSchema,
+  'courseEvaluations',
+  CourseEvaluationSchema
 );

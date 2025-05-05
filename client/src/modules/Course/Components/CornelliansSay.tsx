@@ -9,9 +9,8 @@ import Bear from '/cornellians_say_bear.svg';
 type SummaryProps = {
   classSummary: string;
   summaryTags: Map<string, [string, string]>;
-}
+};
 const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
-  const summaryTagsMap = new Map(Object.entries(summaryTags));
   const capitalizeFirstLetter = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
@@ -27,21 +26,24 @@ const CornelliansSay = ({ classSummary, summaryTags }: SummaryProps) => {
       corresponding adjective and applies the corresponding style for the
       adjective's connotation */}
       <div className={styles.tagsContainer}>
-        {Array.from(summaryTags.entries()).map(([category, [adjective, connotation]]) => (
-          <div
-            key={category}
-            className={`${styles.tag} ${connotation === "positive"
-              ? styles.positiveTag
-              : connotation === "negative"
-                ? styles.negativeTag
-                : styles.neutralTag
+        {Array.from(summaryTags.entries()).map(
+          ([category, [adjective, connotation]]) => (
+            <div
+              key={category}
+              className={`${styles.tag} ${
+                connotation === 'positive'
+                  ? styles.positiveTag
+                  : connotation === 'negative'
+                    ? styles.negativeTag
+                    : styles.neutralTag
               }`}
-          >
-            {capitalizeFirstLetter(adjective)} {category}
-          </div>
-        ))}
+            >
+              {capitalizeFirstLetter(adjective)} {category}
+            </div>
+          )
+        )}
       </div>
     </div>
   );
 };
-export default CornelliansSay
+export default CornelliansSay;

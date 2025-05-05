@@ -12,7 +12,8 @@ import Navbar from '../../Globals/Navbar';
 import Stats from './Stats';
 
 export const Admin = () => {
-  const { isLoggedIn, token, isAuthenticating } = useAuthMandatoryLogin('admin');
+  const { isLoggedIn, token, isAuthenticating } =
+    useAuthMandatoryLogin('admin');
   const [currentPage, setCurrentPage] = useState<string>('reviews');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -22,10 +23,12 @@ export const Admin = () => {
 
     const confirmAdmin = async () => {
       try {
-        const response = await axios.post(`/api/admin/token/validate`, { token });
+        const response = await axios.post(`/api/admin/token/validate`, {
+          token
+        });
         setIsAdmin(response.data.result);
       } catch (error) {
-        console.error("Admin validation failed:", error);
+        console.error('Admin validation failed:', error);
       } finally {
         setLoading(false);
       }
@@ -36,8 +39,8 @@ export const Admin = () => {
 
   if (loading) return <Loading />;
 
-  /** 
-   * If user is not an admin, redirect back to homepage. 
+  /**
+   * If user is not an admin, redirect back to homepage.
    * */
   if (!isLoggedIn || !token || !isAdmin) {
     return <Redirect to="/" />;
@@ -51,8 +54,6 @@ export const Admin = () => {
         return <ManageAdmins token={token} />;
       case 'developer':
         return <DeveloperTools token={token} />;
-      case 'analytics':
-        return <Stats token={token} />
       default:
         return <Reviews token={token} />;
     }
@@ -62,7 +63,10 @@ export const Admin = () => {
     <div className={styles.adminLayout}>
       <Navbar userInput={''} showSearchBar={false} />
       <div className={styles.contentWrapper}>
-        <AdminSidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <AdminSidebar
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
         <div className={styles.mainContent}>{renderPage()}</div>
       </div>
     </div>

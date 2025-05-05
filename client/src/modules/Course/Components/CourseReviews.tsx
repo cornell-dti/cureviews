@@ -23,8 +23,8 @@ const CourseReviews = ({
   const [visibleReviews, setVisibleReviews] = useState(reviews);
 
   useEffect(() => {
-    setVisibleReviews(reviews)
-  }, [reviews])
+    setVisibleReviews(reviews);
+  }, [reviews]);
 
   /**
    * Attempts to report review, and filters out the reported review locally
@@ -44,7 +44,7 @@ const CourseReviews = ({
     } else {
       toast.error('An error occurred. Please try again.');
     }
-  }
+  };
 
   // isPreview and isProfile => PENDING review
   // !isPreview and isProfile => PROFILE regular review

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import styles from '../Styles/Admin.module.css';
+import styles from '../Styles/DevTools.module.css';
 
 interface AdminToolsProps {
   token: string;
@@ -12,28 +12,33 @@ export default function AdminTools({ token }: AdminToolsProps) {
   const [updated, setUpdated] = useState<UpdateStatus>('empty');
   const [raffleStartDate, setRaffleStartDate] = useState('');
   const [raffleWinner, setRaffleWinner] = useState('');
-  const [doubleClick, setDoubleClick] = useState(false);
+  const [selectedSemester, setSelectedSemester] = useState('');
 
   const messages = {
     empty: '',
     semester: 'New semester data successfully added',
     profsReset: 'Professor data successfully reset to empty',
     professors: 'Professor data successfully updated',
-    subjects: 'Subject full name data successfully updated',
-    database: 'Database successfully initialized',
     description: 'Course description data successfully added',
     similarity: 'Similarity data successfully added',
     summarize: 'All courses successfully summarized',
     courseEval: 'Course evaluations successfully updated',
-    failure: 'API failed',
+    subject: 'Full subject names successfully updated',
+    failure: 'API may have failed, but endpoints time out on production. Check Heroku logs'
   };
+
+  const semesters = ['FA21', 'SP22', 'FA22', 'SP23', 'FA23', 'SP24', 'FA24', 'SP25', 'FA25', 'SP26', 'FA26', 'SP27', 'FA27', 'SP28'];
 
   type UpdateStatus = keyof typeof messages;
 
-  const handleApiCall = async (endpoint: string, successState: keyof typeof messages) => {
-    setUpdating(true)
+  const handleApiCall = async (
+    endpoint: string,
+    successState: keyof typeof messages,
+    bodyParams?: Record<string, any>
+  ) => {
+    setUpdating(true);
     try {
-      await axios.post(endpoint, { token });
+      await axios.post(endpoint, { token, ...bodyParams });
       setUpdated(successState);
     } catch {
       setUpdated('failure');
@@ -60,7 +65,7 @@ export default function AdminTools({ token }: AdminToolsProps) {
     try {
       const response = await axios.post('/api/admin/draw-raffle', {
         token,
-        start: new Date(raffleStartDate),
+        start: new Date(raffleStartDate)
       });
       if (response.status === 200) setRaffleWinner(response.data.netid);
       else setUpdated('failure');
@@ -68,14 +73,6 @@ export default function AdminTools({ token }: AdminToolsProps) {
       setUpdated('failure');
     } finally {
       setUpdating(false);
-    }
-  };
-
-  const initDatabaseHandler = () => {
-    if (doubleClick) handleApiCall('/api/admin/db/initialize', 'database');
-    else {
-      alert('Warning! Clicking again will reset all data in the database. Are you sure?');
-      setDoubleClick(true);
     }
   };
 
@@ -108,12 +105,34 @@ export default function AdminTools({ token }: AdminToolsProps) {
         >
           Delete and regenerate all Course Evaluations
         </button>
+        For semesterly updates:
+        <div className={styles.semester}>
+          <button
+            onClick={() => {handleApiCall('/api/admin/semester/add', 'semester', {semester: selectedSemester})}}
+            disabled={updating}
+            className={styles.adminButton}
+          >
+            Add New Semester
+          </button>
+          <select
+            value={selectedSemester}
+            onChange={(e) => {setSelectedSemester(e.target.value)}}
+            className={styles.semDropdown}
+            disabled={updating}
+          >
+            {semesters.map((sem) => (
+              <option key={sem} value={sem}>
+                {sem}
+              </option>
+            ))}
+          </select>
+        </div>
         <button
           onClick={() =>
             handleApiCall('/api/admin/professors/add', 'professors')
           }
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
           Update Professors
         </button>
@@ -122,77 +141,81 @@ export default function AdminTools({ token }: AdminToolsProps) {
             handleApiCall('/api/admin/professors/reset', 'profsReset')
           }
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
           Reset Professors
+        </button>
+      </div>
+
+      <div className={styles.buttonGroup}>
+        For specific features:
+        <button
+          onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Add Course Evals
+        </button>
+        <button
+          onClick={() => handleApiCall('/api/admin/subjects/update', 'subject')}
+          disabled={updating}
+          className={styles.adminButton}
+        >
+          Update Full Subject Names
         </button>
         <button
           onClick={() => handleApiCall('/api/admin/course/desc', 'description')}
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
-          Update Descriptions
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/admin/subjects/update', 'subjects')
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Update Subjects
-        </button>
-        <button
-          onClick={() =>
-            handleApiCall('/api/ai/summarize-courses', 'summarize')
-          }
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Summarize Reviews
+          Update Course Descriptions (Similarity)
         </button>
         <button
           onClick={() =>
             handleApiCall('/api/admin/rec/similarity', 'similarity')
           }
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
-          Update Similarity Data
+          Generate Similar Courses
         </button>
         <button
-          onClick={initDatabaseHandler}
+          onClick={() =>
+            handleApiCall('/api/ai/summarize-courses', 'summarize')
+          }
           disabled={updating}
-          className={styles.adminButtons}
+          className={styles.adminButton}
         >
-          Initialize Database
+          Update Cornellians Say
         </button>
       </div>
 
-      <div className={styles.raffleSection}>
-        <h2>Raffle</h2>
-        <label>
-          Raffle Start Date:
+      <div className={styles.raffleTitle}>
+        <h2>Pick a raffle winner</h2>
+        <label className={styles.raffleSection}>
+          Select a raffle start date:
           <input
             type="date"
             value={raffleStartDate}
             onChange={(e) => setRaffleStartDate(e.target.value)}
+            className={styles.selectDate}
           />
+          <button
+            onClick={raffleHandler}
+            disabled={updating}
+            className={styles.adminButton}
+          >
+            Draw Raffle Winner
+          </button>
         </label>
-        <button
-          onClick={raffleHandler}
-          disabled={updating}
-          className={styles.adminButtons}
-        >
-          Draw Raffle Winner
-        </button>
         {raffleWinner && <p>Winner: {raffleWinner}</p>}
       </div>
 
-      {updated !== 'empty' && (
-        <div className={styles.updateMessage}>{messages[updated]}</div>
-      )}
-      {updating && <p>Updating... Please wait.</p>}
+      <div className={styles.updateSection}>
+        {updating && <p>Updating... Please wait.</p>}
+        {updated !== 'empty' && <p>{messages[updated]}</p>}
+      </div>
+
     </div>
   );
 }

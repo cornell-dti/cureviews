@@ -3,10 +3,16 @@
   background-color: white;
   border: 1px solid #d6e6ff;
   border-radius: 12px;
-  padding: 20px 24px;
+  padding: 12px 24px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+
+.reviewContent {
+  display: flex;
+  align-items: flex-start;
   gap: 16px;
 }
 
@@ -15,43 +21,26 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
 }
 
 .reviewDate {
-  font-weight: 700;
   color: #2f80ed;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 16px;
   width: 100px;
-  /* Keeps date aligned */
 }
 
 .reviewTitle {
   flex: 1;
   text-align: left;
-  margin-left: 12px;
+  margin-left: 64px;
 }
 
-.courseLink {
+.courseName {
   font-weight: 700;
   font-size: 16px;
   color: #2f80ed;
   text-decoration: none;
-}
-
-.courseLink:hover {
-  text-decoration: underline;
-}
-
-.professor {
-  font-size: 14px;
-  color: #6e6e6e;
-  margin-top: 4px;
-}
-
-.professorName {
-  font-weight: 600;
-  color: #333;
 }
 
 .reviewMajor {
@@ -65,24 +54,48 @@
 }
 
 /* Ratings and Review Text Layout */
-.reviewContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
 .reviewRatings {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   font-size: 14px;
   color: #333;
   min-width: 120px;
 }
 
 .reviewRatings p {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
   margin: 0;
+}
+
+.reviewRatings p strong {
+  text-align: left;
+  width: 60%;
+  display: inline-block;
+}
+
+.reviewRatings span {
+  font-weight: bold;
+  min-width: 30px;
+  text-align: right;
+}
+
+.reviewAndProf {
+  flex-direction: column;
+  margin-left: 32px;
+}
+
+.professor {
+  font-size: 14px;
+  color: #6e6e6e;
+}
+
+.professorName {
+  font-weight: 600;
+  color: #6e6e6e;
 }
 
 .reviewText {
@@ -90,13 +103,14 @@
   font-size: 15px;
   font-weight: 500;
   color: #000;
+  margin-top: 5px;
 }
 
 .divider {
   border: none;
   height: 1px;
   background-color: #d3d3d3;
-  margin: 8px 0;
+  margin: 2px 0;
 }
 
 /* Buttons */
@@ -117,8 +131,8 @@
 .approveButton,
 .removeButton,
 .restoreButton {
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 8px 12px;
+  font-size: 13px;
   font-weight: 600;
   border: none;
   border-radius: 10px;
@@ -131,7 +145,7 @@
 
 .approveButton,
 .restoreButton {
-  background-color: #4AA91E;
+  background-color: #4aa91e;
   color: white;
 }
 
@@ -141,7 +155,7 @@
 }
 
 .removeButton {
-  background-color: #BE4138;
+  background-color: #be4138;
   color: white;
 }
 
@@ -150,7 +164,7 @@
 }
 
 .pendingreview {
-  border: 1px solid #B7D8FF;
+  border: 1px solid #b7d8ff;
   padding: 10px;
   border-radius: 5px;
   margin: 10px;
@@ -162,6 +176,8 @@
   text-indent: 10px;
 }
 
+/*Overall Review Page */
+
 .titleinfo {
   font-size: var(--font-p-size);
   font-weight: var(--semi-bold-weight);
@@ -170,9 +186,18 @@
 
 .tabs {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   gap: 60px;
   margin: 25px;
+}
+
+@media only screen and (max-width: 1124px) {
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 .tabButton {
@@ -191,7 +216,7 @@
 }
 
 .tabButton:hover .underline {
-  background-color: #ABD2FF;
+  background-color: #abd2ff;
 }
 
 .tabContent {
@@ -221,7 +246,7 @@
 }
 
 .activeTab .underline {
-  background-color: #0076FF;
+  background-color: #0076ff;
 }
 
 .reviewsList {

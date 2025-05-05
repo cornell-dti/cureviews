@@ -29,10 +29,7 @@ const LoginModal = ({ open }: Props) => {
           <br />
         </span>{' '}
       </div>
-      <button
-        className={`${styles.button}`}
-        onClick={() => signIn('profile')}
-      >
+      <button className={`${styles.button}`} onClick={() => signIn('profile')}>
         Login
       </button>
       <div className={styles.pastReviewsMessage}>

@@ -27,7 +27,10 @@ type NavbarProps = {
   showSearchBar?: boolean;
 };
 
-export default function Navbar({ userInput, showSearchBar = true }: NavbarProps) {
+export default function Navbar({
+  userInput,
+  showSearchBar = true
+}: NavbarProps) {
   const { netId, signIn, signOut } = useAuthOptionalLogin();
   const location = useLocation();
 
@@ -52,7 +55,8 @@ export default function Navbar({ userInput, showSearchBar = true }: NavbarProps)
   return (
     <div
       className={`${styles.navbarwrapper} ${!showSearchBar ? styles.withBorder : ''}`}
-    ><div className={styles.navbar}>
+    >
+      <div className={styles.navbar}>
         <a className="" href="/">
           <img src="/logo.svg" className={styles.logo} alt="CU Reviews Logo" />
         </a>
@@ -65,9 +69,8 @@ export default function Navbar({ userInput, showSearchBar = true }: NavbarProps)
             />
           </div>
         )}
-        <div className={styles.profileDropdown}>
-          {displayButton()}
-        </div>
-      </div></div>
+        <div className={styles.profileDropdown}>{displayButton()}</div>
+      </div>
+    </div>
   );
 }

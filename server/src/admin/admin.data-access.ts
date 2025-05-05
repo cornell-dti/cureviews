@@ -50,6 +50,16 @@ export const findReportedReviews = async () =>
   ).exec();
 
 /*
+ * Returns all approved reviews in the database
+ */
+export const findApprovedReviews = async (limit: number = 250) =>
+  await Reviews.find(
+    { visible: 1, reported: 0 },
+    {},
+    { sort: { date: -1 }, limit }
+  ).exec();
+
+/*
  * Count reviews by approved, pending, and reported and return the total counts
  */
 export const findReviewCounts = async () => {
@@ -157,21 +167,26 @@ export const removeAdminPrivilege = async (id: string) => {
 };
 
 /**
- * Gives a specified user admin privilege
+ * Gives a specified user admin privilege, assigns a role, and updates name.
+ * Users must be in the database already to grant admin privilege.
  * @param id netid of user
+ * @param role role to assign (e.g., 'Designer', 'PM', 'Developer')
+ * @param firstName first name to update
+ * @param lastName last name to update
  * @returns result of the database operation
  */
-export const grantAdminPrivilege = async (id: string) => {
+export const grantAdminPrivilege = async (id: string, role: string, firstName: string, lastName: string) => {
   const res = await Students.updateOne(
     { netId: id },
-    { $set: { privilege: 'admin' } }
+    { $set: { privilege: 'admin', role: role, firstName: firstName, lastName: lastName, date: new Date() } }
   ).exec();
   return res;
 };
 
+
 /**
  * @param start date
- * @returns review objects that are from a start date. 
+ * @returns review objects that are from a start date.
  */
 export const findReviewsByDate = async (start: Date) => {
   const reviews = await Reviews.find(
@@ -181,14 +196,22 @@ export const findReviewsByDate = async (start: Date) => {
   ).exec();
 
   return reviews;
-}
+};
 
+/**
+ * @param courseId string id
+ * @returns reviews for the course with courseId
+ */
 export const getCourseReviews = async (courseId: string) => {
   const reviews = await Reviews.find({ class: courseId }).exec();
-  return reviews
-}
+  return reviews;
+};
 
+/**
+ * @param user student object id in database
+ * @returns the user with the given id
+ */
 export const findStudentByUser = async (user: string) => {
   const student = await Students.findOne({ _id: user }).exec();
   return student;
-}
+};

@@ -53,7 +53,7 @@ const ReviewCard = ({
     let review_day = date.getDate();
 
     return review_month + '/' + review_day + '/' + review_year;
-  }
+  };
 
   /**
    * Shows user liked the review and updates DB count.
@@ -71,7 +71,7 @@ const ReviewCard = ({
     });
 
     setReview(response.data.review);
-  }
+  };
 
   /**
    * Fetch the course information.
@@ -86,7 +86,7 @@ const ReviewCard = ({
       setCourseTitle(course.classTitle);
       setCourseSub(course.classSub);
       setCourseNum(course.classNum);
-    }
+    };
 
     if (isProfile) updateCourse();
   }, [_review, isProfile]);
@@ -104,7 +104,7 @@ const ReviewCard = ({
       });
 
       setLiked(response.data.hasLiked);
-    }
+    };
 
     if (isLoggedIn) updateLiked();
   }, [_review, isLoggedIn]);
@@ -137,7 +137,7 @@ const ReviewCard = ({
         </div>
       );
     }
-  }
+  };
 
   /* SEE MORE -> SEE LESS logic for lengthier reviews */
   const [expand, setExpand] = useState(false);
@@ -154,7 +154,7 @@ const ReviewCard = ({
       if (ref.current) {
         setSeeMoreButton(ref.current.scrollHeight !== ref.current.clientHeight);
       }
-    }
+    };
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -213,10 +213,10 @@ const ReviewCard = ({
             <span className={styles.bold}>
               {_review.major && _review.major.length !== 0
                 ? _review.major.map((major, index) => (
-                  <span key={index}>
-                    {index > 0 && ', '} {major}
-                  </span>
-                ))
+                    <span key={index}>
+                      {index > 0 && ', '} {major}
+                    </span>
+                  ))
                 : 'N/A'}
             </span>
           </div>
@@ -240,12 +240,13 @@ const ReviewCard = ({
           <div> {dateToString()} </div>
           {!isPreview && (
             <div className={styles.reporthelpful}>
-              <button
+              <div
                 className={styles.report}
                 onClick={() => reportHandler(_review._id)}
               >
+                <img src={'/report-flag.svg'} alt="Flag" />
                 Report
-              </button>
+              </div>
 
               <div
                 className={`${styles.helpful} ${liked && styles.likedhelpful}`}
@@ -270,6 +271,6 @@ const ReviewCard = ({
       </div>
     </div>
   );
-}
+};
 
 export default ReviewCard;

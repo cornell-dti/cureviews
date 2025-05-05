@@ -1,15 +1,117 @@
-.userEntry {
-  padding: 1px;
-  margin: 2px;
-  display: flex;
-  border-bottom: 1px solid #ccc;
+.adminRow {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  column-gap: 24px;
+  background-color: white;
+  position: relative;
 }
 
-.removeButton {
-  color: var(--clr-black);
-  font-size: var(--font-small-size);
-  border-radius: 5px;
-  margin-left: auto;
-  padding: 2px 3px;
+.adminRow:hover {
+  background-color: #D9EAFF;
+}
+
+.nameCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.roleCol {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.actionCol {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.roleBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.designer {
+  background-color: #E4DCF3;
+  color: black;
+}
+
+.pmm {
+  background-color: #F6DDD8;
+  color: black;
+}
+
+.pm {
+  background-color: #FBEFCC;
+  color: black;
+}
+
+.tpm {
+  background-color: #DAEAE0;
+  color: black;
+}
+
+.developer {
+  background-color: rgba(0, 118, 255, 0.15);
+  color: black;
+}
+
+.default {
+  background-color: #d1d5db;
+  color: black;
+}
+
+.fullName {
+  font-weight: 600;
+}
+
+.netId {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.actionCol {
+  flex-shrink: 0;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownMenu {
+  position: absolute;
+  right: 0;
+  margin-top: 8px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  width: 120px;
+  z-index: 20;
+}
+
+.dropdownItem {
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #111827;
+}
+
+.dropdownItem:hover {
+  background-color: #D9EAFF;
 }

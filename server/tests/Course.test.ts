@@ -138,7 +138,7 @@ describe('Course functionality unit tests', () => {
   test('Getting course eval from course characteristics', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/courses/get-course-eval`,
-      { classSub: 'AEM', classNum: '1200'}
+      { classSub: 'AEM', classNum: '1200' }
     );
 
     expect(res.status).toBe(200);
@@ -147,7 +147,7 @@ describe('Course functionality unit tests', () => {
 
     const res2 = await axios.post(
       `http://localhost:${testPort}/api/courses/get-course-eval`,
-      { classSub: 'BEE', classNum: '5330'}
+      { classSub: 'BEE', classNum: '5330' }
     );
 
     expect(res2.status).toBe(200);
@@ -158,11 +158,10 @@ describe('Course functionality unit tests', () => {
   test('Getting nonexistent course eval', async () => {
     const res = await axios.post(
       `http://localhost:${testPort}/api/courses/get-course-eval`,
-      { classSub: 'CS', classNum: '2110'}
+      { classSub: 'CS', classNum: '2110' }
     );
 
     expect(res.status).toBe(200);
     expect(res.data.result).toBe(0);
   });
-
 });

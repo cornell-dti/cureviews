@@ -26,7 +26,7 @@ const Stats = ({ token }: StatsProps) => {
         setPendingRevCount(result.pending);
         setReportedRevCount(result.reported);
       }
-    }
+    };
     getCounts();
   });
 
@@ -53,11 +53,10 @@ const Stats = ({ token }: StatsProps) => {
     element.download = 'ReviewsPerClass.csv';
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
-  }
+  };
 
   return (
     <div className={styles.diagnosticbox}>
-      <h2>Diagnostic information</h2>
       <div className={styles.stats}>
         <button className={styles.downloadButton} onClick={downloadCSVFile}>
           Download ApprovedReviewCount by Class
