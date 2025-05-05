@@ -259,7 +259,7 @@ export const addAdmin = async ({
   id,
   role,
   firstName,
-  lastName,
+  lastName
 }: AddAdminParams) => {
   const userIsAdmin = await verifyTokenAdmin({ auth });
   if (userIsAdmin) {
@@ -268,7 +268,6 @@ export const addAdmin = async ({
   }
   return null;
 };
-
 
 /**
  * Updated all professors in the database by scraping through the Cornell course API.
@@ -444,14 +443,17 @@ export const addNewSemDb = async ({ auth, semester }: AdminAddSemesterType) => {
  *
  * @returns true if operation was successful, false if operations was not successful, null if token not admin
  */
-export const addNewCourseEvals = async ({ auth }: VerifyAdminType, resetEvals: boolean) => {
+export const addNewCourseEvals = async (
+  { auth }: VerifyAdminType,
+  resetEvals: boolean
+) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
   }
 
   // UNCOMMENT WHEN USING FUNCTION!!!!!!
-  return await addCurrCourseEvals();
+  // return await addCurrCourseEvals();
 
   return false;
 };
@@ -483,9 +485,9 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
   const userIsAdmin = verifyTokenAdmin({ auth });
   if (!userIsAdmin) {
     return null;
-  }  
+  }
   // UNCOMMENT IF YOU NEED TO PROCESS THESE, but likely not necessary
-  
+
   const descriptionResult = await addAllProcessedDescriptions();
   const idfResult = await addIdfVector();
   const tfidfResult = await addAllTfIdfVectors();

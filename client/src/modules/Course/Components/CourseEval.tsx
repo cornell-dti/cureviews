@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {CourseEvaluation} from 'common';
-import styles from '../Styles/CourseEval.module.css'
+import { CourseEvaluation } from 'common';
+import styles from '../Styles/CourseEval.module.css';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,11 +10,10 @@ import {
   ArcElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js';
-import {Bar, Pie} from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-
 
 type CourseEvalProps = {
   courseEval: CourseEvaluation;
@@ -32,7 +31,7 @@ ChartJS.register(
 
 ChartJS.defaults.scale.grid.display = false;
 
-const CourseEval = ({courseEval}: CourseEvalProps) => {
+const CourseEval = ({ courseEval }: CourseEvalProps) => {
   const [mappedSentiments, setMappedSentiments] = useState(
     mapSentiments(courseEval.sentiments)
   );
@@ -55,20 +54,20 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         anchor: 'end',
         align: 'end',
         clip: false,
-        color: "#000",
+        color: '#000',
         font: {
           size: 14,
           weight: 600,
-          family: 'Arial',
+          family: 'Arial'
         },
         padding: {
-          left: 20,
+          left: 20
         }
       }
     },
     layout: {
       padding: {
-        bottom: 10,
+        bottom: 10
       }
     },
     scales: {
@@ -97,7 +96,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           font: {
             size: 10,
             weight: 400,
-            family: 'Arial',
+            family: 'Arial'
           }
         },
         border: {
@@ -112,8 +111,8 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
     maintainAspectRatio: false,
     layout: {
       padding: {
-        top: 20,
-      },
+        top: 20
+      }
     },
     plugins: {
       legend: {
@@ -123,12 +122,12 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         display: true,
         anchor: 'end',
         align: 'end',
-        color: "#000",
+        color: '#000',
         font: {
           size: 14,
           weight: 600,
-          family: 'Arial',
-        },
+          family: 'Arial'
+        }
       }
     },
     scales: {
@@ -140,7 +139,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         },
         border: {
           display: false
-        },
+        }
       },
       y: {
         display: false
@@ -156,11 +155,11 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         position: 'right',
         labels: {
           usePointStyle: true,
-          boxHeight: 8,
-        },
+          boxHeight: 8
+        }
       }
     }
-  }
+  };
 
   const profData = {
     labels: [
@@ -222,7 +221,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           'rgba(245, 196, 217, 1)',
           'rgba(255, 161, 100, 1)',
           'rgba(154, 198, 247, 1)',
-          'rgba(209, 141, 238, 1)',
+          'rgba(209, 141, 238, 1)'
         ],
         borderColor: 'white',
         borderWidth: 3
@@ -251,55 +250,70 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
           'rgba(163, 199, 134, 1)',
           'rgba(154, 198, 247, 1)',
           'rgba(209, 141, 238, 1)',
-          'rgba(245, 196, 217, 1)',
+          'rgba(245, 196, 217, 1)'
         ],
         borderColor: 'white',
         borderWidth: 3
       }
     ]
-  }
+  };
 
   return (
     <div>
-      <p className={styles.disclaimer}>This course evaluation data is sourced from Cornell’s course evaluation database
-        from {courseEval.semester} and reflects feedback from {courseEval.totalEvals} student responses. It may
-        not fully capture the course experience for all students.</p>
+      <p className={styles.disclaimer}>
+        This course evaluation data is sourced from Cornell’s course evaluation
+        database from {courseEval.semester} and reflects feedback from{' '}
+        {courseEval.totalEvals} student responses. It may not fully capture the
+        course experience for all students.
+      </p>
       <div className={styles.dashboard}>
         <div className={`${styles.container} ${styles.professorRating}`}>
           <h1>Professor Rating</h1>
-          <div style={{width:'100%', height:'100%'}}>
-            <Bar options={profChartOptions} data={profData} plugins={[ChartDataLabels]}/>
+          <div style={{ width: '100%', height: '100%' }}>
+            <Bar
+              options={profChartOptions}
+              data={profData}
+              plugins={[ChartDataLabels]}
+            />
           </div>
         </div>
         <div className={`${styles.container} ${styles.topSentiments}`}>
           <h1>Top Sentiments</h1>
           <div className={styles.textContainer}>
-            {mappedSentiments[0].map((statement) => <p>"{statement}"</p>)}
+            {mappedSentiments[0].map((statement) => (
+              <p>"{statement}"</p>
+            ))}
           </div>
         </div>
         <div className={`${styles.container} ${styles.gradeDistribution}`}>
           <h1>Approximate Grade in Course</h1>
-          <div style={{width:'100%', height:'100%'}}>
-            <Bar className={styles.bar} options={gradeChartOptions} data={gradeData} plugins={[ChartDataLabels]}/>
+          <div style={{ width: '100%', height: '100%' }}>
+            <Bar
+              className={styles.bar}
+              options={gradeChartOptions}
+              data={gradeData}
+              plugins={[ChartDataLabels]}
+            />
           </div>
         </div>
         <div className={`${styles.container} ${styles.studentYear}`}>
           <h1>Student Year</h1>
-          <div style={{width:'99%', height:'99%'}}
-          >
-            <Pie options={pieOptions} data={yearData}/>
+          <div style={{ width: '99%', height: '99%' }}>
+            <Pie options={pieOptions} data={yearData} />
           </div>
         </div>
         <div className={`${styles.container} ${styles.schoolCollege}`}>
           <h1>School / College</h1>
-          <div style={{width:'99%', height:'99%'}}>
-            <Pie options={pieOptions} data={collegeData}/>
+          <div style={{ width: '99%', height: '99%' }}>
+            <Pie options={pieOptions} data={collegeData} />
           </div>
         </div>
         <div className={`${styles.container} ${styles.reasonTaking}`}>
           <h1>Reasons For Taking Course</h1>
           <div className={styles.textContainer}>
-            {mappedSentiments[1].map((statement) => <p>"{statement}"</p>)}
+            {mappedSentiments[1].map((statement) => (
+              <p>"{statement}"</p>
+            ))}
           </div>
         </div>
       </div>

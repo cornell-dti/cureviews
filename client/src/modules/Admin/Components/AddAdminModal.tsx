@@ -21,12 +21,19 @@ type ModalProps = {
 /**
  * Add Admin Component
  *
- * Modal that will pop up with a form to take in admin details (name, netid, 
+ * Modal that will pop up with a form to take in admin details (name, netid,
  * and role). Submitting the form will give admin privilege to the user with
- * the given netid. 
+ * the given netid.
  */
 
-const AddAdminModal = ({ open, setOpen, onSuccess, token, mode, initialValues }: ModalProps) => {
+const AddAdminModal = ({
+  open,
+  setOpen,
+  onSuccess,
+  token,
+  mode,
+  initialValues
+}: ModalProps) => {
   const [name, setName] = useState(initialValues?.name || '');
   const [netId, setNetId] = useState(initialValues?.netId || '');
   const [role, setRole] = useState<string | ''>(initialValues?.role || '');
@@ -54,7 +61,11 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token, mode, initialValues }:
     setError('');
   };
 
-  const addAdminByNetId = async (_netId: string, _role: string, _name: string) => {
+  const addAdminByNetId = async (
+    _netId: string,
+    _role: string,
+    _name: string
+  ) => {
     const [_firstName, ...rest] = _name.trim().split(' ');
     const _lastName = rest.join(' ');
 
@@ -132,7 +143,9 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token, mode, initialValues }:
                   value={role}
                   onChange={(e) => setRole(e.target.value as Role)}
                 >
-                  <option value="" disabled>Select Role</option>
+                  <option value="" disabled>
+                    Select Role
+                  </option>
                   <option value="Designer">Designer</option>
                   <option value="TPM">TPM</option>
                   <option value="PM">PM</option>
@@ -149,7 +162,13 @@ const AddAdminModal = ({ open, setOpen, onSuccess, token, mode, initialValues }:
               onClick={handleSubmit}
               disabled={!valid || loading}
             >
-              {loading ? (mode === 'add' ? 'Adding...' : 'Saving...') : (mode === 'add' ? 'Add Admin' : 'Save Changes')}
+              {loading
+                ? mode === 'add'
+                  ? 'Adding...'
+                  : 'Saving...'
+                : mode === 'add'
+                  ? 'Add Admin'
+                  : 'Save Changes'}
             </button>
           </div>
         </div>

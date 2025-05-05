@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Review } from 'common';
 import AdminReview from './AdminReview';
 import styles from '../Styles/AdminReview.module.css';
-import Dropdown from "./Dropdown";
-import Stats from "./Stats";
+import Dropdown from './Dropdown';
+import Stats from './Stats';
 
 type Props = {
   token: string;
@@ -141,7 +141,7 @@ const Reviews = ({ token }: Props) => {
   return (
     <div className={styles.reviewsPage}>
       <h1>Reviews Dashboard</h1>
-      <Stats token={token}/>
+      <Stats token={token} />
       <div className={styles.content}>
         <div className={styles.tabs}>
           <button

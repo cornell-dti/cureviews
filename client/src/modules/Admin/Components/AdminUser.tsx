@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import DeleteAdminModal from './DeleteAdminModal';
 import AddAdminModal from './AddAdminModal';
 import styles from '../Styles/AdminUser.module.css';
-import axios from 'axios';
 
 type Role = 'Designer' | 'TPM' | 'PM' | 'PMM' | 'Developer';
 
@@ -46,26 +45,40 @@ const AdminUser = ({ user, token, removeHandler, refreshAdmins }: Props) => {
     };
   }, []);
 
-
   return (
     <div className={styles.adminRow}>
       <div className={styles.nameCol}>
-        <div className={styles.fullName}>{user.firstName} {user.lastName}</div>
+        <div className={styles.fullName}>
+          {user.firstName} {user.lastName}
+        </div>
         <div className={styles.netId}>{user.netId}</div>
       </div>
 
       <div className={styles.roleCol}>
-        <span className={`${styles.roleBadge} ${styles[user.role?.toLowerCase() ?? 'default']}`}>
+        <span
+          className={`${styles.roleBadge} ${styles[user.role?.toLowerCase() ?? 'default']}`}
+        >
           {user.role?.trim() ? user.role : 'No Role'}
         </span>
       </div>
 
       <div className={styles.dateCol}>
-        {user.date ? new Date(user.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : ''}
+        {user.date
+          ? new Date(user.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })
+          : ''}
       </div>
 
       <div className={styles.actionCol} ref={menuRef}>
-        <button className={styles.menuButton} onClick={() => setMenuOpen((prev) => !prev)}>⋮</button>
+        <button
+          className={styles.menuButton}
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          ⋮
+        </button>
 
         {menuOpen && (
           <div className={styles.dropdownMenu}>
@@ -89,7 +102,6 @@ const AdminUser = ({ user, token, removeHandler, refreshAdmins }: Props) => {
             </div>
           </div>
         )}
-
       </div>
       <DeleteAdminModal
         isOpen={deleteModalOpen}
@@ -117,6 +129,5 @@ const AdminUser = ({ user, token, removeHandler, refreshAdmins }: Props) => {
     </div>
   );
 };
-
 
 export default AdminUser;

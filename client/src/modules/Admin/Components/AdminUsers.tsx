@@ -14,7 +14,6 @@ type Props = {
 
 const ManageAdmins = ({ token }: Props) => {
   const [admins, setAdmins] = useState<Student[]>([]);
-  const [netId, setNetId] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -31,8 +30,6 @@ const ManageAdmins = ({ token }: Props) => {
     addedAfter !== '' ||
     addedBefore !== '' ||
     sortOption !== 'date-latest';
-
-
 
   /**
    * Fetch all admins when the page loads
@@ -76,7 +73,10 @@ const ManageAdmins = ({ token }: Props) => {
     <div className={styles.adminPage}>
       <div className={styles.adminHeader}>
         <h1>Manage Administrators</h1>
-        <button className={styles.addAdminButtonTop} onClick={() => setIsModalOpen(true)}>
+        <button
+          className={styles.addAdminButtonTop}
+          onClick={() => setIsModalOpen(true)}
+        >
           <span>＋</span> Add Admin
         </button>
       </div>
@@ -194,14 +194,16 @@ const ManageAdmins = ({ token }: Props) => {
                       >
                         Apply
                       </button>
-
                     </div>
                   </div>
                 )}
               </div>
             </div>
             <div className={styles.sortWrapper}>
-              <button className={styles.sortButton} onClick={() => setSortOpen(!sortOpen)}>
+              <button
+                className={styles.sortButton}
+                onClick={() => setSortOpen(!sortOpen)}
+              >
                 Sort
               </button>
 
@@ -209,34 +211,43 @@ const ManageAdmins = ({ token }: Props) => {
                 <div className={styles.sortDropdown}>
                   <div
                     className={`${styles.sortItem} ${sortOption === 'name' ? styles.selectedSort : ''}`}
-                    onClick={() => { setSortOption('name'); setSortOpen(false); }}
+                    onClick={() => {
+                      setSortOption('name');
+                      setSortOpen(false);
+                    }}
                   >
                     Name (Alphabetical)
                   </div>
                   <div
                     className={`${styles.sortItem} ${sortOption === 'role' ? styles.selectedSort : ''}`}
-                    onClick={() => { setSortOption('role'); setSortOpen(false); }}
+                    onClick={() => {
+                      setSortOption('role');
+                      setSortOpen(false);
+                    }}
                   >
                     Role (Alphabetical)
                   </div>
                   <div
                     className={`${styles.sortItem} ${sortOption === 'date-latest' ? styles.selectedSort : ''}`}
-                    onClick={() => { setSortOption('date-latest'); setSortOpen(false); }}
+                    onClick={() => {
+                      setSortOption('date-latest');
+                      setSortOpen(false);
+                    }}
                   >
                     Date Added: Latest
                   </div>
                   <div
                     className={`${styles.sortItem} ${sortOption === 'date-earliest' ? styles.selectedSort : ''}`}
-                    onClick={() => { setSortOption('date-earliest'); setSortOpen(false); }}
+                    onClick={() => {
+                      setSortOption('date-earliest');
+                      setSortOpen(false);
+                    }}
                   >
                     Date Added: Earliest
                   </div>
                 </div>
               )}
-
             </div>
-
-
           </div>
         </div>
         <div className={styles.tableHeader}>
@@ -248,30 +259,40 @@ const ManageAdmins = ({ token }: Props) => {
 
         <div className={styles.adminList}>
           {admins
-            .filter(admin => {
+            .filter((admin) => {
               if (selectedRole && admin.role !== selectedRole) return false;
               if (admin.date) {
                 const adminDate = new Date(admin.date);
 
-                if (addedAfter && adminDate < new Date(addedAfter)) return false;
-                if (addedBefore && adminDate > new Date(addedBefore)) return false;
+                if (addedAfter && adminDate < new Date(addedAfter))
+                  return false;
+                if (addedBefore && adminDate > new Date(addedBefore))
+                  return false;
               }
               return true;
             })
-            .filter(admin =>
+            .filter((admin) =>
               `${admin.firstName} ${admin.lastName} ${admin.netId}`
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase())
             )
             .sort((a, b) => {
               if (sortOption === 'name') {
-                return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+                return `${a.firstName} ${a.lastName}`.localeCompare(
+                  `${b.firstName} ${b.lastName}`
+                );
               } else if (sortOption === 'role') {
                 return (a.role || '').localeCompare(b.role || '');
               } else if (sortOption === 'date-latest') {
-                return new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
+                return (
+                  new Date(b.date || 0).getTime() -
+                  new Date(a.date || 0).getTime()
+                );
               } else if (sortOption === 'date-earliest') {
-                return new Date(a.date || 0).getTime() - new Date(b.date || 0).getTime();
+                return (
+                  new Date(a.date || 0).getTime() -
+                  new Date(b.date || 0).getTime()
+                );
               }
               return 0;
             })
@@ -283,7 +304,7 @@ const ManageAdmins = ({ token }: Props) => {
                   lastName: admin.lastName,
                   netId: admin.netId,
                   role: admin.role as Role,
-                  date: admin.date ? new Date(admin.date) : undefined,
+                  date: admin.date ? new Date(admin.date) : undefined
                 }}
                 token={token}
                 removeHandler={removeAdmin}
@@ -292,7 +313,6 @@ const ManageAdmins = ({ token }: Props) => {
             ))}
         </div>
       </div>
-
     </div>
   );
 };

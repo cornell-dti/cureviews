@@ -62,8 +62,7 @@
   font-weight: var(--regular-weight);
 }
 
-.updateSection{
+.updateSection {
   margin-top: 24px;
-  font-size: var(--font-medium-size)
+  font-size: var(--font-medium-size);
 }
-
