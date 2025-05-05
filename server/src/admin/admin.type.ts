@@ -25,6 +25,11 @@ export interface AdminRequestType {
   token: string;
 }
 
+export interface CourseEvalRequestType {
+  token: string;
+  resetEvals: boolean;
+}
+
 export interface VerifyAdminType {
   auth: Auth;
 }

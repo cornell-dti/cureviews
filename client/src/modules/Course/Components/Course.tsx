@@ -342,7 +342,7 @@ export const Course = () => {
               <div className={styles.tabIndicator}></div>
 
               {/* Add a blue active indicator that moves */}
-              <div className={`${styles.activeIndicator} ${reviewTabSelected ? styles.firstTab : styles.secondTab}`}></div>
+              <div className={`${courseEval != null ? styles.activeIndicator : styles.noEvalsIndicator} ${reviewTabSelected ? styles.firstTab : styles.secondTab}`}></div>
             </div>
             {reviewTabSelected && (
               <div className={styles.reviewscontainer}>

@@ -199,15 +199,17 @@ const mergeCourseEvaluations = (
  *
  * @returns true if operation was successful, false otherwise
  * @param data course eval json data
+ * @param resetEvals true if user wants to delete all existing
+ * course evals and regenerate them, false if user only
+ * wants to add new course evals
  */
 export const addCourseEvalsFromJson = async (
-  data: CourseEvaluationsRaw
+  data: CourseEvaluationsRaw,
+  resetEvals: boolean
 ): Promise<boolean> => {
   const parsedData: CourseEvaluations = parseEval(data)
 
-  // Uncomment if you want to reset and repopulate the database,
-  // instead of skipping over currently existing indices
-  // await CourseEvaluations.deleteMany({})
+  if (resetEvals) await CourseEvaluations.deleteMany({})
 
   const v1 = await Promise.all(
     Object.entries(parsedData)
@@ -244,8 +246,8 @@ export const addCourseEvalsFromJson = async (
 /** Adds course evaluations to database.
  *  !!! UNCOMMENT WHEN YOU NEED TO ADD COURSE EVALS !!!
  *  Also uncomment in admin.controller.ts */
-export const addCurrCourseEvals = async () => {
-  // await addCourseEvalsFromJson(courseData)
+export const addCurrCourseEvals = async (resetEvals: boolean) => {
+  // await addCourseEvalsFromJson(courseData, resetEvals)
   return true
 };
 

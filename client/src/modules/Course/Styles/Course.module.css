@@ -78,8 +78,17 @@
   bottom: 24px;
   height: 2px;
   background-color: var(--clr-blue-300);
-  width: 50%;
   transition: transform 0.3s ease;
+  width: 50%;
+}
+
+.noEvalsIndicator {
+  position: absolute;
+  bottom: 24px;
+  height: 2px;
+  background-color: var(--clr-blue-300);
+  transition: transform 0.3s ease;
+  width: 100%;
 }
 
 /* Position for first tab selected */

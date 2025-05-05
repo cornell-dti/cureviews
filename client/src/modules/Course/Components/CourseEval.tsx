@@ -211,7 +211,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
     labels: ['Freshman', 'Sophomore', 'Junior', 'Senior'],
     datasets: [
       {
-        label: '# of Students',
+        label: ' # of Students',
         data: [
           courseEval.numFresh,
           courseEval.numSoph,
@@ -234,7 +234,7 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
     labels: ['CALS', 'AAP', 'CAS', 'COE', 'Hotel', 'HumEc', 'ILR'],
     datasets: [
       {
-        label: '# of Students',
+        label: ' # of Students',
         data: [
           courseEval.numAg,
           courseEval.numArch,
@@ -285,13 +285,14 @@ const CourseEval = ({courseEval}: CourseEvalProps) => {
         </div>
         <div className={`${styles.container} ${styles.studentYear}`}>
           <h1>Student Year</h1>
-          <div style={{width:'90%', height:'90%'}}>
+          <div style={{width:'99%', height:'99%'}}
+          >
             <Pie options={pieOptions} data={yearData}/>
           </div>
         </div>
         <div className={`${styles.container} ${styles.schoolCollege}`}>
           <h1>School / College</h1>
-          <div style={{width:'90%', height:'90%'}}>
+          <div style={{width:'99%', height:'99%'}}>
             <Pie options={pieOptions} data={collegeData}/>
           </div>
         </div>

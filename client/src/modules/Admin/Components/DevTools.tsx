@@ -42,6 +42,18 @@ export default function AdminTools({ token }: AdminToolsProps) {
     }
   };
 
+  const handleCourseEvalApiCall = async (endpoint: string, successState: keyof typeof messages, resetEvals: boolean) => {
+    setUpdating(true)
+    try {
+      await axios.post(endpoint, { token, resetEvals });
+      setUpdated(successState);
+    } catch {
+      setUpdated('failure');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   const raffleHandler = async () => {
     if (!raffleStartDate) return;
     setUpdating(true);
@@ -79,11 +91,22 @@ export default function AdminTools({ token }: AdminToolsProps) {
           Add New Semester
         </button>
         <button
-          onClick={() => handleApiCall('/api/admin/courses/add-course-evals', 'courseEval')}
+          onClick={() =>
+            handleCourseEvalApiCall('/api/admin/courses/add-course-evals', 'courseEval', false)
+          }
           disabled={updating}
           className={styles.adminButtons}
         >
           Add Course Evaluations
+        </button>
+        <button
+          onClick={() =>
+            handleCourseEvalApiCall('/api/admin/courses/add-course-evals', 'courseEval', true)
+          }
+          disabled={updating}
+          className={styles.adminButtons}
+        >
+          Delete and regenerate all Course Evaluations
         </button>
         <button
           onClick={() =>
