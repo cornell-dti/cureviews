@@ -488,9 +488,9 @@ export const addSimilarityDb = async ({ auth }: VerifyAdminType) => {
   }
   // UNCOMMENT IF YOU NEED TO PROCESS THESE, but likely not necessary
 
-  const descriptionResult = await addAllProcessedDescriptions();
-  const idfResult = await addIdfVector();
-  const tfidfResult = await addAllTfIdfVectors();
+  // const descriptionResult = await addAllProcessedDescriptions();
+  // const idfResult = await addIdfVector();
+  // const tfidfResult = await addAllTfIdfVectors();
   const similarityResult = await addAllSimilarityData();
   return similarityResult;
 };
