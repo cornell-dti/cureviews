@@ -8,8 +8,6 @@ type StatsProps = {
 
 const Stats = ({ token }: StatsProps) => {
   const [approvedRevCount, setApprovedRevCount] = useState<Number>(0);
-  const [pendingRevCount, setPendingRevCount] = useState<Number>(0);
-  const [reportedRevCount, setReportedRevCount] = useState<Number>(0);
 
   /*
       Calls route to update the approved, pending, and reported review counts
@@ -23,8 +21,6 @@ const Stats = ({ token }: StatsProps) => {
       const result = response.data.result;
       if (response.status === 200) {
         setApprovedRevCount(result.approved);
-        setPendingRevCount(result.pending);
-        setReportedRevCount(result.reported);
       }
     };
     getCounts();
@@ -62,8 +58,6 @@ const Stats = ({ token }: StatsProps) => {
           Download ApprovedReviewCount by Class
         </button>
         <p>Approved review count: {approvedRevCount}</p>
-        <p>Pending review count: {pendingRevCount}</p>
-        <p>Reported review count: {reportedRevCount}</p>
       </div>
     </div>
   );

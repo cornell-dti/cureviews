@@ -214,7 +214,9 @@ export const Course = () => {
       setVisibleCourseReviews(courseReviews ? [...courseReviews] : []);
     } else {
       setVisibleCourseReviews(
-        (courseReviews ? [...courseReviews] : []).filter((r: Review) => r.professors?.includes(value))
+        (courseReviews ? [...courseReviews] : []).filter((r: Review) =>
+          r.professors?.includes(value)
+        )
       );
     }
     selectedProf.current = value;
