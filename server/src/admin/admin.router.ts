@@ -597,8 +597,9 @@ adminRouter.post('/rec/similarity', async (req, res) => {
  */
 adminRouter.post('/draw-raffle', async (req, res) => {
   try {
-    const { start } = req.body;
-    const netid = await drawRaffle(start);
+    const { token, start }: AdminRequestType & { start: Date } = req.body;
+    const auth = new Auth({ token });
+    const netid = await drawRaffle({ auth, start });
     res.status(200).json({ netid: netid });
   } catch (err) {
     res.status(500).json({ error: `Internal Server Error: ${err}` });

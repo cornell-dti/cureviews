@@ -12,7 +12,7 @@ import {
   grantAdminPrivilege,
   approveAllReviews,
   findReviewsByDate,
-  getCourseReviews,
+  getReviewCountsForClasses,
   findStudentByUser
 } from './admin.data-access';
 import {
@@ -520,7 +520,11 @@ interface DefaultRaffleValue {
  * @param start date
  * @returns student netid that won the raffle. [done without replacement/removal]
  */
-export const drawRaffle = async (start: Date) => {
+export const drawRaffle = async ({ auth, start }: VerifyAdminType & { start: Date }) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
   const raffleMap = new RaffleMap<string, DefaultRaffleValue>(() => ({
     entries: 0,
     reviews: 0,
@@ -529,25 +533,25 @@ export const drawRaffle = async (start: Date) => {
   const reviews = await findReviewsByDate(start);
 
   // loop thru reviews and update number of entries
-  await Promise.all(
-    reviews.map(async (review) => {
-      const reviews = await getCourseReviews(review.class);
-      const count = reviews.length;
-      const user = review.user;
-      const userValue = raffleMap.get(user);
-      userValue.reviews += 1;
-      if (userValue.reviews >= 5 && !userValue.bonus) {
-        userValue.entries += 5;
-        userValue.bonus = true;
-      }
-      if (count > 3) {
-        userValue.entries += 3;
-      } else {
-        userValue.entries += 1;
-      }
-      raffleMap.set(user, userValue);
-    })
-  );
+  const classIds = Array.from(new Set(reviews.map((r) => r.class)));
+  const countsMap = await getReviewCountsForClasses(classIds);
+
+  reviews.forEach((review) => {
+    const count = countsMap.get(review.class) ?? 0;
+    const user = review.user;
+    const userValue = raffleMap.get(user);
+    userValue.reviews += 1;
+    if (userValue.reviews >= 5 && !userValue.bonus) {
+      userValue.entries += 5;
+      userValue.bonus = true;
+    }
+    if (count > 3) {
+      userValue.entries += 1;
+    } else {
+      userValue.entries += 3;
+    }
+    raffleMap.set(user, userValue);
+  });
 
   // draw a random winner
   let totalEntries = 0;
