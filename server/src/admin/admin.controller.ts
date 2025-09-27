@@ -517,10 +517,16 @@ interface DefaultRaffleValue {
 
 /**
  *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @param start date
  * @returns student netid that won the raffle. [done without replacement/removal]
  */
-export const drawRaffle = async (start: Date) => {
+export const drawRaffle = async ({ auth, start }: VerifyAdminType & { start: Date }) => {
+  const userIsAdmin = verifyTokenAdmin({ auth });
+  if (!userIsAdmin) {
+    return null;
+  }
+
   const raffleMap = new RaffleMap<string, DefaultRaffleValue>(() => ({
     entries: 0,
     reviews: 0,
