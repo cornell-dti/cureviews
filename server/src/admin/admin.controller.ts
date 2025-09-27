@@ -517,6 +517,7 @@ interface DefaultRaffleValue {
 
 /**
  *
+ * @param {Auth} auth: Object that represents the authentication of a request being passed in.
  * @param start date
  * @returns student netid that won the raffle. [done without replacement/removal]
  */

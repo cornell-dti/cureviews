@@ -153,7 +153,7 @@ export const Course = () => {
           const reviews = reviewsResponse.data.result;
           // Convert date field of Review to JavaScript Date object
           reviews.map((r: Review) => (r.date = r.date && new Date(r.date)));
-          reviews.sort(sortByLikes);
+          reviews.sort(sortByDate);
           setCourseReviews(reviews);
           setVisibleCourseReviews(reviews);
 
@@ -214,7 +214,9 @@ export const Course = () => {
       setVisibleCourseReviews(courseReviews ? [...courseReviews] : []);
     } else {
       setVisibleCourseReviews(
-        (courseReviews ? [...courseReviews] : []).filter((r: Review) => r.professors?.includes(value))
+        (courseReviews ? [...courseReviews] : []).filter((r: Review) =>
+          r.professors?.includes(value)
+        )
       );
     }
     selectedProf.current = value;
@@ -370,8 +372,8 @@ export const Course = () => {
                           onChange={sortReviewsBy}
                           className={styles.filtertext}
                         >
-                          <option value="helpful">Most Helpful</option>
                           <option value="recent">Recent</option>
+                          <option value="helpful">Most Helpful</option>
                           {selectedProf.current === 'none' && (
                             <option value="professor">Professor Name</option>
                           )}

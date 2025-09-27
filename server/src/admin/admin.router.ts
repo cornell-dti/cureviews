@@ -6,7 +6,8 @@ import {
   AdminRequestType,
   AdminUserRequestType,
   AdminAddSemesterRequestType,
-  CourseEvalRequestType
+  CourseEvalRequestType,
+  VerifyAdminType
 } from './admin.type';
 import {
   getApprovedReviews,
@@ -594,6 +595,9 @@ adminRouter.post('/rec/similarity', async (req, res) => {
 
 /**
  * Reachable at POST /api/admin/draw-raffle
+ * @body token: a session's current token
+ * @body start: a date object representing the start date of the raffle
+ * Draws a random winner for the raffle
  */
 adminRouter.post('/draw-raffle', async (req, res) => {
   try {
