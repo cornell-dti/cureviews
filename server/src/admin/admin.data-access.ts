@@ -220,6 +220,35 @@ export const getCourseReviews = async (courseId: string) => {
 };
 
 /**
+ * Gets # of reviews for a set of class ids in one query
+ * @param classIds array of class ids
+ * @returns Map of classId -> count of reviews
+ */
+export const getReviewCountsForClasses = async (
+  classIds: string[]
+) => {
+  if (!classIds || classIds.length === 0) {
+    return new Map<string, number>();
+  }
+
+  const pipeline = [
+    { $match: { class: { $in: classIds } } },
+    { $group: { _id: '$class', count: { $sum: 1 } } }
+  ];
+
+  const results: Array<{ _id: string; count: number }> = await Reviews.aggregate(
+    pipeline
+  ).exec();
+
+  const counts = new Map<string, number>();
+  results.forEach((doc) => counts.set(doc._id, doc.count));
+  classIds.forEach((id) => {
+    if (!counts.has(id)) counts.set(id, 0);
+  });
+  return counts;
+};
+
+/**
  * @param user student object id in database
  * @returns the user with the given id
  */
