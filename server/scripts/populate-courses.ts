@@ -655,6 +655,9 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
   const subject = course.classSub;
   const num = course.classNum;
   try {
+    if (course.recommendations) {
+      return true;
+    }
     const similarities = [];
     const tfidf = await RecommendationMetadata.findOne({
       _id: courseId
