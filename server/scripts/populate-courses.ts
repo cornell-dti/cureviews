@@ -655,7 +655,7 @@ const addSimilarityData = async (courses, course): Promise<boolean> => {
   const subject = course.classSub;
   const num = course.classNum;
   try {
-    if (course.recommendations) {
+    if (course.recommendations !== null) {
       return true;
     }
     const similarities = [];
